@@ -1,0 +1,2 @@
+void GetCunicValue_SameFrame(LPBYTE fm, int nX, int nY,  int nMinX, int nMaxX, int pitch, int nMaxHeight, int nCunicSize, double *pCunic, int *pCunicValue);
+void GetCunicValue_OtherFrame(LPBYTE fm, int nX, int nY,  int nMinX, int nMaxX, int pitch, int nMaxHeight, int nCunicSize, double *pCunic, int *pCunicValue);

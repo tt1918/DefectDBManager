@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{63C95FA3-C6C3-4312-87DA-86ED2A2FD36B}</ProjectGuid>
+    <RootNamespace>KoWeb</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>E:\1KOKO\2NEWWEB\KoWeb211008\KoWeb\MIL9\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\1KOKO\KOWEB\koweb201013_3D_NEL8\KoWeb\LIB\BaslerLineFiles;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>.\MIL10_64\Include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\KYW\KOKO\KOWEB\KoWeb211216-9_B-12_DK\KoWeb\Basler22;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\KYW\KOKO\KOWEB\koweb201015_3D_NEL8\KoWeb\LIB\BaslerLineFiles;$(LibraryPath)</LibraryPath>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>.\MIL10_64\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>c:\nexteye\koweb.exe</OutputFile>
+      <ProgramDatabaseFile>c:\nexteye\koweb.pdb</ProgramDatabaseFile>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>mil.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>mil.lib</AdditionalDependencies>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Comments.txt" />
+    <None Include="ReadMe.txt" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\KoWeb.ico" />
+    <None Include="res\KoWeb.rc2" />
+    <None Include="res\KoWebDoc.ico" />
+    <None Include="res\MainGUI.bmp" />
+    <None Include="res\Toolbar.bmp" />
+    <None Include="res\Toolbar256.bmp" />
+    <None Include="UserImages.bmp" />
+    <None Include="work.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbyssClient.h" />
+    <ClInclude Include="AjinMotion.h" />
+    <ClInclude Include="AlignData.h" />
+    <ClInclude Include="BaslerCam.h" />
+    <ClInclude Include="BlobSet.h" />
+    <ClInclude Include="BondingSheet.h" />
+    <ClInclude Include="BUTTON\ButtonST.h" />
+    <ClInclude Include="BUTTON\CdDib.h" />
+    <ClInclude Include="BUTTON\CdStatic.h" />
+    <ClInclude Include="CameraCalib.h" />
+    <ClInclude Include="Cdib.h" />
+    <ClInclude Include="CompareSet.h" />
+    <ClInclude Include="ConnectSocket.h" />
+    <ClInclude Include="cos9LR.h" />
+    <ClInclude Include="CossImage.h" />
+    <ClInclude Include="CossTitle.h" />
+    <ClInclude Include="CrossAreaFunc.h" />
+    <ClInclude Include="CunicFunc.h" />
+    <ClInclude Include="CustomButton.h" />
+    <ClInclude Include="DlgAlign.h" />
+    <ClInclude Include="DlgAlignEdge.h" />
+    <ClInclude Include="DlgAlignMatch.h" />
+    <ClInclude Include="DlgConfig.h" />
+    <ClInclude Include="DlgDebug.h" />
+    <ClInclude Include="DlgModel.h" />
+    <ClInclude Include="DlgModelName.h" />
+    <ClInclude Include="DlgParam.h" />
+    <ClInclude Include="DlgPattern.h" />
+    <ClInclude Include="DlgTeach.h" />
+    <ClInclude Include="DlgTeachOCR.h" />
+    <ClInclude Include="DlgThreshold.h" />
+    <ClInclude Include="EdgeFunc.h" />
+    <ClInclude Include="EuresysGrabber.h" />
+    <ClInclude Include="Fchain.h" />
+    <ClInclude Include="FindLineSet.h" />
+    <ClInclude Include="FishEye.h" />
+    <ClInclude Include="FlatFunc.h" />
+    <ClInclude Include="fpspread_data.h" />
+    <ClInclude Include="GlobalFunc.h" />
+    <ClInclude Include="Grabber.h" />
+    <ClInclude Include="HoleSkip.h" />
+    <ClInclude Include="InspectFunc.h" />
+    <ClInclude Include="InspectThread.h" />
+    <ClInclude Include="KoInspectData.h" />
+    <ClInclude Include="KoPyramid.h" />
+    <ClInclude Include="KoWeb.h" />
+    <ClInclude Include="KoWebData.h" />
+    <ClInclude Include="KoWebDoc.h" />
+    <ClInclude Include="KoWebView.h" />
+    <ClInclude Include="KROI.H" />
+    <ClInclude Include="LineFunc.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MeasureSet.h" />
+    <ClInclude Include="MuraFunc.h" />
+    <ClInclude Include="MuraLine.h" />
+    <ClInclude Include="NittoAiClient.h" />
+    <ClInclude Include="NGSaveThread.h" />
+    <ClInclude Include="OCRSet.h" />
+    <ClInclude Include="OCRTeach.h" />
+    <ClInclude Include="ParamData.h" />
+    <ClInclude Include="patternmatch.h" />
+    <ClInclude Include="PatternSet.h" />
+    <ClInclude Include="PitFunc.h" />
+    <ClInclude Include="PolaImage.h" />
+    <ClInclude Include="RealTimeMarking.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="RotCrossAreaFunc.h" />
+    <ClInclude Include="ScratchFunc.h" />
+    <ClInclude Include="SerialMotion.h" />
+    <ClInclude Include="ShowInfo1.h" />
+    <ClInclude Include="Sio.h" />
+    <ClInclude Include="SpecialData.h" />
+    <ClInclude Include="SpotSet.h" />
+    <ClInclude Include="SpotSetDontCare.h" />
+    <ClInclude Include="SpotVision.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="THREAD.h" />
+    <ClInclude Include="TooFunc.h" />
+    <ClInclude Include="UDP\CossSocket.h" />
+    <ClInclude Include="UDP\Packet.h" />
+    <ClInclude Include="UDP\XManageSocket.h" />
+    <ClInclude Include="userdefine.h" />
+    <ClInclude Include="UserSet.h" />
+    <ClInclude Include="UtilFunc.h" />
+    <ClInclude Include="VisionFunc.h" />
+    <ClInclude Include="WebBarcode.h" />
+    <ClInclude Include="WebInspect.h" />
+    <ClInclude Include="WebKoonJip.h" />
+    <ClInclude Include="WebMarkingInspect.h" />
+    <ClInclude Include="_Font.h" />
+    <ClInclude Include="_Picture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AbyssClient.cpp" />
+    <ClCompile Include="AIView.cpp" />
+    <ClCompile Include="AjinMotion.cpp" />
+    <ClCompile Include="AlignData.cpp" />
+    <ClCompile Include="BaslerCam.cpp" />
+    <ClCompile Include="BlobSet.cpp" />
+    <ClCompile Include="BondingSheet.cpp" />
+    <ClCompile Include="BUTTON\ButtonST.cpp" />
+    <ClCompile Include="BUTTON\CdDib.cpp" />
+    <ClCompile Include="BUTTON\CdStatic.cpp" />
+    <ClCompile Include="CameraCalib.cpp" />
+    <ClCompile Include="Cdib.cpp" />
+    <ClCompile Include="CompareSet.cpp" />
+    <ClCompile Include="ConnectSocket.cpp" />
+    <ClCompile Include="cos9LR.cpp" />
+    <ClCompile Include="CossImage.cpp" />
+    <ClCompile Include="CossTitle.cpp" />
+    <ClCompile Include="CrossAreaFunc.cpp" />
+    <ClCompile Include="CunicFunc.cpp" />
+    <ClCompile Include="CustomButton.cpp" />
+    <ClCompile Include="DlgAlign.cpp" />
+    <ClCompile Include="DlgAlignEdge.cpp" />
+    <ClCompile Include="DlgAlignMatch.cpp" />
+    <ClCompile Include="DlgConfig.cpp" />
+    <ClCompile Include="DlgDebug.cpp" />
+    <ClCompile Include="DlgModel.cpp" />
+    <ClCompile Include="DlgModelName.cpp" />
+    <ClCompile Include="DlgParam.cpp" />
+    <ClCompile Include="DlgPattern.cpp" />
+    <ClCompile Include="DlgTeach.cpp" />
+    <ClCompile Include="DlgTeachOCR.cpp" />
+    <ClCompile Include="DlgThreshold.cpp" />
+    <ClCompile Include="EdgeFunc.cpp" />
+    <ClCompile Include="EuresysGrabber.cpp" />
+    <ClCompile Include="Fchain.cpp" />
+    <ClCompile Include="FindLineSet.cpp" />
+    <ClCompile Include="FishEye.cpp" />
+    <ClCompile Include="FlatFunc.cpp" />
+    <ClCompile Include="fpspread_data.cpp" />
+    <ClCompile Include="GlobalFunc.cpp" />
+    <ClCompile Include="Grabber.cpp" />
+    <ClCompile Include="HoleSkip.cpp" />
+    <ClCompile Include="InspectBlob.cpp" />
+    <ClCompile Include="InspectCompare.cpp" />
+    <ClCompile Include="InspectFindLine.cpp" />
+    <ClCompile Include="InspectFunc.cpp" />
+    <ClCompile Include="InspectMeasure.cpp" />
+    <ClCompile Include="InspectOCR.cpp" />
+    <ClCompile Include="InspectPattern.cpp" />
+    <ClCompile Include="InspectSpot.cpp" />
+    <ClCompile Include="InspectThread.cpp" />
+    <ClCompile Include="InspectUser.cpp" />
+    <ClCompile Include="KoInspectData.cpp" />
+    <ClCompile Include="KoPyramid.cpp" />
+    <ClCompile Include="KoWeb.cpp" />
+    <ClCompile Include="KoWebData.cpp" />
+    <ClCompile Include="KoWebDoc.cpp" />
+    <ClCompile Include="KoWebView.cpp" />
+    <ClCompile Include="KoWebViewLog.cpp" />
+    <ClCompile Include="KoWebViewROI.cpp" />
+    <ClCompile Include="KoWebViewSet.cpp" />
+    <ClCompile Include="KoWebViewUDP.cpp" />
+    <ClCompile Include="KROI.CPP" />
+    <ClCompile Include="LineFunc.cpp" />
+    <ClCompile Include="LineInspectView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MeasureSet.cpp" />
+    <ClCompile Include="MuraFunc.cpp" />
+    <ClCompile Include="MuraLine.cpp" />
+    <ClCompile Include="NiitoAIView.cpp" />
+    <ClCompile Include="NittoAiClient.cpp" />
+    <ClCompile Include="NGSaveThread.cpp" />
+    <ClCompile Include="OCRSet.cpp" />
+    <ClCompile Include="OCRTeach.cpp" />
+    <ClCompile Include="ParamData.cpp" />
+    <ClCompile Include="patternmatch.cpp" />
+    <ClCompile Include="PatternSet.cpp" />
+    <ClCompile Include="PitFunc.cpp" />
+    <ClCompile Include="PolaImage.cpp" />
+    <ClCompile Include="RealTimeMarking.cpp" />
+    <ClCompile Include="RotCrossAreaFunc.cpp" />
+    <ClCompile Include="ScratchFunc.cpp" />
+    <ClCompile Include="SerialMotion.cpp" />
+    <ClCompile Include="ShowInfo1.cpp" />
+    <ClCompile Include="Sio.cpp" />
+    <ClCompile Include="SpecialData.cpp" />
+    <ClCompile Include="SpotSet.cpp" />
+    <ClCompile Include="SpotSetDontCare.cpp" />
+    <ClCompile Include="SpotVision.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="THREAD.cpp" />
+    <ClCompile Include="TooFunc.cpp" />
+    <ClCompile Include="UDP\CossSocket.cpp" />
+    <ClCompile Include="UDP\Packet.cpp" />
+    <ClCompile Include="UDP\XManageSocket.cpp" />
+    <ClCompile Include="UserSet.cpp" />
+    <ClCompile Include="UtilFunc.cpp" />
+    <ClCompile Include="VisionFunc.cpp" />
+    <ClCompile Include="WebBarcode.cpp" />
+    <ClCompile Include="WebInspect.cpp" />
+    <ClCompile Include="WebInspectView.cpp" />
+    <ClCompile Include="WebKoonJip.cpp" />
+    <ClCompile Include="WebMarkingInspect.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="KoWeb.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="VERSION.LIB" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="KoWeb.rc" _x007B_DE52502E-F837-492B-AE14-A182531AFAF4_x007D_="CFpspread_data" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
