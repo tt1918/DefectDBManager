@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "CallClassWrapper.h"
 
-#import "DefectDBManager.tlb" no_namespace named_guids
-
 CallClassWrapper::CallClassWrapper(void) 
 {
 	CoInitialize(NULL);
@@ -12,10 +10,9 @@ CallClassWrapper::CallClassWrapper(void)
 		CoUninitialize();
 	else
 	{
-
+		
 	}
 }
-
 
 CallClassWrapper::~CallClassWrapper(void)
 {
@@ -107,3 +104,20 @@ void CallClassWrapper::ReadCSVFile(std::string path)
 	m_pCallClass->ReadCSVFile(bs);
 	::SysFreeString(bs);
 }
+
+void CallClassWrapper::ShowDefectView()
+{
+	m_pCallClass->ShowViewer();
+}
+
+void CallClassWrapper::AddEndCsvReading(ICsvReadingEvents* pThis)
+{
+	m_pCallClass->AddEventCsvReading(pThis);
+}
+
+void CallClassWrapper::RemoveEndCsvReading(ICsvReadingEvents* pThis)
+{
+	m_pCallClass->RemoveEventCsvReading(pThis);
+}
+
+

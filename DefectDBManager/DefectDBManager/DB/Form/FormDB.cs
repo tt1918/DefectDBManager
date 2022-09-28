@@ -14,6 +14,9 @@ using System.Windows.Forms.PropertyGridInternal;
 
 namespace DefectDBManager
 {
+
+    public delegate void DelegateEndCsvReading();
+    
     public partial class FormDB : Form
     {
         #region const param
@@ -71,6 +74,7 @@ namespace DefectDBManager
         FormDbAddition formDbAddition = null;
         #endregion
 
+        public event DelegateEndCsvReading OnEndCsvReading=null;
 
         public FormDB(object parent)
         {
@@ -820,6 +824,8 @@ namespace DefectDBManager
                 }
 
                 lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
+
+                OnEndCsvReading();
 
             }));
 

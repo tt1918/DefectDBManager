@@ -39,6 +39,8 @@ CDllTestView::CDllTestView() noexcept
 {
 	// TODO: add construction code here
 	m_Defect = new CallClassWrapper;
+	m_CsvReadingEvent = new CsvReadingEvents(this->m_hWnd);
+	m_Defect->AddEndCsvReading(m_CsvReadingEvent);
 #ifdef USE_CODEREADERDLL
 	m_CodeReader = new CallClassWrapperCodeReader;
 	if (!m_CodeReader->Initialize(false, 2048, 2048, _T("C:\\Users\\bonaf\\Downloads\\BCR\\DataMatrixTool.vpp")))
@@ -183,6 +185,8 @@ void CDllTestView::OnBnClickedButton4()
 		AfxMessageBox(str);
 	}
 #endif
+
+	m_Defect->ShowDefectView();
 }
 
 #ifdef USE_CODEREADERDLL
@@ -192,3 +196,4 @@ void CDllTestView::CodeRead(cv::Mat image, std::string* code, bool usePreprocess
 	*code = ret;
 }
 #endif
+

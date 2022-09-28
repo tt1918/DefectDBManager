@@ -4,6 +4,7 @@
 
 #pragma once
 #include "CallClassWrapper.h"
+#include "CsvReadingEvents.h"
 #ifdef USE_CODEREADERDLL
 #include "CallClassWrapperCodeReader.h"
 #endif
@@ -45,8 +46,11 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+
+
 protected:
 	CallClassWrapper* m_Defect;
+	CsvReadingEvents* m_CsvReadingEvent;
 #ifdef USE_CODEREADERDLL
 	CallClassWrapperCodeReader* m_CodeReader;
 #endif

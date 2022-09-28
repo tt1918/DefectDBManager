@@ -55,8 +55,12 @@ namespace DefectDBManager
         private bool isFirst = true;
 
         bool disposed = false;
-        public DbManager()
+
+        private object parent = null;
+        public DbManager(object parent)
         {
+            this.parent = parent;
+
             _DestConfig = new DestConfig();
             _CodeConfig = new CodeConfig();
             _Option = new Option();
@@ -84,6 +88,7 @@ namespace DefectDBManager
 
             formDB = new FormDB(this);
             formDB.DBConn = _DbConn;
+            this.parent = parent;
         }
 
         ~DbManager()
@@ -149,5 +154,6 @@ namespace DefectDBManager
         {
             formDB.Hide();
         }
+
     }
 }

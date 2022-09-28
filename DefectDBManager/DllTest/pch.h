@@ -10,6 +10,7 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
-#define USE_CODEREADERDLL
+//#define USE_CODEREADERDLL
 
+#import "DefectDBManager.tlb" no_namespace, named_guids
 #endif //PCH_H

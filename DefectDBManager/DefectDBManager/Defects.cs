@@ -36,7 +36,16 @@ namespace DefectDBManager
 		public string time;
 	}
 
-	[Guid("1D93206A-C196-41BB-9E4A-160D297C6342")]
+    [ComVisible(true)]
+    [Guid("33C8457C-7482-479E-8AB0-7A4E295F7360")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface ICsvReadingEvents
+    {
+        void EventEndCsvReading();
+    }
+
+    [ComVisible(true)]
+    [Guid("1D93206A-C196-41BB-9E4A-160D297C6342")]
 	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface ICallClass
 	{
@@ -49,12 +58,17 @@ namespace DefectDBManager
 		Defect[] GetDefectListRange(double start, double end);
 
 		void ShowViewer();
+
+		void AddEventCsvReading(ICsvReadingEvents csvReadingEvents);
+		void RemoveEventCsvReading(ICsvReadingEvents csvReadingEvents);
 	}
 
-	[Guid("83AF4738-A82D-4D9C-917D-8E4202727D57")]
+
+    [ComVisible(true)]
+    [Guid("83AF4738-A82D-4D9C-917D-8E4202727D57")]
 	public class Defects : ICallClass
 	{
-		private bool isDownloadComplete = false;
+        private bool isDownloadComplete = false;
 		private static List<Defect> defects = null;
 
 		public DbManager DBManager
@@ -68,14 +82,19 @@ namespace DefectDBManager
 			get { return dbManager._FormDB; }
 		}
 
+		public List<ICsvReadingEvents> _CsvReadingEventsListener =new List<ICsvReadingEvents>();
+
         public Defects()
 		{
 			defects = new List<Defect>();
-            dbManager = new DbManager();
+            dbManager = new DbManager(this);
+
+			dbManager._FormDB.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
         }
 		~Defects()
 		{
-			dbManager._DestConfig.Write();
+			dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager._DestConfig.Write();
             defects.Clear();
 		}
 		public static List<Defect> DefectsList
@@ -134,5 +153,24 @@ namespace DefectDBManager
 			var datas = defects.FindAll(x => x.posY >= start && x.posY <= end);
 			return datas.ToArray();
 		}
-	}
+
+		public void AddEventCsvReading(ICsvReadingEvents csvReadingEvents)
+		{
+			_CsvReadingEventsListener.Add(csvReadingEvents);
+        }
+
+		public void RemoveEventCsvReading(ICsvReadingEvents csvReadingEvents)
+		{
+			_CsvReadingEventsListener.Remove(csvReadingEvents);
+        }
+
+		public void OnEventEndCsvReding()
+		{
+            foreach (ICsvReadingEvents evt in _CsvReadingEventsListener)
+			{
+				evt.EventEndCsvReading();
+			}
+		}
+
+    }
 }

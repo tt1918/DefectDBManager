@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
-struct ICallClass;
+
+//struct ICallClass;
 
 class CallClassWrapper
 {
@@ -11,10 +12,13 @@ public:
 private:
 	ICallClass* m_pCallClass;
 
-public: 
+public:
 	void GetDefectsData();
 	void ReadDBFile(std::string path);
 	void SerachDefectClass(int classID);
 	void ReadCSVFile(std::string path);
+	void ShowDefectView();
+	void AddEndCsvReading(ICsvReadingEvents* pThis);
+	void RemoveEndCsvReading(ICsvReadingEvents* pThis);
 };
 
