@@ -15,7 +15,7 @@ using System.Windows.Forms.PropertyGridInternal;
 namespace DefectDBManager
 {
 
-    public delegate void DelegateEndCsvReading();
+    public delegate void DelegateEndCsvReading(int eventID);
     
     public partial class FormDB : Form
     {
@@ -107,8 +107,9 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
-                displayMarkingOption();
+                this.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
 
+                displayMarkingOption();
                 dbCommTimer.Start();
             }
             else
@@ -817,16 +818,14 @@ namespace DefectDBManager
                 this.displayBCNOListViewByCSV();
                 this.displayFAULTDATListView();
 
-                if(this.dataBase.DbDestConfig.CSVType==eCSV_TYPE.KORENO || this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK ||
+                if (this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO || this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK ||
                 this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
                 {
                     this.displayINSPDATALiseViewByCSV();
                 }
 
                 lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
-
-                OnEndCsvReading();
-
+                OnEndCsvReading(1);
             }));
 
         }

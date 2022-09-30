@@ -76,6 +76,8 @@ BEGIN_MESSAGE_MAP(CKoWebView, CFormView)
 	ON_WM_LBUTTONDBLCLK()
 	ON_BN_CLICKED(IDC_BUTTON_INSPECT3, &CKoWebView::OnBnClickedButtonInspect3)
 	ON_BN_CLICKED(IDC_CHECK_ALL, &CKoWebView::OnBnClickedCheckAll)
+	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NOW, &CKoWebView::OnBnClickedBtnShowDefectNow)
+	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NEXT, &CKoWebView::OnBnClickedBtnShowDefectNext)
 END_MESSAGE_MAP()
 
 BEGIN_EVENTSINK_MAP(CKoWebView, CFormView)
@@ -123,6 +125,9 @@ CKoWebView::CKoWebView()
 	m_AllLength   =1;
 	m_dYLength    = 0.0;
 	m_nCheckNewLot=0;
+
+	m_DefectCallClass = nullptr;
+	m_DefectReadingEvent = nullptr;
 }
 
 CKoWebView::~CKoWebView()
@@ -387,6 +392,8 @@ void CKoWebView::OnInitialUpdate()
 #if PROGRAM_TYPE==WEB_DAKANO
 	FuncBaseLineLoad(_T("C:\\COSS\\BaseLine.dat"));
 #endif
+
+	CreateDefectCallCallss();
 }
 
 
@@ -2255,6 +2262,7 @@ void CKoWebView::ShowDefectInfo(int nID)
 
 void CKoWebView::OnDestroy()
 {
+	DestroyDefectCallClass();
 	ViewClose();
 	CFormView::OnDestroy();
 }
@@ -3026,4 +3034,41 @@ void CKoWebView::OnBnClickedCheckAll()
 
 
 
+void CKoWebView::CreateDefectCallCallss()
+{
+	if (m_DefectCallClass == nullptr)
+		m_DefectCallClass = new CallClassWrapper();
+	if (m_DefectReadingEvent == nullptr)
+	{
+		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
+		m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
+	}
+}
 
+void CKoWebView::DestroyDefectCallClass()
+{
+	if (m_DefectCallClass != nullptr)
+	{
+		m_DefectCallClass->RemoveEndCsvReading(m_DefectReadingEvent);
+		delete m_DefectCallClass;
+	}
+
+	if (m_DefectReadingEvent != nullptr)
+		delete m_DefectReadingEvent;
+}
+
+void CKoWebView::OnBnClickedBtnShowDefectNow()
+{
+	if (m_DefectCallClass == nullptr)
+		return;
+
+	m_DefectCallClass->ShowDefectView(false);
+}
+
+void CKoWebView::OnBnClickedBtnShowDefectNext()
+{
+	if (m_DefectCallClass == nullptr)
+		return;
+
+	m_DefectCallClass->ShowDefectView(true);
+}

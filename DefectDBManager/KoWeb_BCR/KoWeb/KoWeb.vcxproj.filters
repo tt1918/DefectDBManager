@@ -142,15 +142,6 @@
     <None Include="res\MainGUI.bmp">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="NiitoAIView.cpp">
-      <Filter>AI</Filter>
-    </None>
-    <None Include="nittoaiclient.cpp">
-      <Filter>AI</Filter>
-    </None>
-    <None Include="NittoAiClient.h">
-      <Filter>AI</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KoWeb.h">
@@ -425,6 +416,15 @@
     </ClInclude>
     <ClInclude Include="HoleSkip.h">
       <Filter>HOLESKIP</Filter>
+    </ClInclude>
+    <ClInclude Include="NittoAiClient.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BCR\CallClassReadingEvents.h">
+      <Filter>BCR</Filter>
+    </ClInclude>
+    <ClInclude Include="BCR\CallClassWrapper.h">
+      <Filter>BCR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -730,6 +730,18 @@
     </ClCompile>
     <ClCompile Include="HoleSkip.cpp">
       <Filter>HOLESKIP</Filter>
+    </ClCompile>
+    <ClCompile Include="NiitoAIView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="NittoAiClient.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BCR\CallClassReadingEvents.cpp">
+      <Filter>BCR</Filter>
+    </ClCompile>
+    <ClCompile Include="BCR\CallClassWrapper.cpp">
+      <Filter>BCR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

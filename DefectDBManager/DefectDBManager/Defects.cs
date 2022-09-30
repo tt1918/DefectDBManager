@@ -41,7 +41,7 @@ namespace DefectDBManager
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface ICsvReadingEvents
     {
-        void EventEndCsvReading();
+        void EventEndCsvReading(int evtID);
     }
 
     [ComVisible(true)]
@@ -57,8 +57,7 @@ namespace DefectDBManager
 		bool IsDownLoadComplete();
 		Defect[] GetDefectListRange(double start, double end);
 
-		void ShowViewer();
-
+		void ShowViewer(bool isNext);
 		void AddEventCsvReading(ICsvReadingEvents csvReadingEvents);
 		void RemoveEventCsvReading(ICsvReadingEvents csvReadingEvents);
 	}
@@ -119,12 +118,6 @@ namespace DefectDBManager
 			return view.ReadCSVFile(path);
 		}
 
-		public void ShowViewer()
-		{
-			//DbManager dbManager = new DbManager();
-			//dbManager.ShowDBViewer(false);
-            dbManager.ShowDBViewer(false);
-        }
 
 		public bool ReadDBFile(string path)
 		{
@@ -154,7 +147,12 @@ namespace DefectDBManager
 			return datas.ToArray();
 		}
 
-		public void AddEventCsvReading(ICsvReadingEvents csvReadingEvents)
+        public void ShowViewer(bool isNext)
+        {
+            dbManager.ShowDBViewer(isNext);
+        }
+
+        public void AddEventCsvReading(ICsvReadingEvents csvReadingEvents)
 		{
 			_CsvReadingEventsListener.Add(csvReadingEvents);
         }
@@ -164,11 +162,11 @@ namespace DefectDBManager
 			_CsvReadingEventsListener.Remove(csvReadingEvents);
         }
 
-		public void OnEventEndCsvReding()
+		public void OnEventEndCsvReding(int evtID)
 		{
             foreach (ICsvReadingEvents evt in _CsvReadingEventsListener)
 			{
-				evt.EventEndCsvReading();
+				evt.EventEndCsvReading(evtID);
 			}
 		}
 

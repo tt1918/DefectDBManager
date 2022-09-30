@@ -1,14 +1,14 @@
 
-class CsvReadingEvents :public ICsvReadingEvents
+class CallClassReadingEvents :public ICsvReadingEvents
 {
 public:
 	HWND m_pParent;
 public:
-	CsvReadingEvents(HWND pParent)
+	CallClassReadingEvents(HWND pParent)
 	{
 		m_pParent = pParent;
 	}
-	~CsvReadingEvents()
+	~CallClassReadingEvents()
 	{
 		m_pParent = nullptr;
 	}

@@ -27,6 +27,9 @@
 #include "UserSet.h"
 #include "DlgModel.h"
 
+#include "BCR/CallClassWrapper.h"
+#include "BCR/CallClassReadingEvents.h"
+
 #define SHOW_NG_IMAGE	1
 class CKoWebView : public CFormView
 {
@@ -35,52 +38,52 @@ protected: // create from serialization only
 	DECLARE_DYNCREATE(CKoWebView)
 
 public:
-	enum{ IDD = IDD_KOWEB_FORM };
+	enum { IDD = IDD_KOWEB_FORM };
 
-// Attributes
+	// Attributes
 public:
 	CKoWebDoc* GetDocument() const;
 
 #ifdef AI_APPLY
-	AbyssClient* m_pAbyssClient;	
+	AbyssClient* m_pAbyssClient;
 #endif
 
 #ifdef USE_NITTO_AI
 	NittoAiClient* m_pNittoAiClient;
 #endif
 
-	CCossImage      *m_pImageArray[MAX_IMAGE];
+	CCossImage* m_pImageArray[MAX_IMAGE];
 	CRect           m_rcImageMax;
 	CRect           m_rcImage[MAX_IMAGE];
-	CCossImage		*m_pImage;						//여러개 사용하려면 CCossImage *m_pImageArray[3] 만들고 m_pImage=m_pImageArray[0] 이런식으로 사용
-	CCossImage		*m_pNGImage[SHOW_NG_IMAGE];
+	CCossImage* m_pImage;						//여러개 사용하려면 CCossImage *m_pImageArray[3] 만들고 m_pImage=m_pImageArray[0] 이런식으로 사용
+	CCossImage* m_pNGImage[SHOW_NG_IMAGE];
 
-	CDlgConfig		*m_pConfig;
-	CDlgParam		*m_pParam;
-	CDlgDebug		*m_pDebug;
-	CShowInfo1      *m_pShowInfo;
+	CDlgConfig* m_pConfig;
+	CDlgParam* m_pParam;
+	CDlgDebug* m_pDebug;
+	CShowInfo1* m_pShowInfo;
 
 	//범용검사기>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	CDlgPattern		*m_pPattern;
-	CDlgTeachOCR	*m_pOCR;
-	CDlgAlign		*m_pAlign;
-	CDlgTeach		*m_pTeach;
+	CDlgPattern* m_pPattern;
+	CDlgTeachOCR* m_pOCR;
+	CDlgAlign* m_pAlign;
+	CDlgTeach* m_pTeach;
 
-	CPatternSet		*m_pPatternSet;
-	CBlobSet		*m_pBlobSet;
-	CSpotSet		*m_pSpotSet;
-	CFindLineSet    *m_pFindLineSet;
-	CMeasureSet     *m_pMeasureSet;
-	CCompareSet     *m_pCompareSet;
-	COCRSet         *m_pOCRSet;			//@항목추가15
-	CUserSet		*m_pUserSet;
-	CDlgModel       *m_pModel;
+	CPatternSet* m_pPatternSet;
+	CBlobSet* m_pBlobSet;
+	CSpotSet* m_pSpotSet;
+	CFindLineSet* m_pFindLineSet;
+	CMeasureSet* m_pMeasureSet;
+	CCompareSet* m_pCompareSet;
+	COCRSet* m_pOCRSet;			//@항목추가15
+	CUserSet* m_pUserSet;
+	CDlgModel* m_pModel;
 
 
 	//AI관련함수-----------------------------------------------------------
 	void AI_ConnectServer();
 	void AI_Close();
-	int  AI_FindDefectName(LPBYTE fm, int width, int height, int nMaxTime, double *pData);
+	int  AI_FindDefectName(LPBYTE fm, int width, int height, int nMaxTime, double* pData);
 	//---------------------------------------------------------------------
 
 	//Nitto AI관련함수-----------------------------------------------------------
@@ -89,22 +92,22 @@ public:
 	int NittoAI_SendData(DEFECTDATA* defectData);
 	//---------------------------------------------------------------------
 
-	void TeachROI(bool bShow, bool bImageUpdate, CString str, ROIDATA *pROI);
-	void GetTeachROI(int nSet,int nID);
+	void TeachROI(bool bShow, bool bImageUpdate, CString str, ROIDATA* pROI);
+	void GetTeachROI(int nSet, int nID);
 	void UpdateImageInfo();
 
 	void OpenBlobSet(int nSet, int nID);
 	void OpenPatternSet(int nSet, int nID);
 	void OpenSpotSet(int nSet, int nID);	//5
-		int	InspectSpot_Blob(int nSet, int nId, LPBYTE fm, LPBYTE fmGray, int nWidth, int nHeight, int nStartX, int nStartY,    bool bShowGraphic);
-	void OpenFindLineSet(int nSet, int nID);	
-	void OpenMeasureSet(int nSet, int nID);	
-	void OpenCompareSet(int nSet, int nID);	
+	int	InspectSpot_Blob(int nSet, int nId, LPBYTE fm, LPBYTE fmGray, int nWidth, int nHeight, int nStartX, int nStartY, bool bShowGraphic);
+	void OpenFindLineSet(int nSet, int nID);
+	void OpenMeasureSet(int nSet, int nID);
+	void OpenCompareSet(int nSet, int nID);
 	void OpenOCRSet(int nSet, int nID); //@항목추가4-1
-	void OpenUserSet(int nSet, int nID);	
+	void OpenUserSet(int nSet, int nID);
 
 	//INSPECTOR
-	int  PatternMatch(int nId, LPBYTE fmSearch, int left, int top, int right, int bottom, int pitch,  double *dScore, double *dRx, double *dRy);
+	int  PatternMatch(int nId, LPBYTE fmSearch, int left, int top, int right, int bottom, int pitch, double* dScore, double* dRx, double* dRy);
 
 	//Blob
 	void InspectBlob(LPBYTE fm, int nSet, int nId, BOOL bShowGraphic);
@@ -145,7 +148,7 @@ public:
 
 	//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-	CDlgThreshold	*m_pBinary;
+	CDlgThreshold* m_pBinary;
 
 	int         m_nShowNGID;
 	int			m_nDisplayX;
@@ -160,17 +163,17 @@ public:
 	void InitData();
 	void LotReset();
 	int  CheckDefectOverlap();
-//	int  CopyNGImage(bool bFlat); //불량 128x128영상 메모리로 이동
+	//	int  CopyNGImage(bool bFlat); //불량 128x128영상 메모리로 이동
 	void ShowDefectInfo(int nID);
 	void SendLotName(CString sLotName); //Cossclean에 Lot이름 넘김
 
 	void ShowGrabImage(); //Grab한 영상을 화면에 보이게 함.
 	void UpdateCount();
 	void ViewInspect();
-	     void WebInspect();
-			  
+	void WebInspect();
+
 	void ShowResults();
-		void DrawResults();		//결과화면에 그리기
+	void DrawResults();		//결과화면에 그리기
 
 	void ShowResults_General();
 
@@ -197,25 +200,25 @@ public:
 	void CheckPeriod();	//주기체크
 	void AutoExposure(int nLineCAM, int nGrabFrame, double dBright); //자동밝기
 	void CheckKnulling();	//TAC_LINE KNULLING유뮤체크
-// Operations
+	// Operations
 public:
 	void SetShowImage(bool flag);	//Show Image Check
 	void MakeMainDisplay();
 	void MakeNGDisplay();
 	void MakeGUI();
 	void ButtonState(BOOL bStart);
-	void DrawMainViewText(CDC *pDC);
-	
-	void DrawResultViewText(CDC *pDC);		//결과 화면에 쓰기
+	void DrawMainViewText(CDC* pDC);
+
+	void DrawResultViewText(CDC* pDC);		//결과 화면에 쓰기
 	void DrawResultViewText();				//영역 Invalidate
-	
-	void DrawDefectViewText(CDC *pDC);		//Defect정보 화면에 쓰기
+
+	void DrawDefectViewText(CDC* pDC);		//Defect정보 화면에 쓰기
 	void DrawDefectViewText();				//Defect정보 Invalidate기
 
-	void DrawMarkingVisionROI(CDC *pDC);		//결과 화면에 쓰기
+	void DrawMarkingVisionROI(CDC* pDC);		//결과 화면에 쓰기
 
 
-	void SetSpreadData(int nRow, CString str, int nColor=0);  //필요시점
+	void SetSpreadData(int nRow, CString str, int nColor = 0);  //필요시점
 	void SetSpreadCount();						//COUNT (매 Frame)
 	void SetSpreadFPS();						//FPS 보여줌
 	void UpdateInfo();							//검사시간,밝기, Sharpness 보여줌
@@ -229,21 +232,21 @@ public:
 	void AutoStop();
 	void ResetTempData();
 
-//	void MakeDefectRect(int nDefect, int nX, int nY, int nLeft, int nRight);
+	//	void MakeDefectRect(int nDefect, int nX, int nY, int nLeft, int nRight);
 	void DrawDefectRect(int nID);
 
 
-//  VIEWUDP
+	//  VIEWUDP
 	void ConnectUDP();
 	void CloseUDP();
 	void Decoding(int nPort, unsigned char* pData);
 
 
-//  VIEWLOG
-	void fnWriteSlice(int n,int nc);
+	//  VIEWLOG
+	void fnWriteSlice(int n, int nc);
 
 
-//BINARY Dialog
+	//BINARY Dialog
 	void CloseBinary(bool bOriginal);
 	void Binary(int nThreshold);
 	void ROIFull(bool bFull);
@@ -261,28 +264,28 @@ public:
 	void InverseImage();
 	void FlatImageROI(int nBaseGray);
 	void FlatImageFull(int nType, int nBaseGray, int left, int width);
-	
-	
-	void FindHBOSize(double dBase, int nThUp, int nCoreTh, double dCloudTh, int *pValue, int *CoreSize, double *dCloudValue, int *CloudSize);
+
+
+	void FindHBOSize(double dBase, int nThUp, int nCoreTh, double dCloudTh, int* pValue, int* CoreSize, double* dCloudValue, int* CloudSize);
 	void CossFilter_MakeImageWithSobel(int nTh);
 
 
 	void Binary(int nThreshold, int ll, int tt, int rr, int bb);
 	void ShowGray(int ll, int tt, int rr, int bb);
 	void SmoothAndBinary(int nThup, int nThDn, int wingsize);
-	void FilterAverageMean(unsigned char *pSImg, int nImgXSize, int nImgYSize, int nWingSize,unsigned char* pDImg);
-	void NearBrgDiffAll(int thup, int thdn, CRect insRect, unsigned char* pMask33,int nWidth,int nHeight,unsigned char* pAtt, int nWingSize);
+	void FilterAverageMean(unsigned char* pSImg, int nImgXSize, int nImgYSize, int nWingSize, unsigned char* pDImg);
+	void NearBrgDiffAll(int thup, int thdn, CRect insRect, unsigned char* pMask33, int nWidth, int nHeight, unsigned char* pAtt, int nWingSize);
 	void RemoveHorNoise(int nTh);
 	void MakePolaImage();
 	void MakeSeparatemage();
-// Overrides
+	// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual void OnInitialUpdate(); // called first time after construct
 	void         ViewClose();
-// Implementation
+	// Implementation
 public:
 	virtual ~CKoWebView();
 #ifdef _DEBUG
@@ -291,7 +294,7 @@ public:
 #endif
 
 protected:
-	void DrawBackGround(CDC *pDC);
+	void DrawBackGround(CDC* pDC);
 
 	//#CButtonST  2  ----------------------------------
 	CButtonST m_btConfig;   //[CONFIG] 버튼
@@ -299,14 +302,27 @@ protected:
 	CButtonST m_btSaveIMG;  //[Save IMG] 버튼
 	CButtonST m_btGrab;		//[Grab] 버튼
 	CButtonST m_btParam;	//[Param] 버튼
-	
+
 	CFont m_BTFont;
-	void initButtonST(int nType, CButtonST *cButton);
+	void initButtonST(int nType, CButtonST* cButton);
 
 	//-------------------------------------------------
 
 	//#OwnerDraw 2 -------------------------------------
 	CCustomButton	m_btTool;
+
+	/////////////////////////////////////////////////////////////////////////////
+	// DB Defect Search - Start
+public:
+	CallClassWrapper* m_DefectCallClass;
+	CallClassReadingEvents* m_DefectReadingEvent;
+
+private:
+	void CreateDefectCallCallss();
+	void DestroyDefectCallClass();
+
+	// DB Defect Search - End
+	/////////////////////////////////////////////////////////////////////////////
 
 // Generated message map functions
 protected:
@@ -329,12 +345,12 @@ public:
 	int     m_nDefecttextCnt;
 
 	afx_msg void OnBnClickedButtonLoadimage();
-//	CListBox m_ctrlResult;
+	//	CListBox m_ctrlResult;
 	afx_msg void OnBnClickedButtonSaveimage();
 	afx_msg void OnBnClickedButtonInspect();
 	afx_msg void OnBnClickedButtonConfig();
 	DECLARE_EVENTSINK_MAP()
-	afx_msg void OnBnClickedButtonParam();
+		afx_msg void OnBnClickedButtonParam();
 	afx_msg void OnBnClickedButtonTeach();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -348,7 +364,7 @@ public:
 	afx_msg void OnCbnSelchangeComboZoom();
 	CComboBox m_ctrlZoom;
 	afx_msg void OnBnClickedButtonBinary();
-//	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	//	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButtonPattern();
 	afx_msg void OnBnClickedButtonFuncTest();
@@ -358,7 +374,7 @@ public:
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedButtonNext();
 	afx_msg void OnBnClickedButtonPrev();
-//	CListBox m_ctrlDefectInfo;
+	//	CListBox m_ctrlDefectInfo;
 	afx_msg void OnBnClickedButtonOcr();
 	afx_msg void OnDestroy();
 	afx_msg void OnStnClickedStaticZoom();
@@ -384,10 +400,14 @@ public:
 	BOOL m_AllLength;
 	afx_msg void OnBnClickedCheckAll();
 	double m_dYLength;
+	afx_msg void OnBnClickedBtnShowDefectNow();
+	afx_msg void OnBnClickedBtnShowDefectNext();
 };
 
 #ifndef _DEBUG  // debug version in KoWebView.cpp
 inline CKoWebDoc* CKoWebView::GetDocument() const
-   { return reinterpret_cast<CKoWebDoc*>(m_pDocument); }
+{
+	return reinterpret_cast<CKoWebDoc*>(m_pDocument);
+}
 #endif
 

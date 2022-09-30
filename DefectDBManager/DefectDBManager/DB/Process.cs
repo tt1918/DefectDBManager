@@ -128,10 +128,12 @@ namespace DefectDBManager
                 // Data 연결
                 if (isNext == false)    // 현재랏
                 {
+                    this._Option.dbWhen = eDbIdWhen.Now;
                     formDB.DataBase = _DbProc[(int)eDbIdWhen.Now];
                 }
                 else // 예약랏
                 {
+                    this._Option.dbWhen = eDbIdWhen.Next;
                     formDB.DataBase = _DbProc[(int)eDbIdWhen.Next];
                 }
 

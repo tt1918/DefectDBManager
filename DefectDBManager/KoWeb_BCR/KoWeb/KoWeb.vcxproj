@@ -205,6 +205,8 @@
     <ClInclude Include="AjinMotion.h" />
     <ClInclude Include="AlignData.h" />
     <ClInclude Include="BaslerCam.h" />
+    <ClInclude Include="BCR\CallClassReadingEvents.h" />
+    <ClInclude Include="BCR\CallClassWrapper.h" />
     <ClInclude Include="BlobSet.h" />
     <ClInclude Include="BondingSheet.h" />
     <ClInclude Include="BUTTON\ButtonST.h" />
@@ -300,6 +302,8 @@
     <ClCompile Include="AjinMotion.cpp" />
     <ClCompile Include="AlignData.cpp" />
     <ClCompile Include="BaslerCam.cpp" />
+    <ClCompile Include="BCR\CallClassReadingEvents.cpp" />
+    <ClCompile Include="BCR\CallClassWrapper.cpp" />
     <ClCompile Include="BlobSet.cpp" />
     <ClCompile Include="BondingSheet.cpp" />
     <ClCompile Include="BUTTON\ButtonST.cpp" />
