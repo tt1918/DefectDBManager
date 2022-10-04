@@ -17,12 +17,7 @@ HRESULT CallClassReadingEvents::raw_EventEndCsvReading(long evtIdx)
 {
 	// 皋技瘤 贸府秦具窃.
 
-	switch (evtIdx)
-	{
-	case 1:
-		
-		break;
-	}
+	::SendMessage(this->m_pParent, WM_BCR_COMM, (int)evtIdx, NULL);
 
 	return S_OK;
 }

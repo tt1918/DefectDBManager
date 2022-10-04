@@ -20,5 +20,6 @@ public:
 	void ShowDefectView(bool isNext);
 	void AddEndCsvReading(ICsvReadingEvents* pThis);
 	void RemoveEndCsvReading(ICsvReadingEvents* pThis);
+	int GetMarkingData(bool isNext);
 };
 

@@ -37,33 +37,33 @@ IMPLEMENT_DYNCREATE(CKoWebView, CFormView)
 BEGIN_MESSAGE_MAP(CKoWebView, CFormView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_TIMER()
+	ON_WM_CTLCOLOR()
+	ON_WM_CLOSE()
+	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_LOADIMAGE, &CKoWebView::OnBnClickedButtonLoadimage)
 	ON_BN_CLICKED(IDC_BUTTON_SAVEIMAGE, &CKoWebView::OnBnClickedButtonSaveimage)
 	ON_BN_CLICKED(IDC_BUTTON_INSPECT, &CKoWebView::OnBnClickedButtonInspect)
 	ON_BN_CLICKED(IDC_BUTTON_CONFIG, &CKoWebView::OnBnClickedButtonConfig)
 	ON_BN_CLICKED(IDC_BUTTON_PARAM, &CKoWebView::OnBnClickedButtonParam)
 	ON_BN_CLICKED(IDC_BUTTON_TEACH, &CKoWebView::OnBnClickedButtonTeach)
-	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_CHECK_AUTO_START, &CKoWebView::OnBnClickedCheckAutoStart)
 	ON_BN_CLICKED(IDC_CHECK_SHOW_INFO, &CKoWebView::OnBnClickedCheckShowInfo)
 	ON_BN_CLICKED(IDC_CHECK_SHOWIMGE, &CKoWebView::OnBnClickedCheckShowimge)
 	ON_CBN_SELCHANGE(IDC_COMBO_ZOOM, &CKoWebView::OnCbnSelchangeComboZoom)
 	ON_BN_CLICKED(IDC_BUTTON_BINARY, &CKoWebView::OnBnClickedButtonBinary)
-//	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
 	ON_BN_CLICKED(IDC_BUTTON_PATTERN, &CKoWebView::OnBnClickedButtonPattern)
 	ON_BN_CLICKED(IDC_BUTTON_FUNC_TEST, &CKoWebView::OnBnClickedButtonFuncTest)
 	ON_BN_CLICKED(IDC_BUTTON_ALIGN, &CKoWebView::OnBnClickedButtonAlign)
 	ON_BN_CLICKED(IDC_BUTTON_GRAB, &CKoWebView::OnBnClickedButtonGrab)
 	ON_BN_CLICKED(IDC_CHECK_LIVE, &CKoWebView::OnBnClickedCheckLive)
-	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &CKoWebView::OnBnClickedButtonNext)
 	ON_BN_CLICKED(IDC_BUTTON_PREV, &CKoWebView::OnBnClickedButtonPrev)
 	ON_BN_CLICKED(IDC_BUTTON_OCR, &CKoWebView::OnBnClickedButtonOcr)
-	ON_WM_DESTROY()
-	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_BUTTON_DEBUG, &CKoWebView::OnBnClickedButtonDebug)
-	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON_CLOSE, &CKoWebView::OnBnClickedButtonClose)
 	ON_BN_CLICKED(IDC_CHECK_SHOWMAP, &CKoWebView::OnBnClickedCheckShowmap)
 	ON_BN_CLICKED(IDC_RADIO_CAM1, &CKoWebView::OnBnClickedRadioCam1)
@@ -72,12 +72,13 @@ BEGIN_MESSAGE_MAP(CKoWebView, CFormView)
 	ON_BN_CLICKED(IDC_RADIO_CAM4, &CKoWebView::OnBnClickedRadioCam4)
 	ON_BN_CLICKED(IDC_BUTTON_MODEL, &CKoWebView::OnBnClickedButtonModel)
 	ON_BN_CLICKED(IDC_CHECK_SHOWMAX, &CKoWebView::OnBnClickedCheckShowmax)
-	ON_BN_CLICKED(IDC_CHECK_SHOWOLDMAP, &CKoWebView::OnBnClickedCheckShowoldmap)
-	ON_WM_LBUTTONDBLCLK()
+	ON_BN_CLICKED(IDC_CHECK_SHOWOLDMAP, &CKoWebView::OnBnClickedCheckShowoldmap)	
 	ON_BN_CLICKED(IDC_BUTTON_INSPECT3, &CKoWebView::OnBnClickedButtonInspect3)
 	ON_BN_CLICKED(IDC_CHECK_ALL, &CKoWebView::OnBnClickedCheckAll)
 	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NOW, &CKoWebView::OnBnClickedBtnShowDefectNow)
 	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NEXT, &CKoWebView::OnBnClickedBtnShowDefectNext)
+	ON_MESSAGE(WM_BCR_COMM, &CKoWebView::OnBCrComm)
+
 END_MESSAGE_MAP()
 
 BEGIN_EVENTSINK_MAP(CKoWebView, CFormView)
@@ -2994,8 +2995,6 @@ void CKoWebView::NearBrgDiffAll(int thup, int thdn, CRect insRect, unsigned char
 	}
 }
 
-
-
 void CKoWebView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
@@ -3015,8 +3014,6 @@ void CKoWebView::OnLButtonDblClk(UINT nFlags, CPoint point)
 
 	CFormView::OnLButtonDblClk(nFlags, point);
 }
-
-
 
 void CKoWebView::OnBnClickedButtonInspect3() 
 {
@@ -3071,4 +3068,37 @@ void CKoWebView::OnBnClickedBtnShowDefectNext()
 		return;
 
 	m_DefectCallClass->ShowDefectView(true);
+}
+
+LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
+{
+	// index는 ICallClass tlh에 있는 enum 기준으로 처리
+	int evtIdx = (int)wParam;
+	
+	switch (evtIdx)
+	{
+	case eEventReport_eReadCSVNow:
+		m_DefectCallClass->GetMarkingData(false);
+		break;
+	case eEventReport_eReadCSVNext:
+
+		break;
+
+	case eEventReport_eReadDBNow:
+
+		break;
+
+	case eEventReport_eReadDBNext:
+
+		break;
+
+	case eEventReport_eResetDataNow:
+
+		break;
+
+	case eEventReport_eResetDataNext:
+
+		break;
+	}
+	return 0;
 }

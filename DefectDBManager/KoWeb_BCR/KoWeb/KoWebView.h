@@ -402,6 +402,8 @@ public:
 	double m_dYLength;
 	afx_msg void OnBnClickedBtnShowDefectNow();
 	afx_msg void OnBnClickedBtnShowDefectNext();
+
+	afx_msg LRESULT OnBCrComm(WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG  // debug version in KoWebView.cpp

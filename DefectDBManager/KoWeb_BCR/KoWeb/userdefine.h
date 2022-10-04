@@ -126,8 +126,8 @@
 #define     KIPO_PORT			7300		//투영이 정반사한테 데이타 주는 포트
 #define     NITTO_AI_PORT		9000		//Nitto AI에게 주는 포트
 
-#define		WM_XDATARRECIEVED	(WM_USER+100+2)
-
+#define		WM_XDATARRECIEVED	(WM_USER+102)
+#define		WM_BCR_COMM			(WM_USER+103)
 
 
 #define	WM_CONNECT			WM_USER+11
@@ -135,8 +135,8 @@
 #define WM_RESTART			WM_USER+14
 
 
-
 #define MAX_NITTO_AI_CLASS 10
+
 
 
 //ERROR CODE

@@ -120,4 +120,44 @@ void CallClassWrapper::RemoveEndCsvReading(ICsvReadingEvents* pThis)
 	m_pCallClass->RemoveEventCsvReading(pThis);
 }
 
+int CallClassWrapper::GetMarkingData(bool isNext)
+{
+	SAFEARRAY* array = m_pCallClass->GetMarkingData(isNext);
+	if (array)
+	{
+		VARTYPE vt;
+		SafeArrayGetVartype(array, &vt);
+		IRecordInfoPtr splRecordInfo = NULL;
+		SafeArrayGetRecordInfo(array, &splRecordInfo);
+		GUID guid;
+		splRecordInfo->GetGuid(&guid);
 
+		long lLbound = 0;
+		long lUbound = 0;
+
+		SafeArrayGetLBound(array, 1, &lLbound);
+		SafeArrayGetUBound(array, 1, &lUbound);
+		long lDimSize = lUbound - lLbound + 1;
+
+		for (int i = 0; i < lDimSize; i++) {
+			long rgIndices[1];
+			MarkingData value;
+			memset(&value, 0, sizeof(value));
+			rgIndices[0] = i;
+			SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
+			splRecordInfo->RecordClear((PVOID)&value);
+
+			int a;
+			a = 0;
+
+		}
+
+		SafeArrayDestroy(array);
+		array = NULL;
+		CString strMsg;
+		strMsg.Format(_T("%d"), lDimSize);
+		MessageBox(NULL, strMsg, _T(""), MB_OK);
+
+		return lDimSize;
+	}
+}

@@ -107,7 +107,7 @@ void CallClassWrapper::ReadCSVFile(std::string path)
 
 void CallClassWrapper::ShowDefectView()
 {
-	m_pCallClass->ShowViewer();
+	m_pCallClass->ShowViewer(false);
 }
 
 void CallClassWrapper::AddEndCsvReading(ICsvReadingEvents* pThis)

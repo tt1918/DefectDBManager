@@ -19,6 +19,18 @@ namespace DefectDBManager
     
     public partial class FormDB : Form
     {
+        #region Form 종료 못하게 막기
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle = cp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return cp;
+            }
+        }
+        #endregion
         #region const param
         readonly string[] BCnoHeader = { "No.", "LOTNO", "Bad Count", "M^2 불량수", "Use", "원단 BCNO" };
         readonly int[] listBCnoWidth = { 40, 100, 80, 80, 50, 80 };
@@ -801,7 +813,10 @@ namespace DefectDBManager
                     else
                     {
                         lblDownloadResult.Text = "DB Seacing is complete!!";
-                        
+                        if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                            OnEndCsvReading((int)eEventReport.eReadDBNow);
+                        else
+                            OnEndCsvReading((int)eEventReport.eReadDBNext);
                     }
                 }));
             }
@@ -825,7 +840,10 @@ namespace DefectDBManager
                 }
 
                 lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
-                OnEndCsvReading(1);
+                if(dataBase.DbOption.dbWhen==eDbIdWhen.Now)
+                    OnEndCsvReading((int)eEventReport.eReadCSVNow);
+                else
+                    OnEndCsvReading((int)eEventReport.eReadCSVNext);
             }));
 
         }
@@ -964,6 +982,11 @@ namespace DefectDBManager
             initFaultPage();
 
             dataBase.ResetAll();
+
+            if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                OnEndCsvReading((int)eEventReport.eResetDataNow);
+            else
+                OnEndCsvReading((int)eEventReport.eResetDataNext);
         }
         private void btnPrevFaultPage_Click(object sender, EventArgs e)
         {
@@ -1157,6 +1180,10 @@ namespace DefectDBManager
             }
         }
 
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
         #endregion
 
 
@@ -1389,5 +1416,6 @@ namespace DefectDBManager
 
         #endregion Timer
 
+       
     }
 }

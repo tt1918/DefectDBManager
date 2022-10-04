@@ -39,8 +39,7 @@ CDllTestView::CDllTestView() noexcept
 {
 	// TODO: add construction code here
 	m_Defect = new CallClassWrapper;
-	m_CsvReadingEvent = new CsvReadingEvents(this->m_hWnd);
-	m_Defect->AddEndCsvReading(m_CsvReadingEvent);
+	
 #ifdef USE_CODEREADERDLL
 	m_CodeReader = new CallClassWrapperCodeReader;
 	if (!m_CodeReader->Initialize(false, 2048, 2048, _T("C:\\Users\\bonaf\\Downloads\\BCR\\DataMatrixTool.vpp")))
@@ -86,6 +85,8 @@ void CDllTestView::OnInitialUpdate()
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
 
+	m_CsvReadingEvent = new CsvReadingEvents(this->m_hWnd);
+	m_Defect->AddEndCsvReading(m_CsvReadingEvent);
 }
 
 

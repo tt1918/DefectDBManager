@@ -20,7 +20,6 @@ namespace DefectDBManager
 
             Defects _Defects = new Defects();
             _Defects.DBManager.SetDataState(false);
-
             Application.Run(_Defects._FormDB);
         }
     }
