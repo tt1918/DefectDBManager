@@ -26,6 +26,7 @@ public:
 	bool SwapNext2Now();
 	
 	bool IsValid(bool isNext);
+	void AddData(bool isNext, DEFECT data);
 	int GetData(double startY, double endY, DEFECT* data);
 private:
 	int checkReserve();

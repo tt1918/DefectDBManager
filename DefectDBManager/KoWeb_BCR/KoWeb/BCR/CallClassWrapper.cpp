@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 #include "CallClassWrapper.h"
+#include "MarkingDataManager.h"
+#include "../KoWebView.h"
 
-CallClassWrapper::CallClassWrapper(void) 
+CallClassWrapper::CallClassWrapper(HWND pParent)
 {
+	m_pParent = pParent;
 	CoInitialize(NULL);
 	HRESULT hr = CoCreateInstance(CLSID_Defects, NULL, CLSCTX_INPROC_SERVER, IID_ICallClass, reinterpret_cast<void**>(&m_pCallClass));
 
@@ -22,6 +25,7 @@ CallClassWrapper::~CallClassWrapper(void)
 void CallClassWrapper::GetDefectsData()
 {
 	SAFEARRAY* array = m_pCallClass->GetDefect();
+
 	if (array)
 	{
 		VARTYPE vt;
@@ -123,6 +127,10 @@ void CallClassWrapper::RemoveEndCsvReading(ICsvReadingEvents* pThis)
 int CallClassWrapper::GetMarkingData(bool isNext)
 {
 	SAFEARRAY* array = m_pCallClass->GetMarkingData(isNext);
+	MarkingDataManager* pManager = &((CKoWebView*)m_pParent)->m_MarkingDataMgr;
+	if (pManager->SetBuffer(isNext) == false)
+		return -1;
+
 	if (array)
 	{
 		VARTYPE vt;
@@ -142,14 +150,13 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 		for (int i = 0; i < lDimSize; i++) {
 			long rgIndices[1];
 			MarkingData value;
+			DEFECT markingDefect;
 			memset(&value, 0, sizeof(value));
 			rgIndices[0] = i;
 			SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
 			splRecordInfo->RecordClear((PVOID)&value);
 
-			int a;
-			a = 0;
-
+			pManager->AddData(isNext, markingDefect);
 		}
 
 		SafeArrayDestroy(array);

@@ -185,6 +185,12 @@
   <ItemGroup>
     <None Include="Resources\icons8_green_square_16.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_maximize_window_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8_close_window_16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

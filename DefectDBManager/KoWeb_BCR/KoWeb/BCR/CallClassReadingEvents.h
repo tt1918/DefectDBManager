@@ -1,7 +1,7 @@
 
 class CallClassReadingEvents :public ICsvReadingEvents
 {
-public:
+private:
 	HWND m_pParent;
 public:
 	CallClassReadingEvents(HWND pParent)

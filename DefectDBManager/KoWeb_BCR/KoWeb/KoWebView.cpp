@@ -3034,7 +3034,7 @@ void CKoWebView::OnBnClickedCheckAll()
 void CKoWebView::CreateDefectCallCallss()
 {
 	if (m_DefectCallClass == nullptr)
-		m_DefectCallClass = new CallClassWrapper();
+		m_DefectCallClass = new CallClassWrapper(this->m_hWnd);
 	if (m_DefectReadingEvent == nullptr)
 	{
 		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
@@ -3077,19 +3077,11 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 	
 	switch (evtIdx)
 	{
-	case eEventReport_eReadCSVNow:
+	case eEventReport_eUpdateDataNow:
 		m_DefectCallClass->GetMarkingData(false);
 		break;
-	case eEventReport_eReadCSVNext:
-
-		break;
-
-	case eEventReport_eReadDBNow:
-
-		break;
-
-	case eEventReport_eReadDBNext:
-
+	case eEventReport_eUpdateDataNext:
+		m_DefectCallClass->GetMarkingData(true);
 		break;
 
 	case eEventReport_eResetDataNow:

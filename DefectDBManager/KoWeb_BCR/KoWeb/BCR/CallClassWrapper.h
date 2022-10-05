@@ -5,8 +5,10 @@
 
 class CallClassWrapper
 {
+private:
+	HWND m_pParent;
 public:
-	CallClassWrapper(void);
+	CallClassWrapper(HWND pParent);
 	virtual ~CallClassWrapper(void);
 
 private:

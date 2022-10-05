@@ -271,10 +271,8 @@ namespace DefectDBManager
     #region 이벤트 보고용 
     public enum eEventReport
     {
-        eReadCSVNow = 1,
-        eReadCSVNext,
-        eReadDBNow,
-        eReadDBNext,
+        eUpdateDataNow = 1,
+        eUpdateDataNext,
         eResetDataNow,
         eResetDataNext,
     }

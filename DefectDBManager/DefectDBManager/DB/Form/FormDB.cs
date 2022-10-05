@@ -104,6 +104,9 @@ namespace DefectDBManager
             dbSearchProgressTimer = new System.Windows.Forms.Timer();
             dbSearchProgressTimer.Interval = 200;
             dbSearchProgressTimer.Tick += new EventHandler(timer_DbSearch);
+
+            panelTitle.MouseDown+= lblTitle_MouseDown;
+            panelTitle.MouseMove+= lblTitle_MouseMove;
         }
 
         private void FormDB_Load(object sender, EventArgs e)
@@ -119,7 +122,7 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
-                this.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
+                this.lblTitle.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
 
                 displayMarkingOption();
                 dbCommTimer.Start();
@@ -813,10 +816,6 @@ namespace DefectDBManager
                     else
                     {
                         lblDownloadResult.Text = "DB Seacing is complete!!";
-                        if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                            OnEndCsvReading((int)eEventReport.eReadDBNow);
-                        else
-                            OnEndCsvReading((int)eEventReport.eReadDBNext);
                     }
                 }));
             }
@@ -840,10 +839,6 @@ namespace DefectDBManager
                 }
 
                 lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
-                if(dataBase.DbOption.dbWhen==eDbIdWhen.Now)
-                    OnEndCsvReading((int)eEventReport.eReadCSVNow);
-                else
-                    OnEndCsvReading((int)eEventReport.eReadCSVNext);
             }));
 
         }
@@ -1180,12 +1175,52 @@ namespace DefectDBManager
             }
         }
 
-        private void btnHide_Click(object sender, EventArgs e)
+        private void btnUpdateMarkingData_Click(object sender, EventArgs e)
+        {
+            if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                OnEndCsvReading((int)eEventReport.eUpdateDataNow);
+            else
+                OnEndCsvReading((int)eEventReport.eUpdateDataNext);
+        }
+
+        private void btnFormMaximize_Click(object sender, EventArgs e)
+        {
+            if(this.WindowState == FormWindowState.Maximized)
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            else if(this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        private void btnFormHide_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
         #endregion
-
+        
+        #region 마우스로 폼 드래그
+        private Point mouseDownLocation;
+        private void lblTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.mouseDownLocation = e.Location;
+            }
+        }
+        private void lblTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized) return;
+            
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.Left = e.X + this.Left - this.mouseDownLocation.X;
+                this.Top = e.Y + this.Top - this.mouseDownLocation.Y;
+            }
+        }
+        #endregion
 
         #region Timer
 
@@ -1414,8 +1449,10 @@ namespace DefectDBManager
             }
         }
 
+
+
         #endregion Timer
 
-       
+        
     }
 }

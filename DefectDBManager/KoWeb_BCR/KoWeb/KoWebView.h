@@ -6,6 +6,7 @@
 #pragma once
 
 #include "resource.h"
+#include "KoWebDoc.h"
 #include "DlgConfig.h"
 #include "DlgParam.h"
 #include "DlgDebug.h"
@@ -29,6 +30,7 @@
 
 #include "BCR/CallClassWrapper.h"
 #include "BCR/CallClassReadingEvents.h"
+#include "BCR/MarkingDataManager.h"
 
 #define SHOW_NG_IMAGE	1
 class CKoWebView : public CFormView
@@ -79,6 +81,7 @@ public:
 	CUserSet* m_pUserSet;
 	CDlgModel* m_pModel;
 
+	MarkingDataManager m_MarkingDataMgr;
 
 	//AI관련함수-----------------------------------------------------------
 	void AI_ConnectServer();
@@ -344,62 +347,61 @@ public:
 	CString m_sDefectText[10];
 	int     m_nDefecttextCnt;
 
-	afx_msg void OnBnClickedButtonLoadimage();
+	double m_dYLength;
+	BOOL m_bShowInfo;
+	BOOL m_bShowImage;
+	CComboBox m_ctrlZoom;
+	BOOL m_bShowMap;
+	BOOL m_bShowMax;
+	BOOL m_bShowOldMap;
+	BOOL m_AllLength;
+	//	CListBox m_ctrlDefectInfo;
 	//	CListBox m_ctrlResult;
+
+	DECLARE_EVENTSINK_MAP()
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void OnDraw(CDC* pDC);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnClose();
+	afx_msg void OnDestroy();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+//	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedButtonLoadimage();
 	afx_msg void OnBnClickedButtonSaveimage();
 	afx_msg void OnBnClickedButtonInspect();
 	afx_msg void OnBnClickedButtonConfig();
-	DECLARE_EVENTSINK_MAP()
-		afx_msg void OnBnClickedButtonParam();
+	afx_msg void OnBnClickedButtonParam();
 	afx_msg void OnBnClickedButtonTeach();
-	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedCheckAutoStart();
-
-	BOOL m_bShowInfo;
 	afx_msg void OnBnClickedCheckShowInfo();
 	afx_msg void OnBnClickedCheckShowflat();
 	afx_msg void OnBnClickedCheckShowimge();
-	BOOL m_bShowImage;
 	afx_msg void OnCbnSelchangeComboZoom();
-	CComboBox m_ctrlZoom;
 	afx_msg void OnBnClickedButtonBinary();
-	//	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButtonPattern();
 	afx_msg void OnBnClickedButtonFuncTest();
 	afx_msg void OnBnClickedButtonAlign();
 	afx_msg void OnBnClickedButtonGrab();
 	afx_msg void OnBnClickedCheckLive();
-	afx_msg void OnClose();
 	afx_msg void OnBnClickedButtonNext();
 	afx_msg void OnBnClickedButtonPrev();
-	//	CListBox m_ctrlDefectInfo;
 	afx_msg void OnBnClickedButtonOcr();
-	afx_msg void OnDestroy();
-	afx_msg void OnStnClickedStaticZoom();
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButtonDebug();
-	virtual void OnDraw(CDC* pDC);
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedButtonClose();
 	afx_msg void OnBnClickedCheckShowmap();
-	BOOL m_bShowMap;
 	afx_msg void OnBnClickedRadioCam1();
 	afx_msg void OnBnClickedRadioCam2();
 	afx_msg void OnBnClickedRadioCam3();
 	afx_msg void OnBnClickedRadioCam4();
 	afx_msg void OnBnClickedButtonModel();
 	afx_msg void OnBnClickedCheckShowmax();
-	BOOL m_bShowMax;
-	BOOL m_bShowOldMap;
 	afx_msg void OnBnClickedCheckShowoldmap();
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnBnClickedButtonInspect3();
-	BOOL m_AllLength;
 	afx_msg void OnBnClickedCheckAll();
-	double m_dYLength;
 	afx_msg void OnBnClickedBtnShowDefectNow();
 	afx_msg void OnBnClickedBtnShowDefectNext();
 

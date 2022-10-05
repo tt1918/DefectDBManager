@@ -95,6 +95,18 @@ bool MarkingDataManager::IsValid(bool isNext)
 	return isValid;
 }
 
+void MarkingDataManager::AddData(bool isNext, DEFECT data)
+{
+	if (isNext == false)//  ÇöÀç¶ù
+	{
+		m_markingNow.data->push_back(data);
+	}
+	else   // ¿¹¾à¶ù
+	{
+		m_markingNext.data->push_back(data);
+	}
+}
+
 int MarkingDataManager::GetData(double startY, double endY, DEFECT* data)
 {
 	if (IsValid(false) == false)

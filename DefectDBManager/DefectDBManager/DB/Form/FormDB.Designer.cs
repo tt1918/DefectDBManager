@@ -43,6 +43,7 @@
             this.cbDestination = new System.Windows.Forms.ComboBox();
             this.gbBasicInfo = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnUpdateMarkingData = new System.Windows.Forms.Button();
             this.btnSearchDB = new System.Windows.Forms.Button();
             this.btnEditDefectClass = new System.Windows.Forms.Button();
             this.btnShowSkipParam = new System.Windows.Forms.Button();
@@ -84,7 +85,11 @@
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.btnHide = new System.Windows.Forms.Button();
+            this.splitContainer8 = new System.Windows.Forms.SplitContainer();
+            this.panelTitle = new System.Windows.Forms.Panel();
+            this.btnFormHide = new System.Windows.Forms.Button();
+            this.btnFormMaximize = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.gbSearchTime.SuspendLayout();
             this.gbBasicInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -123,6 +128,11 @@
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.Panel2.SuspendLayout();
             this.splitContainer7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).BeginInit();
+            this.splitContainer8.Panel1.SuspendLayout();
+            this.splitContainer8.Panel2.SuspendLayout();
+            this.splitContainer8.SuspendLayout();
+            this.panelTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblLotName
@@ -149,9 +159,9 @@
             // btnOpenCSV
             // 
             this.btnOpenCSV.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenCSV.Location = new System.Drawing.Point(662, 42);
+            this.btnOpenCSV.Location = new System.Drawing.Point(690, 4);
             this.btnOpenCSV.Name = "btnOpenCSV";
-            this.btnOpenCSV.Size = new System.Drawing.Size(85, 38);
+            this.btnOpenCSV.Size = new System.Drawing.Size(70, 38);
             this.btnOpenCSV.TabIndex = 2;
             this.btnOpenCSV.Text = "OPEN CSV";
             this.btnOpenCSV.UseVisualStyleBackColor = true;
@@ -270,7 +280,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbBasicInfo.Controls.Add(this.splitContainer1);
             this.gbBasicInfo.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.gbBasicInfo.Location = new System.Drawing.Point(0, 0);
+            this.gbBasicInfo.Location = new System.Drawing.Point(3, 3);
             this.gbBasicInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbBasicInfo.Name = "gbBasicInfo";
             this.gbBasicInfo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -286,7 +296,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.btnHide);
+            this.splitContainer1.Panel1.Controls.Add(this.btnUpdateMarkingData);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchDB);
             this.splitContainer1.Panel1.Controls.Add(this.btnEditDefectClass);
             this.splitContainer1.Panel1.Controls.Add(this.btnOpenCSV);
@@ -310,13 +320,24 @@
             this.splitContainer1.SplitterDistance = 839;
             this.splitContainer1.TabIndex = 13;
             // 
+            // btnUpdateMarkingData
+            // 
+            this.btnUpdateMarkingData.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnUpdateMarkingData.Location = new System.Drawing.Point(763, 4);
+            this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
+            this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 38);
+            this.btnUpdateMarkingData.TabIndex = 13;
+            this.btnUpdateMarkingData.Text = "UPDATE DATA";
+            this.btnUpdateMarkingData.UseVisualStyleBackColor = true;
+            this.btnUpdateMarkingData.Click += new System.EventHandler(this.btnUpdateMarkingData_Click);
+            // 
             // btnSearchDB
             // 
             this.btnSearchDB.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchDB.Location = new System.Drawing.Point(662, 3);
+            this.btnSearchDB.Location = new System.Drawing.Point(617, 4);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
-            this.btnSearchDB.Size = new System.Drawing.Size(85, 38);
+            this.btnSearchDB.Size = new System.Drawing.Size(70, 38);
             this.btnSearchDB.TabIndex = 8;
             this.btnSearchDB.Text = "검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
@@ -325,9 +346,9 @@
             // btnEditDefectClass
             // 
             this.btnEditDefectClass.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnEditDefectClass.Location = new System.Drawing.Point(476, 75);
+            this.btnEditDefectClass.Location = new System.Drawing.Point(435, 67);
             this.btnEditDefectClass.Name = "btnEditDefectClass";
-            this.btnEditDefectClass.Size = new System.Drawing.Size(111, 27);
+            this.btnEditDefectClass.Size = new System.Drawing.Size(75, 37);
             this.btnEditDefectClass.TabIndex = 12;
             this.btnEditDefectClass.Text = "EDIT CLASS";
             this.btnEditDefectClass.UseVisualStyleBackColor = true;
@@ -336,9 +357,9 @@
             // btnShowSkipParam
             // 
             this.btnShowSkipParam.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnShowSkipParam.Location = new System.Drawing.Point(360, 75);
+            this.btnShowSkipParam.Location = new System.Drawing.Point(358, 67);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
-            this.btnShowSkipParam.Size = new System.Drawing.Size(111, 27);
+            this.btnShowSkipParam.Size = new System.Drawing.Size(75, 37);
             this.btnShowSkipParam.TabIndex = 11;
             this.btnShowSkipParam.Text = "SKIP PARAM";
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
@@ -347,10 +368,10 @@
             // btnXOFSMST
             // 
             this.btnXOFSMST.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnXOFSMST.Location = new System.Drawing.Point(662, 81);
+            this.btnXOFSMST.Location = new System.Drawing.Point(513, 67);
             this.btnXOFSMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXOFSMST.Name = "btnXOFSMST";
-            this.btnXOFSMST.Size = new System.Drawing.Size(85, 38);
+            this.btnXOFSMST.Size = new System.Drawing.Size(75, 37);
             this.btnXOFSMST.TabIndex = 8;
             this.btnXOFSMST.Text = "Show More";
             this.btnXOFSMST.UseVisualStyleBackColor = true;
@@ -409,10 +430,10 @@
             // btnExportCSV
             // 
             this.btnExportCSV.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnExportCSV.Location = new System.Drawing.Point(751, 41);
+            this.btnExportCSV.Location = new System.Drawing.Point(690, 44);
             this.btnExportCSV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExportCSV.Name = "btnExportCSV";
-            this.btnExportCSV.Size = new System.Drawing.Size(85, 38);
+            this.btnExportCSV.Size = new System.Drawing.Size(70, 38);
             this.btnExportCSV.TabIndex = 8;
             this.btnExportCSV.Text = "EXPORT CSV";
             this.btnExportCSV.UseVisualStyleBackColor = true;
@@ -446,10 +467,10 @@
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(751, 3);
+            this.btnReset.Location = new System.Drawing.Point(763, 43);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(85, 38);
+            this.btnReset.Size = new System.Drawing.Size(70, 38);
             this.btnReset.TabIndex = 8;
             this.btnReset.Text = "초기화";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -566,7 +587,7 @@
             this.gbMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMRKCTLMST.Name = "gbMRKCTLMST";
             this.gbMRKCTLMST.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbMRKCTLMST.Size = new System.Drawing.Size(589, 133);
+            this.gbMRKCTLMST.Size = new System.Drawing.Size(589, 125);
             this.gbMRKCTLMST.TabIndex = 6;
             this.gbMRKCTLMST.TabStop = false;
             this.gbMRKCTLMST.Text = "MRKCTLMST";
@@ -581,7 +602,7 @@
             this.listViewMRKCTLMST.Location = new System.Drawing.Point(5, 18);
             this.listViewMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewMRKCTLMST.Name = "listViewMRKCTLMST";
-            this.listViewMRKCTLMST.Size = new System.Drawing.Size(578, 107);
+            this.listViewMRKCTLMST.Size = new System.Drawing.Size(578, 99);
             this.listViewMRKCTLMST.TabIndex = 7;
             this.listViewMRKCTLMST.UseCompatibleStateImageBehavior = false;
             // 
@@ -596,7 +617,7 @@
             this.gbPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYOP.Name = "gbPTRYOP";
             this.gbPTRYOP.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPTRYOP.Size = new System.Drawing.Size(584, 133);
+            this.gbPTRYOP.Size = new System.Drawing.Size(584, 125);
             this.gbPTRYOP.TabIndex = 6;
             this.gbPTRYOP.TabStop = false;
             this.gbPTRYOP.Text = "PTRYOP";
@@ -611,7 +632,7 @@
             this.listViewPTRYOP.Location = new System.Drawing.Point(6, 18);
             this.listViewPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewPTRYOP.Name = "listViewPTRYOP";
-            this.listViewPTRYOP.Size = new System.Drawing.Size(572, 107);
+            this.listViewPTRYOP.Size = new System.Drawing.Size(572, 99);
             this.listViewPTRYOP.TabIndex = 7;
             this.listViewPTRYOP.UseCompatibleStateImageBehavior = false;
             // 
@@ -656,7 +677,7 @@
             this.gbFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbFAULTDAT.Name = "gbFAULTDAT";
             this.gbFAULTDAT.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbFAULTDAT.Size = new System.Drawing.Size(1175, 223);
+            this.gbFAULTDAT.Size = new System.Drawing.Size(1175, 202);
             this.gbFAULTDAT.TabIndex = 6;
             this.gbFAULTDAT.TabStop = false;
             this.gbFAULTDAT.Text = "FAULTDAT";
@@ -671,7 +692,7 @@
             this.listViewFAULTDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewFAULTDAT.Name = "listViewFAULTDAT";
-            this.listViewFAULTDAT.Size = new System.Drawing.Size(1162, 198);
+            this.listViewFAULTDAT.Size = new System.Drawing.Size(1162, 177);
             this.listViewFAULTDAT.TabIndex = 7;
             this.listViewFAULTDAT.UseCompatibleStateImageBehavior = false;
             // 
@@ -680,7 +701,7 @@
             this.lblGRANK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGRANK.AutoSize = true;
             this.lblGRANK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGRANK.Location = new System.Drawing.Point(852, 9);
+            this.lblGRANK.Location = new System.Drawing.Point(852, 11);
             this.lblGRANK.Name = "lblGRANK";
             this.lblGRANK.Size = new System.Drawing.Size(53, 16);
             this.lblGRANK.TabIndex = 10;
@@ -692,7 +713,7 @@
             this.lblTotalFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalFaultPage.AutoSize = true;
             this.lblTotalFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalFaultPage.Location = new System.Drawing.Point(1068, 11);
+            this.lblTotalFaultPage.Location = new System.Drawing.Point(1068, 13);
             this.lblTotalFaultPage.Name = "lblTotalFaultPage";
             this.lblTotalFaultPage.Size = new System.Drawing.Size(46, 13);
             this.lblTotalFaultPage.TabIndex = 10;
@@ -703,7 +724,7 @@
             this.tbGRank.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbGRank.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbGRank.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbGRank.Location = new System.Drawing.Point(911, 10);
+            this.tbGRank.Location = new System.Drawing.Point(911, 12);
             this.tbGRank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbGRank.Name = "tbGRank";
             this.tbGRank.Size = new System.Drawing.Size(43, 15);
@@ -716,7 +737,7 @@
             this.tbFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFaultPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFaultPage.Location = new System.Drawing.Point(1022, 10);
+            this.tbFaultPage.Location = new System.Drawing.Point(1022, 12);
             this.tbFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbFaultPage.Name = "tbFaultPage";
             this.tbFaultPage.Size = new System.Drawing.Size(43, 15);
@@ -728,7 +749,7 @@
             // 
             this.btnNextFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNextFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNextFaultPage.Location = new System.Drawing.Point(1118, 3);
+            this.btnNextFaultPage.Location = new System.Drawing.Point(1118, 5);
             this.btnNextFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNextFaultPage.Name = "btnNextFaultPage";
             this.btnNextFaultPage.Size = new System.Drawing.Size(55, 28);
@@ -741,7 +762,7 @@
             // 
             this.btnPrevFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPrevFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrevFaultPage.Location = new System.Drawing.Point(962, 3);
+            this.btnPrevFaultPage.Location = new System.Drawing.Point(962, 5);
             this.btnPrevFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPrevFaultPage.Name = "btnPrevFaultPage";
             this.btnPrevFaultPage.Size = new System.Drawing.Size(55, 28);
@@ -755,7 +776,7 @@
             this.lblDownloadResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDownloadResult.AutoSize = true;
             this.lblDownloadResult.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblDownloadResult.Location = new System.Drawing.Point(10, 17);
+            this.lblDownloadResult.Location = new System.Drawing.Point(10, 14);
             this.lblDownloadResult.Name = "lblDownloadResult";
             this.lblDownloadResult.Size = new System.Drawing.Size(110, 12);
             this.lblDownloadResult.TabIndex = 13;
@@ -783,8 +804,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.lblTotalFaultPage);
             this.splitContainer2.Panel2.Controls.Add(this.tbFaultPage);
             this.splitContainer2.Panel2.Controls.Add(this.tbGRank);
-            this.splitContainer2.Size = new System.Drawing.Size(1180, 819);
-            this.splitContainer2.SplitterDistance = 778;
+            this.splitContainer2.Size = new System.Drawing.Size(1180, 790);
+            this.splitContainer2.SplitterDistance = 749;
             this.splitContainer2.TabIndex = 14;
             // 
             // splitContainer3
@@ -802,7 +823,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer3.Size = new System.Drawing.Size(1180, 778);
+            this.splitContainer3.Size = new System.Drawing.Size(1180, 749);
             this.splitContainer3.SplitterDistance = 145;
             this.splitContainer3.TabIndex = 0;
             // 
@@ -821,7 +842,7 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer4.Size = new System.Drawing.Size(1180, 629);
+            this.splitContainer4.Size = new System.Drawing.Size(1180, 600);
             this.splitContainer4.SplitterDistance = 130;
             this.splitContainer4.TabIndex = 0;
             // 
@@ -839,8 +860,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer7);
-            this.splitContainer5.Size = new System.Drawing.Size(1180, 495);
-            this.splitContainer5.SplitterDistance = 133;
+            this.splitContainer5.Size = new System.Drawing.Size(1180, 466);
+            this.splitContainer5.SplitterDistance = 125;
             this.splitContainer5.TabIndex = 0;
             // 
             // splitContainer6
@@ -857,7 +878,7 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.gbPTRYOP);
-            this.splitContainer6.Size = new System.Drawing.Size(1180, 133);
+            this.splitContainer6.Size = new System.Drawing.Size(1180, 125);
             this.splitContainer6.SplitterDistance = 589;
             this.splitContainer6.TabIndex = 0;
             // 
@@ -876,27 +897,83 @@
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.gbFAULTDAT);
-            this.splitContainer7.Size = new System.Drawing.Size(1180, 358);
+            this.splitContainer7.Size = new System.Drawing.Size(1180, 337);
             this.splitContainer7.SplitterDistance = 131;
             this.splitContainer7.TabIndex = 0;
             // 
-            // btnHide
+            // splitContainer8
             // 
-            this.btnHide.Location = new System.Drawing.Point(751, 81);
-            this.btnHide.Name = "btnHide";
-            this.btnHide.Size = new System.Drawing.Size(85, 38);
-            this.btnHide.TabIndex = 13;
-            this.btnHide.Text = "CLOSE";
-            this.btnHide.UseVisualStyleBackColor = true;
-            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
+            this.splitContainer8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer8.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer8.IsSplitterFixed = true;
+            this.splitContainer8.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer8.Name = "splitContainer8";
+            this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer8.Panel1
+            // 
+            this.splitContainer8.Panel1.Controls.Add(this.panelTitle);
+            // 
+            // splitContainer8.Panel2
+            // 
+            this.splitContainer8.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer8.Size = new System.Drawing.Size(1180, 819);
+            this.splitContainer8.SplitterDistance = 25;
+            this.splitContainer8.TabIndex = 15;
+            // 
+            // panelTitle
+            // 
+            this.panelTitle.BackColor = System.Drawing.Color.DarkGray;
+            this.panelTitle.Controls.Add(this.btnFormHide);
+            this.panelTitle.Controls.Add(this.btnFormMaximize);
+            this.panelTitle.Controls.Add(this.lblTitle);
+            this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTitle.Location = new System.Drawing.Point(0, 0);
+            this.panelTitle.Name = "panelTitle";
+            this.panelTitle.Size = new System.Drawing.Size(1180, 25);
+            this.panelTitle.TabIndex = 0;
+            // 
+            // btnFormHide
+            // 
+            this.btnFormHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFormHide.Image = global::DefectDBManager.Properties.Resources.icons8_close_window_16;
+            this.btnFormHide.Location = new System.Drawing.Point(1155, 3);
+            this.btnFormHide.Name = "btnFormHide";
+            this.btnFormHide.Size = new System.Drawing.Size(22, 20);
+            this.btnFormHide.TabIndex = 15;
+            this.btnFormHide.UseVisualStyleBackColor = true;
+            this.btnFormHide.Click += new System.EventHandler(this.btnFormHide_Click);
+            // 
+            // btnFormMaximize
+            // 
+            this.btnFormMaximize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFormMaximize.Image = global::DefectDBManager.Properties.Resources.icons8_maximize_window_16;
+            this.btnFormMaximize.Location = new System.Drawing.Point(1131, 3);
+            this.btnFormMaximize.Name = "btnFormMaximize";
+            this.btnFormMaximize.Size = new System.Drawing.Size(22, 20);
+            this.btnFormMaximize.TabIndex = 14;
+            this.btnFormMaximize.UseVisualStyleBackColor = true;
+            this.btnFormMaximize.Click += new System.EventHandler(this.btnFormMaximize_Click);
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(5, 6);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(121, 13);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "DEFECT VIEWER";
             // 
             // FormDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 819);
-            this.Controls.Add(this.splitContainer2);
+            this.Controls.Add(this.splitContainer8);
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimizeBox = false;
             this.Name = "FormDB";
             this.Text = "DEFECT DATA VIEWER";
@@ -946,6 +1023,12 @@
             this.splitContainer7.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
+            this.splitContainer8.Panel1.ResumeLayout(false);
+            this.splitContainer8.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
+            this.splitContainer8.ResumeLayout(false);
+            this.panelTitle.ResumeLayout(false);
+            this.panelTitle.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1007,6 +1090,11 @@
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.SplitContainer splitContainer7;
-        private System.Windows.Forms.Button btnHide;
+        private System.Windows.Forms.SplitContainer splitContainer8;
+        private System.Windows.Forms.Panel panelTitle;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Button btnFormHide;
+        private System.Windows.Forms.Button btnFormMaximize;
+        private System.Windows.Forms.Button btnUpdateMarkingData;
     }
 }
