@@ -133,11 +133,6 @@ void CDlgParam::OnBnClickedButtonReadparameter()
 	GetDlgItem(IDCANCEL)->EnableWindow(false);
 }
 
-
-
-
-
-
 void CDlgParam::OnPaint()
 {
 	CPaintDC dcORG(this); // device context for painting

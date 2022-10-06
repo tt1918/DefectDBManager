@@ -446,6 +446,38 @@ typedef struct TEMPDATA_
 	int m_nMuraMax;
 	int m_nTestCnt[10];
 
+	///////////////////////////////////////////////////////////////////////
+	// BCR 용 - S
+	int		m_nBcrPreEdge;		// 이전 프레임 에지 위치
+	CRect	m_BcrRect;			// 1차 영역 추출
+	CRect	m_BcrFineRect;		// 후처리 영역 추출
+	CRect	m_BcrSavingRect;	// BCR 이미지 저장용
+	CRect	m_BcrRectForMatch;	// BCR 확인 실패 시 중심 처리용
+	CRect   m_BcrRectMatched;	// 패턴 매칭된 BCR 영역
+	CPoint  m_BcrCenterPt;		// 바코드 중심점
+	bool	m_isBcrSuccessRead;	// 바코드 인식 결과
+	int		m_nBcrPatFind;		// 바코드 탐색 결과 순번
+	bool	m_isBcrFirstCode;	// 최소 BCR 리딩
+	int		m_nBcrFirstRead;	// BCR 리딩 상황
+	int		m_nBcrDir;			// BCR 리딩 방향
+
+	bool	m_bBcrForceInsert;  // BCR 강제 입력
+	CString m_strBcrForceData;  // BCR 강제 입력 데이터
+	bool	m_bBcrForceDir;		// BCR 강제 입력시 Dir
+	bool	m_isBcrForceReading; // BCR 강제 입력 처리 확인
+	double  m_dBCRForceREadingDist; // BCR 강제 입력 거리
+
+
+	CString m_strBcrName;		// 인식 결과 바코드 정보
+	int		m_nPreBcrInspFrame;	// 이전 BCR 인식된 Frame 번호
+	CString m_strPreBcrName;	// 이전 인식 결과 바코드 정보
+
+	int		m_nBcrReadOK;		// BCR 인식 갯수
+
+	int		m_nBcrNoReadWarning;
+	int		m_nBcrNoReadError;
+	// BCR 용 - E
+	///////////////////////////////////////////////////////////////////////
 }TEMPDATA;
 
 

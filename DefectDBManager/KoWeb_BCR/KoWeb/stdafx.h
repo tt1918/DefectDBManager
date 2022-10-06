@@ -58,7 +58,7 @@
 	#define RESULT_DELAY				//결과를 다음 Frame촬상끝나고 보내는 것이 아니라  지정된 다음에 보냄 [AI사용하는 경우 사용]
 	#define USE_NEXT_GRAB				//Frame의 Grab이 끝나면  이전 Frame을 검사한다. (중간 Frame검사, 이전 Frame, 다음 Frame있음)
 	#define USE_HOLE_SKIP				//2~3mm Hole을 제거한다. 평활화된 영상에서 처리, 중간은 1/8 압축영상에서 Hole Skip, 가장자리는 3mm 정도영역만 따로 검사해서 Hole Skip)
-	#define USE_PACKET_ANSI				//Packet 에서 사용하는 String은 1Byte로												[TOT 만사용]
+	#define USE_PACKET_ANSI				//Packet 에서 사용하는 String은 1Byte로												[TOT 만사용]				
 #endif
 
 
@@ -96,6 +96,8 @@
 //#define SHOW_DEBUG_DATA				//디버그용 데이타를 표시 (검사시간 표시)			[사용안함]
 //#define NO_GRABER_SYNC_FRAME_FROM_SERVER	//테스트용으로 Server로부터 동기신호받아 검사	[사용안함]
 //---------------------------------------------------------------------------------------
+
+#define BARCODE_VISION			// BCR 클라이언트 선언
 
 #define LONG_SCRATCH_EMPHASIZE			//남경에서 사용함
 					 

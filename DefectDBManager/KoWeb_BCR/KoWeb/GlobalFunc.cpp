@@ -233,7 +233,7 @@ CString GetPCName()
 	
 		//str = "NEL-101";  
 		//str = "COS-204";   //보내는 PC
-		str = "COS-905";  
+		//str = "COS-905";  
 		//str = "NEL-401"; 
 		//str = "COS-504";  
 		//str = "COS-804";	//받는 PC
@@ -245,6 +245,7 @@ CString GetPCName()
 		//str = "NEL-905";  
 		//str = "COS-A04";  		
 		//str = "NEL-B04";	
+	str = "";
 	#ifdef USE_SK_BAT
 		str = "NEL-201";  
 	#endif

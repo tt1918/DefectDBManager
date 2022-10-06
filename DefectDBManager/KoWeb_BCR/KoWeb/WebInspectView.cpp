@@ -66,10 +66,7 @@ void CKoWebView::WebInspect()
 	if(g_System.m_nMakePyramid)
 		ThreadMakeCompression(g_fmGrab[g_ID], g_fmGrabComp);	//영상 압축 : THREAD
 
-
 	l_dTime[2]=Clock_set();
-
-	
 
 #if INSPECT_TYPE==TAC_LINE
 	RemoveHorlineNoise(g_fmGrab[g_ID], g_Temp.m_nInspectX1, g_Temp.m_nInspectX2, g_System.m_nImageH, g_System.m_nImageW, 20);
@@ -102,9 +99,6 @@ void CKoWebView::WebInspect()
 #ifdef USE_HOLE_SKIP
 	HoleRemoveProcess();
 #endif
-
-
-
 
 	l_dTime[3]=Clock_set();
 	g_Temp.m_nMakePyramidDone=0;
@@ -1312,11 +1306,9 @@ void CKoWebView::InspectD()			//TEST
 
 void CKoWebView::InspectBCR()
 {
-
 #ifdef BARCODE_VISION
 	 WEB_Barcode();
 #endif
-
 }
 void CKoWebView::InspectMarkingVision()
 {

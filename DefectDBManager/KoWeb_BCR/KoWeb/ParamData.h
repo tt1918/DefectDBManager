@@ -210,8 +210,6 @@ typedef struct PARAMETERDATA_
 	int    m_nPressValue[10];	//찍힘 Value
 	double m_nPressSize[10];	//찍힘 Size
 
-
-
 	int    m_nSTDThUp[10];		//백얼룩
 	double m_dSTDSizeUp[10];	//백얼룩 Size
 	int    m_nSTDThDn[10];		//흑얼룩
@@ -388,8 +386,41 @@ typedef struct PARAMETERDATA_
 
 #endif
 
-}PARAMETERDATA;  //g_Param
+	////////////////////////////////////////////////////////////////
+	// BCR - S
+	int		m_nBCRUseDotRemove;
+	int     m_nBCRDotPitch;
+	int		m_nBcrDotTh;
+	int		m_nBcrDotUpTh;
 
+	bool	m_bBCRSaveImage;
+
+	// BCR Size
+	int		m_nBcrW;
+	int		m_nBcrH;
+	int     m_nBcrDiffW;
+	int     m_nBcrDiffH;
+
+	// BCR 밝기
+	bool    m_bBcrObjW;
+
+	// 검출 영역 강제 설정
+	int		m_nBCRManualArea;
+	int		m_nBCRAreaL;
+	int		m_nBCRAreaR;
+
+	// 검출 영역 설정
+	int		m_nBCRSearchPixel;
+	int		m_nBcrOffset;
+	
+	// 탐색 못 했을 경우 영역 검색 처리
+	bool	m_useBcrMatSize;
+
+	int		m_nBcrType;
+	// BCR - E
+	////////////////////////////////////////////////////////////////
+
+}PARAMETERDATA;  //g_Param
 
 extern PARAMETER_VER1	g_ParamVer1; //20개씩 받는 것
 extern PARAMETER_VER2   g_ParamVer2; //전체 파라미터
@@ -397,11 +428,11 @@ extern PARAMETER_MARK	g_ParamMark; //마킹데이타: 파라미터 서버로 부터 받아서 저�
 
 
 //실제 한 PC에서 사용하는 데이타
-extern TCHAR					g_ParamName[NEW_MAX_COL_ALG_ITEM][20]; //220개 파라미터 이름
-extern PARAMETER_VER			g_ParamVer;				//파라미터 읽고 쓸때 사용
+extern TCHAR					g_ParamName[NEW_MAX_COL_ALG_ITEM][20]; // 220개 파라미터 이름
+extern PARAMETER_VER			g_ParamVer;				// 파라미터 읽고 쓸때 사용
 
-extern PARAMETERDATA			g_Param;				//한PC의 검사에 사용
-extern PARAMETER_MARKOPTIC		g_Mark;					//한PC의 마킹정보
+extern PARAMETERDATA			g_Param;				// 한PC의 검사에 사용
+extern PARAMETER_MARKOPTIC		g_Mark;					// 한PC의 마킹정보
 
 void LoadParamName();
 int CheckFileReceive20();

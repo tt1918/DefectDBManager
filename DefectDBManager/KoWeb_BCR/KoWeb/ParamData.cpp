@@ -2134,7 +2134,9 @@ void ApplyOpticF()
 }
 void ApplyOpticBCR()
 {
-
+#ifdef BARCODE_VISION
+	
+#endif
 }
 void ApplyOpticMarkingVision() 
 {
