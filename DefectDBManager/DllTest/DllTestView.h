@@ -46,8 +46,6 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-
-
 protected:
 	CallClassWrapper* m_Defect;
 	CsvReadingEvents* m_CsvReadingEvent;

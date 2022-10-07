@@ -454,7 +454,10 @@ typedef struct TEMPDATA_
 	CRect	m_BcrSavingRect;	// BCR 이미지 저장용
 	CRect	m_BcrRectForMatch;	// BCR 확인 실패 시 중심 처리용
 	CRect   m_BcrRectMatched;	// 패턴 매칭된 BCR 영역
+	CRect	m_BcrRectCodeRead;	// CodeReader에 의해 획득한 중심점
+
 	CPoint  m_BcrCenterPt;		// 바코드 중심점
+
 	bool	m_isBcrSuccessRead;	// 바코드 인식 결과
 	int		m_nBcrPatFind;		// 바코드 탐색 결과 순번
 	bool	m_isBcrFirstCode;	// 최소 BCR 리딩
@@ -471,6 +474,7 @@ typedef struct TEMPDATA_
 	CString m_strBcrName;		// 인식 결과 바코드 정보
 	int		m_nPreBcrInspFrame;	// 이전 BCR 인식된 Frame 번호
 	CString m_strPreBcrName;	// 이전 인식 결과 바코드 정보
+	double  m_dBcrRealPos;		// 원단상의 실제 위치
 
 	int		m_nBcrReadOK;		// BCR 인식 갯수
 
@@ -598,4 +602,6 @@ CString LoadCurrentLotName();
 void WriteLog(CString str);
 void WriteDebugLog(bool bMakeFile, CString str);
 
-
+#ifdef BARCODE_VISION
+void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe);
+#endif

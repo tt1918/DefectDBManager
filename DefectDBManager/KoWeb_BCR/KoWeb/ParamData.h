@@ -185,6 +185,10 @@ typedef struct PARAMETERDATA_
 	double m_dScaleFactorY;     //Scale
 	double m_dImageAngleFactorY;//CAMANGLE 영상기울어짐(왼쪽기준)  x좌표 곱해주면 Offset 구해짐
 
+#ifdef BARCODE_VISION
+	double m_dBcrScaleFactorY;
+#endif
+
 	//1차원 (각 한 항목이라도 만족하면 1Level) ------------------------------------------
 	int    m_nValueOneUp;		//백 Value가 이 값보다 크면 Size 관계없이 1Level
 	double m_dSizeOneUp;		//백 Size가 이 값보다 크면 Value 관계없이 1Level
@@ -393,7 +397,7 @@ typedef struct PARAMETERDATA_
 	int		m_nBcrDotTh;
 	int		m_nBcrDotUpTh;
 
-	bool	m_bBCRSaveImage;
+	bool	m_bBcrSaveImage;
 
 	// BCR Size
 	int		m_nBcrW;
@@ -415,6 +419,8 @@ typedef struct PARAMETERDATA_
 	
 	// 탐색 못 했을 경우 영역 검색 처리
 	bool	m_useBcrMatSize;
+	int		m_nBCRWarningM;
+	int		m_nBCRErrorM;
 
 	int		m_nBcrType;
 	// BCR - E

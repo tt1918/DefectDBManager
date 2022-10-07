@@ -8,18 +8,29 @@
 
 #include "KoWebDoc.h"
 #include "KoWebView.h"
+#include "BCR/CallClassWrapperCodeReader.h"
 
 //BARCODE_VISION
+
+#define BCR_CODE_LENGTH 17
+
+CallClassWrapperCodeReader g_CodeReader;
+
+extern CXManageSocket  l_Send_Server;
 
 BYTE l_fmBCRBK[512 * 128];
 BYTE l_fmBCR[512 * 2178];
 
 int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, int* pY, TCHAR sBcr[][30]);
+
+bool SearchBCR();
 double Distance2NearRect(CRect r1, CRect r2);
 CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch);
 CPoint GetBcrCenter(unsigned char* fm, CRect rt, int nPitch);
 CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect);
 void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch);
+BOOL CheckValidCode(CString str);
+int CheckBcrOrder(CString NewBarcode, CString LastBarcode);
 
 void WEB_Barcode()
 {
@@ -33,7 +44,7 @@ void WEB_Barcode()
 	int nBcrX[10], nBcrY[10];
 	TCHAR sBCR[10][30];
 
-	int nFrameNum = g_Temp.m_nGrabFrame;
+	
 
 	g_Temp.m_nMaxGray = 0;
 	g_Temp.m_nMinGray = 255;
@@ -43,263 +54,12 @@ void WEB_Barcode()
 	if (g_Temp.m_nEdgeDir == 0) nX = g_Temp.m_nInspectX1;
 	else                     nX = g_Temp.m_nInspectX2 - nBcrPitch;
 
-	g_Temp.m_isBcrSuccessRead = false;
-	g_Temp.m_nBcrPatFind = 0;
-	// 결과 데이터는 전부 g_Temp 데이터에 저장됨.
-	GetBcrPosition(fm, 0, 0, width, height, pitch);
-	// 기존 코드
-	bool isBcrExsit = true;
-	CString strBcrMsg = _T("none");
-	CString strReadMsg = _T("");
-	CString strMsg;
-	if (g_Param.m_nBcrDotTh > 0 && g_Param.m_nBcrDotUpTh > 0)
+	// 기존 방식 검사 
+	if (SearchBCR() == false) // 검사 실패한 경우 재검사
 	{
-		if (g_Temp.m_BcrRectForMatch.Width() == 0 || g_Temp.m_BcrRectForMatch.Height() == 0)
-			isBcrExsit = false;
 
-		if (g_Param.m_nNotInspArea != width)
-		{
-			if (g_Temp.m_BcrRect.left < 0)		g_Temp.m_BcrRect.left = 0;
-			if (g_Temp.m_BcrRect.right < 0)		g_Temp.m_BcrRect.right = 0;
-			if (g_Temp.m_BcrRect.top < 0)		g_Temp.m_BcrRect.top = 0;
-			if (g_Temp.m_BcrRect.bottom < 0)	g_Temp.m_BcrRect.bottom = 0;
-			if (g_Temp.m_BcrRect.left > width)	g_Temp.m_BcrRect.left = width;
-			if (g_Temp.m_BcrRect.right > width)	g_Temp.m_BcrRect.right = width;
-			if (g_Temp.m_BcrRect.top > height)	g_Temp.m_BcrRect.top = height;
-			if (g_Temp.m_BcrRect.bottom > height) g_Temp.m_BcrRect.bottom = height;
-
-			CRect tmpRect = g_Temp.m_BcrRect;
-
-			if (isBcrExsit == true)
-			{
-				// 검출 처리
-				//strReadMsg = ;
-
-			}
-			else
-			{
-				g_Temp.m_isBcrSuccessRead = false;
-			}
-
-			if (g_Temp.m_isBcrSuccessRead == true)
-			{
-				if (g_Temp.m_isBcrFirstCode == false)
-					g_Temp.m_isBcrFirstCode = true;
-
-				if (g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrSuccessRead == true)
-				{
-					CString strForcedBcr = g_Temp.m_strBcrForceData;
-					CString strTemp = strReadMsg;
-
-					if (strTemp.CompareNoCase(_T("")) == 0 || strTemp.CompareNoCase(_T("no_barcode")) == 0)
-					{
-						g_Temp.m_isBcrSuccessRead = false;
-						g_Temp.m_isBcrFirstCode = false;
-					}
-					else
-					{
-						g_Temp.m_isBcrForceReading = true;
-						g_Temp.m_dBCRForceREadingDist = 0.0;
-
-						if (strForcedBcr.CompareNoCase(strTemp) != 0)
-						{
-							g_Temp.m_strBcrForceData = strTemp;
-
-							// 강제 알람....
-							//m_SendtoServerSock.SendCommand_LocalHost(NM_FORCE_BCR_NOT_EQAUL_OCR_ALRAM);
-							/*CString str;
-							str.Format("[FORCE_BCR] Not Eqaul BCR & OCR :%s,%s", strForcedBcr, strTemp);
-							WriteLog(str);*/
-						}
-					}
-				}
-
-				if (g_Temp.m_isBcrSuccessRead == true)
-				{
-					strBcrMsg = _T("Read");
-					g_Temp.m_nBcrPatFind = 1;
-				}
-				else
-					g_Temp.m_nBcrPatFind = 0;
-			}
-			else
-				g_Temp.m_nBcrPatFind = 0;
-
-			if (strReadMsg == _T(""))
-				strReadMsg = _T("no_barcode");
-
-			int nMatchFrame = 0;
-			const int nPreFrm = g_Temp.m_nPreBcrInspFrame;
-			g_Temp.m_strBcrName = strReadMsg;
-
-			// 강제 입력 시 방향을 설정해준다. 
-			if (g_Temp.m_bBcrForceInsert == true)
-			{
-				if (g_Temp.m_bBcrForceDir == true) // 증가
-					g_Temp.m_nBcrDir = 1;
-				else
-					g_Temp.m_nBcrDir = 0;
-			}
-
-			int nRet = 0;
-			if (g_Temp.m_isBcrSuccessRead == false && g_Temp.m_nBcrDir != 0 && isBcrExsit == true &&
-				(g_Param.m_useBcrMatSize == true && g_Temp.m_BcrFineRect.Width() > 0))
-			{
-				// 실제 BCR Length 처리 추가해야함.
-				const double dBarcode_period_frame = 4.5;// (float)(1000 / (pDoc->m_data.m_dBarcodeScaleY * pDoc->m_pImage->GetHeight()));
-				/*if (m_bUseTestMode && !m_bSim_Mode || m_bUseTestMode && m_bSim_Mode)
-				{
-
-					nMatchFrame = m_nFnPeriod;
-				}
-				else*/
-				{
-					if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 1 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 1 + 1)))
-						nMatchFrame = 1;
-					else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 2 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 2 + 1)))
-						nMatchFrame = 2;
-					else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 3 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 3 + 1)))
-						nMatchFrame = 3;
-					else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 4 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 4 + 1)))
-						nMatchFrame = 4;
-					else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 5 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 5 + 1)))
-						nMatchFrame = 5;
-
-				}
-
-				CRect rectBCD;
-				rectBCD = g_Temp.m_BcrRectForMatch;
-				strBcrMsg.Format(_T("Matched"));
-				nRet = 1;
-
-
-				if (nRet > 0)
-				{
-					g_Temp.m_BcrRectMatched = rectBCD;
-					const int nLastBcrFrame = g_Temp.m_nPreBcrInspFrame;
-					const CString strLastBCNO = g_Temp.m_strPreBcrName;
-					int ntmp = 0;
-
-					if (g_Temp.m_bBcrForceInsert == true)
-					{
-						strMsg = g_Temp.m_strBcrForceData.Left(11);
-						ntmp = _ttoi(g_Temp.m_strBcrForceData.Right(6));
-					}
-					else
-					{
-						strMsg = g_Temp.m_strPreBcrName.Left(11);
-						ntmp = _ttoi(g_Temp.m_strPreBcrName.Right(6));
-					}
-
-					CString strNewBCNO;
-					if (g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == false)
-					{
-						if (g_Temp.m_nBcrDir == -1)  // 감소
-						{
-							int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
-							strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nBcd);
-
-							/*strT.Format("[FORCE_BCR]강제 BCR 입력 후 계산 nBcd : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / ",
-								nBcd, strNewBcno, m_nFrameNum, nLastBcdFrame, dBarcode_period_frame);
-							WriteLog(strT);*/
-						}
-						else // 증가
-						{
-							int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
-							strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nBcd);
-
-							/*strT.Format("[FORCE_BCR]강제 BCR 입력 후 계산 nBcd : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / ",
-								nBcd, strNewBcno, m_nFrameNum, nLastBcdFrame, dBarcode_period_frame);
-							WriteLog(strT);*/
-						}
-					}
-					else
-					{
-						if (g_Temp.m_nBcrDir == -1)  // 감소
-							strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nMatchFrame);
-						else // 증가
-							strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nMatchFrame);
-					}
-
-					if (g_Temp.m_bBcrForceInsert == true)
-					{
-						if (strMsg.CompareNoCase(L"") == 0 ||
-							strMsg.CompareNoCase(L"no_barcode") == 0)
-						{
-							g_Temp.m_isBcrForceReading = false;
-							strNewBCNO = "";
-							CString str;
-							str.Format(L"[FORCE_BCR]패턴매칭후 값이 없거나 no_barcode 발생 :%s", strNewBCNO);
-							WriteLog(str);
-						}
-						else
-						{
-							g_Temp.m_isBcrForceReading = true;
-							g_Temp.m_dBCRForceREadingDist = 0.f;
-							g_Temp.m_strBcrForceData = strNewBCNO;
-							CString str;
-							str.Format(L"[FORCE_BCR]패턴매칭후 값 강제 셋팅 :%s", strNewBCNO);
-							WriteLog(str);
-						}
-					}
-
-					if (strNewBCNO.GetLength() > 0)
-					{
-						g_Temp.m_strBcrName = strNewBCNO;
-						g_Temp.m_isBcrSuccessRead = true;
-						g_Temp.m_nBcrPatFind = 2;
-					}
-					else
-					{
-						CString str;
-						str.Format(L"This message should not be logged %d,%d", nFrameNum, g_Temp.m_nPreBcrInspFrame);
-						WriteLog(str);
-					}
-				}
-			}
-
-			if (g_Temp.m_isBcrSuccessRead == true)
-			{
-				g_Temp.m_nPreBcrInspFrame = nFrameNum;
-				g_Temp.m_strPreBcrName  = g_Temp.m_strBcrName;
-
-				g_Temp.m_nBcrReadOK++;
-			}
-
-			if (g_Temp.m_isBcrFirstCode == true ||
-				(g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == true) ||
-				(g_Temp.m_nBcrDir != 0))
-			{
-				// 전공정 데이터 검색해야함
-			}
-
-			if (g_Param.m_nBcrType == eCSV_TYPE_KOTECH || g_Param.m_nBcrType == eCSV_TYPE_KORENO || g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK)
-			{
-				if (g_Temp.m_nBcrFirstRead == 2)
-				{
-
-				}
-			}
-
-			if (g_Param.m_nBcrType == eCSV_TYPE_NITTO_RK || g_Param.m_nBcrType == eCSV_TYPE_NITTO_RTS || 
-				g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK || g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK_IJP)
-			{
-				if (g_Temp.m_isBcrSuccessRead == true)
-				{
-					g_Temp.m_nBcrNoReadWarning = 0;
-					g_Temp.m_nBcrNoReadError = 0;
-
-				}
-				else
-				{
-
-				}
-			}
-
-		}
 	}
-
-	if (strBcrMsg != L"none")
+	else // 완료하면 후처리???
 	{
 
 	}
@@ -322,7 +82,378 @@ void WEB_Barcode()
 		memcpy(l_fmBCRBK + nBcrPitch * i, fm + pitch * i + nX, nBcrPitch);
 	//------------------------------------------------------------
 
-	if (g_Param.m_bBCRSaveImage)
+	
+
+}
+
+//최대 10개이나 현실적으로 3개만, 상, 하 붙은것은 제외.
+//바코드 찾을때 필요한 파라미터 알려줘요
+int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, int* pY, TCHAR sBcr[][30])
+{
+	int nBCRCount = 0;
+
+
+
+
+	return nBCRCount;
+}
+
+bool SearchBCR()
+{
+	int i, j, m, nOverlap;
+	LPBYTE fm = g_fmGrab[g_ID];
+	int pitch = g_System.m_nPitch;
+	int width = g_System.m_nImageW;
+	int height = g_System.m_nImageH;
+
+	int nFrameNum = g_Temp.m_nGrabFrame;
+
+	CString strLog;
+	g_Temp.m_isBcrSuccessRead = false;
+	g_Temp.m_nBcrPatFind = 0;
+	// 결과 데이터는 전부 g_Temp 데이터에 저장됨.
+	GetBcrPosition(fm, 0, 0, width, height, pitch);
+	// 기존 코드
+
+
+	bool isBcrExsit = true;
+	CString strBcrMsg = _T("none");
+	CString strReadMsg = _T("");
+	CString strMsg;
+
+
+	if (g_Param.m_nBcrType == eCSV_TYPE_NITTO_RTS || g_Param.m_nBcrType == eCSV_TYPE_NITTO_RK)
+	{
+		if (g_Param.m_nBcrDotTh > 0 && g_Param.m_nBcrDotUpTh > 0)
+		{
+			if (g_Temp.m_BcrRectForMatch.Width() == 0 || g_Temp.m_BcrRectForMatch.Height() == 0)
+				isBcrExsit = false;
+		}
+	}
+
+	if (g_Param.m_nNotInspArea != width)
+	{
+		if (g_Temp.m_BcrRect.left < 0)		g_Temp.m_BcrRect.left = 0;
+		if (g_Temp.m_BcrRect.right < 0)		g_Temp.m_BcrRect.right = 0;
+		if (g_Temp.m_BcrRect.top < 0)		g_Temp.m_BcrRect.top = 0;
+		if (g_Temp.m_BcrRect.bottom < 0)	g_Temp.m_BcrRect.bottom = 0;
+		if (g_Temp.m_BcrRect.left > width)	g_Temp.m_BcrRect.left = width;
+		if (g_Temp.m_BcrRect.right > width)	g_Temp.m_BcrRect.right = width;
+		if (g_Temp.m_BcrRect.top > height)	g_Temp.m_BcrRect.top = height;
+		if (g_Temp.m_BcrRect.bottom > height) g_Temp.m_BcrRect.bottom = height;
+
+		CRect tmpRect = g_Temp.m_BcrRect;
+
+		if (isBcrExsit == true)
+		{
+			// BCR 검출 
+#ifdef ENA_CODE_READ
+			BYTE* pBcrImg = new BYTE[tmpRect.Width() * tmpRect.Height()];
+			for (i = tmpRect.top, j = 0; i < tmpRect.bottom; i++, j++)
+				memcpy(pBcrImg + j * tmpRect.Width(), fm + i * width + tmpRect.left, sizeof(BYTE) * tmpRect.Width());
+			std::string strRead = g_CodeReader.CodeRead(pBcrImg, tmpRect.Width(), tmpRect.Height(), false);
+			strReadMsg = strRead.c_str();
+			if (strReadMsg == _T("") || CheckValidCode(strReadMsg) == false)
+				strRead = g_CodeReader.CodeRead(pBcrImg, tmpRect.Width(), tmpRect.Height(), true);
+			strReadMsg = strRead.c_str();
+			if (strReadMsg == _T("") || CheckValidCode(strReadMsg) == false)
+			{
+				strReadMsg = _T("no_barcode");
+				g_Temp.m_isBcrSuccessRead = false;
+			}
+			else
+			{
+				g_Temp.m_BcrRectCodeRead = g_CodeReader.GetLastCodePosition();
+				// 이미지 상의 실제 좌표 위치로 이동
+				g_Temp.m_BcrRectCodeRead.OffsetRect(CPoint(tmpRect.left, tmpRect.top));
+				g_Temp.m_isBcrSuccessRead = true;
+			}
+
+			delete[] pBcrImg;
+#else
+			strReadMsg = _T("no_barcode");
+#endif
+		}
+		else
+		{
+			g_Temp.m_isBcrSuccessRead = false;
+		}
+
+		if (g_Temp.m_isBcrSuccessRead == true)
+		{
+			if (g_Temp.m_isBcrFirstCode == false)
+				g_Temp.m_isBcrFirstCode = true;
+
+			if (g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrSuccessRead == true)
+			{
+				CString strForcedBcr = g_Temp.m_strBcrForceData;
+				CString strTemp = strReadMsg;
+
+				if (strTemp.CompareNoCase(_T("")) == 0 || strTemp.CompareNoCase(_T("no_barcode")) == 0)
+				{
+					g_Temp.m_isBcrSuccessRead = false;
+					g_Temp.m_isBcrFirstCode = false;
+				}
+				else
+				{
+					g_Temp.m_isBcrForceReading = true;
+					g_Temp.m_dBCRForceREadingDist = 0.0;
+
+					if (strForcedBcr.CompareNoCase(strTemp) != 0)
+					{
+						g_Temp.m_strBcrForceData = strTemp;
+
+						// 강제 알람
+						l_Send_Server.SendCommand_LocalHost(NM_FORCE_BCR_NOT_MATCHED_ALRAM);
+						strLog.Format(_T("[FORCE_BCR] Matching Error BCR and OCR :%s,%s"), strForcedBcr, strTemp);
+						WriteLog(strLog);
+					}
+				}
+			}
+
+			if (g_Temp.m_isBcrSuccessRead == true)
+			{
+				strBcrMsg = _T("Read");
+				g_Temp.m_nBcrPatFind = 1;
+			}
+			else
+				g_Temp.m_nBcrPatFind = 0;
+		}
+		else
+			g_Temp.m_nBcrPatFind = 0;
+
+		if (strReadMsg == _T(""))
+			strReadMsg = _T("no_barcode");
+
+		int nMatchFrame = 0;
+		const int nPreFrm = g_Temp.m_nPreBcrInspFrame;
+
+		g_Temp.m_strBcrName = strReadMsg;
+
+		// 강제 입력 시 방향을 설정해준다. 
+		if (g_Temp.m_bBcrForceInsert == true)
+		{
+			if (g_Temp.m_bBcrForceDir == true) // 증가
+				g_Temp.m_nBcrDir = 1;
+			else
+				g_Temp.m_nBcrDir = 0;
+		}
+
+		int nRet = 0;
+		if (g_Temp.m_isBcrSuccessRead == false && g_Temp.m_nBcrDir != 0 && isBcrExsit == true &&
+			(g_Param.m_useBcrMatSize == true && g_Temp.m_BcrFineRect.Width() > 0))
+		{
+			// 실제 BCR Length 처리 추가해야함.
+			const double dBarcode_period_frame = (double)(1000, 0 / (g_Param.m_dBcrScaleFactorY * height));
+			/*if (m_bUseTestMode && !m_bSim_Mode || m_bUseTestMode && m_bSim_Mode)
+			{
+
+				nMatchFrame = m_nFnPeriod;
+			}
+			else*/
+			{
+				if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 1 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 1 + 1)))
+					nMatchFrame = 1;
+				else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 2 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 2 + 1)))
+					nMatchFrame = 2;
+				else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 3 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 3 + 1)))
+					nMatchFrame = 3;
+				else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 4 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 4 + 1)))
+					nMatchFrame = 4;
+				else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 5 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 5 + 1)))
+					nMatchFrame = 5;
+
+			}
+
+			CRect rectBCD;
+			rectBCD = g_Temp.m_BcrRectForMatch;
+			strBcrMsg.Format(_T("Matched"));
+			nRet = 1;
+
+
+			if (nRet > 0)
+			{
+				g_Temp.m_BcrRectMatched = rectBCD;
+				const int nLastBcrFrame = g_Temp.m_nPreBcrInspFrame;
+				const CString strLastBCNO = g_Temp.m_strPreBcrName;
+				int ntmp = 0;
+
+				if (g_Temp.m_bBcrForceInsert == true)
+				{
+					strMsg = g_Temp.m_strBcrForceData.Left(11);
+					ntmp = _ttoi(g_Temp.m_strBcrForceData.Right(6));
+				}
+				else
+				{
+					strMsg = g_Temp.m_strPreBcrName.Left(11);
+					ntmp = _ttoi(g_Temp.m_strPreBcrName.Right(6));
+				}
+
+				CString strNewBCNO;
+				if (g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == false)
+				{
+					if (g_Temp.m_nBcrDir == -1)  // 감소
+					{
+						int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
+						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nBcd);
+
+						strLog.Format(_T("[FORCE_BCR]강제 Calulated nBcd after forced BCR inserting : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / "),
+							nBcd, strNewBCNO, nFrameNum, g_Temp.m_nPreBcrInspFrame, dBarcode_period_frame);
+						WriteLog(strLog);
+					}
+					else // 증가
+					{
+						int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
+						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nBcd);
+
+						strLog.Format(_T("[FORCE_BCR]Calulated nBcd after forced BCR inserting : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / "),
+							nBcd, strNewBCNO, nFrameNum, g_Temp.m_nPreBcrInspFrame, dBarcode_period_frame);
+						WriteLog(strLog);
+					}
+				}
+				else
+				{
+					if (g_Temp.m_nBcrDir == -1)  // 감소
+						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nMatchFrame);
+					else // 증가
+						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nMatchFrame);
+				}
+
+				if (g_Temp.m_bBcrForceInsert == true)
+				{
+					if (strMsg.CompareNoCase(L"") == 0 ||
+						strMsg.CompareNoCase(L"no_barcode") == 0)
+					{
+						g_Temp.m_isBcrForceReading = false;
+						strNewBCNO = "";
+						CString str;
+						str.Format(L"[FORCE_BCR] Error is occured after pattern maching, because there is no measure or no_barcode signal :%s", strNewBCNO);
+						WriteLog(str);
+					}
+					else
+					{
+						g_Temp.m_isBcrForceReading = true;
+						g_Temp.m_dBCRForceREadingDist = 0.f;
+						g_Temp.m_strBcrForceData = strNewBCNO;
+						CString str;
+						str.Format(L"[FORCE_BCR]BCNO is setted by force command after pattern matching:%s", strNewBCNO);
+						WriteLog(str);
+					}
+				}
+
+				if (strNewBCNO.GetLength() > 0)
+				{
+					g_Temp.m_strBcrName = strNewBCNO;
+					g_Temp.m_isBcrSuccessRead = true;
+					g_Temp.m_nBcrPatFind = 2;
+				}
+				else
+				{
+					CString str;
+					str.Format(L"This message should not be logged %d,%d", nFrameNum, g_Temp.m_nPreBcrInspFrame);
+					WriteLog(str);
+				}
+			}
+		}
+
+		if (g_Temp.m_isBcrSuccessRead == true)
+		{
+			g_Temp.m_nPreBcrInspFrame = nFrameNum;
+			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;
+
+			g_Temp.m_nBcrReadOK++;
+		}
+
+		if (g_Temp.m_isBcrFirstCode == true ||
+			(g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == true) ||
+			(g_Temp.m_nBcrDir != 0))
+		{
+			// 전공정 결점 데이터 검색해야함
+		}
+
+		if (g_Param.m_nBcrType == eCSV_TYPE_KOTECH || g_Param.m_nBcrType == eCSV_TYPE_KORENO || g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK)
+		{
+			// 10미터 마다 불량 데이터 전송?????
+			// 구현 확인 해야함.
+		}
+
+		if (g_Param.m_nBcrType == eCSV_TYPE_NITTO_RK || g_Param.m_nBcrType == eCSV_TYPE_NITTO_RTS ||
+			g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK || g_Param.m_nBcrType == eCSV_TYPE_KORENO_RK_IJP)
+		{
+			if (g_Temp.m_isBcrSuccessRead == true)
+			{
+				g_Temp.m_nBcrNoReadWarning = 0;
+				g_Temp.m_nBcrNoReadError = 0;
+
+			}
+			else
+			{
+				double calcFrameLeng = 0;
+				// 미터로 계산
+				calcFrameLeng = (g_Param.m_dBcrScaleFactorY * height) / 1000.0;
+				g_Temp.m_nBcrNoReadWarning += calcFrameLeng;
+				g_Temp.m_nBcrNoReadError += calcFrameLeng;
+
+				if (g_Temp.m_isBcrFirstCode == true)
+				{
+					strLog.Format(_T("ERROR Meter : %.3fM, Warning Meter : %.3fM"),
+						g_Temp.m_nBcrNoReadWarning, g_Temp.m_nBcrNoReadError);
+					WriteLog(strLog);
+				}
+
+				if (g_Temp.m_isBcrFirstCode == true && g_Temp.m_strBcrName.GetLength() > 9)
+				{
+					if ((int)g_Temp.m_nBcrNoReadError > g_Param.m_nBCRErrorM)
+					{
+						g_Temp.m_nBcrNoReadError = 0;
+						l_Send_Server.SendCommand_LocalHost(NM_BCR_BCD_READING_ERROR);
+						strLog.Format(_T("[Error] No Bcr Read Length: %.3fM [Error Std Meter:%d]"), g_Temp.m_nBcrNoReadError, g_Param.m_nBCRErrorM);
+						WriteLog(strLog);
+					}
+					else if ((int)g_Temp.m_nBcrNoReadWarning > g_Param.m_nBCRWarningM)
+					{
+						g_Temp.m_nBcrNoReadWarning = 0;
+						l_Send_Server.SendCommand_LocalHost(NM_BCR_BCD_READING_LOW);
+						strLog.Format(_T("[Warning] No Bcr Read Length: %.3fM [Warning Std Meter:%d]"), g_Temp.m_nBcrNoReadError, g_Param.m_nBCRWarningM);
+						WriteLog(strLog);
+					}
+				}
+
+				// BCR 인식률 전송
+				if (g_Temp.m_nInspectFrame > 0 && g_Temp.m_nInspectFrame%100==0)
+				{
+					double dReadingRate;
+
+					dReadingRate = (int)((double)g_Temp.m_nBcrReadOK * 100.0 / (g_Temp.m_nInspectFrame * g_Param.m_dFrameLen * 0.001));
+
+					CPacket* packet = new CPacket;
+					packet->MakeReturnPacket(NM_BCR_BCD_READING_RATE, 1);
+					l_Send_Server.SendInsData(packet);
+					delete packet;
+					strLog.Format(_T("[INFO] Barcode Reading Rate: %d"), (int)dReadingRate);
+					WriteLog(strLog);
+				}
+				
+			}
+		}
+	}
+
+	if (strBcrMsg != L"none")
+	{
+		if (g_Temp.m_isBcrSuccessRead == true)
+		{
+			int nOrder = CheckBcrOrder(g_Temp.m_strBcrName, g_Temp.m_strPreBcrName);
+			if (nOrder > 0)
+			{
+				for (i = 0; i < nOrder; i++)
+					WriteBarcodeInfo(g_Temp.m_strPreBcrName, _T("none"), 10, 0);
+				nOrder = 0;
+			}
+			WriteBarcodeInfo(g_Temp.m_strPreBcrName, strBcrMsg, g_Temp.m_nBcrPatFind, g_Temp.m_nInspectFrame);
+		}
+	}
+
+	if (g_Param.m_bBcrSaveImage==true && g_Temp.m_isBcrSuccessRead==true)
 	{
 		/*CNeImage image;
 		if (image.Create(rectBcd.Width(), rectBcd.Height(), 8))
@@ -348,18 +479,7 @@ void WEB_Barcode()
 		}*/
 	}
 
-}
-
-//최대 10개이나 현실적으로 3개만, 상, 하 붙은것은 제외.
-//바코드 찾을때 필요한 파라미터 알려줘요
-int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, int* pY, TCHAR sBcr[][30])
-{
-	int nBCRCount = 0;
-
-
-
-
-	return nBCRCount;
+	return g_Temp.m_isBcrSuccessRead;
 }
 
 
@@ -448,7 +568,7 @@ CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	tmpRect.right = g_Temp.m_BcrRect.right;
 	tmpRect.InflateRect(0, 0, 0, 0);
 
-	if (g_Param.m_bBCRSaveImage == true)
+	if (g_Param.m_bBcrSaveImage == true)
 	{
 		g_Temp.m_BcrSavingRect.SetRect(0, 0, 256, 256);
 
@@ -1102,3 +1222,48 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	g_Temp.m_BcrRect.NormalizeRect();
 }
 
+BOOL CheckValidCode(CString str)
+{
+	BOOL bRet = TRUE;
+	int legnth = 0;
+
+	legnth = str.GetLength();
+	
+	if (legnth != BCR_CODE_LENGTH)
+		return (FALSE);
+
+	for (int i = 0; i < legnth; i++)
+	{
+		TCHAR t = str.GetAt(i);
+		if (!IsCharAlphaNumeric(t) && t != '_' && t != '-')
+			bRet = FALSE;
+	}
+	return (bRet);
+}
+
+int CheckBcrOrder(CString NewBarcode, CString LastBarcode)
+{
+
+	int NewBarcodePos;
+	int LastBarcodePos;
+	int nRst = 0;
+	NewBarcodePos = _ttoi(NewBarcode.Right(6));
+
+	LastBarcodePos = _ttoi(LastBarcode.Right(6));
+	if (NewBarcodePos == 0 || LastBarcodePos == 0)
+	{
+		nRst = 0;
+		return nRst;
+	}
+	if (NewBarcodePos > LastBarcodePos)
+	{
+		nRst = NewBarcodePos - LastBarcodePos;
+	}
+	else
+	{
+		nRst = LastBarcodePos - NewBarcodePos;
+	}
+
+	return nRst;
+
+}

@@ -18,7 +18,7 @@ int GetClientOptic(CString sComName);	//OPTIC 읽는 함수
 void Delete_All_in_Folder(CString path);
 
 void CopyLotData2ServerbyFTP(CString sLotName);						//한 LOT끝난 .txt를 서버 특정 폴더로 복사하도록 틀정파일을 만듦(FTP가 알아서 복사)
-	void DeleteFolderFile(CString sDeleteFolder, int nEraseDay);
+void DeleteFolderFile(CString sDeleteFolder, int nEraseDay);
 
 
 BOOL LoadBMP(LPCTSTR lpszFileName, LPBYTE fmImage, int width, int height); //NG 이미지 Load하는 함수

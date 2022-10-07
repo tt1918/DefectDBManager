@@ -9,6 +9,8 @@ using OpenCvSharp;
 using CodeReaderDLL.MatroxLib;
 using CodeReaderDLL.CognexLib;
 using System.Threading;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace CodeReaderDLL
 {
@@ -19,13 +21,14 @@ namespace CodeReaderDLL
         bool Initialize(bool isMIL, int sizeX, int sizeY, string path);
         bool Terminate();
         string CodeRead(IntPtr img, int width, int height, bool usePreprocess);
+        IntPtr GetCodePosition();
     }
 
     [Guid("ED558B56-012F-494D-AA98-588D0775327A")]
     public class CodeReader : ICallCodeReader
     {
         private bool isMil = false;
-        private MilCodeReader milCodeReader = null;
+        private MilCodeReader milCodeReader = null; // dot spacing 0
         private CognexCodeReader cognexCodeReader = null;
 
         public string CodeRead(IntPtr img, int width, int height, bool usePreprocess)
@@ -62,12 +65,28 @@ namespace CodeReaderDLL
             return strReturn;
         }
 
+        public IntPtr GetCodePosition()
+        {
+            if (isMil)
+            {
+                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(milCodeReader.LastCodeRect));
+                Marshal.StructureToPtr(milCodeReader.LastCodeRect, ptr, false);
+                return ptr;
+            }
+            else
+            {
+                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(cognexCodeReader.LastCodeRect));
+                Marshal.StructureToPtr(cognexCodeReader.LastCodeRect, ptr, false);
+                return ptr;
+            }
+        }
+
         public bool Initialize(bool isMIL, int sizeX, int sizeY, string path)
         {
             isMil = isMIL;
             if (isMil) // MIL Code Reader 사용
             {
-                milCodeReader = new MilCodeReader(sizeX, sizeY);
+                milCodeReader = new MilCodeReader(sizeX, sizeY, path, 0);
                 if (milCodeReader.InitComplete)
                     return true;
                 else

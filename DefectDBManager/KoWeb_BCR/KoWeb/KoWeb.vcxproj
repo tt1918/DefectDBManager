@@ -116,12 +116,16 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -169,6 +173,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\OpenCV\Include\opencv</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +181,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>mil.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -207,6 +214,7 @@
     <ClInclude Include="BaslerCam.h" />
     <ClInclude Include="BCR\CallClassReadingEvents.h" />
     <ClInclude Include="BCR\CallClassWrapper.h" />
+    <ClInclude Include="BCR\CallClassWrapperCodeReader.h" />
     <ClInclude Include="BCR\MarkingDataManager.h" />
     <ClInclude Include="BlobSet.h" />
     <ClInclude Include="BondingSheet.h" />
@@ -305,6 +313,7 @@
     <ClCompile Include="BaslerCam.cpp" />
     <ClCompile Include="BCR\CallClassReadingEvents.cpp" />
     <ClCompile Include="BCR\CallClassWrapper.cpp" />
+    <ClCompile Include="BCR\CallClassWrapperCodeReader.cpp" />
     <ClCompile Include="BCR\MarkingDataManager.cpp" />
     <ClCompile Include="BlobSet.cpp" />
     <ClCompile Include="BondingSheet.cpp" />

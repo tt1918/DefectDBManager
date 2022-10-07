@@ -42,8 +42,12 @@
 
 //#define NANJING_OLED					//남경 OLED이면 사용함.(COS9)
 //#define MARKING_VISION				//이 클라이언트를 마킹비전 클라이언트로 사용할때 살린다. (MAK-101, MAK-102) 
-//#define BARCODE_VISION				//Barcode사용하면 살린다. (BCR-101, BCR-102)	
+#define BARCODE_VISION				//Barcode사용하면 살린다. (BCR-101, BCR-102)	, BCR 클라이언트 선언
 
+#ifdef BARCODE_VISION
+#import "BCR/DefectDBManager.tlb" no_namespace, named_guids
+#define ENA_CODE_READ				// 바코드 라이브러리 활성화
+#endif
 
 //#define SERVER_TEST				    //3동정밀코팅에서 SERVER TEST 시에만 사용한다. (100.0.0.244)에 보냄
 //#define USE_DECODING_RESET			//Decoding에서 Reset관련 신호가 오면 현재 검사파일을 지운다.& 스크라치 검사 Upper Cut값을 올림  [3동정밀라미 에서만 사용함]
@@ -96,8 +100,6 @@
 //#define SHOW_DEBUG_DATA				//디버그용 데이타를 표시 (검사시간 표시)			[사용안함]
 //#define NO_GRABER_SYNC_FRAME_FROM_SERVER	//테스트용으로 Server로부터 동기신호받아 검사	[사용안함]
 //---------------------------------------------------------------------------------------
-
-#define BARCODE_VISION			// BCR 클라이언트 선언
 
 #define LONG_SCRATCH_EMPHASIZE			//남경에서 사용함
 					 
@@ -372,7 +374,6 @@
 //
 ///////////////////////////////////////////////////////////////
 
-#import "BCR/DefectDBManager.tlb" no_namespace, named_guids
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -1083,3 +1083,72 @@ void WriteDebugLog(bool bMakeFile, CString str)
 	}
 }
 
+#ifdef BARCODE_VISION
+// Defect Data는 추수 수정해야함.. 완료 안되었음....
+void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe)
+{
+	CTime ttime = CTime::GetCurrentTime();
+	CString kk = ttime.Format("%Y_%m_%d");//ttime.Format("%H_%M_%S");
+	CString strTime = ttime.Format("[%Y %m %d]");
+	CStdioFile   file;
+	CString filename;
+	CString strpath;
+	CString str;
+	CString strHeader;
+	strHeader.Format(_T("\t검사시간\tFrame\tYposistion(mm)\t---Barcode No---\t처리\t--너비--\t--높이--"));
+	SYSTEMTIME st;
+	CString strTimeS;
+	//GetSystemTime(&st);
+	GetLocalTime(&st);
+	strTimeS.Format(_T("[%02d:%02d:%02d]"), st.wHour, st.wMinute, st.wSecond);
+
+	//	strpath.Format("C:\\NEXTEYE\\Log\\%s\\%s\\",kk,pDoc->m_str_lotFull);
+	strpath.Format(_T("%s%s\\"), LOT_PATH, g_Temp.m_slotName);
+	if (GetFileAttributes(strpath) == -1)
+	{
+		CreateDirectory(strpath, NULL);
+	}
+
+	filename.Format(_T("%s%s_BcdDetailInfo_%s.txt"), strpath, g_Temp.m_sMyComName, strMsg.Left(11));
+	CRect bcrRect;
+
+	if (nRst == 1)
+	{
+		bcrRect = g_Temp.m_BcrRectCodeRead;
+		str.Format(_T("%s%s\t%d\t%f\t%s\t%s\tWidth:%d\tHeight:%d"), strTime, strTimeS, nframe, g_Defect.m_Defect[0].y_pos, strMsg, strIdx, bcrRect.Width(), bcrRect.Height());
+	}
+	else if (nRst == 2)
+	{
+		bcrRect = g_Temp.m_BcrFineRect;
+		str.Format(_T("%s%s\t%d\t%f\t%s\t%s\tWidth:%d\tHeight:%d"), strTime, strTimeS, nframe, g_Defect.m_Defect[0].y_pos, strMsg, strIdx, bcrRect.Width(), bcrRect.Height());
+	}
+	else if (nRst == 10)
+	{
+		str.Format(_T("Missing Barcode"));
+	}
+	else
+	{
+		bcrRect = g_Temp.m_BcrFineRect;
+		str.Format(_T("%s%s\t%d\t%f\t%s\t%s\tWidth:%d\tHeight:%d"), strTime, strTimeS, nframe, g_Defect.m_Defect[0].y_pos, strMsg, strIdx, bcrRect.Width(), bcrRect.Height());
+	}
+
+	if (!file.Open(filename, CFile::modeReadWrite | CFile::typeText))
+	{
+		if (file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::typeText))
+		{
+			file.WriteString(strHeader);
+			file.SeekToEnd();
+			file.WriteString(_T("\n"));
+			file.WriteString(str);
+			file.Close();
+		}
+	}
+	else
+	{
+		file.SeekToEnd();
+		file.WriteString(_T("\n"));
+		file.WriteString(str);
+		file.Close();
+	}
+}
+#endif

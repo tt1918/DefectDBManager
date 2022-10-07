@@ -71,7 +71,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Cognex\VisionPro\ReferencedAssemblies\Cognex.VisionPro.ToolGroup.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="Matrox.MatroxImagingLibrary.v3.5">
+    <Reference Include="Matrox.MatroxImagingLibrary.v3.5, Version=10.0.2564.2, Culture=neutral, PublicKeyToken=5a83d419d44a9d98, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>MatroxLib\Matrox.MatroxImagingLibrary.v3.5.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">

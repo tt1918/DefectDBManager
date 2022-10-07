@@ -429,6 +429,9 @@
     <ClInclude Include="BCR\MarkingDataManager.h">
       <Filter>BCR</Filter>
     </ClInclude>
+    <ClInclude Include="BCR\CallClassWrapperCodeReader.h">
+      <Filter>BCR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -747,6 +750,9 @@
       <Filter>BCR</Filter>
     </ClCompile>
     <ClCompile Include="BCR\MarkingDataManager.cpp">
+      <Filter>BCR</Filter>
+    </ClCompile>
+    <ClCompile Include="BCR\CallClassWrapperCodeReader.cpp">
       <Filter>BCR</Filter>
     </ClCompile>
   </ItemGroup>

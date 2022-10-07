@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "StdAfx.h"
 #include "CallClassWrapperCodeReader.h"
 
 #import "CodeReaderDLL.tlb" no_namespace named_guids
@@ -33,12 +33,20 @@ bool CallClassWrapperCodeReader::Terminate()
 	return false;
 }
 
-std::string CallClassWrapperCodeReader::CodeRead(cv::Mat img, int width, int height, bool usePreprocess)
+std::string CallClassWrapperCodeReader::CodeRead(unsigned char* img, int width, int height, bool usePreprocess)
 {
-	__int64 addr = reinterpret_cast<__int64>(img.data);
-	bstr_t code = m_pCallCodeReader->CodeRead(addr, img.cols, img.rows, usePreprocess);
+	__int64 addr = reinterpret_cast<__int64>(img);
+	bstr_t code = m_pCallCodeReader->CodeRead(addr, width, height, usePreprocess);
 	std::string strCode(code, SysStringByteLen(code));
 	SysFreeString(code);
 
 	return strCode;
+}
+
+CRect CallClassWrapperCodeReader::GetLastCodePosition()
+{
+	CRect rt =  (CRect*)m_pCallCodeReader->GetCodePosition();
+	// º¯È¯ - > c# rectangle left, top, width, height 
+	CRect ret(rt.left, rt.top, rt.left + rt.right, rt.top + rt.bottom);
+	return ret;
 }

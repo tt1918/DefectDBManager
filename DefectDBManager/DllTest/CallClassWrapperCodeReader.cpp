@@ -42,3 +42,11 @@ std::string CallClassWrapperCodeReader::CodeRead(cv::Mat img, int width, int hei
 
 	return strCode;
 }
+
+CRect CallClassWrapperCodeReader::GetLastCodePosition()
+{
+	CRect rt =  (CRect*)m_pCallCodeReader->GetCodePosition();
+	// º¯È¯ - > c# rectangle left, top, width, height 
+	CRect ret(rt.left, rt.top, rt.left + rt.right, rt.top + rt.bottom);
+	return ret;
+}

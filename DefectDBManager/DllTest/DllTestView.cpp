@@ -171,7 +171,7 @@ void CDllTestView::OnBnClickedButton4()
 
 		start = clock();
 		// 		std::string code = call->CodeRead(mat, mat.cols, mat.rows);
-		std::string szCode[2];
+		std::string szCode[2] = {"", ""};
 		std::thread t1(std::bind(&CDllTestView::CodeRead, this, mat, &szCode[0], false));
 		std::thread t2(std::bind(&CDllTestView::CodeRead, this, mat, &szCode[1], true));
 
@@ -180,10 +180,24 @@ void CDllTestView::OnBnClickedButton4()
 
 		end = clock();
 
-		mat.release();
 		CString str, str2(szCode[0].c_str()), str3(szCode[1].c_str());
 		str.Format(_T("%.3f 1: %s 2 : %s"), (double)(end - start), str2, str3);
 		AfxMessageBox(str);
+
+		CRect rect = m_CodeReader->GetLastCodePosition();
+
+		cv::Mat cImg;
+		cv::cvtColor(mat, cImg, cv::COLOR_GRAY2BGR);
+		cv::rectangle(cImg, cv::Rect(rect.left, rect.top, rect.Width(), rect.Height()), cv::Scalar(255, 0, 0), 1, 8, 0);
+		cv::putText(cImg, szCode[0].c_str(), cv::Point(rect.left, rect.top), 2, 0.5, cv::Scalar(255,0,0));
+		cv::putText(cImg, szCode[1].c_str(), cv::Point(rect.left, rect.bottom+10), 2, 0.5, cv::Scalar(255, 0, 0));
+
+		cv::namedWindow("output", cv::WINDOW_NORMAL);
+		cv::imshow("output", cImg);
+		cv::waitKey(0);
+
+		mat.release();
+		cImg.release();
 	}
 #endif
 

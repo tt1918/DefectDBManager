@@ -13,6 +13,8 @@
 #include "KoWebView.h"
 #include "math.h"
 
+#include "BCR/CallClassWrapperCodeReader.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -129,6 +131,10 @@ CKoWebView::CKoWebView()
 
 	m_DefectCallClass = nullptr;
 	m_DefectReadingEvent = nullptr;
+
+#ifdef ENA_CODE_READ
+	g_CodeReader.Initialize(false, 0, 0, COG_VPP_FILE);
+#endif
 }
 
 CKoWebView::~CKoWebView()
@@ -169,6 +175,10 @@ CKoWebView::~CKoWebView()
 	 if(m_pUserSet)		delete m_pUserSet;
 	 if(m_pModel)       delete m_pModel;
 	//------------------------------------------------------	 
+
+#ifdef ENA_CODE_READ
+	 g_CodeReader.Terminate();
+#endif
 
 	 WriteLog(_T("Program Closed By User"));
 }
@@ -984,6 +994,21 @@ void CKoWebView::ResetTempData()   //OnButtonFrameReset
 	}
 	//--------------------------------------------------------
 
+#ifdef BARCODE_VISION
+	g_Temp.m_nBcrReadOK = 0;
+	g_Temp.m_nBcrNoReadWarning = 0;
+	g_Temp.m_nBcrNoReadError = 0;
+	g_Temp.m_isBcrFirstCode = false;
+	g_Temp.m_strBcrName = g_Temp.m_strPreBcrName = _T("");
+	g_Temp.m_nPreBcrInspFrame = -1;
+
+	g_Temp.m_nBcrFirstRead = -1;
+	g_Temp.m_nBcrPreEdge = 0;
+	g_Temp.m_dBcrRealPos = 0.0;
+
+	g_Temp.m_isBcrForceReading = false;
+	g_Temp.m_dBCRForceREadingDist = 0;
+#endif
 
 	SetSpreadCount();
 

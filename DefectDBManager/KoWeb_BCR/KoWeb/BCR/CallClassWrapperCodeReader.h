@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
-#include "opencv2/imgproc.hpp"
-#include "opencv2/highgui.hpp"
-
+#include <atltypes.h>
 struct ICallCodeReader;
 
 class CallClassWrapperCodeReader
@@ -36,6 +34,9 @@ public:
 	 * @param int height 바코드 이미지 Y
 	 * @return 읽은 바코드 문자 없는 경우 string.empty
 	 */
-	std::string CodeRead(cv::Mat img, int width, int height, bool usePreprocess);
+	std::string CodeRead(unsigned char* img, int width, int height, bool usePreprocess);
+
+	CRect GetLastCodePosition();
 };
 
+extern CallClassWrapperCodeReader g_CodeReader;

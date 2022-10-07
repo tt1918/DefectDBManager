@@ -25,11 +25,14 @@ namespace CodeReaderDLL.CognexLib
         private CogToolGroup toolGroup = null;
         private CogIPOneImageTool imageTool = null;
         private ICogImage cogImage = null;
+        private Rectangle lastCodeRect = new Rectangle();
         
         public bool InitComplete { get; private set; } = false;
         public string LastErrorMessage { get; private set; } = string.Empty;
         public string ReadMatrixCode { get; private set; } = string.Empty;
         public string CodeReadElapsedTime { get; private set; } = string.Empty;
+        public Rectangle LastCodeRect { get { return lastCodeRect; } }
+
         public CognexCodeReader(string vppFilePath)
         {
             idTool = new CogIDTool();
@@ -129,7 +132,24 @@ namespace CodeReaderDLL.CognexLib
                 }
 
                 LastErrorMessage = String.Empty;
+                // 읽은 바코드
                 ReadMatrixCode = rd.DecodedString;
+                // 읽은 바코드 위치
+                CogPolygon cogPolygon = idTool.Results[0].BoundsPolygon.ConvexHull();
+                int sizeV = cogPolygon.VertexCapacity;
+                double minX = double.MaxValue, maxX = double.MinValue, minY = double.MaxValue, maxY = double.MinValue;
+
+                for (int i = 0; i < sizeV; i++)
+                {
+                    cogPolygon.GetVertex(i, out double posX, out double posY);
+                    if (minX > posX) minX = posX;
+                    if (minY > posY) minY = posY;
+                    if (maxX < posX) maxX = posX;
+                    if (maxY < posY) maxY = posY;
+                }
+
+                lastCodeRect = new System.Drawing.Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+
                 sw.Stop();
                 CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
 

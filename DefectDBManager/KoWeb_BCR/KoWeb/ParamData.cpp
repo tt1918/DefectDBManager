@@ -1141,6 +1141,10 @@ void ApplyParameter()
 	g_Param.m_dScaleFactorX	=g_ParamVer.system[4];	//Scale Factor X	
 	g_Param.m_dScaleFactorY =g_ParamVer.system[5];  //Scale Factor Y
 
+#ifdef BARCODE_VISION
+	g_Param.m_dBcrScaleFactorY = g_Param.m_dScaleFactorY;
+#endif
+
 	if(g_Param.m_nExposure>g_System.m_nMaxExposure)		 g_Param.m_nExposure=g_System.m_nMaxExposure;
 	else if(g_Param.m_nExposure<g_System.m_nMinExposure) g_Param.m_nExposure=g_System.m_nMinExposure;
 

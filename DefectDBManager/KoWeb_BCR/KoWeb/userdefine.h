@@ -53,6 +53,7 @@
 	#define LINEOFFSET_PATH3			_T("C:\\COSS\\LineOffset3.ini")
 	#define DCF_FILE					_T("C:\\COSS\\CossCam.dcf")
 	#define EURESYS_FILE				_T("C:\\COSS\\config.es")		//유레시스 grabber 설정파일
+	#define COG_VPP_FILE				_T("C:\\COSS\\codeRead.vpp")
 
 #endif
 
