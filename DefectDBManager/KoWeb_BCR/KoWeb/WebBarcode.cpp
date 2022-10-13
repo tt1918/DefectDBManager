@@ -480,6 +480,7 @@ bool SearchBCR(LPVOID pParent)
 		{
 			sNGImageFullName.Format(_T("%s%s\\%s\\%s"), NG_IMAGE_PATH, g_Temp.m_slotName, g_Temp.m_sMyComName, sNGImageName);
 			InputNGImage(g_Defect.m_pImage[0], sNGImageFullName);
+			strcpy_s(g_Temp.m_cBcrFileName, sNGImageFullName.GetLength(), CW2A(sNGImageFullName));
 		}
 #endif
 	}
@@ -1457,55 +1458,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			g_Defect.m_nBcrCount = 1;
 		}
 		
-		//if (((CVisWebApp*)AfxGetApp())->m_DestConfig.GetAREADEL())
-		//{
-		//	double y_stt, y_end;
-		//	//에어리어마킹
-		//	for (int i = 0; i < m_nAreadelCnt; i++)
-		//	{
-		//		if ((m_STR_MD_AREADEL[i] <= dCurFramePos && dNextFramePos < m_END_MD_AREADEL[i]) ||
-		//			(m_END_MD_AREADEL[i] <= dCurFramePos && dNextFramePos < m_STR_MD_AREADEL[i]) ||
-		//			(dCurFramePos <= m_STR_MD_AREADEL[i] && m_STR_MD_AREADEL[i] < dNextFramePos) ||
-		//			(dCurFramePos <= m_END_MD_AREADEL[i] && m_END_MD_AREADEL[i] < dNextFramePos))
-		//		{
-		//			//현재위치에 AreaDel마킹영역이 존재시
-		//			if (pDoc->m_data.m_nOddEven == 1)
-		//			{
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_stt =
-		//					m_STR_WD_AREADEL[i] + pDoc->m_data.m_nEdgePoint * pDoc->m_data.m_dScaleFactorX + pDoc->m_data.m_dCalibSttX;
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_end =
-		//					m_END_WD_AREADEL[i] + pDoc->m_data.m_nEdgePoint * pDoc->m_data.m_dScaleFactorX + pDoc->m_data.m_dCalibSttX;
-		//			}
-		//			else if (pDoc->m_data.m_nOddEven == 0)
-		//			{
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_stt =
-		//					pDoc->m_data.m_nEdgePoint * pDoc->m_data.m_dScaleFactorX + pDoc->m_data.m_dCalibSttX - m_END_WD_AREADEL[i];
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_end =
-		//					pDoc->m_data.m_nEdgePoint * pDoc->m_data.m_dScaleFactorX + pDoc->m_data.m_dCalibSttX - m_STR_WD_AREADEL[i];
-		//			}
-		//			if (m_nBarDirection == 1)	//증가
-		//			{
-		//				y_stt = max(dCurFramePos, m_STR_MD_AREADEL[i]);
-		//				y_end = min(dNextFramePos, m_END_MD_AREADEL[i]);
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_stt = y_stt - dCurFramePos;	//1frame 기준으로 변환
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_end = y_end - dCurFramePos;	//1frame 기준으로 변환
-		//			}
-		//			else	//감소
-		//			{
-		//				y_stt = min(dCurFramePos, m_END_MD_AREADEL[i]);
-		//				y_end = max(dNextFramePos, m_STR_MD_AREADEL[i]);
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_stt = dCurFramePos - y_stt;	//1frame 기준으로 변환
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_end = dCurFramePos - y_end;	//1frame 기준으로 변환
-		//			}
-
-		//			str.Format("Areadel Mark Pos, %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f", m_STR_WD_AREADEL[i], m_END_WD_AREADEL[i], y_stt, y_end,
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_stt, pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].x_end,
-		//				pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_stt, pDoc->m_data.m_AreaDelDefect[pDoc->m_data.m_nAreadelDefects].y_end);
-		//			logData.WriteLog(str);
-
-		//			pDoc->m_data.m_nAreadelDefects++;
-		//		}
-		//	}
-		//}
+		// 이전 위치 데이터 업데이트
+		g_Temp.m_dBcrPreFramePos = dCurFramePos;
 	}
 }
