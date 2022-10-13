@@ -34,6 +34,7 @@ void CShowInfo1::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_SHOW_AREA, m_bShowCandiArea);
 	DDX_Check(pDX, IDC_CHECK_SHOW_ALLCANDI, m_bShowAllCandi);
 	DDX_Check(pDX, IDC_CHECK_SHOW_VALIDCANDI, m_bShowValidCandi);
+	DDX_Check(pDX, IDC_CHECK_BCR_MARK, m_bBcrMark);
 	DDX_Text(pDX, IDC_EDIT_NOTINSPECT_AREA, m_nNotInspectArea);
 	DDX_Text(pDX, IDC_EDIT_EDGE_OFFSET, m_nEdgeOffset);
 	DDX_Control(pDX, IDC_BUTTON_SETEXPOSURE, m_btData1);
@@ -45,14 +46,15 @@ void CShowInfo1::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CShowInfo1, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_SETEXPOSURE, &CShowInfo1::OnBnClickedButtonSetexposure)
 	ON_WM_PAINT()
+	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDCANCEL, &CCossImage::OnBnClickedCancel)
 	ON_BN_CLICKED(IDC_CHECK_SHOW_FLAT, &CShowInfo1::OnBnClickedCheckShowFlat)
-	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_CHECK_SHOW_AREA, &CShowInfo1::OnBnClickedCheckShowArea)
 	ON_BN_CLICKED(IDC_CHECK_SHOW_ALLCANDI, &CShowInfo1::OnBnClickedCheckShowAllcandi)
 	ON_BN_CLICKED(IDC_CHECK_SHOW_VALIDCANDI, &CShowInfo1::OnBnClickedCheckShowValidcandi)
 	ON_BN_CLICKED(IDC_BUTTON_SETEXPOSURE2, &CShowInfo1::OnBnClickedButtonSetexposure2)
 	ON_BN_CLICKED(IDC_BUTTON_SETEXPOSURE3, &CShowInfo1::OnBnClickedButtonSetexposure3)
+	ON_BN_CLICKED(IDC_CHECK_BCR_MARK, &CShowInfo1::OnBnClickedCheckBcrMark)
 END_MESSAGE_MAP()
 
 
@@ -104,13 +106,18 @@ BOOL CShowInfo1::OnInitDialog()
 	m_nNotInspectArea	=g_Param.m_nNotInspArea;
 	m_nEdgeOffset		=g_Param.m_nEdgeOffset;
 
+#ifdef BARCODE_VISION
+	g_Param.m_bBcrMark=m_bBcrMark = true;
+#endif
+
 	UpdateData(false);
 
 //OnCtlColor ----------------------------------------------------------------
 	::SetWindowTheme(GetDlgItem(IDC_CHECK_SHOW_FLAT)			->GetSafeHwnd(), L"", L""); 
 	::SetWindowTheme(GetDlgItem(IDC_CHECK_SHOW_AREA)			->GetSafeHwnd(), L"", L""); 
 	::SetWindowTheme(GetDlgItem(IDC_CHECK_SHOW_ALLCANDI)		->GetSafeHwnd(), L"", L""); 
-	::SetWindowTheme(GetDlgItem(IDC_CHECK_SHOW_VALIDCANDI)		->GetSafeHwnd(), L"", L""); 
+	::SetWindowTheme(GetDlgItem(IDC_CHECK_SHOW_VALIDCANDI)		->GetSafeHwnd(), L"", L"");
+	::SetWindowTheme(GetDlgItem(IDC_CHECK_BCR_MARK)				->GetSafeHwnd(), L"", L"");
 //	::SetWindowTheme(GetDlgItem(IDC_EDIT_EXPOSURE)		->GetSafeHwnd(), L"", L""); 
 
 
@@ -123,6 +130,14 @@ BOOL CShowInfo1::OnInitDialog()
 	GetDlgItem(IDC_CHECK_SHOW_AREA)			->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CHECK_SHOW_ALLCANDI)		->ShowWindow(SW_HIDE);
 	GetDlgItem(IDC_CHECK_SHOW_VALIDCANDI)	->ShowWindow(SW_HIDE);
+#endif
+
+#ifdef BARCODE_VISION
+	GetDlgItem(IDC_CHECK_SHOW_AREA)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_SHOW_ALLCANDI)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_CHECK_SHOW_VALIDCANDI)-> ShowWindow(SW_HIDE);
+#else
+	GetDlgItem(IDC_CHECK_BCR_MARK)->ShowWindow(SW_HIDE);
 #endif
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -310,6 +325,12 @@ void CShowInfo1::OnBnClickedCheckShowValidcandi()
 	}
 }
 
+void CShowInfo1::OnBnClickedCheckBcrMark()
+{
+	m_bBcrMark = 1 - m_bBcrMark;
+	g_Param.m_bBcrMark = (bool)m_bBcrMark;
+}
+
 
 HBRUSH CShowInfo1::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
@@ -324,6 +345,7 @@ HBRUSH CShowInfo1::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		case IDC_CHECK_SHOW_AREA:
 		case IDC_CHECK_SHOW_ALLCANDI:
 		case IDC_CHECK_SHOW_VALIDCANDI:	
+		case IDC_CHECK_BCR_MARK:
 
 			pDC->SetTextColor(RGB(255,255,255));
 			pDC->SetBkMode(TRANSPARENT);
@@ -422,3 +444,4 @@ BOOL CShowInfo1::PreTranslateMessage(MSG* pMsg)
 	}
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
+

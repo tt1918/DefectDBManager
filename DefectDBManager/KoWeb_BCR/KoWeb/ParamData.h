@@ -422,7 +422,12 @@ typedef struct PARAMETERDATA_
 	int		m_nBCRWarningM;
 	int		m_nBCRErrorM;
 
-	int		m_nBcrType;
+	int		m_nBcrCsvType;
+	int		m_nMarkingDefectMarking;
+
+	// Bcr 위치에 마킹 여부 설정
+	bool	m_bBcrMark;
+	int		m_nBcrOddEven;
 	// BCR - E
 	////////////////////////////////////////////////////////////////
 

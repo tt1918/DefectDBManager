@@ -243,6 +243,8 @@ namespace DefectDBManager
 
         public NittoDBProgress DB_Progress { get; private set; }
 
+        public string SearchLotName { get; set; }
+
         // 상위 객체
         private object owner;
 
@@ -388,7 +390,7 @@ namespace DefectDBManager
             lotID = lotID.ToUpper();
 
             eCSV_TYPE type = DbDestConfig.CSVType;
-            if(type == eCSV_TYPE.KOTECH || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
+            if(type == eCSV_TYPE.NITTO || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
             {
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 int newLotCnt = GetNextLotCnt(lotID);
@@ -429,6 +431,9 @@ namespace DefectDBManager
             bool success = false;
 
             lotID = lotID.ToUpper();
+
+            this.SearchLotName = lotID;
+
             if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
                 CrtParam.UseKT = 1;
             else
@@ -486,7 +491,7 @@ namespace DefectDBManager
             success = SearchFLTDAT(lotID);
             if (success == false) return false;
 
-            if(DbDestConfig.CSVType==eCSV_TYPE.KOTECH || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
+            if(DbDestConfig.CSVType==eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
             {
                 if(dbOption.dbWhen== eDbIdWhen.Now && dbOption.prodAvaliableSpan>0)
                 {
@@ -855,7 +860,7 @@ namespace DefectDBManager
             }
 
             eCSV_TYPE csvType = destConfig.GetCsvType();
-            if (csvType == eCSV_TYPE.KOTECH || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK)
+            if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK)
             {
                 if (dbOption.checkES == true)
                     success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_ES);
@@ -1008,7 +1013,7 @@ namespace DefectDBManager
                 }
             }
 
-            if (csvType == eCSV_TYPE.KOTECH || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
+            if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
             {
                 success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_ES);
                 success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_TG);
@@ -1203,7 +1208,7 @@ namespace DefectDBManager
                                         if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
                                         else markData.XOFFSET_ALARM = float.MaxValue;
 
-                                        if (csvType == eCSV_TYPE.KOTECH)
+                                        if (csvType == eCSV_TYPE.NITTO)
                                         {
                                             if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
                                             else markData.DefectLine = 8; // 그외
@@ -1378,7 +1383,7 @@ namespace DefectDBManager
         {
             switch (destConfig.CSVType)
             {
-                case eCSV_TYPE.KOTECH:
+                case eCSV_TYPE.NITTO:
                     openCsvKoh(path);
                     break;
 

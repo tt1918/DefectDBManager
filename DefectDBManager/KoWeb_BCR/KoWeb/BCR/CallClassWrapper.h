@@ -23,5 +23,8 @@ public:
 	void AddEndCsvReading(ICsvReadingEvents* pThis);
 	void RemoveEndCsvReading(ICsvReadingEvents* pThis);
 	int GetMarkingData(bool isNext);
+	int GetMarkingDefectMeter();
+	void GetMarkDefectData(CString strBCno, double start, double end);
+	void GetMarkAreaDefectData(double start, double end);
 };
 

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "MarkingDataManager.h"
+#include "../userdefine.h"
 
 MarkingDataManager::MarkingDataManager()
 {
@@ -95,7 +96,7 @@ bool MarkingDataManager::IsValid(bool isNext)
 	return isValid;
 }
 
-void MarkingDataManager::AddData(bool isNext, DEFECT data)
+void MarkingDataManager::AddData(bool isNext, MARK_DEFECT data)
 {
 	if (isNext == false)//  ÇöÀç¶ù
 	{
@@ -107,21 +108,44 @@ void MarkingDataManager::AddData(bool isNext, DEFECT data)
 	}
 }
 
-int MarkingDataManager::GetData(double startY, double endY, DEFECT* data)
+int MarkingDataManager::GetData(double startY, double endY, MARK_DEFECT* data)
 {
 	if (IsValid(false) == false)
 		return 0;
 
 	int size = m_markingNow.data->size();
-	std::vector<DEFECT>::iterator iter;
+	std::vector<MARK_DEFECT>::iterator iter;
 	
 	int cnt = 0;
 	for (iter = m_markingNow.data->begin(); iter != m_markingNow.data->end(); iter++)
 	{
 		if (iter->y_pos >= startY && iter->y_pos <= endY)
 		{
-			memcpy(&data[cnt], &iter, sizeof(DEFECT));
+			memcpy(&data[cnt], &iter, sizeof(MARK_DEFECT));
 			cnt++;
+		}
+	}
+
+	return cnt;
+}
+
+int MarkingDataManager::GetData(CString strBcno, double startY, double endY, MARK_DEFECT* data)
+{
+	if (IsValid(false) == false)
+		return 0;
+
+	int size = m_markingNow.data->size();
+	std::vector<MARK_DEFECT>::iterator iter;
+
+	int cnt = 0;
+	for (iter = m_markingNow.data->begin(); iter != m_markingNow.data->end(); iter++)
+	{
+		if (iter->y_pos >= startY && iter->y_pos <= endY)
+		{
+			memcpy(&data[cnt], &iter, sizeof(MARK_DEFECT));
+			cnt++;
+
+			if (cnt >= MAX_DEFECT) break;
 		}
 	}
 

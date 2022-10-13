@@ -9,14 +9,13 @@ namespace DefectDBManager
 {
     public class Define
     {
-        public static string MainPath { get { return AppDomain.CurrentDomain.BaseDirectory; } }
+        public static string MainPath { get { return "C\\COSS"; } }
         public static string UserDefectClassPath { get { return Path.Combine(MainPath, "UserDefectClass.Ini"); } }
         public static string BCRPath { get { return Path.Combine(MainPath, "Barcode"); } }
         public static string DestPath { get { return Path.Combine(MainPath, "Dest.Ini"); } }
 
         public static string DBResultName { get { return "DBResult.txt"; } }
     }
-
 
     public class Global
     {

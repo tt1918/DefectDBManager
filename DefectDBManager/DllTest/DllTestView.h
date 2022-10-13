@@ -9,6 +9,8 @@
 #include "CallClassWrapperCodeReader.h"
 #endif
 
+#include <list>
+
 class CDllTestView : public CFormView
 {
 protected: // create from serialization only
@@ -63,6 +65,9 @@ public:
 #ifdef USE_CODEREADERDLL
 	void CodeRead(cv::Mat image, std::string* code, bool usePreprocess);
 #endif
+	void Read2DMatrix(cv::Mat image);
+	std::list<cv::Rect> FindBarcodePosition(cv::Mat image);
+	cv::Rect SetBarcodeArea(cv::Rect rect, int width, int height);
 };
 
 #ifndef _DEBUG  // debug version in DllTestView.cpp

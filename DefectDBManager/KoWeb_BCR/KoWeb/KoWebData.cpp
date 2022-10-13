@@ -1084,7 +1084,7 @@ void WriteDebugLog(bool bMakeFile, CString str)
 }
 
 #ifdef BARCODE_VISION
-// Defect Data는 추수 수정해야함.. 완료 안되었음....
+// Defect Data는 추후 수정해야함.. 완료 안되었음....
 void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe)
 {
 	CTime ttime = CTime::GetCurrentTime();
@@ -1119,7 +1119,7 @@ void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe)
 	}
 	else if (nRst == 2)
 	{
-		bcrRect = g_Temp.m_BcrFineRect;
+		bcrRect = g_Temp.m_BcrRectFine;
 		str.Format(_T("%s%s\t%d\t%f\t%s\t%s\tWidth:%d\tHeight:%d"), strTime, strTimeS, nframe, g_Defect.m_Defect[0].y_pos, strMsg, strIdx, bcrRect.Width(), bcrRect.Height());
 	}
 	else if (nRst == 10)
@@ -1128,7 +1128,7 @@ void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe)
 	}
 	else
 	{
-		bcrRect = g_Temp.m_BcrFineRect;
+		bcrRect = g_Temp.m_BcrRectFine;
 		str.Format(_T("%s%s\t%d\t%f\t%s\t%s\tWidth:%d\tHeight:%d"), strTime, strTimeS, nframe, g_Defect.m_Defect[0].y_pos, strMsg, strIdx, bcrRect.Width(), bcrRect.Height());
 	}
 
@@ -1149,6 +1149,23 @@ void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe)
 		file.WriteString(_T("\n"));
 		file.WriteString(str);
 		file.Close();
+	}
+}
+
+void WriteBcrDefectLog(CString path, CString str)
+{
+	CStdioFile f;
+	int nDay, ret, nCreateFile = 0;
+	CTime time = CTime::GetCurrentTime();
+	CString sDate;
+
+	ret = f.Open(path, CFile::modeCreate | CFile::modeNoTruncate | CFile::typeText | CFile::modeWrite);
+	if (ret)
+	{
+		sDate.Format(_T("\n%02d:%02d:%02d %s"), time.GetHour(), time.GetMinute(), time.GetSecond(), str);
+		f.SeekToEnd();
+		f.WriteString(sDate);
+		f.Close();
 	}
 }
 #endif

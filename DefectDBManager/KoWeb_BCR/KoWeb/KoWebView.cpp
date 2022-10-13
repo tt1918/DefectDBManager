@@ -132,7 +132,7 @@ CKoWebView::CKoWebView()
 	m_DefectCallClass = nullptr;
 	m_DefectReadingEvent = nullptr;
 
-#ifdef ENA_CODE_READ
+#ifdef USE_CODEREADERDLL
 	g_CodeReader.Initialize(false, 0, 0, COG_VPP_FILE);
 #endif
 }
@@ -176,7 +176,7 @@ CKoWebView::~CKoWebView()
 	 if(m_pModel)       delete m_pModel;
 	//------------------------------------------------------	 
 
-#ifdef ENA_CODE_READ
+#ifdef USE_CODEREADERDLL
 	 g_CodeReader.Terminate();
 #endif
 
@@ -995,19 +995,26 @@ void CKoWebView::ResetTempData()   //OnButtonFrameReset
 	//--------------------------------------------------------
 
 #ifdef BARCODE_VISION
+	// 제일 처음 읽은 바코드인지 확인하기 위해서 true로 셋팅함.
+	g_Temp.m_isBcrFirstCheck=true; 
+
 	g_Temp.m_nBcrReadOK = 0;
 	g_Temp.m_nBcrNoReadWarning = 0;
 	g_Temp.m_nBcrNoReadError = 0;
 	g_Temp.m_isBcrFirstCode = false;
 	g_Temp.m_strBcrName = g_Temp.m_strPreBcrName = _T("");
-	g_Temp.m_nPreBcrInspFrame = -1;
+	g_Temp.m_nBcrPreInspFrame = -1;
 
 	g_Temp.m_nBcrFirstRead = -1;
 	g_Temp.m_nBcrPreEdge = 0;
-	g_Temp.m_dBcrRealPos = 0.0;
+	g_Temp.m_dBcrCrtRealPos = 0.0;
 
 	g_Temp.m_isBcrForceReading = false;
 	g_Temp.m_dBCRForceREadingDist = 0;
+	memset(g_Temp.m_dBcrScale, 0x00, sizeof(double) * 3);
+
+	g_Temp.m_nBcrScaleIdx = 0;
+	g_Temp.m_dBcrPreFramePos = 0.0;
 #endif
 
 	SetSpreadCount();
@@ -3103,6 +3110,7 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 	switch (evtIdx)
 	{
 	case eEventReport_eUpdateDataNow:
+		g_Param.m_nMarkingDefectMarking = m_DefectCallClass->GetMarkingDefectMeter();
 		m_DefectCallClass->GetMarkingData(false);
 		break;
 	case eEventReport_eUpdateDataNext:

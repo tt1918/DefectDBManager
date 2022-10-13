@@ -43,27 +43,31 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedButtonSetexposure();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg void OnBnClickedCancel();
+public :
 	int m_nExposure;
-	afx_msg void OnBnClickedCheckShowFlat();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnBnClickedCheckShowArea();
-	afx_msg void OnBnClickedCheckShowAllcandi();
-	afx_msg void OnBnClickedCheckShowValidcandi();
 	BOOL m_bShowFlat;
 	BOOL m_bShowCandiArea;
 	BOOL m_bShowAllCandi;
 	BOOL m_bShowValidCandi;
-	afx_msg void OnBnClickedButtonSetexposure2();
-	afx_msg void OnBnClickedButtonSetexposure3();
-	int m_nNotInspectArea;
-	int m_nEdgeOffset;
+	BOOL m_bBcrMark;
 	CButtonST m_btData1;
 	CButtonST m_btData2;
 	CButtonST m_btData3;
+	int m_nNotInspectArea;
+	int m_nEdgeOffset;
+
+public:
+	virtual BOOL OnInitDialog();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedButtonSetexposure();
+	afx_msg void OnPaint();
+	afx_msg void OnBnClickedCancel();
+	afx_msg void OnBnClickedCheckShowFlat();
+	afx_msg void OnBnClickedCheckShowArea();
+	afx_msg void OnBnClickedCheckShowAllcandi();
+	afx_msg void OnBnClickedCheckShowValidcandi();
+	afx_msg void OnBnClickedButtonSetexposure2();
+	afx_msg void OnBnClickedButtonSetexposure3();
+	afx_msg void OnBnClickedCheckBcrMark();
 };

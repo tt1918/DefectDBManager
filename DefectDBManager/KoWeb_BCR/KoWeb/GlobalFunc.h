@@ -22,4 +22,6 @@ void DeleteFolderFile(CString sDeleteFolder, int nEraseDay);
 
 
 BOOL LoadBMP(LPCTSTR lpszFileName, LPBYTE fmImage, int width, int height); //NG 이미지 Load하는 함수
+
+bool DirectoryExist(const TCHAR* pPath);
 	

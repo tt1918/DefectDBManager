@@ -103,10 +103,13 @@
 #define NM_BCR_BCD_READING_LOW		421
 #define NM_BCR_BCD_READING_RATE		422
 
+
 #define NM_FORCE_BCR_NOT_MATCHED_ALRAM 430
+#define NM_FORCE_BCR_NOT_EQAUL_BCR_DIR 431
 
 #define NM_NITTO_AI_IMAGE			500
 #define NM_NITTO_AI_RESULT			501
+#define NM_NITTO_DATA_BCR			502
 
 
 //순서가 NEXTEYE와 같음 (value->sizey, sizeX->dTemp[0], sizeY->dTemp[1]
@@ -139,6 +142,41 @@ typedef struct tagDEFECT
 #endif
 
 }DEFECT;
+
+typedef struct tagMarkDefect
+{
+	int			defect_class;	// 결점 class
+	float		x_pos;			// 불량 위치 X mm
+	float		y_pos;			// 불량 위치 Y mm
+	float		size;			//  불량 크기
+	float		offset;			// 불량 원단장 y 위치 mm
+	char		fltid[4];		// FLTID(ANSI)
+	int			mark;			// 0:미마킹, 1:마킹
+}MARK_DEFECT;
+
+typedef struct tagAreaMarkDefect
+{
+	int			defect_class;	// 결점 class
+	float		x;				// 구간 마킹 시작 위치 X mm
+	float		y;				// 구간 마킹 시작 위치 Y mm
+	float		width;			// 구간 마킹 넓이 mm
+	float		height;			// 구간 마킹 높이 mm
+	float		offset;			// 원단장 시작 위치 y mm
+	int			mark;			// 0:미마킹, 1:마킹
+}AREA_MARK_DEFECT;
+
+typedef struct tagBcrDefect
+{
+	int			defect_class;						// 결점 class
+	float		x;									// 불량 위치 X mm
+	float		y;									// 불량 위치 Y mm
+	float		width;								// BCD 넓이
+	float		height;								// BCD 높이
+	int			type;								// BCD 리딩 옵션
+	int			position;							// BCD 위치 (M)
+	char		fileName[MAX_BADIMAGE_FILENAME];	// 파일명(ANSI)
+	int			mark;								// 0:미마킹, 1:마킹
+}BCR_DEFECT;
 
 
 class CPacket  

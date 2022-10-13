@@ -54,6 +54,7 @@
 	#define DCF_FILE					_T("C:\\COSS\\CossCam.dcf")
 	#define EURESYS_FILE				_T("C:\\COSS\\config.es")		//유레시스 grabber 설정파일
 	#define COG_VPP_FILE				_T("C:\\COSS\\codeRead.vpp")
+	#define BCR_PATH					_T("C:\\COSS\\Barcode\\")
 
 #endif
 

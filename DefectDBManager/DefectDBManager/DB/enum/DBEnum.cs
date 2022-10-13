@@ -137,7 +137,7 @@ namespace DefectDBManager
     {
         None = 0,
         KORENO,
-        KOTECH,
+        NITTO,
         NITTO_RTS,
         NITTO_RK,
         KORENO_RK,

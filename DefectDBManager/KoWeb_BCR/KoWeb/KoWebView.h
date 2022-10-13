@@ -338,6 +338,7 @@ public:
 	BOOL m_bShowCandiArea;
 	BOOL m_bShowAllCandi;
 	BOOL m_bShowValidCandi;
+
 	//Result ¾²±â
 	CRect	m_rcResult;
 	CString m_sResult[20];

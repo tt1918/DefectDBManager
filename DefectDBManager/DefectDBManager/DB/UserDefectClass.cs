@@ -105,7 +105,7 @@ namespace DefectDBManager
             int lineNum = resultLine % Global.MaxDefectLine;
             int camNum = resultLine / Global.MaxDefectLine;
 
-            if (type == eCSV_TYPE.KOTECH)
+            if (type == eCSV_TYPE.NITTO)
             {
                 if (lineNum == 0) camNum = DefectType.ES_DOT;
                 else if (lineNum == 1)
@@ -332,7 +332,7 @@ namespace DefectDBManager
                             refClass = strToDecimal(TransFLTID[i]);
                     }
                 }
-                else if (type == eCSV_TYPE.KOTECH ||
+                else if (type == eCSV_TYPE.NITTO ||
                     type == eCSV_TYPE.KORENO ||
                     type == eCSV_TYPE.NITTO_RTS ||
                     type == eCSV_TYPE.NITTO_RK ||

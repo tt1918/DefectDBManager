@@ -46,7 +46,7 @@
 
 #ifdef BARCODE_VISION
 #import "BCR/DefectDBManager.tlb" no_namespace, named_guids
-#define ENA_CODE_READ				// 바코드 라이브러리 활성화
+#define USE_CODEREADERDLL				// 바코드 라이브러리 활성화
 #endif
 
 //#define SERVER_TEST				    //3동정밀코팅에서 SERVER TEST 시에만 사용한다. (100.0.0.244)에 보냄

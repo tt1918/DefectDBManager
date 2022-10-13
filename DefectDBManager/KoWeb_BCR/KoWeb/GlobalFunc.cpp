@@ -265,7 +265,6 @@ CString GetPCName()
 	_stscanf(str, _T("%s"), sPCName);
 #endif
 
-
 	g_Temp.m_sMyComName.Format(_T("%s"), str);
 
 	if(str.GetLength()==7)
@@ -290,6 +289,17 @@ CString GetPCName()
 		g_Temp.m_nPCID=g_Temp.m_nPCFirstNo*OPTICDEV+g_Temp.m_nPCNum;   //OPTICDEVL 0x100
 
 		g_Temp.m_nPCOptic=GetClientOptic(g_Temp.m_sMyComName);  //광학계는 NEL-9 가 9가 아닐수 있지만 g_Temp.m_nPCFirstNo는 "9" 임.
+
+#ifdef BARCODE_VISION
+		if (g_Temp.m_sMyComName == "BCR-101" || "BCR-103")
+		{
+			g_Param.m_nBcrOddEven = 1;
+		}
+		else
+		{
+			g_Param.m_nBcrOddEven = 0;
+		}
+#endif
 	}	
 
 	return str;
@@ -499,4 +509,13 @@ BOOL LoadBMP(LPCTSTR lpszFileName, LPBYTE fmImage, int width, int height)
 	
 
 	return TRUE;
+}
+
+bool DirectoryExist(const TCHAR* pPath)
+{
+	if (pPath == nullptr)
+		return false;
+
+	DWORD fileAtt = GetFileAttributes(pPath);
+	return (fileAtt != INVALID_FILE_ATTRIBUTES && (fileAtt & FILE_ATTRIBUTE_DIRECTORY));
 }

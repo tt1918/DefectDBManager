@@ -920,7 +920,7 @@ namespace DefectDBManager
                     }
 
                     DestConfig config = dataBase.DbDestConfig;
-                    if (config.CSVType != eCSV_TYPE.KOTECH && config.CSVType != eCSV_TYPE.NITTO_RTS &&
+                    if (config.CSVType != eCSV_TYPE.NITTO && config.CSVType != eCSV_TYPE.NITTO_RTS &&
                         config.CSVType != eCSV_TYPE.NITTO_RK && config.CSVType != eCSV_TYPE.KORENO &&
                         config.CSVType != eCSV_TYPE.KORENO_RK && config.CSVType != eCSV_TYPE.KORENO_RK_IJP)
                     {

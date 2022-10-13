@@ -95,7 +95,14 @@ typedef struct DEFECTDATA_
 	DEFECT	m_Defect[MAX_DEFECT+1];	
 	LPBYTE  m_pImage[MAX_DEFECT+1];
 
-
+#ifdef BARCODE_VISION
+	int					m_nBcrCount;
+	int					m_nAreaDefectCount;
+	int					m_nMarkDefectCount;
+	BCR_DEFECT			m_BMarkDefect;
+	AREA_MARK_DEFECT	m_AreaDefect[MAX_DEFECT];
+	MARK_DEFECT			m_MarkDefect[MAX_DEFECT];
+#endif
 }DEFECTDATA;
 
 typedef struct DEFECTTEMP_
@@ -448,9 +455,12 @@ typedef struct TEMPDATA_
 
 	///////////////////////////////////////////////////////////////////////
 	// BCR 용 - S
+	bool	m_isBcrFirstCheck;	// 검사 시작 후 제일 처음 
+	bool	m_isBcrInitRead;	// 바코드를 2번 이상 읽었을 때 초기화 처리
+
 	int		m_nBcrPreEdge;		// 이전 프레임 에지 위치
 	CRect	m_BcrRect;			// 1차 영역 추출
-	CRect	m_BcrFineRect;		// 후처리 영역 추출
+	CRect	m_BcrRectFine;		// 후처리 영역 추출
 	CRect	m_BcrSavingRect;	// BCR 이미지 저장용
 	CRect	m_BcrRectForMatch;	// BCR 확인 실패 시 중심 처리용
 	CRect   m_BcrRectMatched;	// 패턴 매칭된 BCR 영역
@@ -460,7 +470,7 @@ typedef struct TEMPDATA_
 
 	bool	m_isBcrSuccessRead;	// 바코드 인식 결과
 	int		m_nBcrPatFind;		// 바코드 탐색 결과 순번
-	bool	m_isBcrFirstCode;	// 최소 BCR 리딩
+	bool	m_isBcrFirstCode;	// 최초 BCR 리딩
 	int		m_nBcrFirstRead;	// BCR 리딩 상황
 	int		m_nBcrDir;			// BCR 리딩 방향
 
@@ -472,14 +482,25 @@ typedef struct TEMPDATA_
 
 
 	CString m_strBcrName;		// 인식 결과 바코드 정보
-	int		m_nPreBcrInspFrame;	// 이전 BCR 인식된 Frame 번호
+	int		m_nBcrPreInspFrame;	// 이전 BCR 인식된 Frame 번호
 	CString m_strPreBcrName;	// 이전 인식 결과 바코드 정보
-	double  m_dBcrRealPos;		// 원단상의 실제 위치
+	double  m_dBcrCrtRealPos;		// 원단상의 실제 위치
+	double  m_dBcrPreRealPos;	// 이전 BCR 원단상의 실제 위치
+	double  m_dBcrOffsetY;		// 프레임 내에서 바코드 위치에 따른 OFFSET
+	double  m_dBcrScale[3];		// Bcr 길이 방향 Scale 계산		
 
 	int		m_nBcrReadOK;		// BCR 인식 갯수
 
 	int		m_nBcrNoReadWarning;
 	int		m_nBcrNoReadError;
+
+	int		m_nBcrScaleIdx;		// Bcr Y scale 확인용
+	int		m_nBcrOrder;		// Bcr order 확인용
+	double  m_dBcrPreFramePos;	// 
+
+	char	m_cBcrFileName[MAX_BADIMAGE_FILENAME];		// BCR 조각 영상 이름
+
+	CString m_strBcrLog;		// BCR 로그 저장용
 	// BCR 용 - E
 	///////////////////////////////////////////////////////////////////////
 }TEMPDATA;

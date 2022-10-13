@@ -35,6 +35,12 @@ void CKoWebView::WebInspect()
 
 	g_Defect.m_nDefectCount=0;	//Defect¼ö Reset
 
+#ifdef BARCODE_VISION
+	g_Defect.m_nAreaDefectCount = 0;
+	g_Defect.m_nBcrCount = 0;
+	g_Defect.m_nMarkDefectCount = 0;
+#endif
+
 #ifdef MY_RECV
 	if(g_Temp.m_nPCOptic==RECV_OPTIC && g_Kipo.m_nKipoPress!=0)  //¹Þ´Â PC (COS7)
 		KO_UpdateKipoPress(g_Temp.m_nGrabFrameSub);  
@@ -1307,7 +1313,7 @@ void CKoWebView::InspectD()			//TEST
 void CKoWebView::InspectBCR()
 {
 #ifdef BARCODE_VISION
-	 WEB_Barcode();
+	 WEB_Barcode(this);
 #endif
 }
 void CKoWebView::InspectMarkingVision()

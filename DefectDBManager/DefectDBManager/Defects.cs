@@ -62,6 +62,20 @@ namespace DefectDBManager
         public Int32 CAM_NO;
     }
 
+    [Guid("0C33BE40-DF66-4F24-9EA5-060A9E10EBB2")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct MarkingAreaDefect
+	{
+        [MarshalAs(UnmanagedType.R4)]
+        public float stX;                // 구간 마킹 시작 위치 X mm
+        [MarshalAs(UnmanagedType.R4)]
+        public float stY;                // 구간 마킹 시작 위치 Y mm
+        [MarshalAs(UnmanagedType.R4)]
+        public float edX;				// 구간 마킹 넓이 mm
+        [MarshalAs(UnmanagedType.R4)]
+        public float edY;				// 구간 마킹 높이 mm
+    }
+
     [ComVisible(true)]
     [Guid("33C8457C-7482-479E-8AB0-7A4E295F7360")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -87,7 +101,13 @@ namespace DefectDBManager
 		void AddEventCsvReading(ICsvReadingEvents csvReadingEvents);
 		void RemoveEventCsvReading(ICsvReadingEvents csvReadingEvents);
         MarkingData[] GetMarkingData(bool isNext);
-	}
+		int GetMarkingDefectMeter();
+		MarkingData[] GetMarkDefectData(string bcno, double start, double end);
+		MarkingAreaDefect[] GetMarkAreaDefectData(double start, double end);
+
+        string GetLotName(bool isNext);
+
+    }
 
 
     [ComVisible(true)]
@@ -97,6 +117,7 @@ namespace DefectDBManager
         private bool isDownloadComplete = false;
 		private static List<Defect> defects = null;
 		private static List<MarkingData> markingData = null;
+		private static List<MarkingAreaDefect> markingAreaDefects = null;
 
 		public DbManager DBManager
 		{
@@ -115,15 +136,19 @@ namespace DefectDBManager
 		{
 			defects = new List<Defect>();
             dbManager = new DbManager(this);
-
-			dbManager._FormDB.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            markingData = new List<MarkingData>();
+            markingAreaDefects = new List<MarkingAreaDefect>();
+            dbManager._FormDB.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
         }
 		~Defects()
 		{
 			dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
             dbManager._DestConfig.Write();
-            defects.Clear();
-		}
+            defects?.Clear();
+			markingData?.Clear();
+			markingAreaDefects?.Clear();
+
+        }
 		public static List<Defect> DefectsList
 		{
             get { return defects; }
@@ -200,14 +225,9 @@ namespace DefectDBManager
 
 		public MarkingData[] GetMarkingData(bool isNext)
 		{
-			if (markingData != null && markingData.Count > 0)
-			{
-				markingData.Clear();
-				markingData = null;
-			}
+			markingData.Clear();
 
-            markingData = new List<MarkingData>();
-			List<MarkingFaultDatum> oriData;
+            List<MarkingFaultDatum> oriData;
             if (isNext == false)
                 oriData = DBManager._ResultData[0].MarkFault.Data;
 			else
@@ -230,6 +250,74 @@ namespace DefectDBManager
             }
 
 			return markingData.ToArray();
+        }
+
+		public MarkingData[] GetMarkDefectData(string bcno, double start, double end)
+		{
+			markingData.Clear();
+            List<MarkingFaultDatum> oriData;
+            oriData = DBManager._ResultData[0].MarkFault.Data;
+
+			foreach(MarkingFaultDatum datum in oriData)
+			{
+				if(datum.YPOS_M>=start && datum.YPOS_M <= end)
+				{
+                    MarkingData item = new MarkingData();
+                    item.DefectLine = datum.DefectLine;
+                    item.BCNO = datum.BCNO;
+                    item.CAM_NO = datum.CAM_NO;
+                    item.FAULTID = datum.FAULTID;
+                    item.FLTNO = datum.FLTNO;
+                    item.OFFSET = datum.OFFSET;
+                    item.UseCSVResult = datum.UseCSVResult;
+                    item.XOFFSET = datum.XOFFSET;
+                    item.XPOS_M = datum.XPOS_M;
+                    item.YPOS_M = datum.YPOS_M;
+                    markingData.Add(item);
+                }
+            }
+
+            return markingData.ToArray();
+        }
+
+		public MarkingAreaDefect[] GetMarkAreaDefectData(double start, double end)
+		{
+			markingAreaDefects.Clear();
+
+			List<AREADELData> delData = DBManager._DbProc[0].AREADEL_Data;
+			foreach(AREADELData item in delData)
+			{
+				if((item.STR_MD<=start && end<item.END_MD) || (item.END_MD<=start && end<item.STR_MD) || 
+					(start <=item.STR_MD && item.STR_MD<end) || (start<=item.END_MD && item.END_MD<end))
+				{
+                    MarkingAreaDefect data = new MarkingAreaDefect();
+
+
+                    //현재위치에 AreaDel마킹영역이 존재시
+                    data.stX = item.STR_WD;
+                    data.edX = item.END_WD;
+					data.stY = item.STR_MD;
+					data.edY = item.END_MD;
+					markingAreaDefects.Add(data);
+                }
+            }
+            return markingAreaDefects.ToArray();
+        }
+
+        public int GetMarkingDefectMeter()
+        {
+			return dbManager._DestConfig.EverMarkDefectMeter;
+		}
+
+        public string GetLotName(bool isNext)
+		{
+			string lotName="";
+			if (isNext == false)
+				lotName = dbManager._DbProc[0].SearchLotName;
+			else
+                lotName = dbManager._DbProc[1].SearchLotName;
+
+			return lotName;
         }
     }
 }
