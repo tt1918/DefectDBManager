@@ -36,9 +36,9 @@ void CKoWebView::WebInspect()
 	g_Defect.m_nDefectCount=0;	//Defect¼ö Reset
 
 #ifdef BARCODE_VISION
-	g_Defect.m_nAreaDefectCount = 0;
+	g_Defect.m_nBcrAreaDefectCount = 0;
 	g_Defect.m_nBcrCount = 0;
-	g_Defect.m_nMarkDefectCount = 0;
+	g_Defect.m_nBcrDefectCount = 0;
 #endif
 
 #ifdef MY_RECV

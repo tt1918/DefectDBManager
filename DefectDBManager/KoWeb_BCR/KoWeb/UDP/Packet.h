@@ -190,6 +190,9 @@ public:
 	//----------------------------------------------------------------------------------------------------------------------------------------------
 
 	void MakePacketData();		//NG데이타 전달용 Packet만드는 함수
+#ifdef BARCODE_VISION
+	void MakeBcrPacketData();	// BCR Vision Data 전달용 Patcket만드는 함수
+#endif
 #ifdef RESULT_DELAY
 	void MakePacketDataDelay(int N); //NG데이타 전달용 Packet만드는 함수 (한 Frame뒤에 보냄)
 #endif
@@ -241,6 +244,13 @@ public:
 
 	int		m_nDefect;
 	DEFECT	*m_pDefect_data;
+
+#ifdef BARCODE_VISION
+	MARK_DEFECT*		m_pBcrDefect_Data;
+	AREA_MARK_DEFECT*	m_pBcrAreaDel_Data;
+	BCR_DEFECT			m_BcrInfo_Data;
+#endif
+
 protected:
 
 };

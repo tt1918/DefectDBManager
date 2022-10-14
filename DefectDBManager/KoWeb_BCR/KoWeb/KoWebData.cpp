@@ -1168,4 +1168,20 @@ void WriteBcrDefectLog(CString path, CString str)
 		f.Close();
 	}
 }
+
+void WriteBcrEdgeLog(float edgePos)
+{
+	CStdioFile   file;
+	CString filename, tmp;
+
+	CreateDirectory(BCR_EDGE_PATH, NULL);
+	filename.Format(_T("%sEdge_Info.txt"), BCR_EDGE_PATH);
+
+	if (file.Open(filename, CFile::modeCreate | CFile::modeReadWrite | CFile::typeText))
+	{
+		tmp.Format(_T("%f"), edgePos);
+		file.WriteString(tmp);
+		file.Close();
+	}
+}
 #endif

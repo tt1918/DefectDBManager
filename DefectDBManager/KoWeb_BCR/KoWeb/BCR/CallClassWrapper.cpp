@@ -207,7 +207,7 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 		SafeArrayGetUBound(array, 1, &lUbound);
 		long lDimSize = lUbound - lLbound + 1;
 
-		g_Defect.m_nMarkDefectCount = lDimSize;
+		g_Defect.m_nBcrDefectCount = lDimSize;
 
 		for (int i = 0; i < lDimSize; i++) {
 			long rgIndices[1];
@@ -216,14 +216,14 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 			rgIndices[0] = i;
 			SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
 
-			g_Defect.m_MarkDefect[i].defect_class = value.DefectLine; // defect Class 재정의 해야함.
-			g_Defect.m_MarkDefect[i].x_pos = value.XPOS_M;
-			g_Defect.m_MarkDefect[i].y_pos = value.YPOS_M;
-			g_Defect.m_MarkDefect[i].offset = value.OFFSET;
+			g_Defect.m_BcrDefect[i].defect_class = value.DefectLine; // defect Class 재정의 해야함.
+			g_Defect.m_BcrDefect[i].x_pos = value.XPOS_M;
+			g_Defect.m_BcrDefect[i].y_pos = value.YPOS_M;
+			g_Defect.m_BcrDefect[i].offset = value.OFFSET;
 
 			int cLen = ::SysStringLen(value.FAULTID);
-			strcpy_s(g_Defect.m_MarkDefect[i].fltid, cLen, CW2A(value.FAULTID));
-			g_Defect.m_MarkDefect[i].mark = 1;
+			strcpy_s(g_Defect.m_BcrDefect[i].fltid, cLen, CW2A(value.FAULTID));
+			g_Defect.m_BcrDefect[i].mark = 1;
 
 			splRecordInfo->RecordClear((PVOID)&value);
 		}
@@ -237,6 +237,7 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 
 void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 {
+	CString strLog;
 	SAFEARRAY* array = m_pCallClass->GetMarkAreaDefectData(start, end);
 	if (array)
 	{
@@ -254,7 +255,9 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 		SafeArrayGetUBound(array, 1, &lUbound);
 		long lDimSize = lUbound - lLbound + 1;
 
-		g_Defect.m_nAreaDefectCount = lDimSize;
+		g_Defect.m_nBcrAreaDefectCount = lDimSize;
+
+		double stY, edY;
 
 		for (int i = 0; i < lDimSize; i++) {
 			long rgIndices[1];
@@ -266,26 +269,37 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 			//현재위치에 AreaDel마킹영역이 존재시
 			if (g_Param.m_nBcrOddEven == 1)
 			{
-				g_Defect.m_AreaDefect[i].x = value.stX + (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX);
-				g_Defect.m_AreaDefect[i].width = value.edX + (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX - g_Defect.m_AreaDefect[i].x);
+				g_Defect.m_BcrAreaDefect[i].x = value.stX + (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX);
+				g_Defect.m_BcrAreaDefect[i].width = value.edX + (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX - g_Defect.m_BcrAreaDefect[i].x);
 			}
 			else if (g_Param.m_nBcrOddEven == 0)
 			{
-				g_Defect.m_AreaDefect[i].x = (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX) - value.edX;
-				g_Defect.m_AreaDefect[i].width = (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX) - value.stX - g_Defect.m_AreaDefect[i].x;
+				g_Defect.m_BcrAreaDefect[i].x = (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX) - value.edX;
+				g_Defect.m_BcrAreaDefect[i].width = (float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX) - value.stX - g_Defect.m_BcrAreaDefect[i].x;
 			}
 			if (g_Temp.m_nBcrDir == 1)	//증가
 			{
-				g_Defect.m_AreaDefect[i].y = (float)(__max(start, value.stY) - start);	//1frame 기준으로 변환
-				g_Defect.m_AreaDefect[i].height = (float)(__min(end, value.edY) - start) - g_Defect.m_AreaDefect[i].y;	//1frame 기준으로 변환
+				stY = __max(start, value.stY);
+				edY = __min(end, value.edY);
+				g_Defect.m_BcrAreaDefect[i].y = (float)(stY - start);	//1frame 기준으로 변환
+				g_Defect.m_BcrAreaDefect[i].height = (float)(edY - start) - g_Defect.m_BcrAreaDefect[i].y;	//1frame 기준으로 변환
 			}
 			else	//감소
 			{
-				g_Defect.m_AreaDefect[i].y = (float)(start - __min(start, value.edY));	//1frame 기준으로 변환
-				g_Defect.m_AreaDefect[i].height = (float)(start - __max(end, value.stY)) - g_Defect.m_AreaDefect[i].y;	//1frame 기준으로 변환
+				stY = __min(start, value.edY);
+				edY = __max(end, value.stY);
+				g_Defect.m_BcrAreaDefect[i].y = (float)(start - stY);	//1frame 기준으로 변환
+				g_Defect.m_BcrAreaDefect[i].height = (float)(start - edY) - g_Defect.m_BcrAreaDefect[i].y;	//1frame 기준으로 변환
 			}
-			g_Defect.m_AreaDefect[i].defect_class = 1;	// 추후 클래스 정의 해야함.
-			g_Defect.m_AreaDefect[i].mark = 1;
+			g_Defect.m_BcrAreaDefect[i].defect_class = 1;	// 추후 클래스 정의 해야함.
+			g_Defect.m_BcrAreaDefect[i].mark = 1;
+
+			// Area Del Data Save
+			strLog.Format(_T("AreaMaring Pos : %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f"), value.stX, value.edX, stY, edY,
+				g_Defect.m_BcrAreaDefect[i].x, g_Defect.m_BcrAreaDefect[i].width, g_Defect.m_BcrAreaDefect[i].y,
+				g_Defect.m_BcrAreaDefect[i].height);
+			WriteBcrDefectLog(g_Temp.m_strBcrLog, strLog);
+
 			splRecordInfo->RecordClear((PVOID)&value);
 		}
 

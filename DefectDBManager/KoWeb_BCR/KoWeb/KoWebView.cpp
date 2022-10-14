@@ -739,7 +739,11 @@ void CKoWebView::OnBnClickedButtonInspect()
 	l_dTime[0]=Clock_set();
 
 	ViewInspect();		//One Inspect
+#ifndef BARCODE_VISION // 바코드 비전은 변경할 필요 없음
 	MakeResultData();
+#else 
+	MakeBcrResultData();
+#endif BARCODE_VISION
 
 	l_dTime[8]=Clock_set();
 	g_Temp.m_dInspTime=l_dTime[8]-l_dTime[0];

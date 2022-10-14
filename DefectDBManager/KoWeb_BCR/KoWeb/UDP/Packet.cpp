@@ -19,6 +19,11 @@ CPacket::CPacket()
 {
 	m_pBuf = NULL;
 	m_pDefect_data = NULL;
+
+#ifdef BARCODE_VISION
+	m_pBcrDefect_Data = nullptr;
+	m_pBcrAreaDel_Data = nullptr;
+#endif
 }
 
 CPacket::~CPacket()
@@ -28,6 +33,13 @@ CPacket::~CPacket()
 
 	if(m_pBuf)
 		delete [] m_pBuf;
+
+#ifdef BARCODE_VISION
+	if (m_pBcrDefect_Data != nullptr)
+		delete[] m_pBcrDefect_Data;
+	if (m_pBcrAreaDel_Data != nullptr)
+		delete[] m_pBcrAreaDel_Data;
+#endif
 }
 
 int CPacket::GetCode(char* buf, int buf_len)
@@ -116,6 +128,97 @@ void CPacket::MakePacketData()
 
 	if(g_DefectSend.m_nDefectCount) memcpy(m_pBuf+20, m_pDefect_data, sizeof(DEFECT)*g_DefectSend.m_nDefectCount);	
 }
+
+#ifdef BARCODE_VISION
+void CPacket::MakeBcrPacketData()	// BCR Vision Data 전달용 Patcket만드는 함수
+{
+	double dEdge;
+	int  i, j, nEdgeDefectCombine;   //Edge와 Defect수를 합치다.
+
+	CTime time = CTime::GetCurrentTime();
+	CString sTime = time.Format("[%H-%M-%S]");
+	int lotNo = 0;
+	TCHAR sFileName[MAX_BADIMAGE_FILENAME];
+	TCHAR sFileName1[MAX_BADIMAGE_FILENAME];
+	int nLotLen;
+	char cLotName[20], cPcName[10], cFileName[MAX_BADIMAGE_FILENAME];
+	int offset = 0;
+	int dataSize;
+
+	if (g_Temp.m_nFoundEdge > 0) dEdge = g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX;
+	else					  dEdge = g_System.m_nImageW / 2 * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX;
+	
+	m_nDefect = g_DefectSend.m_nDefectCount;
+	m_nPacket_code = NM_NITTO_DATA_BCR;
+	m_nFrame_num = g_DefectSend.m_nFrameNum;
+	m_nFull_packet_length = m_nBuflen = 4 * 8 + (sizeof(MARK_DEFECT) * g_DefectSend.m_nBcrDefectCount) +
+										(sizeof(AREA_MARK_DEFECT) * g_DefectSend.m_nBcrAreaDefectCount) +
+										(sizeof(BCR_DEFECT) * g_DefectSend.m_nBcrCount);
+
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_pBuf = new char[m_nBuflen];
+	memset(m_pBuf, 0x00, m_nBuflen);
+
+	memcpy(m_pBuf, &m_nBuflen, 4);									// 0
+	memcpy(m_pBuf + 4, &m_nPacket_code, 4);							// 1
+	memcpy(m_pBuf + 8, &lotNo, 4);									// 2
+	memcpy(m_pBuf + 12, &g_DefectSend.m_nFrameNum, 4);				// 3
+	memcpy(m_pBuf + 16, &dEdge, 4);									// 4 
+	memcpy(m_pBuf + 20, &g_DefectSend.m_nBcrCount, 4);				// 5
+	memcpy(m_pBuf + 24, &g_DefectSend.m_nBcrAreaDefectCount, 4);	// 6
+	memcpy(m_pBuf + 28, &g_DefectSend.m_nBcrDefectCount, 4);		// 7
+	
+	if (g_DefectSend.m_nBcrCount > 0)
+	{
+		memcpy(&m_BcrInfo_Data, &g_DefectSend.m_BMarkDefect, sizeof(BCR_DEFECT));
+#ifdef INTERFACE_NEXTEYE_SERVER		
+		_stprintf(sFileName1, CA2W(g_DefectSend.m_BMarkDefect.fileName));
+		_stprintf(sFileName, _T("%s\\%s\\%s"), g_Temp.m_slotName, g_Temp.m_sMyComName, sFileName1);
+		sprintf(m_BcrInfo_Data.fileName, CW2A(sFileName));
+#else
+#ifdef USE_PACKET_ANSI
+		_stprintf(sFileName1, CA2W(g_DefectSend.m_BMarkDefect.fileName));
+		_stprintf(sFileName, _T("%s\\%s\\%s"), g_Temp.m_slotName, g_Temp.m_sMyComName, sFileName1);
+		sprintf(m_BcrInfo_Data.fileName, CW2A(sFileName));
+#else
+#ifdef USE_COSS_SERVER_CLIENT_NEL
+		_stprintf(sFileName, _T("%s\\%s\\%s"), g_Temp.m_slotName, g_Temp.m_sMyComName, g_DefectSend.m_BMarkDefect.fileName);
+		_tcscpy(m_BcrInfo_Data.fileName, sFileName);
+#else
+		_tcscpy(m_BcrInfo_Data.fileName, g_DefectSend.m_BMarkDefect.fileName);
+#endif
+#endif
+#endif
+		dataSize = sizeof(BCR_DEFECT) * g_DefectSend.m_nBcrCount;
+		memcpy(m_pBuf + 28, &m_BcrInfo_Data, dataSize);
+		offset += dataSize;
+	}
+
+	if (g_DefectSend.m_nBcrAreaDefectCount > 0)
+	{
+		if (m_pBcrAreaDel_Data) delete[] m_pBcrAreaDel_Data;
+		m_pBcrAreaDel_Data = new AREA_MARK_DEFECT[g_DefectSend.m_nBcrAreaDefectCount];
+		memcpy(m_pBcrAreaDel_Data, g_DefectSend.m_BcrAreaDefect, sizeof(AREA_MARK_DEFECT) * g_DefectSend.m_nBcrAreaDefectCount);
+
+		dataSize = sizeof(AREA_MARK_DEFECT) * g_DefectSend.m_nBcrAreaDefectCount;
+		memcpy(m_pBuf + 28 + offset, m_pBcrAreaDel_Data, dataSize);
+		offset += dataSize;
+	}
+
+
+	if (g_DefectSend.m_nBcrDefectCount > 0)
+	{
+		if (m_pBcrDefect_Data) delete[] m_pBcrDefect_Data;
+		m_pBcrDefect_Data = new MARK_DEFECT[g_DefectSend.m_nBcrDefectCount];
+		memcpy(m_pBcrDefect_Data, g_DefectSend.m_BcrDefect, sizeof(MARK_DEFECT) * g_DefectSend.m_nBcrDefectCount);
+
+		dataSize = sizeof(MARK_DEFECT) * g_DefectSend.m_nBcrDefectCount;
+		memcpy(m_pBuf + 28 + offset, m_pBcrDefect_Data, dataSize);
+		offset += dataSize;
+	}
+}
+#endif
 
 #ifdef RESULT_DELAY
 void CPacket::MakePacketDataDelay(int N)

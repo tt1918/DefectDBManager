@@ -32,7 +32,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch);
 BOOL CheckValidCode(CString str);
 int CheckBcrOrder(CString NewBarcode, CString LastBarcode);
 void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum);
-void WriteBcrDefectLog(CString path, CString str);
+
 
 void WEB_Barcode(LPVOID pParent)
 {
@@ -484,6 +484,9 @@ bool SearchBCR(LPVOID pParent)
 		}
 #endif
 	}
+
+	if (nFrameNum > 0 && nFrameNum % 100 == 0)
+		WriteBcrEdgeLog((g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX) + g_Param.m_dCamStartPosX);
 
 	return g_Temp.m_isBcrSuccessRead;
 }

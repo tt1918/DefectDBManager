@@ -97,11 +97,11 @@ typedef struct DEFECTDATA_
 
 #ifdef BARCODE_VISION
 	int					m_nBcrCount;
-	int					m_nAreaDefectCount;
-	int					m_nMarkDefectCount;
+	int					m_nBcrAreaDefectCount;
+	int					m_nBcrDefectCount;
 	BCR_DEFECT			m_BMarkDefect;
-	AREA_MARK_DEFECT	m_AreaDefect[MAX_DEFECT];
-	MARK_DEFECT			m_MarkDefect[MAX_DEFECT];
+	AREA_MARK_DEFECT	m_BcrAreaDefect[MAX_DEFECT];
+	MARK_DEFECT			m_BcrDefect[MAX_DEFECT];
 #endif
 }DEFECTDATA;
 
@@ -625,4 +625,6 @@ void WriteDebugLog(bool bMakeFile, CString str);
 
 #ifdef BARCODE_VISION
 void WriteBarcodeInfo(CString strMsg, CString strIdx, int nRst, int nframe);
+void WriteBcrDefectLog(CString path, CString str);
+void WriteBcrEdgeLog(float edgePos);
 #endif

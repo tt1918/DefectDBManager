@@ -1,6 +1,11 @@
 UINT THREAD_Auto(LPVOID lParam);
 UINT THREAD_Inspect(LPVOID lParam);
-	void MakeResultData();				//서버에 보낼데이타 만듦 (가변마킹외 )
+	
+void MakeResultData();				//서버에 보낼데이타 만듦 (가변마킹외 )
+
+#ifdef BARCODE_VISION
+void MakeBcrResultData();
+#endif
 
 void SetInspectFlag(bool flag);
 

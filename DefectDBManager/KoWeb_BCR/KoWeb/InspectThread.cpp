@@ -150,7 +150,11 @@ UINT THREAD_Inspect(LPVOID lParam)
 #if PROGRAM_TYPE==GENERAL_TEACH
 				pView->ShowResults_General();
 #else
+#ifndef BARCODE_VISION // 바코드 비전은 변경할 필요 없음
 				MakeResultData();							//보낼데이타 만듦.(가변마킹, 불량 한 줄씩 쓰는 것도 여기서 진행 by Thread)
+#else BARCODE_VISION
+				MakeBcrResultData();
+#endif
 				pView->ShowResults();						//결과화면에 보여주고, 영상 Update (6~7msec) ListBox에 쓰는데 시간이 많이 걸림 (나중에 List Box없애야 함)
 #endif
 
@@ -750,6 +754,13 @@ void MakeResultData()
 	g_SaveNGCnt=nDefectCnt;
 #endif
 }
+
+#ifdef BARCODE_VISION
+void MakeBcrResultData()
+{
+	memcpy(&g_DefectSend, &g_Defect, sizeof(DEFECTDATA));
+}
+#endif
 
 #ifdef USE_NITTO_AI
 void UpdateAiResultData(int nFrame, int ngCount, int aiClass, float* scores)
