@@ -73,7 +73,11 @@ BOOL CShowInfo1::OnInitDialog()
 	m_Color[0]=RGB(0,0,0);
 	m_Color[1]=RGB(40,40,40);
 
+#ifndef BARCODE_VISION
 	m_nYCnt=11;
+#else
+	m_nYCnt = 12;
+#endif
 
 	GetDlgItem(IDC_NGOK)->GetWindowPlacement(&wp);
 
@@ -101,7 +105,9 @@ BOOL CShowInfo1::OnInitDialog()
 	m_sTitle[7]=_T("Insp Time(msec)");
 	m_sTitle[8]=_T("Bright/Sharp");
 	m_sTitle[9]=_T("HDD(%)");
-
+#ifdef BARCODE_VISION
+	m_sTitle[10]=_T("BCNO");
+#endif
 	m_nExposure			=g_Param.m_nExposure;
 	m_nNotInspectArea	=g_Param.m_nNotInspArea;
 	m_nEdgeOffset		=g_Param.m_nEdgeOffset;

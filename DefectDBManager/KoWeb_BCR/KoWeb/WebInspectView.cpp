@@ -33,13 +33,17 @@ void CKoWebView::WebInspect()
 
 	for(i=1;i<10;i++) l_dTime[i]=l_dTime[0];
 
-	g_Defect.m_nDefectCount=0;	//Defect수 Reset
+	//////////////////////////////////////////////////////
+	// Defect수 Reset - S
+	g_Defect.m_nDefectCount=0;	
 
 #ifdef BARCODE_VISION
 	g_Defect.m_nBcrAreaDefectCount = 0;
 	g_Defect.m_nBcrCount = 0;
 	g_Defect.m_nBcrDefectCount = 0;
 #endif
+	// Defect수 Reset - E
+	//////////////////////////////////////////////////////
 
 #ifdef MY_RECV
 	if(g_Temp.m_nPCOptic==RECV_OPTIC && g_Kipo.m_nKipoPress!=0)  //받는 PC (COS7)

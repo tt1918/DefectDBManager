@@ -156,7 +156,7 @@ typedef struct PARAMETERDATA_
 {
 	int  m_nNoInspect;		//1이면 검사안함
 	int  m_nAutoEdgeFind;	//1이면 자동검사
-	int  m_nNotInspArea;	//검사하지 않는 영역(양수면 왼쪽, 홀수면 오른쪽)
+	int  m_nNotInspArea;	//검사하지 않는 영역(양수면 왼쪽, 음수면 오른쪽)
 	int  m_nEdgeOffset;		//자동Edge후 Offset
 
 	int  m_nTapeDist[3];	//[0]LOT구분TAPE [1]:보호 [2]:이형  Tape오기까지 Frame수

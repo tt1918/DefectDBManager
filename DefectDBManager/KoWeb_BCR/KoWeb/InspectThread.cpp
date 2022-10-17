@@ -533,8 +533,18 @@ void CKoWebView::ViewInspect()
 	WebInspect();
 #endif
 
-	if(m_pShowInfo)
+	if (m_pShowInfo)
+	{
 		m_pShowInfo->SetResult(g_Temp.m_nLatestResult);
+
+#ifdef BARCODE_VISION
+		if(g_Temp.m_isBcrSuccessRead==true)
+			SetSpreadData(11, g_Temp.m_strBcrName, RGB(0, 255, 0));
+		else
+			SetSpreadData(11, _T("NONE"), RGB(255, 0, 0));
+#endif
+	}
+
 }
 
 //서버에 보낼데이타 만듦 불량 

@@ -361,7 +361,14 @@ int LoadSystemData()
 	g_System.m_nMinExposure=100;
 #endif
 
+#ifdef BARCODE_VISION
+	g_System.m_nImageW = g_System.m_nPitch = 4096;
+	g_System.m_nImageH = 2048;
+	g_System.m_nMakePyramid = 0;
 
+	// 테스트 용
+	g_System.m_nFlatBright = 0;
+#endif
 
 	return ok;
 }
@@ -759,7 +766,6 @@ void LoadPerspective()
 	CString str;
 	int nLUTL[2], nLUTR[2];
 
-
 	//NEL로 읽어보고 -------------------------------------------------------------
 	#ifdef USE_HEX_FORMAT
 		str.Format(_T("NEL-%X"), g_Temp.m_nPCID);
@@ -779,11 +785,8 @@ void LoadPerspective()
 		str.Format(_T("COS-%d"), g_Temp.m_nPCID);
 	#endif
 
-
 	nLUTL[1] = GetPrivateProfileInt(str,_T("LEFT"),			 0,	PROJECTION_PATH);
 	nLUTR[1] = GetPrivateProfileInt(str,_T("RIGHT"),		 0,	PROJECTION_PATH);
-
-
 
 	if(nLUTL[0])		g_System.m_nLUTL=nLUTL[0];
 	else if(nLUTL[1])	g_System.m_nLUTL=nLUTL[1];

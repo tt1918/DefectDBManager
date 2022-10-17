@@ -2139,7 +2139,19 @@ void ApplyOpticF()
 void ApplyOpticBCR()
 {
 #ifdef BARCODE_VISION
-	
+	// 임시로 사용
+	g_Param.m_nBrightMin = 50;
+	g_Param.m_nBrightMax = 250;
+	g_Param.m_nNotInspArea = 1;
+	g_Param.m_nAutoEdgeFind = 1;
+	g_Param.m_nBCRSearchPixel = 80;
+	g_Param.m_nBcrW = 80;
+	g_Param.m_nBcrH = 160;
+	g_Param.m_useBcrMatSize = true;
+	g_Param.m_nBcrDiffW = 20;
+	g_Param.m_nBcrDiffH = 20;
+	g_Param.m_nBcrDotTh = 20;
+	g_Param.m_nBcrDotUpTh = 80;
 #endif
 }
 void ApplyOpticMarkingVision() 

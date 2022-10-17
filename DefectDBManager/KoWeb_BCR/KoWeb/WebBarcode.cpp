@@ -82,7 +82,7 @@ void WEB_Barcode(LPVOID pParent)
 		memcpy(l_fmBCRBK + nBcrPitch * i, fm + pitch * i + nX, nBcrPitch);
 	//------------------------------------------------------------
 
-	
+
 
 }
 
@@ -157,7 +157,7 @@ bool SearchBCR(LPVOID pParent)
 			strReadMsg = strRead.c_str();
 			if (strReadMsg == _T("") || CheckValidCode(strReadMsg) == false)
 			{
-		if (g_Temp.m_BcrRect.top > height)	g_Temp.m_BcrRect.top = height;
+				if (g_Temp.m_BcrRect.top > height)	g_Temp.m_BcrRect.top = height;
 				strReadMsg = _T("no_barcode");
 				g_Temp.m_isBcrSuccessRead = false;
 			}
@@ -233,10 +233,9 @@ bool SearchBCR(LPVOID pParent)
 		// 강제 입력 시 방향을 설정해준다. 
 		if (g_Temp.m_bBcrForceInsert == true)
 		{
-			if (g_Temp.m_bBcrForceDir == true) // 증가
-				g_Temp.m_nBcrDir = 1;
-			else
-				g_Temp.m_nBcrDir = 0;
+			// 증가
+			if (g_Temp.m_bBcrForceDir == true)	g_Temp.m_nBcrDir = 1;
+			else								g_Temp.m_nBcrDir = -1;
 		}
 
 		int nRet = 0;
@@ -424,7 +423,7 @@ bool SearchBCR(LPVOID pParent)
 				}
 
 				// BCR 인식률 전송
-				if (g_Temp.m_nInspectFrame > 0 && g_Temp.m_nInspectFrame%100==0)
+				if (g_Temp.m_nInspectFrame > 0 && g_Temp.m_nInspectFrame % 100 == 0)
 				{
 					double dReadingRate;
 
@@ -437,7 +436,7 @@ bool SearchBCR(LPVOID pParent)
 					strLog.Format(_T("[INFO] Barcode Reading Rate: %d"), (int)dReadingRate);
 					WriteLog(strLog);
 				}
-				
+
 			}
 		}
 	}
@@ -457,19 +456,19 @@ bool SearchBCR(LPVOID pParent)
 		}
 	}
 
-	if (g_Param.m_bBcrSaveImage==true && g_Temp.m_isBcrSuccessRead==true)
+	if (g_Param.m_bBcrSaveImage == true && g_Temp.m_isBcrSuccessRead == true)
 	{
 		int stX, stY;
 		stX = g_Temp.m_BcrRect.left + g_Temp.m_BcrRect.Width() / 2 - BAD_IMG_WIDTH / 2;
 		stY = g_Temp.m_BcrRect.top + g_Temp.m_BcrRect.Height() / 2 - BAD_IMG_HEIGHT / 2;
 		for (i = 0; i < BAD_IMG_HEIGHT; i++)
 		{
-			memcpy(g_Defect.m_pImage[0] + i * BAD_IMG_WIDTH, fm + (stY + i) * width + stX, sizeof(BYTE)* BAD_IMG_WIDTH);
+			memcpy(g_Defect.m_pImage[0] + i * BAD_IMG_WIDTH, fm + (stY + i) * width + stX, sizeof(BYTE) * BAD_IMG_WIDTH);
 		}
 
 		double dBcrX = 0.f, dBcrY = 0.f;
-		dBcrX = (g_Temp.m_BcrRectFine.left + g_Temp.m_BcrRectFine.Width()/2.0) * g_Param.m_dScaleFactorX;
-		dBcrY = (g_Temp.m_BcrRectFine.top + g_Temp.m_BcrRectFine.Height()/2.0) * g_Param.m_dScaleFactorY;
+		dBcrX = (g_Temp.m_BcrRectFine.left + g_Temp.m_BcrRectFine.Width() / 2.0) * g_Param.m_dScaleFactorX;
+		dBcrY = (g_Temp.m_BcrRectFine.top + g_Temp.m_BcrRectFine.Height() / 2.0) * g_Param.m_dScaleFactorY;
 
 		CString sNGImageName, sNGImageFullName;
 		sNGImageName.Format(_T("MATCHED_[%05d]%.3f_%.3f.bmp"), nFrameNum, dBcrX, dBcrY);
@@ -910,11 +909,10 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 
 	//-----------------------------------------------------------------------------------------
 	//필름이 나오는 부위에 따라 기준선을 찾는다. 오른쪽에 나오는 경우 오른쪽부터 기준선을 찾음
+	edgeX = g_Temp.m_nFoundEdge;
 
 	if (g_Temp.m_nEdgeDir == 1)	//PVA가 영상에서 오른쪽에 있을 경우 
 	{
-		edgeX = g_Temp.m_nFoundEdge;
-
 		if (edgeX > w - 1 || edgeX < 20)	edgeX = g_Temp.m_nBcrPreEdge;
 		else								g_Temp.m_nBcrPreEdge = edgeX;
 
@@ -938,15 +936,13 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// 에지 기준으로 검출 영역 생성 - S
-	if (g_Temp.m_nEdgeDir == 1)  // 에지 기준 오른쪽에 바코드가 있는 경우
+	if (g_Temp.m_nEdgeDir == 0)  // 에지 기준 오른쪽에 바코드가 있는 경우
 	{
 		rtBcrArea = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
 		rtBcrAreaCheck = CRect(edgeX - g_Param.m_nBCRSearchPixel, 0, edgeX - 2, h);
 		g_Temp.m_BcrRect = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
-
-
 	}
-	else	// 에지 기준 오른쪽에 바코드가 있는 경우
+	else	// 에지 기준 왼쪽에 바코드가 있는 경우
 	{
 		rtBcrArea = CRect(edgeX - g_Param.m_nBCRSearchPixel, 0, edgeX - 2, h);
 		rtBcrAreaCheck = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
@@ -973,10 +969,10 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	int bcrHalfW = g_Param.m_nBcrW / 2;
 	int bcrHalfH = g_Param.m_nBcrH / 2;
 
-	if (g_Temp.m_nEdgeDir == 0)  // 에지 왼쪽에 BCR 존재
-		g_Temp.m_BcrRect.SetRect(BarCenter.x - (g_Param.m_nBcrOffset + bcrHalfW), g_Temp.m_BcrRectFine.top - bcrHalfH, edgeX - g_Param.m_nBcrOffset, g_Temp.m_BcrRectFine.bottom + bcrHalfH);
-	else					  // 에지 오른쪽에 BCR 존재
+	if (g_Temp.m_nEdgeDir == 0)		// 에지 오른쪽에 BCR 존재
 		g_Temp.m_BcrRect.SetRect(edgeX + g_Param.m_nBcrOffset, g_Temp.m_BcrRectFine.top - bcrHalfH, BarCenter.x + (bcrHalfW + g_Param.m_nBcrOffset), g_Temp.m_BcrRectFine.bottom + bcrHalfH);
+	else							// 에지 왼쪽에 BCR 존재	
+		g_Temp.m_BcrRect.SetRect(BarCenter.x - (g_Param.m_nBcrOffset + bcrHalfW), g_Temp.m_BcrRectFine.top - bcrHalfH, edgeX - g_Param.m_nBcrOffset, g_Temp.m_BcrRectFine.bottom + bcrHalfH);
 	//바코드 중심점 및 영역 만듬 - E  
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1020,22 +1016,24 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 			memset(pInt, 0, sizeof(long) * kSize * kSize);
 			memcpy(fmDilate, fmErode, rectBcd.Width() * rectBcd.Height());
 
-			for (int iter = 0; i < 4; i++)
+			
+
+			for (int iter = 0; iter < 1; iter++)
 			{
-				Erode_Gray(fmErode, fmTmp, 0, 0, rectBcd.Width(), rectBcd.Height(), rectBcd.Width(), pInt, kSize, kSize);
+				Erode_Gray(fmErode, fmTmp, 0, 0, rectBcd.Width()-1, rectBcd.Height()-1, rectBcd.Width(), pInt, kSize, kSize);
 				memcpy(fmErode, fmTmp, sizeof(BYTE) * rectBcd.Width() * rectBcd.Height());
 			}
 
-			for (int iter = 0; i < 4; i++)
+			for (int iter = 0; iter < 4; iter++)
 			{
-				Dilate_Gray(fmDilate, fmTmp, 0, 0, rectBcd.Width(), rectBcd.Height(), rectBcd.Width(), pInt, kSize, kSize);
+				Dilate_Gray(fmDilate, fmTmp, 0, 0, rectBcd.Width()-1, rectBcd.Height()-1, rectBcd.Width(), pInt, kSize, kSize);
 				memcpy(fmDilate, fmTmp, sizeof(BYTE) * rectBcd.Width() * rectBcd.Height());
 			}
 
 			memset(fmTmp, 0xff, rectBcd.Width() * rectBcd.Height());
 
 			int refTh = (int)dAvg - g_Param.m_nBcrDotTh;
-			int refUpTh = (int)dAvg - g_Param.m_nBcrDotUpTh;
+			int refUpTh = (int)dAvg + g_Param.m_nBcrDotUpTh;
 
 			for (i = 0; i < rectBcd.Height(); i++)
 			{
@@ -1044,11 +1042,10 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 					if (*(fmErode + i * rectBcd.Width() + j) <= refTh)
 						*(fmTmp + i * rectBcd.Width() + j) = 0;
 
-					if (*(fmDilate + i * rectBcd.Width() + j) >= refUpTh)
-						*(fmTmp + i * rectBcd.Width() + j) = 0;
+					/*if (*(fmDilate + i * rectBcd.Width() + j) >= refUpTh)
+						*(fmTmp + i * rectBcd.Width() + j) = 0;*/
 				}
 			}
-
 
 			// 흑점을 Blob
 			g_Chain.SetChainData(0, fmTmp, 1, 1, 2, 10000, rectBcd.Width(), rectBcd.Height());
@@ -1094,8 +1091,8 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 					rectBlob.right = maxX[0];
 					rectBlob.top = minY[0];
 					rectBlob.bottom = maxY[0];
-					dWidth = rectBlob.Width() * g_Param.m_dScaleFactorX;
-					dHeight = rectBlob.Height() * g_Param.m_dScaleFactorY;
+					dWidth = rectBlob.Width(); //* g_Param.m_dScaleFactorX;
+					dHeight = rectBlob.Height(); //* g_Param.m_dScaleFactorY;
 					if (abs(g_Param.m_nBcrW - dWidth) <= g_Param.m_nBcrDiffW && abs(g_Param.m_nBcrH - dHeight) <= g_Param.m_nBcrDiffH)
 					{
 						dMaxMatchedW = dWidth;
@@ -1146,8 +1143,8 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 									} while (nStartIndex < nChainCnt);
 								}
 
-								dWidth = rectBlob.Width() * g_Param.m_dScaleFactorX;
-								dHeight = rectBlob.Height() * g_Param.m_dScaleFactorY;
+								dWidth = rectBlob.Width();// *g_Param.m_dScaleFactorX;
+								dHeight = rectBlob.Height();// *g_Param.m_dScaleFactorY;
 								if (abs(g_Param.m_nBcrW - dWidth) <= g_Param.m_nBcrDiffW && abs(g_Param.m_nBcrH - dHeight) <= g_Param.m_nBcrDiffH)
 								{
 									if (dMaxMatchedW > 0 && dMaxMatchedH > 0)
@@ -1236,7 +1233,7 @@ BOOL CheckValidCode(CString str)
 	int legnth = 0;
 
 	legnth = str.GetLength();
-	
+
 	if (legnth != BCR_CODE_LENGTH)
 		return (FALSE);
 
@@ -1254,10 +1251,10 @@ int CheckBcrOrder(CString NewBarcode, CString LastBarcode)
 	int NewBarcodePos;
 	int LastBarcodePos;
 	int nRst = 0;
-	
+
 	NewBarcodePos = _ttoi(NewBarcode.Right(6));
 	LastBarcodePos = _ttoi(LastBarcode.Right(6));
-	
+
 	if (NewBarcodePos == 0 || LastBarcodePos == 0)
 	{
 		nRst = 0;
@@ -1287,10 +1284,10 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 
 	if (strLot.GetLength() == 0)	strTmp.Format(_T(""));
 	else							strTmp.Format(_T("%s%s"), BCR_PATH, strLot);
-	
+
 	if (DirectoryExist(strTmp.GetBuffer()) == false)
 		CreateDirectory(strTmp, NULL);
-	
+
 	g_Temp.m_strBcrLog.Format(_T("%sBcrSearchDefectData"), strTmp);
 	int csvType = g_Param.m_nBcrCsvType;
 
@@ -1312,7 +1309,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		strBcrLotName = g_Temp.m_strBcrName.Left(LOT_NAME_LENGTH);
 		g_Temp.m_dBcrCrtRealPos = _tcstod((LPCTSTR)(str), &position);
 		g_Temp.m_dBcrCrtRealPos *= 1000.0;
-		
+
 		strLog.Format(_T("BCR NO: %s"), strBcrLotName);
 		WriteBcrDefectLog(g_Temp.m_strBcrLog, strLog);
 
@@ -1331,7 +1328,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			{
 				for (i = 0; i < 3; i++)
 					dSum += g_Temp.m_dBcrScale[i];
-				
+
 				g_Param.m_dBcrScaleFactorY = dSum / 3.0;
 
 				if (g_Param.m_dBcrScaleFactorY > g_Param.m_dScaleFactorY * 1.2 || g_Param.m_dBcrScaleFactorY > g_Param.m_dScaleFactorY * 0.8)
@@ -1404,7 +1401,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 	int nCrtMeter = 20;
 	//-----------------------------------------------------------------------------
 	//바코드 위치에서 위치 값 읽은 후 조건에 맞는 데이터 검색
-	if (g_Temp.m_isBcrFirstCheck == false && (g_Temp.m_nBcrDir==-1 || g_Temp.m_nBcrDir == 1))
+	if (g_Temp.m_isBcrFirstCheck == false && (g_Temp.m_nBcrDir == -1 || g_Temp.m_nBcrDir == 1))
 	{
 		double bar_frame_length = 0; //바코드 상 거리로 인한 프레임 길이 값 
 		bar_frame_length = g_Param.m_dBcrScaleFactorY * g_System.m_nImageH;
@@ -1429,7 +1426,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			g_Temp.m_dBcrPreFramePos = dCurFramePos;
 
 
-		
+
 		int defectCnt;
 		// 불량 데이터 검색
 		if (g_Temp.m_nBcrDir == 1)  //바코드 수가 증가할 경우 
@@ -1443,7 +1440,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		// Bcr 영역 Marking 처리
 		if (g_Temp.m_isBcrSuccessRead)
 		{
-			
+
 			g_Defect.m_BMarkDefect.x = (float)(g_Temp.m_BcrRectFine.left * g_Param.m_dScaleFactorX) + g_Param.m_dCamStartPosX;
 			g_Defect.m_BMarkDefect.y = (float)(g_Temp.m_BcrRectFine.top * g_Param.m_dScaleFactorY) + g_Param.m_dCamStartPosY;
 			g_Defect.m_BMarkDefect.width = g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX;
@@ -1451,7 +1448,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			g_Defect.m_BMarkDefect.type = csvType;
 			g_Defect.m_BMarkDefect.position = (int)g_Temp.m_dBcrCrtRealPos;
 
-			if (csvType == eCSV_TYPE_NITTO || csvType == eCSV_TYPE_NITTO_RK 
+			if (csvType == eCSV_TYPE_NITTO || csvType == eCSV_TYPE_NITTO_RK
 				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP)
 				g_Defect.m_BMarkDefect.defect_class = 6;
 			else
@@ -1460,7 +1457,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			strcpy_s(g_Defect.m_BMarkDefect.fileName, MAX_BADIMAGE_FILENAME, g_Temp.m_cBcrFileName);
 			g_Defect.m_nBcrCount = 1;
 		}
-		
+
 		// 이전 위치 데이터 업데이트
 		g_Temp.m_dBcrPreFramePos = dCurFramePos;
 	}

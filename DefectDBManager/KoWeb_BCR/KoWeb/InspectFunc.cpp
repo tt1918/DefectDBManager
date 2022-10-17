@@ -263,6 +263,8 @@ int GetImageEdge_Sub0(LPBYTE fm, int left, int top, int right, int bottom, int p
 int GetImageEdge_Sub1(LPBYTE fm, int left, int top, int width, int height, int pitch, int nThUp); //외곽에서 안쪽을 찾아가는 함수(반사류)
 int GetImageEdge_Sub2(LPBYTE fm, int left, int top, int right, int bottom, int pitch, int nThUp);
 int GetImageEdge_Sub3(LPBYTE fm, int pitch, int nThreshold);										//투영반사
+int GetImageEdge_Sub4(LPBYTE fm, int left, int top, int right, int bottom, int pitch, int nThUp);
+
 void GetImageEdge()
 {
 	int nEdge = 0;
@@ -287,7 +289,7 @@ void GetImageEdge()
 		case COSB:  g_Param.m_nEdgeThreshold = 30;  break;
 		case COSC:  g_Param.m_nEdgeThreshold = 50;  break;
 		case COSD:  g_Param.m_nEdgeThreshold = 50;  break;
-		case CBCR:  g_Param.m_nEdgeThreshold = 50;  break;
+		case CBCR:  g_Param.m_nEdgeThreshold = 40;  break;
 		case CMAK:  g_Param.m_nEdgeThreshold = 50;  break;
 		}
 	}
@@ -309,7 +311,7 @@ void GetImageEdge()
 	case COSB:  g_Temp.m_nEdgeType = 0;		  break; //반사  (최외곽)
 	case COSC:  g_Temp.m_nEdgeType = 2;		  break; //
 	case COSD:  g_Temp.m_nEdgeType = 2;		  break; //
-	case CBCR:  g_Temp.m_nEdgeType = 2;		  break; //BCR(정투과)
+	case CBCR:  g_Temp.m_nEdgeType = 4;		  break; //BCR(정투과)
 	case CMAK:  g_Temp.m_nEdgeType = 2;		  break; //마킹비전(정투과)
 	}
 
@@ -321,6 +323,8 @@ void GetImageEdge()
 		nEdge = GetImageEdge_Sub2(fm, 0, 0, g_System.m_nImageW - 1, g_System.m_nImageH - 1, g_System.m_nImageW, g_Param.m_nEdgeThreshold);
 	else if (g_Temp.m_nEdgeType == 3) //안쪽에서 바깥쪽으로 검사,(투영반사, 25개 개별로 검사해서 구함)
 		nEdge = GetImageEdge_Sub3(fm, g_System.m_nImageW, g_Param.m_nEdgeThreshold);
+	else if (g_Temp.m_nEdgeType == 4) // 에지 차이를 판단하여 경계 확인
+		nEdge = GetImageEdge_Sub4(fm, 0, 0, g_System.m_nImageW - 1, g_System.m_nImageH - 1, g_System.m_nImageW, g_Param.m_nEdgeThreshold);
 	else
 		nEdge = -2;
 
@@ -886,6 +890,102 @@ int GetImageEdge_Sub3(LPBYTE fm, int pitch, int nThreshold)
 	//}
 
 	return nFoundEdge;
+}
+
+// 바코드 검사 확인용
+int GetImageEdge_Sub4(LPBYTE fm, int left, int top, int right, int bottom, int pitch, int nThUp)
+{
+	int i, j, loop;
+	int nY1, nY2, nOff;
+	int nCount, nEdge = -1;
+	int nStep = 5;
+	int nDir = -1;
+
+	if (g_Param.m_nNotInspArea > 0)		nDir = 0;   //왼쪽 못 씀 
+	else if (g_Param.m_nNotInspArea < 0)   nDir = 1;   //오른쪽 못 씀
+	else
+	{
+		if (g_Param.m_nEdgeOffset > 0)			nDir = 0; //왼쪽 못 씀
+		else if (g_Param.m_nEdgeOffset < 0)    nDir = 1; //오른쪽 못 씀
+	}
+	if (nDir < 0) return -1;
+
+	g_Temp.m_nEdgeDir = nDir;
+
+	for (loop = 0; loop < nStep; loop++)
+	{
+		nY1 = top + (bottom - top + 1) * loop / nStep;
+		nY2 = top + (bottom - top + 1) * (loop + 1) / nStep;
+		nOff = (nY2 - nY2) / 50;
+		if (nOff < 1) nOff = 1;
+		nCount = 0;
+		memset(l_ProfileEdge, 0, (right + 1) * sizeof(int));
+		for (i = nY1; i < nY2; i += nOff)
+		{
+			nCount++;
+			for (j = left; j <= right; j++)
+				*(l_ProfileEdge + j) += *(fm + pitch * i + j);
+		}
+		if (nCount < 1) return 0;
+
+		for (j = left; j <= right; j++)
+			*(l_ProfileEdge + j) /= nCount;
+
+		if (nDir == 0)
+		{
+			for (j = right-2; j >= left-2; j--)
+				if (abs(*(l_ProfileEdge + j + 2) - *(l_ProfileEdge + j - 2)) >= nThUp)
+				{
+					nEdge = j;
+					break;
+				}
+
+			if (nEdge != -1)
+			{
+				int val1, val2;
+				val1 = *(l_ProfileEdge + j + 2);
+				val2 = *(l_ProfileEdge + j - 2);
+				int eth = val1+(val2 - val1) / 3;
+				for (int ii = nEdge + 2; ii >= nEdge - 2; ii--)
+				{
+					if (*(l_ProfileEdge + ii) > eth)
+					{
+						nEdge = ii;
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (j = left; j <= right; j++)
+				if (abs(*(l_ProfileEdge + j + 2) - *(l_ProfileEdge + j - 2)) >= nThUp)
+				{
+					nEdge = j;
+					break;
+				}
+
+			if (nEdge != -1)
+			{
+				int val1, val2;
+				val1 = *(l_ProfileEdge + j - 2);
+				val2 = *(l_ProfileEdge + j + 2);
+				int eth = val1 + (val2 - val1) / 3;
+				for (int ii = nEdge - 2; ii <= nEdge + 2; ii++)
+				{
+					if (*(l_ProfileEdge + ii) > eth)
+					{
+						nEdge = ii;
+						break;
+					}
+				}
+			}
+		}
+
+		if (nEdge != -1)
+			break;
+	}
+	return nEdge;
 }
 
 BYTE l_fmBin[BAD_IMG_WIDTH * BAD_IMG_WIDTH];

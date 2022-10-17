@@ -218,8 +218,6 @@ public:
 	//TapeÀ§Ä¡ 
 	void CPacket::MakeTapePacket(int frame_num, float dPosY);
 
-	
-
 	//	Server -> Client
 	void	MakeInstantPacket(int code, LPCSTR param_name, double val);
 	void	MakeInstantPacket(int code, LPCSTR param_name, LPSTR str_val, int len);
