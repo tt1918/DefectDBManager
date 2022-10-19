@@ -65,6 +65,8 @@ bool MarkingDataManager::SetBuffer(bool isNext)
 		m_markingNext.idx = idx;
 	}
 	m_cs.Unlock();
+
+	return true;
 }
 
 bool MarkingDataManager::SwapNext2Now()
@@ -77,6 +79,8 @@ bool MarkingDataManager::SwapNext2Now()
 	m_markingNow.idx = m_markingNext.idx;
 	resetData(true);
 	m_cs.Unlock();
+
+	return true;
 }
 
 bool MarkingDataManager::IsValid(bool isNext)
@@ -113,7 +117,7 @@ int MarkingDataManager::GetData(double startY, double endY, MARK_DEFECT* data)
 	if (IsValid(false) == false)
 		return 0;
 
-	int size = m_markingNow.data->size();
+	int size = (int)m_markingNow.data->size();
 	std::vector<MARK_DEFECT>::iterator iter;
 	
 	int cnt = 0;
@@ -134,7 +138,7 @@ int MarkingDataManager::GetData(CString strBcno, double startY, double endY, MAR
 	if (IsValid(false) == false)
 		return 0;
 
-	int size = m_markingNow.data->size();
+	int size = (int)m_markingNow.data->size();
 	std::vector<MARK_DEFECT>::iterator iter;
 
 	int cnt = 0;

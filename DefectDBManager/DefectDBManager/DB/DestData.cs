@@ -399,7 +399,7 @@ namespace DefectDBManager
 
             key = "DB_CONFIG";
             dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
-            dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
+            dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "dDB_PW", "");
             dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
 
             this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);

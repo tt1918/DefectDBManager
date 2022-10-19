@@ -377,7 +377,6 @@ void CKoWebView::OnInitialUpdate()
 	OpenPyramid(g_System.m_nImageW, g_System.m_nImageH); //영상압축시 사용할 메모리 확보
 
 
-
 #if PROGRAM_TYPE==GENERAL_TEACH
 	SetTimer(TIMER_TEST, 200, NULL);	//0.2초에 한번 실행
 #endif
@@ -404,7 +403,9 @@ void CKoWebView::OnInitialUpdate()
 	FuncBaseLineLoad(_T("C:\\COSS\\BaseLine.dat"));
 #endif
 
+#ifdef BARCODE_VISION
 	CreateDefectCallCallss();
+#endif
 }
 
 
@@ -1057,7 +1058,6 @@ void CKoWebView::OnBnClickedCheckAutoStart()
 		memset(g_fmMAP, 0, 8192*2048);
 	#endif
 #endif
-
 		if(g_Temp.m_bLive)
 		{			
 			g_Temp.m_bLive=0;
@@ -3076,6 +3076,8 @@ void CKoWebView::CreateDefectCallCallss()
 		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
 		m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
 	}
+
+	g_Param.m_nBcrCsvType = m_DefectCallClass->GetCSV_Type();
 }
 
 void CKoWebView::DestroyDefectCallClass()

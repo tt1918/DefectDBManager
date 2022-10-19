@@ -2138,20 +2138,70 @@ void ApplyOpticF()
 }
 void ApplyOpticBCR()
 {
+	// 이미 앞에 정의된 것
+	/*
+	g_Param.m_nNotInspArea = g_ParamVer.param[42];	//미검영역 (+ 면 왼쪽 미검, -면 오른쪽 미검)
+	g_Param.m_nEdgeThreshold = g_ParamVer.param[43];  //자동검사 여부 및 Threadhold
+	if (g_Param.m_nEdgeThreshold > 0) g_Param.m_nAutoEdgeFind = 1;
+	else						   g_Param.m_nAutoEdgeFind = 0;
+	g_Param.m_nEdgeOffset	=g_ParamVer.param[44];  //TAC EDGE (자동검사후 Offset영역)
+	g_Param.m_nBrightMax	=g_ParamVer.param[49];	//최대밝기
+	g_Param.m_nBrightMin	=g_ParamVer.param[50];	//최소밝기
+	*/
 #ifdef BARCODE_VISION
 	// 임시로 사용
+	g_Param.m_nBCRSearchPixel = (int)g_ParamVer.param[10];
+	g_Param.m_nBcrOffset = (int)g_ParamVer.param[11];
+
+	g_Param.m_dBcrW = g_ParamVer.param[12];
+	g_Param.m_dBcrH = g_ParamVer.param[13];
+	g_Param.m_dBcrDiffW = g_ParamVer.param[14];
+	g_Param.m_dBcrDiffH = g_ParamVer.param[15];
+
+	g_Param.m_nBCRUseDotRemove = (int)g_ParamVer.param[16];
+	g_Param.m_nBCRDotPitch = (int)g_ParamVer.param[17];
+	g_Param.m_nBcrDotTh = (int)g_ParamVer.param[18];
+	g_Param.m_nBcrDotUpTh = (int)g_ParamVer.param[19];
+
+	g_Param.m_bBcrObjW = (bool)g_ParamVer.param[20];
+
+	g_Param.m_useBCRManualArea = (bool)g_ParamVer.param[21];
+	g_Param.m_nBCRAreaL = (int)g_ParamVer.param[22];
+	g_Param.m_nBCRAreaR = (int)g_ParamVer.param[23];
+	
+	g_Param.m_useBcrMatSize = (bool)g_ParamVer.param[24];
+	g_Param.m_nBCRWarningM = (int)g_ParamVer.param[25];
+	g_Param.m_nBCRErrorM = (int)g_ParamVer.param[26];
+
+	g_Param.m_bBcrSaveImage = (bool)g_ParamVer.param[27];
+
 	g_Param.m_nBrightMin = 50;
 	g_Param.m_nBrightMax = 250;
 	g_Param.m_nNotInspArea = 1;
 	g_Param.m_nAutoEdgeFind = 1;
-	g_Param.m_nBCRSearchPixel = 80;
-	g_Param.m_nBcrW = 80;
-	g_Param.m_nBcrH = 160;
+	g_Param.m_nBCRSearchPixel = 500;
 	g_Param.m_useBcrMatSize = true;
-	g_Param.m_nBcrDiffW = 20;
-	g_Param.m_nBcrDiffH = 20;
+	g_Param.m_dBcrW = 4.0;
+	g_Param.m_dBcrH = 6.5;
+	g_Param.m_dBcrDiffW = 0.5;
+	g_Param.m_dBcrDiffH = 0.5;
 	g_Param.m_nBcrDotTh = 20;
-	g_Param.m_nBcrDotUpTh = 80;
+	g_Param.m_nBcrDotUpTh = 20;
+	g_Param.m_useBCRManualArea = false;
+
+	g_Param.m_nBCRAreaL = 1;
+	g_Param.m_nBCRAreaR = 10;
+
+	g_Param.m_nBcrOffset = 5;
+
+	// Wrapper에서 얻어옴 - S
+	// g_Param.m_nBcrCsvType = 0;
+	// Wrapper에서 얻어옴 - E
+
+	g_Param.m_nBcrNullDotDiff = 10;
+	g_Param.m_nBcrNullDotOffset = 5;
+	g_Param.m_nBcrNullDotCheckMin= 20;
+	g_Param.m_nBcrNullDotConnMin = 3;
 #endif
 }
 void ApplyOpticMarkingVision() 

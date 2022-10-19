@@ -308,3 +308,8 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 	}
 
 }
+
+int CallClassWrapper::GetCSV_Type()
+{
+	return m_pCallClass->GetCSV_Type();
+}

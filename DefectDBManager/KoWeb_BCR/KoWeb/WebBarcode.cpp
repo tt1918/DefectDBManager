@@ -1,4 +1,4 @@
-#include "Stdafx.h"
+ï»¿#include "Stdafx.h"
 
 #include <memory.h>
 #include <emmintrin.h>
@@ -9,6 +9,10 @@
 #include "KoWebDoc.h"
 #include "KoWebView.h"
 #include "BCR/CallClassWrapperCodeReader.h"
+
+#include "opencv.hpp"
+#include "imgproc/imgproc.hpp"
+#include <list>
 
 //BARCODE_VISION
 
@@ -21,6 +25,8 @@ extern CXManageSocket  l_Send_Server;
 BYTE l_fmBCRBK[512 * 128];
 BYTE l_fmBCR[512 * 2178];
 
+int m_tmpNullDotPos;
+
 int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, int* pY, TCHAR sBcr[][30]);
 
 bool SearchBCR(LPVOID pParent);
@@ -32,7 +38,11 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch);
 BOOL CheckValidCode(CString str);
 int CheckBcrOrder(CString NewBarcode, CString LastBarcode);
 void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum);
+bool CheckDotOnPVA(LPBYTE fm, int w, int h, int pitch, int left, int right, int dir);
 
+bool Read2DMatrix(cv::Mat roiImage);
+std::list<cv::Rect> FindBarcodePosition(cv::Mat image);
+cv::Rect SetBarcodeArea(cv::Rect rect, int width, int height);
 
 void WEB_Barcode(LPVOID pParent)
 {
@@ -54,12 +64,30 @@ void WEB_Barcode(LPVOID pParent)
 	if (g_Temp.m_nEdgeDir == 0) nX = g_Temp.m_nInspectX1;
 	else                     nX = g_Temp.m_nInspectX2 - nBcrPitch;
 
-	// ±âÁ¸ ¹æ½Ä °Ë»ç 
-	if (SearchBCR(pParent) == false) // °Ë»ç ½ÇÆĞÇÑ °æ¿ì Àç°Ë»ç
-	{
+	// ê¸°ì¡´ ë°©ì‹ ê²€ì‚¬ 
+	bool bRes = SearchBCR(pParent);
 
+	// ê²€ì‚¬ ì‹¤íŒ¨í•œ ê²½ìš° ì¬ê²€ì‚¬
+	if (bRes == false)
+	{
+		cv::Mat inImg = cv::Mat(height, width, CV_8UC1);
+		memcpy(inImg.data, fm, sizeof(BYTE) * height * width);
+
+		std::list<cv::Rect> codePosition = FindBarcodePosition(inImg);
+		for (std::list<cv::Rect>::iterator iter = codePosition.begin(); iter != codePosition.end(); iter++)
+		{
+			bRes = Read2DMatrix(inImg(*iter));
+			if (bRes == true)
+				break;
+		}
+		inImg.release();
 	}
-	else // ¿Ï·áÇÏ¸é ÈÄÃ³¸®???
+
+	if (bRes == true)
+	{
+		SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
+	}
+	else
 	{
 
 	}
@@ -71,29 +99,22 @@ void WEB_Barcode(LPVOID pParent)
 
 	nBCRCount = GetBCRData(l_fmBCR, 0, 0, nBcrPitch, 2178, nBcrPitch, nBcrX, nBcrY, sBCR);
 
-
 	for (i = 0; i < nBCRCount; i++)
 	{
 
 	}
 
-	//°¡Àå ¸¶Áö¸· ÃÔ»óÇÑ°Í º¸°ü-----------------------------------
+	//ê°€ì¥ ë§ˆì§€ë§‰ ì´¬ìƒí•œê²ƒ ë³´ê´€-----------------------------------
 	for (i = 0; i < 128; i++)
 		memcpy(l_fmBCRBK + nBcrPitch * i, fm + pitch * i + nX, nBcrPitch);
 	//------------------------------------------------------------
-
-
-
 }
 
-//ÃÖ´ë 10°³ÀÌ³ª Çö½ÇÀûÀ¸·Î 3°³¸¸, »ó, ÇÏ ºÙÀº°ÍÀº Á¦¿Ü.
-//¹ÙÄÚµå Ã£À»¶§ ÇÊ¿äÇÑ ÆÄ¶ó¹ÌÅÍ ¾Ë·ÁÁà¿ä
+//ìµœëŒ€ 10ê°œì´ë‚˜ í˜„ì‹¤ì ìœ¼ë¡œ 3ê°œë§Œ, ìƒ, í•˜ ë¶™ì€ê²ƒì€ ì œì™¸.
+//ë°”ì½”ë“œ ì°¾ì„ë•Œ í•„ìš”í•œ íŒŒë¼ë¯¸í„° ì•Œë ¤ì¤˜ìš”
 int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, int* pY, TCHAR sBcr[][30])
 {
 	int nBCRCount = 0;
-
-
-
 
 	return nBCRCount;
 }
@@ -111,9 +132,10 @@ bool SearchBCR(LPVOID pParent)
 	CString strLog;
 	g_Temp.m_isBcrSuccessRead = false;
 	g_Temp.m_nBcrPatFind = 0;
-	// °á°ú µ¥ÀÌÅÍ´Â ÀüºÎ g_Temp µ¥ÀÌÅÍ¿¡ ÀúÀåµÊ.
+
+	// ê²°ê³¼ ë°ì´í„°ëŠ” ì „ë¶€ g_Temp ë°ì´í„°ì— ì €ì¥ë¨.
 	GetBcrPosition(fm, 0, 0, width, height, pitch);
-	// ±âÁ¸ ÄÚµå
+	// ê¸°ì¡´ ì½”ë“œ
 
 
 	bool isBcrExsit = true;
@@ -145,7 +167,7 @@ bool SearchBCR(LPVOID pParent)
 
 		if (isBcrExsit == true)
 		{
-			// BCR °ËÃâ 
+			// BCR ê²€ì¶œ 
 #ifdef USE_CODEREADERDLL
 			BYTE* pBcrImg = new BYTE[tmpRect.Width() * tmpRect.Height()];
 			for (i = tmpRect.top, j = 0; i < tmpRect.bottom; i++, j++)
@@ -164,7 +186,7 @@ bool SearchBCR(LPVOID pParent)
 			else
 			{
 				g_Temp.m_BcrRectCodeRead = g_CodeReader.GetLastCodePosition();
-				// ÀÌ¹ÌÁö »óÀÇ ½ÇÁ¦ ÁÂÇ¥ À§Ä¡·Î ÀÌµ¿
+				// ì´ë¯¸ì§€ ìƒì˜ ì‹¤ì œ ì¢Œí‘œ ìœ„ì¹˜ë¡œ ì´ë™
 				g_Temp.m_BcrRectCodeRead.OffsetRect(CPoint(tmpRect.left, tmpRect.top));
 				g_Temp.m_isBcrSuccessRead = true;
 			}
@@ -203,7 +225,7 @@ bool SearchBCR(LPVOID pParent)
 					{
 						g_Temp.m_strBcrForceData = strTemp;
 
-						// °­Á¦ ¾Ë¶÷
+						// ê°•ì œ ì•ŒëŒ
 						l_Send_Server.SendCommand_LocalHost(NM_FORCE_BCR_NOT_MATCHED_ALRAM);
 						strLog.Format(_T("[FORCE_BCR] Matching Error BCR and OCR :%s,%s"), strForcedBcr, strTemp);
 						WriteLog(strLog);
@@ -230,10 +252,10 @@ bool SearchBCR(LPVOID pParent)
 
 		g_Temp.m_strBcrName = strReadMsg;
 
-		// °­Á¦ ÀÔ·Â ½Ã ¹æÇâÀ» ¼³Á¤ÇØÁØ´Ù. 
+		// ê°•ì œ ì…ë ¥ ì‹œ ë°©í–¥ì„ ì„¤ì •í•´ì¤€ë‹¤. 
 		if (g_Temp.m_bBcrForceInsert == true)
 		{
-			// Áõ°¡
+			// ì¦ê°€
 			if (g_Temp.m_bBcrForceDir == true)	g_Temp.m_nBcrDir = 1;
 			else								g_Temp.m_nBcrDir = -1;
 		}
@@ -242,7 +264,7 @@ bool SearchBCR(LPVOID pParent)
 		if (g_Temp.m_isBcrSuccessRead == false && g_Temp.m_nBcrDir != 0 && isBcrExsit == true &&
 			(g_Param.m_useBcrMatSize == true && g_Temp.m_BcrRectFine.Width() > 0))
 		{
-			// ½ÇÁ¦ BCR Length Ã³¸® Ãß°¡ÇØ¾ßÇÔ.
+			// ì‹¤ì œ BCR Length ì²˜ë¦¬ ì¶”ê°€í•´ì•¼í•¨.
 			const double dBarcode_period_frame = (double)(1000, 0 / (g_Param.m_dBcrScaleFactorY * height));
 			/*if (m_bUseTestMode && !m_bSim_Mode || m_bUseTestMode && m_bSim_Mode)
 			{
@@ -291,16 +313,16 @@ bool SearchBCR(LPVOID pParent)
 				CString strNewBCNO;
 				if (g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == false)
 				{
-					if (g_Temp.m_nBcrDir == -1)  // °¨¼Ò
+					if (g_Temp.m_nBcrDir == -1)  // ê°ì†Œ
 					{
 						int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
 						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nBcd);
 
-						strLog.Format(_T("[FORCE_BCR]°­Á¦ Calulated nBcd after forced BCR inserting : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / "),
+						strLog.Format(_T("[FORCE_BCR]ê°•ì œ Calulated nBcd after forced BCR inserting : %d / BCNO : %s / gFrame : %d , LastFrame : %d fBpF:%.6f / "),
 							nBcd, strNewBCNO, nFrameNum, g_Temp.m_nBcrPreInspFrame, dBarcode_period_frame);
 						WriteLog(strLog);
 					}
-					else // Áõ°¡
+					else // ì¦ê°€
 					{
 						int nBcd = int((nFrameNum - nLastBcrFrame) / dBarcode_period_frame);
 						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nBcd);
@@ -312,9 +334,9 @@ bool SearchBCR(LPVOID pParent)
 				}
 				else
 				{
-					if (g_Temp.m_nBcrDir == -1)  // °¨¼Ò
+					if (g_Temp.m_nBcrDir == -1)  // ê°ì†Œ
 						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp - nMatchFrame);
-					else // Áõ°¡
+					else // ì¦ê°€
 						strNewBCNO.Format(_T("%s%06d"), strMsg, ntmp + nMatchFrame);
 				}
 
@@ -367,13 +389,13 @@ bool SearchBCR(LPVOID pParent)
 			(g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == true) ||
 			(g_Temp.m_nBcrDir != 0))
 		{
-			// Àü°øÁ¤ °áÁ¡ µ¥ÀÌÅÍ °Ë»öÇØ¾ßÇÔ
+			// ì „ê³µì • ê²°ì  ë°ì´í„° ê²€ìƒ‰í•´ì•¼í•¨
 		}
 
 		if (g_Param.m_nBcrCsvType == eCSV_TYPE_NITTO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO_RK)
 		{
-			// 10¹ÌÅÍ ¸¶´Ù ºÒ·® µ¥ÀÌÅÍ Àü¼Û?????
-			// ±¸Çö È®ÀÎ ÇØ¾ßÇÔ.
+			// 10ë¯¸í„° ë§ˆë‹¤ ë¶ˆëŸ‰ ë°ì´í„° ì „ì†¡?????
+			// êµ¬í˜„ í™•ì¸ í•´ì•¼í•¨.
 		}
 
 		if (g_Param.m_nBcrCsvType == eCSV_TYPE_NITTO_RK || g_Param.m_nBcrCsvType == eCSV_TYPE_NITTO_RTS ||
@@ -392,7 +414,7 @@ bool SearchBCR(LPVOID pParent)
 				if (g_Param.m_dBcrScaleFactorY > BCR_SCALE_MAX)
 					g_Param.m_dBcrScaleFactorY = BCR_SCALE_REF;
 
-				// ¹ÌÅÍ·Î °è»ê
+				// ë¯¸í„°ë¡œ ê³„ì‚°
 				calcFrameLeng = (g_Param.m_dBcrScaleFactorY * height) / 1000.0;
 				g_Temp.m_nBcrNoReadWarning += calcFrameLeng;
 				g_Temp.m_nBcrNoReadError += calcFrameLeng;
@@ -422,7 +444,7 @@ bool SearchBCR(LPVOID pParent)
 					}
 				}
 
-				// BCR ÀÎ½Ä·ü Àü¼Û
+				// BCR ì¸ì‹ë¥  ì „ì†¡
 				if (g_Temp.m_nInspectFrame > 0 && g_Temp.m_nInspectFrame % 100 == 0)
 				{
 					double dReadingRate;
@@ -473,7 +495,7 @@ bool SearchBCR(LPVOID pParent)
 		CString sNGImageName, sNGImageFullName;
 		sNGImageName.Format(_T("MATCHED_[%05d]%.3f_%.3f.bmp"), nFrameNum, dBcrX, dBcrY);
 
-		//ºÒ·®ÀÌ¹ÌÁö ÀúÀåÇÏ´Â °Í ¸·À½(Å×½ºÆ®¿¡¼­ ÀúÀåÇÏÁö ¸øÇÏ°Ô), ÇöÀåÀû¿ë¿¡¼­´Â DONT_SAVE_IMAGE ¾ø¾Ú.
+		//ë¶ˆëŸ‰ì´ë¯¸ì§€ ì €ì¥í•˜ëŠ” ê²ƒ ë§‰ìŒ(í…ŒìŠ¤íŠ¸ì—ì„œ ì €ì¥í•˜ì§€ ëª»í•˜ê²Œ), í˜„ì¥ì ìš©ì—ì„œëŠ” DONT_SAVE_IMAGE ì—†ì•°.
 #ifndef DONT_SAVE_IMAGE			
 		if (g_Temp.m_dHDDspace == 0 || g_Temp.m_dHDDspace > 15.0)
 		{
@@ -637,7 +659,7 @@ CPoint GetBcrCenter(unsigned char* fm, CRect rt, int nPitch)
 	long temp_sum = 9200000;
 
 	//for(j=rt.top; j<rt.bottom; j+=nSkipY)
-	for (j = rt.top; j < rt.bottom; j++)	//ÄÚÅØ°ú µ¿ÀÏÇÏ°Ô ¹Ù²Ş
+	for (j = rt.top; j < rt.bottom; j++)	//ì½”í…ê³¼ ë™ì¼í•˜ê²Œ ë°”ê¿ˆ
 	{
 		for (i = rt.left; i < rt.right; i += nSkipX)
 		{
@@ -670,8 +692,8 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 	int ntmp = 0;
 	int ntop = 0, nbottom = 0, nleft = 0, nright = 0, nth = 0, nping = 0;
 	nping = 0;
-	//±âÁ¸¿¡´Â ´©Àû Gray°ªÀ¸·Î ºñ±³ÇßÀ½. BCD Search ROI Å©±â°¡ º¯°æµÇ¸é, TH°¡ ½ÇÁúÀûÀ¸·Î º¯°æµÇ´Â ¹®Á¦°¡ ÀÖ¾úÀ½.
-	//º¸Åë BCD ³ôÀÌ°¡ 140pixelÁ¤µµ µÇ°í ÆøÀ» 220PixelÁ¤µµ·Î ¼³Á¤, º¸Åë Áß°£°ªÀ¸·Î Æò±Õ TH¸¦ ±¸ÇÔ
+	//ê¸°ì¡´ì—ëŠ” ëˆ„ì  Grayê°’ìœ¼ë¡œ ë¹„êµí–ˆìŒ. BCD Search ROI í¬ê¸°ê°€ ë³€ê²½ë˜ë©´, THê°€ ì‹¤ì§ˆì ìœ¼ë¡œ ë³€ê²½ë˜ëŠ” ë¬¸ì œê°€ ìˆì—ˆìŒ.
+	//ë³´í†µ BCD ë†’ì´ê°€ 140pixelì •ë„ ë˜ê³  í­ì„ 220Pixelì •ë„ë¡œ ì„¤ì •, ë³´í†µ ì¤‘ê°„ê°’ìœ¼ë¡œ í‰ê·  THë¥¼ êµ¬í•¨
 	double dTh = g_Param.m_nBcrDotTh;
 	rect.SetRect(0, 0, w, h);
 
@@ -697,7 +719,7 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 
 
 	//--------------------------------------------------------------------
-	// À§¾Æ·¡ BCD ¿µ¿ªÀ» Ã£À½
+	// ìœ„ì•„ë˜ BCD ì˜ì—­ì„ ì°¾ìŒ
 	int k = 0;
 	int* pHisto = new int[rect.Height()];
 	memset(pHisto, 0, sizeof(int) * rect.Height());
@@ -714,7 +736,7 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 	int nPosMin = 0;
 	int nPosMax = 0;
 	int nHisto, nPos;
-	//°¡Àå ³·Àº À§Ä¡¸¦ Ã£´Â´Ù.
+	//ê°€ì¥ ë‚®ì€ ìœ„ì¹˜ë¥¼ ì°¾ëŠ”ë‹¤.
 	if (g_Param.m_bBcrObjW == false)
 	{
 		for (j = rect.top + 5; j < rect.bottom - 5; j++)
@@ -777,14 +799,14 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 		ntop = 0;
 	}
 
-	// ÁÂ¿ì BCD ¿µ¿ªÀ» Ã£À½
+	// ì¢Œìš° BCD ì˜ì—­ì„ ì°¾ìŒ
 
 	if (nbottom < 0 || ntop < 0 || nbottom >2048 || ntop >2048)
 	{
 	}
 	else
 	{
-		//BCD¸¦ Æ÷ÇÔÇÏÁö ¾Ê´Â ÁÖº¯¿µ¿ªÀÇ Projection À» ±¸ÇÔ
+		//BCDë¥¼ í¬í•¨í•˜ì§€ ì•ŠëŠ” ì£¼ë³€ì˜ì—­ì˜ Projection ì„ êµ¬í•¨
 		int* pOuterHistoY = new int[rect.Width()];
 		memset(pOuterHistoY, 0, sizeof(int) * rect.Width());
 		const int nProjRange = 50;
@@ -811,7 +833,7 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 			nOuterCount += (rect.Height() - nbottom + nProjSkip) / 2;
 		}
 
-		//BCD¸¦ Æ÷ÇÔÇÏÁö ¾Ê´Â ¿µ¿ª°ú BCD¿µ¿ª°úÀÇ ¹à±âÂ÷ÀÌ·Î ÁÂ¿ì BCD¿µ¿ªÀ» Ã£À½
+		//BCDë¥¼ í¬í•¨í•˜ì§€ ì•ŠëŠ” ì˜ì—­ê³¼ BCDì˜ì—­ê³¼ì˜ ë°ê¸°ì°¨ì´ë¡œ ì¢Œìš° BCDì˜ì—­ì„ ì°¾ìŒ
 		int* pHistoY = new int[rect.Width()];
 		memset(pHistoY, 0, sizeof(int) * (rect.Width()));
 		nCount = nbottom - ntop;
@@ -878,7 +900,7 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 		delete[] pOuterHistoY;
 	}
 
-	//ºÎÀûÀıÇÑ Rect »çÀÌÁî Ã³¸®
+	//ë¶€ì ì ˆí•œ Rect ì‚¬ì´ì¦ˆ ì²˜ë¦¬
 	nping = 0;
 	if (nleft < 0)		nleft = rect.left;
 	if (nright < 0)		nright = rect.right;
@@ -895,70 +917,75 @@ CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect)
 }
 
 
-// 2D ¹ÙÄÚµå ¿µ¿ª È¹µæ
-// Nitto ±âÁØÀ¸·Î 
+// 2D ë°”ì½”ë“œ ì˜ì—­ íšë“
+// Nitto ê¸°ì¤€ìœ¼ë¡œ 
 void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 {
 	CRect rtBcrArea = CRect(0, 0, 0, 0);
-	CRect rtBcrAreaCheck = CRect(0, 0, 0, 0); //Å×½ºÆ® °ËÁõ¿ë 
+	CRect rtBcrAreaCheck = CRect(0, 0, 0, 0); //í…ŒìŠ¤íŠ¸ ê²€ì¦ìš© 
 
 	int edgeX = 0;
-	CRect rt = CRect(0, 0, w, h);
-	int ntmp = 0;
-
-
 	//-----------------------------------------------------------------------------------------
-	//ÇÊ¸§ÀÌ ³ª¿À´Â ºÎÀ§¿¡ µû¶ó ±âÁØ¼±À» Ã£´Â´Ù. ¿À¸¥ÂÊ¿¡ ³ª¿À´Â °æ¿ì ¿À¸¥ÂÊºÎÅÍ ±âÁØ¼±À» Ã£À½
+	//í•„ë¦„ì´ ë‚˜ì˜¤ëŠ” ë¶€ìœ„ì— ë”°ë¼ ê¸°ì¤€ì„ ì„ ì°¾ëŠ”ë‹¤. ì˜¤ë¥¸ìª½ì— ë‚˜ì˜¤ëŠ” ê²½ìš° ì˜¤ë¥¸ìª½ë¶€í„° ê¸°ì¤€ì„ ì„ ì°¾ìŒ
 	edgeX = g_Temp.m_nFoundEdge;
-
-	if (g_Temp.m_nEdgeDir == 1)	//PVA°¡ ¿µ»ó¿¡¼­ ¿À¸¥ÂÊ¿¡ ÀÖÀ» °æ¿ì 
+	if (g_Temp.m_nEdgeDir == 0)	//PVAê°€ ì˜ìƒì—ì„œ ì˜¤ë¥¸ìª½ì— ìˆì„ ê²½ìš° 
 	{
 		if (edgeX > w - 1 || edgeX < 20)	edgeX = g_Temp.m_nBcrPreEdge;
 		else								g_Temp.m_nBcrPreEdge = edgeX;
-
-		rt.left = edgeX;
-
-		if (ntmp == 0) ntmp = edgeX;
-		else		edgeX = ntmp + g_Param.m_nEdgeOffset;
 	}
 	else
 	{
 		if (edgeX > w - 1 || edgeX < 20)	edgeX = g_Temp.m_nBcrPreEdge;
 		else								g_Temp.m_nBcrPreEdge = edgeX;
-
-		rt.right = edgeX;
-
-		if (ntmp == 0) ntmp = edgeX;
-		else		edgeX = ntmp + g_Param.m_nEdgeOffset;
 	}
-
 	g_Temp.m_nFoundEdge = edgeX;
+	//-----------------------------------------------------------------------------------------
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	// ¿¡Áö ±âÁØÀ¸·Î °ËÃâ ¿µ¿ª »ı¼º - S
-	if (g_Temp.m_nEdgeDir == 0)  // ¿¡Áö ±âÁØ ¿À¸¥ÂÊ¿¡ ¹ÙÄÚµå°¡ ÀÖ´Â °æ¿ì
+	// ì—ì§€ ê¸°ì¤€ìœ¼ë¡œ ê²€ì¶œ ì˜ì—­ ìƒì„± - S
+	if (g_Temp.m_nEdgeDir == 0)  // ì—ì§€ ê¸°ì¤€ ì˜¤ë¥¸ìª½ì— ë°”ì½”ë“œê°€ ìˆëŠ” ê²½ìš°
 	{
 		rtBcrArea = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
 		rtBcrAreaCheck = CRect(edgeX - g_Param.m_nBCRSearchPixel, 0, edgeX - 2, h);
 		g_Temp.m_BcrRect = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
 	}
-	else	// ¿¡Áö ±âÁØ ¿ŞÂÊ¿¡ ¹ÙÄÚµå°¡ ÀÖ´Â °æ¿ì
+	else	// ì—ì§€ ê¸°ì¤€ ì™¼ìª½ì— ë°”ì½”ë“œê°€ ìˆëŠ” ê²½ìš°
 	{
 		rtBcrArea = CRect(edgeX - g_Param.m_nBCRSearchPixel, 0, edgeX - 2, h);
 		rtBcrAreaCheck = CRect(edgeX + 2, 0, edgeX + g_Param.m_nBCRSearchPixel, h);
 		g_Temp.m_BcrRect = CRect(edgeX - g_Param.m_nBCRSearchPixel, 0, edgeX - 2, h);
 	}
 
-	if (g_Param.m_nBCRManualArea)
+	if (g_Param.m_useBCRManualArea == true)
 	{
 		rtBcrArea.left = rtBcrAreaCheck.left = g_Temp.m_BcrRect.left = g_Param.m_nBCRAreaL;
 		rtBcrArea.right = rtBcrAreaCheck.right = g_Temp.m_BcrRect.right = g_Param.m_nBCRAreaR;
 	}
-	// ¿¡Áö ±âÁØÀ¸·Î °ËÃâ ¿µ¿ª »ı¼º - S
+	// ì—ì§€ ê¸°ì¤€ìœ¼ë¡œ ê²€ì¶œ ì˜ì—­ ìƒì„± - S
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
+	if (CheckDotOnPVA(fm, w, h, w, rtBcrArea.left, rtBcrArea.right, g_Temp.m_nEdgeDir) == true)
+	{
+		// ê²€ì‚¬ ì™„ë£Œ í›„ ë„ë§ë¶€ í”¼í•´ì„œ ì—ì§€ ì˜ì—­ ì´ë™
+		edgeX = m_tmpNullDotPos;
+
+		if (g_Temp.m_nEdgeDir == 0)
+		{
+			g_Temp.m_BcrRect.left = m_tmpNullDotPos;
+			g_Temp.m_BcrRect.right = g_Temp.m_BcrRect.left + g_Param.m_nBCRSearchPixel;
+			if (g_Temp.m_BcrRect.right >= w)
+				g_Temp.m_BcrRect.right = w - 1;
+		}
+		else
+		{
+			g_Temp.m_BcrRect.right = m_tmpNullDotPos;
+			g_Temp.m_BcrRect.left = g_Temp.m_BcrRect.right - g_Param.m_nBCRSearchPixel;
+			if (g_Temp.m_BcrRect.left < 0)
+				g_Temp.m_BcrRect.left = 0;
+		}
+	}
 	///////////////////////////////////////////////////////////////////////////////////////////////
-	//¹ÙÄÚµå Áß½ÉÁ¡ ¹× ¿µ¿ª ¸¸µë - S   
+	//ë°”ì½”ë“œ ì¤‘ì‹¬ì  ë° ì˜ì—­ ë§Œë“¬ - S   
 	g_Temp.m_BcrRectFine = GetBcrFineArea(fm, left, top, w, h, pitch);
 	CPoint BarCenter = GetBcrCenter(fm, rtBcrArea, w);
 
@@ -966,14 +993,14 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	BarCenter.y = (g_Temp.m_BcrRectFine.top + g_Temp.m_BcrRectFine.bottom) / 2;
 	g_Temp.m_BcrCenterPt = BarCenter;
 
-	int bcrHalfW = g_Param.m_nBcrW / 2;
-	int bcrHalfH = g_Param.m_nBcrH / 2;
+	int bcrHalfW = (int)((g_Param.m_dBcrW / g_Param.m_dScaleFactorX) / 2.0);
+	int bcrHalfH = (int)((g_Param.m_dBcrH / g_Param.m_dScaleFactorY) / 2.0);
 
-	if (g_Temp.m_nEdgeDir == 0)		// ¿¡Áö ¿À¸¥ÂÊ¿¡ BCR Á¸Àç
+	if (g_Temp.m_nEdgeDir == 0)		// ì—ì§€ ì˜¤ë¥¸ìª½ì— BCR ì¡´ì¬
 		g_Temp.m_BcrRect.SetRect(edgeX + g_Param.m_nBcrOffset, g_Temp.m_BcrRectFine.top - bcrHalfH, BarCenter.x + (bcrHalfW + g_Param.m_nBcrOffset), g_Temp.m_BcrRectFine.bottom + bcrHalfH);
-	else							// ¿¡Áö ¿ŞÂÊ¿¡ BCR Á¸Àç	
+	else							// ì—ì§€ ì™¼ìª½ì— BCR ì¡´ì¬	
 		g_Temp.m_BcrRect.SetRect(BarCenter.x - (g_Param.m_nBcrOffset + bcrHalfW), g_Temp.m_BcrRectFine.top - bcrHalfH, edgeX - g_Param.m_nBcrOffset, g_Temp.m_BcrRectFine.bottom + bcrHalfH);
-	//¹ÙÄÚµå Áß½ÉÁ¡ ¹× ¿µ¿ª ¸¸µë - E  
+	//ë°”ì½”ë“œ ì¤‘ì‹¬ì  ë° ì˜ì—­ ë§Œë“¬ - E  
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	if (g_Param.m_useBcrMatSize == true)
@@ -1016,19 +1043,17 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 			memset(pInt, 0, sizeof(long) * kSize * kSize);
 			memcpy(fmDilate, fmErode, rectBcd.Width() * rectBcd.Height());
 
-			
-
 			for (int iter = 0; iter < 1; iter++)
 			{
-				Erode_Gray(fmErode, fmTmp, 0, 0, rectBcd.Width()-1, rectBcd.Height()-1, rectBcd.Width(), pInt, kSize, kSize);
+				Erode_Gray(fmErode, fmTmp, 0, 0, rectBcd.Width() - 1, rectBcd.Height() - 1, rectBcd.Width(), pInt, kSize, kSize);
 				memcpy(fmErode, fmTmp, sizeof(BYTE) * rectBcd.Width() * rectBcd.Height());
 			}
 
-			for (int iter = 0; iter < 4; iter++)
+			/*for (int iter = 0; iter < 4; iter++)
 			{
-				Dilate_Gray(fmDilate, fmTmp, 0, 0, rectBcd.Width()-1, rectBcd.Height()-1, rectBcd.Width(), pInt, kSize, kSize);
+				Dilate_Gray(fmDilate, fmTmp, 0, 0, rectBcd.Width() - 1, rectBcd.Height() - 1, rectBcd.Width(), pInt, kSize, kSize);
 				memcpy(fmDilate, fmTmp, sizeof(BYTE) * rectBcd.Width() * rectBcd.Height());
-			}
+			}*/
 
 			memset(fmTmp, 0xff, rectBcd.Width() * rectBcd.Height());
 
@@ -1047,7 +1072,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 				}
 			}
 
-			// ÈæÁ¡À» Blob
+			// í‘ì ì„ Blob
 			g_Chain.SetChainData(0, fmTmp, 1, 1, 2, 10000, rectBcd.Width(), rectBcd.Height());
 			int nChainCnt = g_Chain.FastChain(0, 0, rectBcd.Width() - 1, rectBcd.Height() - 1);
 
@@ -1061,7 +1086,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 				double dMaxMatchedH = 0;
 				int nMaxMatchedIndex = -1;
 				CRect rectMatched;
-				CRect rectMostMatched;	// ¸ÅÄª½ÇÆĞÈ®ÀÎ¿ë
+				CRect rectMostMatched;	// ë§¤ì¹­ì‹¤íŒ¨í™•ì¸ìš©
 				int* blobType;
 
 				areaSize = new double[nChainCnt];
@@ -1070,7 +1095,6 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 				maxX = new int[nChainCnt];
 				maxY = new int[nChainCnt];
 				blobType = new int[nChainCnt];
-
 
 				for (i = 0; i < nChainCnt; i++)
 				{
@@ -1082,8 +1106,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 					blobType[i] = 1;
 				}
 
-
-				// Blob °¹¼ö°¡ 1°³ÀÎ °æ¿ì
+				// Blob ê°¯ìˆ˜ê°€ 1ê°œì¸ ê²½ìš°
 				if (nChainCnt == 1)
 				{
 					CRect rectBlob;
@@ -1091,9 +1114,9 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 					rectBlob.right = maxX[0];
 					rectBlob.top = minY[0];
 					rectBlob.bottom = maxY[0];
-					dWidth = rectBlob.Width(); //* g_Param.m_dScaleFactorX;
-					dHeight = rectBlob.Height(); //* g_Param.m_dScaleFactorY;
-					if (abs(g_Param.m_nBcrW - dWidth) <= g_Param.m_nBcrDiffW && abs(g_Param.m_nBcrH - dHeight) <= g_Param.m_nBcrDiffH)
+					dWidth = rectBlob.Width() * g_Param.m_dScaleFactorX;
+					dHeight = rectBlob.Height() * g_Param.m_dScaleFactorY;
+					if (abs(g_Param.m_dBcrW - dWidth) <= g_Param.m_dBcrDiffW && abs(g_Param.m_dBcrH - dHeight) <= g_Param.m_dBcrDiffH)
 					{
 						dMaxMatchedW = dWidth;
 						dMaxMatchedH = dHeight;
@@ -1105,7 +1128,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 				}
 				else
 				{
-					// °¡±î¿î ¿µ¿ªµéÀº º´ÇÕ Ã³¸®
+					// ê°€ê¹Œìš´ ì˜ì—­ë“¤ì€ ë³‘í•© ì²˜ë¦¬
 					for (i = 0; i < nChainCnt; i++)
 					{
 						CRect rectBlob;
@@ -1143,13 +1166,13 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 									} while (nStartIndex < nChainCnt);
 								}
 
-								dWidth = rectBlob.Width();// *g_Param.m_dScaleFactorX;
-								dHeight = rectBlob.Height();// *g_Param.m_dScaleFactorY;
-								if (abs(g_Param.m_nBcrW - dWidth) <= g_Param.m_nBcrDiffW && abs(g_Param.m_nBcrH - dHeight) <= g_Param.m_nBcrDiffH)
+								dWidth = rectBlob.Width() * g_Param.m_dScaleFactorX;
+								dHeight = rectBlob.Height() * g_Param.m_dScaleFactorY;
+								if (abs(g_Param.m_dBcrW - dWidth) <= g_Param.m_dBcrDiffW && abs(g_Param.m_dBcrH - dHeight) <= g_Param.m_dBcrDiffH)
 								{
 									if (dMaxMatchedW > 0 && dMaxMatchedH > 0)
 									{
-										if ((pow(dWidth - g_Param.m_nBcrW, 2) + pow(dHeight - g_Param.m_nBcrH, 2)) < (pow(dMaxMatchedW - g_Param.m_nBcrW, 2) + pow(dMaxMatchedH - g_Param.m_nBcrH, 2)))
+										if ((pow(dWidth - g_Param.m_dBcrW, 2) + pow(dHeight - g_Param.m_dBcrH, 2)) < (pow(dMaxMatchedW - g_Param.m_dBcrW, 2) + pow(dMaxMatchedH - g_Param.m_dBcrH, 2)))
 										{
 											dMaxMatchedW = dWidth;
 											dMaxMatchedH = dHeight;
@@ -1173,7 +1196,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 									{
 										double tmpW = rectMostMatched.Width() * g_Param.m_dScaleFactorX;
 										double tmpH = rectMostMatched.Height() * g_Param.m_dScaleFactorY;
-										if (pow(dWidth - g_Param.m_nBcrW, 2) + pow(dHeight - g_Param.m_nBcrW, 2) < pow(tmpW - g_Param.m_nBcrW, 2) + pow(tmpH - g_Param.m_nBcrW, 2))
+										if (pow(dWidth - g_Param.m_dBcrW, 2) + pow(dHeight - g_Param.m_dBcrH, 2) < pow(tmpW - g_Param.m_dBcrW, 2) + pow(tmpH - g_Param.m_dBcrH, 2))
 											rectMostMatched = rectBlob;
 									}
 								}
@@ -1181,13 +1204,16 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 						}
 					}
 				}
+
 				if (nMaxMatchedIndex >= 0)
 				{
-					g_Temp.m_BcrRectFine = CRect(
+					g_Temp.m_BcrRectForMatch = CRect(
 						rectBcd.left + rectMatched.left,
 						rectBcd.top + rectMatched.top,
 						rectBcd.left + rectMatched.right,
 						rectBcd.top + rectMatched.bottom);
+
+					g_Temp.m_BcrRectFine = g_Temp.m_BcrRectForMatch;
 				}
 				else
 				{
@@ -1218,7 +1244,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 		else							g_Temp.m_BcrRectForMatch = CRect(0, 0, 0, 0);
 	}
 
-	if (g_Param.m_nBCRManualArea)
+	if (g_Param.m_useBCRManualArea == true)
 	{
 		g_Temp.m_BcrRect.left = g_Param.m_nBCRAreaL;
 		g_Temp.m_BcrRect.right = g_Param.m_nBCRAreaR;
@@ -1304,7 +1330,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 
 	if (g_Temp.m_isBcrSuccessRead == true)
 	{
-		// ¹ÙÄÚµå(BCNO)¿¡¼­ ¹ÙÄÚµå À§Ä¡Á¤º¸¸¦ »Ì¾Æ³»´Â ºÎºĞ  --> È¸»ç¿¡¼­ Å×½ºÆ® ½Ã, »ç¿ë ¾ÈÇÔ 
+		// ë°”ì½”ë“œ(BCNO)ì—ì„œ ë°”ì½”ë“œ ìœ„ì¹˜ì •ë³´ë¥¼ ë½‘ì•„ë‚´ëŠ” ë¶€ë¶„  --> íšŒì‚¬ì—ì„œ í…ŒìŠ¤íŠ¸ ì‹œ, ì‚¬ìš© ì•ˆí•¨ 
 		str = g_Temp.m_strBcrName.Right(BCR_POS_DATA_LENGTH);
 		strBcrLotName = g_Temp.m_strBcrName.Left(LOT_NAME_LENGTH);
 		g_Temp.m_dBcrCrtRealPos = _tcstod((LPCTSTR)(str), &position);
@@ -1315,11 +1341,11 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 
 		g_Temp.m_dBcrOffsetY = g_Temp.m_BcrRectFine.top * g_Param.m_dBcrScaleFactorY;
 
-		if (g_Temp.m_isBcrFirstCheck == true) // Ã³À½ ÀÌ¸é, scale factor default °ª ÀÔ·Â --> ÆÄ¶ó¹ÌÅÍ ÀĞ¾î¿Ã ¶§ ÀÔ·ÂµÇ¾î ÀÖÀ½  
+		if (g_Temp.m_isBcrFirstCheck == true) // ì²˜ìŒ ì´ë©´, scale factor default ê°’ ì…ë ¥ --> íŒŒë¼ë¯¸í„° ì½ì–´ì˜¬ ë•Œ ì…ë ¥ë˜ì–´ ìˆìŒ  
 		{
 			g_Temp.m_isBcrFirstCheck = false;
 		}
-		else	// Ã³À½ÀÌ ¾Æ´Ò °æ¿ì, ÀÌÀü ¹ÙÄÚµå À§Ä¡¿Í ÁÂÇ¥¸¦ ¹ÙÅÁÀ¸·Î scale factor °è»ê 
+		else	// ì²˜ìŒì´ ì•„ë‹ ê²½ìš°, ì´ì „ ë°”ì½”ë“œ ìœ„ì¹˜ì™€ ì¢Œí‘œë¥¼ ë°”íƒ•ìœ¼ë¡œ scale factor ê³„ì‚° 
 		{
 			g_Temp.m_dBcrScale[g_Temp.m_nBcrScaleIdx % 3] = (double)(fabs)(g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) /
 				(double)((crtFrameNum - g_Temp.m_nBcrPreInspFrame) * g_System.m_nImageH + g_Temp.m_BcrRectFine.top - m_nBcrPreYPos);
@@ -1344,11 +1370,11 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 
 			g_Temp.m_nBcrScaleIdx++;
 
-			//2¹øÀÌ»ó ÀĞ¾úÀ» ¶§ ¼ıÀÚ Áõ°¨¿©ºÎ¸¦ ÆÇ´Ü
-			//2¹ø ÀÌ»óÂ°ºÎÅÍ ÀÎ½ÄµÈ °æ¿ì
+			//2ë²ˆì´ìƒ ì½ì—ˆì„ ë•Œ ìˆ«ì ì¦ê°ì—¬ë¶€ë¥¼ íŒë‹¨
+			//2ë²ˆ ì´ìƒì§¸ë¶€í„° ì¸ì‹ëœ ê²½ìš°
 			if (g_Temp.m_isBcrForceReading == true)
 			{
-				if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) > 0) // ¹ÙÄÚµå ¼ıÀÚ°¡ Áõ°¡
+				if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) > 0) // ë°”ì½”ë“œ ìˆ«ìê°€ ì¦ê°€
 				{
 					if (g_Temp.m_bBcrForceDir == false)
 					{
@@ -1356,9 +1382,9 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 						strLog.Format(_T("[FORCE_BCR]Not Eqaul BCR Direction - increase"));
 						WriteLog(strLog);
 					}
-					g_Temp.m_nBcrDir = 1;	// Áõ°¡
+					g_Temp.m_nBcrDir = 1;	// ì¦ê°€
 				}
-				else if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) < 0) // ¹ÙÄÚµå ¼ıÀÚ°¡ °¨¼Ò
+				else if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) < 0) // ë°”ì½”ë“œ ìˆ«ìê°€ ê°ì†Œ
 				{
 					if (g_Temp.m_bBcrForceDir == true)
 					{
@@ -1366,25 +1392,25 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 						strLog.Format(_T("[FORCE_BCR]Not Eqaul BCR Direction - decrease"));
 						WriteLog(strLog);
 					}
-					g_Temp.m_nBcrDir = -1;	// °¨¼Ò
+					g_Temp.m_nBcrDir = -1;	// ê°ì†Œ
 				}
 
 				if (g_Temp.m_isBcrForceReading == true && g_Temp.m_isBcrFirstCode == true)
 				{
-					// Force ÆÄ¶ó¹ÌÅÍ ÃÊ±âÈ­ Ãß°¡
+					// Force íŒŒë¼ë¯¸í„° ì´ˆê¸°í™” ì¶”ê°€
 				}
 			}
 			else
 			{
-				if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) > 0) // ¹ÙÄÚµå ¼ıÀÚ°¡ Áõ°¡
-					g_Temp.m_nBcrDir = 1;	// Áõ°¡
-				else if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) < 0) // ¹ÙÄÚµå ¼ıÀÚ°¡ °¨¼Ò
-					g_Temp.m_nBcrDir = -1;	// °¨¼Ò
+				if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) > 0) // ë°”ì½”ë“œ ìˆ«ìê°€ ì¦ê°€
+					g_Temp.m_nBcrDir = 1;	// ì¦ê°€
+				else if ((g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrPreRealPos) < 0) // ë°”ì½”ë“œ ìˆ«ìê°€ ê°ì†Œ
+					g_Temp.m_nBcrDir = -1;	// ê°ì†Œ
 			}
 
 			g_Temp.m_isBcrInitRead = true;
 
-			// ¸¶Áö¸· ¹ÙÄÚµå °ª ÀÔ·Â -->ÀÌÀü ¹ÙÄÚµå ÇÁ·¹ÀÓ, ÀÌÀü ¹ÙÄÚµå ¿µ»ó³» À§Ä¡, ÀÌÀü ¹ÙÄÚµå ROLL»ó À§Ä¡(mm ´ÜÀ§)  
+			// ë§ˆì§€ë§‰ ë°”ì½”ë“œ ê°’ ì…ë ¥ -->ì´ì „ ë°”ì½”ë“œ í”„ë ˆì„, ì´ì „ ë°”ì½”ë“œ ì˜ìƒë‚´ ìœ„ì¹˜, ì´ì „ ë°”ì½”ë“œ ROLLìƒ ìœ„ì¹˜(mm ë‹¨ìœ„)  
 			m_nBcrPreYPos = g_Temp.m_BcrRectFine.top;
 			g_Temp.m_nBcrPreInspFrame = crtFrameNum;
 			g_Temp.m_dBcrPreRealPos = g_Temp.m_dBcrCrtRealPos;
@@ -1400,44 +1426,43 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 
 	int nCrtMeter = 20;
 	//-----------------------------------------------------------------------------
-	//¹ÙÄÚµå À§Ä¡¿¡¼­ À§Ä¡ °ª ÀĞÀº ÈÄ Á¶°Ç¿¡ ¸Â´Â µ¥ÀÌÅÍ °Ë»ö
+	//ë°”ì½”ë“œ ìœ„ì¹˜ì—ì„œ ìœ„ì¹˜ ê°’ ì½ì€ í›„ ì¡°ê±´ì— ë§ëŠ” ë°ì´í„° ê²€ìƒ‰
 	if (g_Temp.m_isBcrFirstCheck == false && (g_Temp.m_nBcrDir == -1 || g_Temp.m_nBcrDir == 1))
 	{
-		double bar_frame_length = 0; //¹ÙÄÚµå »ó °Å¸®·Î ÀÎÇÑ ÇÁ·¹ÀÓ ±æÀÌ °ª 
+		double bar_frame_length = 0; //ë°”ì½”ë“œ ìƒ ê±°ë¦¬ë¡œ ì¸í•œ í”„ë ˆì„ ê¸¸ì´ ê°’ 
 		bar_frame_length = g_Param.m_dBcrScaleFactorY * g_System.m_nImageH;
 
 		int nDistMeter = g_Param.m_nMarkingDefectMarking;
-		int nTenMeterFrame = (int)(1000.0 * nDistMeter / bar_frame_length); //¸îFrameÀ» ÀüÀÇ Defect/frame °³¼ö¸¦ º¸³¾Áö Meter->Frame°è»ê
+		int nTenMeterFrame = (int)(1000.0 * nDistMeter / bar_frame_length); //ëª‡Frameì„ ì „ì˜ Defect/frame ê°œìˆ˜ë¥¼ ë³´ë‚¼ì§€ Meter->Frameê³„ì‚°
 
-		// À§Ä¡ Á¤º¸ °è»ê.
+		// ìœ„ì¹˜ ì •ë³´ ê³„ì‚°.
 		double dNextFramePos, dCurFramePos;
-		if (g_Temp.m_nBcrDir == 1)  //¹ÙÄÚµå ¼ö°¡ Áõ°¡ÇÒ °æ¿ì 
+		if (g_Temp.m_nBcrDir == 1)  //ë°”ì½”ë“œ ìˆ˜ê°€ ì¦ê°€í•  ê²½ìš° 
 		{
 			dNextFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame + 1) * bar_frame_length;
 			dCurFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame) * bar_frame_length;
 		}
-		else	//°¨¼Ò
+		else	//ê°ì†Œ
 		{
 			dNextFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame + 1) * bar_frame_length;
 			dCurFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame) * bar_frame_length;
 		}
 
-		if (g_Temp.m_dBcrPreFramePos == 0)	//Ã³À½ ÃÊ±â°ª
+		if (g_Temp.m_dBcrPreFramePos == 0)	//ì²˜ìŒ ì´ˆê¸°ê°’
 			g_Temp.m_dBcrPreFramePos = dCurFramePos;
 
 
-
 		int defectCnt;
-		// ºÒ·® µ¥ÀÌÅÍ °Ë»ö
-		if (g_Temp.m_nBcrDir == 1)  //¹ÙÄÚµå ¼ö°¡ Áõ°¡ÇÒ °æ¿ì 
+		// ë¶ˆëŸ‰ ë°ì´í„° ê²€ìƒ‰
+		if (g_Temp.m_nBcrDir == 1)  //ë°”ì½”ë“œ ìˆ˜ê°€ ì¦ê°€í•  ê²½ìš° 
 			((CKoWebView*)pParent)->m_DefectCallClass->GetMarkDefectData(strBcrLotName, dCurFramePos, dNextFramePos);
-		else	//°¨¼Ò
+		else	//ê°ì†Œ
 			((CKoWebView*)pParent)->m_DefectCallClass->GetMarkDefectData(strBcrLotName, dNextFramePos, dCurFramePos);
 
-		// Area Maring µ¥ÀÌÅÍ °Ë»ö
+		// Area Maring ë°ì´í„° ê²€ìƒ‰
 		((CKoWebView*)pParent)->m_DefectCallClass->GetMarkAreaDefectData(dCurFramePos, dNextFramePos);
 
-		// Bcr ¿µ¿ª Marking Ã³¸®
+		// Bcr ì˜ì—­ Marking ì²˜ë¦¬
 		if (g_Temp.m_isBcrSuccessRead)
 		{
 
@@ -1458,7 +1483,394 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			g_Defect.m_nBcrCount = 1;
 		}
 
-		// ÀÌÀü À§Ä¡ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+		// ì´ì „ ìœ„ì¹˜ ë°ì´í„° ì—…ë°ì´íŠ¸
 		g_Temp.m_dBcrPreFramePos = dCurFramePos;
 	}
+}
+
+// PVA ë‚´ì˜ dot í™•ì¸í•˜ì—¬ ì—ì§€ ê²½ê³„ ìƒˆë¡œ ì¶”ì¶œí•¨.
+// top->bottomìœ¼ë¡œ ê²€ìƒ‰í•˜ì—¬ pixel ë³€í™”ëŸ‰ í­ ê³„ì‚°ê³¼ ì£¼ê¸°ìœ¨ì„ í™•ì¸í•˜ì—¬ 
+// nulling dotìœ¼ë¡œ ì¸ì‹í•˜ê³  ìƒˆë¡œìš´ ì—ì§€ ì˜ì—­ ì²˜ë¦¬
+// ì›ë˜ë¼ë©´ FFT ì£¼íŒŒìˆ˜ ì¶”ì¶œì´ ì¢‹ê¸°ëŠ” í•œë°.... 
+bool CheckDotOnPVA(LPBYTE fm, int w, int h, int pitch, int left, int right, int dir)
+{
+	int diffVal = g_Param.m_nBcrNullDotDiff;
+	int offset = g_Param.m_nBcrNullDotOffset;
+	int checkMin = g_Param.m_nBcrNullDotCheckMin;
+	int connMin = g_Param.m_nBcrNullDotConnMin;
+
+	int range = right - left + 1;
+	m_tmpNullDotPos = -1;
+	// ë‚˜ì¤‘ì— 
+	int* freqCnt = new int[range];
+	int* dirFlag = new int[range];
+	int diff;
+
+	memset(freqCnt, 0x00, sizeof(int) * range);
+	memset(dirFlag, 0x00, sizeof(int) * range);
+
+	int cont = 0;
+	for (int j = left, k = 0; j <= right; j++, k++)
+	{
+		for (int i = 0; i < h - offset; i++)
+		{
+			diff = *(fm + (i + offset) * w + j)  - *(fm + i * w + j);
+			if (dirFlag[k] == 0)	// ì‹œì‘
+			{
+				if (diff < -diffVal)
+					dirFlag[k] = -1;
+				else if (diff > diffVal)
+					dirFlag[k] = 1;
+			}
+			else if (dirFlag[k] < 0)	// ê°ì†Œ
+			{
+				if (diff > diffVal)
+				{
+					if (cont >= 1)
+					{
+						dirFlag[k] = 1;
+						i += (offset-1); // ì í”„
+					}
+					else cont++;
+
+				}
+				else
+					cont = 0;
+			}
+			else if (dirFlag[k] > 0) // ì¦ê°€
+			{
+				if (diff < -diffVal)
+				{
+					if (cont >= 1)
+					{
+						dirFlag[k] = -1;
+						freqCnt[k]++;
+						i += (offset - 1); // ì í”„
+					}
+					else
+						cont++;
+				}
+				else
+					cont = 0;
+			}
+		}
+	}
+
+	if (dir == 0)	// ì—ì§€ ì˜¤ë¥¸ìª½ì— BCR ì¡´ì¬
+	{
+		for (int i = range; i >= 5; i--)
+		{
+			if (freqCnt[i] >= checkMin)
+			{
+				int k = i - 1;
+				int subCnt = 1;
+				bool isFault = false;
+				while (k > i - 5)
+				{
+					if (freqCnt[k] >= checkMin)
+						subCnt++;
+					else
+					{
+						if (subCnt < connMin)
+						{
+							isFault = true;
+							break;
+						}
+					}
+					k--;
+				}
+				if (isFault == false)
+				{
+					m_tmpNullDotPos = i + left;
+					break;
+				}
+			}
+		}
+	}
+	else			// ì—ì§€ ì™¼ìª½ì— BCR ì¡´ì¬
+	{
+		for (int i = 0; i <= range -5; i++)
+		{
+			if (freqCnt[i] >= checkMin)
+			{
+				int k = i + 1;
+				int subCnt = 1;
+				bool isFault = false;
+				while (k < i + 5)
+				{
+					if (freqCnt[k] >= checkMin)
+						subCnt++;
+					else
+					{
+						if (subCnt < connMin)
+						{
+							isFault = true;
+							break;
+						}
+							
+					}
+					k++;
+				}
+				if (isFault == false)
+				{
+					m_tmpNullDotPos = i+left;
+					break;
+				}
+			}
+		}
+	}
+
+	bool bRes = true;
+	if (m_tmpNullDotPos == -1)
+		bRes = false;
+
+	delete[] freqCnt;
+	delete[] dirFlag;
+
+	return bRes;
+}
+
+bool Read2DMatrix(cv::Mat roiImage)
+{
+	bool isFind = true;
+	cv::Mat image;
+	if (roiImage.cols % 4 != 0)
+	{
+
+		int newCols = (int)(roiImage.cols / 4.0);
+		newCols *= 4;
+		cv::resize(roiImage, image, cv::Size(newCols, roiImage.rows));
+	}
+	else {
+		image = roiImage.clone();
+	}
+	double start, end;
+
+	start = clock();
+	std::string szCode[2] = { "", "" };
+	szCode[0] = g_CodeReader.CodeRead(image.data, image.cols, image.rows, false);
+	if (szCode[0].compare("") == true)
+	{
+		szCode[1] = g_CodeReader.CodeRead(image.data, image.cols, image.rows, true);
+		if (szCode[1].compare("") == true)
+		{
+			isFind = false;
+		}
+		else
+			g_Temp.m_strBcrName.Format(_T("%s"), szCode[1].c_str());
+	}
+	else
+		g_Temp.m_strBcrName.Format(_T("%s"), szCode[0].c_str());
+
+	if (isFind == true)
+	{
+		g_Temp.m_BcrRectCodeRead = g_CodeReader.GetLastCodePosition();
+		g_Temp.m_isBcrSuccessRead = true;
+	}
+	
+	image.release();
+
+	return isFind;
+}
+
+
+std::list<cv::Rect> FindBarcodePosition(cv::Mat image)
+{
+	cv::Mat bw, resizeImg, resizeBw;
+	cv::resize(image, resizeImg, cv::Size(image.cols, image.rows / 2));
+	cv::adaptiveThreshold(resizeImg, resizeBw, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, -10);
+	cv::resize(resizeBw, bw, cv::Size(image.cols, image.rows));
+
+	LPBYTE fmBinary = bw.data;
+	double* sumValue = new double[bw.cols];
+	ZeroMemory(sumValue, sizeof(sumValue) * bw.cols);
+
+#pragma omp parallel for
+	for (int i = 0; i < bw.cols; i++)
+	{
+		for (int j = 0; j < bw.rows; j++)
+		{
+			sumValue[i] += *(fmBinary + j * bw.cols + i);
+		}
+	}
+
+	double maxValue = 0;
+	int maxPosition = 0;
+
+	for (int i = 0; i < bw.cols; i++)
+	{
+		if (sumValue[i] > maxValue)
+		{
+			maxValue = sumValue[i];
+			maxPosition = i;
+		}
+	}
+
+	delete[] sumValue;
+	cv::Mat leftImg, rightImg;
+	leftImg = image(cv::Rect(0, 0, maxPosition - 1, 256));
+	rightImg = image(cv::Rect(maxPosition + 1, 0, image.cols - maxPosition - 1, 256));
+	cv::Scalar meanL = cv::mean(leftImg);
+	cv::Scalar meanR = cv::mean(rightImg);
+
+	bool isBgLeft = false;
+	int bcWidth = 500;
+	cv::Mat cropedImg; // ì—ì§€ì˜ì—­ì—ì„œ bcWidth ì˜ì—­ ë§Œí¼ ì˜ë¼ë‚¸ ì´ë¯¸ì§€
+	if (meanL[0] > meanR[0]) // ì˜¤ë¥¸ìª½ì— í•„ë¦„
+	{
+		isBgLeft = true;
+		if (maxPosition + bcWidth > image.cols)
+			cropedImg = image(cv::Rect(maxPosition, 0, image.cols - maxPosition, image.rows));
+		else
+			cropedImg = image(cv::Rect(maxPosition, 0, bcWidth, image.rows));
+	}
+	else
+	{
+		if (maxPosition - bcWidth < 0)
+			cropedImg = image(cv::Rect(0, 0, maxPosition, image.rows));
+		else
+		{
+			cropedImg = image(cv::Rect(maxPosition - bcWidth, 0, bcWidth, image.rows));
+		}
+	}
+
+	bw.release();
+	resizeImg.release();
+	resizeBw.release();
+	cv::resize(cropedImg, resizeImg, cv::Size(cropedImg.cols / 2, cropedImg.rows / 2));
+	cv::adaptiveThreshold(cropedImg, resizeBw, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, -5);
+	cv::resize(resizeBw, bw, cv::Size(cropedImg.cols, cropedImg.rows));
+
+	int offset = 256;
+	cv::Mat vconcatImg;
+	int loop = bw.rows / offset;
+	for (int i = 0; i < loop; i++)
+	{
+		cv::Rect rt2;
+		cv::Rect rt1(0, offset * i, bw.cols, offset);
+		if (i != loop - 1)
+		{
+			rt2.x = 0;
+			rt2.y = offset * (i + 1);
+			rt2.width = bw.cols;
+			rt2.height = offset;
+		}
+		else
+		{
+			rt2.x = 0;
+			rt2.y = 0;
+			rt2.width = bw.cols;
+			rt2.height = offset;
+		}
+		cv::Mat source1 = bw(rt1);
+		cv::Mat source2 = bw(rt2);
+		cv::Mat diff;
+		cv::subtract(source1, source2, diff);
+
+		if (i == 0)
+			vconcatImg = diff.clone();
+		else
+		{
+			cv::Mat tempImg = vconcatImg.clone();
+			cv::vconcat(tempImg, diff, vconcatImg);
+		}
+	}
+
+	cv::Mat mask = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(1, 1));
+	cv::dilate(vconcatImg, vconcatImg, mask, cv::Point(-1, -1), 3);
+	cv::erode(vconcatImg, vconcatImg, mask, cv::Point(-1, -1), 7);
+
+	cv::Mat img_label, stats, centroid;
+	int numOfLabels = cv::connectedComponentsWithStats(vconcatImg, img_label, stats, centroid, 8, CV_32S);
+	int num = 1;
+	std::list<cv::Rect> listBarcode;
+	for (int i = 1; i < numOfLabels; i++)
+	{
+		int area = stats.at<int>(i, cv::CC_STAT_AREA);
+		int left = stats.at<int>(i, cv::CC_STAT_LEFT);
+		int top = stats.at<int>(i, cv::CC_STAT_TOP);
+		int width = stats.at<int>(i, cv::CC_STAT_WIDTH);
+		int height = stats.at<int>(i, cv::CC_STAT_HEIGHT);
+
+		double areaRatio = (double)area / (double)(width * height);
+
+		if (isBgLeft)
+		{
+			if (area > 1000 && width > 45 && areaRatio > 0.5) {
+				//cv::rectangle(colorImg, cv::Point(left + maxPosition, top), cv::Point(left + maxPosition + width, top + height), cv::Scalar(0, 0, 255), 3);
+				cv::Rect rect(cv::Point(left + maxPosition, top), cv::Point(left + maxPosition + width, top + height));
+				cv::Rect validRect = SetBarcodeArea(rect, image.cols, image.rows);
+				listBarcode.push_back(validRect);
+			}
+		}
+		else
+		{
+			if (area > 1000 && width > 45 && areaRatio > 0.5) {
+				if (maxPosition - bcWidth < 0)
+				{
+					//cv::rectangle(colorImg, cv::Point(left, top), cv::Point(left + width, top + height), cv::Scalar(0, 0, 255), 3);
+					cv::Rect rect(cv::Point(left, top), cv::Point(left + width, top + height));
+					cv::Rect validRect = SetBarcodeArea(rect, image.cols, image.rows);
+					listBarcode.push_back(validRect);
+				}
+				else
+				{
+					//cv::rectangle(colorImg, cv::Point(maxPosition - bcWidth + left, top), cv::Point(maxPosition - bcWidth + left + width, top + height), cv::Scalar(0, 0, 255), 3);
+					cv::Rect rect(cv::Point(maxPosition - bcWidth + left, top), cv::Point(maxPosition - bcWidth + left + width, top + height));
+					cv::Rect validRect = SetBarcodeArea(rect, image.cols, image.rows);
+					listBarcode.push_back(validRect);
+				}
+			}
+		}
+	}
+
+	return listBarcode;
+}
+
+
+cv::Rect SetBarcodeArea(cv::Rect rect, int width, int height)
+{
+	cv::Rect modifyRect(rect);
+	// X
+	if (modifyRect.x > 100)
+	{
+		modifyRect.x -= 100;
+		modifyRect.width += 100;
+	}
+	else
+	{
+		modifyRect.x = 0;
+		modifyRect.width += modifyRect.x;
+	}
+
+	if (modifyRect.x + modifyRect.width < width - 100)
+	{
+		modifyRect.width += 100;
+	}
+	else
+	{
+		modifyRect.width = width - modifyRect.x - 1;
+	}
+
+	// Y
+	if (modifyRect.y > 100)
+	{
+		modifyRect.y -= 100;
+		modifyRect.height += 100;
+	}
+	else
+	{
+		modifyRect.y = 0;
+		modifyRect.height += modifyRect.y;
+	}
+
+	if (modifyRect.y + modifyRect.height < height - 100)
+	{
+		modifyRect.height += 100;
+	}
+	else
+	{
+		modifyRect.height = height - modifyRect.y - 1;
+	}
+	return modifyRect;
 }

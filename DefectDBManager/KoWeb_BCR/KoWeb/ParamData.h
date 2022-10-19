@@ -392,42 +392,56 @@ typedef struct PARAMETERDATA_
 
 	////////////////////////////////////////////////////////////////
 	// BCR - S
-	int		m_nBCRUseDotRemove;
-	int     m_nBCRDotPitch;
-	int		m_nBcrDotTh;
-	int		m_nBcrDotUpTh;
-
-	bool	m_bBcrSaveImage;
-
-	// BCR Size
-	int		m_nBcrW;
-	int		m_nBcrH;
-	int     m_nBcrDiffW;
-	int     m_nBcrDiffH;
-
-	// BCR 밝기
-	bool    m_bBcrObjW;
-
-	// 검출 영역 강제 설정
-	int		m_nBCRManualArea;
-	int		m_nBCRAreaL;
-	int		m_nBCRAreaR;
 
 	// 검출 영역 설정
-	int		m_nBCRSearchPixel;
-	int		m_nBcrOffset;
-	
-	// 탐색 못 했을 경우 영역 검색 처리
-	bool	m_useBcrMatSize;
-	int		m_nBCRWarningM;
-	int		m_nBCRErrorM;
+	int		m_nBCRSearchPixel;		// 10
+	int		m_nBcrOffset;			// 11
 
-	int		m_nBcrCsvType;
+	// BCR Size
+	double	m_dBcrW;				// 12
+	double	m_dBcrH;				// 13
+	double	m_dBcrDiffW;			// 14
+	double	m_dBcrDiffH;			// 15
+
+	//  
+	int		m_nBCRUseDotRemove;		// 16
+	int     m_nBCRDotPitch;			// 17
+	int		m_nBcrDotTh;			// 18	
+	int		m_nBcrDotUpTh;			// 19
+
+	// BCR 밝기
+	bool    m_bBcrObjW;				// 20
+
+	// 검출 영역 강제 설정
+	bool	m_useBCRManualArea;		// 21
+	int		m_nBCRAreaL;			// 22
+	int		m_nBCRAreaR;			// 23
+
+	// 탐색 못 했을 경우 영역 검색 처리
+	bool	m_useBcrMatSize;		// 24
+	int		m_nBCRWarningM;			// 25
+	int		m_nBCRErrorM;			// 26
+
+	bool	m_bBcrSaveImage;		// 27
+	
+	// =======================================================
+	// 내부 혹은 UI에서 받아오는 부분
 	int		m_nMarkingDefectMarking;
 
 	// Bcr 위치에 마킹 여부 설정
 	bool	m_bBcrMark;
 	int		m_nBcrOddEven;
+
+	// 공장 타입
+	int		m_nBcrCsvType;
+	// =======================================================
+
+	// 널링부 도트 체크
+	int		m_nBcrNullDotDiff;
+	int		m_nBcrNullDotOffset;
+	int		m_nBcrNullDotCheckMin;
+	int		m_nBcrNullDotConnMin;
+
 	// BCR - E
 	////////////////////////////////////////////////////////////////
 

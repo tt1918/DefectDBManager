@@ -26,5 +26,6 @@ public:
 	int GetMarkingDefectMeter();
 	void GetMarkDefectData(CString strBCno, double start, double end);
 	void GetMarkAreaDefectData(double start, double end);
+	int GetCSV_Type();
 };
 

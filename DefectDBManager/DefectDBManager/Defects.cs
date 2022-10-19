@@ -107,6 +107,7 @@ namespace DefectDBManager
 
         string GetLotName(bool isNext);
 
+		int GetCSV_Type();
     }
 
 
@@ -319,5 +320,12 @@ namespace DefectDBManager
 
 			return lotName;
         }
+
+        public int GetCSV_Type()
+		{
+			int type = (int)dbManager._DestConfig.CSVType;
+
+			return type;
+		}
     }
 }
