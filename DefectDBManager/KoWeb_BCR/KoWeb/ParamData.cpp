@@ -2198,6 +2198,8 @@ void ApplyOpticBCR()
 	// g_Param.m_nBcrCsvType = 0;
 	// Wrapper¿¡¼­ ¾ò¾î¿È - E
 
+	g_Param.m_bBcrSaveImage = true;
+
 	g_Param.m_nBcrNullDotDiff = 10;
 	g_Param.m_nBcrNullDotOffset = 5;
 	g_Param.m_nBcrNullDotCheckMin= 20;
