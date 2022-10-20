@@ -8,7 +8,10 @@ namespace DefectDBManager
 {
     public class Option
     {
+        public string lotName;
         public eDbIdWhen dbWhen;
+
+        public int vendor;
 
         public bool checkES;
         public bool checkTG;
@@ -51,7 +54,7 @@ namespace DefectDBManager
         public bool useCSVSVJH;
         public bool useCSVSVMH;
 
-        // 상산 가능 경과시간
+        // 생산 가능 경과시간
         public int prodAvaliableSpan;
         public float xOffset;
 

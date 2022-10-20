@@ -819,7 +819,6 @@ namespace DefectDBManager
                     }
                 }));
             }
-
         }
 
         private void threadFromCSV()
@@ -871,8 +870,25 @@ namespace DefectDBManager
             }
 
             // 화면 데이터 적용
-            this.LotName = tbLotName.Text;
-            string destName = cbDestination.SelectedItem.ToString();
+            this.dataBase.DbOption.lotName = (string)tbLotName.Text.Clone();
+            this.dataBase.DbOption.vendor = cbDestination.SelectedIndex;
+            SearchDefect();
+        }
+
+        public bool IsSearchDefect()
+        {
+            if (this.thread != null && this.thread.IsAlive == true)
+                return true;
+
+            return false;
+        }
+
+        public void SearchDefect()
+        {
+            if (IsSearchDefect() == true) return;
+
+            this.LotName = this.dataBase.DbOption.lotName;
+            string destName = cbDestination.Items[this.dataBase.DbOption.vendor].ToString();
 
             if (DataBase.DbDestConfig.DicDest.ContainsKey(destName) == true)
             {
@@ -942,6 +958,7 @@ namespace DefectDBManager
                 }
             }
         }
+
 
         private void UpdateUIOptionToDBOption()
         {

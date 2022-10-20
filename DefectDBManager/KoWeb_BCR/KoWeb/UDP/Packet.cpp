@@ -715,7 +715,7 @@ void CPacket::MakeLRLinePacket(int nCode, int nFrame)
 
 #endif
 
-void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vender, bool& useES, bool& useTG, bool& useETC, bool& useBMark)
+void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vendor, bool& useES, bool& useTG, bool& useETC, bool& useBMark)
 {
 	if (m_pBuf)
 		delete[] m_pBuf;
@@ -728,7 +728,7 @@ void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool
 	memcpy(&dataLen, m_pBuf + 8, 4);
 	memcpy(lotName, m_pBuf + 12, dataLen);
 	memcpy(&lotNext, m_pBuf + 12 + dataLen, 1);
-	memcpy(&vender, m_pBuf + 12 + dataLen + 1, 4);
+	memcpy(&vendor, m_pBuf + 12 + dataLen + 1, 4);
 	memcpy(&useES, m_pBuf + 12 + dataLen + 1 + 4, 1);
 	memcpy(&useTG, m_pBuf + 12 + dataLen + 1 + 4 + 1, 1);
 	memcpy(&useETC, m_pBuf + 12 + dataLen + 1 + 4 + 2, 1);

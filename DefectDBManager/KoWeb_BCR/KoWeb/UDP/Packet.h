@@ -233,7 +233,7 @@ public:
 	void    MakeSubLogDataPacket(CString strData);
 	void	PullAiNgImagePacket(char* buf, int buf_len, int& frameNum, int& totalNg, int& aiClass, float* scores);
 
-	void	PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vender, bool& useES, bool& useTG, bool& useETC, bool& useBMark);
+	void	PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vendor, bool& useES, bool& useTG, bool& useETC, bool& useBMark);
 	void	MakeAckBcrSearchLotPacket(CString data, long progress);
 	
 	void	PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName);

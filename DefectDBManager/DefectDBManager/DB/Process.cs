@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DefectDBManager.UserDefectClass;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager
 {
@@ -25,16 +26,16 @@ namespace DefectDBManager
         /// <summary>
         /// Code configuration
         /// </summary>
-        public CodeConfig _CodeConfig;
+        public CodeConfig[] _CodeConfig;
         /// <summary>
         /// Data 탐색 옵션
         /// </summary>
-        public Option _Option;
+        public Option[] _Option;
 
         /// <summary>
         /// 데이터 탐색 파라미터
         /// </summary>
-        public Param _Param;
+        public Param[] _Param;
 
         /// <summary>
         /// DB 검색 후 최종 불량 데이터
@@ -62,29 +63,33 @@ namespace DefectDBManager
             this.parent = parent;
 
             _DestConfig = new DestConfig();
-            _CodeConfig = new CodeConfig();
-            _Option = new Option();
-            _Param = new Param();
+            _DestConfig.Read();//Dest.Ini 파일 읽어들임
+
             _DbConn = new OracleDbConnection();
 
             int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length;
             _ResultData = new ResultData[cnt];
             _DbProc = new NittoDB[cnt];
+            _Param = new Param[cnt];
+            _Option = new Option[cnt];
+            _CodeConfig = new CodeConfig[cnt];
+
             for (int i = 0; i < cnt; i++)
             {
                 _ResultData[i] = new ResultData();
+                _Option[i] = new Option();
+                _Param[i] = new Param();
+                _Param[i]._UserDefectClass.Load();
+                _CodeConfig[i] = new CodeConfig();
+
                 _DbProc[i] = new NittoDB(this, _DbConn);
 
                 _DbProc[i].DbDestConfig = _DestConfig;
-                _DbProc[i].DBCodeConfig = _CodeConfig;
-                _DbProc[i].DbOption = _Option;
-                _DbProc[i].CrtParam = _Param;
+                _DbProc[i].DBCodeConfig = _CodeConfig[i];
+                _DbProc[i].DbOption = _Option[i];
+                _DbProc[i].CrtParam = _Param[i];
                 _DbProc[i].ResultDefect = _ResultData[i];
             }
-
-            //Dest.Ini 파일 읽어들임
-            _DestConfig.Read();
-            _Param._UserDefectClass.Load();
 
             formDB = new FormDB(this);
             formDB.DBConn = _DbConn;
@@ -123,23 +128,23 @@ namespace DefectDBManager
         {
             if (formDB == null) return;
 
-            if (isFirst==true || isNextDBView != isNext)
+            if (isFirst == true || isNextDBView != isNext)
             {
                 // Data 연결
                 if (isNext == false)    // 현재랏
                 {
-                    this._Option.dbWhen = eDbIdWhen.Now;
+                    this._Option[0].dbWhen = eDbIdWhen.Now;
                     formDB.DataBase = _DbProc[(int)eDbIdWhen.Now];
                 }
                 else // 예약랏
                 {
-                    this._Option.dbWhen = eDbIdWhen.Next;
+                    this._Option[1].dbWhen = eDbIdWhen.Next;
                     formDB.DataBase = _DbProc[(int)eDbIdWhen.Next];
                 }
 
                 formDB.RedrawAll = true;
                 isNextDBView = isNext;
-                isFirst =false;
+                isFirst = false;
             }
         }
 
@@ -157,5 +162,23 @@ namespace DefectDBManager
             formDB.Hide();
         }
 
+        public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            if (formDB.IsSearchDefect() == true) return;
+
+            _Option[idx].dbWhen = (eDbIdWhen)idx;
+            _Option[idx].vendor = vendor;
+            _Option[idx].checkES = useES;
+            _Option[idx].checkTG = useTG;
+            _Option[idx].checkETC = useETC;
+            _Option[idx].lotName = lotName;
+
+            formDB.DataBase = _DbProc[idx];
+            formDB.SearchDefect();
+        }
     }
 }

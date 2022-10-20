@@ -327,5 +327,16 @@ namespace DefectDBManager
 
 			return type;
 		}
+
+		// 예약랏을 현재랏으로 변경
+		public void LotChange()
+		{
+
+		}
+
+		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
+		{
+            dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
+        }
     }
 }
