@@ -99,10 +99,14 @@
 #define NM_FULL_IMG_SAVE_ALL		302
 #define NM_LINE_SETTING				303
 
+#define NM_BCR_SEARCH_LOT			401
+#define NM_BCR_SEARCH_LOT_ACK		402
+#define NM_BCR_SEARCH_MODEL			403
+#define NM_BCR_SEARCH_MODEL_ACK		404
+
 #define NM_BCR_BCD_READING_ERROR	420
 #define NM_BCR_BCD_READING_LOW		421
 #define NM_BCR_BCD_READING_RATE		422
-
 
 #define NM_FORCE_BCR_NOT_MATCHED_ALRAM 430
 #define NM_FORCE_BCR_NOT_EQAUL_BCR_DIR 431
@@ -229,6 +233,11 @@ public:
 	void    MakeSubLogDataPacket(CString strData);
 	void	PullAiNgImagePacket(char* buf, int buf_len, int& frameNum, int& totalNg, int& aiClass, float* scores);
 
+	void	PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vender, bool& useES, bool& useTG, bool& useETC, bool& useBMark);
+	void	MakeAckBcrSearchLotPacket(CString data, long progress);
+	
+	void	PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName);
+	void	MakeAckBcrSearchModelPacket(CString data, long progress);
 
 	void	MakeLRLinePacket(int nCode, int nFrame);
 

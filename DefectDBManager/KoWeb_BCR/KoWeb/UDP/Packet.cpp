@@ -714,3 +714,71 @@ void CPacket::MakeLRLinePacket(int nCode, int nFrame)
 }
 
 #endif
+
+void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vender, bool& useES, bool& useTG, bool& useETC, bool& useBMark)
+{
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_nBuflen = buf_len;
+	m_pBuf = new char[m_nBuflen];
+	memcpy(m_pBuf, buf, m_nBuflen);
+
+	int dataLen;
+	//----------------------------------------------
+	memcpy(&dataLen, m_pBuf + 8, 4);
+	memcpy(lotName, m_pBuf + 12, dataLen);
+	memcpy(&lotNext, m_pBuf + 12 + dataLen, 1);
+	memcpy(&vender, m_pBuf + 12 + dataLen + 1, 4);
+	memcpy(&useES, m_pBuf + 12 + dataLen + 1 + 4, 1);
+	memcpy(&useTG, m_pBuf + 12 + dataLen + 1 + 4 + 1, 1);
+	memcpy(&useETC, m_pBuf + 12 + dataLen + 1 + 4 + 2, 1);
+	memcpy(&useBMark, m_pBuf + 12 + dataLen + 1 + 4 + 3, 1);
+	//-----------------------------------------------
+}
+
+void CPacket::MakeAckBcrSearchLotPacket(CString data, long progress)
+{
+	m_nPacket_code = NM_BCR_SEARCH_LOT_ACK;
+	int dataLen = data.GetLength() * 2;	// UNICODE 贸府
+	m_nBuflen = m_nFull_packet_length = 4 + 4 + dataLen + 8;
+
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_pBuf = new char[m_nBuflen];
+	memset(m_pBuf, 0, m_nBuflen);
+
+	memcpy(m_pBuf, &m_nFull_packet_length, 4);
+	memcpy(m_pBuf + 4, &data, dataLen);
+	memcpy(m_pBuf + 8 + dataLen, &progress, sizeof(long));
+}
+
+void CPacket::PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName)
+{
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_nBuflen = buf_len;
+	m_pBuf = new char[m_nBuflen];
+	memcpy(m_pBuf, buf, m_nBuflen);
+
+	int dataLen;
+	//----------------------------------------------
+	memcpy(&dataLen, m_pBuf + 8, 4);
+	memcpy(lotName, m_pBuf + 12, dataLen);
+	//-----------------------------------------------
+}
+
+void CPacket::MakeAckBcrSearchModelPacket(CString data, long progress)
+{
+	m_nPacket_code = NM_BCR_SEARCH_MODEL_ACK;
+	int dataLen = data.GetLength() * 2;	// UNICODE 贸府
+	m_nBuflen = m_nFull_packet_length = 4 + 4 + dataLen + 8;
+
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_pBuf = new char[m_nBuflen];
+	memset(m_pBuf, 0, m_nBuflen);
+
+	memcpy(m_pBuf, &m_nFull_packet_length, 4);
+	memcpy(m_pBuf + 4, &data, dataLen);
+	memcpy(m_pBuf + 8 + dataLen, &progress, sizeof(long));
+}

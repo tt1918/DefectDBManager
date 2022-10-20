@@ -911,7 +911,32 @@ void CKoWebView::Decoding(int nPort, unsigned char* pData)
 		}
 		break;
 #endif
-	
+
+#ifdef BARCODE_VISION
+	case NM_BCR_SEARCH_LOT:
+	{
+		char lotName[100];
+		bool lotNext;
+		int vender;
+		bool useES, useTG, useETC, useBMark;
+		packet.PullBcrSearchLotPacket((char*)pData, nDataLen, lotName, lotNext, vender, useES, useTG, useETC, useBMark);
+
+		// 单捞磐 贸府
+
+		break;
+	}
+		
+
+	case NM_BCR_SEARCH_MODEL:
+	{
+		char lotName[100];
+		packet.PullBcrSearchModelPatcket((char*)pData, nDataLen, lotName);
+
+		// 单捞磐 贸府
+
+		break;
+	}
+#endif
 	default:
 		break;
 	}

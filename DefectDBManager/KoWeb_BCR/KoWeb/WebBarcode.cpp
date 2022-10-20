@@ -24,7 +24,7 @@ enum eBCRPatRead
 	eFineRectOK,
 	eReadDone,
 	eForceReadDone,
-}
+};
 
 CallClassWrapperCodeReader g_CodeReader;
 
