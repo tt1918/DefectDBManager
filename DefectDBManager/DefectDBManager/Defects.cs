@@ -106,8 +106,12 @@ namespace DefectDBManager
 		MarkingAreaDefect[] GetMarkAreaDefectData(double start, double end);
 
         string GetLotName(bool isNext);
-
 		int GetCSV_Type();
+		void LotChange();
+		void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
+		int GetBcdReadWarningM();
+		int GetBcdReadErrorM();
+		int SearchModel(string lotName);
     }
 
 
@@ -338,5 +342,21 @@ namespace DefectDBManager
 		{
             dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
         }
+
+		public int GetBcdReadWarningM()
+		{
+			return dbManager._DestConfig.NoBcrWarning;
+        }
+
+		public int GetBcdReadErrorM()
+		{
+			return dbManager._DestConfig.NoBcrError;
+        }
+
+		public int SearchModel(string lotName)
+		{
+			dbManager._DbProc[2].SearchModel(lotName);
+			return 0;
+		}
     }
 }

@@ -67,7 +67,7 @@ namespace DefectDBManager
 
             _DbConn = new OracleDbConnection();
 
-            int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length;
+            int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length+1;
             _ResultData = new ResultData[cnt];
             _DbProc = new NittoDB[cnt];
             _Param = new Param[cnt];
@@ -178,7 +178,18 @@ namespace DefectDBManager
             _Option[idx].lotName = lotName;
 
             formDB.DataBase = _DbProc[idx];
-            formDB.SearchDefect();
+            formDB.SearchLotDefect();
+        }
+
+        public void SearchModel(string lotName, bool isNext, int vendor)
+        {
+            if (formDB.IsSearchDefect() == true) return;
+            _Option[2].dbWhen = (eDbIdWhen)0;
+            _Option[2].vendor = vendor;
+            _Option[2].lotName = lotName;
+
+            formDB.DataBase = _DbProc[2];
+            formDB.SearchModel();
         }
     }
 }

@@ -209,6 +209,7 @@
     <ClInclude Include="AjinMotion.h" />
     <ClInclude Include="AlignData.h" />
     <ClInclude Include="BaslerCam.h" />
+    <ClInclude Include="BCR\BcrParamRecv.h" />
     <ClInclude Include="BCR\CallClassReadingEvents.h" />
     <ClInclude Include="BCR\CallClassWrapper.h" />
     <ClInclude Include="BCR\CallClassWrapperCodeReader.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="AjinMotion.cpp" />
     <ClCompile Include="AlignData.cpp" />
     <ClCompile Include="BaslerCam.cpp" />
+    <ClCompile Include="BCR\BcrParamRecv.cpp" />
     <ClCompile Include="BCR\CallClassReadingEvents.cpp" />
     <ClCompile Include="BCR\CallClassWrapper.cpp" />
     <ClCompile Include="BCR\CallClassWrapperCodeReader.cpp" />

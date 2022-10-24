@@ -407,6 +407,8 @@ public:
 	afx_msg void OnBnClickedBtnShowDefectNext();
 
 	afx_msg LRESULT OnBCrComm(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnBcrSearchLot(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnBcrSearchModel(WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG  // debug version in KoWebView.cpp

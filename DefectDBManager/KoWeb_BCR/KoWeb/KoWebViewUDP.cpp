@@ -915,28 +915,36 @@ void CKoWebView::Decoding(int nPort, unsigned char* pData)
 #ifdef BARCODE_VISION
 	case NM_BCR_SEARCH_LOT:
 	{
-		char lotName[100];
+		char lotName[MAX_PATH];
 		bool lotNext;
 		int vender;
 		bool useES, useTG, useETC, useBMark;
+		memset(lotName, 0x00, sizeof(char)* MAX_PATH);
 		packet.PullBcrSearchLotPacket((char*)pData, nDataLen, lotName, lotNext, vender, useES, useTG, useETC, useBMark);
 
 		// 单捞磐 贸府
-
+		::PostMessage(this->GetSafeHwnd(), WM_BCR_SEARCH_LOT, NULL, NULL);
 		break;
 	}
-		
-
+	
 	case NM_BCR_SEARCH_MODEL:
 	{
-		char lotName[100];
+		char lotName[MAX_PATH];
+		memset(lotName, 0x00, sizeof(char) * MAX_PATH);
 		packet.PullBcrSearchModelPatcket((char*)pData, nDataLen, lotName);
 
 		// 单捞磐 贸府
+		::PostMessage(this->GetSafeHwnd(), WM_BCR_SEARCH_MODEL, NULL, NULL);
+		break;
+	}
 
+	case NM_BCR_SEND_PARAMETER_FILE:
+	{
+		packet.PullBcrParamPacket((char*)pData, nDataLen);
 		break;
 	}
 #endif
+
 	default:
 		break;
 	}

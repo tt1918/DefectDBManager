@@ -62,7 +62,7 @@ void CallClassWrapper::ReadDBFile(std::string path)
 	::SysFreeString(bs);
 }
 
-void CallClassWrapper::SerachDefectClass(int classID) 
+void CallClassWrapper::SearchDefectClass(int classID) 
 {
 	SAFEARRAY* array = m_pCallClass->SearchDefects(classID);
 	if (array)

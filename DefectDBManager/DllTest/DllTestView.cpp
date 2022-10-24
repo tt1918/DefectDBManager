@@ -151,7 +151,7 @@ void CDllTestView::OnBnClickedButton2()
 
 void CDllTestView::OnBnClickedButton3()
 {
-	m_Defect->SerachDefectClass(1000091);
+	m_Defect->SearchDefectClass(1000091);
 }
 
 

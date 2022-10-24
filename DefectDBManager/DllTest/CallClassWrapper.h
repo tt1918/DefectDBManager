@@ -15,7 +15,7 @@ private:
 public:
 	void GetDefectsData();
 	void ReadDBFile(std::string path);
-	void SerachDefectClass(int classID);
+	void SearchDefectClass(int classID);
 	void ReadCSVFile(std::string path);
 	void ShowDefectView();
 	void AddEndCsvReading(ICsvReadingEvents* pThis);

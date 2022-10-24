@@ -56,6 +56,7 @@
 	#define COG_VPP_FILE				_T("C:\\COSS\\codeRead.vpp")
 	#define BCR_PATH					_T("C:\\COSS\\Barcode\\")
 	#define BCR_EDGE_PATH				_T("C:\\COSS\\EdgeInfo\\")
+	#define BCR_DEST_INI_PATH			_T("C:\\COSS\\Dest.Ini")
 #endif
 
 
@@ -129,8 +130,9 @@
 #define     NITTO_AI_PORT		9000		//Nitto AI에게 주는 포트
 
 #define		WM_XDATARRECIEVED	(WM_USER+102)
-#define		WM_BCR_COMM			(WM_USER+103)
-
+#define		WM_BCR_COMM			(WM_USER+201)
+#define		WM_BCR_SEARCH_LOT	(WM_USER+202)
+#define		WM_BCR_SEARCH_MODEL (WM_USER+203)
 
 #define	WM_CONNECT			WM_USER+11
 #define	WM_CAMYPOS			WM_USER+13

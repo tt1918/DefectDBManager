@@ -2170,8 +2170,8 @@ void ApplyOpticBCR()
 	g_Param.m_nBCRAreaR = (int)g_ParamVer.param[23];
 	
 	g_Param.m_useBcrMatSize = (bool)g_ParamVer.param[24];
-	g_Param.m_nBCRWarningM = (int)g_ParamVer.param[25];
-	g_Param.m_nBCRErrorM = (int)g_ParamVer.param[26];
+	//g_Param.m_nBCRWarningM = (int)g_ParamVer.param[25];
+	//g_Param.m_nBCRErrorM = (int)g_ParamVer.param[26];
 
 	g_Param.m_bBcrSaveImage = (bool)g_ParamVer.param[27];
 
@@ -2193,6 +2193,10 @@ void ApplyOpticBCR()
 	g_Param.m_nBCRAreaR = 10;
 
 	g_Param.m_nBcrOffset = 5;
+
+	g_Param.m_nBCRWarningM = 10;
+	g_Param.m_nBCRErrorM = 30;
+
 
 	// Wrapper¿¡¼­ ¾ò¾î¿È - S
 	// g_Param.m_nBcrCsvType = 0;

@@ -65,7 +65,7 @@ void CallClassWrapper::ReadDBFile(std::string path)
 	::SysFreeString(bs);
 }
 
-void CallClassWrapper::SerachDefectClass(int classID) 
+void CallClassWrapper::SearchDefectClass(int classID) 
 {
 	SAFEARRAY* array = m_pCallClass->SearchDefects(classID);
 	if (array)
@@ -312,4 +312,22 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 int CallClassWrapper::GetCSV_Type()
 {
 	return m_pCallClass->GetCSV_Type();
+}
+
+void CallClassWrapper::SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC)
+{
+	_bstr_t bstrLot;
+	bstrLot = strLot.AllocSysString();
+
+	m_pCallClass->SearchLot(bstrLot, isNext, vendor, useES, useTG, useETC);
+
+	::SysFreeString(bstrLot);
+}
+
+void CallClassWrapper::SearchModel(CString strLot)
+{
+	_bstr_t bstrLot;
+	bstrLot = strLot.AllocSysString();
+	m_pCallClass->SearchModel(bstrLot);
+	::SysFreeString(bstrLot);
 }

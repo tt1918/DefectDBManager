@@ -14,6 +14,7 @@
 #include "math.h"
 
 #include "BCR/CallClassWrapperCodeReader.h"
+#include "BCR/BcrParamRecv.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -80,6 +81,8 @@ BEGIN_MESSAGE_MAP(CKoWebView, CFormView)
 	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NOW, &CKoWebView::OnBnClickedBtnShowDefectNow)
 	ON_BN_CLICKED(IDC_BTN_SHOW_DEFECT_NEXT, &CKoWebView::OnBnClickedBtnShowDefectNext)
 	ON_MESSAGE(WM_BCR_COMM, &CKoWebView::OnBCrComm)
+	ON_MESSAGE(WM_BCR_SEARCH_LOT, &CKoWebView::OnBcrSearchLot)
+	ON_MESSAGE(WM_BCR_SEARCH_MODEL, &CKoWebView::OnBcrSearchModel)
 
 END_MESSAGE_MAP()
 
@@ -3131,5 +3134,27 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 
 		break;
 	}
+	return 0;
+}
+
+
+LRESULT CKoWebView::OnBcrSearchLot(WPARAM wParam, LPARAM lParam)
+{
+	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
+	CString strLot;
+	strLot.Format(_T("%s"), g_BcrSearchInfo.m_strLot);
+	m_DefectCallClass->SearchLot(strLot, g_BcrSearchInfo.isNext, g_BcrSearchInfo.m_nVendor, g_BcrSearchInfo.useES,
+		g_BcrSearchInfo.useTG, g_BcrSearchInfo.useETC);
+
+	return 0;
+}
+
+LRESULT CKoWebView::OnBcrSearchModel(WPARAM wParam, LPARAM lParam)
+{
+	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
+	CString strLot;
+	strLot.Format(_T("%s"), g_BcrSearchInfo.m_strLot);
+	m_DefectCallClass->SearchModel(strLot);
+
 	return 0;
 }

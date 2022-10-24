@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Packet.h"
+#include "../BCR/BcrParamRecv.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -14,11 +15,14 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+#ifdef BARCODE_VISION
+extern BcrParamRecv g_CommBcrParam;
+#endif
 
 CPacket::CPacket()
 {
-	m_pBuf = NULL;
-	m_pDefect_data = NULL;
+	m_pBuf = nullptr;
+	m_pDefect_data = nullptr;
 
 #ifdef BARCODE_VISION
 	m_pBcrDefect_Data = nullptr;
@@ -724,16 +728,27 @@ void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool
 	memcpy(m_pBuf, buf, m_nBuflen);
 
 	int dataLen;
+	double subData;
+	int subData1;
 	//----------------------------------------------
 	memcpy(&dataLen, m_pBuf + 8, 4);
 	memcpy(lotName, m_pBuf + 12, dataLen);
-	memcpy(&lotNext, m_pBuf + 12 + dataLen, 1);
-	memcpy(&vendor, m_pBuf + 12 + dataLen + 1, 4);
-	memcpy(&useES, m_pBuf + 12 + dataLen + 1 + 4, 1);
-	memcpy(&useTG, m_pBuf + 12 + dataLen + 1 + 4 + 1, 1);
-	memcpy(&useETC, m_pBuf + 12 + dataLen + 1 + 4 + 2, 1);
-	memcpy(&useBMark, m_pBuf + 12 + dataLen + 1 + 4 + 3, 1);
+	memcpy(&subData, m_pBuf + 12 + dataLen, 8);
 	//-----------------------------------------------
+	subData1 = (int)subData;
+	vendor = (subData1 / 100000);
+	useES = (subData1 / 10000) % 10;
+	useTG = (subData1 / 1000) % 10;
+	useETC = (subData1 / 100) % 10;
+	useBMark = (subData1 / 10) % 10;
+	lotNext = subData1 % 10;
+
+	strcpy(g_BcrSearchInfo.m_strLot, lotName);
+	g_BcrSearchInfo.isNext = lotNext;
+	g_BcrSearchInfo.useES = useES;
+	g_BcrSearchInfo.useTG = useTG;
+	g_BcrSearchInfo.useETC = useETC;
+	g_BcrSearchInfo.useBMark = useBMark;
 }
 
 void CPacket::MakeAckBcrSearchLotPacket(CString data, long progress)
@@ -747,9 +762,9 @@ void CPacket::MakeAckBcrSearchLotPacket(CString data, long progress)
 	m_pBuf = new char[m_nBuflen];
 	memset(m_pBuf, 0, m_nBuflen);
 
-	memcpy(m_pBuf, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 4, &data, dataLen);
-	memcpy(m_pBuf + 8 + dataLen, &progress, sizeof(long));
+	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
+	memcpy(m_pBuf + 8, &data, dataLen);
+	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
 }
 
 void CPacket::PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName)
@@ -778,7 +793,44 @@ void CPacket::MakeAckBcrSearchModelPacket(CString data, long progress)
 	m_pBuf = new char[m_nBuflen];
 	memset(m_pBuf, 0, m_nBuflen);
 
-	memcpy(m_pBuf, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 4, &data, dataLen);
-	memcpy(m_pBuf + 8 + dataLen, &progress, sizeof(long));
+	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
+	memcpy(m_pBuf + 8, &data, dataLen);
+	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
+}
+
+void CPacket::PullBcrParamPacket(char* buf, int buf_len)
+{
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_nBuflen = buf_len;
+	m_pBuf = new char[m_nBuflen];
+	memcpy(m_pBuf, buf, m_nBuflen);
+
+	int dataLen;
+	int type;
+	int crtID;
+	int index;
+	int total;
+	int size = m_nBuflen - 24;
+	//----------------------------------------------
+	memcpy(&type, m_pBuf + 8, 4);
+	memcpy(&crtID, m_pBuf + 12, 4);
+	memcpy(&index, m_pBuf + 16, 4);
+	memcpy(&total, m_pBuf + 20, 4);
+	g_CommBcrParam.SetType(type);
+	g_CommBcrParam.SetData(index, total, size, m_pBuf + 24);
+	//-----------------------------------------------
+}
+
+void CPacket::MakeBcrReadingRatePacket(double val)
+{
+	m_nPacket_code = NM_BCR_BCD_READING_RATE;
+	m_nBuflen = m_nFull_packet_length = 4 + 4 + 8;
+	
+	if (m_pBuf)
+		delete[] m_pBuf;
+	m_pBuf = new char[m_nBuflen];
+	memset(m_pBuf, 0, m_nBuflen);
+	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
+	memcpy(m_pBuf + 8, &val, sizeof(double));
 }

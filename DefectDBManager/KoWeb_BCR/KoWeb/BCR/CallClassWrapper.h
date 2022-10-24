@@ -17,7 +17,7 @@ private:
 public:
 	void GetDefectsData();
 	void ReadDBFile(std::string path);
-	void SerachDefectClass(int classID);
+	void SearchDefectClass(int classID);
 	void ReadCSVFile(std::string path);
 	void ShowDefectView(bool isNext);
 	void AddEndCsvReading(ICsvReadingEvents* pThis);
@@ -27,5 +27,7 @@ public:
 	void GetMarkDefectData(CString strBCno, double start, double end);
 	void GetMarkAreaDefectData(double start, double end);
 	int GetCSV_Type();
+	void SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC);
+	void SearchModel(CString strLot);
 };
 

@@ -467,13 +467,12 @@ bool SearchBCR(LPVOID pParent)
 					dReadingRate = (int)((double)g_Temp.m_nBcrReadOK * 100.0 / (g_Temp.m_nInspectFrame * g_Param.m_dFrameLen * 0.001));
 
 					CPacket* packet = new CPacket;
-					packet->MakeReturnPacket(NM_BCR_BCD_READING_RATE, 1);
+					packet->MakeBcrReadingRatePacket(dReadingRate);
 					l_Send_Server.SendInsData(packet);
 					delete packet;
 					strLog.Format(_T("[INFO] Barcode Reading Rate: %d"), (int)dReadingRate);
 					WriteLog(strLog);
 				}
-
 			}
 		}
 	}

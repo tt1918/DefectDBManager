@@ -811,11 +811,212 @@ namespace DefectDBManager
                     // 완료 시 보고 처리 필요
                     if(isSuccess==false)
                     {
-                        lblDownloadResult.Text = "DB Seacing is failed!!";
+                        lblDownloadResult.Text = "DB Searching Lot is failed!!";
                     }
                     else
                     {
-                        lblDownloadResult.Text = "DB Seacing is complete!!";
+                        lblDownloadResult.Text = "DB Searching Lot is complete!!";
+                    }
+                }));
+            }
+        }
+
+        private void threadSearchModelFromDB()
+        {
+            bool isSuccess = true;
+            try
+            {
+                int errorOut = 0;
+                DestConfigUnit unit = null;
+                unit = DataBase.DbDestConfig.DicDest[this.destName];
+
+                // 리스트 클리어
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.clearAllListView();
+                    this.initFaultPage();
+                    this.dbSearchProgressTimer.Start();
+                }));
+
+                // 검사 옵션 업데이트
+                Option option = dataBase.DbOption;
+                option.useDefectEdit = false;
+                option.useSplit = unit.IsSplit;
+
+                // 검색 시간 갭 설정
+
+                if (cbSetSearchTime.Checked == true)
+                {
+                    if (Int32.TryParse(tbSearchStartTime.Text, out int value) == true || value != 0)
+                        option.timeGabStMinute1 = value;
+                    else
+                        option.timeGabStMinute1 = DataBase.DbDestConfig.DbTime.start;
+
+                    if (Int32.TryParse(tbSearchEndTime.Text, out value) == true || value != 0)
+                        option.timeGabEdMinute2 = value;
+                    else
+                        option.timeGabEdMinute2 = DataBase.DbDestConfig.DbTime.end;
+                }
+                else
+                {
+                    option.timeGabStMinute1 = DataBase.DbDestConfig.DbTime.start;
+                    option.timeGabEdMinute2 = DataBase.DbDestConfig.DbTime.end;
+                }
+
+                option.timeGabStMinute2 = DataBase.DbDestConfig.DbTime.start;
+                option.timeGabEdMinute1 = DataBase.DbDestConfig.DbTime.end;
+
+                option.timeGabEsStMinute1 = DataBase.DbDestConfig.ESDbTime.start;
+                option.timeGabEsStMinute2 = DataBase.DbDestConfig.ESDbTime.start;
+                option.timeGabEsEdMinute1 = DataBase.DbDestConfig.ESDbTime.end;
+                option.timeGabEsEdMinute2 = DataBase.DbDestConfig.ESDbTime.end;
+                option.useESTime = DataBase.DbDestConfig.ESDbTime.IsUse;
+
+                if (unit.IsSplit == false)
+                {
+                    option.MKCD = unit.MKCD;
+                    dataBase.DbOption = option;
+
+                    dataBase.ResetDataSplit();
+                    isSuccess &= dataBase.SearchModel(this.LotName, false);
+
+                    // 데이터 처리 필요
+                    if (dataBase.CrtParam.isProductAvaliable == false)
+                    {
+
+                    }
+
+                    if (dataBase.CrtParam.isXOffsetError == true)
+                    {
+
+                    }
+
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        this.displayAllListView();
+                    }));
+
+                }
+                else
+                {
+                    if (unit.UnitA.IsUse == true)
+                    {
+                        option.checkTG = unit.UnitA.TG;
+                        option.checkES = unit.UnitA.ES;
+                        option.checkETC = unit.UnitA.ETC;
+
+                        option.MKCD = unit.UnitA.MKCD;
+                        option.Title = unit.UnitA.Title;
+                        option.splitStartX = unit.UnitA.StartX;
+                        option.splitEndX = unit.UnitA.EndX;
+
+                        dataBase.DbOption = option;
+                        dataBase.ResetDataSplit();
+                        isSuccess &= dataBase.SearchModel(this.LotName, false);
+
+                        // 데이터 처리 필요
+                        if (dataBase.CrtParam.isProductAvaliable == false)
+                        {
+
+                        }
+
+                        if (dataBase.CrtParam.isXOffsetError == true)
+                        {
+
+                        }
+
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            this.displayAllListView();
+                        }));
+                    }
+
+                    if (unit.UnitB.IsUse == true)
+                    {
+                        option.checkTG = unit.UnitB.TG;
+                        option.checkES = unit.UnitB.ES;
+                        option.checkETC = unit.UnitB.ETC;
+
+                        option.MKCD = unit.UnitB.MKCD;
+                        option.Title = unit.UnitB.Title;
+                        option.splitStartX = unit.UnitB.StartX;
+                        option.splitEndX = unit.UnitB.EndX;
+
+                        dataBase.DbOption = option;
+                        dataBase.ResetDataSplit();
+                        isSuccess &= dataBase.SearchModel(this.LotName, false);
+
+                        // 데이터 처리 필요
+                        if (dataBase.CrtParam.isProductAvaliable == false)
+                        {
+
+                        }
+
+                        if (dataBase.CrtParam.isXOffsetError == true)
+                        {
+
+                        }
+
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            this.displayAllListView();
+                        }));
+                    }
+
+                    if (unit.UnitC.IsUse == true)
+                    {
+                        option.checkTG = unit.UnitC.TG;
+                        option.checkES = unit.UnitC.ES;
+                        option.checkETC = unit.UnitC.ETC;
+
+                        option.MKCD = unit.UnitC.MKCD;
+                        option.Title = unit.UnitC.Title;
+                        option.splitStartX = unit.UnitC.StartX;
+                        option.splitEndX = unit.UnitC.EndX;
+
+                        dataBase.DbOption = option;
+                        dataBase.ResetDataSplit();
+                        isSuccess &= dataBase.SearchModel(this.LotName, false);
+
+                        // 데이터 처리 필요
+                        if (dataBase.CrtParam.isProductAvaliable == false)
+                        {
+
+                        }
+
+                        if (dataBase.CrtParam.isXOffsetError == true)
+                        {
+
+                        }
+
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            this.displayAllListView();
+                        }));
+                    }
+                }
+
+                // Fault Data 표시
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
+                }));
+            }
+            finally
+            {
+                // Fault Data 표시
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    this.dbSearchProgressTimer.Stop();
+
+                    // 완료 시 보고 처리 필요
+                    if (isSuccess == false)
+                    {
+                        lblDownloadResult.Text = "DB Searching Model is failed!!";
+                    }
+                    else
+                    {
+                        lblDownloadResult.Text = "DB Searching Model is complete!!";
                     }
                 }));
             }
@@ -872,7 +1073,7 @@ namespace DefectDBManager
             // 화면 데이터 적용
             this.dataBase.DbOption.lotName = (string)tbLotName.Text.Clone();
             this.dataBase.DbOption.vendor = cbDestination.SelectedIndex;
-            SearchDefect();
+            SearchLotDefect();
         }
 
         public bool IsSearchDefect()
@@ -883,7 +1084,7 @@ namespace DefectDBManager
             return false;
         }
 
-        public void SearchDefect()
+        public void SearchLotDefect()
         {
             if (IsSearchDefect() == true) return;
 
@@ -909,6 +1110,31 @@ namespace DefectDBManager
             }
 
             this.thread = new Thread(this.threadFromDB);
+            this.thread.Start();
+        }
+
+        public void SearchModel()
+        {
+            if (IsSearchDefect() == true) return;
+            this.LotName = this.dataBase.DbOption.lotName;
+            string destName = cbDestination.Items[this.dataBase.DbOption.vendor].ToString();
+            if (DataBase.DbDestConfig.DicDest.ContainsKey(destName) == true)
+                this.destName = destName;
+            else
+            {
+                MessageBox.Show($"해당하는 출하처 정보가 존재하지 않습니다. : [{destName}]");
+                return;
+            }
+
+            UpdateUIOptionToDBOption();
+
+            if (this.thread != null)
+            {
+                this.thread.Join(100);
+                this.thread = null;
+            }
+
+            this.thread = new Thread(this.threadSearchModelFromDB);
             this.thread.Start();
         }
 

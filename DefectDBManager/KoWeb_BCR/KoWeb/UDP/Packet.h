@@ -103,10 +103,12 @@
 #define NM_BCR_SEARCH_LOT_ACK		402
 #define NM_BCR_SEARCH_MODEL			403
 #define NM_BCR_SEARCH_MODEL_ACK		404
+#define NM_BCR_SEND_PARAMETER_FILE	405
+#define NM_BCR_SEND_PARAMETER_FILE_DEST_ACK	406
 
-#define NM_BCR_BCD_READING_ERROR	420
-#define NM_BCR_BCD_READING_LOW		421
-#define NM_BCR_BCD_READING_RATE		422
+#define NM_BCR_BCD_READING_ERROR	410
+#define NM_BCR_BCD_READING_LOW		411
+#define NM_BCR_BCD_READING_RATE		412
 
 #define NM_FORCE_BCR_NOT_MATCHED_ALRAM 430
 #define NM_FORCE_BCR_NOT_EQAUL_BCR_DIR 431
@@ -238,6 +240,10 @@ public:
 	
 	void	PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName);
 	void	MakeAckBcrSearchModelPacket(CString data, long progress);
+
+	void	PullBcrParamPacket(char* buf, int buf_len);
+
+	void	MakeBcrReadingRatePacket(double val);
 
 	void	MakeLRLinePacket(int nCode, int nFrame);
 
