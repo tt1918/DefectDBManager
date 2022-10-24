@@ -87,7 +87,7 @@ namespace DefectDBManager
         #endregion
 
         public event DelegateEndCsvReading OnEndCsvReading=null;
-
+        public bool UpdateEndEvent = false;
         public FormDB(object parent)
         {
             InitializeComponent();
@@ -817,6 +817,12 @@ namespace DefectDBManager
                     {
                         lblDownloadResult.Text = "DB Searching Lot is complete!!";
                     }
+
+                    if(this.UpdateEndEvent==true)
+                    {
+                        OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
+                        this.UpdateEndEvent = false;
+                    }
                 }));
             }
         }
@@ -907,6 +913,7 @@ namespace DefectDBManager
             // 화면 데이터 적용
             this.dataBase.DbOption.lotName = (string)tbLotName.Text.Clone();
             this.dataBase.DbOption.vendor = cbDestination.SelectedIndex;
+            this.UpdateEndEvent = false;
             SearchLotDefect();
         }
 

@@ -179,6 +179,7 @@ namespace DefectDBManager
             _Option[idx].lotName = lotName;
 
             formDB.DataBase = _DbProc[idx];
+            formDB.UpdateEndEvent = true;
             formDB.SearchLotDefect();
         }
 

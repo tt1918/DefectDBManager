@@ -275,6 +275,7 @@ namespace DefectDBManager
         eUpdateDataNext,
         eResetDataNow,
         eResetDataNext,
+        eFinishedSearchLot,
         eFinishedSearchModel,
     }
 
