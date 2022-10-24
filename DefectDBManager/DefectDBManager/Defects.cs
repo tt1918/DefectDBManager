@@ -76,6 +76,26 @@ namespace DefectDBManager
         public float edY;				// 구간 마킹 높이 mm
     }
 
+    [Guid("784F167B-0CFE-4343-AAF9-AFD2960ED87E")]
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct LotSearchResult
+	{
+        [MarshalAs(UnmanagedType.BStr)]
+        public string LotNo;
+		[MarshalAs(UnmanagedType.BStr)]
+		public string Line;
+		[MarshalAs(UnmanagedType.BStr)]
+		public string DateST;
+        [MarshalAs(UnmanagedType.BStr)]
+        public string TimeST;
+        [MarshalAs(UnmanagedType.BStr)]
+        public string DateED;
+        [MarshalAs(UnmanagedType.BStr)]
+        public string TimeED;
+        [MarshalAs(UnmanagedType.I4)]
+        public Int32 DefectCnt;
+    }
+
     [ComVisible(true)]
     [Guid("33C8457C-7482-479E-8AB0-7A4E295F7360")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -109,7 +129,8 @@ namespace DefectDBManager
 		int GetCSV_Type();
 		void LotChange();
 		void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
-		int GetBcdReadWarningM();
+		LotSearchResult[] GetSearchLotResults(bool isNext);
+        int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
 		string[] GetSearchModelResult();
@@ -153,7 +174,6 @@ namespace DefectDBManager
             defects?.Clear();
 			markingData?.Clear();
 			markingAreaDefects?.Clear();
-
         }
 		public static List<Defect> DefectsList
 		{
@@ -344,7 +364,14 @@ namespace DefectDBManager
             dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
         }
 
-		public int GetBcdReadWarningM()
+		public LotSearchResult[] GetSearchLotResults(bool isNext)
+		{
+			List<LotSearchResult> results = new List<LotSearchResult>();
+			dbManager.GetSearchLotResultSummery(isNext, ref results);
+            return results.ToArray();
+		}
+
+        public int GetBcdReadWarningM()
 		{
 			return dbManager._DestConfig.NoBcrWarning;
         }
@@ -356,7 +383,7 @@ namespace DefectDBManager
 
 		public int SearchModel(string lotName)
 		{
-			dbManager._DbProc[2].SearchModel(lotName);
+			dbManager.SearchModel(lotName);
 			return 0;
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -181,6 +182,30 @@ namespace DefectDBManager
             formDB.DataBase = _DbProc[idx];
             formDB.UpdateEndEvent = true;
             formDB.SearchLotDefect();
+        }
+
+        public void GetSearchLotResultSummery(bool isNext, ref List<LotSearchResult> results)
+        {
+            int size = formDB.DataBase.INSPDAT_Data.Length;
+            foreach (List<List<INSPDATData>> data in formDB.DataBase.INSPDAT_Data)
+            {
+                if (data == null) continue;
+                foreach (List<INSPDATData> items in data)
+                {
+                    foreach (INSPDATData item in items)
+                    {
+                        LotSearchResult result = new LotSearchResult();
+                        result.LotNo = item.LOTNO;
+                        result.DefectCnt = item.RollCtlCnt;
+                        result.Line = item.LOTNO.Substring(0,2); // 확인 필요
+                        result.TimeST = item.STRTM;
+                        result.DateST = item.STRDT;
+                        result.TimeED = item.ENDTM;
+                        result.DateED = item.ENDDT;
+                        results.Add(result);
+                    }
+                }
+            }
         }
 
         public void SearchModel(string lotName)
