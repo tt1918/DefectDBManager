@@ -157,10 +157,13 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            DBConnString = string.Format($"Data Source=(DESCRIPTION="
-                    + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={dbIP})(PORT={dbPort})))"
-                    + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
-                    + $"User ID={UserID};Password={password};Connection Timeout=30;");
+            DBConnString = String.Format($"Data Source={dbName};" +
+                    $"User ID={UserID};Password={password};Connection Timeout=30;");
+
+            //DBConnString = string.Format($"Data Source=(DESCRIPTION="
+            //        + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={dbIP})(PORT={dbPort})))"
+            //        + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
+            //        + $"User ID={UserID};Password={password};Connection Timeout=30;");
 
             connectToDB(DBConnString);
 
@@ -199,6 +202,8 @@ namespace DefectDBManager
 
         public List<DateTime> ProductEndTime;
         public List<string> ProductLotName;
+
+        public List<string> SearchModelList = null;
 
         public DestConfig DbDestConfig
         {
@@ -245,6 +250,7 @@ namespace DefectDBManager
 
         public string SearchLotName { get; set; }
 
+       
         // 상위 객체
         private object owner;
 
@@ -265,6 +271,8 @@ namespace DefectDBManager
                 PTRY0P_Data[i] = new List<PTRY0PData>();
 
             INSPDAT_Data = new List<List<INSPDATData>>[count];
+            for(int i=0; i<count; i++)
+                INSPDAT_Data[i] = new List<List<INSPDATData>>();
 
             MRKCTLMST_Data = new List<MRKCTLMSTData>();
             dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
@@ -400,7 +408,13 @@ namespace DefectDBManager
 
             int count = 0;
             string strData;
-            if(SearchPTRYOP_Model(lotID)==true)
+
+            if (SearchModelList != null)
+                SearchModelList.Clear();
+            else
+                SearchModelList = new List<string>();
+
+            if (SearchPTRYOP_Model(lotID)==true)
             {
                 int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
                 for(int i=0; i<fcdCnt; i++)
@@ -414,11 +428,18 @@ namespace DefectDBManager
                             strData = string.Format($"{count}\t-\t{PTRY0P_Data[i][j].Y0ZKNM}");
                             Log.WriteLoadData(strData, count, "MODEL", 0.0);
                             isRes = true;
+                            SearchModelList.Add(PTRY0P_Data[i][j].Y0ZKNM);
                             break;
                         }
                     }
                 }
             }
+
+            if(count>0)
+            {
+
+            }
+
             return isRes;
         }
 

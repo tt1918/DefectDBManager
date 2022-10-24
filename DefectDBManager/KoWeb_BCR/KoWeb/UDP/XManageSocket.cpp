@@ -135,8 +135,6 @@ void CXManageSocket::SendInstantData_LocalHost(LPCSTR param_name, double value)
 }
 
 
-
-
 void CXManageSocket::SendInstantData_LocalHost(LPCSTR param_name, LPSTR str_data)
 {
 	CPacket packet;

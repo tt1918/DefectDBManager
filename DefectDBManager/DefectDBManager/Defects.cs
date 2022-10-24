@@ -112,6 +112,7 @@ namespace DefectDBManager
 		int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
+		string[] GetSearchModelResult();
     }
 
 
@@ -358,5 +359,10 @@ namespace DefectDBManager
 			dbManager._DbProc[2].SearchModel(lotName);
 			return 0;
 		}
+
+		public string[] GetSearchModelResult()
+		{
+			return dbManager._DbProc[2].SearchModelList.ToArray();
+        }
     }
 }

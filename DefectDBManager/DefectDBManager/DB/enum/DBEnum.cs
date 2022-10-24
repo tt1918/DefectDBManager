@@ -275,6 +275,7 @@ namespace DefectDBManager
         eUpdateDataNext,
         eResetDataNow,
         eResetDataNext,
+        eFinishedSearchModel,
     }
 
     #endregion

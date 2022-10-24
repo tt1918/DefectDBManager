@@ -58,6 +58,8 @@ namespace DefectDBManager
         bool disposed = false;
 
         private object parent = null;
+
+        
         public DbManager(object parent)
         {
             this.parent = parent;
@@ -153,7 +155,6 @@ namespace DefectDBManager
             if (formDB == null) return;
 
             SetDataState(isNext);
-
             formDB.Show();
         }
 
@@ -181,11 +182,10 @@ namespace DefectDBManager
             formDB.SearchLotDefect();
         }
 
-        public void SearchModel(string lotName, bool isNext, int vendor)
+        public void SearchModel(string lotName)
         {
             if (formDB.IsSearchDefect() == true) return;
             _Option[2].dbWhen = (eDbIdWhen)0;
-            _Option[2].vendor = vendor;
             _Option[2].lotName = lotName;
 
             formDB.DataBase = _DbProc[2];

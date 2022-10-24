@@ -331,3 +331,46 @@ void CallClassWrapper::SearchModel(CString strLot)
 	m_pCallClass->SearchModel(bstrLot);
 	::SysFreeString(bstrLot);
 }
+
+int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
+{
+	long lDimSize = 0;
+	SAFEARRAY* array = m_pCallClass->GetSearchModelResult();
+	if (array)
+	{
+		VARTYPE vt;
+		SafeArrayGetVartype(array, &vt);
+		IRecordInfoPtr splRecordInfo = NULL;
+		SafeArrayGetRecordInfo(array, &splRecordInfo);
+		GUID guid;
+		splRecordInfo->GetGuid(&guid);
+
+		long lLbound = 0;
+		long lUbound = 0;
+
+		SafeArrayGetLBound(array, 1, &lLbound);
+		SafeArrayGetUBound(array, 1, &lUbound);
+		lDimSize = lUbound - lLbound + 1;
+
+		g_Defect.m_nBcrAreaDefectCount = lDimSize;
+
+		double stY, edY;
+
+		for (int i = 0; i < lDimSize; i++) {
+			long rgIndices[1];
+			_bstr_t value;
+			memset(&value, 0, sizeof(value));
+			rgIndices[0] = i;
+			SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
+			CString model;
+			model.Format(_T("%s"), (LPCWSTR)value);
+			arModel->Add(model);
+			splRecordInfo->RecordClear((PVOID)&value);
+		}
+
+		SafeArrayDestroy(array);
+		array = NULL;
+	}
+
+	return lDimSize;
+}

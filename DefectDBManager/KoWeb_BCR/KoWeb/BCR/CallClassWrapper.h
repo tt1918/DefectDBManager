@@ -29,5 +29,6 @@ public:
 	int GetCSV_Type();
 	void SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC);
 	void SearchModel(CString strLot);
+	int GetSearchModelResult(CStringArray *arModel);
 };
 

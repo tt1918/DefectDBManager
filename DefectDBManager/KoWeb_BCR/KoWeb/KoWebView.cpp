@@ -3133,6 +3133,24 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 	case eEventReport_eResetDataNext:
 
 		break;
+
+	case eEventReport_eFinishedSearchModel:
+		{
+			CStringArray arData;
+			int size = m_DefectCallClass->GetSearchModelResult(&arData);
+			CPacket* packet = new CPacket;
+			CString data;
+			for (int i = 0; i < size; i++)
+			{
+				data += arData[i];
+				if(i<size-1)	data += ",";
+			}
+			packet->MakeAckBcrSearchModelPacket(data, 100);
+			l_Send_Server.SendInsData(packet);
+			delete packet;
+			arData.RemoveAll();
+			break;
+		}
 	}
 	return 0;
 }
