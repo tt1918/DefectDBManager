@@ -3134,6 +3134,28 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 
 		break;
 
+	case eEventReport_eFinishedSearchLot:
+		{
+			CStringArray arData;
+			CString data;
+			int size = m_DefectCallClass->GetSearchLotResult(g_BcrSearchInfo.isNext, &arData);
+
+			for (int i = 0; i < size; i++)
+			{
+				data += arData[i];
+				if (i < size - 1)	data += ";";
+			}
+			CPacket* packet = new CPacket;
+			packet->MakeAckBcrSearchLotPacket(data, 100);
+			l_Send_Server.SendInsData(packet);
+			delete packet;
+			arData.RemoveAll();
+			CString strLog;
+			strLog.Format(_T("[Lot Search Ack] : %s"), data);
+			WriteLog(data);
+			break;
+		}
+		
 	case eEventReport_eFinishedSearchModel:
 		{
 			CStringArray arData;
@@ -3149,6 +3171,8 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 			l_Send_Server.SendInsData(packet);
 			delete packet;
 			arData.RemoveAll();
+			CString strLog;
+			strLog.Format(_T("[Model Search Ack] : %s"), data);
 			break;
 		}
 	}

@@ -28,6 +28,7 @@ public:
 	void GetMarkAreaDefectData(double start, double end);
 	int GetCSV_Type();
 	void SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC);
+	int GetSearchLotResult(bool isNext, CStringArray* arData);
 	void SearchModel(CString strLot);
 	int GetSearchModelResult(CStringArray *arModel);
 };

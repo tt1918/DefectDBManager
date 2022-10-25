@@ -324,6 +324,48 @@ void CallClassWrapper::SearchLot(CString strLot, bool isNext, long vendor, bool 
 	::SysFreeString(bstrLot);
 }
 
+int CallClassWrapper::GetSearchLotResult(bool isNext, CStringArray* arData)
+{
+	long lDimSize = 0;
+	SAFEARRAY* array = m_pCallClass->GetSearchLotResults(isNext);
+	if (array)
+	{
+		VARTYPE vt;
+		SafeArrayGetVartype(array, &vt);
+		IRecordInfoPtr splRecordInfo = NULL;
+		SafeArrayGetRecordInfo(array, &splRecordInfo);
+		GUID guid;
+		splRecordInfo->GetGuid(&guid);
+
+		long lLbound = 0;
+		long lUbound = 0;
+
+		SafeArrayGetLBound(array, 1, &lLbound);
+		SafeArrayGetUBound(array, 1, &lUbound);
+		lDimSize = lUbound - lLbound + 1;
+
+		for (int i = 0; i < lDimSize; i++) {
+			long rgIndices[1];
+			LotSearchResult value;
+			memset(&value, 0, sizeof(value));
+			rgIndices[0] = i;
+			SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
+			CString data;
+			data.Format(_T("%s,$s,$s,$s,$s,%d"), (LPCWSTR)value.LotNo, (LPCWSTR)value.Line, 
+				(LPCWSTR)value.DateST, (LPCWSTR)value.TimeST, 
+				(LPCWSTR)value.DateED, (LPCWSTR)value.TimeED, 
+				value.DefectCnt);
+			arData->Add(data);
+			splRecordInfo->RecordClear((PVOID)&value);
+		}
+
+		SafeArrayDestroy(array);
+		array = NULL;
+	}
+
+	return lDimSize;
+}
+
 void CallClassWrapper::SearchModel(CString strLot)
 {
 	_bstr_t bstrLot;
@@ -351,10 +393,6 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 		SafeArrayGetLBound(array, 1, &lLbound);
 		SafeArrayGetUBound(array, 1, &lUbound);
 		lDimSize = lUbound - lLbound + 1;
-
-		g_Defect.m_nBcrAreaDefectCount = lDimSize;
-
-		double stY, edY;
 
 		for (int i = 0; i < lDimSize; i++) {
 			long rgIndices[1];

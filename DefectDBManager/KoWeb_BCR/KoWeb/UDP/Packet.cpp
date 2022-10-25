@@ -763,7 +763,7 @@ void CPacket::MakeAckBcrSearchLotPacket(CString data, long progress)
 	memset(m_pBuf, 0, m_nBuflen);
 
 	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 8, &data, dataLen);
+	memcpy(m_pBuf + 8, data.GetBuffer(), dataLen);
 	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
 }
 
@@ -794,7 +794,7 @@ void CPacket::MakeAckBcrSearchModelPacket(CString data, long progress)
 	memset(m_pBuf, 0, m_nBuflen);
 
 	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 8, &data, dataLen);
+	memcpy(m_pBuf + 8, data.GetBuffer(), dataLen);
 	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
 }
 
