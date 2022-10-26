@@ -488,7 +488,8 @@ namespace DefectDBManager
                         data.Parse(reader);
                         PTRLYP_Data.Add(data);
                         DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
-                        Log.WriteLoadData(data.ToString(), PTRLYP_Data.Count, "PTRYLP", 0);
+                        string logData = string.Format($"{PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                        Log.WriteLoadData(logData, 0, "PTRYLP", 0);
                     }
                     success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
                 }
@@ -738,19 +739,22 @@ namespace DefectDBManager
                         if (nY0PPCD == 100)
                         {
                             PTRY0P_Data[(int)eFCD.ES].Add(data);
-                            Log.WriteLoadData(data.ToString(), (int)eFCD.ES, "PTRYOP_MODEL", 0.0);
+                            string logData = string.Format($"{(int)eFCD.ES}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, 0, "PTRYOP_MODEL", 0.0);
                         }
 
                         if (nY0PPCD == 400)
                         {
                             PTRY0P_Data[(int)eFCD.TG].Add(data);
-                            Log.WriteLoadData(data.ToString(), (int)eFCD.TG, "PTRYOP_MODEL", 0.0);
+                            string logData = string.Format($"{(int)eFCD.TG}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, 0, "PTRYOP_MODEL", 0.0);
                         }
 
                         if (nY0PPCD != 100 && nY0PPCD != 400)
                         {
                             PTRY0P_Data[(int)eFCD.ETC].Add(data);
-                            Log.WriteLoadData(data.ToString(), (int)eFCD.ETC, "PTRYOP_MODEL", 0.0);
+                            string logData = string.Format($"{(int)eFCD.ETC}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, 0, "PTRYOP_MODEL", 0.0);
                         }
                     }
                 }
