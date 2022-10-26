@@ -25,7 +25,7 @@ namespace DefectDBManager
                         sw.WriteLine(str);
                     else
                     {
-                        sw.WriteLine($"{time}");
+                        sw.Write($"[{time}] ");
                         sw.WriteLine(str);
                     }
                 }

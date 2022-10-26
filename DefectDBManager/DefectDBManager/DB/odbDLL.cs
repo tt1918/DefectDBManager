@@ -10,6 +10,7 @@ using System.Diagnostics;
 
 namespace DefectDBManager
 {
+    public delegate void DelegateDBConnect(bool state);
     public class OracleDbConnection : IDisposable
     {
         public string DBConnString
@@ -62,6 +63,8 @@ namespace DefectDBManager
 
         public bool bDBConnCheck = false;
 
+        public event DelegateDBConnect OnDbConnect = null;
+
         public OracleDbConnection()
         {
 
@@ -108,9 +111,11 @@ namespace DefectDBManager
                 if (!IsDBConnected)
                 {
                     conn.Open();
-
                     if (conn.State == System.Data.ConnectionState.Open)
+                    {
                         bDBConnCheck = true;
+                        this.OnDbConnect(true);
+                    }
                     else
                         bDBConnCheck = false;
                 }
@@ -470,7 +475,7 @@ namespace DefectDBManager
             QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
             string query = ptrylp.GetQuery();
             long dbCnt = 0;
-
+            Log.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
             using (var comm = new OracleCommand(query, conn.Connection))
             {
                 using (var reader = comm.ExecuteReader())
@@ -483,6 +488,7 @@ namespace DefectDBManager
                         data.Parse(reader);
                         PTRLYP_Data.Add(data);
                         DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
+                        Log.WriteLoadData(data.ToString(), PTRLYP_Data.Count, "PTRYLP", 0);
                     }
                     success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
                 }
@@ -536,10 +542,11 @@ namespace DefectDBManager
             XOFSMST_Data.Clear();
             QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
             string query = msg.GetQuery();
+            
+            Log.WriteLoadData(query, 0, "XOFSMST", 0.0);
+            
             long dbCnt = 0;
-
             string logData;
-
             using (var comm = new OracleCommand(query, conn.Connection))
             {
                 using (var reader = comm.ExecuteReader())
@@ -575,6 +582,7 @@ namespace DefectDBManager
             AREADEL_Data.Clear();
             QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
             string query = msg.GetQuery();
+            Log.WriteLoadData(query, 0, "AREADEL", 0.0);
             long dbCnt = 0;
             int crtRead = 0;
             string logData;
@@ -594,7 +602,7 @@ namespace DefectDBManager
                         DB_Progress.AddCount(eNittoDBProgress.AREADEL);
 
                         logData = string.Format($"{AREADEL_Data.Count}\t-\t{data.ToString()}");
-                        Log.WriteLoadData(logData, AREADEL_Data.Count, "XOFSMST", 0.0);
+                        Log.WriteLoadData(logData, AREADEL_Data.Count, "AREADEL", 0.0);
                     }
                 }
             }
@@ -694,6 +702,7 @@ namespace DefectDBManager
             string query = msg.GetQuery(PTRLYP_Data, true);
             long dbCnt = 0;
 
+            Log.WriteLoadData(query, 0, "PTRYOP_MODEL", 0.0);
             using (var comm = new OracleCommand(query, conn.Connection))
             {
                 using (OracleDataReader reader = comm.ExecuteReader())
@@ -729,16 +738,19 @@ namespace DefectDBManager
                         if (nY0PPCD == 100)
                         {
                             PTRY0P_Data[(int)eFCD.ES].Add(data);
+                            Log.WriteLoadData(data.ToString(), (int)eFCD.ES, "PTRYOP_MODEL", 0.0);
                         }
 
                         if (nY0PPCD == 400)
                         {
                             PTRY0P_Data[(int)eFCD.TG].Add(data);
+                            Log.WriteLoadData(data.ToString(), (int)eFCD.TG, "PTRYOP_MODEL", 0.0);
                         }
 
                         if (nY0PPCD != 100 && nY0PPCD != 400)
                         {
                             PTRY0P_Data[(int)eFCD.ETC].Add(data);
+                            Log.WriteLoadData(data.ToString(), (int)eFCD.ETC, "PTRYOP_MODEL", 0.0);
                         }
                     }
                 }

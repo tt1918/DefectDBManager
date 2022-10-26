@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.PropertyGridInternal;
+using static DefectDBManager.QueryMsg;
 
 namespace DefectDBManager
 {
@@ -79,14 +80,14 @@ namespace DefectDBManager
         private OracleDbConnection dbConn = null;
 
         public string LotName;
-
         #endregion
 
         #region Form
         FormDbAddition formDbAddition = null;
+        FormDbLoginData formLogin = null;
         #endregion
 
-        public event DelegateEndCsvReading OnEndCsvReading=null;
+        public event DelegateEndCsvReading OnEndCsvReading = null;
         public bool UpdateEndEvent = false;
         public FormDB(object parent)
         {
@@ -105,8 +106,8 @@ namespace DefectDBManager
             dbSearchProgressTimer.Interval = 200;
             dbSearchProgressTimer.Tick += new EventHandler(timer_DbSearch);
 
-            panelTitle.MouseDown+= lblTitle_MouseDown;
-            panelTitle.MouseMove+= lblTitle_MouseMove;
+            panelTitle.MouseDown += lblTitle_MouseDown;
+            panelTitle.MouseMove += lblTitle_MouseMove;
         }
 
         private void FormDB_Load(object sender, EventArgs e)
@@ -126,10 +127,12 @@ namespace DefectDBManager
 
                 displayMarkingOption();
                 dbCommTimer.Start();
+                dbConn.OnDbConnect += OnDbConnect;
             }
             else
             {
                 dbCommTimer.Stop();
+                dbConn.OnDbConnect -= OnDbConnect;
             }
         }
 
@@ -685,7 +688,7 @@ namespace DefectDBManager
 
                     }
 
-                    if(dataBase.CrtParam.isXOffsetError==true)
+                    if (dataBase.CrtParam.isXOffsetError == true)
                     {
 
                     }
@@ -809,7 +812,7 @@ namespace DefectDBManager
                     this.dbSearchProgressTimer.Stop();
 
                     // 완료 시 보고 처리 필요
-                    if(isSuccess==false)
+                    if (isSuccess == false)
                     {
                         lblDownloadResult.Text = "DB Searching Lot is failed!!";
                     }
@@ -818,7 +821,7 @@ namespace DefectDBManager
                         lblDownloadResult.Text = "DB Searching Lot is complete!!";
                     }
 
-                    if(this.UpdateEndEvent==true)
+                    if (this.UpdateEndEvent == true)
                     {
                         OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
                         this.UpdateEndEvent = false;
@@ -1051,7 +1054,7 @@ namespace DefectDBManager
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("데이터를 초기화 하시겠습니까?", "Reset Fault Data", MessageBoxButtons.YesNo)==DialogResult.No)
+            if (MessageBox.Show("데이터를 초기화 하시겠습니까?", "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 return;
             }
@@ -1091,16 +1094,15 @@ namespace DefectDBManager
             this.dbConn.Password = dataBase.DbDestConfig.dbLogin.DbPW;
             this.dbConn.DBName = dataBase.DbDestConfig.dbLogin.DbName;
 
-            using (FormDbLoginData form = new FormDbLoginData(this.dbConn))
-            {
-                form.ShowDialog();
+            if (formLogin == null) formLogin = new FormDbLoginData(this.dbConn);
 
-                if (this.dbConn.IsDBConnected == true)
-                {
-                    dataBase.DbDestConfig.dbLogin.DbID = this.dbConn.UserID;
-                    dataBase.DbDestConfig.dbLogin.DbPW = this.dbConn.Password;
-                    dataBase.DbDestConfig.dbLogin.DbName = this.dbConn.DBName;
-                }
+            formLogin.Conn = this.dbConn;
+            formLogin.ShowDialog();
+            if (this.dbConn.IsDBConnected == true)
+            {
+                dataBase.DbDestConfig.dbLogin.DbID = this.dbConn.UserID;
+                dataBase.DbDestConfig.dbLogin.DbPW = this.dbConn.Password;
+                dataBase.DbDestConfig.dbLogin.DbName = this.dbConn.DBName;
             }
         }
 
@@ -1269,11 +1271,11 @@ namespace DefectDBManager
 
         private void btnFormMaximize_Click(object sender, EventArgs e)
         {
-            if(this.WindowState == FormWindowState.Maximized)
+            if (this.WindowState == FormWindowState.Maximized)
             {
                 this.WindowState = FormWindowState.Normal;
             }
-            else if(this.WindowState == FormWindowState.Normal)
+            else if (this.WindowState == FormWindowState.Normal)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
@@ -1283,8 +1285,19 @@ namespace DefectDBManager
         {
             this.Hide();
         }
+
+        private void OnDbConnect(bool state)
+        {
+            if(state)
+            {
+                if(this.formLogin?.Visible==true)
+                {
+                    this.formLogin.Close();
+                }
+            }
+        }
         #endregion
-        
+
         #region 마우스로 폼 드래그
         private Point mouseDownLocation;
         private void lblTitle_MouseDown(object sender, MouseEventArgs e)
@@ -1297,7 +1310,7 @@ namespace DefectDBManager
         private void lblTitle_MouseMove(object sender, MouseEventArgs e)
         {
             if (this.WindowState == FormWindowState.Maximized) return;
-            
+
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 this.Left = e.X + this.Left - this.mouseDownLocation.X;
@@ -1313,9 +1326,9 @@ namespace DefectDBManager
         {
             if (this.dbConn == null) return;
 
-            if(this.dbConn.IsDBConnected==true)
+            if (this.dbConn.IsDBConnected == true)
             {
-                if(isOldConn == false)
+                if (isOldConn == false)
                 {
                     lblDbConnStateIcon?.Image.Dispose();
                     lblDbConnStateIcon.Image = Properties.Resources.icons8_green_square_16;
@@ -1324,7 +1337,7 @@ namespace DefectDBManager
             }
             else
             {
-                if(isOldConn==true)
+                if (isOldConn == true)
                 {
                     lblDbConnStateIcon?.Image.Dispose();
                     lblDbConnStateIcon.Image = Properties.Resources.icons8_black_medium_square_16;
@@ -1339,7 +1352,7 @@ namespace DefectDBManager
 
             StringBuilder sb = new StringBuilder();
 
-            if(this.dataBase.DB_Progress.IsError==true)
+            if (this.dataBase.DB_Progress.IsError == true)
             {
                 sb.Append($"Error is occured : Error Step [{((eNittoDBProgress)dataBase.DB_Progress.ErrorStep).ToString()}]");
                 lblDownloadResult.Text = sb.ToString();
@@ -1350,7 +1363,7 @@ namespace DefectDBManager
 
             // 현재 진항하고 있는 마지막 스텝을 확인한다. 
             int finalStep = 0;
-            for(int i=0; i<maxIdx; i++)
+            for (int i = 0; i < maxIdx; i++)
             {
                 if (this.dataBase.DB_Progress._Progress[i].IsComplete() == true || this.dataBase.DB_Progress._Progress[i].IsSkip == true)
                     finalStep = i;
@@ -1363,9 +1376,9 @@ namespace DefectDBManager
             if (finalStep < 0) finalStep = 0;
 
 
-            for (int i= finalStep; i< maxIdx; i++)
+            for (int i = finalStep; i < maxIdx; i++)
             {
-                
+
                 switch ((eNittoDBProgress)i)
                 {
                     case eNittoDBProgress.PTRYLP:
@@ -1414,7 +1427,7 @@ namespace DefectDBManager
                         break;
 
                     case eNittoDBProgress.MRKCTLMST_ES:
-                        if(this.dataBase.DB_Progress._Progress[i].IsSkip==true)
+                        if (this.dataBase.DB_Progress._Progress[i].IsSkip == true)
                             sb.Append("MRKCTLMST_ES Skip => ");
                         else if (this.dataBase.DB_Progress._Progress[i].IsComplete() == true)
                             sb.Append("MRKCTLMST_ES Complete => ");
@@ -1534,6 +1547,6 @@ namespace DefectDBManager
         }
         #endregion Timer
 
-        
+
     }
 }

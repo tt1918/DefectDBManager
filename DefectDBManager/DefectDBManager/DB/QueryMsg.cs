@@ -214,7 +214,7 @@ namespace DefectDBManager
 
                 DateTime cvtTime;
 
-                if (DateTime.TryParseExact(time, "yyyyMMddhhmmss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out cvtTime) != true)
+                if (DateTime.TryParseExact(time, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out cvtTime) != true)
                 {
                     return false;
                 }
