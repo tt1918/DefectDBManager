@@ -21,6 +21,11 @@ CallClassWrapper::~CallClassWrapper(void)
 	CoUninitialize();
 }
 
+void CallClassWrapper::SetParent(HWND pParent)
+{
+	m_pParent = pParent;
+}
+
 void CallClassWrapper::GetDefectsData()
 {
 	SAFEARRAY* array = m_pCallClass->GetDefect();

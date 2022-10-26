@@ -244,9 +244,6 @@ void CCossSocket::StopComm()
 	m_hThread = NULL;
 }
 
-
-
-
 /*
 int CCossSocket::GetIpAdr()
 {

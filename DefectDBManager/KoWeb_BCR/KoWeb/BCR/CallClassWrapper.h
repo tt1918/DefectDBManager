@@ -15,6 +15,7 @@ private:
 	ICallClass* m_pCallClass;
 
 public:
+	void SetParent(HWND pParent);
 	void GetDefectsData();
 	void ReadDBFile(std::string path);
 	void SearchDefectClass(int classID);

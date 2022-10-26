@@ -120,6 +120,7 @@ namespace DefectDBManager
 		void ShowViewer(bool isNext);
 		void AddEventCsvReading(ICsvReadingEvents csvReadingEvents);
 		void RemoveEventCsvReading(ICsvReadingEvents csvReadingEvents);
+		void CelarEventCsvReading();
         MarkingData[] GetMarkingData(bool isNext);
 		int GetMarkingDefectMeter();
 		MarkingData[] GetMarkDefectData(string bcno, double start, double end);
@@ -138,6 +139,7 @@ namespace DefectDBManager
 
 
     [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [Guid("83AF4738-A82D-4D9C-917D-8E4202727D57")]
 	public class Defects : ICallClass
 	{
@@ -169,7 +171,9 @@ namespace DefectDBManager
         }
 		~Defects()
 		{
-			dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
+			_CsvReadingEventsListener.Clear();
+
+            dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
             dbManager._DestConfig.Write();
             defects?.Clear();
 			markingData?.Clear();
@@ -240,8 +244,12 @@ namespace DefectDBManager
 		{
 			_CsvReadingEventsListener.Remove(csvReadingEvents);
         }
+		public void CelarEventCsvReading()
+		{
+			_CsvReadingEventsListener.Clear();
+        }
 
-		public void OnEventEndCsvReding(int evtID)
+        public void OnEventEndCsvReding(int evtID)
 		{
             foreach (ICsvReadingEvents evt in _CsvReadingEventsListener)
 			{

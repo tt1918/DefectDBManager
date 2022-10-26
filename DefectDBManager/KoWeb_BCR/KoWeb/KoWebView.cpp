@@ -3075,24 +3075,21 @@ void CKoWebView::CreateDefectCallCallss()
 	if (m_DefectCallClass == nullptr)
 		m_DefectCallClass = new CallClassWrapper(this->m_hWnd);
 	if (m_DefectReadingEvent == nullptr)
-	{
 		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
-		m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
-	}
+	
+	m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
 
 	g_Param.m_nBcrCsvType = m_DefectCallClass->GetCSV_Type();
 }
 
 void CKoWebView::DestroyDefectCallClass()
 {
-	if (m_DefectCallClass != nullptr)
-	{
+	/*if (m_DefectReadingEvent != nullptr && m_DefectCallClass != nullptr)
 		m_DefectCallClass->RemoveEndCsvReading(m_DefectReadingEvent);
-		delete m_DefectCallClass;
-	}
-
 	if (m_DefectReadingEvent != nullptr)
 		delete m_DefectReadingEvent;
+	if (m_DefectCallClass != nullptr)
+		delete m_DefectCallClass;*/
 }
 
 void CKoWebView::OnBnClickedBtnShowDefectNow()
