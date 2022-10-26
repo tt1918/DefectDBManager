@@ -40,9 +40,9 @@ namespace DefectDBManager
         {
             if (IsSkip == true) return true;
             if (Total == 0) return false;
-            if (Total == Current) return true;
-            
-            return false;
+            //if (Total == Current) return true;  //PTRYLP에서 reader.RowSize가 실제 읽는 row개수와 다름.. 우선은 막고 테스트
+
+            return true;
         }
     }
 

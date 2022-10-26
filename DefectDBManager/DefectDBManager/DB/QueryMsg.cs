@@ -23,10 +23,11 @@ namespace DefectDBManager
 
             public string GetQuery()
             {
+                string vender = $"'{Vender}'";
                 string message = "SELECT DISTINCT " +
                                  "* " +
                                  " " +
-                                 " FROM PTRYLP WHERE YLMLOT LIKE " + Vender +
+                                 " FROM PTRYLP WHERE YLMLOT LIKE " + vender +
                                  " AND YLSGEB LIKE 'LOGROLL%'";
 
                 return message;
@@ -46,14 +47,13 @@ namespace DefectDBManager
 
             public string GetQuery()
             {
+                string vender = $"'{Vender}'";
                 string message = "SELECT * FROM XOFSMST WHERE XOFSMST.KYCD IN " +
-                                    "(SELECT PTRY0P.Y0KYCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + Vender +
-                                    " AND PTRYLP.YLSGEB = 'LOGROLL' AND XOFSMST.PPCD IN(SELECT PTRY0P.Y0PPCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + Vender +
-                                    " AND PTRYLP.YLSGEB = 'LOGROLL' AND XOFSMST.LNCD IN(SELECT PTRY0P.Y0LNCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + Vender +
-                                    " AND PTRYLP.YLSGEB = 'LOGROLL' AND XOFSMST.YLMZKN2 IN(SELECT DISTINCT PTRYLP.YLMZKN2 FROM PTRYLP WHERE PTRYLP.YLMLOT = " + Vender +
-                                    " AND PTRYLP.YLSGEB = 'LOGROLL' AND XOFSMST.YLSZKN IN(SELECT PTRY0P.Y0ZKNM FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = + " + Vender +
-                                    " AND PTRYLP.YLSGEB = 'LOGROLL'))";
-
+                                    "(SELECT PTRY0P.Y0KYCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                                    " AND XOFSMST.PPCD IN(SELECT PTRY0P.Y0PPCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                                    " AND XOFSMST.LNCD IN(SELECT PTRY0P.Y0LNCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                                    " AND XOFSMST.YLMZKN2 IN(SELECT DISTINCT PTRYLP.YLMZKN2 FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL')" +
+                                    " AND XOFSMST.YLSZKN IN(SELECT PTRY0P.Y0ZKNM FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = + " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))";
                 return message;
             }
         }
@@ -70,8 +70,9 @@ namespace DefectDBManager
 
             public string GetQuery()
             {
+                string vender = $"'{Vender}'";
                 string message = "SELECT * FROM AREADEL ADEL WHERE EXISTS (SELECT 'X'  FROM(SELECT TRIM(YL.YLMLOT) YLMLOT," +
-                                    " TRIM(YL.YLSLOT) YLSLOT FROM PTRYLP YL WHERE YL.YLMLOT = " + Vender + ")" +
+                                    " TRIM(YL.YLSLOT) YLSLOT FROM PTRYLP YL WHERE YL.YLMLOT = " + vender + ")" +
                                     " EYL WHERE ADEL.LOTNO = EYL.YLMLOT OR ADEL.LOTNO = EYL.YLSLOT)";
 
                 return message;

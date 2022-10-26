@@ -615,6 +615,7 @@ namespace DefectDBManager
 
             // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
             string query = msg.GetQuery(PTRLYP_Data);
+            Log.WriteLoadData(query, 0, "PTRY0P", 0.0);
             long dbCnt = 0;
             string logData="";
             int logCnt = 0;
@@ -624,13 +625,13 @@ namespace DefectDBManager
                 {
                     DB_Progress.Reset(eNittoDBProgress.PTRYLP);
                     dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.PTRYLP, dbCnt);
+                    DB_Progress.SetTotal(eNittoDBProgress.PTRYOP, dbCnt);
 
                     while (reader.Read())
                     {
-                        string strYOKLOT = reader[8].ToString();
-                        string strY0LNSN = reader[10].ToString();
-                        int nY0PPCD = Int32.Parse(reader[3].ToString());
+                        string strYOKLOT = reader[7].ToString();
+                        string strY0LNSN = reader[9].ToString();
+                        int nY0PPCD = Int32.Parse(reader[2].ToString());
 
                         if (Char.IsLetter(strYOKLOT, 0) == true)
                         {
@@ -647,8 +648,9 @@ namespace DefectDBManager
                         data.Parse(reader);
                         DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
 
-                        if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
-                            continue;
+                        //아래 구문은 Int형 범위초과로 에러...
+                        //if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
+                        //    continue;
 
                         if (dbOption.checkES == true && nY0PPCD == 100)
                         {
@@ -673,7 +675,7 @@ namespace DefectDBManager
                     }
                 }
             }
-            success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
+            success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYOP);
 
             return success;
         }
