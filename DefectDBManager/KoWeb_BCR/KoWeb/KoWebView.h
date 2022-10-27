@@ -319,7 +319,6 @@ protected:
 public:
 	CallClassWrapper* m_DefectCallClass;
 	CallClassReadingEvents* m_DefectReadingEvent;
-
 private:
 	void CreateDefectCallCallss();
 	void DestroyDefectCallClass();
