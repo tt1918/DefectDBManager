@@ -960,6 +960,7 @@ namespace DefectDBManager
                 {
                     string query = "";
                     QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
+                    msg.LNCD = PTRY0P_Data[idx][i].LNCD;
                     msg.SetTime(PTRY0P_Data[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
                     msg.SetTime(PTRY0P_Data[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
 
