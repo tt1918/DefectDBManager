@@ -66,7 +66,10 @@ namespace DefectDBManager
             this.parent = parent;
 
             _DestConfig = new DestConfig();
-            _DestConfig.Read();//Dest.Ini 파일 읽어들임
+            if (_DestConfig.Read() < 0) //Dest.Ini 파일 읽어들임
+            {
+                MessageBox.Show($"Failed to read {Define.DestPath}");
+            }
 
             _DbConn = new OracleDbConnection();
 

@@ -98,10 +98,10 @@ namespace DefectDBManager
         {
             if (conn == null)
             {
-                //  DBConnString = String.Format("Data Source=(DESCRIPTION="
-                //+ "(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=LOCALHOST)(PORT=1521)))"
-                //+ "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORCL)));"
-                //+ "User Id=test;Password=1234");
+                dbConn = String.Format("Data Source=(DESCRIPTION="
+              + "(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=172.29.2.24)(PORT=1521)))"
+              + "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=INSP)));"
+              + "User Id=INSP;Password=INSP");
 
                 conn = new OracleConnection(dbConn);
             }
@@ -310,6 +310,8 @@ namespace DefectDBManager
             ProductLotName.Clear();
 
             XOFSMST_Data.Clear();
+            PTRLYP_Data.Clear();
+
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)
@@ -824,7 +826,7 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
+            bool success = true;
 
             DestConfigUnit destUnit = new DestConfigUnit();
             destConfig.GetData(dbOption.FWPlace, ref destUnit);
@@ -871,7 +873,7 @@ namespace DefectDBManager
                                     MRKCTLMST_Data.Add(data);
 
                                     logData = string.Format($"{MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
-                                    Log.WriteLoadData(query, MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
+                                    Log.WriteLoadData(logData, MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
                                     // 조건문 추가해야 함
                                     CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
                                     if (dicSizeMRKCTLMST[i][j].ContainsKey(data.FLTID) == true)

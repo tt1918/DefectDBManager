@@ -23,11 +23,11 @@ namespace DefectDBManager
 
             public string GetQuery()
             {
-                string vender = $"'{Vender}'";
+                string vender = $"'{Vender}%'";
                 string message = "SELECT DISTINCT " +
                                  "* " +
                                  " " +
-                                 " FROM PTRYLP WHERE YLMLOT LIKE " + vender +
+                                 " FROM PTRYLP WHERE YLMLOT LIKE " + vender + 
                                  " AND YLSGEB LIKE 'LOGROLL%'";
 
                 return message;
@@ -137,11 +137,11 @@ namespace DefectDBManager
                         break;
 
                     case eFCD.TG:
-                        strOption = "(PPCD <> '100' AND PPCD <> '400')";
+                        strOption = "PPCD='400'";
                         break;
 
                     case eFCD.ETC:
-                        strOption = "PPCD='400'";
+                        strOption = "(PPCD <> '100' AND PPCD <> '400')";
                         break;
                 }
 
@@ -258,16 +258,16 @@ namespace DefectDBManager
                 {
                     case 0:
                         query = "SELECT * FROM INSPDAT WHERE BCNO IN (SELECT DISTINCT BCNO FROM INSPDAT WHERE CONCAT(STRDT,STRTM)>='" + startTime[0].ToString("yyyyMMddhhmmss") +
-                                "' AND CONCAT(ENDDT,ENDTM)<='" + endTime[1].ToString("yyyyMMddhhmmss") +
+                                "' AND CONCAT(ENDDT,ENDTM)<='" + endTime[1].ToString("yyyyMMddHHmmss") +
                                 "' AND INSPDAT.CUSTCD='" + LNCD +
-                                "') AND CONCAT(STRDT,STRTM)>='" + start_ES_Time[0].ToString("yyyyMMddhhmmss") +
-                                "' AND CONCAT(ENDDT,ENDTM)<='" + end_ES_Time[1].ToString("yyyyMMddhhmmss") +
+                                "') AND CONCAT(STRDT,STRTM)>='" + start_ES_Time[0].ToString("yyyyMMddHHmmss") +
+                                "' AND CONCAT(ENDDT,ENDTM)<='" + end_ES_Time[1].ToString("yyyyMMddHHmmss") +
                                 "' AND INSPDAT.CUSTCD='" + LNCD + "'";
                         break;
 
                     case 1:
-                        query = "SELECT * FROM INSPDAT WHERE CONCAT(STRDT,STRTM)>='" + endTime[0].ToString("yyyyMMddhhmmss") +
-                                "' AND CONCAT(ENDDT,ENDTM)<='" + endTime[1].ToString("yyyyMMddhhmmss") +
+                        query = "SELECT * FROM INSPDAT WHERE CONCAT(STRDT,STRTM)>='" + startTime[0].ToString("yyyyMMddHHmmss") +
+                                "' AND CONCAT(ENDDT,ENDTM)<='" + endTime[1].ToString("yyyyMMddHHmmss") +
                                 "' AND INSPDAT.CUSTCD='" + LNCD + "'";
                         break;
                 }
@@ -284,7 +284,7 @@ namespace DefectDBManager
             {
                 string message = "";
 
-                message = "SELECT * FORM FAULTDAT WHERE CTLNO='" + CTLNO + "'";
+                message = "SELECT * FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'";
 
                 return message;
             }

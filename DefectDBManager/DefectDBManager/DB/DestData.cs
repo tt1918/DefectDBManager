@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace DefectDBManager
 {
@@ -314,6 +315,8 @@ namespace DefectDBManager
 
         public int Read()
         {
+            if (File.Exists(Define.DestPath) == false) return -1;
+
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
             string key;
             for (int i = 0; i < Global.MaxDestItemCnt; i++)

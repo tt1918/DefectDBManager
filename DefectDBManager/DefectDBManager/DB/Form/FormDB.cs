@@ -316,6 +316,7 @@ namespace DefectDBManager
             try
             {
                 listViewBCNO.BeginUpdate();
+                int total = 0;
 
                 for (int i = 0; i < count; i++)
                 {
@@ -328,8 +329,10 @@ namespace DefectDBManager
                             ListViewItem item;
                             INSPDATData tmpData = data[i][j][k];
                             // No.0
-                            if (useSplit == true) item = new ListViewItem($"{idxCnt + 1}({title})");
-                            else item = new ListViewItem($"{idxCnt + 1}");
+                            if (useSplit == true) item = new ListViewItem($"{total + 1}({title})");
+                            else item = new ListViewItem($"{total + 1}");
+
+                            total++;
 
                             // No.1
                             if (type == eCSV_TYPE.KORENO || type == eCSV_TYPE.KORENO_RK || type == eCSV_TYPE.KORENO_RK_IJP)
@@ -349,16 +352,18 @@ namespace DefectDBManager
 
                             // No.3
                             if (tmpData.Width != 0 && tmpData.Length != 0)
-                                unitDefect = (double)(tmpData.RollCtlCnt * 1000 * 1000) / (double)(tmpData.Width * tmpData.Length);
+                                unitDefect = (double)(tmpData.RollCtlCnt) / (double)((tmpData.Width / 1000) * (tmpData.Length / 1000));
                             else
                                 unitDefect = 0.0;
-                            item.SubItems.Add($"{unitDefect}");
+                            item.SubItems.Add($"{unitDefect:F02}");
 
                             // No.4
                             item.SubItems.Add("0");
 
                             // No.5
                             item.SubItems.Add(tmpData.BCNO);
+
+                            listViewBCNO.Items.Add(item);
                         }
                     }
                 }
@@ -466,7 +471,7 @@ namespace DefectDBManager
                     ListViewItem item = new ListViewItem(data.LNCD);
                     item.SubItems.Add(data.FLTID);
                     item.SubItems.Add(data.ROLLNAME);
-                    item.SubItems.Add($"{data.SIZE:3F}");
+                    item.SubItems.Add($"{data.SIZE:F02}");
 
                     listViewMRKCTLMST.Items.Add(item);
                 }
@@ -1042,7 +1047,7 @@ namespace DefectDBManager
 
             dataBase.DbOption.checkES = cbUseES.Checked;
             dataBase.DbOption.checkTG = cbUseTG.Checked;
-            dataBase.DbOption.checkETC = cbUseTG.Checked;
+            dataBase.DbOption.checkETC = cbUseETC.Checked;
             dataBase.DbOption.useMask = cbUseMask.Checked;
             if (Int32.TryParse(tbSearchEndTime.Text, out int val) == true)
                 dataBase.DbOption.timeGabEdMinute2 = val;
@@ -1330,6 +1335,7 @@ namespace DefectDBManager
             {
                 if (isOldConn == false)
                 {
+                    lblDbConnState.Text = "CONNECTED";
                     lblDbConnStateIcon?.Image.Dispose();
                     lblDbConnStateIcon.Image = Properties.Resources.icons8_green_square_16;
                     isOldConn = true;
@@ -1339,6 +1345,7 @@ namespace DefectDBManager
             {
                 if (isOldConn == true)
                 {
+                    lblDbConnState.Text = "DISCONNECTED";
                     lblDbConnStateIcon?.Image.Dispose();
                     lblDbConnStateIcon.Image = Properties.Resources.icons8_black_medium_square_16;
                     isOldConn = false;
