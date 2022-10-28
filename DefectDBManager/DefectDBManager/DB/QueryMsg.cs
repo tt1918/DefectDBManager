@@ -323,9 +323,7 @@ namespace DefectDBManager
             public string GetQuery()
             {
                 string message = "";
-
                 message = "SELECT * FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'";
-
                 return message;
             }
         }
