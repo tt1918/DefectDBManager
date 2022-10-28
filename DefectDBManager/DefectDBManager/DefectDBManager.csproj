@@ -105,6 +105,12 @@
     <Compile Include="DB\Form\FormDbLoginData.Designer.cs">
       <DependentUpon>FormDbLoginData.cs</DependentUpon>
     </Compile>
+    <Compile Include="DB\Form\FormDbProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\Form\FormDbProgress.Designer.cs">
+      <DependentUpon>FormDbProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\Form\FormSkipParam.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +122,12 @@
     </Compile>
     <Compile Include="DB\Form\FormDefectClassEdit.Designer.cs">
       <DependentUpon>FormDefectClassEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Form\ucProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DB\Form\ucProgress.Designer.cs">
+      <DependentUpon>ucProgress.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\Form\ucSkipParam.cs">
       <SubType>UserControl</SubType>
@@ -158,11 +170,17 @@
     <EmbeddedResource Include="DB\Form\FormDbLoginData.resx">
       <DependentUpon>FormDbLoginData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DB\Form\FormDbProgress.resx">
+      <DependentUpon>FormDbProgress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\FormDefectClassEdit.resx">
       <DependentUpon>FormDefectClassEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\FormSkipParam.resx">
       <DependentUpon>FormSkipParam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Form\ucProgress.resx">
+      <DependentUpon>ucProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\ucSkipParam.resx">
       <DependentUpon>ucSkipParam.cs</DependentUpon>
