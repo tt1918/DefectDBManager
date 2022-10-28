@@ -3075,24 +3075,19 @@ void CKoWebView::CreateDefectCallCallss()
 	if (m_DefectCallClass == nullptr)
 		m_DefectCallClass = new CallClassWrapper(this->m_hWnd);
 	if (m_DefectReadingEvent == nullptr)
-	{
 		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
-		m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
-	}
+	m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
 
 	g_Param.m_nBcrCsvType = m_DefectCallClass->GetCSV_Type();
 }
 
 void CKoWebView::DestroyDefectCallClass()
 {
+	// m_DefectReadingEvent 해제시 종료 시 오류 발생....
+	/*if (m_DefectReadingEvent != nullptr)
+		delete m_DefectReadingEvent;*/
 	if (m_DefectCallClass != nullptr)
-	{
-		m_DefectCallClass->RemoveEndCsvReading(m_DefectReadingEvent);
 		delete m_DefectCallClass;
-	}
-
-	if (m_DefectReadingEvent != nullptr)
-		delete m_DefectReadingEvent;
 }
 
 void CKoWebView::OnBnClickedBtnShowDefectNow()
@@ -3134,6 +3129,28 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 
 		break;
 
+	case eEventReport_eFinishedSearchLot:
+		{
+			CStringArray arData;
+			CString data;
+			int size = m_DefectCallClass->GetSearchLotResult(g_BcrSearchInfo.isNext, &arData);
+
+			for (int i = 0; i < size; i++)
+			{
+				data += arData[i];
+				if (i < size - 1)	data += ";";
+			}
+			CPacket* packet = new CPacket;
+			packet->MakeAckBcrSearchLotPacket(data, 100);
+			l_Send_Server.SendInsData(packet);
+			delete packet;
+			arData.RemoveAll();
+			CString strLog;
+			strLog.Format(_T("[Lot Search Ack] : %s"), data);
+			WriteLog(data);
+			break;
+		}
+		
 	case eEventReport_eFinishedSearchModel:
 		{
 			CStringArray arData;
@@ -3149,6 +3166,8 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 			l_Send_Server.SendInsData(packet);
 			delete packet;
 			arData.RemoveAll();
+			CString strLog;
+			strLog.Format(_T("[Model Search Ack] : %s"), data);
 			break;
 		}
 	}

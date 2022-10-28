@@ -12,12 +12,14 @@ private:
 	int   m_total;
 	int	  m_type;
 
+	int	  m_ctrID;
+
 public:
 	BcrParamRecv();
 	~BcrParamRecv();
 
 	void SetType(int type);
-	void SetData(int index, int total, int size, char* info);
+	void SetData(int ctrID, int index, int total, int size, char* info);
 
 private:
 	void clearData();

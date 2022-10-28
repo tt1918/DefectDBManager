@@ -818,7 +818,7 @@ void CPacket::PullBcrParamPacket(char* buf, int buf_len)
 	memcpy(&index, m_pBuf + 16, 4);
 	memcpy(&total, m_pBuf + 20, 4);
 	g_CommBcrParam.SetType(type);
-	g_CommBcrParam.SetData(index, total, size, m_pBuf + 24);
+	g_CommBcrParam.SetData(crtID, index, total, size, m_pBuf + 24);
 	//-----------------------------------------------
 }
 

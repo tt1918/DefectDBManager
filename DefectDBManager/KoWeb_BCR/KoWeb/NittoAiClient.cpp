@@ -15,6 +15,7 @@ bool NittoAiClient::Init()
 {
 	return m_inited = InitSharedMemory() && InitUdp();
 }
+
 void NittoAiClient::Term()
 {
 	TermSharedMemory();
@@ -76,6 +77,7 @@ bool NittoAiClient::InitUdp()
 void NittoAiClient::TermUdp()
 {
 #ifdef USE_NITTO_AI
+	m_Recv_NittoAi.StopComm();
 	m_Send_NittoAi.Close();
 	m_Recv_NittoAi.Close();
 #endif

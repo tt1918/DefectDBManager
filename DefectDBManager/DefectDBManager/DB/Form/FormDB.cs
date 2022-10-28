@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -60,6 +61,7 @@ namespace DefectDBManager
 
         private System.Windows.Forms.Timer dbCommTimer = null;
         private System.Windows.Forms.Timer dbSearchProgressTimer = null;
+        private Stopwatch dbLoadingTime = null;
 
         public NittoDB DataBase
         {
@@ -108,6 +110,8 @@ namespace DefectDBManager
 
             panelTitle.MouseDown += lblTitle_MouseDown;
             panelTitle.MouseMove += lblTitle_MouseMove;
+
+            dbLoadingTime = new Stopwatch();
         }
 
         private void FormDB_Load(object sender, EventArgs e)
@@ -633,6 +637,8 @@ namespace DefectDBManager
             bool isSuccess = true;
             try
             {
+                dbLoadingTime.Start();
+                
                 int errorOut = 0;
                 DestConfigUnit unit = null;
                 unit = DataBase.DbDestConfig.DicDest[this.destName];
@@ -678,6 +684,8 @@ namespace DefectDBManager
                 option.timeGabEsEdMinute1 = DataBase.DbDestConfig.ESDbTime.end;
                 option.timeGabEsEdMinute2 = DataBase.DbDestConfig.ESDbTime.end;
                 option.useESTime = DataBase.DbDestConfig.ESDbTime.IsUse;
+
+                
 
                 if (unit.IsSplit == false)
                 {
@@ -811,10 +819,15 @@ namespace DefectDBManager
             }
             finally
             {
+                dbLoadingTime.Stop();
+
                 // Fault Data 표시
                 this.Invoke(new MethodInvoker(delegate ()
                 {
                     this.dbSearchProgressTimer.Stop();
+                    
+                    this.dbLoadingTime.Stop();
+                    double elapsedTime = (double)dbLoadingTime.ElapsedMilliseconds / 1000.0;
 
                     // 완료 시 보고 처리 필요
                     if (isSuccess == false)
@@ -823,7 +836,7 @@ namespace DefectDBManager
                     }
                     else
                     {
-                        lblDownloadResult.Text = "DB Searching Lot is complete!!";
+                        lblDownloadResult.Text = $"DB Searching Lot is complete!! Elapsed Time : {elapsedTime:F3}";
                     }
 
                     if (this.UpdateEndEvent == true)
@@ -840,6 +853,7 @@ namespace DefectDBManager
             bool isSuccess = true;
             try
             {
+                dbLoadingTime.Start();
                 // 리스트 클리어
                 this.Invoke(new MethodInvoker(delegate ()
                 {
@@ -856,7 +870,8 @@ namespace DefectDBManager
                 this.Invoke(new MethodInvoker(delegate ()
                 {
                     this.dbSearchProgressTimer.Stop();
-
+                    this.dbLoadingTime.Stop();
+                    double elapsedTime = (double)dbLoadingTime.ElapsedMilliseconds / 1000.0;
                     // 완료 시 보고 처리 필요
                     if (isSuccess == false)
                     {
@@ -864,7 +879,7 @@ namespace DefectDBManager
                     }
                     else
                     {
-                        lblDownloadResult.Text = "DB Model Searchingis complete!!";
+                        lblDownloadResult.Text = $"DB Model Searchingis complete!! : {elapsedTime:F3}";
                     }
                     OnEndCsvReading((int)eEventReport.eUpdateDataNow);
                 }));

@@ -17,6 +17,7 @@ BcrParamRecv::BcrParamRecv()
 	}
 
 	m_total = 0;
+	m_ctrID = -1;
 }
 
 BcrParamRecv::~BcrParamRecv()
@@ -29,13 +30,17 @@ void BcrParamRecv::SetType(int type)
 	m_type = type;
 }
 
-void BcrParamRecv::SetData(int index, int total, int size, char* info)
+void BcrParamRecv::SetData(int ctrID, int index, int total, int size, char* info)
 {
 	if (index == 0)
 	{
 		clearData();
 		m_total = total;
+		m_ctrID = ctrID;
 	}
+
+	if (m_ctrID != ctrID)
+		return;
 
 	int multibyteSize = size / 2;
 		

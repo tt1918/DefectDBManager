@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace DefectDBManager
 {
@@ -311,6 +312,7 @@ namespace DefectDBManager
 
             XOFSMST_Data.Clear();
             PTRLYP_Data.Clear();
+            MRKCTLMST_Data.Clear();
 
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
@@ -337,6 +339,8 @@ namespace DefectDBManager
         public void ResetDataSplit()
         {
             XOFSMST_Data.Clear();
+            MRKCTLMST_Data.Clear();
+            
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)
@@ -382,7 +386,7 @@ namespace DefectDBManager
                 for (j = 30 - 1; j >= 0; j--)
                 {
                     if (j == 0) strLowPath = Path.Combine(Define.BCRPath, lotID);
-                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:2D}");
+                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:D2}");
 
                     if (Directory.Exists(strLowPath)) nLotCnt = j;
 
@@ -409,7 +413,7 @@ namespace DefectDBManager
             {
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 int newLotCnt = GetNextLotCnt(lotID);
-                if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:2D}";
+                if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
                 else Log.LotLog = lotID;
             }
 
@@ -469,7 +473,7 @@ namespace DefectDBManager
 
             // 이전 랏데이터 확인해서 스플라이스 처리해야 함
             int newLotCnt = GetNextLotCnt(lotID);
-            if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:2D}";
+            if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
             else Log.LotLog = lotID;
 
             DB_Progress.ResetAll();
@@ -542,7 +546,6 @@ namespace DefectDBManager
 
             bool success = false;
 
-            XOFSMST_Data.Clear();
             QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
             string query = msg.GetQuery();
             
@@ -582,7 +585,6 @@ namespace DefectDBManager
 
             bool success = false;
 
-            AREADEL_Data.Clear();
             QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
             string query = msg.GetQuery();
             Log.WriteLoadData(query, 0, "AREADEL", 0.0);
@@ -800,7 +802,6 @@ namespace DefectDBManager
 
                 for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
                 {
-
                     dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
 
                     foreach (MRKCTLMST_DE data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
@@ -847,6 +848,8 @@ namespace DefectDBManager
                 DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i), PTRY0Pcnt);
                 for (int j = 0; j < PTRY0Pcnt; j++)
                 {
+                    dicSizeMRKCTLMST[i][j].Clear();
+
                     if ((dbOption.checkES ==true && (eFCD)i == eFCD.ES) ||
                        (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
                        (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && PTRY0P_Data[i][j].Y0KLOT.Length > 0)

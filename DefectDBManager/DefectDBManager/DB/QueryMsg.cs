@@ -10,6 +10,8 @@ namespace DefectDBManager
     {
         public string Vender;
 
+        private string message;
+
         public class PTRYLP_Query : QueryMsg
         {
             public PTRYLP_Query()
@@ -24,13 +26,20 @@ namespace DefectDBManager
             public string GetQuery()
             {
                 string vender = $"'{Vender}%'";
-                string message = "SELECT DISTINCT " +
-                                 "* " +
-                                 " " +
-                                 " FROM PTRYLP WHERE YLMLOT LIKE " + vender + 
-                                 " AND YLSGEB LIKE 'LOGROLL%'";
-
-                return message;
+                try
+                {
+                    message = "SELECT DISTINCT " +
+                              "* " +
+                              " " +
+                              " FROM PTRYLP WHERE YLMLOT LIKE " + vender +
+                              " AND YLSGEB LIKE 'LOGROLL%'";
+                    return message;
+                }
+                catch(Exception ex)
+                {
+                    Log.WriteLog($"[Error] PTRYLP_Query Exception : {ex.Message}");
+                    return "";
+                }
             }
         }
 
@@ -48,13 +57,22 @@ namespace DefectDBManager
             public string GetQuery()
             {
                 string vender = $"'{Vender}'";
-                string message = "SELECT * FROM XOFSMST WHERE XOFSMST.KYCD IN " +
-                                    "(SELECT PTRY0P.Y0KYCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
-                                    " AND XOFSMST.PPCD IN(SELECT PTRY0P.Y0PPCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
-                                    " AND XOFSMST.LNCD IN(SELECT PTRY0P.Y0LNCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
-                                    " AND XOFSMST.YLMZKN2 IN(SELECT DISTINCT PTRYLP.YLMZKN2 FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL')" +
-                                    " AND XOFSMST.YLSZKN IN(SELECT PTRY0P.Y0ZKNM FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = + " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))";
-                return message;
+                try
+                {
+                    message = "SELECT * FROM XOFSMST WHERE XOFSMST.KYCD IN " +
+                              "(SELECT PTRY0P.Y0KYCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                              " AND XOFSMST.PPCD IN(SELECT PTRY0P.Y0PPCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                              " AND XOFSMST.LNCD IN(SELECT PTRY0P.Y0LNCD FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))" +
+                              " AND XOFSMST.YLMZKN2 IN(SELECT DISTINCT PTRYLP.YLMZKN2 FROM PTRYLP WHERE PTRYLP.YLMLOT = " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL')" +
+                              " AND XOFSMST.YLSZKN IN(SELECT PTRY0P.Y0ZKNM FROM PTRY0P WHERE PTRY0P.Y0KLOT IN(SELECT DISTINCT(TRIM(PTRYLP.YLSLOT)) FROM PTRYLP WHERE PTRYLP.YLMLOT = + " + vender + " AND PTRYLP.YLSGEB = 'LOGROLL'))";
+                    return message;
+                }
+                catch(System.Exception ex)
+                {
+                    Log.WriteLog($"[Error] XOFSMST_Query Exception : {ex.Message}");
+                    return "";
+                }
+                
             }
         }
 
@@ -71,11 +89,19 @@ namespace DefectDBManager
             public string GetQuery()
             {
                 string vender = $"'{Vender}'";
-                string message = "SELECT * FROM AREADEL ADEL WHERE EXISTS (SELECT 'X'  FROM(SELECT TRIM(YL.YLMLOT) YLMLOT," +
-                                    " TRIM(YL.YLSLOT) YLSLOT FROM PTRYLP YL WHERE YL.YLMLOT = " + vender + ")" +
-                                    " EYL WHERE ADEL.LOTNO = EYL.YLMLOT OR ADEL.LOTNO = EYL.YLSLOT)";
+                try
+                {
+                    message = "SELECT * FROM AREADEL ADEL WHERE EXISTS (SELECT 'X'  FROM(SELECT TRIM(YL.YLMLOT) YLMLOT," +
+                              " TRIM(YL.YLSLOT) YLSLOT FROM PTRYLP YL WHERE YL.YLMLOT = " + vender + ")" +
+                              " EYL WHERE ADEL.LOTNO = EYL.YLMLOT OR ADEL.LOTNO = EYL.YLSLOT)";
 
-                return message;
+                    return message;
+                }
+                catch (System.Exception ex)
+                {
+                    Log.WriteLog($"[Error] AREADEL_Query Exception : {ex.Message}");
+                    return "";
+                }
             }
         }
 
@@ -91,26 +117,34 @@ namespace DefectDBManager
                 Vender = name;
             }
 
-            public string GetQuery(List<PTRYLPdata> data, bool isModelSearch=false)
+            public string GetQuery(List<PTRYLPdata> data, bool isModelSearch = false)
             {
-                StringBuilder sbMsg = new StringBuilder();
-                sbMsg.Append("SELECT * FROM PTRY0P WHERE");
-                sbMsg.Append($" Y0KLOT='{Vender}'");
-
-                if(isModelSearch==false)
+                try
                 {
-                    foreach (PTRYLPdata datum in data)
+                    StringBuilder sbMsg = new StringBuilder();
+                    sbMsg.Append("SELECT * FROM PTRY0P WHERE");
+                    sbMsg.Append($" Y0KLOT='{Vender}'");
+
+                    if (isModelSearch == false)
                     {
-                        string subID;
-                        int nPos = datum.YLSLOT.IndexOf(' ');
-                        if (nPos > 0)
-                            subID = datum.YLSLOT.Substring(0, nPos);
-                        else
-                            subID = datum.YLSLOT;
-                        sbMsg.Append($" OR Y0KLOT='{subID}'");
+                        foreach (PTRYLPdata datum in data)
+                        {
+                            string subID;
+                            int nPos = datum.YLSLOT.IndexOf(' ');
+                            if (nPos > 0)
+                                subID = datum.YLSLOT.Substring(0, nPos);
+                            else
+                                subID = datum.YLSLOT;
+                            sbMsg.Append($" OR Y0KLOT='{subID}'");
+                        }
                     }
+                    return sbMsg.ToString();
                 }
-                return sbMsg.ToString();
+                catch (System.Exception ex)
+                {
+                    Log.WriteLog($"[Error] PTRYOP_Query Exception : {ex.Message}");
+                    return "";
+                }
             }
         }
 
@@ -126,30 +160,36 @@ namespace DefectDBManager
 
             public string GetQuery(eFCD type)
             {
-                string message = "";
-
-                string strOption = "";
-
-                switch (type)
+                try
                 {
-                    case eFCD.ES:
-                        strOption = "PPCD='100'";
-                        break;
+                    string strOption = "";
 
-                    case eFCD.TG:
-                        strOption = "PPCD='400'";
-                        break;
+                    switch (type)
+                    {
+                        case eFCD.ES:
+                            strOption = "PPCD='100'";
+                            break;
 
-                    case eFCD.ETC:
-                        strOption = "(PPCD <> '100' AND PPCD <> '400')";
-                        break;
+                        case eFCD.TG:
+                            strOption = "PPCD='400'";
+                            break;
+
+                        case eFCD.ETC:
+                            strOption = "(PPCD <> '100' AND PPCD <> '400')";
+                            break;
+                    }
+
+                    message = "SELECT * FROM MRKCTLMST, PTRY0P WHERE PTRY0P.Y0KYCD=MRKCTLMST.KYCD AND PTRY0P.Y0PPCD=MRKCTLMST.PPCD AND" +
+                              " PTRY0P.Y0LNCD=MRKCTLMST.LNCD AND PTRY0P.Y0ZKNM=MRKCTLMST.ROLLNAME AND PTRY0P.Y0KASS <> 0 AND MRKCTLMST.MKCD='" + MKCD + "'" +
+                              " AND PTRY0P.Y0KLOT LIKE '" + Y0KLOT + "%' AND MRKCTLMST.MRKF1='1' AND " + strOption;
+
+                    return message;
                 }
-
-                message = "SELECT * FROM MRKCTLMST, PTRY0P WHERE PTRY0P.Y0KYCD=MRKCTLMST.KYCD AND PTRY0P.Y0PPCD=MRKCTLMST.PPCD AND" +
-                                    " PTRY0P.Y0LNCD=MRKCTLMST.LNCD AND PTRY0P.Y0ZKNM=MRKCTLMST.ROLLNAME AND PTRY0P.Y0KASS <> 0 AND MRKCTLMST.MKCD='" + MKCD + "'" +
-                                    " AND PTRY0P.Y0KLOT LIKE '" + Y0KLOT + "%' AND MRKCTLMST.MRKF1='1' AND " + strOption;
-
-                return message;
+                catch (System.Exception ex)
+                {
+                    Log.WriteLog($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
+                    return "";
+                }
             }
         }
 
