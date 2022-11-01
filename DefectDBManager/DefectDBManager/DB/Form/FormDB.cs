@@ -311,9 +311,8 @@ namespace DefectDBManager
 
             // 리스트 초기화는 따로 불러서 처리
 
-            int idxCnt = 0;
-            bool useSplit = DataBase.DbOption.useSplit;
-            string title = DataBase.DbOption.Title;
+            bool useSplit = DataBase.DbOption.searchOP.useSplit;
+            string title = DataBase.DbOption.searchOP.Title;
             eCSV_TYPE type = dataBase.DbDestConfig.CSVType;
 
             double unitDefect;
@@ -586,7 +585,6 @@ namespace DefectDBManager
                 DestConfigUnit destUnit = dataBase.DbDestConfig.SelDestUnit;
 
                 int enaCnt = tmpData.Count;
-                string text;
 
                 if (enaCnt > maxFaultDat * crtFaultDatPage)
                 {
@@ -653,8 +651,11 @@ namespace DefectDBManager
 
                 // 검사 옵션 업데이트
                 Option option = dataBase.DbOption;
-                option.useDefectEdit = false;
-                option.useSplit = unit.IsSplit;
+                SearchOption searchOp = new SearchOption();
+                option.searchOP = searchOp;
+
+                searchOp.useDefectEdit = false;
+                searchOp.useSplit = unit.IsSplit;
 
                 // 검색 시간 갭 설정
 
@@ -689,7 +690,7 @@ namespace DefectDBManager
 
                 if (unit.IsSplit == false)
                 {
-                    option.MKCD = unit.MKCD;
+                    searchOp.MKCD = unit.MKCD;
                     dataBase.DbOption = option;
 
                     dataBase.ResetDataSplit();
@@ -720,10 +721,10 @@ namespace DefectDBManager
                         option.checkES = unit.UnitA.ES;
                         option.checkETC = unit.UnitA.ETC;
 
-                        option.MKCD = unit.UnitA.MKCD;
-                        option.Title = unit.UnitA.Title;
-                        option.splitStartX = unit.UnitA.StartX;
-                        option.splitEndX = unit.UnitA.EndX;
+                        searchOp.MKCD = unit.UnitA.MKCD;
+                        searchOp.Title = unit.UnitA.Title;
+                        searchOp.splitStartX = unit.UnitA.StartX;
+                        searchOp.splitEndX = unit.UnitA.EndX;
 
                         dataBase.DbOption = option;
                         dataBase.ResetDataSplit();
@@ -752,10 +753,10 @@ namespace DefectDBManager
                         option.checkES = unit.UnitB.ES;
                         option.checkETC = unit.UnitB.ETC;
 
-                        option.MKCD = unit.UnitB.MKCD;
-                        option.Title = unit.UnitB.Title;
-                        option.splitStartX = unit.UnitB.StartX;
-                        option.splitEndX = unit.UnitB.EndX;
+                        searchOp.MKCD = unit.UnitB.MKCD;
+                        searchOp.Title = unit.UnitB.Title;
+                        searchOp.splitStartX = unit.UnitB.StartX;
+                        searchOp.splitEndX = unit.UnitB.EndX;
 
                         dataBase.DbOption = option;
                         dataBase.ResetDataSplit();
@@ -784,10 +785,10 @@ namespace DefectDBManager
                         option.checkES = unit.UnitC.ES;
                         option.checkETC = unit.UnitC.ETC;
 
-                        option.MKCD = unit.UnitC.MKCD;
-                        option.Title = unit.UnitC.Title;
-                        option.splitStartX = unit.UnitC.StartX;
-                        option.splitEndX = unit.UnitC.EndX;
+                        searchOp.MKCD = unit.UnitC.MKCD;
+                        searchOp.Title = unit.UnitC.Title;
+                        searchOp.splitStartX = unit.UnitC.StartX;
+                        searchOp.splitEndX = unit.UnitC.EndX;
 
                         dataBase.DbOption = option;
                         dataBase.ResetDataSplit();
@@ -1063,7 +1064,7 @@ namespace DefectDBManager
             dataBase.DbOption.checkES = cbUseES.Checked;
             dataBase.DbOption.checkTG = cbUseTG.Checked;
             dataBase.DbOption.checkETC = cbUseETC.Checked;
-            dataBase.DbOption.useMask = cbUseMask.Checked;
+            dataBase.DbOption.searchOP.useMask = cbUseMask.Checked;
             if (Int32.TryParse(tbSearchEndTime.Text, out int val) == true)
                 dataBase.DbOption.timeGabEdMinute2 = val;
             if (Int32.TryParse(tbSearchStartTime.Text, out val) == true)
@@ -1083,7 +1084,10 @@ namespace DefectDBManager
             clearAllListView();
             initFaultPage();
 
-            dataBase.ResetAll();
+            dataBase.ResetDataAll();
+            dataBase.ResetData_DE();
+
+            tbLotName.Text = "";
 
             if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
                 OnEndCsvReading((int)eEventReport.eResetDataNow);
@@ -1279,6 +1283,11 @@ namespace DefectDBManager
                     tbFaultPage.Text = $"{crtFaultDatPage * 100}";
                 }
             }
+        }
+
+        private void btnEditDefect_Click(object sender, EventArgs e)
+        {
+            RunDefectEdit();
         }
 
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
@@ -1567,8 +1576,84 @@ namespace DefectDBManager
                 }
             }
         }
+
         #endregion Timer
 
+        #region Defect Edit
+        public void RunDefectEdit()
+        {
+            int errorIdx=-1;
+            DestConfigUnit unit = new DestConfigUnit();
+            int vendorIdx = this.cbDestination.SelectedIndex;
+            dataBase.DbDestConfig.GetData(vendorIdx, ref unit);
+
+            if(unit.IsSplit==true)
+            {
+                MessageBox.Show("원단 도번별 차등 검사 스펙이 적용되었습니다. MRKCTRLMST 수정은 지원하지 않습니다.");
+                return;
+            }
+
+            DataBase.ResetData_DE();
+
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            int queryCount = 0;
+            for (int i=0; i<count; i++)
+            {
+                for (int j = 0; j < DataBase.PTRY0P_Data[i].Count; j++)
+                {
+                    QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
+                    msg.Y0KLOT = DataBase.PTRY0P_Data[i][j].Y0KLOT;
+                    msg.MKCD = unit.MKCD;
+                    MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
+                    if (cbUseES.Checked == true && i == (int)eFCD.ES)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.ES);
+                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }   
+                    else if(cbUseETC.Checked == true && i == (int)eFCD.ETC)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.ETC);
+                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }
+                    else if(cbUseTG.Checked==true && i == (int)eFCD.TG)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.TG);
+                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }
+                    else
+                    {
+                        de_data.query = "";
+                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                    }
+                }
+            }
+
+            if(queryCount > 0)
+            {
+                using (FormEditDefect form = new FormEditDefect())
+                {
+                    form._DataBase = DataBase;
+                    if(form.ShowDialog()==DialogResult.OK)
+                    {
+                        if(MessageBox.Show("선택된 결점정보를 적용하시겠습니까?", "Defect Editor", 
+                            MessageBoxButtons.YesNo)== DialogResult.Yes)
+                        {
+                            DataBase.ResetDataAll();
+                            Option option = DataBase.DbOption;
+                            SearchOption searchOP = new SearchOption();
+                            option.searchOP = searchOP;
+                            searchOP.useMask = cbUseMask.Checked;
+                            searchOP.useDefectEdit = true;
+                            DataBase.SearchLot(this.LotName, false, ref errorIdx);
+                        }
+                    }
+                }
+            }
+        }
+        #endregion Defect Edit
 
     }
 }

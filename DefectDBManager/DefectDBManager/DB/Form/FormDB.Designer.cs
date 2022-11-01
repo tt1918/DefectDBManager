@@ -90,6 +90,7 @@
             this.btnFormHide = new System.Windows.Forms.Button();
             this.btnFormMaximize = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.btnEditDefect = new System.Windows.Forms.Button();
             this.gbSearchTime.SuspendLayout();
             this.gbBasicInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -301,6 +302,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnEditDefectClass);
             this.splitContainer1.Panel1.Controls.Add(this.btnOpenCSV);
             this.splitContainer1.Panel1.Controls.Add(this.btnShowSkipParam);
+            this.splitContainer1.Panel1.Controls.Add(this.btnEditDefect);
             this.splitContainer1.Panel1.Controls.Add(this.btnXOFSMST);
             this.splitContainer1.Panel1.Controls.Add(this.gbDBConnection);
             this.splitContainer1.Panel1.Controls.Add(this.cbDestination);
@@ -346,7 +348,7 @@
             // btnEditDefectClass
             // 
             this.btnEditDefectClass.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnEditDefectClass.Location = new System.Drawing.Point(435, 67);
+            this.btnEditDefectClass.Location = new System.Drawing.Point(436, 67);
             this.btnEditDefectClass.Name = "btnEditDefectClass";
             this.btnEditDefectClass.Size = new System.Drawing.Size(75, 37);
             this.btnEditDefectClass.TabIndex = 12;
@@ -368,7 +370,7 @@
             // btnXOFSMST
             // 
             this.btnXOFSMST.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnXOFSMST.Location = new System.Drawing.Point(513, 67);
+            this.btnXOFSMST.Location = new System.Drawing.Point(514, 67);
             this.btnXOFSMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXOFSMST.Name = "btnXOFSMST";
             this.btnXOFSMST.Size = new System.Drawing.Size(75, 37);
@@ -966,6 +968,18 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DEFECT VIEWER";
             // 
+            // btnEditDefect
+            // 
+            this.btnEditDefect.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnEditDefect.Location = new System.Drawing.Point(592, 67);
+            this.btnEditDefect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnEditDefect.Name = "btnEditDefect";
+            this.btnEditDefect.Size = new System.Drawing.Size(75, 37);
+            this.btnEditDefect.TabIndex = 8;
+            this.btnEditDefect.Text = "EDIT DEFECT";
+            this.btnEditDefect.UseVisualStyleBackColor = true;
+            this.btnEditDefect.Click += new System.EventHandler(this.btnEditDefect_Click);
+            // 
             // FormDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -1096,5 +1110,6 @@
         private System.Windows.Forms.Button btnFormHide;
         private System.Windows.Forms.Button btnFormMaximize;
         private System.Windows.Forms.Button btnUpdateMarkingData;
+        private System.Windows.Forms.Button btnEditDefect;
     }
 }

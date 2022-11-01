@@ -193,6 +193,51 @@ namespace DefectDBManager
             }
         }
 
+        public class MRKCTLMST_DE_Query : QueryMsg
+        {
+            public string MKCD;
+            public string Y0KLOT;
+
+            public MRKCTLMST_DE_Query()
+            {
+
+            }
+
+            public string GetQuery(eFCD type)
+            {
+                try
+                {
+                    string strOption = "";
+                    string strMsg = $"PTRY0P.Y0KLOT LIKE '{Y0KLOT}%%'";
+                    switch (type)
+                    {
+                        case eFCD.ES:
+                            strOption = "PPCD='100'";
+                            break;
+
+                        case eFCD.TG:
+                            strOption = "PPCD='400'";
+                            break;
+
+                        case eFCD.ETC:
+                            strOption = "(PPCD <> '100' AND PPCD <> '400')";
+                            break;
+                    }
+
+                    message = "SELECT * FROM MRKCTLMST, PTRY0P WHERE PTRY0P.Y0KYCD=MRKCTLMST.KYCD AND PTRY0P.Y0PPCD=MRKCTLMST.PPCD AND" +
+                              " PTRY0P.Y0LNCD=MRKCTLMST.LNCD AND PTRY0P.Y0ZKNM=MRKCTLMST.ROLLNAME AND PTRY0P.Y0KASS <> 0 AND MRKCTLMST.MKCD='" + MKCD + "'" +
+                              " AND " + strOption + " AND " + strMsg;
+
+                    return message;
+                }
+                catch (System.Exception ex)
+                {
+                    Log.WriteLog($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
+                    return "";
+                }
+            }
+        }
+
         public class INSPDATA_Query : QueryMsg
         {
             public enum eTargetTime

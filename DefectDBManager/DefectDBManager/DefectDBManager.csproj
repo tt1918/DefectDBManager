@@ -111,6 +111,18 @@
     <Compile Include="DB\Form\FormDbProgress.Designer.cs">
       <DependentUpon>FormDbProgress.cs</DependentUpon>
     </Compile>
+    <Compile Include="DB\Form\FormDefectItemEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\Form\FormDefectItemEditor.Designer.cs">
+      <DependentUpon>FormDefectItemEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Form\FormEditDefect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\Form\FormEditDefect.Designer.cs">
+      <DependentUpon>FormEditDefect.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\Form\FormSkipParam.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +187,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\FormDefectClassEdit.resx">
       <DependentUpon>FormDefectClassEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Form\FormDefectItemEditor.resx">
+      <DependentUpon>FormDefectItemEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DB\Form\FormEditDefect.resx">
+      <DependentUpon>FormEditDefect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\FormSkipParam.resx">
       <DependentUpon>FormSkipParam.cs</DependentUpon>

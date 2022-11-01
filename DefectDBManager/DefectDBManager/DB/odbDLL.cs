@@ -300,7 +300,7 @@ namespace DefectDBManager
             conn?.Dispose();
         }
 
-        public void ResetAll()
+        public void ResetDataAll()
         {
             LoadedBcNo.Clear();
             ProductEndTime.Clear();
@@ -322,7 +322,6 @@ namespace DefectDBManager
             // 각 광학별 불량 갯수 초기화
             CrtParam.ClearEachOpticDefectCnt();
 
-            ResetData_DE();
             ResultDefect.ResetAll();
 
             CrtParam.isProductAvaliable = false;
@@ -850,7 +849,7 @@ namespace DefectDBManager
 
         public bool SearchMRKCTLMST(string logID)
         {
-            if (dbOption.useDefectEdit)
+            if (dbOption.searchOP.useDefectEdit)
                 return searchMRKCTLMSTfromBuffer(logID);
             else
                 return searchMRKCTLMSTfromDB(logID);
@@ -883,7 +882,7 @@ namespace DefectDBManager
                         dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
                         DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx), 
                             _MRKCTLMST_DE[fcdIdx][ptry0Idx].data.Count, ptry0Idx);
-                        foreach (MRKCTLMST_DE data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
+                        foreach (MRKCTLMSTData data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
                         {
                             DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + dataCnt));
 
@@ -945,7 +944,7 @@ namespace DefectDBManager
                            (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && PTRY0P_Data[i][j].Y0KLOT.Length > 0)
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
-                            msg.MKCD = dbOption.MKCD;
+                            msg.MKCD = dbOption.searchOP.MKCD;
                             msg.Y0KLOT = PTRY0P_Data[i][j].Y0KLOT;
                             string query = msg.GetQuery((eFCD)i);
                             Log.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
@@ -1200,13 +1199,13 @@ namespace DefectDBManager
 
             bool useXOffset = destConfig.UseXOffset;
             bool useXOffsetAlarm = destConfig.UseXOffsetAlarm;
-            bool useMask = DbOption.useMask;
-            bool bXOffsetError = false;
+            bool useMask = DbOption.searchOP.useMask;
+            //bool bXOffsetError = false;
             bool useAIFromDB = DbOption.useAIfromDB;
 
-            bool useSplit = DbOption.useSplit;
-            float splitStartX = DbOption.splitStartX;
-            float splitEndX = DbOption.splitEndX;
+            bool useSplit = DbOption.searchOP.useSplit;
+            float splitStartX = DbOption.searchOP.splitStartX;
+            float splitEndX = DbOption.searchOP.splitEndX;
 
             float maxXPos = 0;
             float minXPos = float.MaxValue;
@@ -1538,7 +1537,7 @@ namespace DefectDBManager
         {
             DateTime dt = DateTime.Now;
             Debug.Assert(ProductEndTime.Count == ProductLotName.Count);
-            string strE, strC, strD, str;
+            string strE, strC, str;
             strC = dt.ToString("yyyyMMddHHmmdd");
 
             int count = 0;
@@ -1587,7 +1586,7 @@ namespace DefectDBManager
         private void openCsvKoh(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
             // 우선 fault Data 초기화.. 
             // 나중에 CrtParam._FaultData 내에 다른 데이터 초기화 해야하는지 확인이 필요함.
             // CrtParam._FaultData는 인덱스가 0으로 바뀌는데 CrtParam._MarkFaultData는 초기화 안 함
@@ -1658,7 +1657,7 @@ namespace DefectDBManager
         private void openCsvKor(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
             // 우선 fault Data 초기화.. 
             // 나중에 CrtParam._FaultData 내에 다른 데이터 초기화 해야하는지 확인이 필요함.
             // CrtParam._FaultData는 인덱스가 0으로 바뀌는데 CrtParam._MarkFaultData는 초기화 안 함
@@ -1677,8 +1676,7 @@ namespace DefectDBManager
             int nThru, nDiff, nCross, nThru1, nThru2, nFreq, nSame;
             nDiff = nThru = nCross = nThru1 = nThru2 = nFreq = nSame = 0;
 
-            string tmpBCR, tmpDefect;
-            string[] tmpBuf;
+            string tmpDefect;
             int tmpDefectId = 0, defectKind = 0;
 
             bool bCSVOption = false;
@@ -2024,7 +2022,7 @@ namespace DefectDBManager
         private void openCsvNitto(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
 
 
             // 에러 대비 초기화

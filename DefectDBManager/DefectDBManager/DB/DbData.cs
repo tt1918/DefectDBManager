@@ -199,6 +199,7 @@ namespace DefectDBManager
         public string ROLLNAME;
         public string MRKF1;
         public string MRKF2;
+        public string PPCD;
         public float SIZE;
 
         // Dic 구현해야함
@@ -206,6 +207,7 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
+            PPCD = reader[2].ToString();
             LNCD = reader[3].ToString();
             FLTID = reader[4].ToString();
             ROLLNAME = reader[5].ToString();

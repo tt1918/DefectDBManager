@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,31 +89,15 @@ namespace DefectDBManager
 
 
     #region mrkctlmst 변수 (Defect Edit에서 사용)
-    public class MRKCTLMST_DE
-    {
-        //public int sizeIdx;
-        public string LNCD;
-        public string FLTID;
-        public string PPCD;
-        public float SIZE;
-        public string MRKF1;
-        public string ROLLNAME;
-
-        public override string ToString()
-        {
-            string msg = $"{FLTID}, , {MRKF1}, , ";
-            return msg;
-        }
-    }
-
+    
     public class MRKCTLMST_DE_Data
     {
-        public List<MRKCTLMST_DE> data;
+        public List<MRKCTLMSTData> data;
         public string query;
 
         public MRKCTLMST_DE_Data()
         {
-            data = new List<MRKCTLMST_DE>();
+            data = new List<MRKCTLMSTData>();
         }
     }
 
