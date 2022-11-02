@@ -39,12 +39,12 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.dgvDefect = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColMRKF1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColLNCD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColFALTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColSIZE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColPPCD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColROLLNAME = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelTitle.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -182,12 +182,12 @@
             this.dgvDefect.AllowUserToResizeRows = false;
             this.dgvDefect.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDefect.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column6,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5});
+            this.ColMRKF1,
+            this.ColLNCD,
+            this.ColFALTID,
+            this.ColSIZE,
+            this.ColPPCD,
+            this.ColROLLNAME});
             this.dgvDefect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDefect.Location = new System.Drawing.Point(3, 35);
             this.dgvDefect.MultiSelect = false;
@@ -199,59 +199,54 @@
             this.dgvDefect.TabIndex = 6;
             this.dgvDefect.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDefect_CellDoubleClick);
             // 
-            // Column1
+            // ColMRKF1
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.NullValue = false;
-            this.Column1.DefaultCellStyle = dataGridViewCellStyle1;
-            this.Column1.HeaderText = "";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 20;
+            this.ColMRKF1.DefaultCellStyle = dataGridViewCellStyle1;
+            this.ColMRKF1.HeaderText = "";
+            this.ColMRKF1.Name = "ColMRKF1";
+            this.ColMRKF1.Width = 20;
             // 
-            // Column6
+            // ColLNCD
             // 
-            this.Column6.HeaderText = "마킹";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column6.Width = 70;
+            this.ColLNCD.HeaderText = "마킹";
+            this.ColLNCD.Name = "ColLNCD";
+            this.ColLNCD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColLNCD.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColLNCD.Width = 75;
             // 
-            // Column2
+            // ColFALTID
             // 
-            this.Column2.HeaderText = "FALTID";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column2.Width = 70;
+            this.ColFALTID.HeaderText = "FALTID";
+            this.ColFALTID.Name = "ColFALTID";
+            this.ColFALTID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColFALTID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColFALTID.Width = 75;
             // 
-            // Column3
+            // ColSIZE
             // 
-            this.Column3.HeaderText = "SIZE";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column3.Width = 70;
+            this.ColSIZE.HeaderText = "SIZE";
+            this.ColSIZE.Name = "ColSIZE";
+            this.ColSIZE.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColSIZE.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColSIZE.Width = 75;
             // 
-            // Column4
+            // ColPPCD
             // 
-            this.Column4.HeaderText = "PPCD";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column4.Width = 70;
+            this.ColPPCD.HeaderText = "PPCD";
+            this.ColPPCD.Name = "ColPPCD";
+            this.ColPPCD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColPPCD.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColPPCD.Width = 75;
             // 
-            // Column5
+            // ColROLLNAME
             // 
-            this.Column5.HeaderText = "ROLLNAME";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column5.Width = 120;
+            this.ColROLLNAME.HeaderText = "ROLLNAME";
+            this.ColROLLNAME.Name = "ColROLLNAME";
+            this.ColROLLNAME.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ColROLLNAME.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColROLLNAME.Width = 180;
             // 
             // FormEditDefect
             // 
@@ -285,11 +280,11 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.DataGridView dgvDefect;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColMRKF1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColLNCD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColFALTID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColSIZE;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColPPCD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColROLLNAME;
     }
 }

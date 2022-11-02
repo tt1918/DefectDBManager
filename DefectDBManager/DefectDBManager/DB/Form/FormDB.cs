@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.PropertyGridInternal;
 using static DefectDBManager.QueryMsg;
@@ -18,7 +19,7 @@ namespace DefectDBManager
 {
 
     public delegate void DelegateEndCsvReading(int eventID);
-    
+
     public partial class FormDB : Form
     {
         #region Form 종료 못하게 막기
@@ -636,7 +637,7 @@ namespace DefectDBManager
             try
             {
                 dbLoadingTime.Start();
-                
+
                 int errorOut = 0;
                 DestConfigUnit unit = null;
                 unit = DataBase.DbDestConfig.DicDest[this.destName];
@@ -644,8 +645,8 @@ namespace DefectDBManager
                 // 리스트 클리어
                 this.Invoke(new MethodInvoker(delegate ()
                 {
-                    this.clearAllListView();
-                    this.initFaultPage();
+                    //this.clearAllListView();
+                    //this.initFaultPage();
                     this.dbSearchProgressTimer.Start();
                 }));
 
@@ -686,7 +687,7 @@ namespace DefectDBManager
                 option.timeGabEsEdMinute2 = DataBase.DbDestConfig.ESDbTime.end;
                 option.useESTime = DataBase.DbDestConfig.ESDbTime.IsUse;
 
-                
+
 
                 if (unit.IsSplit == false)
                 {
@@ -826,7 +827,7 @@ namespace DefectDBManager
                 this.Invoke(new MethodInvoker(delegate ()
                 {
                     this.dbSearchProgressTimer.Stop();
-                    
+
                     this.dbLoadingTime.Stop();
                     double elapsedTime = (double)dbLoadingTime.ElapsedMilliseconds / 1000.0;
 
@@ -1081,8 +1082,8 @@ namespace DefectDBManager
             }
 
             // ListView 초기화
-            clearAllListView();
-            initFaultPage();
+            this.clearAllListView();
+            this.initFaultPage();
 
             dataBase.ResetDataAll();
             dataBase.ResetData_DE();
@@ -1285,10 +1286,65 @@ namespace DefectDBManager
             }
         }
 
+        //private System.Windows.Forms.Timer timer;
+
+        //private FormDbProgress formProgress = new FormDbProgress();
         private void btnEditDefect_Click(object sender, EventArgs e)
         {
+            //timer = new System.Windows.Forms.Timer();
+            //timer.Interval = 5000;
+            //timer.Tick += new EventHandler(timerTest);
+
+            //DataBase.DB_Progress.ResetAll();
+            //string name = cbDestination.Items[cbDestination.SelectedIndex].ToString();
+            //formProgress._Unit = DataBase.DbDestConfig.DicDest[name];
+            //formProgress._LotName = this.tbLotName.Text;
+            //formProgress._DbProgress = DataBase.DB_Progress;
+            //timer.Start();
+            //formProgress.ShowDialog();
+            //return;
             RunDefectEdit();
         }
+
+        //int step = -1;
+        //private void timerTest(object sender, EventArgs e)
+        //{
+        //    int count = System.Enum.GetValues(typeof(eNittoDBProgress)).Length;
+
+        //    if(count-1 == step)
+        //    {
+        //        formProgress._Step = 1;
+        //        DataBase.DB_Progress.SetCount((eNittoDBProgress)(step), 1);
+        //        timer.Stop();
+        //    }
+
+        //    if(step == 5)
+        //    {
+        //        formProgress.SetError(step);
+        //        timer.Stop();
+        //        return;
+        //    }
+
+        //    if (step == -1)
+        //    {
+        //        DataBase.DB_Progress.SetMatStep((eNittoDBProgress)(step + 1), 1);
+        //        DataBase.DB_Progress.SetTotal((eNittoDBProgress)(step + 1), 1);
+        //        formProgress.Start(step + 1);
+        //    }
+        //    else
+        //    {
+        //        DataBase.DB_Progress.SetCount((eNittoDBProgress)(step), 1);
+
+        //        if(step != count - 1)
+        //        {
+        //            DataBase.DB_Progress.SetMatStep((eNittoDBProgress)(step + 1), 1);
+        //            DataBase.DB_Progress.SetTotal((eNittoDBProgress)(step + 1), 1);
+        //            formProgress.Start(step + 1);
+        //        }
+                
+        //    }
+        //    step++;
+        //}
 
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
         {
@@ -1317,9 +1373,9 @@ namespace DefectDBManager
 
         private void OnDbConnect(bool state)
         {
-            if(state)
+            if (state)
             {
-                if(this.formLogin?.Visible==true)
+                if (this.formLogin?.Visible == true)
                 {
                     this.formLogin.Close();
                 }
@@ -1582,12 +1638,12 @@ namespace DefectDBManager
         #region Defect Edit
         public void RunDefectEdit()
         {
-            int errorIdx=-1;
+            int errorIdx = -1;
             DestConfigUnit unit = new DestConfigUnit();
             int vendorIdx = this.cbDestination.SelectedIndex;
             dataBase.DbDestConfig.GetData(vendorIdx, ref unit);
 
-            if(unit.IsSplit==true)
+            if (unit.IsSplit == true)
             {
                 MessageBox.Show("원단 도번별 차등 검사 스펙이 적용되었습니다. MRKCTRLMST 수정은 지원하지 않습니다.");
                 return;
@@ -1595,9 +1651,16 @@ namespace DefectDBManager
 
             DataBase.ResetData_DE();
 
+            for(int i=0; i<10; i++)
+            {
+                PTRY0PData data = new PTRY0PData();
+                data.Y0KLOT = $"{i}";
+                DataBase.PTRY0P_Data[0].Add(data);
+            }
+            
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             int queryCount = 0;
-            for (int i=0; i<count; i++)
+            for (int i = 0; i < count; i++)
             {
                 for (int j = 0; j < DataBase.PTRY0P_Data[i].Count; j++)
                 {
@@ -1610,14 +1673,14 @@ namespace DefectDBManager
                         de_data.query = msg.GetQuery(eFCD.ES);
                         DataBase._MRKCTLMST_DE[i].Add(de_data);
                         queryCount++;
-                    }   
-                    else if(cbUseETC.Checked == true && i == (int)eFCD.ETC)
+                    }
+                    else if (cbUseETC.Checked == true && i == (int)eFCD.ETC)
                     {
                         de_data.query = msg.GetQuery(eFCD.ETC);
                         DataBase._MRKCTLMST_DE[i].Add(de_data);
                         queryCount++;
                     }
-                    else if(cbUseTG.Checked==true && i == (int)eFCD.TG)
+                    else if (cbUseTG.Checked == true && i == (int)eFCD.TG)
                     {
                         de_data.query = msg.GetQuery(eFCD.TG);
                         DataBase._MRKCTLMST_DE[i].Add(de_data);
@@ -1631,15 +1694,15 @@ namespace DefectDBManager
                 }
             }
 
-            if(queryCount > 0)
+            if (queryCount > 0)
             {
                 using (FormEditDefect form = new FormEditDefect())
                 {
                     form._DataBase = DataBase;
-                    if(form.ShowDialog()==DialogResult.OK)
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
-                        if(MessageBox.Show("선택된 결점정보를 적용하시겠습니까?", "Defect Editor", 
-                            MessageBoxButtons.YesNo)== DialogResult.Yes)
+                        if (MessageBox.Show("선택된 결점정보를 적용하시겠습니까?", "Defect Editor",
+                            MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             DataBase.ResetDataAll();
                             Option option = DataBase.DbOption;

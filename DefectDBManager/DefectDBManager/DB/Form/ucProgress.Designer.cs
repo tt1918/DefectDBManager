@@ -30,6 +30,7 @@
         {
             this.lblLED = new System.Windows.Forms.Label();
             this.lblProcessName = new System.Windows.Forms.Label();
+            this.lblState = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblLED
@@ -52,14 +53,24 @@
             this.lblProcessName.TabIndex = 1;
             this.lblProcessName.Text = "Title";
             // 
+            // lblState
+            // 
+            this.lblState.AutoSize = true;
+            this.lblState.Location = new System.Drawing.Point(157, 5);
+            this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(45, 12);
+            this.lblState.TabIndex = 1;
+            this.lblState.Text = "READY";
+            // 
             // ucProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblState);
             this.Controls.Add(this.lblProcessName);
             this.Controls.Add(this.lblLED);
             this.Name = "ucProgress";
-            this.Size = new System.Drawing.Size(210, 22);
+            this.Size = new System.Drawing.Size(247, 22);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -69,5 +80,6 @@
 
         private System.Windows.Forms.Label lblLED;
         private System.Windows.Forms.Label lblProcessName;
+        private System.Windows.Forms.Label lblState;
     }
 }

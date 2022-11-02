@@ -77,14 +77,6 @@ namespace DefectDBManager
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-
-            for(int i=0; i<10; i++)
-            {
-                dgvDefect.Rows.Add("FALSE", "111", "222", "333", "444", "sfjkw");
-                //listViewDefectEdit.Items.Add(item);
-            }
-
-            return;
             UpdateDefectEditedData();
         }
 
@@ -144,37 +136,49 @@ namespace DefectDBManager
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             int resCnt = 0;
             string logData;
-
-            this.dgvDefect.Rows.Clear();
-            _mrk_de.Clear();
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                for(int j=0; j < _DataBase._MRKCTLMST_DE[i].Count; j++)
-                {
-                    using (var comm = new OracleCommand(_DataBase._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
-                    {
-                        using (var reader = comm.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                MRKCTLMSTData data = new MRKCTLMSTData();
-                                data.Parse(reader);
-                                addItem(data);
-                                _DataBase._MRKCTLMST_DE[i][j].data.Add(data);
-                                
-                                _mrk_de.Add(resCnt, data);
+                this.dgvDefect.Rows.Clear();
+                _mrk_de.Clear();
 
-                                logData = string.Format($"{resCnt}\t-\t{data.ToString()}");
-                                Log.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
-                                resCnt++;
+                dgvDefect.SuspendLayout();
+
+                for (int i = 0; i < count; i++)
+                {
+                    for (int j = 0; j < _DataBase._MRKCTLMST_DE[i].Count; j++)
+                    {
+                        using (var comm = new OracleCommand(_DataBase._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
+                        {
+                            using (var reader = comm.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    MRKCTLMSTData data = new MRKCTLMSTData();
+                                    data.Parse(reader);
+                                    addItem(data);
+                                    _DataBase._MRKCTLMST_DE[i][j].data.Add(data);
+
+                                    _mrk_de.Add(resCnt, data);
+
+                                    logData = string.Format($"{resCnt}\t-\t{data.ToString()}");
+                                    Log.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
+                                    resCnt++;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            return true;
+                dgvDefect.ResumeLayout();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                string log = $"[ERROR] MRKCTLMST-EDIT : {ex.Message}";
+                Log.WriteLog(log);
+                dgvDefect.ResumeLayout();
+                return false;
+            }
         }
 
         private void UpdateDefectEditedData()
@@ -221,11 +225,13 @@ namespace DefectDBManager
 
         private void resetAllCheck()
         {
+            this.dgvDefect.SuspendLayout();
             int count = this.dgvDefect.Rows.Count;
             for (int i = 0; i < count; i++)
             {
                 this.dgvDefect.Rows[i].Cells[0].Value = "False";
             }
+            this.dgvDefect.ResumeLayout();
         }
     }
 }

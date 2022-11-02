@@ -139,10 +139,11 @@
             // 
             // tbEditData
             // 
+            this.tbEditData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbEditData.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbEditData.Location = new System.Drawing.Point(54, 3);
             this.tbEditData.Name = "tbEditData";
-            this.tbEditData.Size = new System.Drawing.Size(149, 21);
+            this.tbEditData.Size = new System.Drawing.Size(149, 14);
             this.tbEditData.TabIndex = 0;
             // 
             // FormDefectItemEditor
