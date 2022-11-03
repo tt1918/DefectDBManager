@@ -18,10 +18,10 @@ namespace DefectDBManager.DB.Form
             set { this.lblProcessName.Text = value; }
         }
 
-        public string State
+        public eProcessState State
         {
-            get { return this.lblState.Text; }
-            set { this.lblState.Text = value; }
+            get;
+            private set;
         }
 
         public DbProgress Progress { get; set; }
@@ -30,6 +30,8 @@ namespace DefectDBManager.DB.Form
         private System.Windows.Forms.Timer timer;
         private Image ledOn;
         private Image ledOff;
+
+        private bool disposed = false;
         public ucProgress()
         {
             InitializeComponent();
@@ -43,18 +45,38 @@ namespace DefectDBManager.DB.Form
         }
         ~ucProgress()
         {
-            ledOn?.Dispose(); 
-            ledOff?.Dispose();
+            if (disposed == true)
+                return;
+            DisposeCtrl(false);
+        }
+
+        new public void Dispose()
+        {
+            DisposeCtrl(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void DisposeCtrl(bool disposing)
+        {
+            if (this.disposed)
+                return;
+            if (disposing)
+            {
+                ledOn?.Dispose();
+                ledOff?.Dispose();
+            }
+            this.disposed = true;
         }
 
         private void dispState(object sender, EventArgs e)
         {
-            if(Progress.IsComplete() == true || Progress.IsSkip == true)
+            if(Progress.IsComplete() == true)
             {
                 timer.Stop();
                 lblLED.Image = ledOn;
                 if (Progress.IsSkip == true)    lblState.Text = "SKIP";
                 else                            lblState.Text = "COMPLETE";
+                State = eProcessState.Complete;
             }
             else
             {
@@ -67,17 +89,20 @@ namespace DefectDBManager.DB.Form
 
         public void Reset()
         {
+            timer.Stop();
             lblLED.Image = ledOff;
             lblState.Text = "READY";
-            timer.Stop();
+            State = eProcessState.Ready;
         }
         
         public void Set()
         {
+            timer.Start();
             lblLED.Image = ledOn;
             isOn = true;
-            timer.Start();
             lblState.Text = "PROCESS";
+            State = eProcessState.Run;
+            
         }
 
         public void Stop()
@@ -90,6 +115,7 @@ namespace DefectDBManager.DB.Form
             timer.Stop();
             lblLED.Image = ledOn;
             lblState.Text = "ERROR";
+            State = eProcessState.Error;
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,19 +18,126 @@ namespace DefectDBManager
         public string _LotName;
         public int _Total;
         public int _Step;
+        public eNittoDBProgress _LastProgress;
         public NittoDBProgress _DbProgress;
-        public int _ProgressStep;
+        public int _DispType=0; // 0: Full Search, 1: Model Search
+
+        private List<ucProgress> _formProgress = new List<ucProgress>();
+
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer timerClose;
+
+        private FormError formError = null;
         public FormDbProgress()
         {
             InitializeComponent();
 
+            this.FormClosing += Form_Closing;
+
             panelTitle.MouseDown += lblTitle_MouseDown;
             panelTitle.MouseMove += lblTitle_MouseMove;
 
-            _ProgressStep = 0;
-//            listBoxProcess.DrawMode = DrawMode.OwnerDrawVariable;
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 500;
+            timer.Tick += new EventHandler(ProgressCheck);
 
+            timerClose = new System.Windows.Forms.Timer();
+            timerClose.Interval = 1000;
+            timerClose.Tick += new EventHandler(CheckCloseTime);
+            initProcessCtrl();
         }
+
+        private void Form_Closing(object sender, FormClosingEventArgs e)
+        {
+            timer.Dispose();
+            timerClose.Dispose();
+
+            if (_formProgress != null)
+            {
+                for (int i = 0; i < _formProgress.Count; i++)
+                    this._formProgress[i]?.Dispose();
+                this._formProgress.Clear();
+            }
+        }
+
+
+        #region 프로세스 진행 상태 확인
+        int oldListStep = -1;
+        private void ProgressCheck(object sender, EventArgs e)
+        {
+            if (_Step == -1 || _Total == -1) return;
+
+            bool isComp = true;
+            
+            if (oldListStep != _Step)
+            {
+                for (int i = 0; i <= (int)_LastProgress; i++)
+                    _formProgress[i].Reset();
+                oldListStep = _Step;
+            }
+
+            for (int i = 0; i <= (int)_LastProgress; i++)
+            {
+                if (_DbProgress._Progress[i].State == eProcessState.Ready)
+                {
+                    if (_formProgress[i].State != eProcessState.Ready)
+                        _formProgress[i].Reset();
+                }
+
+                if (_DbProgress._Progress[i].State == eProcessState.Run)
+                {
+                    if (_formProgress[i].State != eProcessState.Run)
+                        _formProgress[i].Set();
+
+                    return;
+                }
+
+                if (_DbProgress._Progress[i].State == eProcessState.Error)
+                {
+                    if (_formProgress[i].State != eProcessState.Error)
+                        _formProgress[i].SetError();
+                    timer.Stop();
+                    formError = new FormError();
+                    formError.Show();
+                    formError.Left = this.Right + 2;
+                    formError.Top = this.Top + 2;
+                    return;
+                }
+            }
+
+            for(int i=0; i <= (int)_LastProgress; i++)
+            {
+                isComp &= _DbProgress._Progress[i].IsComplete();
+            }
+
+            // 마지막 스텝이고 전체 완료되면 종료 처리
+            if (_Step-1 == _Total && isComp == true)
+            {
+                if (_DbProgress.IsError == true)
+                {
+
+                }
+                else
+                {
+                    timerClose.Start();
+                }
+
+                btnClose.Visible = true;
+                timer.Stop();
+            }
+        }
+        #endregion
+
+        #region 화면 닫기
+        int countdown = 5;
+        private void CheckCloseTime(object sender, EventArgs e)
+        {
+            countdown--;
+            this.btnClose.Text = $"COLSE ({countdown}S)";
+            if (countdown == 0)
+                this.Hide();
+        }
+        #endregion
 
         #region 마우스로 폼 드래그
         private Point mouseDownLocation;
@@ -52,18 +160,31 @@ namespace DefectDBManager
         }
         #endregion
 
-        private List<ucProgress> _dbProgress = new List<ucProgress>(); 
-        private void setProcessCtrl()
+        private void initProcessCtrl()
         {
             int count = System.Enum.GetValues(typeof(eNittoDBProgress)).Length;
-            for(int i=0; i< count; i++)
+            for (int i = 0; i < count; i++)
             {
                 var view = new ucProgress();
                 view.Title = ((eNittoDBProgress)i).ToString();
                 view.Progress = _DbProgress._Progress[i];
-                _dbProgress.Add(view);
+                _formProgress.Add(view);
                 flpProgress.Controls.Add(view);
             }
+        }
+
+        private void setProcessCtrl()
+        {
+            int count = System.Enum.GetValues(typeof(eNittoDBProgress)).Length;
+
+            flpProgress.Controls.Clear();
+
+            for (int i = 0; i <= (int)_LastProgress; i++)
+            {
+                flpProgress.Controls.Add(_formProgress[i]);
+                _formProgress[i].Progress = _DbProgress._Progress[i];
+            }
+                
         }
 
         private void setProcessList()
@@ -74,7 +195,7 @@ namespace DefectDBManager
                 listBoxProcess.Items.Clear();
                 _Total = 0;
                 _Step = -1;
-                if (_Unit.IsSplit==false)
+                if (_Unit.IsSplit == false || _DispType==1)
                 {
                     _Total++;
                     listBoxProcess.Items.Add(_LotName);
@@ -87,7 +208,7 @@ namespace DefectDBManager
                         string text = $"{_LotName}_UnitA";
                         listBoxProcess.Items.Add(text);
                     }
-                    if(_Unit.UnitB.IsUse == true)
+                    if (_Unit.UnitB.IsUse == true)
                     {
                         _Total++;
                         string text = $"{_LotName}_UnitB";
@@ -101,9 +222,12 @@ namespace DefectDBManager
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log.WriteLog($"[Error] Process List Bug :[{ex.Message}]");
+                string text = $"[Error] Process List Bug :[{ex.Message}]";
+                Log.WriteLog(text);
+                lblText.Text = text;
+
                 listBoxProcess.EndUpdate();
             }
             finally
@@ -114,10 +238,22 @@ namespace DefectDBManager
 
         private void listBoxProcess_VisibleChanged(object sender, EventArgs e)
         {
-            if(Visible==true)
+            if (Visible == true)
             {
                 setProcessCtrl();
                 setProcessList();
+                btnClose.Visible = false;
+
+                oldListStep = -1;
+                countdown = 5;
+
+                this.btnClose.Text = "CLOSE";
+                lblText.Text = "";
+            }
+            else
+            {
+                timer.Stop();
+                timerClose.Stop();
             }
         }
 
@@ -130,32 +266,16 @@ namespace DefectDBManager
         private void listBoxProcess_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
-            if (e.Index<= _Step && _Step!=-1)
+            if (e.Index <= _Step && _Step != -1)
                 e.Graphics.DrawString(listBoxProcess.Items[e.Index].ToString(), new Font("Arial", 10, FontStyle.Bold), Brushes.Black, e.Bounds);
             else
                 e.Graphics.DrawString(listBoxProcess.Items[e.Index].ToString(), new Font("Arial", 10, FontStyle.Regular), Brushes.Black, e.Bounds);
             e.DrawFocusRectangle();
         }
 
-        private void listBoxProcess_MeasureItem(object sender, MeasureItemEventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            e.ItemHeight = 18;
-        }
-
-        public void Start(int step)
-        {
-            if (step >= _dbProgress.Count)
-                return;
-
-            _dbProgress[step].Set();
-        }
-
-        public void SetError(int step)
-        {
-            if (step >= _dbProgress.Count)
-                return;
-
-            _dbProgress[step].SetError();
+            this.Hide();
         }
     }
 }

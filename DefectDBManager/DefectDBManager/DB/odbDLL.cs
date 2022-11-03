@@ -422,6 +422,10 @@ namespace DefectDBManager
                 else
                     SearchModelList = new List<string>();
 
+                DB_Progress.SetSkip(eNittoDBProgress.PTRYLP);
+                DB_Progress.SetSkip(eNittoDBProgress.XOFSMST);
+                DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
+
                 if (SearchPTRYOP_Model(lotID) == true)
                 {
                     int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
@@ -498,17 +502,18 @@ namespace DefectDBManager
                     using (var reader = comm.ExecuteReader())
                     {
                         dbCnt = reader.RowSize;
-                        DB_Progress.SetTotal(eNittoDBProgress.PTRYLP, dbCnt);
+                        DB_Progress.Set(eNittoDBProgress.PTRYLP);
                         while (reader.Read())
                         {
                             PTRYLPdata data = new PTRYLPdata();
                             data.Parse(reader);
                             PTRLYP_Data.Add(data);
-                            DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
                             string logData = string.Format($"{PTRLYP_Data.Count}\t-\t{data.ToString()}");
                             Log.WriteLoadData(logData, 0, "PTRYLP", 0);
                         }
-                        success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
+
+                        DB_Progress.Complete(eNittoDBProgress.PTRYLP);
+                        success = true;
                     }
                 }
 
@@ -559,8 +564,6 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
-
             try
             {
                 QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
@@ -581,22 +584,21 @@ namespace DefectDBManager
                     {
                         DB_Progress.Reset(eNittoDBProgress.XOFSMST);
                         dbCnt = reader.RowSize;
-                        DB_Progress.SetTotal(eNittoDBProgress.XOFSMST, dbCnt);
+                        DB_Progress.Set(eNittoDBProgress.XOFSMST);
                         while (reader.Read())
                         {
                             XOFSMSTData data = new XOFSMSTData();
                             data.Parse(reader);
                             XOFSMST_Data.Add(data);
-                            DB_Progress.AddCount(eNittoDBProgress.XOFSMST);
-
+                            
                             logData = string.Format($"{XOFSMST_Data.Count}\t-\t{data.ToString()}");
                             Log.WriteLoadData(logData, XOFSMST_Data.Count, "XOFSMST", 0.0);
                         }
                     }
                 }
-                success = DB_Progress.IsCompelete(eNittoDBProgress.XOFSMST);
-
-                return success;
+                DB_Progress.Complete(eNittoDBProgress.XOFSMST);
+                return true;
+;
             }
             catch (Exception ex)
             {
@@ -611,8 +613,7 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-            bool success = false;
-
+            
             try
             {
                 QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
@@ -627,28 +628,27 @@ namespace DefectDBManager
 
                 long dbCnt = 0;
                 string logData;
+                DB_Progress.Reset(eNittoDBProgress.AREADEL);
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (var reader = comm.ExecuteReader())
                     {
-                        DB_Progress.Reset(eNittoDBProgress.AREADEL);
                         dbCnt = reader.RowSize;
-                        DB_Progress.SetTotal(eNittoDBProgress.AREADEL, dbCnt);
+                        DB_Progress.Set(eNittoDBProgress.AREADEL);
 
                         while (reader.Read())
                         {
                             AREADELData data = new AREADELData();
                             data.Parse(reader);
                             AREADEL_Data.Add(data);
-                            DB_Progress.AddCount(eNittoDBProgress.AREADEL);
 
                             logData = string.Format($"{AREADEL_Data.Count}\t-\t{data.ToString()}");
                             Log.WriteLoadData(logData, AREADEL_Data.Count, "AREADEL", 0.0);
                         }
                     }
                 }
-                success = DB_Progress.IsCompelete(eNittoDBProgress.AREADEL);
-                return success;
+                DB_Progress.Complete(eNittoDBProgress.AREADEL);
+                return true;
             }
             catch (Exception ex)
             {
@@ -663,8 +663,6 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-
-            bool success = false;
 
             try
             {
@@ -684,13 +682,13 @@ namespace DefectDBManager
                 long dbCnt = 0;
                 string logData = "";
                 int logCnt = 0;
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (OracleDataReader reader = comm.ExecuteReader())
                     {
-                        DB_Progress.Reset(eNittoDBProgress.PTRYOP);
                         dbCnt = reader.RowSize;
-                        DB_Progress.SetTotal(eNittoDBProgress.PTRYOP, dbCnt);
+                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
 
                         while (reader.Read())
                         {
@@ -711,8 +709,7 @@ namespace DefectDBManager
 
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
-                            DB_Progress.AddCount(eNittoDBProgress.PTRYOP);
-
+                            
                             //아래 구문은 Int형 범위초과로 에러...
                             //if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
                             //    continue;
@@ -740,8 +737,8 @@ namespace DefectDBManager
                         }
                     }
                 }
-                success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYOP);
-                return success;
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                return true;
             }
             catch (Exception ex)
             {
@@ -757,7 +754,6 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
             try
             {
                 QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
@@ -773,13 +769,14 @@ namespace DefectDBManager
                     return false;
                 }
 
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (OracleDataReader reader = comm.ExecuteReader())
                     {
-                        DB_Progress.Reset(eNittoDBProgress.PTRYOP);
                         dbCnt = reader.RowSize;
-                        DB_Progress.SetTotal(eNittoDBProgress.PTRYOP, dbCnt);
+                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
 
                         while (reader.Read())
                         {
@@ -800,7 +797,6 @@ namespace DefectDBManager
 
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
-                            DB_Progress.AddCount(eNittoDBProgress.PTRYOP);
 
                             if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
                                 continue;
@@ -828,8 +824,8 @@ namespace DefectDBManager
                         }
                     }
                 }
-                success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYOP);
-                return success;
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                return true;
             }
             catch (Exception ex)
             {
@@ -857,8 +853,8 @@ namespace DefectDBManager
 
         private bool searchMRKCTLMSTfromBuffer(string logID)
         {
-            bool success = false;
             int procStep = 0;
+            
             try
             {
                 DestConfigUnit destUnit = new DestConfigUnit();
@@ -871,21 +867,15 @@ namespace DefectDBManager
                 {
                     procStep = fcdIdx;
                     int PTRY0Pcnt = PTRY0P_Data[fcdIdx].Count;
-
-                    checkDicMRKCTLMST(PTRY0Pcnt, fcdIdx);
-
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
-                    DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx), PTRY0Pcnt);
-
+                    checkDicMRKCTLMST(PTRY0Pcnt, fcdIdx);
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
                     for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
                     {
                         dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
-                        DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx), 
-                            _MRKCTLMST_DE[fcdIdx][ptry0Idx].data.Count, ptry0Idx);
+                        
                         foreach (MRKCTLMSTData data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
                         {
-                            DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + dataCnt));
-
                             if (dicSizeMRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
                                 dicSizeMRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = data.SIZE;
                             else
@@ -896,8 +886,9 @@ namespace DefectDBManager
                             Log.WriteLoadData(logData, dataCnt, "MRKCTLMST-BUFFER", 0.0);
                         }
                     }
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
                 }
-                return success;
+                return true;
             }
             catch(Exception ex)
             {
@@ -917,8 +908,6 @@ namespace DefectDBManager
 
             try
             {
-                bool success = true;
-
                 DestConfigUnit destUnit = new DestConfigUnit();
                 destConfig.GetData(dbOption.FWPlace, ref destUnit);
 
@@ -930,11 +919,10 @@ namespace DefectDBManager
                 {
                     procStep = i;
                     int PTRY0Pcnt = PTRY0P_Data[i].Count;
-
-                    checkDicMRKCTLMST(PTRY0Pcnt, i);
-
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
-                    DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i), PTRY0Pcnt);
+                    checkDicMRKCTLMST(PTRY0Pcnt, i);
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+
                     for (int j = 0; j < PTRY0Pcnt; j++)
                     {
                         dicSizeMRKCTLMST[i][j].Clear();
@@ -961,11 +949,9 @@ namespace DefectDBManager
                                 using (var reader = comm.ExecuteReader())
                                 {
                                     dbCnt = reader.RowSize;
-                                    DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i), dbCnt, j);
+
                                     while (reader.Read())
                                     {
-                                        DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
-
                                         MRKCTLMSTData data = new MRKCTLMSTData();
                                         data.Parse(reader);
                                         MRKCTLMST_Data.Add(data);
@@ -993,16 +979,10 @@ namespace DefectDBManager
                             DB_Progress.SetSkip((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                         }
                     }
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                 }
 
-                eCSV_TYPE csvType = destConfig.GetCsvType();
-                if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK)
-                {
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_ES);
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_TG);
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_ETC);
-                }
-                return success;
+                return true;
             }
             catch (Exception ex)
             {
@@ -1018,7 +998,6 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = true;
             int procStep = 0;
             try
             {
@@ -1054,9 +1033,9 @@ namespace DefectDBManager
                         if (dbOption.checkETC == false && idx == (int)eFCD.ETC) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_ETC);
                         continue;
                     }
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
                     int PTRY0Pcnt = PTRY0P_Data[idx].Count;
-                    DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx), PTRY0Pcnt);
 
                     for (int i = 0; i < PTRY0Pcnt; i++)
                     {
@@ -1101,11 +1080,10 @@ namespace DefectDBManager
                             using (var reader = comm.ExecuteReader())
                             {
                                 dbCnt = reader.RowSize;
-                                DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx), dbCnt, i);
+                                
                                 while (reader.Read())
                                 {
-                                    DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
-
+                                    
                                     INSPDATData data = new INSPDATData();
                                     data.Parse(reader);
 
@@ -1162,16 +1140,11 @@ namespace DefectDBManager
                         // 최종 데이터 입력
                         INSPDAT_Data[idx].Add(inspDataList);
                     }
+
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
                 }
 
-                if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
-                {
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_ES);
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_TG);
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_ETC);
-                }
-
-                return success;
+                return true;
             }
             catch (Exception ex)
             {
@@ -1257,7 +1230,8 @@ namespace DefectDBManager
                     int nItemCnt = 0;
                     for (int iIdx = 0; iIdx < INSPDAT_Data[fcdIdx].Count; iIdx++)
                         nItemCnt += INSPDAT_Data[fcdIdx][iIdx].Count;
-                    DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx), nItemCnt);
+
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     nItemCnt = 0;
                     for (int opIdx = 0; opIdx < PTRY0P_Data[fcdIdx].Count; opIdx++)
                     {
@@ -1292,12 +1266,10 @@ namespace DefectDBManager
                                 {
                                     dbCnt = reader.RowSize;
 
-                                    DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx), dbCnt, nItemCnt);
                                     nItemCnt++;
 
                                     while (reader.Read())
                                     {
-                                        DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                                         FLTDATAData data = new FLTDATAData();
                                         data.Parse(reader);
 
@@ -1435,6 +1407,7 @@ namespace DefectDBManager
                             }
                         }
                     }
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                 }
 
                 //   Defect 사이즈 처리
@@ -1442,11 +1415,7 @@ namespace DefectDBManager
                 resultDefect.MarkFault.MaxXPos = maxXPos;
                 resultDefect.MarkFault.MinSize = minSize;
 
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_ES);
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_TG);
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_ETC);
-
-                return success;
+                return true;
             }
             catch (Exception ex)
             {

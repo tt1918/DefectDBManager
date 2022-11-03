@@ -34,9 +34,13 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.listBoxProcess = new System.Windows.Forms.ListBox();
             this.flpProgress = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.lblText = new System.Windows.Forms.Label();
             this.panelTitle.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTitle
@@ -46,7 +50,7 @@
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelTitle.Location = new System.Drawing.Point(3, 3);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(478, 22);
+            this.panelTitle.Size = new System.Drawing.Size(478, 23);
             this.panelTitle.TabIndex = 1;
             // 
             // lblTitle
@@ -66,13 +70,15 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.panelTitle, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6.540084F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 93.45992F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 434);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 487);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // tableLayoutPanel2
@@ -83,11 +89,11 @@
             this.tableLayoutPanel2.Controls.Add(this.listBoxProcess, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.flpProgress, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 31);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 32);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(478, 400);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(478, 417);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // listBoxProcess
@@ -98,10 +104,9 @@
             this.listBoxProcess.ItemHeight = 18;
             this.listBoxProcess.Location = new System.Drawing.Point(3, 3);
             this.listBoxProcess.Name = "listBoxProcess";
-            this.listBoxProcess.Size = new System.Drawing.Size(144, 394);
+            this.listBoxProcess.Size = new System.Drawing.Size(144, 411);
             this.listBoxProcess.TabIndex = 0;
             this.listBoxProcess.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxProcess_DrawItem);
-            this.listBoxProcess.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.listBoxProcess_MeasureItem);
             this.listBoxProcess.VisibleChanged += new System.EventHandler(this.listBoxProcess_VisibleChanged);
             // 
             // flpProgress
@@ -111,14 +116,51 @@
             this.flpProgress.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flpProgress.Location = new System.Drawing.Point(153, 3);
             this.flpProgress.Name = "flpProgress";
-            this.flpProgress.Size = new System.Drawing.Size(322, 394);
+            this.flpProgress.Size = new System.Drawing.Size(322, 411);
             this.flpProgress.TabIndex = 1;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.10042F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.89958F));
+            this.tableLayoutPanel3.Controls.Add(this.btnClose, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lblText, 0, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 455);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(478, 29);
+            this.tableLayoutPanel3.TabIndex = 3;
+            // 
+            // btnClose
+            // 
+            this.btnClose.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnClose.Location = new System.Drawing.Point(405, 3);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(70, 23);
+            this.btnClose.TabIndex = 0;
+            this.btnClose.Text = "CLOSE";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // lblText
+            // 
+            this.lblText.AutoSize = true;
+            this.lblText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblText.Location = new System.Drawing.Point(3, 0);
+            this.lblText.Name = "lblText";
+            this.lblText.Size = new System.Drawing.Size(396, 29);
+            this.lblText.TabIndex = 1;
+            this.lblText.Text = " ";
+            this.lblText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormDbProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 434);
+            this.ClientSize = new System.Drawing.Size(484, 487);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormDbProgress";
@@ -128,6 +170,8 @@
             this.panelTitle.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -140,5 +184,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ListBox listBoxProcess;
         private System.Windows.Forms.FlowLayoutPanel flpProgress;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Label lblText;
     }
 }

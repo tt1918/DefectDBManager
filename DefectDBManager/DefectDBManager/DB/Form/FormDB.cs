@@ -88,6 +88,7 @@ namespace DefectDBManager
         #region Form
         FormDbAddition formDbAddition = null;
         FormDbLoginData formLogin = null;
+        FormDbProgress formProgress = null;
         #endregion
 
         public event DelegateEndCsvReading OnEndCsvReading = null;
@@ -113,6 +114,17 @@ namespace DefectDBManager
             panelTitle.MouseMove += lblTitle_MouseMove;
 
             dbLoadingTime = new Stopwatch();
+
+            this.FormClosing += Form_Closing;
+        }
+
+        private void Form_Closing(object sender, FormClosingEventArgs e)
+        {
+            dbLoadingTime.Stop();
+            dbCommTimer.Stop();
+            dbSearchProgressTimer.Stop();
+            ledOff?.Dispose();
+            ledOn?.Dispose();
         }
 
         private void FormDB_Load(object sender, EventArgs e)
@@ -691,10 +703,12 @@ namespace DefectDBManager
 
                 if (unit.IsSplit == false)
                 {
+                    formProgress._Step = 0;
+
                     searchOp.MKCD = unit.MKCD;
                     dataBase.DbOption = option;
-
                     dataBase.ResetDataSplit();
+                    
                     isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
 
                     // 데이터 처리 필요
@@ -718,6 +732,8 @@ namespace DefectDBManager
                 {
                     if (unit.UnitA.IsUse == true)
                     {
+                        formProgress._Step++;
+
                         option.checkTG = unit.UnitA.TG;
                         option.checkES = unit.UnitA.ES;
                         option.checkETC = unit.UnitA.ETC;
@@ -750,6 +766,8 @@ namespace DefectDBManager
 
                     if (unit.UnitB.IsUse == true)
                     {
+                        formProgress._Step++;
+
                         option.checkTG = unit.UnitB.TG;
                         option.checkES = unit.UnitB.ES;
                         option.checkETC = unit.UnitB.ETC;
@@ -782,6 +800,8 @@ namespace DefectDBManager
 
                     if (unit.UnitC.IsUse == true)
                     {
+                        formProgress._Step++;
+
                         option.checkTG = unit.UnitC.TG;
                         option.checkES = unit.UnitC.ES;
                         option.checkETC = unit.UnitC.ETC;
@@ -975,6 +995,14 @@ namespace DefectDBManager
                 this.thread = null;
             }
 
+            if(formProgress==null)
+                formProgress = new FormDbProgress();
+            formProgress._LotName = this.tbLotName.Text;
+            formProgress._DbProgress = DataBase.DB_Progress;
+            formProgress._LastProgress = eNittoDBProgress.FAULTDAT_ETC;
+            formProgress._DispType = 0;
+            formProgress.Show();
+
             this.thread = new Thread(this.threadFromDB);
             this.thread.Start();
         }
@@ -999,6 +1027,14 @@ namespace DefectDBManager
                 this.thread.Join(100);
                 this.thread = null;
             }
+
+            if (formProgress == null)
+                formProgress = new FormDbProgress();
+            formProgress._LotName = this.tbLotName.Text;
+            formProgress._DbProgress = DataBase.DB_Progress;
+            formProgress._LastProgress = eNittoDBProgress.PTRYOP;
+            formProgress._DispType = 1;
+            formProgress.Show();
 
             this.thread = new Thread(this.threadSearchModelFromDB);
             this.thread.Start();
@@ -1291,9 +1327,7 @@ namespace DefectDBManager
         //private FormDbProgress formProgress = new FormDbProgress();
         private void btnEditDefect_Click(object sender, EventArgs e)
         {
-            //timer = new System.Windows.Forms.Timer();
-            //timer.Interval = 5000;
-            //timer.Tick += new EventHandler(timerTest);
+            
 
             //DataBase.DB_Progress.ResetAll();
             //string name = cbDestination.Items[cbDestination.SelectedIndex].ToString();
@@ -1305,46 +1339,6 @@ namespace DefectDBManager
             //return;
             RunDefectEdit();
         }
-
-        //int step = -1;
-        //private void timerTest(object sender, EventArgs e)
-        //{
-        //    int count = System.Enum.GetValues(typeof(eNittoDBProgress)).Length;
-
-        //    if(count-1 == step)
-        //    {
-        //        formProgress._Step = 1;
-        //        DataBase.DB_Progress.SetCount((eNittoDBProgress)(step), 1);
-        //        timer.Stop();
-        //    }
-
-        //    if(step == 5)
-        //    {
-        //        formProgress.SetError(step);
-        //        timer.Stop();
-        //        return;
-        //    }
-
-        //    if (step == -1)
-        //    {
-        //        DataBase.DB_Progress.SetMatStep((eNittoDBProgress)(step + 1), 1);
-        //        DataBase.DB_Progress.SetTotal((eNittoDBProgress)(step + 1), 1);
-        //        formProgress.Start(step + 1);
-        //    }
-        //    else
-        //    {
-        //        DataBase.DB_Progress.SetCount((eNittoDBProgress)(step), 1);
-
-        //        if(step != count - 1)
-        //        {
-        //            DataBase.DB_Progress.SetMatStep((eNittoDBProgress)(step + 1), 1);
-        //            DataBase.DB_Progress.SetTotal((eNittoDBProgress)(step + 1), 1);
-        //            formProgress.Start(step + 1);
-        //        }
-                
-        //    }
-        //    step++;
-        //}
 
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
         {
@@ -1407,6 +1401,8 @@ namespace DefectDBManager
         #region Timer
 
         bool isOldConn = false;
+        Image ledOn = Properties.Resources.icons8_green_square_16;
+        Image ledOff = Properties.Resources.icons8_black_medium_square_16;
         private void timer_DispDBConn(object sender, EventArgs e)
         {
             if (this.dbConn == null) return;
@@ -1416,8 +1412,7 @@ namespace DefectDBManager
                 if (isOldConn == false)
                 {
                     lblDbConnState.Text = "CONNECTED";
-                    lblDbConnStateIcon?.Image.Dispose();
-                    lblDbConnStateIcon.Image = Properties.Resources.icons8_green_square_16;
+                    lblDbConnStateIcon.Image = ledOn;
                     isOldConn = true;
                 }
             }
@@ -1426,8 +1421,7 @@ namespace DefectDBManager
                 if (isOldConn == true)
                 {
                     lblDbConnState.Text = "DISCONNECTED";
-                    lblDbConnStateIcon?.Image.Dispose();
-                    lblDbConnStateIcon.Image = Properties.Resources.icons8_black_medium_square_16;
+                    lblDbConnStateIcon.Image = ledOff;
                     isOldConn = false;
                 }
             }
@@ -1473,7 +1467,7 @@ namespace DefectDBManager
                             sb.Append("PTRYLP Complete => ");
                         else
                         {
-                            sb.Append($"PTRYLP:{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"PTRYLP is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1484,7 +1478,7 @@ namespace DefectDBManager
                             sb.Append("XOFSMST Complete => ");
                         else
                         {
-                            sb.Append($"XOFSMST:{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"XOFSMST is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1496,7 +1490,7 @@ namespace DefectDBManager
                             sb.Append("AREADEL Complete => ");
                         else
                         {
-                            sb.Append($"AREADEL:{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"AREADEL is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1507,7 +1501,7 @@ namespace DefectDBManager
                             sb.Append("PTRYOP Complete => ");
                         else
                         {
-                            sb.Append($"PTRYOP:{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"PTRYOP is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1520,7 +1514,7 @@ namespace DefectDBManager
                             sb.Append("MRKCTLMST_ES Complete => ");
                         else
                         {
-                            sb.Append($"MRKCTLMST_ES({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"MRKCTLMST_ES is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1533,7 +1527,7 @@ namespace DefectDBManager
                             sb.Append("MRKCTLMST_TG Complete => ");
                         else
                         {
-                            sb.Append($"MRKCTLMST_TG({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"MRKCTLMST_TG is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1546,7 +1540,7 @@ namespace DefectDBManager
                             sb.Append("MRKCTLMST_ETC Complete => ");
                         else
                         {
-                            sb.Append($"MRKCTLMST_ETC({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"MRKCTLMST_ETC is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1559,7 +1553,7 @@ namespace DefectDBManager
                             sb.Append("INSPDAT_ES Complete => ");
                         else
                         {
-                            sb.Append($"INSPDAT_ES({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"INSPDAT_ESis processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1572,7 +1566,7 @@ namespace DefectDBManager
                             sb.Append("INSPDAT_TG Complete => ");
                         else
                         {
-                            sb.Append($"INSPDAT_TG({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"INSPDAT_TG is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1585,7 +1579,7 @@ namespace DefectDBManager
                             sb.Append("INSPDAT_ETC Complete => ");
                         else
                         {
-                            sb.Append($"INSPDAT_ETC({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"INSPDAT_ETC is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1598,7 +1592,7 @@ namespace DefectDBManager
                             sb.Append("FAULTDAT_ES Complete => ");
                         else
                         {
-                            sb.Append($"FAULTDAT_ES({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"FAULTDAT_ES is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1611,7 +1605,7 @@ namespace DefectDBManager
                             sb.Append("FAULTDAT_TG Complete => ");
                         else
                         {
-                            sb.Append($"FAULTDAT_TG({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"FAULTDAT_TG is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -1624,7 +1618,7 @@ namespace DefectDBManager
                             sb.Append("FAULTDAT_ETC Complete => ");
                         else
                         {
-                            sb.Append($"FAULTDAT_ETC({this.dataBase.DB_Progress._Progress[i].Step}/{this.dataBase.DB_Progress._Progress[i].MaxStep}):{this.dataBase.DB_Progress._Progress[i].Progress}%");
+                            sb.Append($"FAULTDAT_ETC is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }

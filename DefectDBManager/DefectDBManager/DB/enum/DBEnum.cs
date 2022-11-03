@@ -280,4 +280,14 @@ namespace DefectDBManager
     }
 
     #endregion
+
+    #region Pross 상태 확인용
+    public enum eProcessState
+    {
+        Ready = 0,
+        Run,
+        Complete,
+        Error,
+    }
+    #endregion
 }
