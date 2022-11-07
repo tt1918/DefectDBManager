@@ -34,8 +34,8 @@ extern BcrParamRecv g_CommBcrParam;
 class BcrSearchInfo
 {
 public :
-	char m_strLot[100];
-	int m_nVendor;
+	char strLot[100];
+	int vendor;
 	bool isNext;
 	bool useES;
 	bool useTG;
@@ -45,8 +45,8 @@ public :
 public:
 	BcrSearchInfo()
 	{
-		memset(m_strLot, 0x00, sizeof(char) * 100);
-		m_nVendor = -1;
+		memset(strLot, 0x00, sizeof(char) * 100);
+		vendor = -1;
 		isNext = false;
 		useES = false;
 		useTG = false;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -130,7 +131,8 @@ namespace DefectDBManager
 		int GetCSV_Type();
 		void LotChange();
 		void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
-		LotSearchResult[] GetSearchLotResults(bool isNext);
+		int GetSearchModelCount();
+        LotSearchResult[] GetSearchLotResults(bool isNext);
         int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
@@ -379,6 +381,21 @@ namespace DefectDBManager
             return results.ToArray();
 		}
 
+        public int SearchModel(string lotName)
+        {
+            dbManager.SearchModel(lotName);
+            return 0;
+        }
+		public int GetSearchModelCount()
+		{
+            Trace.WriteLine($"SearchModelList Count = {dbManager._DbProc[2].SearchModelList.Count}");
+            return dbManager._DbProc[2].SearchModelList.Count;
+        }
+        public string[] GetSearchModelResult()
+        {
+            return dbManager._DbProc[2].SearchModelList.ToArray();
+        }
+
         public int GetBcdReadWarningM()
 		{
 			return dbManager._DestConfig.NoBcrWarning;
@@ -389,15 +406,5 @@ namespace DefectDBManager
 			return dbManager._DestConfig.NoBcrError;
         }
 
-		public int SearchModel(string lotName)
-		{
-			dbManager.SearchModel(lotName);
-			return 0;
-		}
-
-		public string[] GetSearchModelResult()
-		{
-			return dbManager._DbProc[2].SearchModelList.ToArray();
-        }
     }
 }

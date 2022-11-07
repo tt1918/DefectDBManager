@@ -236,7 +236,7 @@ public:
 	void	PullAiNgImagePacket(char* buf, int buf_len, int& frameNum, int& totalNg, int& aiClass, float* scores);
 
 	void	PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool& lotNext, int& vendor, bool& useES, bool& useTG, bool& useETC, bool& useBMark);
-	void	MakeAckBcrSearchLotPacket(CString data, long progress);
+	void	MakeAckBcrSearchLotPacket(CString data, double progress);
 	
 	void	PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName);
 	void	MakeAckBcrSearchModelPacket(CString data, long progress);

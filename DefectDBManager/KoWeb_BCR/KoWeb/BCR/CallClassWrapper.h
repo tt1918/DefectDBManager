@@ -13,6 +13,7 @@ public:
 
 private:
 	ICallClass* m_pCallClass;
+	CRITICAL_SECTION cs;
 
 public:
 	void SetParent(HWND pParent);

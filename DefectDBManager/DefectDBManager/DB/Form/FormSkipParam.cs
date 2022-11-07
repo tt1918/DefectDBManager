@@ -13,6 +13,8 @@ namespace DefectDBManager
     public partial class FormSkipParam : Form
     {
         #region const param
+        private readonly string[] MaskHeader = {" ", "X LEFT", "X RIGHT", "Y TOP", "Y BOTTOM" };
+        private readonly int[] listMaskWidth = {10, 60, 60, 60, 80 };
         private readonly string[] skipParamName = { "경계 반사", "정투과", "주기성 불량", "크로스 불량", "정반사", "미분반사" };
         #endregion
         public DestConfig Config { get; set; }
@@ -30,6 +32,7 @@ namespace DefectDBManager
 
         private void FormSkipParam_Load(object sender, EventArgs e)
         {
+            initListViewOffsetSkip();
         }
 
         private void FormSkipParam_VisibleChanged(object sender, EventArgs e)
@@ -37,6 +40,7 @@ namespace DefectDBManager
             if (this.Visible == true)
             {
                 initComboDest();
+                displayListViewOffsetSkip();
             }
         }
 
@@ -119,6 +123,89 @@ namespace DefectDBManager
         }
 
         #endregion Skip Size
+
+        #region Offset Skip
+
+        private void initListViewOffsetSkip()
+        {
+            for (int i = 0; i < MaskHeader.Length; i++)
+                lvOffsetSkip.Columns.Add(MaskHeader[i], listMaskWidth[i]);
+        }
+
+        private void displayListViewOffsetSkip()
+        {
+            if (_Param?.OffsetSkip == null) return;
+            try
+            {
+                lvOffsetSkip.BeginUpdate();
+                lvOffsetSkip.Items.Clear();
+
+                foreach (var data in _Param.OffsetSkip)
+                {
+                    ListViewItem item = new ListViewItem("");
+                    item.SubItems.Add($"{data.Left:F3}");
+                    item.SubItems.Add($"{data.Right:F3}");
+                    item.SubItems.Add($"{data.Top:F3}");
+                    item.SubItems.Add($"{data.Bottom:F3}");
+                }
+            }
+            finally
+            {
+                lvOffsetSkip.EndUpdate();
+            }
+        }
+
+        private void updateListViewOffsetSkip()
+        {
+            List<SkipOffsetParam> param = new List<SkipOffsetParam>();
+
+            foreach (ListViewItem item in lvOffsetSkip.Items)
+            {
+                SkipOffsetParam data = new SkipOffsetParam();
+                if (float.TryParse(item.SubItems[1].Text, out float value) == true)
+                    data.Left = value;
+                else continue;
+
+                if (float.TryParse(item.SubItems[2].Text, out value) == true)
+                    data.Right = value;
+                else continue;
+
+                if (float.TryParse(item.SubItems[3].Text, out value) == true)
+                    data.Top = value;
+                else continue;
+
+                if (float.TryParse(item.SubItems[4].Text, out value) == true)
+                    data.Bottom = value;
+                else continue;
+
+                param.Add(data);
+            }
+
+            _Param.OffsetSkip = param;
+        }
+
+        private void btnUpdateSkipOffset_Click(object sender, EventArgs e)
+        {
+            updateListViewOffsetSkip();
+        }
+
+        private void btnAddOffset_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = new ListViewItem();
+
+            item.SubItems.Add(tbStartX.Text);
+            item.SubItems.Add(tbEndX.Text);
+            item.SubItems.Add(tbStartY.Text);
+            item.SubItems.Add(tbEndY.Text);
+            lvOffsetSkip.Items.Add(item);
+        }
+
+        private void btnDelOffset_Click(object sender, EventArgs e)
+        {
+            int selIndex = lvOffsetSkip.FocusedItem.Index;
+            lvOffsetSkip.Items.RemoveAt(selIndex);
+        }
+        #endregion Offset Skip
 
         private void btnClose_Click(object sender, EventArgs e)
         {

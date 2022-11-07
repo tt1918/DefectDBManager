@@ -306,6 +306,7 @@ namespace DefectDBManager
             ProductEndTime.Clear();
             ProductLotName.Clear();
 
+            AREADEL_Data.Clear();
             XOFSMST_Data.Clear();
             PTRLYP_Data.Clear();
             MRKCTLMST_Data.Clear();
@@ -333,6 +334,8 @@ namespace DefectDBManager
         /// </summary>
         public void ResetDataSplit()
         {
+            PTRLYP_Data.Clear(); 
+            AREADEL_Data.Clear();
             XOFSMST_Data.Clear();
             MRKCTLMST_Data.Clear();
 
@@ -400,7 +403,6 @@ namespace DefectDBManager
         {
             bool isRes = true;
             CrtParam.Model = "";
-
             try
             {
                 lotID = lotID.ToUpper();
@@ -451,12 +453,13 @@ namespace DefectDBManager
                 {
 
                 }
-
                 return isRes;
             }
             catch (Exception ex)
             {
-                Log.WriteLog($"[Error] DB Serach Model error message : [{ex.Message}]");
+                string strLog = $"[Error] DB Serach Model error message : [{ex.Message}]";
+                Trace.WriteLine(strLog);
+                Log.WriteLog(strLog);
                 return false;
             }
         }
@@ -466,7 +469,6 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-
             bool success = false;
             try
             {
@@ -483,7 +485,6 @@ namespace DefectDBManager
                 int newLotCnt = GetNextLotCnt(lotID);
                 if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
                 else Log.LotLog = lotID;
-
                 DB_Progress.ResetAll();
 
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
@@ -522,25 +523,18 @@ namespace DefectDBManager
                     DB_Progress.SetError(eNittoDBProgress.PTRYLP);
                     return false;
                 }
-
                 success = SearchXOFSMST(lotID);
                 if (success == false) return false;
-
                 success = SearchAreaDel(lotID);
                 if (success == false) return false;
-
                 success = SearchPTRYOP(lotID);
                 if (success == false) return false;
-
                 success = SearchMRKCTLMST(lotID);
                 if (success == false) return false;
-
                 success = SearchINSPDAT(lotID);
                 if (success == false) return false;
-
                 success = SearchFLTDAT(lotID);
                 if (success == false) return false;
-
                 if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
                 {
                     if (dbOption.dbWhen == eDbIdWhen.Now && dbOption.prodAvaliableSpan > 0)
@@ -1161,8 +1155,6 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-
-            bool success = true;
 
             faultData = resultDefect.Data;
             markFaultData = resultDefect.MarkFault.Data;

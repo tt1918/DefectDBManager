@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -174,17 +175,15 @@ namespace DefectDBManager
             else idx = 1;
 
             if (formDB.IsSearchDefect() == true) return;
-
             _Option[idx].dbWhen = (eDbIdWhen)idx;
             _Option[idx].vendor = vendor;
             _Option[idx].checkES = useES;
             _Option[idx].checkTG = useTG;
             _Option[idx].checkETC = useETC;
             _Option[idx].lotName = lotName;
-
             formDB.DataBase = _DbProc[idx];
             formDB.UpdateEndEvent = true;
-            formDB.SearchLotDefect();
+            formDB.SearchDefect();
         }
 
         public void GetSearchLotResultSummery(bool isNext, ref List<LotSearchResult> results)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
@@ -167,24 +168,21 @@ namespace DefectDBManager
             {
                 var view = new ucProgress();
                 view.Title = ((eNittoDBProgress)i).ToString();
-                view.Progress = _DbProgress._Progress[i];
+                //view.Progress = _DbProgress._Progress[i];
                 _formProgress.Add(view);
-                flpProgress.Controls.Add(view);
+                //flpProgress.Controls.Add(view);
             }
         }
 
         private void setProcessCtrl()
         {
             int count = System.Enum.GetValues(typeof(eNittoDBProgress)).Length;
-
             flpProgress.Controls.Clear();
-
             for (int i = 0; i <= (int)_LastProgress; i++)
             {
                 flpProgress.Controls.Add(_formProgress[i]);
                 _formProgress[i].Progress = _DbProgress._Progress[i];
             }
-                
         }
 
         private void setProcessList()
@@ -195,30 +193,38 @@ namespace DefectDBManager
                 listBoxProcess.Items.Clear();
                 _Total = 0;
                 _Step = -1;
-                if (_Unit.IsSplit == false || _DispType==1)
+                if(_Unit==null)
                 {
                     _Total++;
                     listBoxProcess.Items.Add(_LotName);
                 }
                 else
                 {
-                    if (_Unit.UnitA.IsUse == true)
+                    if (_Unit.IsSplit == false || _DispType == 1)
                     {
                         _Total++;
-                        string text = $"{_LotName}_UnitA";
-                        listBoxProcess.Items.Add(text);
+                        listBoxProcess.Items.Add(_LotName);
                     }
-                    if (_Unit.UnitB.IsUse == true)
+                    else
                     {
-                        _Total++;
-                        string text = $"{_LotName}_UnitB";
-                        listBoxProcess.Items.Add(text);
-                    }
-                    if (_Unit.UnitC.IsUse == true)
-                    {
-                        _Total++;
-                        string text = $"{_LotName}_UnitC";
-                        listBoxProcess.Items.Add(text);
+                        if (_Unit.UnitA.IsUse == true)
+                        {
+                            _Total++;
+                            string text = $"{_LotName}_UnitA";
+                            listBoxProcess.Items.Add(text);
+                        }
+                        if (_Unit.UnitB.IsUse == true)
+                        {
+                            _Total++;
+                            string text = $"{_LotName}_UnitB";
+                            listBoxProcess.Items.Add(text);
+                        }
+                        if (_Unit.UnitC.IsUse == true)
+                        {
+                            _Total++;
+                            string text = $"{_LotName}_UnitC";
+                            listBoxProcess.Items.Add(text);
+                        }
                     }
                 }
             }
@@ -227,7 +233,6 @@ namespace DefectDBManager
                 string text = $"[Error] Process List Bug :[{ex.Message}]";
                 Log.WriteLog(text);
                 lblText.Text = text;
-
                 listBoxProcess.EndUpdate();
             }
             finally
@@ -265,6 +270,7 @@ namespace DefectDBManager
         /// <param name="e"></param>
         private void listBoxProcess_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (this.Visible == false) return;
             e.DrawBackground();
             if (e.Index <= _Step && _Step != -1)
                 e.Graphics.DrawString(listBoxProcess.Items[e.Index].ToString(), new Font("Arial", 10, FontStyle.Bold), Brushes.Black, e.Bounds);

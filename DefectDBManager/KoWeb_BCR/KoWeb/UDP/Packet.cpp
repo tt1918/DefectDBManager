@@ -743,7 +743,8 @@ void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool
 	useBMark = (subData1 / 10) % 10;
 	lotNext = subData1 % 10;
 
-	strcpy(g_BcrSearchInfo.m_strLot, lotName);
+	strcpy(g_BcrSearchInfo.strLot, lotName);
+	g_BcrSearchInfo.vendor = vendor;
 	g_BcrSearchInfo.isNext = lotNext;
 	g_BcrSearchInfo.useES = useES;
 	g_BcrSearchInfo.useTG = useTG;
@@ -751,20 +752,31 @@ void CPacket::PullBcrSearchLotPacket(char* buf, int buf_len, char* lotName, bool
 	g_BcrSearchInfo.useBMark = useBMark;
 }
 
-void CPacket::MakeAckBcrSearchLotPacket(CString data, long progress)
+void CPacket::MakeAckBcrSearchLotPacket(CString data, double progress)
 {
 	m_nPacket_code = NM_BCR_SEARCH_LOT_ACK;
-	int dataLen = data.GetLength() * 2;	// UNICODE 贸府
-	m_nBuflen = m_nFull_packet_length = 4 + 4 + dataLen + 8;
+
+	int dataLen = data.GetLength()*2;
+	//char* sBuffer;
+	//sBuffer = new char[dataLen+1];
+
+	//memset(sBuffer, 0x00, sizeof(char) * (dataLen+1));
+	
+	//WideCharToMultiByte(CP_ACP, 0, data, dataLen, sBuffer, dataLen, NULL, NULL); //char肺 函版窃
+	
+
+	//int dataLen = data.GetLength();	// UNICODE 贸府
+	m_nBuflen = m_nFull_packet_length = 4 + 4 +4 + dataLen + 8;
 
 	if (m_pBuf)
 		delete[] m_pBuf;
 	m_pBuf = new char[m_nBuflen];
-	memset(m_pBuf, 0, m_nBuflen);
-
-	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 8, &data, dataLen);
-	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
+	memcpy(m_pBuf, &m_nBuflen, 4);
+	memcpy(m_pBuf + 4, &m_nPacket_code, 4);
+	memcpy(m_pBuf + 8, &dataLen, 4);
+	memcpy(m_pBuf + 12, data.GetBuffer(), dataLen);
+	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(double));
+	//delete[] sBuffer;
 }
 
 void CPacket::PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName)

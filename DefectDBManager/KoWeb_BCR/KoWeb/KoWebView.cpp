@@ -3138,7 +3138,7 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 			for (int i = 0; i < size; i++)
 			{
 				data += arData[i];
-				if (i < size - 1)	data += ";";
+				if (i < size - 1)	data += "\n";
 			}
 			CPacket* packet = new CPacket;
 			packet->MakeAckBcrSearchLotPacket(data, 100);
@@ -3168,6 +3168,7 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 			arData.RemoveAll();
 			CString strLog;
 			strLog.Format(_T("[Model Search Ack] : %s"), data);
+			WriteLog(strLog);
 			break;
 		}
 	}
@@ -3179,8 +3180,8 @@ LRESULT CKoWebView::OnBcrSearchLot(WPARAM wParam, LPARAM lParam)
 {
 	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
 	CString strLot;
-	strLot.Format(_T("%s"), g_BcrSearchInfo.m_strLot);
-	m_DefectCallClass->SearchLot(strLot, g_BcrSearchInfo.isNext, g_BcrSearchInfo.m_nVendor, g_BcrSearchInfo.useES,
+	strLot.Format(_T("%s"), g_BcrSearchInfo.strLot);
+	m_DefectCallClass->SearchLot(strLot, g_BcrSearchInfo.isNext, g_BcrSearchInfo.vendor, g_BcrSearchInfo.useES,
 		g_BcrSearchInfo.useTG, g_BcrSearchInfo.useETC);
 
 	return 0;
@@ -3190,7 +3191,7 @@ LRESULT CKoWebView::OnBcrSearchModel(WPARAM wParam, LPARAM lParam)
 {
 	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
 	CString strLot;
-	strLot.Format(_T("%s"), g_BcrSearchInfo.m_strLot);
+	strLot.Format(_T("%s"), g_BcrSearchInfo.strLot);
 	m_DefectCallClass->SearchModel(strLot);
 
 	return 0;
