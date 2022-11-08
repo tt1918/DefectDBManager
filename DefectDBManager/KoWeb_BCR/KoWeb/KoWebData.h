@@ -484,7 +484,7 @@ typedef struct TEMPDATA_
 	CString m_strBcrName;		// 인식 결과 바코드 정보
 	int		m_nBcrPreInspFrame;	// 이전 BCR 인식된 Frame 번호
 	CString m_strPreBcrName;	// 이전 인식 결과 바코드 정보
-	double  m_dBcrCrtRealPos;		// 원단상의 실제 위치
+	double  m_dBcrCrtRealPos;	// 원단상의 실제 위치
 	double  m_dBcrPreRealPos;	// 이전 BCR 원단상의 실제 위치
 	double  m_dBcrOffsetY;		// 프레임 내에서 바코드 위치에 따른 OFFSET
 	double  m_dBcrScale[3];		// Bcr 길이 방향 Scale 계산		
@@ -499,6 +499,8 @@ typedef struct TEMPDATA_
 	double  m_dBcrPreFramePos;	// 
 
 	char	m_cBcrFileName[MAX_BADIMAGE_FILENAME];		// BCR 조각 영상 이름
+
+	int		m_nTempNullPos;
 
 	CString m_strBcrLog;		// BCR 로그 저장용
 	// BCR 용 - E

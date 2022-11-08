@@ -104,7 +104,7 @@ void WEB_Barcode(LPVOID pParent)
 	}
 
 	// 우선 방향을 못 확인했더라도 패턴 영역을 확인한 상태이면 이미지는 저장하도록함
-	if (g_Param.m_bBcrSaveImage == true && (g_Temp.m_isBcrSuccessRead == true || g_Temp.m_nBcrPatFind == 3))
+	if (g_Param.m_bBcrSaveImage == true && (g_Temp.m_isBcrSuccessRead == true || g_Temp.m_nBcrPatFind == eBCRPatRead::eForceReadDone))
 	{
 		CvtBcrImage2SaveDefectImage(fm, width, height, g_Temp.m_BcrRectFine, g_Defect.m_pImage[0], BAD_IMG_WIDTH, BAD_IMG_HEIGHT);
 		SaveBcrImage(nFrameNum);
@@ -545,7 +545,10 @@ double Distance2NearRect(CRect r1, CRect r2)
 	return dMin;
 }
 
-
+/// <summary>
+/// Fine Area 탐색
+/// 상하 기준 탐색 및 좌우는 기존 BCR 영역 기준 처리
+/// </summary>
 int l_proj[2048];
 CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch)
 {
@@ -622,8 +625,6 @@ CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch)
 			rectSave.left = rectSave.right - g_Temp.m_BcrSavingRect.Width();
 		}
 		g_Temp.m_BcrSavingRect = rectSave;
-
-
 	}
 	return tmpRect;
 }
@@ -950,11 +951,11 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	}
 	// 에지 기준으로 검출 영역 생성 - S
 	///////////////////////////////////////////////////////////////////////////////////////////////
-
+	g_Temp.m_nTempNullPos = -1;
 	if (CheckDotOnPVA(fm, w, h, w, rtBcrArea.left, rtBcrArea.right, g_Temp.m_nEdgeDir) == true)
 	{
 		// 검사 완료 후 널링부 피해서 에지 영역 이동
-		edgeX = m_tmpNullDotPos;
+		edgeX = g_Temp.m_nTempNullPos = m_tmpNullDotPos;
 
 		if (g_Temp.m_nEdgeDir == 0)
 		{
@@ -970,6 +971,10 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 			if (g_Temp.m_BcrRect.left < 0)
 				g_Temp.m_BcrRect.left = 0;
 		}
+	}
+	else
+	{
+		g_Temp.m_nTempNullPos = g_Temp.m_nFoundEdge;
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//바코드 중심점 및 영역 만듬 - S   
@@ -1200,6 +1205,8 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 						rectBcd.left + rectMatched.right,
 						rectBcd.top + rectMatched.bottom);
 
+					// Blob 영역을 Fine Pat 영역으로 치환
+					// GetBcrFineArea 에서 찾은 영역이 오차가 있음
 					g_Temp.m_BcrRectFine = g_Temp.m_BcrRectForMatch;
 
 					// 이진화로 패턴 영역 찾은 결과 
@@ -1666,7 +1673,6 @@ bool Read2DMatrix(cv::Mat roiImage)
 	return isFind;
 }
 
-
 std::list<cv::Rect> FindBarcodePosition(cv::Mat image)
 {
 	cv::Mat bw, resizeImg, resizeBw;
@@ -1817,6 +1823,7 @@ std::list<cv::Rect> FindBarcodePosition(cv::Mat image)
 		}
 	}
 
+	bw.release();
 	return listBarcode;
 }
 

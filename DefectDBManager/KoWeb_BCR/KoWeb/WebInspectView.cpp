@@ -797,8 +797,6 @@ void CKoWebView::DrawResults()
 		m_sResult[m_nResultStringCnt++]=str;	
 	}
 #endif
-	
-
 
 #ifdef USE_DAKANO_LINE
 	if(l_nStringCnt)
@@ -928,6 +926,19 @@ void CKoWebView::DrawResults()
 	{
 		str.Format(_T("%d Motion = %d(T:%d), Brightness=%d  Exposure=%d"), g_Temp.m_nMotionCount, g_Temp.m_dMotionPos, g_Temp.m_dMotionTarget,  g_Temp.m_dMotionBrightness, g_Temp.m_nExposureData);
 		m_sResult[m_nResultStringCnt++]=str; //m_ctrlResult.AddString(str);
+	}
+#endif
+
+#ifdef BARCODE_VISION
+	str.Format(_T("Check Dot Edge : %d"), g_Temp.m_nTempNullPos);
+	m_sResult[m_nResultStringCnt++] = str;
+	str.Format(_T("BCR Fine Rect : (%d,%d),(%d,%d)"), g_Temp.m_BcrRectFine.top, g_Temp.m_BcrRectFine.left, g_Temp.m_BcrRectFine.bottom, g_Temp.m_BcrRectFine.right);
+	m_sResult[m_nResultStringCnt++] = str;
+	
+	if (g_Temp.m_nBcrPatFind == 1) // BCR Reader에 의해 읽기 완료
+	{
+		str.Format(_T("BCR Info : %s"), g_Temp.m_strBcrName);
+		m_sResult[m_nResultStringCnt++] = str;
 	}
 #endif
 

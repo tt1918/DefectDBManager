@@ -139,7 +139,6 @@ namespace DefectDBManager
 		string[] GetSearchModelResult();
     }
 
-
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
     [Guid("83AF4738-A82D-4D9C-917D-8E4202727D57")]

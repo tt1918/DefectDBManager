@@ -33,6 +33,8 @@ namespace DefectDBManager
                 return cp;
             }
         }
+
+        public bool _FormCloseBtnType = false;
         #endregion
         #region const param
         readonly string[] BCnoHeader = { "No.", "LOTNO", "Bad Count", "M^2 불량수", "Use", "원단 BCNO" };
@@ -1387,18 +1389,17 @@ namespace DefectDBManager
         private void btnFormMaximize_Click(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Maximized)
-            {
                 this.WindowState = FormWindowState.Normal;
-            }
             else if (this.WindowState == FormWindowState.Normal)
-            {
                 this.WindowState = FormWindowState.Maximized;
-            }
         }
 
         private void btnFormHide_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            if (this._FormCloseBtnType == true)
+                this.Close();
+            else
+                this.Hide();
         }
 
         private void OnDbConnect(bool state)
