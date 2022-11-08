@@ -1,4 +1,6 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿//#define FAST_FLTID
+
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -1237,10 +1239,16 @@ namespace DefectDBManager
                         int inspCnt = INSPDAT_Data[fcdIdx][opIdx].Count;
                         for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                         {
-                            QueryMsg.FLTDAT_Query msg = new QueryMsg.FLTDAT_Query();
                             inspdata = INSPDAT_Data[fcdIdx][opIdx][inspIdx];
+#if (FAST_FLTID)
+                            QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
+                            fastMsg.BCNO = inspdata.BCNO;
+                            query = fastMsg.GetQuery();
+#else
+                            QueryMsg.FLTDAT_Query msg = new QueryMsg.FLTDAT_Query();
                             msg.CTLNO = inspdata.CTLNO;
                             query = msg.GetQuery();
+#endif
                             Log.WriteLoadData(query, 0, "FAULTDAT", 0.0);
 
                             if (query == "")
