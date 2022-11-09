@@ -792,9 +792,10 @@ void CPacket::PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName)
 	memcpy(&dataLen, m_pBuf + 8, 4);
 	memcpy(lotName, m_pBuf + 12, dataLen);
 	//-----------------------------------------------
+	strcpy(g_BcrSearchInfo.strLot, lotName);
 }
 
-void CPacket::MakeAckBcrSearchModelPacket(CString data, long progress)
+void CPacket::MakeAckBcrSearchModelPacket(CString data, double progress)
 {
 	m_nPacket_code = NM_BCR_SEARCH_MODEL_ACK;
 	int dataLen = data.GetLength() * 2;	// UNICODE Ã³¸®
@@ -803,11 +804,11 @@ void CPacket::MakeAckBcrSearchModelPacket(CString data, long progress)
 	if (m_pBuf)
 		delete[] m_pBuf;
 	m_pBuf = new char[m_nBuflen];
-	memset(m_pBuf, 0, m_nBuflen);
-
-	memcpy(m_pBuf + 4, &m_nFull_packet_length, 4);
-	memcpy(m_pBuf + 8, &data, dataLen);
-	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(long));
+	memcpy(m_pBuf, &m_nBuflen, 4);
+	memcpy(m_pBuf + 4, &m_nPacket_code, 4);
+	memcpy(m_pBuf + 8, &dataLen, 4);
+	memcpy(m_pBuf + 12, data.GetBuffer(), dataLen);
+	memcpy(m_pBuf + 12 + dataLen, &progress, sizeof(double));
 }
 
 void CPacket::PullBcrParamPacket(char* buf, int buf_len)

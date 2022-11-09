@@ -391,7 +391,7 @@ namespace DefectDBManager
             {
                 string strBCNO = $"'{BCNO}'";
                 StringBuilder sbMsg = new StringBuilder(); 
-                sbMsg.Append("FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID, ");
+                sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID, ");
                 sbMsg.Append("MRK_WRK_4.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M, MRK_WRK_4.X_OFFSET, INSPDAT.WIDTH ");
                 sbMsg.Append("FROM FAULTDAT,FLTMST,MRK_WRK_4,INSPDAT ");
                 sbMsg.Append("WHERE ");

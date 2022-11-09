@@ -239,7 +239,7 @@ public:
 	void	MakeAckBcrSearchLotPacket(CString data, double progress);
 	
 	void	PullBcrSearchModelPatcket(char* buf, int buf_len, char* lotName);
-	void	MakeAckBcrSearchModelPacket(CString data, long progress);
+	void	MakeAckBcrSearchModelPacket(CString data, double progress);
 
 	void	PullBcrParamPacket(char* buf, int buf_len);
 

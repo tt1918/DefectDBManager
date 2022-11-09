@@ -196,11 +196,13 @@ namespace DefectDBManager
 
         public List<MRKCTLMSTData> MRKCTLMST_Data;
         public List<Dictionary<string, float>>[] dicSizeMRKCTLMST;
+        public List<Dictionary<string, bool>>[] dicMRKF1MRKCTLMST;
         public List<MRKCTLMST_DE_Data>[] _MRKCTLMST_DE;
 
         public List<List<INSPDATData>>[] INSPDAT_Data;
 
         public Dictionary<string, float> dicSizeData;
+        public Dictionary<string, bool> dicMRKF1Data;
 
         public List<string> LoadedBcNo;
 
@@ -280,10 +282,12 @@ namespace DefectDBManager
 
             MRKCTLMST_Data = new List<MRKCTLMSTData>();
             dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
+            dicMRKF1MRKCTLMST = new List<Dictionary<string, bool>>[count];
             _MRKCTLMST_DE = new List<MRKCTLMST_DE_Data>[count];
             for (int i = 0; i < count; i++)
             {
                 dicSizeMRKCTLMST[i] = new List<Dictionary<string, float>>();
+                dicMRKF1MRKCTLMST[i] = new List<Dictionary<string, bool>>();
                 _MRKCTLMST_DE[i] = new List<MRKCTLMST_DE_Data>();
             }
 
@@ -367,6 +371,9 @@ namespace DefectDBManager
             {
                 for (int j = 0; j < dicSizeMRKCTLMST[i].Count; j++)
                     dicSizeMRKCTLMST[i][j].Clear();
+
+                for(int j=0; j< dicMRKF1MRKCTLMST[i].Count; j++)
+                    dicMRKF1MRKCTLMST[i][j].Clear();
 
                 _MRKCTLMST_DE[i].Clear();
             }
@@ -837,6 +844,10 @@ namespace DefectDBManager
             if (targetCnt > dicSizeMRKCTLMST[fcdIdx].Count)
                 for (int dicIdx = dicSizeMRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
                     dicSizeMRKCTLMST[fcdIdx].Add(new Dictionary<string, float>());
+
+            if (targetCnt > dicMRKF1MRKCTLMST[fcdIdx].Count)
+                for (int dicIdx = dicMRKF1MRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
+                    dicMRKF1MRKCTLMST[fcdIdx].Add(new Dictionary<string, bool>());
         }
 
         public bool SearchMRKCTLMST(string logID)
@@ -858,6 +869,8 @@ namespace DefectDBManager
 
                 int fcdTotal = System.Enum.GetValues(typeof(eFCD)).Length;
                 int dataCnt = 0;
+                int valMRKF1 = 0;
+                bool boolMRKF1  = false;
                 string logData = "";
                 for (int fcdIdx = 0; fcdIdx < fcdTotal; fcdIdx++)
                 {
@@ -869,13 +882,23 @@ namespace DefectDBManager
                     for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
                     {
                         dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
-                        
+                        dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Clear();
+
                         foreach (MRKCTLMSTData data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
                         {
                             if (dicSizeMRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
                                 dicSizeMRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = data.SIZE;
                             else
                                 dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, data.SIZE);
+
+                            valMRKF1 = Int32.Parse(data.MRKF1);
+                            boolMRKF1 = false;
+                            if (valMRKF1 == 1) boolMRKF1  = true;
+                            if (dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = boolMRKF1 ;
+                            else
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, boolMRKF1 );
+
                             dataCnt++;
 
                             logData = string.Format($"{dataCnt}\t_\t{data.ToString()}");
@@ -922,6 +945,7 @@ namespace DefectDBManager
                     for (int j = 0; j < PTRY0Pcnt; j++)
                     {
                         dicSizeMRKCTLMST[i][j].Clear();
+                        dicMRKF1MRKCTLMST[i][j].Clear();
 
                         if ((dbOption.checkES == true && (eFCD)i == eFCD.ES) ||
                            (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
@@ -960,6 +984,14 @@ namespace DefectDBManager
                                             dicSizeMRKCTLMST[i][j][data.FLTID] = data.SIZE;
                                         else
                                             dicSizeMRKCTLMST[i][j].Add(data.FLTID, data.SIZE);
+
+                                        int nVal = Int32.Parse(data.MRKF1);
+                                        bool boolVal = false;
+                                        if (nVal == 1) boolVal = true;
+                                        if (dicMRKF1MRKCTLMST[i][j].ContainsKey(data.FLTID) == true)
+                                            dicMRKF1MRKCTLMST[i][j][data.FLTID] = boolVal;
+                                        else
+                                            dicMRKF1MRKCTLMST[i][j].Add(data.FLTID, boolVal);
 
                                         for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
                                         {
@@ -1187,6 +1219,8 @@ namespace DefectDBManager
             float finalXPos;
             string tmpFaltID;
 
+            bool validMark;
+
             INSPDATData inspdata;
 
             long dbCnt = 0;
@@ -1230,11 +1264,13 @@ namespace DefectDBManager
                     for (int opIdx = 0; opIdx < PTRY0P_Data[fcdIdx].Count; opIdx++)
                     {
                         dicSizeData.Clear();
+                        dicMRKF1Data.Clear();
 
                         foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcdIdx][opIdx])
-                        {
                             dicSizeData.Add(pair.Key, pair.Value);
-                        }
+
+                        foreach (KeyValuePair<string, bool> pair in dicMRKF1MRKCTLMST[fcdIdx][opIdx])
+                            dicMRKF1Data.Add(pair.Key, pair.Value);
 
                         int inspCnt = INSPDAT_Data[fcdIdx][opIdx].Count;
                         for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
@@ -1289,10 +1325,11 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-                                        if (dicSizeData.ContainsKey(tmpKey) == true)
+                                        if (dicSizeData.ContainsKey(tmpKey) == true && dicMRKF1Data.ContainsKey(tmpKey)==true)
                                         {
+                                            validMark = dicMRKF1Data[data.FLTID];
                                             faultSize = dicSizeData[data.FLTID];
-                                            if (faultSize <= (data.AREA_M + 0.00001f)) bValid = true;
+                                            if (faultSize <= (data.AREA_M + 0.00001f) && validMark==true) bValid = true;
                                             else bValid = false;
                                         }
 

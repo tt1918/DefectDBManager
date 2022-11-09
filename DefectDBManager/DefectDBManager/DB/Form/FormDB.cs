@@ -1742,6 +1742,11 @@ namespace DefectDBManager
                             searchOP.useMask = cbUseMask.Checked;
                             searchOP.useDefectEdit = true;
                             DataBase.SearchLot(this.LotName, false, ref errorIdx);
+
+                            clearAllListView();
+                            displayAllListView();
+                            // Fault Data 표시
+                            this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
                         }
                     }
                 }

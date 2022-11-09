@@ -75,11 +75,6 @@ namespace DefectDBManager
             resetAllCheck();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
-        {
-            UpdateDefectEditedData();
-        }
-
         private void btnOK_Click(object sender, EventArgs e)
         {
             UpdateDefectEditedData();
@@ -115,19 +110,15 @@ namespace DefectDBManager
 
         private void addItem(MRKCTLMSTData data)
         {
-            StringBuilder sb = new StringBuilder();
-            if (data.MRKF1 == "1") sb.Append("True,");
-            else sb.Append("False,");
-            sb.Append(data.LNCD);
-            sb.Append(",");
-            sb.Append(data.FLTID);
-            sb.Append(",");
-            sb.Append(data.SIZE.ToString());
-            sb.Append(",");
-            sb.Append(data.PPCD);
-            sb.Append(",");
-            sb.Append(data.ROLLNAME);
-            dgvDefect.Rows.Add(sb.ToString());
+            string[] strValue = new string[6];
+            if (data.MRKF1 == "1") strValue[0] = "True";
+            else strValue[0] = "False";
+            strValue[1] = $"{data.LNCD}";
+            strValue[2] = $"{data.FLTID}";
+            strValue[3] = $"{data.SIZE}";
+            strValue[4] = $"{data.PPCD}";
+            strValue[5] = $"{data.ROLLNAME}";
+            dgvDefect.Rows.Add(strValue);
         }
 
         #region DB
@@ -147,6 +138,9 @@ namespace DefectDBManager
                 {
                     for (int j = 0; j < _DataBase._MRKCTLMST_DE[i].Count; j++)
                     {
+                        if (_DataBase._MRKCTLMST_DE[i][j].query == "")
+                            continue;
+
                         using (var comm = new OracleCommand(_DataBase._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
                         {
                             using (var reader = comm.ExecuteReader())
@@ -210,7 +204,7 @@ namespace DefectDBManager
             int row = e.RowIndex;
             int col = e.ColumnIndex;
 
-            if (col == 0) return;
+            if (col <= 0 || row < 0) return;
 
             string text = this.dgvDefect[col, row].FormattedValue.ToString();
             using(FormDefectItemEditor form = new FormDefectItemEditor())
