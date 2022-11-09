@@ -690,7 +690,8 @@ namespace DefectDBManager
             bool isSuccess = true;
             try
             {
-                dbLoadingTime.Start();
+                this.dbLoadingTime.Reset();
+                this.dbLoadingTime.Start();
                 int errorOut = 0;
                 DestConfigUnit unit = null;
                 unit = DataBase.DbDestConfig.DicDest[this.destName];
@@ -853,7 +854,6 @@ namespace DefectDBManager
             }
             finally
             {
-                dbLoadingTime.Stop();
                 this.dbSearchProgressTimer.Stop();
                 this.dbLoadingTime.Stop();
 
@@ -908,6 +908,7 @@ namespace DefectDBManager
             try
             {
                 this.resetListView();
+                this.dbLoadingTime.Reset();
                 this.dbLoadingTime.Start();
                 this.dbSearchProgressTimer.Start();
                 if (formProgress != null) formProgress._Step = 0;
