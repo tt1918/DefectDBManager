@@ -387,7 +387,6 @@ namespace DefectDBManager
         }
 		public int GetSearchModelCount()
 		{
-            Trace.WriteLine($"SearchModelList Count = {dbManager._DbProc[2].SearchModelList.Count}");
             return dbManager._DbProc[2].SearchModelList.Count;
         }
         public string[] GetSearchModelResult()

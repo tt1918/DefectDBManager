@@ -3180,7 +3180,8 @@ LRESULT CKoWebView::OnBcrSearchLot(WPARAM wParam, LPARAM lParam)
 {
 	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
 	CString strLot;
-	strLot.Format(_T("%s"), g_BcrSearchInfo.strLot);
+	std::wstring strName = CA2W(g_BcrSearchInfo.strLot);
+	strLot.Format(_T("%s"), strName.c_str());
 	m_DefectCallClass->SearchLot(strLot, g_BcrSearchInfo.isNext, g_BcrSearchInfo.vendor, g_BcrSearchInfo.useES,
 		g_BcrSearchInfo.useTG, g_BcrSearchInfo.useETC);
 
@@ -3191,7 +3192,8 @@ LRESULT CKoWebView::OnBcrSearchModel(WPARAM wParam, LPARAM lParam)
 {
 	// 모델 번호와 현재랏/예약랏 확인하여 dll에서 처리하도록 수정해야 함.
 	CString strLot;
-	strLot.Format(_T("%s"), g_BcrSearchInfo.strLot);
+	std::wstring strName = CA2W(g_BcrSearchInfo.strLot);
+	strLot.Format(_T("%s"), strName.c_str());
 	m_DefectCallClass->SearchModel(strLot);
 
 	return 0;

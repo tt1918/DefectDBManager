@@ -541,11 +541,7 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 		{
 			VARTYPE vt;
 			SafeArrayGetVartype(array, &vt);
-			IRecordInfoPtr splRecordInfo = NULL;
-			SafeArrayGetRecordInfo(array, &splRecordInfo);
-			GUID guid;
-			splRecordInfo->GetGuid(&guid);
-
+			
 			long lLbound = 0;
 			long lUbound = 0;
 
@@ -555,14 +551,14 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 
 			for (int i = 0; i < lDimSize; i++) {
 				long rgIndices[1];
-				_bstr_t value;
-				memset(&value, 0, sizeof(value));
+				VARIANT value;
+				VariantInit(&value);
 				rgIndices[0] = i;
-				SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
+				SafeArrayGetElement(array, rgIndices, &value.bstrVal);
 				CString model;
-				model.Format(_T("%s"), (LPCWSTR)value);
+				model.Format(_T("%s"), value.bstrVal);
 				arModel->Add(model);
-				splRecordInfo->RecordClear((PVOID)&value);
+				VariantClear(&value);
 			}
 
 			SafeArrayDestroy(array);
