@@ -523,15 +523,38 @@ namespace DefectDBManager
                 listViewMRKCTLMST.BeginUpdate();
 
                 // 리스트 초기화는 따로
-
-                foreach (MRKCTLMSTData data in DataBase.MRKCTLMST_Data)
+                if(DataBase.DbOption.searchOP.useDefectEdit==false)
                 {
-                    ListViewItem item = new ListViewItem(data.LNCD);
-                    item.SubItems.Add(data.FLTID);
-                    item.SubItems.Add(data.ROLLNAME);
-                    item.SubItems.Add($"{data.SIZE:F02}");
+                    foreach (MRKCTLMSTData data in DataBase.MRKCTLMST_Data)
+                    {
+                        ListViewItem item = new ListViewItem(data.LNCD);
+                        item.SubItems.Add(data.FLTID);
+                        item.SubItems.Add(data.ROLLNAME);
+                        item.SubItems.Add($"{data.SIZE:F02}");
 
-                    listViewMRKCTLMST.Items.Add(item);
+                        listViewMRKCTLMST.Items.Add(item);
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i< DataBase._MRKCTLMST_DE.Length; i++)
+                    {
+                        if (DataBase._MRKCTLMST_DE[i] == null)
+                            continue;
+                        for(int j=0; j< DataBase._MRKCTLMST_DE[i].Count; j++)
+                        {
+                            foreach (MRKCTLMSTData data in DataBase._MRKCTLMST_DE[i][j].data)
+                            {
+                                ListViewItem item = new ListViewItem(data.LNCD);
+                                item.SubItems.Add(data.FLTID);
+                                item.SubItems.Add(data.ROLLNAME);
+                                item.SubItems.Add($"{data.SIZE:F02}");
+
+                                listViewMRKCTLMST.Items.Add(item);
+                            }
+                        }
+                    }
+                    
                 }
             }
             finally
@@ -1365,17 +1388,6 @@ namespace DefectDBManager
         //private FormDbProgress formProgress = new FormDbProgress();
         private void btnEditDefect_Click(object sender, EventArgs e)
         {
-            //if (formProgress == null)
-            //    formProgress = new FormDbProgress();
-            //DataBase.DB_Progress.ResetAll();
-            //string name = cbDestination.Items[cbDestination.SelectedIndex].ToString();
-            //formProgress._Unit = DataBase.DbDestConfig.DicDest[name];
-            //formProgress._LotName = this.tbLotName.Text;
-            //formProgress._DbProgress = DataBase.DB_Progress;
-            //formProgress._LastProgress = eNittoDBProgress.FAULTDAT_ETC;
-            //formProgress._DispType = 0;
-            //formProgress.ShowDialog();
-            //return;
             RunDefectEdit();
         }
 
@@ -1751,6 +1763,10 @@ namespace DefectDBManager
                         }
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("결점 정보가 존재하지 않습니다.");
             }
         }
         #endregion Defect Edit

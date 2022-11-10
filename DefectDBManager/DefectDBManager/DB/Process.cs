@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DefectDBManager.UserDefectClass;
@@ -61,7 +62,8 @@ namespace DefectDBManager
 
         private object parent = null;
 
-        
+        private Thread threadDBConnect = null;
+
         public DbManager(object parent)
         {
             this.parent = parent;
@@ -98,6 +100,15 @@ namespace DefectDBManager
                 _DbProc[i].ResultDefect = _ResultData[i];
             }
 
+            if (this.threadDBConnect != null)
+            {
+                this.threadDBConnect.Join(100);
+                this.threadDBConnect = null;
+            }
+
+            this.threadDBConnect = new Thread(this.DbConnect);
+            this.threadDBConnect.Start();
+
             formDB = new FormDB(this);
             formDB.DBConn = _DbConn;
             this.parent = parent;
@@ -125,6 +136,21 @@ namespace DefectDBManager
                 _DbConn.Dispose();
             }
             this.disposed = true;
+        }
+
+        private void DbConnect()
+        {
+            try
+            {
+                _DbConn.UserID = _DestConfig.dbLogin.DbID;
+                _DbConn.Password = _DestConfig.dbLogin.DbPW;
+                _DbConn.DBName = _DestConfig.dbLogin.DbName;
+                _DbConn.Connect();
+            }
+            catch(Exception ex)
+            {
+                Log.WriteLog($"[Error] : {ex.Message}");
+            }
         }
 
         /// <summary>

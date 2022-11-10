@@ -64,6 +64,7 @@ namespace DefectDBManager
 
         #region 프로세스 진행 상태 확인
         int oldListStep = -1;
+        int oldProcessStep = -1;
         private void ProgressCheck(object sender, EventArgs e)
         {
             if (_Step == -1 || _Total == -1) return;
@@ -79,30 +80,28 @@ namespace DefectDBManager
 
             for (int i = 0; i <= (int)_LastProgress; i++)
             {
-                if (_DbProgress._Progress[i].State == eProcessState.Ready)
+                if(_DbProgress._Progress[i].State != _formProgress[i].State)
                 {
-                    if (_formProgress[i].State != eProcessState.Ready)
-                        _formProgress[i].Reset();
-                }
-
-                if (_DbProgress._Progress[i].State == eProcessState.Run)
-                {
-                    if (_formProgress[i].State != eProcessState.Run)
+                    if(_DbProgress._Progress[i].State== eProcessState.Run)
+                    {
                         _formProgress[i].Set();
-
-                    return;
-                }
-
-                if (_DbProgress._Progress[i].State == eProcessState.Error)
-                {
-                    if (_formProgress[i].State != eProcessState.Error)
-                        _formProgress[i].SetError();
-                    timer.Stop();
-                    formError = new FormError();
-                    formError.Show();
-                    formError.Left = this.Right + 2;
-                    formError.Top = this.Top + 2;
-                    return;
+                    }
+                    else if(_DbProgress._Progress[i].State == eProcessState.Complete)
+                    {
+                        _formProgress[i].Complete();
+                    }
+                    else if(_DbProgress._Progress[i].State == eProcessState.Error)
+                    {
+                        if (_formProgress[i].State != eProcessState.Error)
+                            _formProgress[i].SetError();
+                        timer.Stop();
+                        formError = new FormError();
+                        formError.Show();
+                        formError.Left = this.Right + 2;
+                        formError.Top = this.Top + 2;
+                        btnClose.Visible = true;
+                        return;
+                    }
                 }
             }
 
@@ -112,11 +111,11 @@ namespace DefectDBManager
             }
 
             // 마지막 스텝이고 전체 완료되면 종료 처리
-            if (_Step-1 == _Total && isComp == true)
+            if (_Step == _Total - 1 && isComp == true)
             {
                 if (_DbProgress.IsError == true)
                 {
-
+                    btnClose.Visible = true;
                 }
                 else
                 {
@@ -250,10 +249,12 @@ namespace DefectDBManager
                 btnClose.Visible = false;
 
                 oldListStep = -1;
+                oldProcessStep = -1;
                 countdown = 5;
 
                 this.btnClose.Text = "CLOSE";
                 lblText.Text = "";
+                timer.Start();
             }
             else
             {
@@ -281,6 +282,8 @@ namespace DefectDBManager
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            if (formError?.Visible == true)
+                formError.Close();
             this.Hide();
         }
     }

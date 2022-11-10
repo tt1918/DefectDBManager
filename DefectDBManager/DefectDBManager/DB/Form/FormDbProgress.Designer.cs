@@ -122,8 +122,8 @@
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.10042F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.89958F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 73.84937F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.15063F));
             this.tableLayoutPanel3.Controls.Add(this.btnClose, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblText, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -137,9 +137,9 @@
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnClose.Location = new System.Drawing.Point(405, 3);
+            this.btnClose.Location = new System.Drawing.Point(356, 3);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(70, 23);
+            this.btnClose.Size = new System.Drawing.Size(119, 23);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "CLOSE";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -151,7 +151,7 @@
             this.lblText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblText.Location = new System.Drawing.Point(3, 0);
             this.lblText.Name = "lblText";
-            this.lblText.Size = new System.Drawing.Size(396, 29);
+            this.lblText.Size = new System.Drawing.Size(347, 29);
             this.lblText.TabIndex = 1;
             this.lblText.Text = " ";
             this.lblText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

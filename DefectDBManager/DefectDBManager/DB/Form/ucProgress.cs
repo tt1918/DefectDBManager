@@ -102,7 +102,15 @@ namespace DefectDBManager.DB.Form
             isOn = true;
             lblState.Text = "PROCESS";
             State = eProcessState.Run;
-            
+        }
+
+        public void Complete()
+        {
+            timer.Stop();
+            lblLED.Image = ledOn;
+            isOn = true;
+            lblState.Text = "Complete";
+            State = eProcessState.Complete;
         }
 
         public void Stop()
