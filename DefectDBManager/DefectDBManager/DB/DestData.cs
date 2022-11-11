@@ -121,17 +121,9 @@ namespace DefectDBManager
         public bool UsePTRYLPYLMYKHCheck;
         public string[] FLTIDCheck = new string[10];
 
-        public SkipSize[] _SkipSize;
-
         public DestConfigUnit()
         {
             int count = System.Enum.GetValues(typeof(eOpticClass)).Length;
-            _SkipSize = new SkipSize[count];
-            for (int i = 0; i < count; i++)
-            {
-                _SkipSize[i] = new SkipSize();
-            }
-
             Reset();
         }
 
@@ -186,9 +178,6 @@ namespace DefectDBManager
             DB_DT = u.DB_DT;
 
             Index = u.Index;
-
-            for (int i = 0; i < _SkipSize.Length; i++)
-                _SkipSize[i].SetData(u._SkipSize[i]);
         }
 
         public int GetSize()
@@ -319,6 +308,19 @@ namespace DefectDBManager
 
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
             string key;
+
+            key = "SKIP SIZE";
+            for (int j = 0; j < opticSize; j++)
+            {
+                SkipData[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", 0.0f);
+                SkipData[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
+                SkipData[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
+
+                SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
+                SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
+                SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
+            }
+
             for (int i = 0; i < Global.MaxDestItemCnt; i++)
             {
                 DestConfigUnit unit = new DestConfigUnit();
@@ -330,17 +332,6 @@ namespace DefectDBManager
                 unit.UseETC = NativeFunc.ReadIni(Define.DestPath, key, "ETC", false);
                 unit.UseSameDefect = NativeFunc.ReadIni(Define.DestPath, key, "SAME_DEFECT", false);
                 unit.IsSplit = NativeFunc.ReadIni(Define.DestPath, key, "SPLIT", false);
-
-                for (int j = 0; j < opticSize; j++)
-                {
-                    unit._SkipSize[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j+1}", 0.0f);
-                    unit._SkipSize[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
-                    unit._SkipSize[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
-
-                    unit._SkipSize[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
-                    unit._SkipSize[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
-                    unit._SkipSize[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
-                }
 
                 unit.SkipLeftMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_MM",  0);
                 unit.SkipRightMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_MM", 0);
@@ -433,6 +424,19 @@ namespace DefectDBManager
             string key;
             DestConfigUnit unit = null;
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
+
+            key = "SKIP SIZE";
+            for (int j = 0; j < opticSize; j++)
+            {
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", SkipData[j].minX);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", SkipData[j].minY);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", SkipData[j].min);
+
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", SkipData[j].maxX);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", SkipData[j].maxY);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", SkipData[j].max);
+            }
+
             for (int i = 0; i < this.DicDest.Count; i++)
             {
                 if (GetData(i, ref unit) == true)
@@ -445,17 +449,6 @@ namespace DefectDBManager
                     NativeFunc.WriteIni(Define.DestPath, key, "ETC", unit.UseETC);
                     NativeFunc.WriteIni(Define.DestPath, key, "SAME_DEFECT", unit.UseSameDefect);
                     NativeFunc.WriteIni(Define.DestPath, key, "SPLIT", unit.IsSplit);
-
-                    for (int j = 0; j < opticSize; j++)
-                    {
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", unit._SkipSize[j].minX);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", unit._SkipSize[j].minY);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", unit._SkipSize[j].min);
-
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", unit._SkipSize[j].maxX);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", unit._SkipSize[j].maxY);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", unit._SkipSize[j].max);
-                    }
 
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_MM", unit.SkipLeftMM);
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_MM", unit.SkipRightMM);

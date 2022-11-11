@@ -53,7 +53,6 @@
             this.ucSkipParam3 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam2 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam1 = new DefectDBManager.ucSkipParam();
-            this.cbDest = new System.Windows.Forms.ComboBox();
             this.btnClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,7 +80,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.btnClose);
             this.splitContainer1.Size = new System.Drawing.Size(749, 497);
-            this.splitContainer1.SplitterDistance = 447;
+            this.splitContainer1.SplitterDistance = 446;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -97,7 +96,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(749, 447);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(749, 446);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // gbInspDataMask
@@ -120,7 +119,7 @@
             this.gbInspDataMask.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbInspDataMask.Location = new System.Drawing.Point(441, 3);
             this.gbInspDataMask.Name = "gbInspDataMask";
-            this.gbInspDataMask.Size = new System.Drawing.Size(305, 441);
+            this.gbInspDataMask.Size = new System.Drawing.Size(305, 440);
             this.gbInspDataMask.TabIndex = 1;
             this.gbInspDataMask.TabStop = false;
             this.gbInspDataMask.Text = "검사 데이터 마스크";
@@ -273,7 +272,6 @@
             this.gbSizeSkip.Controls.Add(this.ucSkipParam3);
             this.gbSizeSkip.Controls.Add(this.ucSkipParam2);
             this.gbSizeSkip.Controls.Add(this.ucSkipParam1);
-            this.gbSizeSkip.Controls.Add(this.cbDest);
             this.gbSizeSkip.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbSizeSkip.Location = new System.Drawing.Point(3, 4);
             this.gbSizeSkip.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -288,7 +286,7 @@
             // 
             this.ucSkipParam6._SkipSize = null;
             this.ucSkipParam6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam6.Location = new System.Drawing.Point(214, 284);
+            this.ucSkipParam6.Location = new System.Drawing.Point(214, 264);
             this.ucSkipParam6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam6.Name = "ucSkipParam6";
             this.ucSkipParam6.Size = new System.Drawing.Size(211, 117);
@@ -310,7 +308,7 @@
             // 
             this.ucSkipParam5._SkipSize = null;
             this.ucSkipParam5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam5.Location = new System.Drawing.Point(6, 284);
+            this.ucSkipParam5.Location = new System.Drawing.Point(6, 264);
             this.ucSkipParam5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam5.Name = "ucSkipParam5";
             this.ucSkipParam5.Size = new System.Drawing.Size(211, 117);
@@ -321,7 +319,7 @@
             // 
             this.ucSkipParam4._SkipSize = null;
             this.ucSkipParam4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam4.Location = new System.Drawing.Point(214, 165);
+            this.ucSkipParam4.Location = new System.Drawing.Point(214, 145);
             this.ucSkipParam4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam4.Name = "ucSkipParam4";
             this.ucSkipParam4.Size = new System.Drawing.Size(211, 117);
@@ -332,7 +330,7 @@
             // 
             this.ucSkipParam3._SkipSize = null;
             this.ucSkipParam3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam3.Location = new System.Drawing.Point(6, 165);
+            this.ucSkipParam3.Location = new System.Drawing.Point(6, 145);
             this.ucSkipParam3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam3.Name = "ucSkipParam3";
             this.ucSkipParam3.Size = new System.Drawing.Size(211, 117);
@@ -343,7 +341,7 @@
             // 
             this.ucSkipParam2._SkipSize = null;
             this.ucSkipParam2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam2.Location = new System.Drawing.Point(214, 46);
+            this.ucSkipParam2.Location = new System.Drawing.Point(214, 24);
             this.ucSkipParam2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam2.Name = "ucSkipParam2";
             this.ucSkipParam2.Size = new System.Drawing.Size(211, 117);
@@ -354,21 +352,12 @@
             // 
             this.ucSkipParam1._SkipSize = null;
             this.ucSkipParam1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ucSkipParam1.Location = new System.Drawing.Point(5, 46);
+            this.ucSkipParam1.Location = new System.Drawing.Point(5, 24);
             this.ucSkipParam1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam1.Name = "ucSkipParam1";
             this.ucSkipParam1.Size = new System.Drawing.Size(211, 117);
             this.ucSkipParam1.TabIndex = 1;
             this.ucSkipParam1.Title = "Skip Data";
-            // 
-            // cbDest
-            // 
-            this.cbDest.FormattingEnabled = true;
-            this.cbDest.Location = new System.Drawing.Point(5, 18);
-            this.cbDest.Name = "cbDest";
-            this.cbDest.Size = new System.Drawing.Size(232, 23);
-            this.cbDest.TabIndex = 0;
-            this.cbDest.SelectedIndexChanged += new System.EventHandler(this.cbDest_SelectedIndexChanged);
             // 
             // btnClose
             // 
@@ -412,7 +401,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox gbSizeSkip;
-        private System.Windows.Forms.ComboBox cbDest;
         private ucSkipParam ucSkipParam6;
         private ucSkipParam ucSkipParam5;
         private ucSkipParam ucSkipParam4;

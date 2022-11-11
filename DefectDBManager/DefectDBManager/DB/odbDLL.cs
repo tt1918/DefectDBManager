@@ -119,9 +119,13 @@ namespace DefectDBManager
                     {
                         bDBConnCheck = true;
                         this.OnDbConnect(true);
+                        Log.WriteLog("DB 연결에 성공하였습니다.");
                     }
                     else
+                    {
                         bDBConnCheck = false;
+                        Log.WriteLog("DB 연결에 실패하였습니다.");
+                    }
                 }
             }
             catch (Exception e)

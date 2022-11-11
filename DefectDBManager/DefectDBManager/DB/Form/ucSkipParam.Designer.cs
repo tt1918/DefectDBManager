@@ -81,6 +81,7 @@
             this.tbSizeMax.Name = "tbSizeMax";
             this.tbSizeMax.Size = new System.Drawing.Size(47, 14);
             this.tbSizeMax.TabIndex = 2;
+            this.tbSizeMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeMin
             // 
@@ -90,6 +91,7 @@
             this.tbSizeMin.Name = "tbSizeMin";
             this.tbSizeMin.Size = new System.Drawing.Size(47, 14);
             this.tbSizeMin.TabIndex = 2;
+            this.tbSizeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeYMax
             // 
@@ -99,6 +101,7 @@
             this.tbSizeYMax.Name = "tbSizeYMax";
             this.tbSizeYMax.Size = new System.Drawing.Size(47, 14);
             this.tbSizeYMax.TabIndex = 2;
+            this.tbSizeYMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeYMin
             // 
@@ -108,6 +111,7 @@
             this.tbSizeYMin.Name = "tbSizeYMin";
             this.tbSizeYMin.Size = new System.Drawing.Size(47, 14);
             this.tbSizeYMin.TabIndex = 2;
+            this.tbSizeYMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeXMax
             // 
@@ -117,6 +121,7 @@
             this.tbSizeXMax.Name = "tbSizeXMax";
             this.tbSizeXMax.Size = new System.Drawing.Size(47, 14);
             this.tbSizeXMax.TabIndex = 2;
+            this.tbSizeXMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeXMin
             // 
@@ -126,6 +131,7 @@
             this.tbSizeXMin.Name = "tbSizeXMin";
             this.tbSizeXMin.Size = new System.Drawing.Size(47, 14);
             this.tbSizeXMin.TabIndex = 2;
+            this.tbSizeXMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 

@@ -1145,10 +1145,7 @@ namespace DefectDBManager
             string dest = cbDestination.SelectedItem.ToString();
             dataBase.DbOption.FWPlace = dest;
             if (dataBase.DbDestConfig.DicDest.ContainsKey(dest) == true)
-            {
                 dataBase.DbDestConfig.SelDestUnit = dataBase.DbDestConfig.DicDest[dest];
-                dataBase.DbDestConfig.SkipData = dataBase.DbDestConfig.SelDestUnit._SkipSize;
-            }
 
             dataBase.DbOption.checkES = cbUseES.Checked;
             dataBase.DbOption.checkTG = cbUseTG.Checked;
@@ -1383,9 +1380,6 @@ namespace DefectDBManager
             }
         }
 
-        //private System.Windows.Forms.Timer timer;
-
-        //private FormDbProgress formProgress = new FormDbProgress();
         private void btnEditDefect_Click(object sender, EventArgs e)
         {
             RunDefectEdit();
