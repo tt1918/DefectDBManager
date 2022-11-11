@@ -94,11 +94,6 @@ namespace DefectDBManager
         public bool UseES;
         public bool UseETC;
         public bool UseSameDefect;
-        public bool IsSplit;
-
-        public DestSplitUnit UnitA = new DestSplitUnit();
-        public DestSplitUnit UnitB = new DestSplitUnit();
-        public DestSplitUnit UnitC = new DestSplitUnit();
 
         // Edge Defect Skip
         public int SkipLeftMM;
@@ -331,7 +326,6 @@ namespace DefectDBManager
                 unit.UseES = NativeFunc.ReadIni(Define.DestPath, key, "ES", false);
                 unit.UseETC = NativeFunc.ReadIni(Define.DestPath, key, "ETC", false);
                 unit.UseSameDefect = NativeFunc.ReadIni(Define.DestPath, key, "SAME_DEFECT", false);
-                unit.IsSplit = NativeFunc.ReadIni(Define.DestPath, key, "SPLIT", false);
 
                 unit.SkipLeftMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_MM",  0);
                 unit.SkipRightMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_MM", 0);
@@ -355,36 +349,6 @@ namespace DefectDBManager
                     unit.FLTIDCheck[j] = NativeFunc.ReadIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", "");
 
                 unit.Index = i;
-
-                if(unit.IsSplit==true)
-                {
-                    unit.UnitA.Title = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_Title", "");
-                    unit.UnitA.IsUse = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_IsUse", false);
-                    unit.UnitA.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_StartX", 0.0f);
-                    unit.UnitA.EndX = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_EndX", 0.0f);
-                    unit.UnitA.MKCD = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_MKCD", "62");
-                    unit.UnitA.TG = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_TG", true);
-                    unit.UnitA.ES = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_ES", true);
-                    unit.UnitA.ETC = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_ETC", false);
-
-                    unit.UnitB.Title = NativeFunc.ReadIni(Define.DestPath, key,  "UnitB_Title", "");
-                    unit.UnitB.IsUse = NativeFunc.ReadIni(Define.DestPath, key,  "UnitB_IsUse", false);
-                    unit.UnitB.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitB_StartX", 0);
-                    unit.UnitB.EndX = NativeFunc.ReadIni(Define.DestPath, key,   "UnitB_EndX", 0);
-                    unit.UnitB.MKCD = NativeFunc.ReadIni(Define.DestPath, key,   "UnitB_MKCD", "62");
-                    unit.UnitB.TG = NativeFunc.ReadIni(Define.DestPath, key,     "UnitB_TG", true);
-                    unit.UnitB.ES = NativeFunc.ReadIni(Define.DestPath, key,     "UnitB_ES", true);
-                    unit.UnitB.ETC = NativeFunc.ReadIni(Define.DestPath, key,    "UnitB_ETC", false);
-
-                    unit.UnitC.Title = NativeFunc.ReadIni(Define.DestPath, key,  "UnitC_Title", "");
-                    unit.UnitC.IsUse = NativeFunc.ReadIni(Define.DestPath, key,  "UnitC_IsUse", false);
-                    unit.UnitC.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitC_StartX", 0);
-                    unit.UnitC.EndX = NativeFunc.ReadIni(Define.DestPath, key,   "UnitC_EndX", 0);
-                    unit.UnitC.MKCD = NativeFunc.ReadIni(Define.DestPath, key,   "UnitC_MKCD", "62");
-                    unit.UnitC.TG = NativeFunc.ReadIni(Define.DestPath, key,     "UnitC_TG", true);
-                    unit.UnitC.ES = NativeFunc.ReadIni(Define.DestPath, key,     "UnitC_ES", true);
-                    unit.UnitC.ETC = NativeFunc.ReadIni(Define.DestPath, key,    "UnitC_ETC", false);
-                }
 
                 if(unit.Title.Length>0 && unit.Title!="")
                     this.DicDest.Add(unit.Title, unit);
@@ -448,7 +412,6 @@ namespace DefectDBManager
                     NativeFunc.WriteIni(Define.DestPath, key, "ES", unit.UseES);
                     NativeFunc.WriteIni(Define.DestPath, key, "ETC", unit.UseETC);
                     NativeFunc.WriteIni(Define.DestPath, key, "SAME_DEFECT", unit.UseSameDefect);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SPLIT", unit.IsSplit);
 
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_MM", unit.SkipLeftMM);
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_MM", unit.SkipRightMM);

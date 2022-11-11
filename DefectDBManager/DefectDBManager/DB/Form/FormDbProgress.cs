@@ -21,7 +21,7 @@ namespace DefectDBManager
         public int _Step;
         public eNittoDBProgress _LastProgress;
         public NittoDBProgress _DbProgress;
-        public int _DispType=0; // 0: Full Search, 1: Model Search
+        public int _DispType = 0; // 0: Full Search, 1: Model Search
 
         private List<ucProgress> _formProgress = new List<ucProgress>();
 
@@ -70,7 +70,7 @@ namespace DefectDBManager
             if (_Step == -1 || _Total == -1) return;
 
             bool isComp = true;
-            
+
             if (oldListStep != _Step)
             {
                 for (int i = 0; i <= (int)_LastProgress; i++)
@@ -80,17 +80,17 @@ namespace DefectDBManager
 
             for (int i = 0; i <= (int)_LastProgress; i++)
             {
-                if(_DbProgress._Progress[i].State != _formProgress[i].State)
+                if (_DbProgress._Progress[i].State != _formProgress[i].State)
                 {
-                    if(_DbProgress._Progress[i].State== eProcessState.Run)
+                    if (_DbProgress._Progress[i].State == eProcessState.Run)
                     {
                         _formProgress[i].Set();
                     }
-                    else if(_DbProgress._Progress[i].State == eProcessState.Complete)
+                    else if (_DbProgress._Progress[i].State == eProcessState.Complete)
                     {
                         _formProgress[i].Complete();
                     }
-                    else if(_DbProgress._Progress[i].State == eProcessState.Error)
+                    else if (_DbProgress._Progress[i].State == eProcessState.Error)
                     {
                         if (_formProgress[i].State != eProcessState.Error)
                             _formProgress[i].SetError();
@@ -105,7 +105,7 @@ namespace DefectDBManager
                 }
             }
 
-            for(int i=0; i <= (int)_LastProgress; i++)
+            for (int i = 0; i <= (int)_LastProgress; i++)
             {
                 isComp &= _DbProgress._Progress[i].IsComplete();
             }
@@ -192,39 +192,15 @@ namespace DefectDBManager
                 listBoxProcess.Items.Clear();
                 _Total = 0;
                 _Step = -1;
-                if(_Unit==null)
+                if (_Unit == null)
                 {
                     _Total++;
                     listBoxProcess.Items.Add(_LotName);
                 }
                 else
                 {
-                    if (_Unit.IsSplit == false || _DispType == 1)
-                    {
-                        _Total++;
-                        listBoxProcess.Items.Add(_LotName);
-                    }
-                    else
-                    {
-                        if (_Unit.UnitA.IsUse == true)
-                        {
-                            _Total++;
-                            string text = $"{_LotName}_UnitA";
-                            listBoxProcess.Items.Add(text);
-                        }
-                        if (_Unit.UnitB.IsUse == true)
-                        {
-                            _Total++;
-                            string text = $"{_LotName}_UnitB";
-                            listBoxProcess.Items.Add(text);
-                        }
-                        if (_Unit.UnitC.IsUse == true)
-                        {
-                            _Total++;
-                            string text = $"{_LotName}_UnitC";
-                            listBoxProcess.Items.Add(text);
-                        }
-                    }
+                    _Total++;
+                    listBoxProcess.Items.Add(_LotName);
                 }
             }
             catch (Exception ex)

@@ -523,7 +523,7 @@ namespace DefectDBManager
                 listViewMRKCTLMST.BeginUpdate();
 
                 // 리스트 초기화는 따로
-                if(DataBase.DbOption.searchOP.useDefectEdit==false)
+                if (DataBase.DbOption.searchOP.useDefectEdit == false)
                 {
                     foreach (MRKCTLMSTData data in DataBase.MRKCTLMST_Data)
                     {
@@ -537,11 +537,11 @@ namespace DefectDBManager
                 }
                 else
                 {
-                    for(int i = 0; i< DataBase._MRKCTLMST_DE.Length; i++)
+                    for (int i = 0; i < DataBase._MRKCTLMST_DE.Length; i++)
                     {
                         if (DataBase._MRKCTLMST_DE[i] == null)
                             continue;
-                        for(int j=0; j< DataBase._MRKCTLMST_DE[i].Count; j++)
+                        for (int j = 0; j < DataBase._MRKCTLMST_DE[i].Count; j++)
                         {
                             foreach (MRKCTLMSTData data in DataBase._MRKCTLMST_DE[i][j].data)
                             {
@@ -554,7 +554,7 @@ namespace DefectDBManager
                             }
                         }
                     }
-                    
+
                 }
             }
             finally
@@ -725,7 +725,6 @@ namespace DefectDBManager
                 option.searchOP = searchOp;
 
                 searchOp.useDefectEdit = false;
-                searchOp.useSplit = unit.IsSplit;
                 // 검색 시간 갭 설정
 
                 if (cbSetSearchTime.Checked == true)
@@ -755,122 +754,24 @@ namespace DefectDBManager
                 option.timeGabEsEdMinute2 = DataBase.DbDestConfig.ESDbTime.end;
                 option.useESTime = DataBase.DbDestConfig.ESDbTime.IsUse;
 
-                if (unit.IsSplit == false)
+                if (formProgress != null) formProgress._Step = 0;
+
+                searchOp.MKCD = unit.MKCD;
+                dataBase.DbOption = option;
+                dataBase.ResetDataSplit();
+                isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
+                // 데이터 처리 필요
+                if (dataBase.CrtParam.isProductAvaliable == false)
                 {
-                    if (formProgress != null) formProgress._Step = 0;
 
-                    searchOp.MKCD = unit.MKCD;
-                    dataBase.DbOption = option;
-                    dataBase.ResetDataSplit();
-                    isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
-                    // 데이터 처리 필요
-                    if (dataBase.CrtParam.isProductAvaliable == false)
-                    {
-
-                    }
-
-                    if (dataBase.CrtParam.isXOffsetError == true)
-                    {
-
-                    }
-
-                    this.displayAllListView();
                 }
-                else
+
+                if (dataBase.CrtParam.isXOffsetError == true)
                 {
-                    if (unit.UnitA.IsUse == true)
-                    {
-                        if (formProgress != null) formProgress._Step++;
 
-                        option.checkTG = unit.UnitA.TG;
-                        option.checkES = unit.UnitA.ES;
-                        option.checkETC = unit.UnitA.ETC;
-
-                        searchOp.MKCD = unit.UnitA.MKCD;
-                        searchOp.Title = unit.UnitA.Title;
-                        searchOp.splitStartX = unit.UnitA.StartX;
-                        searchOp.splitEndX = unit.UnitA.EndX;
-
-                        dataBase.DbOption = option;
-                        dataBase.ResetDataSplit();
-                        isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
-
-                        // 데이터 처리 필요
-                        if (dataBase.CrtParam.isProductAvaliable == false)
-                        {
-
-                        }
-
-                        if (dataBase.CrtParam.isXOffsetError == true)
-                        {
-
-                        }
-
-                        this.displayAllListView();
-                    }
-
-                    if (unit.UnitB.IsUse == true)
-                    {
-                        if (formProgress != null) formProgress._Step++;
-
-                        option.checkTG = unit.UnitB.TG;
-                        option.checkES = unit.UnitB.ES;
-                        option.checkETC = unit.UnitB.ETC;
-
-                        searchOp.MKCD = unit.UnitB.MKCD;
-                        searchOp.Title = unit.UnitB.Title;
-                        searchOp.splitStartX = unit.UnitB.StartX;
-                        searchOp.splitEndX = unit.UnitB.EndX;
-
-                        dataBase.DbOption = option;
-                        dataBase.ResetDataSplit();
-                        isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
-
-                        // 데이터 처리 필요
-                        if (dataBase.CrtParam.isProductAvaliable == false)
-                        {
-
-                        }
-
-                        if (dataBase.CrtParam.isXOffsetError == true)
-                        {
-
-                        }
-
-                        this.displayAllListView();
-                    }
-
-                    if (unit.UnitC.IsUse == true)
-                    {
-                        if (formProgress != null) formProgress._Step++;
-
-                        option.checkTG = unit.UnitC.TG;
-                        option.checkES = unit.UnitC.ES;
-                        option.checkETC = unit.UnitC.ETC;
-
-                        searchOp.MKCD = unit.UnitC.MKCD;
-                        searchOp.Title = unit.UnitC.Title;
-                        searchOp.splitStartX = unit.UnitC.StartX;
-                        searchOp.splitEndX = unit.UnitC.EndX;
-
-                        dataBase.DbOption = option;
-                        dataBase.ResetDataSplit();
-                        isSuccess &= dataBase.SearchLot(this.LotName, false, ref errorOut);
-
-                        // 데이터 처리 필요
-                        if (dataBase.CrtParam.isProductAvaliable == false)
-                        {
-
-                        }
-
-                        if (dataBase.CrtParam.isXOffsetError == true)
-                        {
-
-                        }
-
-                        this.displayAllListView();
-                    }
                 }
+
+                this.displayAllListView();
 
                 // Fault Data 표시
                 this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
@@ -935,6 +836,7 @@ namespace DefectDBManager
                 this.dbLoadingTime.Start();
                 this.dbSearchProgressTimer.Start();
                 if (formProgress != null) formProgress._Step = 0;
+                //isSuccess &= dataBase.SearchModel(this.LotName, false);
                 isSuccess &= dataBase.SearchModel(this.LotName, false);
             }
             catch (Exception ex)
@@ -1046,7 +948,7 @@ namespace DefectDBManager
                 MessageBox.Show($"해당하는 출하처 정보가 존재하지 않습니다. : [{destName}]");
                 return;
             }
-            
+
             if (this.thread != null)
             {
                 this.thread.Join(100);
@@ -1070,7 +972,7 @@ namespace DefectDBManager
         {
             if (IsSearchDefect() == true) return;
             this.LotName = tbLotName.Text = this.dataBase.DbOption.lotName;
-            
+
             if (this.thread != null)
             {
                 this.thread.Join(100);
@@ -1680,12 +1582,6 @@ namespace DefectDBManager
             DestConfigUnit unit = new DestConfigUnit();
             int vendorIdx = this.cbDestination.SelectedIndex;
             dataBase.DbDestConfig.GetData(vendorIdx, ref unit);
-
-            if (unit.IsSplit == true)
-            {
-                MessageBox.Show("원단 도번별 차등 검사 스펙이 적용되었습니다. MRKCTRLMST 수정은 지원하지 않습니다.");
-                return;
-            }
 
             DataBase.ResetData_DE();
 

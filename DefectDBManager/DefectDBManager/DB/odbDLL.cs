@@ -130,7 +130,8 @@ namespace DefectDBManager
             }
             catch (Exception e)
             {
-                string message = String.Format($"Error Message : {e.Message}");
+                string message = String.Format($"[Error] DB Login is Failed. Message : {e.Message}");
+                Log.WriteLog(message);
             }
 
             return true;
@@ -461,6 +462,58 @@ namespace DefectDBManager
                         }
                     }
                 }
+
+                if (count > 0)
+                {
+
+                }
+                return isRes;
+            }
+            catch (Exception ex)
+            {
+                string strLog = $"[Error] DB Serach Model error message : [{ex.Message}]";
+                Trace.WriteLine(strLog);
+                Log.WriteLog(strLog);
+                return false;
+            }
+        }
+
+        public bool SearchModelDummy(string lotID, bool bMsgOut = true)
+        {
+            bool isRes = true;
+            CrtParam.Model = "";
+            try
+            {
+                lotID = lotID.ToUpper();
+
+                eCSV_TYPE type = DbDestConfig.CSVType;
+                if (type == eCSV_TYPE.NITTO || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
+                {
+                    // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                    int newLotCnt = GetNextLotCnt(lotID);
+                    if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
+                    else Log.LotLog = lotID;
+                }
+
+                int count = 0;
+                string strData;
+
+                if (SearchModelList != null)
+                    SearchModelList.Clear();
+                else
+                    SearchModelList = new List<string>();
+
+                DB_Progress.SetSkip(eNittoDBProgress.PTRYLP);
+                DB_Progress.SetSkip(eNittoDBProgress.XOFSMST);
+                DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
+
+                System.Threading.Thread.Sleep(100);
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+                DB_Progress.Set(eNittoDBProgress.PTRYOP);
+                System.Threading.Thread.Sleep(500);
+                SearchModelList.Add("12345678");
+                SearchModelList.Add("87654321");
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
 
                 if (count > 0)
                 {
