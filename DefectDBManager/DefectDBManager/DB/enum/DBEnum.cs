@@ -71,7 +71,7 @@ namespace DefectDBManager
     #region FAULTDAT List
     public enum eFAULTDATList
     {
-        Cnt, 
+        Cnt,
         AdminNo,
         NgCnt,
         Offset,
@@ -278,7 +278,17 @@ namespace DefectDBManager
         eFinishedSearchLot,
         eFinishedSearchModel,
     }
+    #endregion
 
+    #region 검색 결과 
+    public enum eSearchProcessRes
+    {
+        DB_SearchIsBusy=-3,
+        DB_NoExistES=-2,
+        DB_Disconnected= -1,
+        Process_None=0,
+        DB_SearchDone=1,
+    }
     #endregion
 
     #region Pross 상태 확인용

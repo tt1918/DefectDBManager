@@ -12,6 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager
 {
+    public delegate void DelegateProcessEvent(int eventID);
     public sealed class DbManager : IDisposable
     {
         /// <summary>
@@ -63,6 +64,7 @@ namespace DefectDBManager
         private object parent = null;
 
         private Thread threadDBConnect = null;
+        public event DelegateProcessEvent OnProcessEvent= null;
 
         public DbManager(object parent)
         {
@@ -196,11 +198,24 @@ namespace DefectDBManager
 
         public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
         {
+            formDB._SearchRes = eSearchProcessRes.Process_None;
+            if (_DbConn.IsDBConnected == false)
+            {
+                formDB._SearchRes = eSearchProcessRes.DB_Disconnected;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
+
+            if (formDB.IsSearchDefect() == true)
+            {
+                formDB._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
             int idx = 0;
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            if (formDB.IsSearchDefect() == true) return;
             _Option[idx].dbWhen = (eDbIdWhen)idx;
             _Option[idx].vendor = vendor;
             _Option[idx].checkES = useES;
@@ -208,6 +223,7 @@ namespace DefectDBManager
             _Option[idx].checkETC = useETC;
             _Option[idx].lotName = lotName;
             formDB.DataBase = _DbProc[idx];
+            formDB.DataBase.ResetDataAll();
             formDB.UpdateEndEvent = true;
             formDB.SearchDefect();
         }
@@ -238,11 +254,25 @@ namespace DefectDBManager
 
         public void SearchModel(string lotName)
         {
-            if (formDB.IsSearchDefect() == true) return;
+            formDB._SearchRes = eSearchProcessRes.Process_None;
+            if (_DbConn.IsDBConnected == false)
+            {
+                formDB._SearchRes = eSearchProcessRes.DB_Disconnected;
+                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                return;
+            }
+
+            if (formDB.IsSearchDefect() == true)
+            {
+                formDB._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
+                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                return;
+            }
             _Option[2].dbWhen = (eDbIdWhen)0;
             _Option[2].lotName = lotName;
 
             formDB.DataBase = _DbProc[2];
+            formDB.DataBase.ResetDataAll();
             formDB.SearchModel();
         }
     }

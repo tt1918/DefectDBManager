@@ -346,7 +346,12 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 	{
 		EnterCriticalSection(&cs);
 		CString strLog;
-		SAFEARRAY* array = m_pCallClass->GetMarkAreaDefectData(start, end);
+		long areaDelCnt=0;
+		SAFEARRAY* array = m_pCallClass->GetMarkAreaDelDefectData(start, end, &areaDelCnt);
+		g_Defect.m_nBcrAreaDefectCount = areaDelCnt;
+		if (areaDelCnt == 0)
+			return;
+
 		if (array)
 		{
 			VARTYPE vt;
@@ -439,6 +444,84 @@ int CallClassWrapper::GetCSV_Type()
 	return type;
 }
 
+bool CallClassWrapper::GetUseES(bool isNext)
+{
+	bool isRes = false;
+	try
+	{
+		EnterCriticalSection(&cs);
+		VARIANT value;
+		VariantInit(&value);
+
+		value.boolVal = m_pCallClass->IsEsUse(isNext);
+		if (value.boolVal == VARIANT_TRUE)
+			isRes = true;
+		VariantClear(&value);
+		LeaveCriticalSection(&cs);
+	}
+	catch (...)
+	{
+		LeaveCriticalSection(&cs);
+		return isRes;
+	}
+	return isRes;
+}
+
+bool CallClassWrapper::GetUseTG(bool isNext)
+{
+	bool isRes = false;
+	try
+	{
+		EnterCriticalSection(&cs);
+		VARIANT value;
+		VariantInit(&value);
+
+		value.boolVal = m_pCallClass->IsTgUse(isNext);
+		if (value.boolVal == VARIANT_TRUE)
+			isRes = true;
+		VariantClear(&value);
+		LeaveCriticalSection(&cs);
+	}
+	catch (...)
+	{
+		LeaveCriticalSection(&cs);
+		return isRes;
+	}
+	return isRes;
+}
+
+bool CallClassWrapper::GetUseETC(bool isNext)
+{
+	bool isRes = false;
+	try
+	{
+		EnterCriticalSection(&cs);
+		VARIANT value;
+		VariantInit(&value);
+
+		value.boolVal = m_pCallClass->IsEtcUse(isNext);
+		if (value.boolVal == VARIANT_TRUE)
+			isRes = true;
+		VariantClear(&value);
+		LeaveCriticalSection(&cs);
+	}
+	catch (...)
+	{
+		LeaveCriticalSection(&cs);
+		return isRes;
+	}
+	return isRes;
+}
+
+bool CallClassWrapper::UseAreaDelCheck()
+{
+	VARIANT_BOOL res = m_pCallClass->UseAreaDelCheck();
+	bool isRes = false;
+	if (res == VARIANT_TRUE)
+		isRes = true;
+	return true;
+}
+
 void CallClassWrapper::SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC)
 {
 	try
@@ -458,13 +541,26 @@ void CallClassWrapper::SearchLot(CString strLot, bool isNext, long vendor, bool 
 	}
 }
 
+int CallClassWrapper::GetSearchDBResult()
+{
+	long result = 0;
+	try
+	{
+		result = m_pCallClass->GetSearchResut();
+	}
+	catch (...)
+	{
+		return 0;
+	}
+	return result;
+}
+
 int CallClassWrapper::GetSearchLotResult(bool isNext, CStringArray* arData)
 {
 	long lDimSize = 0;
 	try
 	{
 		EnterCriticalSection(&cs);
-
 		SAFEARRAY* array = m_pCallClass->GetSearchLotResults(isNext);
 		if (array)
 		{
@@ -532,6 +628,7 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 	try
 	{
 		EnterCriticalSection(&cs);
+
 		int modelCnt = m_pCallClass->GetSearchModelCount();
 		if (modelCnt == 0)
 			return 0;
@@ -571,4 +668,54 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 		LeaveCriticalSection(&cs);
 	}
 	return lDimSize;
+}
+
+int CallClassWrapper::GetLoadedBCNO_Data(bool isNext, CStringArray* arBCNO)
+{
+	long size=0;
+	try
+	{
+		EnterCriticalSection(&cs);
+		SAFEARRAY* array = m_pCallClass->GetLoadedBCNO(isNext, &size);
+		
+		if (size == 0)
+			return size;
+
+		if (array)
+		{
+			long lDimSize = 0;
+			VARTYPE vt;
+			SafeArrayGetVartype(array, &vt);
+
+			long lLbound = 0;
+			long lUbound = 0;
+
+			SafeArrayGetLBound(array, 1, &lLbound);
+			SafeArrayGetUBound(array, 1, &lUbound);
+			lDimSize = lUbound - lLbound + 1;
+
+			for (int i = 0; i < lDimSize; i++) {
+				long rgIndices[1];
+				VARIANT value;
+				VariantInit(&value);
+				rgIndices[0] = i;
+				SafeArrayGetElement(array, rgIndices, &value.bstrVal);
+				CString model;
+				model.Format(_T("%s"), value.bstrVal);
+				arBCNO->Add(model);
+				VariantClear(&value);
+			}
+
+			SafeArrayDestroy(array);
+			array = NULL;
+		}
+		LeaveCriticalSection(&cs);
+	}
+	catch (...)
+	{
+		LeaveCriticalSection(&cs);
+		return size;
+	}
+
+	return size;
 }

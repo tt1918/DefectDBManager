@@ -591,8 +591,13 @@ namespace DefectDBManager
                 }
                 success = SearchXOFSMST(lotID);
                 if (success == false) return false;
-                success = SearchAreaDel(lotID);
-                if (success == false) return false;
+
+                if(DbDestConfig.UseAREADEL==true)
+                {
+                    success = SearchAreaDel(lotID);
+                    if (success == false) return false;
+                }
+
                 success = SearchPTRYOP(lotID);
                 if (success == false) return false;
                 success = SearchMRKCTLMST(lotID);
@@ -1287,6 +1292,9 @@ namespace DefectDBManager
             string query;
             int procStep = 0;
 
+            int[] defectCnt=new int[fcdCnt];
+            defectCnt.Initialize();
+
             try
             {
                 for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
@@ -1296,12 +1304,15 @@ namespace DefectDBManager
 
                     if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)
                     {
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
                     }
                     else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)
                     {
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
                     }
                     else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)
                     {
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
                     }
                     else
                     {
@@ -1495,6 +1506,7 @@ namespace DefectDBManager
                                             dataCnt++;
                                             logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
                                             Log.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                            defectCnt[fcdIdx]++;
                                         }
                                     }
                                 }
@@ -1504,11 +1516,35 @@ namespace DefectDBManager
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                 }
 
+                if(minSize==999.0)
+                    minSize= 0;
+
                 //   Defect 사이즈 처리
                 resultDefect.MarkFault.MinXPos = minXPos;
                 resultDefect.MarkFault.MaxXPos = maxXPos;
                 resultDefect.MarkFault.MinSize = minSize;
 
+                // 불량 체크
+                bool isSuccess = true;
+                if(DbDestConfig.CSVType==eCSV_TYPE.KORENO|| DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
+                {
+                    // 하나라도 검색이 되었으면 OK
+                    isSuccess = false;
+                    for (int i = 0; i < fcdCnt; i++)
+                    {
+                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
+                            isSuccess = true;
+                    }
+                }
+                else
+                {
+                    // 전체가 다 불량이 있어야 OK
+                    for (int i = 0; i < fcdCnt; i++)
+                    {
+                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
+                            isSuccess &= false;
+                    }
+                }
                 return true;
             }
             catch (Exception ex)

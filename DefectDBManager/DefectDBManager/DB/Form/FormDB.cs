@@ -95,6 +95,7 @@ namespace DefectDBManager
 
         public event DelegateEndCsvReading OnEndCsvReading = null;
         public bool UpdateEndEvent = false;
+        public eSearchProcessRes _SearchRes;
         public FormDB(object parent)
         {
             InitializeComponent();
@@ -781,6 +782,11 @@ namespace DefectDBManager
                 this.dbSearchProgressTimer.Stop();
                 this.dbLoadingTime.Stop();
 
+                if(isSuccess==false)
+                    this._SearchRes = eSearchProcessRes.DB_NoExistES;
+                else
+                    this._SearchRes = eSearchProcessRes.DB_SearchDone;
+
                 if (this.UpdateEndEvent == true)
                 {
                     OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
@@ -845,6 +851,7 @@ namespace DefectDBManager
             }
             finally
             {
+                this._SearchRes = eSearchProcessRes.DB_SearchDone;
                 this.dbSearchProgressTimer.Stop();
                 this.dbLoadingTime.Stop();
                 OnEndCsvReading((int)eEventReport.eFinishedSearchModel);

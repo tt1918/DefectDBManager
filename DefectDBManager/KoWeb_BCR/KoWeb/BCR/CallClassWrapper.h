@@ -27,11 +27,17 @@ public:
 	int GetMarkingData(bool isNext);
 	int GetMarkingDefectMeter();
 	void GetMarkDefectData(CString strBCno, double start, double end);
+	bool UseAreaDelCheck();
 	void GetMarkAreaDefectData(double start, double end);
 	int GetCSV_Type();
+	bool GetUseES(bool isNext);
+	bool GetUseTG(bool isNext);
+	bool GetUseETC(bool isNext);
 	void SearchLot(CString strLot, bool isNext, long vendor, bool useES, bool useTG, bool useETC);
+	int GetSearchDBResult();
 	int GetSearchLotResult(bool isNext, CStringArray* arData);
 	void SearchModel(CString strLot);
 	int GetSearchModelResult(CStringArray *arModel);
+	int GetLoadedBCNO_Data(bool isNext, CStringArray* arBCNO);
 };
 

@@ -1457,8 +1457,9 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			((CKoWebView*)pParent)->m_DefectCallClass->GetMarkDefectData(strBcrLotName, dNextFramePos, dCurFramePos);
 
 		// Area Maring 데이터 검색
+		// UseAreaDel은 함수 내부에서 확인함
 		((CKoWebView*)pParent)->m_DefectCallClass->GetMarkAreaDefectData(dCurFramePos, dNextFramePos);
-
+		
 		// Bcr 영역 Marking 처리
 		if (g_Temp.m_isBcrSuccessRead)
 		{
@@ -1479,6 +1480,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			strcpy_s(g_Defect.m_BMarkDefect.fileName, MAX_BADIMAGE_FILENAME, g_Temp.m_cBcrFileName);
 			g_Defect.m_nBcrCount = 1;
 		}
+
 
 		// 이전 위치 데이터 업데이트
 		g_Temp.m_dBcrPreFramePos = dCurFramePos;
@@ -1936,5 +1938,90 @@ void CvtBcrImage2SaveDefectImage(LPBYTE fm, int w, int h, CRect rect, LPBYTE out
 
 			*(out + i * outW + j) = ucOut;
 		}
+	}
+}
+
+void CheckBcrLotDataError(CString strBcno)
+{
+	int type = g_Param.m_nBcrCsvType;
+	if (type == eCSV_TYPE_KORENO_RK_IJP || type == eCSV_TYPE_NITTO_RTS || type == eCSV_TYPE_NITTO_RK)
+	{
+		if (g_Param.m_nNoInspect == false)
+		{
+			int nBCNO_nowSize = g_Temp.m_arLoadedBCNO[0].GetSize();
+			int nBCNO_nextSize = g_Temp.m_arLoadedBCNO[1].GetSize();
+
+			CString strDataNow, strDataNext;
+			CString strMsgNow, strMsgNext;
+			for (int i = 0; i < nBCNO_nowSize; i++)
+			{
+				strDataNow += g_Temp.m_arLoadedBCNO[0][i];
+				strDataNow += ",";
+			}
+			for (int i = 0; i < nBCNO_nextSize; i++)
+			{
+				strDataNext += g_Temp.m_arLoadedBCNO[1][i];
+				strDataNext += ",";
+			}
+
+			strMsgNow.Format(_T("Now %s read : %s"), strDataNow, strBcno);
+			strMsgNext.Format(_T("Now %s read : %s"), strDataNext, strBcno);
+
+			bool bFind = false;
+			for (int i = 0; i < nBCNO_nowSize; i++)
+			{
+				if (strBcno == g_Temp.m_arLoadedBCNO[0][i])
+				{
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind == FALSE && strBcno != _T("no_barcode") && nBCNO_nowSize>0)
+				WriteLog(strMsgNow);
+
+			// bFind = false; ??? 확인 필요함
+			for (int i = 0; i < nBCNO_nextSize; i++)
+			{
+				if (strBcno == g_Temp.m_arLoadedBCNO[1][i])
+				{
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind == FALSE && strBcno != _T("no_barcode") && nBCNO_nextSize > 0)
+				WriteLog(strMsgNext);
+
+			if (g_Temp.m_isBcrFirstCode==true && strBcno != _T("no_barcode") && nBCNO_nowSize && bFind == FALSE)
+			{
+				if (g_Temp.m_bFirstCompare==false || g_Temp.m_nGrabFrame > 30)
+				{
+					if (strBcno.GetLength() > 9)
+					{
+						if ((type == eCSV_TYPE_NITTO_RTS) || (type == eCSV_TYPE_NITTO_RK))
+						{
+							if (g_Param.m_isUseES || g_Param.m_isUseTG)	//연신,그외 체크되었을 때만 비교
+							{
+								l_Send_Server.SendCommand_LocalHost(NM_BCR_LOT_DATA_ERROR);
+								strMsgNow += _T(" Alarm");
+								WriteLog(strMsgNow);
+							}
+						}
+						else
+						{
+							if (g_Param.m_isUseES)	//연신 체크되었을 때만 비교
+							{
+								l_Send_Server.SendCommand_LocalHost(NM_BCR_LOT_DATA_ERROR);
+								strMsgNow += _T(" Alarm");
+								WriteLog(strMsgNow);
+							}
+						}
+					}
+				}
+				if (g_Temp.m_bFirstCompare==true)
+				{
+					g_Temp.m_bFirstCompare = false;		//처음 읽은 바코드는 비교하여 에러 메세지를 보내지 않는다.
+				}
+			}
+		} 
 	}
 }

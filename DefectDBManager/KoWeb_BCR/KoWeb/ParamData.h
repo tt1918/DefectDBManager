@@ -434,6 +434,9 @@ typedef struct PARAMETERDATA_
 
 	// 공장 타입
 	int		m_nBcrCsvType;
+	bool	m_isUseES;
+	bool	m_isUseTG;
+	bool	m_isUseETC;
 	// =======================================================
 
 	// 널링부 도트 체크

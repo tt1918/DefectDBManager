@@ -3078,7 +3078,12 @@ void CKoWebView::CreateDefectCallCallss()
 		m_DefectReadingEvent = new CallClassReadingEvents(this->m_hWnd);
 	m_DefectCallClass->AddEndCsvReading(m_DefectReadingEvent);
 
+	// Lot 변경 후 CSV 타입 다시 받아와야 함
 	g_Param.m_nBcrCsvType = m_DefectCallClass->GetCSV_Type();
+	g_Param.m_isUseES = m_DefectCallClass->GetUseES(false);
+	g_Param.m_isUseTG = m_DefectCallClass->GetUseTG(false);
+	g_Param.m_isUseETC = m_DefectCallClass->GetUseETC(false);
+	g_Temp.m_bFirstCompare = true;
 }
 
 void CKoWebView::DestroyDefectCallClass()
@@ -3094,7 +3099,7 @@ void CKoWebView::OnBnClickedBtnShowDefectNow()
 {
 	if (m_DefectCallClass == nullptr)
 		return;
-
+	g_BcrSearchInfo.isNext = false;
 	m_DefectCallClass->ShowDefectView(false);
 }
 
@@ -3103,6 +3108,7 @@ void CKoWebView::OnBnClickedBtnShowDefectNext()
 	if (m_DefectCallClass == nullptr)
 		return;
 
+	g_BcrSearchInfo.isNext = true;
 	m_DefectCallClass->ShowDefectView(true);
 }
 
@@ -3133,42 +3139,111 @@ LRESULT CKoWebView::OnBCrComm(WPARAM wParam, LPARAM lParam)
 		{
 			CStringArray arData;
 			CString data;
-			int size = m_DefectCallClass->GetSearchLotResult(g_BcrSearchInfo.isNext, &arData);
-
-			for (int i = 0; i < size; i++)
-			{
-				data += arData[i];
-				if (i < size - 1)	data += "\n";
-			}
-			CPacket* packet = new CPacket;
-			packet->MakeAckBcrSearchLotPacket(data, 100);
-			l_Send_Server.SendInsData(packet);
-			delete packet;
-			arData.RemoveAll();
 			CString strLog;
-			strLog.Format(_T("[Lot Search Ack] : %s"), data);
-			WriteLog(data);
+			int searchRes = m_DefectCallClass->GetSearchDBResult();
+			if (searchRes < 0)
+			{
+				if (searchRes == eSearchProcessRes_DB_SearchIsBusy)
+				{
+					strLog.Format(_T("[Error] : Lot Search DB_SearchIsBusy"));
+				}
+				else if (searchRes == eSearchProcessRes_DB_NoExistES)
+				{
+					strLog.Format(_T("[Error] : Lot Search 점착랏 없음"));
+				}
+				else if (searchRes == eSearchProcessRes_DB_Disconnected)
+				{
+					strLog.Format(_T("[Error] : Lot Search DB_Disconnected"));
+				}
+				WriteLog(data);
+				CPacket* packet = new CPacket;
+				packet->MakeAckBcrSearchLotPacket(data, -1);
+				l_Send_Server.SendInsData(packet);
+			}
+			else
+			{
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				// INSP탐색에서 읽어온 BCNO 번호 갖고 옴
+				int loadedBCNOSize;
+				int bcnoIdx = 0;
+				if (g_BcrSearchInfo.isNext == false) bcnoIdx = 0;
+				else			     				 bcnoIdx = 1;
+				g_Temp.m_arLoadedBCNO[bcnoIdx].RemoveAll();
+				loadedBCNOSize = m_DefectCallClass->GetLoadedBCNO_Data(g_BcrSearchInfo.isNext, &g_Temp.m_arLoadedBCNO[bcnoIdx]);
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+				// 현재랏이면 CSV 파라미터를 업데이트 함
+				if (g_BcrSearchInfo.isNext == false)
+				{
+					g_Param.m_nBcrCsvType = m_DefectCallClass->GetCSV_Type();
+					g_Param.m_isUseES = m_DefectCallClass->GetUseES(false);
+					g_Param.m_isUseTG = m_DefectCallClass->GetUseTG(false);
+					g_Param.m_isUseETC = m_DefectCallClass->GetUseETC(false);
+					g_Temp.m_bFirstCompare = true;
+				}
+					
+
+				int size = m_DefectCallClass->GetSearchLotResult(g_BcrSearchInfo.isNext, &arData);
+				data += _T("No. LOTNO\tLINE\tSTT TIME\tEND TIME\tDEFECT COUNT");
+				for (int i = 0; i < size; i++)
+				{
+					data += arData[i];
+					if (i < size - 1)	data += "\n";
+				}
+				CPacket* packet = new CPacket;
+				packet->MakeAckBcrSearchLotPacket(data, 100);
+				l_Send_Server.SendInsData(packet);
+				delete packet;
+				arData.RemoveAll();
+
+				strLog.Format(_T("[Lot Search Ack] : %s"), data);
+				WriteLog(data);
+			}
+			
 			break;
 		}
 		
 	case eEventReport_eFinishedSearchModel:
 		{
 			CStringArray arData;
-			int size = m_DefectCallClass->GetSearchModelResult(&arData);
-			CPacket* packet = new CPacket;
 			CString data;
-			for (int i = 0; i < size; i++)
-			{
-				data += arData[i];
-				if(i<size-1)	data += ",";
-			}
-			packet->MakeAckBcrSearchModelPacket(data, 100);
-			l_Send_Server.SendInsData(packet);
-			delete packet;
-			arData.RemoveAll();
 			CString strLog;
-			strLog.Format(_T("[Model Search Ack] : %s"), data);
-			WriteLog(strLog);
+			
+			int searchRes = m_DefectCallClass->GetSearchDBResult();
+			if (searchRes < 0)
+			{
+				if (searchRes == eSearchProcessRes_DB_SearchIsBusy)
+				{
+					strLog.Format(_T("[Error] : Model Search DB_SearchIsBusy"));
+				}
+				else if (searchRes == eSearchProcessRes_DB_Disconnected)
+				{
+					strLog.Format(_T("[Error] : Model Search DB_Disconnected"));
+				}
+				WriteLog(data);
+				CPacket* packet = new CPacket;
+				packet->MakeAckBcrSearchModelPacket(data, searchRes);
+				l_Send_Server.SendInsData(packet);
+			}
+			else
+			{
+				int size = m_DefectCallClass->GetSearchModelResult(&arData);
+				CPacket* packet = new CPacket;
+
+				for (int i = 0; i < size; i++)
+				{
+					data += arData[i];
+					if (i < size - 1)	data += ",";
+				}
+				packet->MakeAckBcrSearchModelPacket(data, 100);
+				l_Send_Server.SendInsData(packet);
+				delete packet;
+				arData.RemoveAll();
+
+				strLog.Format(_T("[Model Search Ack] : %s"), data);
+				WriteLog(strLog);
+			}
+			
 			break;
 		}
 	}

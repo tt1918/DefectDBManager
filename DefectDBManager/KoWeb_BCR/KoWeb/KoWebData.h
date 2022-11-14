@@ -453,6 +453,7 @@ typedef struct TEMPDATA_
 	int m_nMuraMax;
 	int m_nTestCnt[10];
 
+#ifdef BARCODE_VISION
 	///////////////////////////////////////////////////////////////////////
 	// BCR 용 - S
 	bool	m_isBcrFirstCheck;	// 검사 시작 후 제일 처음 
@@ -503,8 +504,12 @@ typedef struct TEMPDATA_
 	int		m_nTempNullPos;
 
 	CString m_strBcrLog;		// BCR 로그 저장용
+
+	CStringArray m_arLoadedBCNO[2];	// 0 : 현재랏, 1 : 예약랏
+	bool m_bFirstCompare;
 	// BCR 용 - E
 	///////////////////////////////////////////////////////////////////////
+#endif
 }TEMPDATA;
 
 

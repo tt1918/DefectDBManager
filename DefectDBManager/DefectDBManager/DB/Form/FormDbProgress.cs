@@ -29,6 +29,7 @@ namespace DefectDBManager
         private System.Windows.Forms.Timer timerClose;
 
         private FormError formError = null;
+        private Stopwatch sw;
         public FormDbProgress()
         {
             InitializeComponent();
@@ -45,6 +46,9 @@ namespace DefectDBManager
             timerClose = new System.Windows.Forms.Timer();
             timerClose.Interval = 1000;
             timerClose.Tick += new EventHandler(CheckCloseTime);
+
+            sw = new Stopwatch();
+
             initProcessCtrl();
         }
 
@@ -52,7 +56,6 @@ namespace DefectDBManager
         {
             timer.Dispose();
             timerClose.Dispose();
-
             if (_formProgress != null)
             {
                 for (int i = 0; i < _formProgress.Count; i++)
@@ -70,6 +73,14 @@ namespace DefectDBManager
             if (_Step == -1 || _Total == -1) return;
 
             bool isComp = true;
+
+            // Close 버튼 활성화
+            // 에러가 발생하거나 문제가 있을 때 표시하기 위해서
+            if(sw.ElapsedMilliseconds>30000)
+            {
+                sw.Stop();
+                btnClose.Visible = true;
+            }
 
             if (oldListStep != _Step)
             {
@@ -231,11 +242,13 @@ namespace DefectDBManager
                 this.btnClose.Text = "CLOSE";
                 lblText.Text = "";
                 timer.Start();
+                sw.Start();
             }
             else
             {
                 timer.Stop();
                 timerClose.Stop();
+                sw.Stop();
             }
         }
 

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace DefectDBManager
 {
@@ -388,6 +389,8 @@ namespace DefectDBManager
             string key;
             DestConfigUnit unit = null;
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
+
+            File.Delete(Define.DestPath);
 
             key = "SKIP SIZE";
             for (int j = 0; j < opticSize; j++)
