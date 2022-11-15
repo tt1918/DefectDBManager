@@ -21,20 +21,22 @@ namespace DefectDBManager
             Conn = conn;
         }
 
-
         private void FormDbLoginData_Load(object sender, EventArgs e)
         {
-            tbDbName.Text = Conn.DBName;
-            tbUserID.Text = Conn.UserID;
-            tbPassword.Text = Conn.Password;
+            
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
+            if (rbConStringType1.Checked == true)
+                Conn.ConStringType = 0;
+            else if (rbConStringType2.Checked == true)
+                Conn.ConStringType = 1;
             Conn.DBName = tbDbName.Text;
             Conn.UserID = tbUserID.Text;
             Conn.Password = tbPassword.Text;
-
+            Conn.HostIP = tbHostIP.Text;
+            Conn.DBPort = tbPort.Text;
             Conn.Connect();
         }
 
@@ -47,6 +49,61 @@ namespace DefectDBManager
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void FormDbLoginData_VisibleChanged(object sender, EventArgs e)
+        {
+            if(this.Visible==true)
+            {
+                displayCtrl();
+            }
+        }
+
+        private void displayCtrl()
+        {
+            if(Conn.ConStringType==0)
+            {
+                rbConStringType1.Checked = true;
+                rbConStringType2.Checked = false;
+                tbHostIP.Enabled = false;
+                tbPort.Enabled = false;
+            }
+            else if(Conn.ConStringType == 1)
+            {
+                rbConStringType1.Checked = false;
+                rbConStringType2.Checked = true;
+                tbHostIP.Enabled = true;
+                tbPort.Enabled = true;
+            }
+            tbHostIP.Text = Conn.HostIP;
+            tbPort.Text = Conn.DBPort;
+            tbDbName.Text = Conn.DBName;
+            tbUserID.Text = Conn.UserID;
+            tbPassword.Text = Conn.Password;
+        }
+
+        private void enableCtrl()
+        {
+            if (rbConStringType1.Checked == true)
+            {
+                tbHostIP.Enabled = false;
+                tbPort.Enabled = false;
+            }
+            else if (rbConStringType2.Checked == true)
+            {
+                tbHostIP.Enabled = true;
+                tbPort.Enabled = true;
+            }
+        }
+
+        private void rbConStringType1_CheckedChanged(object sender, EventArgs e)
+        {
+            enableCtrl();
+        }
+
+        private void rbConStringType2_CheckedChanged(object sender, EventArgs e)
+        {
+            enableCtrl();
         }
     }
 }

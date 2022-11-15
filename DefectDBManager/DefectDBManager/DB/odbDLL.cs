@@ -21,6 +21,13 @@ namespace DefectDBManager
             get;
             private set;
         }
+        public int ConStringType { get; set; }
+        public string HostIP
+        {
+            get { return hostIP; }
+            set { hostIP = value; }
+        }
+        private string hostIP;
         public string UserID
         {
             get { return userID; }
@@ -49,12 +56,12 @@ namespace DefectDBManager
         }
         private string dbName;
 
-        public int DBPort
+        public string DBPort
         {
             get { return dbPort; }
             set { dbPort = value; }
         }
-        private int dbPort;
+        private string dbPort;
 
         public OracleConnection Connection
         {
@@ -102,10 +109,7 @@ namespace DefectDBManager
             if (conn == null)
             {
                 // 이거 나중에 정리해야할듯....
-                dbConn = String.Format("Data Source=(DESCRIPTION="
-              + "(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=172.29.2.24)(PORT=1521)))"
-              + "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=INSP)));"
-              + "User Id=INSP;Password=INSP");
+               
 
                 conn = new OracleConnection(dbConn);
             }
@@ -171,8 +175,18 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            DBConnString = String.Format($"Data Source={dbName};" +
-                    $"User ID={UserID};Password={password};Connection Timeout=30;");
+            if(ConStringType==0)
+            {
+                DBConnString = String.Format($"Data Source={dbName};" +
+                             $"User ID={UserID};Password={password};Connection Timeout=30;");
+            }
+            else if(ConStringType == 1)
+            {
+                DBConnString = String.Format("Data Source=(DESCRIPTION="
+                            + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={hostIP})(PORT={DBPort})))"
+                            + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
+                            + $"User Id={userID};Password={password}");
+            }
 
             connectToDB(DBConnString);
 

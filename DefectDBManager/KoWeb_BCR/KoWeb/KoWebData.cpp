@@ -41,6 +41,7 @@ SYSTEMDATA		g_System;
 CONFIGDATA		g_Config;
 DEFECTDATA		g_Defect;
 DEFECTDATA		g_DefectSend;
+int				g_AreaDelSplice[10000];// 영역 나눔 확인
 
 //RESULT_DELAY -------------------------
 DEFECTDATA		g_DefectSendDelay[6];   //[0]: 원래보낼것, [1] 1Frame Delay  ... [5] 5Frame Delay

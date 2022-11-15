@@ -68,7 +68,7 @@ void CallClassWrapper::GetDefectsData()
 			CString strMsg;
 			strMsg.Format(_T("%d"), lDimSize);
 			MessageBox(NULL, strMsg, _T(""), MB_OK);
-			
+
 		}
 		LeaveCriticalSection(&cs);
 	}
@@ -226,6 +226,8 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 			SafeArrayGetUBound(array, 1, &lUbound);
 			long lDimSize = lUbound - lLbound + 1;
 
+			int type = g_Param.m_nBcrCsvType;
+
 			for (int i = 0; i < lDimSize; i++) {
 				long rgIndices[1];
 				MarkingData value;
@@ -234,11 +236,46 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 				rgIndices[0] = i;
 				SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
 				splRecordInfo->RecordClear((PVOID)&value);
-				markingDefect.defect_class = value.DefectLine; // 추가 후처리 필요함.
-
 				markingDefect.x_pos = value.XPOS_M;
 				markingDefect.y_pos = value.YPOS_M;
 				markingDefect.offset = value.OFFSET;
+				if (value.UseCSVResult == false)
+				{
+					if (type == eCSV_TYPE_NITTO)
+					{
+						if (value.DefectLine == 9) // 점착
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 12;//
+						else  //if (value.DefectLine == 8) // 그외
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+					else if (type == eCSV_TYPE_NITTO_RTS || type == eCSV_TYPE_NITTO_RK || type == eCSV_TYPE_KORENO_RK_IJP)
+					{
+						if (value.DefectLine == 9) //점착 
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 12;//
+						else if (value.DefectLine == 8) // 연신 - 기타
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 11;//
+						else //value.DefectLine = 7 그외
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+					else // 나중에 정의해야 함
+					{
+						if (value.DefectLine == 9) //점착 
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 12;//
+						else if (value.DefectLine == 8) // 연신 - 기타
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 11;//
+						else //value.DefectLine = 7 그외
+							markingDefect.defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+				}
+				else
+				{
+					if (value.DefectLine == 9) //점착 
+						markingDefect.defect_class = value.CAM_NO * 100000000 + 12;
+					else if (value.DefectLine == 8) // 연신 - 기타
+						markingDefect.defect_class = value.CAM_NO * 100000000 + 11;//
+					else //value.DefectLine = 7 그외
+						markingDefect.defect_class = value.CAM_NO * 100000000 + 13;//
+				}
 
 				int cLen = ::SysStringLen(value.FAULTID);
 				strcpy_s(markingDefect.fltid, cLen, CW2A(value.FAULTID));
@@ -308,6 +345,8 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 
 			g_Defect.m_nBcrDefectCount = lDimSize;
 
+			int type = g_Param.m_nBcrCsvType;
+
 			for (int i = 0; i < lDimSize; i++) {
 				long rgIndices[1];
 				MarkingData value;
@@ -319,6 +358,44 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 				g_Defect.m_BcrDefect[i].x_pos = value.XPOS_M;
 				g_Defect.m_BcrDefect[i].y_pos = value.YPOS_M;
 				g_Defect.m_BcrDefect[i].offset = value.OFFSET;
+
+				if (value.UseCSVResult == false)
+				{
+					if (type == eCSV_TYPE_NITTO)
+					{
+						if (value.DefectLine == 9) // 점착
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+						else  //if (value.DefectLine == 8) // 그외
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+					else if (type == eCSV_TYPE_NITTO_RTS || type == eCSV_TYPE_NITTO_RK || type == eCSV_TYPE_KORENO_RK_IJP)
+					{
+						if (value.DefectLine == 9) //점착 
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+						else if (value.DefectLine == 8) // 연신 - 기타
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+						else //value.DefectLine = 7 그외
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+					else // 나중에 정의해야 함
+					{
+						if (value.DefectLine == 9) //점착 
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+						else if (value.DefectLine == 8) // 연신 - 기타
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+						else //value.DefectLine = 7 그외
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+					}
+				}
+				else
+				{
+					if (value.DefectLine == 9) //점착 
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;
+					else if (value.DefectLine == 8) // 연신 - 기타
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+					else //value.DefectLine = 7 그외
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+				}
 
 				int cLen = ::SysStringLen(value.FAULTID);
 				strcpy_s(g_Defect.m_BcrDefect[i].fltid, cLen, CW2A(value.FAULTID));
@@ -346,7 +423,7 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 	{
 		EnterCriticalSection(&cs);
 		CString strLog;
-		long areaDelCnt=0;
+		long areaDelCnt = 0;
 		SAFEARRAY* array = m_pCallClass->GetMarkAreaDelDefectData(start, end, &areaDelCnt);
 		g_Defect.m_nBcrAreaDefectCount = areaDelCnt;
 		if (areaDelCnt == 0)
@@ -406,13 +483,16 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 				}
 				g_Defect.m_BcrAreaDefect[i].defect_class = 1;	// 추후 클래스 정의 해야함.
 				g_Defect.m_BcrAreaDefect[i].mark = 1;
-
+				g_Defect.m_BcrAreaDefect[i].index = value.idx;
+				g_Defect.m_BcrAreaDefect[i].index2 = g_AreaDelSplice[value.idx];
+				
 				// Area Del Data Save
-				strLog.Format(_T("AreaMaring Pos : %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f"), value.stX, value.edX, stY, edY,
-					g_Defect.m_BcrAreaDefect[i].x, g_Defect.m_BcrAreaDefect[i].width, g_Defect.m_BcrAreaDefect[i].y,
+				strLog.Format(_T("AreaMaring Pos[%d_%d] : %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f"), value.idx, g_AreaDelSplice[value.idx], 
+					value.stX, value.edX, stY, edY, g_Defect.m_BcrAreaDefect[i].x, g_Defect.m_BcrAreaDefect[i].width, g_Defect.m_BcrAreaDefect[i].y,
 					g_Defect.m_BcrAreaDefect[i].height);
 				WriteBcrDefectLog(g_Temp.m_strBcrLog, strLog);
 
+				g_AreaDelSplice[value.idx]++;
 				splRecordInfo->RecordClear((PVOID)&value);
 			}
 
@@ -638,7 +718,7 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 		{
 			VARTYPE vt;
 			SafeArrayGetVartype(array, &vt);
-			
+
 			long lLbound = 0;
 			long lUbound = 0;
 
@@ -672,12 +752,12 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 
 int CallClassWrapper::GetLoadedBCNO_Data(bool isNext, CStringArray* arBCNO)
 {
-	long size=0;
+	long size = 0;
 	try
 	{
 		EnterCriticalSection(&cs);
 		SAFEARRAY* array = m_pCallClass->GetLoadedBCNO(isNext, &size);
-		
+
 		if (size == 0)
 			return size;
 

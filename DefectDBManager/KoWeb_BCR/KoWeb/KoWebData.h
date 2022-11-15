@@ -492,8 +492,8 @@ typedef struct TEMPDATA_
 
 	int		m_nBcrReadOK;		// BCR 인식 갯수
 
-	int		m_nBcrNoReadWarning;
-	int		m_nBcrNoReadError;
+	double	m_dBcrNoReadWarning;
+	double	m_dBcrNoReadError;
 
 	int		m_nBcrScaleIdx;		// Bcr Y scale 확인용
 	int		m_nBcrOrder;		// Bcr order 확인용
@@ -552,6 +552,7 @@ extern SYSTEMDATA		g_System;
 extern CONFIGDATA		g_Config;
 extern DEFECTDATA		g_Defect;
 extern DEFECTDATA		g_DefectSend;	//서버, 마킹서버에 보낼 데이타
+extern int				g_AreaDelSplice[10000];
 
 //RESULT_DELAY ----------------------------------
 	extern DEFECTDATA	   g_DefectSendDelay[6];  //최대 Delay 5개 + 1

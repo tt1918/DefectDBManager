@@ -68,6 +68,8 @@ namespace DefectDBManager
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct MarkingAreaDefect
 	{
+        [MarshalAs(UnmanagedType.I4)]
+        public Int32 idx;
         [MarshalAs(UnmanagedType.R4)]
         public float stX;                // 구간 마킹 시작 위치 X mm
         [MarshalAs(UnmanagedType.R4)]
@@ -329,6 +331,7 @@ namespace DefectDBManager
             if(dbManager._DestConfig.UseAREADEL==true)
 			{
                 List<AREADELData> delData = DBManager._DbProc[0].AREADEL_Data;
+				int idx = 0;
                 foreach (AREADELData item in delData)
                 {
                     if ((item.STR_MD <= start && end < item.END_MD) || (item.END_MD <= start && end < item.STR_MD) ||
@@ -337,13 +340,15 @@ namespace DefectDBManager
                         MarkingAreaDefect data = new MarkingAreaDefect();
 
 
-                        //현재위치에 AreaDel마킹영역이 존재시
+						//현재위치에 AreaDel마킹영역이 존재시
+						data.idx = idx;
                         data.stX = item.STR_WD;
                         data.edX = item.END_WD;
                         data.stY = item.STR_MD;
                         data.edY = item.END_MD;
                         markingAreaDefects.Add(data);
                     }
+					idx++;
                 }
             }
 			count = markingAreaDefects.Count;

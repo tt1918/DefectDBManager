@@ -1007,8 +1007,8 @@ void CKoWebView::ResetTempData()   //OnButtonFrameReset
 	g_Temp.m_isBcrFirstCheck=true; 
 
 	g_Temp.m_nBcrReadOK = 0;
-	g_Temp.m_nBcrNoReadWarning = 0;
-	g_Temp.m_nBcrNoReadError = 0;
+	g_Temp.m_dBcrNoReadWarning = 0;
+	g_Temp.m_dBcrNoReadError = 0;
 	g_Temp.m_isBcrFirstCode = false;
 	g_Temp.m_strBcrName = g_Temp.m_strPreBcrName = _T("");
 	g_Temp.m_nBcrPreInspFrame = -1;
@@ -1023,6 +1023,8 @@ void CKoWebView::ResetTempData()   //OnButtonFrameReset
 
 	g_Temp.m_nBcrScaleIdx = 0;
 	g_Temp.m_dBcrPreFramePos = 0.0;
+
+	memset(g_AreaDelSplice, 0x00, sizeof(int) * 10000);
 #endif
 
 	SetSpreadCount();

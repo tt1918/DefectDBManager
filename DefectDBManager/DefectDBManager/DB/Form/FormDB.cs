@@ -1200,7 +1200,6 @@ namespace DefectDBManager
                         idx++;
                     }
 
-
                     wr.Close();
                 }
             }

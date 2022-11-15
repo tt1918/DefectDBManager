@@ -39,6 +39,13 @@
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbPort = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbHostIP = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.rbConStringType1 = new System.Windows.Forms.RadioButton();
+            this.rbConStringType2 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +74,7 @@
             this.lblDomain.AutoSize = true;
             this.lblDomain.BackColor = System.Drawing.SystemColors.Control;
             this.lblDomain.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDomain.Location = new System.Drawing.Point(9, 41);
+            this.lblDomain.Location = new System.Drawing.Point(9, 128);
             this.lblDomain.Name = "lblDomain";
             this.lblDomain.Size = new System.Drawing.Size(66, 16);
             this.lblDomain.TabIndex = 2;
@@ -78,7 +85,7 @@
             // 
             this.tbDbName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbDbName.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDbName.Location = new System.Drawing.Point(90, 41);
+            this.tbDbName.Location = new System.Drawing.Point(90, 128);
             this.tbDbName.Name = "tbDbName";
             this.tbDbName.Size = new System.Drawing.Size(164, 18);
             this.tbDbName.TabIndex = 3;
@@ -90,7 +97,7 @@
             this.lblUserID.AutoSize = true;
             this.lblUserID.BackColor = System.Drawing.SystemColors.Control;
             this.lblUserID.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserID.Location = new System.Drawing.Point(9, 64);
+            this.lblUserID.Location = new System.Drawing.Point(9, 151);
             this.lblUserID.Name = "lblUserID";
             this.lblUserID.Size = new System.Drawing.Size(20, 16);
             this.lblUserID.TabIndex = 2;
@@ -101,7 +108,7 @@
             // 
             this.tbUserID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbUserID.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUserID.Location = new System.Drawing.Point(90, 64);
+            this.tbUserID.Location = new System.Drawing.Point(90, 151);
             this.tbUserID.Name = "tbUserID";
             this.tbUserID.Size = new System.Drawing.Size(164, 18);
             this.tbUserID.TabIndex = 3;
@@ -112,7 +119,7 @@
             this.lblPassword.AutoSize = true;
             this.lblPassword.BackColor = System.Drawing.SystemColors.Control;
             this.lblPassword.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassword.Location = new System.Drawing.Point(9, 88);
+            this.lblPassword.Location = new System.Drawing.Point(9, 175);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(29, 16);
             this.lblPassword.TabIndex = 2;
@@ -123,7 +130,7 @@
             // 
             this.tbPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbPassword.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPassword.Location = new System.Drawing.Point(90, 88);
+            this.tbPassword.Location = new System.Drawing.Point(90, 175);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(164, 18);
             this.tbPassword.TabIndex = 3;
@@ -132,7 +139,7 @@
             // btnDisconnect
             // 
             this.btnDisconnect.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDisconnect.Location = new System.Drawing.Point(137, 112);
+            this.btnDisconnect.Location = new System.Drawing.Point(137, 205);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(101, 36);
             this.btnDisconnect.TabIndex = 4;
@@ -143,7 +150,7 @@
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(192, 154);
+            this.btnClose.Location = new System.Drawing.Point(192, 247);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(66, 36);
             this.btnClose.TabIndex = 4;
@@ -154,7 +161,7 @@
             // btnConnect
             // 
             this.btnConnect.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(33, 112);
+            this.btnConnect.Location = new System.Drawing.Point(33, 205);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(101, 36);
             this.btnConnect.TabIndex = 4;
@@ -162,11 +169,102 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.SystemColors.Control;
+            this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(9, 105);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 16);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "PORT";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbPort
+            // 
+            this.tbPort.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbPort.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPort.Location = new System.Drawing.Point(90, 105);
+            this.tbPort.Name = "tbPort";
+            this.tbPort.Size = new System.Drawing.Size(164, 18);
+            this.tbPort.TabIndex = 6;
+            this.tbPort.Text = "1521";
+            this.tbPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.Control;
+            this.label2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(9, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 16);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "HOST IP";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tbHostIP
+            // 
+            this.tbHostIP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbHostIP.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbHostIP.Location = new System.Drawing.Point(90, 81);
+            this.tbHostIP.Name = "tbHostIP";
+            this.tbHostIP.Size = new System.Drawing.Size(164, 18);
+            this.tbHostIP.TabIndex = 8;
+            this.tbHostIP.Text = "100.0.0.1";
+            this.tbHostIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.Control;
+            this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(10, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 16);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "TYPE";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rbConStringType1
+            // 
+            this.rbConStringType1.AutoSize = true;
+            this.rbConStringType1.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.rbConStringType1.Location = new System.Drawing.Point(87, 50);
+            this.rbConStringType1.Name = "rbConStringType1";
+            this.rbConStringType1.Size = new System.Drawing.Size(64, 21);
+            this.rbConStringType1.TabIndex = 10;
+            this.rbConStringType1.TabStop = true;
+            this.rbConStringType1.Text = "Type1";
+            this.rbConStringType1.UseVisualStyleBackColor = true;
+            this.rbConStringType1.CheckedChanged += new System.EventHandler(this.rbConStringType1_CheckedChanged);
+            // 
+            // rbConStringType2
+            // 
+            this.rbConStringType2.AutoSize = true;
+            this.rbConStringType2.Font = new System.Drawing.Font("맑은 고딕", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.rbConStringType2.Location = new System.Drawing.Point(154, 50);
+            this.rbConStringType2.Name = "rbConStringType2";
+            this.rbConStringType2.Size = new System.Drawing.Size(64, 21);
+            this.rbConStringType2.TabIndex = 10;
+            this.rbConStringType2.TabStop = true;
+            this.rbConStringType2.Text = "Type2";
+            this.rbConStringType2.UseVisualStyleBackColor = true;
+            this.rbConStringType2.CheckedChanged += new System.EventHandler(this.rbConStringType2_CheckedChanged);
+            // 
             // FormDbLoginData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 195);
+            this.ClientSize = new System.Drawing.Size(264, 290);
+            this.Controls.Add(this.rbConStringType2);
+            this.Controls.Add(this.rbConStringType1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.tbHostIP);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbPort);
             this.Controls.Add(this.lblDomain);
             this.Controls.Add(this.lblUserID);
             this.Controls.Add(this.btnClose);
@@ -184,6 +282,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DB LOING DATA";
             this.Load += new System.EventHandler(this.FormDbLoginData_Load);
+            this.VisibleChanged += new System.EventHandler(this.FormDbLoginData_VisibleChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -204,5 +303,12 @@
         private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnConnect;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbPort;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbHostIP;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.RadioButton rbConStringType1;
+        private System.Windows.Forms.RadioButton rbConStringType2;
     }
 }

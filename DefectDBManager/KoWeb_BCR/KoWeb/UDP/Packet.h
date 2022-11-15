@@ -170,6 +170,8 @@ typedef struct tagAreaMarkDefect
 	float		width;			// 구간 마킹 넓이 mm
 	float		height;			// 구간 마킹 높이 mm
 	float		offset;			// 원단장 시작 위치 y mm
+	int			index;			// AreaDel의 인덱스
+	int			index2;			// AreaDel 프레임 잘린 인덱스
 	int			mark;			// 0:미마킹, 1:마킹
 }AREA_MARK_DEFECT;
 

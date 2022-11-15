@@ -705,9 +705,6 @@ void MakeResultData()
 #endif
 		}
 #endif
-
-
-
 		//-----------------------------------------------------------------------------
 	}
 
@@ -769,6 +766,17 @@ void MakeResultData()
 void MakeBcrResultData()
 {
 	memcpy(&g_DefectSend, &g_Defect, sizeof(DEFECTDATA));
+
+	// 불량이미지 저장하는 것 막음(테스트에서 저장하지 못하게), 현장적용에서는 DONT_SAVE_IMAGE 없앰.
+#ifndef DONT_SAVE_IMAGE			
+	if (g_Temp.m_dHDDspace == 0 || g_Temp.m_dHDDspace > 15.0)
+	{
+		CString strBcrFileName;
+		std::wstring strName = CA2W(g_Temp.m_cBcrFileName);
+		strBcrFileName.Format(_T("%s"), strName.c_str());
+		InputNGImage(g_Defect.m_pImage[0], strBcrFileName);	// 0번은 무조건 바코드 영상으로 한다.
+	}
+#endif
 }
 #endif
 

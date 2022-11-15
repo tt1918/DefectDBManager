@@ -43,7 +43,7 @@ CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch);
 CPoint GetBcrCenter(unsigned char* fm, CRect rt, int nPitch);
 CRect GetBarcodeRect2(LPBYTE fm, int w, int h, int pitch, int ndirect);
 void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch);
-BOOL CheckValidCode(CString str);
+bool CheckValidCode(CString str);
 int CheckBcrOrder(CString NewBarcode, CString LastBarcode);
 void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum);
 bool CheckDotOnPVA(LPBYTE fm, int w, int h, int pitch, int left, int right, int dir);
@@ -52,7 +52,7 @@ bool Read2DMatrix(cv::Mat roiImage);
 std::list<cv::Rect> FindBarcodePosition(cv::Mat image);
 cv::Rect SetBarcodeArea(cv::Rect rect, int width, int height);
 
-void SaveBcrImage(int frameNum);
+void UpdateBcrImagePathToDefect(int frameNum);
 void CvtBcrImage2SaveDefectImage(LPBYTE fm, int w, int h, CRect rect, LPBYTE out, int outW, int outH);
 
 void WEB_Barcode(LPVOID pParent)
@@ -104,10 +104,10 @@ void WEB_Barcode(LPVOID pParent)
 	}
 
 	// 우선 방향을 못 확인했더라도 패턴 영역을 확인한 상태이면 이미지는 저장하도록함
-	if (g_Param.m_bBcrSaveImage == true && (g_Temp.m_isBcrSuccessRead == true || g_Temp.m_nBcrPatFind == eBCRPatRead::eForceReadDone))
+	if (g_Param.m_bBcrSaveImage == true && (g_Temp.m_isBcrSuccessRead == true || g_Temp.m_nBcrPatFind == eForceReadDone))
 	{
 		CvtBcrImage2SaveDefectImage(fm, width, height, g_Temp.m_BcrRectFine, g_Defect.m_pImage[0], BAD_IMG_WIDTH, BAD_IMG_HEIGHT);
-		SaveBcrImage(nFrameNum);
+		UpdateBcrImagePathToDefect(nFrameNum);
 	}
 
 	SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
@@ -141,7 +141,7 @@ int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, i
 
 bool SearchBCR(LPVOID pParent)
 {
-	int i, j, m, nOverlap;
+	int i;
 	LPBYTE fm = g_fmGrab[g_ID];
 	int pitch = g_System.m_nPitch;
 	int width = g_System.m_nImageW;
@@ -151,7 +151,7 @@ bool SearchBCR(LPVOID pParent)
 
 	CString strLog;
 	g_Temp.m_isBcrSuccessRead = false;
-	g_Temp.m_nBcrPatFind = eBCRPatRead::eNone;	// 패턴 검사로 찾은 경우 확인
+	g_Temp.m_nBcrPatFind = eNone;	// 패턴 검사로 찾은 경우 확인
 
 	// 결과 데이터는 전부 g_Temp 데이터에 저장됨.
 	GetBcrPosition(fm, 0, 0, width, height, pitch);
@@ -255,7 +255,7 @@ bool SearchBCR(LPVOID pParent)
 			if (g_Temp.m_isBcrSuccessRead == true)
 			{
 				strBcrMsg = _T("Read");
-				g_Temp.m_nBcrPatFind = eBCRPatRead::eReadDone; // Reader로 읽어들인 경우
+				g_Temp.m_nBcrPatFind = eReadDone; // Reader로 읽어들인 경우
 			}
 		}
 
@@ -381,7 +381,7 @@ bool SearchBCR(LPVOID pParent)
 				{
 					g_Temp.m_strBcrName = strNewBCNO;
 					g_Temp.m_isBcrSuccessRead = true;
-					g_Temp.m_nBcrPatFind = eBCRPatRead::eForceReadDone; // 강제 바코드 입력으로 데이터 입력
+					g_Temp.m_nBcrPatFind = eForceReadDone; // 강제 바코드 입력으로 데이터 입력
 				}
 				else
 				{
@@ -418,8 +418,8 @@ bool SearchBCR(LPVOID pParent)
 		{
 			if (g_Temp.m_isBcrSuccessRead == true)
 			{
-				g_Temp.m_nBcrNoReadWarning = 0;
-				g_Temp.m_nBcrNoReadError = 0;
+				g_Temp.m_dBcrNoReadWarning = 0;
+				g_Temp.m_dBcrNoReadError = 0;
 
 			}
 			else
@@ -431,30 +431,30 @@ bool SearchBCR(LPVOID pParent)
 
 				// 미터로 계산
 				calcFrameLeng = (g_Param.m_dBcrScaleFactorY * height) / 1000.0;
-				g_Temp.m_nBcrNoReadWarning += calcFrameLeng;
-				g_Temp.m_nBcrNoReadError += calcFrameLeng;
+				g_Temp.m_dBcrNoReadWarning += calcFrameLeng;
+				g_Temp.m_dBcrNoReadError += calcFrameLeng;
 
 				if (g_Temp.m_isBcrFirstCode == true)
 				{
 					strLog.Format(_T("ERROR Meter : %.3fM, Warning Meter : %.3fM"),
-						g_Temp.m_nBcrNoReadWarning, g_Temp.m_nBcrNoReadError);
+						g_Temp.m_dBcrNoReadWarning, g_Temp.m_dBcrNoReadError);
 					WriteLog(strLog);
 				}
 
 				if (g_Temp.m_isBcrFirstCode == true && g_Temp.m_strBcrName.GetLength() > 9)
 				{
-					if ((int)g_Temp.m_nBcrNoReadError > g_Param.m_nBCRErrorM)
+					if ((int)g_Temp.m_dBcrNoReadError > g_Param.m_nBCRErrorM)
 					{
-						g_Temp.m_nBcrNoReadError = 0;
+						g_Temp.m_dBcrNoReadError = 0;
 						l_Send_Server.SendCommand_LocalHost(NM_BCR_BCD_READING_ERROR);
-						strLog.Format(_T("[Error] No Bcr Read Length: %.3fM [Error Std Meter:%d]"), g_Temp.m_nBcrNoReadError, g_Param.m_nBCRErrorM);
+						strLog.Format(_T("[Error] No Bcr Read Length: %.3fM [Error Std Meter:%d]"), g_Temp.m_dBcrNoReadError, g_Param.m_nBCRErrorM);
 						WriteLog(strLog);
 					}
-					else if ((int)g_Temp.m_nBcrNoReadWarning > g_Param.m_nBCRWarningM)
+					else if ((int)g_Temp.m_dBcrNoReadWarning > g_Param.m_nBCRWarningM)
 					{
-						g_Temp.m_nBcrNoReadWarning = 0;
+						g_Temp.m_dBcrNoReadWarning = 0;
 						l_Send_Server.SendCommand_LocalHost(NM_BCR_BCD_READING_LOW);
-						strLog.Format(_T("[Warning] No Bcr Read Length: %.3fM [Warning Std Meter:%d]"), g_Temp.m_nBcrNoReadError, g_Param.m_nBCRWarningM);
+						strLog.Format(_T("[Warning] No Bcr Read Length: %.3fM [Warning Std Meter:%d]"), g_Temp.m_dBcrNoReadError, g_Param.m_nBCRWarningM);
 						WriteLog(strLog);
 					}
 				}
@@ -495,7 +495,7 @@ bool SearchBCR(LPVOID pParent)
 
 
 	if (nFrameNum > 0 && nFrameNum % 100 == 0)
-		WriteBcrEdgeLog((g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX) + g_Param.m_dCamStartPosX);
+		WriteBcrEdgeLog((float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX));
 
 	return g_Temp.m_isBcrSuccessRead;
 }
@@ -1210,7 +1210,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 					g_Temp.m_BcrRectFine = g_Temp.m_BcrRectForMatch;
 
 					// 이진화로 패턴 영역 찾은 결과 
-					g_Temp.m_nBcrPatFind = eBCRPatRead::eFineRectOK;
+					g_Temp.m_nBcrPatFind = eFineRectOK;
 				}
 				else
 				{
@@ -1250,9 +1250,9 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	g_Temp.m_BcrRect.NormalizeRect();
 }
 
-BOOL CheckValidCode(CString str)
+bool CheckValidCode(CString str)
 {
-	BOOL bRet = TRUE;
+	bool bRet = true;
 	int legnth = 0;
 
 	legnth = str.GetLength();
@@ -1448,8 +1448,6 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		if (g_Temp.m_dBcrPreFramePos == 0)	//처음 초기값
 			g_Temp.m_dBcrPreFramePos = dCurFramePos;
 
-
-		int defectCnt;
 		// 불량 데이터 검색
 		if (g_Temp.m_nBcrDir == 1)  //바코드 수가 증가할 경우 
 			((CKoWebView*)pParent)->m_DefectCallClass->GetMarkDefectData(strBcrLotName, dCurFramePos, dNextFramePos);
@@ -1464,23 +1462,28 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		if (g_Temp.m_isBcrSuccessRead)
 		{
 
-			g_Defect.m_BMarkDefect.x = (float)(g_Temp.m_BcrRectFine.left * g_Param.m_dScaleFactorX) + g_Param.m_dCamStartPosX;
-			g_Defect.m_BMarkDefect.y = (float)(g_Temp.m_BcrRectFine.top * g_Param.m_dScaleFactorY) + g_Param.m_dCamStartPosY;
-			g_Defect.m_BMarkDefect.width = g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX;
-			g_Defect.m_BMarkDefect.height = g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX;
+			g_Defect.m_BMarkDefect.x = (float)(g_Temp.m_BcrRectFine.left * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX);
+			g_Defect.m_BMarkDefect.y = (float)(g_Temp.m_BcrRectFine.top * g_Param.m_dScaleFactorY + g_Param.m_dCamStartPosY);
+			g_Defect.m_BMarkDefect.width = (float)(g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX);
+			g_Defect.m_BMarkDefect.height = (float)(g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX);
 			g_Defect.m_BMarkDefect.type = csvType;
 			g_Defect.m_BMarkDefect.position = (int)g_Temp.m_dBcrCrtRealPos;
 
 			if (csvType == eCSV_TYPE_NITTO || csvType == eCSV_TYPE_NITTO_RK
-				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP)
-				g_Defect.m_BMarkDefect.defect_class = 6;
+				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP) 
+			{
+				//g_Defect.m_BMarkDefect.defect_class = 6;
+				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCID*100000000+100+COSC; // 확인 필요
+			}
 			else
-				g_Defect.m_BMarkDefect.defect_class = 9;
+			{
+				//g_Defect.m_BMarkDefect.defect_class = 9;
+				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCID * 100000000 + 100 + COSC; // 확인 필요
+			}
 			g_Defect.m_BMarkDefect.mark = (int)g_Param.m_bBcrMark;
 			strcpy_s(g_Defect.m_BMarkDefect.fileName, MAX_BADIMAGE_FILENAME, g_Temp.m_cBcrFileName);
 			g_Defect.m_nBcrCount = 1;
 		}
-
 
 		// 이전 위치 데이터 업데이트
 		g_Temp.m_dBcrPreFramePos = dCurFramePos;
@@ -1650,10 +1653,10 @@ bool Read2DMatrix(cv::Mat roiImage)
 	start = clock();
 	std::string szCode[2] = { "", "" };
 	szCode[0] = g_CodeReader.CodeRead(image.data, image.cols, image.rows, false);
-	if (szCode[0].compare("") == true)
+	if (szCode[0].compare("") == 0)
 	{
 		szCode[1] = g_CodeReader.CodeRead(image.data, image.cols, image.rows, true);
-		if (szCode[1].compare("") == true)
+		if (szCode[1].compare("") == 0)
 			isFind = false;
 		else
 			strCode.Format(_T("%s"), szCode[1].c_str());
@@ -1668,10 +1671,11 @@ bool Read2DMatrix(cv::Mat roiImage)
 		if (isFind == true) 
 		{
 			g_Temp.m_strBcrName = strCode;
-			g_Temp.m_nBcrPatFind = eBCRPatRead::eReadDone;
+			g_Temp.m_nBcrPatFind = eReadDone;
 		}
 	}
-		
+	end = clock();
+
 	return isFind;
 }
 
@@ -1876,25 +1880,18 @@ cv::Rect SetBarcodeArea(cv::Rect rect, int width, int height)
 	return modifyRect;
 }
 
-void SaveBcrImage(int frameNum)
+void UpdateBcrImagePathToDefect(int frameNum)
 {
 	double dBcrX = 0.f, dBcrY = 0.f;
 	dBcrX = (g_Temp.m_BcrRectFine.left + g_Temp.m_BcrRectFine.Width() / 2.0) * g_Param.m_dScaleFactorX;
 	dBcrY = (g_Temp.m_BcrRectFine.top + g_Temp.m_BcrRectFine.Height() / 2.0) * g_Param.m_dScaleFactorY;
 
 	CString sNGImageName, sNGImageFullName;
-	sNGImageName.Format(_T("MATCHED_[%05d]%.3f_%.3f.bmp"), frameNum, dBcrX, dBcrY);
+	sNGImageName.Format(_T("BCNO_MATCHED_[%05d]%.3f_%.3f.bmp"), frameNum, dBcrX, dBcrY);
+	strcpy_s(g_Defect.m_Defect[0].filename, sNGImageName.GetLength()+1, CW2A(sNGImageName));
 
-	//불량이미지 저장하는 것 막음(테스트에서 저장하지 못하게), 현장적용에서는 DONT_SAVE_IMAGE 없앰.
-#ifndef DONT_SAVE_IMAGE			
-	if (g_Temp.m_dHDDspace == 0 || g_Temp.m_dHDDspace > 15.0)
-	{
-		sNGImageFullName.Format(_T("%s%s\\%s\\%s"), NG_IMAGE_PATH, g_Temp.m_slotName, g_Temp.m_sMyComName, sNGImageName);
-		InputNGImage(g_Defect.m_pImage[0], sNGImageFullName);
-		int len = sNGImageFullName.GetLength()+1;
-		strcpy_s(g_Temp.m_cBcrFileName, len, CW2A(sNGImageFullName));
-	}
-#endif
+	sNGImageFullName.Format(_T("%s%s\\%s\\%s"), NG_IMAGE_PATH, g_Temp.m_slotName, g_Temp.m_sMyComName, sNGImageName);
+	strcpy_s(g_Temp.m_cBcrFileName, sNGImageFullName.GetLength() + 1, CW2A(sNGImageFullName));
 }
 
 void CvtBcrImage2SaveDefectImage(LPBYTE fm, int w, int h, CRect rect, LPBYTE out, int outW, int outH)
@@ -1912,8 +1909,8 @@ void CvtBcrImage2SaveDefectImage(LPBYTE fm, int w, int h, CRect rect, LPBYTE out
 	double diffX, diffY;
 	int nTarX, nTarY;
 	double w11, w12, w21, w22;
-	BYTE uc11, uc12, uc21, uc22;
-	BYTE ucOut;
+	byte uc11, uc12, uc21, uc22;
+	byte ucOut;
 	for (i = 0; i < outH; i++)
 	{
 		for (j = 0; j < outW; j++)
@@ -1933,7 +1930,7 @@ void CvtBcrImage2SaveDefectImage(LPBYTE fm, int w, int h, CRect rect, LPBYTE out
 			uc12 = *(fm + nTarY * w + nTarX + 1);
 			uc21 = *(fm + (nTarY + 1) * w + nTarX);
 			uc22 = *(fm + (nTarY + 1) * w + nTarX + 1);
-			ucOut = w11 * uc11 + w12 * uc12 + w21 * uc21 + w22 * uc22;
+			ucOut = (byte)(w11 * uc11 + w12 * uc12 + w21 * uc21 + w22 * uc22);
 			if (ucOut > 255) ucOut = 255;
 
 			*(out + i * outW + j) = ucOut;
@@ -1948,8 +1945,8 @@ void CheckBcrLotDataError(CString strBcno)
 	{
 		if (g_Param.m_nNoInspect == false)
 		{
-			int nBCNO_nowSize = g_Temp.m_arLoadedBCNO[0].GetSize();
-			int nBCNO_nextSize = g_Temp.m_arLoadedBCNO[1].GetSize();
+			int nBCNO_nowSize = (int)(g_Temp.m_arLoadedBCNO[0].GetSize());
+			int nBCNO_nextSize = (int)(g_Temp.m_arLoadedBCNO[1].GetSize());
 
 			CString strDataNow, strDataNext;
 			CString strMsgNow, strMsgNext;
