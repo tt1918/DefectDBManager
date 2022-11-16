@@ -320,7 +320,7 @@ void CPacket::MakeBcrPacketDataDelay(int N)
 
 	CTime time = CTime::GetCurrentTime();
 	CString sTime = time.Format("[%H-%M-%S]");
-	int nDelayFrame = N;
+	int nDelayFrame = 0;
 	TCHAR sFileName[MAX_BADIMAGE_FILENAME];
 	TCHAR sFileName1[MAX_BADIMAGE_FILENAME];
 	int nLotLen;
