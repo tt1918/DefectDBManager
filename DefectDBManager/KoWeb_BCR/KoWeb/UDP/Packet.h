@@ -202,10 +202,14 @@ public:
 	void MakePacketData();		//NG데이타 전달용 Packet만드는 함수
 #ifdef BARCODE_VISION
 	void MakeBcrPacketData();	// BCR Vision Data 전달용 Patcket만드는 함수
-#endif
+#endif BARCODE_VISION
+
 #ifdef RESULT_DELAY
 	void MakePacketDataDelay(int N); //NG데이타 전달용 Packet만드는 함수 (한 Frame뒤에 보냄)
-#endif
+#ifdef BARCODE_VISION
+	void MakeBcrPacketDataDelay(int N); // BCR Vision Data 전달용 Patcket만드는 함수 (한 Frame뒤에 보냄)
+#endif BARCODE_VISION
+#endif RESULT_DELAY
 	void MakeInfoPacket(int code, TCHAR *param_name, double val);
 
 #ifdef USE_SK_BAT

@@ -887,8 +887,12 @@ void ResultDataSend()
 #ifdef USE_NITTO_AI
 			g_csAi.Lock();
 #endif
-			//전전 Frame불량 데이타로 Packet만듦.			
+			//전전 Frame불량 데이타로 Packet만듦.		
+#ifndef BARCODE_VISION
 			packet->MakePacketDataDelay(g_DelayIndex);
+#else
+			packet->MakeBcrPacketDataDelay(g_DelayIndex);
+#endif BARCODE_VISION
 
 #ifdef USE_NITTO_AI
 			g_csAi.Unlock();
@@ -935,8 +939,11 @@ void ResultDataSend()
 			if(g_Temp.m_nGrabFrameID%g_Temp.m_nFrameInfoSendCount==0 && g_Temp.m_nGrabFrameID>0)
 			{
 				CPacket* packet = new CPacket;
+#ifndef BARCODE_VISION
 				packet->MakePacketDataDelay(g_DelayIndex);
-
+#else
+				packet->MakeBcrPacketDataDelay(g_DelayIndex);
+#endif
 				//서버데이타 보내고
 				l_Send_Server.SendInsData(packet); 
 

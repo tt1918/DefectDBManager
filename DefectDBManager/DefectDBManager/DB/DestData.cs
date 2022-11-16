@@ -204,9 +204,12 @@ namespace DefectDBManager
 
     public class DBLoginInfo
     {
-        public string DbID;
-        public string DbPW;
-        public string DbName;
+        public string   DbID;
+        public string   DbPW;
+        public string   DbName;
+        public string   DBPort;
+        public string   DBIP;
+        public int      DBConStringType;
 
         public bool GetDBLoginInfo(ref string id, ref string pw, ref string name)
         {
@@ -360,6 +363,9 @@ namespace DefectDBManager
             dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
             dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
             dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
+            dbLogin.DBPort = NativeFunc.ReadIni(Define.DestPath, key, "DB_PORT", "");
+            dbLogin.DBIP = NativeFunc.ReadIni(Define.DestPath, key, "DB_IP", "");
+            dbLogin.DBConStringType = NativeFunc.ReadIni(Define.DestPath, key, "DB_CON_STRING_TYPE", 0);
 
             this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
             this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
@@ -444,6 +450,9 @@ namespace DefectDBManager
             NativeFunc.WriteIni(Define.DestPath, key, "DB_ID", dbLogin.DbID);
             NativeFunc.WriteIni(Define.DestPath, key, "DB_PW", dbLogin.DbPW);
             NativeFunc.WriteIni(Define.DestPath, key, "DB_NAME", dbLogin.DbName);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_PORT", dbLogin.DBPort);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_IP", dbLogin.DBIP);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_CON_STRING_TYPE", dbLogin.DBConStringType);
 
             NativeFunc.WriteIni(Define.DestPath, key, "CSV_TYPE", (int)this.CSVType);
             NativeFunc.WriteIni(Define.DestPath, key, "CSV_VER", this.csvVer);

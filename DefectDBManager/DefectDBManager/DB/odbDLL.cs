@@ -42,13 +42,6 @@ namespace DefectDBManager
         }
         private string password;
 
-        public string IP
-        {
-            get { return dbIP; }
-            set { dbIP = value; }
-        }
-        private string dbIP;
-
         public string DBName
         {
             get { return dbName; }

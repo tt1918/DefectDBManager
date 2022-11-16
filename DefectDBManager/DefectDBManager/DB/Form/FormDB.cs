@@ -1121,6 +1121,9 @@ namespace DefectDBManager
             this.dbConn.UserID = dataBase.DbDestConfig.dbLogin.DbID;
             this.dbConn.Password = dataBase.DbDestConfig.dbLogin.DbPW;
             this.dbConn.DBName = dataBase.DbDestConfig.dbLogin.DbName;
+            this.dbConn.DBPort = dataBase.DbDestConfig.dbLogin.DBPort;
+            this.dbConn.HostIP = dataBase.DbDestConfig.dbLogin.DBIP;
+            this.dbConn.ConStringType = dataBase.DbDestConfig.dbLogin.DBConStringType;
 
             if (formLogin == null) formLogin = new FormDbLoginData(this.dbConn);
 
@@ -1131,6 +1134,9 @@ namespace DefectDBManager
                 dataBase.DbDestConfig.dbLogin.DbID = this.dbConn.UserID;
                 dataBase.DbDestConfig.dbLogin.DbPW = this.dbConn.Password;
                 dataBase.DbDestConfig.dbLogin.DbName = this.dbConn.DBName;
+                dataBase.DbDestConfig.dbLogin.DBConStringType = this.dbConn.ConStringType;
+                dataBase.DbDestConfig.dbLogin.DBIP = this.dbConn.HostIP;
+                dataBase.DbDestConfig.dbLogin.DBPort = this.dbConn.DBPort;
             }
         }
 
