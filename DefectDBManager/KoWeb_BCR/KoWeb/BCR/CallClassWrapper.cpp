@@ -35,7 +35,7 @@ void CallClassWrapper::GetDefectsData()
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		SAFEARRAY* array = m_pCallClass->GetDefect();
 
 		if (array)
@@ -70,11 +70,11 @@ void CallClassWrapper::GetDefectsData()
 			MessageBox(NULL, strMsg, _T(""), MB_OK);
 
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -82,15 +82,15 @@ void CallClassWrapper::ReadDBFile(std::string path)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		_bstr_t bs(path.c_str());
 		m_pCallClass->ReadDBFile(bs);
 		::SysFreeString(bs);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -98,7 +98,7 @@ void CallClassWrapper::SearchDefectClass(int classID)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		SAFEARRAY* array = m_pCallClass->SearchDefects(classID);
 		if (array)
 		{
@@ -131,11 +131,11 @@ void CallClassWrapper::SearchDefectClass(int classID)
 			strMsg.Format(_T("%d"), lDimSize);
 			MessageBox(NULL, strMsg, _T(""), MB_OK);
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -143,15 +143,15 @@ void CallClassWrapper::ReadCSVFile(std::string path)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		_bstr_t bs(path.c_str());
 		m_pCallClass->ReadCSVFile(bs);
 		::SysFreeString(bs);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -159,13 +159,13 @@ void CallClassWrapper::ShowDefectView(bool isNext)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		m_pCallClass->ShowViewer(isNext);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -173,13 +173,13 @@ void CallClassWrapper::AddEndCsvReading(ICsvReadingEvents* pThis)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		m_pCallClass->AddEventCsvReading(pThis);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -187,13 +187,13 @@ void CallClassWrapper::RemoveEndCsvReading(ICsvReadingEvents* pThis)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		m_pCallClass->RemoveEventCsvReading(pThis);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -202,7 +202,7 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 	int size = 0;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 
 		SAFEARRAY* array = m_pCallClass->GetMarkingData(isNext);
 		MarkingDataManager* pManager = &((CKoWebView*)m_pParent)->m_MarkingDataMgr;
@@ -277,8 +277,7 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 						markingDefect.defect_class = value.CAM_NO * 100000000 + 13;//
 				}
 
-				int cLen = ::SysStringLen(value.FAULTID);
-				strcpy_s(markingDefect.fltid, cLen, CW2A(value.FAULTID));
+				sprintf(g_Defect.m_BcrDefect[i].fltid, CW2A(value.FAULTID));
 				markingDefect.mark = 1;
 
 				pManager->AddData(isNext, markingDefect);
@@ -292,11 +291,11 @@ int CallClassWrapper::GetMarkingData(bool isNext)
 
 			size = lDimSize;
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 
 	return size;
@@ -307,13 +306,13 @@ int CallClassWrapper::GetMarkingDefectMeter()
 	int size = 0;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		size = m_pCallClass->GetMarkingDefectMeter();
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	return size;
 }
@@ -322,7 +321,7 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		BSTR bstr;
 		bstr = strBCno.AllocSysString();
 
@@ -354,7 +353,6 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 				rgIndices[0] = i;
 				SafeArrayGetElement(array, rgIndices, (void FAR*) & value);
 
-				g_Defect.m_BcrDefect[i].defect_class = value.DefectLine; // defect Class 재정의 해야함.
 				g_Defect.m_BcrDefect[i].x_pos = value.XPOS_M;
 				g_Defect.m_BcrDefect[i].y_pos = value.YPOS_M;
 				g_Defect.m_BcrDefect[i].offset = value.OFFSET;
@@ -397,8 +395,7 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
 				}
 
-				int cLen = ::SysStringLen(value.FAULTID);
-				strcpy_s(g_Defect.m_BcrDefect[i].fltid, cLen, CW2A(value.FAULTID));
+				sprintf(g_Defect.m_BcrDefect[i].fltid, CW2A(value.FAULTID));
 				g_Defect.m_BcrDefect[i].mark = 1;
 
 				splRecordInfo->RecordClear((PVOID)&value);
@@ -409,11 +406,11 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 		}
 
 		::SysFreeString(bstr);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -421,7 +418,7 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		CString strLog;
 		long areaDelCnt = 0;
 		SAFEARRAY* array = m_pCallClass->GetMarkAreaDelDefectData(start, end, &areaDelCnt);
@@ -499,11 +496,11 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 			SafeArrayDestroy(array);
 			array = NULL;
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -513,13 +510,13 @@ int CallClassWrapper::GetCSV_Type()
 	int type = -1;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		type = m_pCallClass->GetCSV_Type();
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	return type;
 }
@@ -529,7 +526,7 @@ bool CallClassWrapper::GetUseES(bool isNext)
 	bool isRes = false;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		VARIANT value;
 		VariantInit(&value);
 
@@ -537,11 +534,11 @@ bool CallClassWrapper::GetUseES(bool isNext)
 		if (value.boolVal == VARIANT_TRUE)
 			isRes = true;
 		VariantClear(&value);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 		return isRes;
 	}
 	return isRes;
@@ -552,7 +549,7 @@ bool CallClassWrapper::GetUseTG(bool isNext)
 	bool isRes = false;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		VARIANT value;
 		VariantInit(&value);
 
@@ -560,11 +557,11 @@ bool CallClassWrapper::GetUseTG(bool isNext)
 		if (value.boolVal == VARIANT_TRUE)
 			isRes = true;
 		VariantClear(&value);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 		return isRes;
 	}
 	return isRes;
@@ -575,7 +572,7 @@ bool CallClassWrapper::GetUseETC(bool isNext)
 	bool isRes = false;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		VARIANT value;
 		VariantInit(&value);
 
@@ -583,11 +580,11 @@ bool CallClassWrapper::GetUseETC(bool isNext)
 		if (value.boolVal == VARIANT_TRUE)
 			isRes = true;
 		VariantClear(&value);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 		return isRes;
 	}
 	return isRes;
@@ -606,18 +603,18 @@ void CallClassWrapper::SearchLot(CString strLot, bool isNext, long vendor, bool 
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		_bstr_t bstrLot;
 		bstrLot = strLot.AllocSysString();
 
 		m_pCallClass->SearchLot(bstrLot, isNext, vendor, useES, useTG, useETC);
 
 		::SysFreeString(bstrLot);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -640,7 +637,7 @@ int CallClassWrapper::GetSearchLotResult(bool isNext, CStringArray* arData)
 	long lDimSize = 0;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		SAFEARRAY* array = m_pCallClass->GetSearchLotResults(isNext);
 		if (array)
 		{
@@ -676,11 +673,11 @@ int CallClassWrapper::GetSearchLotResult(bool isNext, CStringArray* arData)
 			SafeArrayDestroy(array);
 			array = NULL;
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	return lDimSize;
 }
@@ -689,16 +686,16 @@ void CallClassWrapper::SearchModel(CString strLot)
 {
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		_bstr_t bstrLot;
 		bstrLot = strLot.AllocSysString();
 		m_pCallClass->SearchModel(bstrLot);
 		::SysFreeString(bstrLot);
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 }
 
@@ -707,7 +704,7 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 	long lDimSize = 0;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 
 		int modelCnt = m_pCallClass->GetSearchModelCount();
 		if (modelCnt == 0)
@@ -741,11 +738,11 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 			SafeArrayDestroy(array);
 			array = NULL;
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	return lDimSize;
 }
@@ -755,7 +752,7 @@ int CallClassWrapper::GetLoadedBCNO_Data(bool isNext, CStringArray* arBCNO)
 	long size = 0;
 	try
 	{
-		EnterCriticalSection(&cs);
+		//EnterCriticalSection(&cs);
 		SAFEARRAY* array = m_pCallClass->GetLoadedBCNO(isNext, &size);
 
 		if (size == 0)
@@ -789,11 +786,11 @@ int CallClassWrapper::GetLoadedBCNO_Data(bool isNext, CStringArray* arBCNO)
 			SafeArrayDestroy(array);
 			array = NULL;
 		}
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 	}
 	catch (...)
 	{
-		LeaveCriticalSection(&cs);
+		//LeaveCriticalSection(&cs);
 		return size;
 	}
 

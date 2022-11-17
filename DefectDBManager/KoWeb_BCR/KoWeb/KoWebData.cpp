@@ -363,8 +363,8 @@ int LoadSystemData()
 #endif
 
 #ifdef BARCODE_VISION
-	g_System.m_nImageW = g_System.m_nPitch = 4096;
-	g_System.m_nImageH = 2048;
+	g_System.m_nImageW = g_System.m_nPitch = 8192;
+	g_System.m_nImageH = 4096;
 	g_System.m_nMakePyramid = 0;
 
 	// 테스트 용

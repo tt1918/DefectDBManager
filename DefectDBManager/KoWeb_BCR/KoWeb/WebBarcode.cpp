@@ -110,7 +110,13 @@ void WEB_Barcode(LPVOID pParent)
 		UpdateBcrImagePathToDefect(nFrameNum);
 	}
 
-	SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
+	if (g_Temp.m_nBcrFirstRead==true
+		|| (g_Temp.m_bBcrForceInsert ==true && g_Temp.m_isBcrForceReading==true)
+		|| (g_Temp.m_nBcrDir != 0)) // 방향이 인식 되었으면 들어온다
+	{
+		SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
+	}
+	
 
 	//for (i = 0; i < 128; i++)
 	//	memcpy(l_fmBCR + nBcrPitch * i, l_fmBCRBK + nBcrPitch * i, nBcrPitch);
@@ -392,10 +398,57 @@ bool SearchBCR(LPVOID pParent)
 			}
 		}
 
+#ifdef BCR_SIMUL_TEST
+		if (g_Temp.m_strPreBcrName.GetLength() == 0)
+		{
+			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName = _T("E850401-03_001400"); // 테스트 코드
+		}
+		if ((nFrameNum - g_Temp.m_nBcrPreInspFrame > 9) && g_Temp.m_isBcrSuccessRead == FALSE)
+		{
+			int nStrSize = g_Temp.m_strPreBcrName.GetLength();
+			int nSpacePos = g_Temp.m_strPreBcrName.ReverseFind('_');
+
+			CString strmsg = g_Temp.m_strPreBcrName.Left(nSpacePos + 1);
+			int ntmp = _ttoi(g_Temp.m_strPreBcrName.Right(nStrSize - nSpacePos - 1));
+			g_Temp.m_strBcrName.Format(_T("%s%06d"), strmsg, ntmp + 1);
+
+			nStrSize = g_Temp.m_strBcrName.GetLength();
+			nSpacePos = g_Temp.m_strBcrName.ReverseFind('_');
+
+			/*pDoc->m_str_lot_Full = g_Temp.m_strBcrName;
+			pDoc->m_str_lot_End = pDoc->m_str_lot_Full.Right(nStrSize - nSpacePos - 1);*/
+			g_Temp.m_slotName = g_Temp.m_strBcrName.Left(nSpacePos);
+			g_Temp.m_isBcrSuccessRead = TRUE;
+			g_Defect.m_nBcrCount = 1;
+			g_Defect.m_nBcrDefectCount = 0;
+			g_Defect.m_nBcrAreaDefectCount = 0;
+			g_Temp.m_nBcrPatFind = eReadDone;
+			g_Temp.m_nBcrDir = 1;	//증가
+			g_Temp.m_isBcrFirstCode = 1;
+			strBcrMsg = _T("Read");
+
+			g_Temp.m_BcrRectFine = CRect(200, g_Temp.m_nFoundEdge, 800, g_Temp.m_nFoundEdge + 200);
+			g_Temp.m_BcrRect = CRect(200, g_Temp.m_nFoundEdge, 800, g_Temp.m_nFoundEdge + 200);
+		}
+		else if (g_Temp.m_nBcrPatFind == eForceReadDone)
+		{
+
+		}
+		else
+		{
+			g_Temp.m_isBcrSuccessRead = false;
+			g_Defect.m_nBcrCount = 0;
+			g_Defect.m_nBcrDefectCount = 0;
+			g_Defect.m_nBcrAreaDefectCount = 0;
+			g_Temp.m_nBcrPatFind = eNone;
+		}
+#endif	
+
 		if (g_Temp.m_isBcrSuccessRead == true)
 		{
-			g_Temp.m_nBcrPreInspFrame = nFrameNum;
-			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;
+			// 이위치 아닌거 같음.
+			/*g_Temp.m_nBcrPreInspFrame = nFrameNum;
+			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;*/
 
 			g_Temp.m_nBcrReadOK++;
 		}
@@ -491,8 +544,6 @@ bool SearchBCR(LPVOID pParent)
 			WriteBarcodeInfo(g_Temp.m_strPreBcrName, strBcrMsg, g_Temp.m_nBcrPatFind, g_Temp.m_nInspectFrame);
 		}
 	}
-
-
 
 	if (nFrameNum > 0 && nFrameNum % 100 == 0)
 		WriteBcrEdgeLog((float)(g_Temp.m_nFoundEdge * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX));
@@ -1296,7 +1347,6 @@ int CheckBcrOrder(CString NewBarcode, CString LastBarcode)
 	return nRst;
 }
 
-
 int m_nBcrPreYPos = 0;
 
 void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
@@ -1436,13 +1486,13 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		double dNextFramePos, dCurFramePos;
 		if (g_Temp.m_nBcrDir == 1)  //바코드 수가 증가할 경우 
 		{
-			dNextFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame + 1) * bar_frame_length;
-			dCurFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame) * bar_frame_length;
+			dNextFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (crtFrameNum - lastBcrFrameNum + 1) * bar_frame_length;
+			dCurFramePos = g_Temp.m_dBcrCrtRealPos - g_Temp.m_dBcrOffsetY + (crtFrameNum - lastBcrFrameNum) * bar_frame_length;
 		}
 		else	//감소
 		{
-			dNextFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame + 1) * bar_frame_length;
-			dCurFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (lastBcrFrameNum - g_Temp.m_nBcrPreInspFrame) * bar_frame_length;
+			dNextFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (crtFrameNum - lastBcrFrameNum + 1) * bar_frame_length;
+			dCurFramePos = g_Temp.m_dBcrCrtRealPos + g_Temp.m_dBcrOffsetY - (crtFrameNum - lastBcrFrameNum) * bar_frame_length;
 		}
 
 		if (g_Temp.m_dBcrPreFramePos == 0)	//처음 초기값
@@ -1461,7 +1511,6 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		// Bcr 영역 Marking 처리
 		if (g_Temp.m_isBcrSuccessRead)
 		{
-
 			g_Defect.m_BMarkDefect.x = (float)(g_Temp.m_BcrRectFine.left * g_Param.m_dScaleFactorX + g_Param.m_dCamStartPosX);
 			g_Defect.m_BMarkDefect.y = (float)(g_Temp.m_BcrRectFine.top * g_Param.m_dScaleFactorY + g_Param.m_dCamStartPosY);
 			g_Defect.m_BMarkDefect.width = (float)(g_Temp.m_BcrRectFine.Width() * g_Param.m_dScaleFactorX);
