@@ -934,7 +934,8 @@ void CKoWebView::DrawResults()
 	m_sResult[m_nResultStringCnt++] = str;
 	str.Format(_T("BCR Fine Rect : (%d,%d),(%d,%d)"), g_Temp.m_BcrRectFine.top, g_Temp.m_BcrRectFine.left, g_Temp.m_BcrRectFine.bottom, g_Temp.m_BcrRectFine.right);
 	m_sResult[m_nResultStringCnt++] = str;
-	
+	str.Format(_T("BCR : [%d], Defect : [%d], AreaDel : [%d]"), g_Defect.m_nBcrCount, g_Defect.m_nBcrDefectCount, g_Defect.m_nBcrAreaDefectCount);
+	m_sResult[m_nResultStringCnt++] = str;
 	if (g_Temp.m_nBcrPatFind == 1) // BCR Reader에 의해 읽기 완료
 	{
 		str.Format(_T("BCR Info : %s"), g_Temp.m_strBcrName);
