@@ -444,7 +444,6 @@ typedef struct TEMPDATA_
 	double   m_dOuterEdge;		//바깥쪽Edge	
 #endif
 
-
 	int m_nKnullingCheck;		//Knulling Check했으면 1
 	int m_nKnullingValue;		//TAC_LINE에서 Knull값 구한것
 	double m_dNullingRatio;   
@@ -462,9 +461,7 @@ typedef struct TEMPDATA_
 	int		m_nBcrPreEdge;		// 이전 프레임 에지 위치
 	CRect	m_BcrRect;			// 1차 영역 추출
 	CRect	m_BcrRectFine;		// 후처리 영역 추출
-	CRect	m_BcrSavingRect;	// BCR 이미지 저장용
 	CRect	m_BcrRectForMatch;	// BCR 확인 실패 시 중심 처리용
-	CRect   m_BcrRectMatched;	// 패턴 매칭된 BCR 영역
 	CRect	m_BcrRectCodeRead;	// CodeReader에 의해 획득한 중심점
 
 	CPoint  m_BcrCenterPt;		// 바코드 중심점

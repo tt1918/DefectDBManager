@@ -70,6 +70,10 @@ void WEB_Barcode(LPVOID pParent)
 
 	g_Temp.m_nMaxGray = 0;
 	g_Temp.m_nMinGray = 255;
+	g_Temp.m_BcrRect = CRect(0, 0, 0, 0);
+	g_Temp.m_BcrRectFine = CRect(0, 0, 0, 0);
+	g_Temp.m_BcrRectForMatch = CRect(0,0,0,0);
+	g_Temp.m_BcrRectCodeRead = CRect(0, 0, 0, 0);
 
 	if (g_Param.m_nNotInspArea == 0) return;
 
@@ -147,7 +151,7 @@ int GetBCRData(LPBYTE fm, int left, int top, int w, int h, int pitch, int* pX, i
 
 bool SearchBCR(LPVOID pParent)
 {
-	int i;
+	int i, j;
 	LPBYTE fm = g_fmGrab[g_ID];
 	int pitch = g_System.m_nPitch;
 	int width = g_System.m_nImageW;
@@ -304,18 +308,13 @@ bool SearchBCR(LPVOID pParent)
 					nMatchFrame = 4;
 				else if ((nFrameNum - nPreFrm >= (int)(dBarcode_period_frame * 5 - 1) && nFrameNum - nPreFrm <= (int)(dBarcode_period_frame * 5 + 1)))
 					nMatchFrame = 5;
-
 			}
 
-			CRect rectBCD;
-			rectBCD = g_Temp.m_BcrRectForMatch;
 			strBcrMsg.Format(_T("Matched"));
 			nRet = 1;
 
-
 			if (nRet > 0)
 			{
-				g_Temp.m_BcrRectMatched = rectBCD;
 				const int nLastBcrFrame = g_Temp.m_nBcrPreInspFrame;
 				const CString strLastBCNO = g_Temp.m_strPreBcrName;
 				int ntmp = 0;
@@ -425,7 +424,8 @@ bool SearchBCR(LPVOID pParent)
 			g_Temp.m_nBcrPatFind = eReadDone;
 			g_Temp.m_nBcrDir = 1;	//증가
 			g_Temp.m_isBcrFirstCode = 1;
-			strBcrMsg = _T("Read");
+			strBcrMsg = _T("Read"); 
+			g_Temp.m_isBcrFirstCheck = false;
 
 			g_Temp.m_BcrRectFine = CRect(200, g_Temp.m_nFoundEdge, 800, g_Temp.m_nFoundEdge + 200);
 			g_Temp.m_BcrRect = CRect(200, g_Temp.m_nFoundEdge, 800, g_Temp.m_nFoundEdge + 200);
@@ -640,43 +640,6 @@ CRect GetBcrFineArea(LPBYTE fm, int left, int top, int w, int h, int pitch)
 	tmpRect.right = g_Temp.m_BcrRect.right;
 	tmpRect.InflateRect(0, 0, 0, 0);
 
-	if (g_Param.m_bBcrSaveImage == true)
-	{
-		g_Temp.m_BcrSavingRect.SetRect(0, 0, 256, 256);
-
-		CRect rectSave;
-		rectSave.SetRect(0, 0, 0, 0);
-		rectSave = rect;
-
-		CPoint nCenter;
-		nCenter = rect.CenterPoint();
-
-		rectSave.top = nCenter.y - (g_Temp.m_BcrSavingRect.Height() / 2);
-		rectSave.bottom = nCenter.y + (g_Temp.m_BcrSavingRect.Height() / 2);
-		rectSave.left = nCenter.x - (g_Temp.m_BcrSavingRect.Width() / 2);
-		rectSave.right = nCenter.x + (g_Temp.m_BcrSavingRect.Width() / 2);
-		if (rectSave.top < 0)
-		{
-			rectSave.top = 0;
-			rectSave.bottom = g_Temp.m_BcrSavingRect.Height();
-		}
-		if (rectSave.bottom > h)
-		{
-			rectSave.bottom = h;
-			rectSave.top = rectSave.bottom - g_Temp.m_BcrSavingRect.Height();
-		}
-		if (rectSave.left < 0)
-		{
-			rectSave.left = 0;
-			rectSave.right = g_Temp.m_BcrSavingRect.Width();
-		}
-		if (rectSave.right > w)
-		{
-			rectSave.right = w;
-			rectSave.left = rectSave.right - g_Temp.m_BcrSavingRect.Width();
-		}
-		g_Temp.m_BcrSavingRect = rectSave;
-	}
 	return tmpRect;
 }
 
@@ -1266,6 +1229,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 				else
 				{
 					g_Temp.m_BcrRectForMatch = CRect(0, 0, 0, 0);
+					g_Temp.m_BcrRectFine = CRect(0, 0, 0, 0);
 				}
 
 				delete[] areaSize;
@@ -1278,6 +1242,7 @@ void GetBcrPosition(LPBYTE fm, int left, int top, int w, int h, int pitch)
 			else
 			{
 				g_Temp.m_BcrRectForMatch = CRect(0, 0, 0, 0);
+				g_Temp.m_BcrRectFine = CRect(0, 0, 0, 0);
 			}
 
 			delete[] pInt;
@@ -1522,12 +1487,12 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP) 
 			{
 				//g_Defect.m_BMarkDefect.defect_class = 6;
-				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCID*100000000+100+COSC; // 확인 필요
+				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCNum *1000000 + 18; // 확인 필요
 			}
 			else
 			{
 				//g_Defect.m_BMarkDefect.defect_class = 9;
-				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCID * 100000000 + 100 + COSC; // 확인 필요
+				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCNum * 1000000 + 18; // 확인 필요
 			}
 			g_Defect.m_BMarkDefect.mark = (int)g_Param.m_bBcrMark;
 			strcpy_s(g_Defect.m_BMarkDefect.fileName, MAX_BADIMAGE_FILENAME, g_Temp.m_cBcrFileName);

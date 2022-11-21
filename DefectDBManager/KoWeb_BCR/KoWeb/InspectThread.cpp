@@ -766,6 +766,7 @@ void MakeResultData()
 void MakeBcrResultData()
 {
 	memcpy(&g_DefectSend, &g_Defect, sizeof(DEFECTDATA));
+	g_DefectSend.m_nFrameNum = g_Temp.m_nGrabFrame;
 
 	// 불량이미지 저장하는 것 막음(테스트에서 저장하지 못하게), 현장적용에서는 DONT_SAVE_IMAGE 없앰.
 #ifndef DONT_SAVE_IMAGE			
@@ -880,24 +881,28 @@ void ResultDataSend()
 
 	if(g_DelayIndex>=g_System.m_nResultDaley) 
 	{
+#ifndef BARCODE_VISION
 		if(g_DefectSendDelay[g_DelayIndex].m_nDefectCount>0)
-		{		
+		{
 			CPacket* packet = new CPacket;
-
 #ifdef USE_NITTO_AI
 			g_csAi.Lock();
 #endif
-			//전전 Frame불량 데이타로 Packet만듦.		
-#ifndef BARCODE_VISION
 			packet->MakePacketDataDelay(g_DelayIndex);
-#else
-			packet->MakeBcrPacketDataDelay(g_DelayIndex);
-#endif BARCODE_VISION
-
 #ifdef USE_NITTO_AI
 			g_csAi.Unlock();
 #endif
+#else
+		if (g_DefectSendDelay[g_DelayIndex].m_nBcrAreaDefectCount > 0 ||
+			g_DefectSendDelay[g_DelayIndex].m_nBcrCount> 0 ||
+			g_DefectSendDelay[g_DelayIndex].m_nBcrDefectCount>0)
 
+		{		
+			CPacket* packet = new CPacket;
+
+			//전전 Frame불량 데이타로 Packet만듦.		
+			packet->MakeBcrPacketDataDelay(g_DelayIndex);
+#endif
 			for(loop=0;loop<2;loop++)
 			{
 				//마킹데이타먼저 보내고
@@ -993,8 +998,11 @@ void ResultDataSend()
 
 
 		//불량 데이타로 Packet만듦.
+#ifndef BARCODE_VISION
 		packet->MakePacketData();
-
+#else
+		packet->MakeBcrPacketData();
+#endif
 		for(loop=0;loop<2;loop++)
 		{
 			//마킹데이타먼저 보내고
@@ -1037,7 +1045,11 @@ void ResultDataSend()
 		{
 			CPacket* packet = new CPacket;
 			g_DefectSend.m_nFrameNum=g_Temp.m_nGrabFrameID;
+#ifndef BARCODE_VISION
 			packet->MakePacketData();
+#else
+			packet->MakeBcrPacketData();
+#endif
 			l_Send_Server.SendInsData(packet); 
 
 #ifdef SERVER_TEST
@@ -1053,10 +1065,6 @@ void ResultDataSend()
 		//----------------------------------------------------------------------------------
 	}
 #endif
-
-
-
-
 
 #ifdef USE_SK_BAT
 	if(g_Temp.m_dOuterEdge>0 || g_Temp.m_dInnerEdge>0)

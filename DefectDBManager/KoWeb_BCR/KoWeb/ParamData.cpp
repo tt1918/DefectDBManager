@@ -2181,8 +2181,8 @@ void ApplyOpticBCR()
 	g_Param.m_nAutoEdgeFind = 1;
 	g_Param.m_nBCRSearchPixel = 500;
 	g_Param.m_useBcrMatSize = true;
-	g_Param.m_dBcrW = 4.0;
-	g_Param.m_dBcrH = 6.5;
+	g_Param.m_dBcrW = 4.5;
+	g_Param.m_dBcrH = 6.0;
 	g_Param.m_dBcrDiffW = 0.5;
 	g_Param.m_dBcrDiffH = 0.5;
 	g_Param.m_nBcrDotTh = 20;

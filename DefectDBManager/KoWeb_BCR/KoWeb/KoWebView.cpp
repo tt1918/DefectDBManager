@@ -136,7 +136,7 @@ CKoWebView::CKoWebView()
 	m_DefectReadingEvent = nullptr;
 
 #ifdef USE_CODEREADERDLL
-	g_CodeReader.Initialize(false, 0, 0, COG_VPP_FILE);
+	g_CodeReader.Initialize(false, 2048, 2048, COG_VPP_FILE);
 #endif
 }
 

@@ -362,37 +362,37 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 					if (type == eCSV_TYPE_NITTO)
 					{
 						if (value.DefectLine == 9) // 점착
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
 						else  //if (value.DefectLine == 8) // 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
 					}
 					else if (type == eCSV_TYPE_NITTO_RTS || type == eCSV_TYPE_NITTO_RK || type == eCSV_TYPE_KORENO_RK_IJP)
 					{
 						if (value.DefectLine == 9) //점착 
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
 						else if (value.DefectLine == 8) // 연신 - 기타
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
 						else //value.DefectLine = 7 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
 					}
 					else // 나중에 정의해야 함
 					{
 						if (value.DefectLine == 9) //점착 
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
 						else if (value.DefectLine == 8) // 연신 - 기타
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
 						else //value.DefectLine = 7 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
 					}
 				}
 				else
 				{
 					if (value.DefectLine == 9) //점착 
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 12;
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;
 					else if (value.DefectLine == 8) // 연신 - 기타
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 11;//
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
 					else //value.DefectLine = 7 그외
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 100000000 + 13;//
+						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
 				}
 
 				sprintf(g_Defect.m_BcrDefect[i].fltid, CW2A(value.FAULTID));
