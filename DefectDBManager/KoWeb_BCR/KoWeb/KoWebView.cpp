@@ -136,7 +136,10 @@ CKoWebView::CKoWebView()
 	m_DefectReadingEvent = nullptr;
 
 #ifdef USE_CODEREADERDLL
-	g_CodeReader.Initialize(false, 2048, 2048, COG_VPP_FILE);
+	if (g_CodeReader.Initialize(false, 2048, 2048, COG_VPP_FILE) == false)
+	{
+		AfxMessageBox(_T("CodeReaderDll Initialize failed"));
+	}
 #endif
 }
 

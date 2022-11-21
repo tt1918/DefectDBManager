@@ -359,7 +359,6 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 
 				if (value.UseCSVResult == false)
 				{
-
 					if (type == eCSV_TYPE_NITTO)
 					{
 						if (value.DefectLine < 21) // Defect Edit에 포함되지 않는 Defect Line

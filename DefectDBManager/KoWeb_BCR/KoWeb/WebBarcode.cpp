@@ -114,9 +114,9 @@ void WEB_Barcode(LPVOID pParent)
 		UpdateBcrImagePathToDefect(nFrameNum);
 	}
 
-	if (g_Temp.m_nBcrFirstRead==true
-		|| (g_Temp.m_bBcrForceInsert ==true && g_Temp.m_isBcrForceReading==true)
-		|| (g_Temp.m_nBcrDir != 0)) // 방향이 인식 되었으면 들어온다
+	//if (g_Temp.m_nBcrFirstRead==true
+	//	|| (g_Temp.m_bBcrForceInsert ==true && g_Temp.m_isBcrForceReading==true)
+	//	|| (g_Temp.m_nBcrDir != 0)) // 방향이 인식 되었으면 들어온다
 	{
 		SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
 	}
@@ -1414,14 +1414,14 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			}
 
 			g_Temp.m_isBcrInitRead = true;
-
-			// 마지막 바코드 값 입력 -->이전 바코드 프레임, 이전 바코드 영상내 위치, 이전 바코드 ROLL상 위치(mm 단위)  
-			m_nBcrPreYPos = g_Temp.m_BcrRectFine.top;
-			g_Temp.m_nBcrPreInspFrame = crtFrameNum;
-			g_Temp.m_dBcrPreRealPos = g_Temp.m_dBcrCrtRealPos;
 			g_Temp.m_nBcrOrder = CheckBcrOrder(g_Temp.m_strBcrName, g_Temp.m_strPreBcrName);
-			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;
 		}
+
+		// 마지막 바코드 값 입력 -->이전 바코드 프레임, 이전 바코드 영상내 위치, 이전 바코드 ROLL상 위치(mm 단위)  
+		m_nBcrPreYPos = g_Temp.m_BcrRectFine.top;
+		g_Temp.m_nBcrPreInspFrame = crtFrameNum;
+		g_Temp.m_dBcrPreRealPos = g_Temp.m_dBcrCrtRealPos;
+		g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;
 	}
 	else
 	{
