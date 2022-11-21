@@ -453,13 +453,6 @@ bool SearchBCR(LPVOID pParent)
 			g_Temp.m_nBcrReadOK++;
 		}
 
-		if (g_Temp.m_isBcrFirstCode == true ||
-			(g_Temp.m_bBcrForceInsert == true && g_Temp.m_isBcrForceReading == true) ||
-			(g_Temp.m_nBcrDir != 0))
-		{
-			// 전공정 결점 데이터 검색해야함
-		}
-
 		if (g_Param.m_nBcrCsvType == eCSV_TYPE_NITTO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO_RK)
 		{
 			// 10미터 마다 불량 데이터 전송?????

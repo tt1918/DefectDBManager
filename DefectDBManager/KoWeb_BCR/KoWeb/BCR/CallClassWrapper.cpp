@@ -359,40 +359,71 @@ void CallClassWrapper::GetMarkDefectData(CString strBCno, double start, double e
 
 				if (value.UseCSVResult == false)
 				{
+
 					if (type == eCSV_TYPE_NITTO)
 					{
-						if (value.DefectLine == 9) // 점착
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
-						else  //if (value.DefectLine == 8) // 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						if (value.DefectLine < 21) // Defect Edit에 포함되지 않는 Defect Line
+						{
+							if (value.DefectLine == 9) // 점착
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
+							else  //if (value.DefectLine == 8) // 그외
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						}
+						else // Edit Defect에 의해서 만들어진 Defect Line
+						{
+							g_Defect.m_BcrDefect[i].defect_class = (value.DefectLine - 20) * 1000000 + 16;
+						}
 					}
 					else if (type == eCSV_TYPE_NITTO_RTS || type == eCSV_TYPE_NITTO_RK || type == eCSV_TYPE_KORENO_RK_IJP)
 					{
-						if (value.DefectLine == 9) //점착 
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
-						else if (value.DefectLine == 8) // 연신 - 기타
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
-						else //value.DefectLine = 7 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						if (value.DefectLine < 21) // Defect Edit에 포함되지 않는 Defect Line
+						{
+							if (value.DefectLine == 9) //점착 
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
+							else if (value.DefectLine == 8) // 연신 - 기타
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
+							else //value.DefectLine = 7 그외
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						}
+						else
+						{
+							// 1000*CamNum+21+defect classNUM;
+							// 나중에 어떻게 처리할지 확인 필요
+							g_Defect.m_BcrDefect[i].defect_class = (value.DefectLine % 1000 - 20) * 1000000 + 16;
+						}
 					}
 					else // 나중에 정의해야 함
 					{
-						if (value.DefectLine == 9) //점착 
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
-						else if (value.DefectLine == 8) // 연신 - 기타
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
-						else //value.DefectLine = 7 그외
-							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						if (value.DefectLine < 21) // Defect Edit에 포함되지 않는 Defect Line
+						{
+							if (value.DefectLine == 9) //점착 
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;//
+							else if (value.DefectLine == 8) // 연신 - 기타
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
+							else //value.DefectLine = 7 그외
+								g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+						}
+						else
+						{
+							g_Defect.m_BcrDefect[i].defect_class = (value.DefectLine - 20) * 1000000 + 16;
+						}
 					}
 				}
 				else
 				{
-					if (value.DefectLine == 9) //점착 
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;
-					else if (value.DefectLine == 8) // 연신 - 기타
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
-					else //value.DefectLine = 7 그외
-						g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+					if (value.DefectLine < 21) // Defect Edit에 포함되지 않는 Defect Line
+					{
+						if (value.DefectLine == 9) //점착 
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 12;
+						else if (value.DefectLine == 8) // 연신 - 기타
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 11;//
+						else //value.DefectLine = 7 그외
+							g_Defect.m_BcrDefect[i].defect_class = value.CAM_NO * 1000000 + 13;//
+					}
+					else // Edit Defect에 의해서 만들어진 Defect Line
+					{
+						g_Defect.m_BcrDefect[i].defect_class = (value.DefectLine - 20) * 1000000 + 16;
+					}
 				}
 
 				sprintf(g_Defect.m_BcrDefect[i].fltid, CW2A(value.FAULTID));
@@ -428,7 +459,7 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 			LeaveCriticalSection(&cs);
 			return;
 		}
-			
+
 
 		if (array)
 		{
@@ -486,9 +517,9 @@ void CallClassWrapper::GetMarkAreaDefectData(double start, double end)
 				g_Defect.m_BcrAreaDefect[i].mark = 1;
 				g_Defect.m_BcrAreaDefect[i].index = value.idx;
 				g_Defect.m_BcrAreaDefect[i].index2 = g_AreaDelSplice[value.idx];
-				
+
 				// Area Del Data Save
-				strLog.Format(_T("AreaMaring Pos[%d_%d] : %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f"), value.idx, g_AreaDelSplice[value.idx], 
+				strLog.Format(_T("AreaMaring Pos[%d_%d] : %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f"), value.idx, g_AreaDelSplice[value.idx],
 					value.stX, value.edX, stY, edY, g_Defect.m_BcrAreaDefect[i].x, g_Defect.m_BcrAreaDefect[i].width, g_Defect.m_BcrAreaDefect[i].y,
 					g_Defect.m_BcrAreaDefect[i].height);
 				WriteBcrDefectLog(g_Temp.m_strBcrLog, strLog);
@@ -716,7 +747,7 @@ int CallClassWrapper::GetSearchModelResult(CStringArray* arModel)
 			LeaveCriticalSection(&cs);
 			return 0;
 		}
-			
+
 
 		SAFEARRAY* array = m_pCallClass->GetSearchModelResult();
 		if (array)
