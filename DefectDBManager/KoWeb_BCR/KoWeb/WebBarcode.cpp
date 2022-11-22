@@ -72,7 +72,7 @@ void WEB_Barcode(LPVOID pParent)
 	g_Temp.m_nMinGray = 255;
 	g_Temp.m_BcrRect = CRect(0, 0, 0, 0);
 	g_Temp.m_BcrRectFine = CRect(0, 0, 0, 0);
-	g_Temp.m_BcrRectForMatch = CRect(0,0,0,0);
+	g_Temp.m_BcrRectForMatch = CRect(0, 0, 0, 0);
 	g_Temp.m_BcrRectCodeRead = CRect(0, 0, 0, 0);
 
 	if (g_Param.m_nNotInspArea == 0) return;
@@ -114,13 +114,8 @@ void WEB_Barcode(LPVOID pParent)
 		UpdateBcrImagePathToDefect(nFrameNum);
 	}
 
-	//if (g_Temp.m_nBcrFirstRead==true
-	//	|| (g_Temp.m_bBcrForceInsert ==true && g_Temp.m_isBcrForceReading==true)
-	//	|| (g_Temp.m_nBcrDir != 0)) // 방향이 인식 되었으면 들어온다
-	{
-		SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
-	}
-	
+	SearchDefectData(pParent, g_Temp.m_nGrabFrame, g_Temp.m_nBcrPreInspFrame);
+
 
 	//for (i = 0; i < 128; i++)
 	//	memcpy(l_fmBCR + nBcrPitch * i, l_fmBCRBK + nBcrPitch * i, nBcrPitch);
@@ -218,13 +213,13 @@ bool SearchBCR(LPVOID pParent)
 				// 이미지 상의 실제 좌표 위치로 이동
 				g_Temp.m_BcrRectCodeRead.OffsetRect(CPoint(tmpRect.left, tmpRect.top));
 				g_Temp.m_isBcrSuccessRead = true;
-	}
+			}
 
 			delete[] pBcrImg;
 #else
 			strReadMsg = _T("no_barcode");
 #endif
-}
+		}
 		else
 		{
 			g_Temp.m_isBcrSuccessRead = false;
@@ -424,7 +419,7 @@ bool SearchBCR(LPVOID pParent)
 			g_Temp.m_nBcrPatFind = eReadDone;
 			g_Temp.m_nBcrDir = 1;	//증가
 			g_Temp.m_isBcrFirstCode = 1;
-			strBcrMsg = _T("Read"); 
+			strBcrMsg = _T("Read");
 			g_Temp.m_isBcrFirstCheck = false;
 
 			g_Temp.m_BcrRectFine = CRect(200, g_Temp.m_nFoundEdge, 800, g_Temp.m_nFoundEdge + 200);
@@ -445,13 +440,7 @@ bool SearchBCR(LPVOID pParent)
 #endif	
 
 		if (g_Temp.m_isBcrSuccessRead == true)
-		{
-			// 이위치 아닌거 같음.
-			/*g_Temp.m_nBcrPreInspFrame = nFrameNum;
-			g_Temp.m_strPreBcrName = g_Temp.m_strBcrName;*/
-
 			g_Temp.m_nBcrReadOK++;
-		}
 
 		if (g_Param.m_nBcrCsvType == eCSV_TYPE_NITTO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO || g_Param.m_nBcrCsvType == eCSV_TYPE_KORENO_RK)
 		{
@@ -1414,7 +1403,6 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			}
 
 			g_Temp.m_isBcrInitRead = true;
-			g_Temp.m_nBcrOrder = CheckBcrOrder(g_Temp.m_strBcrName, g_Temp.m_strPreBcrName);
 		}
 
 		// 마지막 바코드 값 입력 -->이전 바코드 프레임, 이전 바코드 영상내 위치, 이전 바코드 ROLL상 위치(mm 단위)  
@@ -1465,7 +1453,7 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 		// Area Maring 데이터 검색
 		// UseAreaDel은 함수 내부에서 확인함
 		((CKoWebView*)pParent)->m_DefectCallClass->GetMarkAreaDefectData(dCurFramePos, dNextFramePos);
-		
+
 		// Bcr 영역 Marking 처리
 		if (g_Temp.m_isBcrSuccessRead)
 		{
@@ -1477,10 +1465,10 @@ void SearchDefectData(LPVOID pParent, int crtFrameNum, int lastBcrFrameNum)
 			g_Defect.m_BMarkDefect.position = (int)g_Temp.m_dBcrCrtRealPos;
 
 			if (csvType == eCSV_TYPE_NITTO || csvType == eCSV_TYPE_NITTO_RK
-				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP) 
+				|| csvType == eCSV_TYPE_NITTO_RTS || csvType == eCSV_TYPE_KORENO_RK_IJP)
 			{
 				//g_Defect.m_BMarkDefect.defect_class = 6;
-				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCNum *1000000 + 18; // 확인 필요
+				g_Defect.m_BMarkDefect.defect_class = g_Temp.m_nPCNum * 1000000 + 18; // 확인 필요
 			}
 			else
 			{
@@ -1675,7 +1663,7 @@ bool Read2DMatrix(cv::Mat roiImage)
 	if (isFind == true)
 	{
 		isFind = CheckValidCode(strCode);
-		if (isFind == true) 
+		if (isFind == true)
 		{
 			g_Temp.m_strBcrName = strCode;
 			g_Temp.m_nBcrPatFind = eReadDone;
@@ -1895,7 +1883,7 @@ void UpdateBcrImagePathToDefect(int frameNum)
 
 	CString sNGImageName, sNGImageFullName;
 	sNGImageName.Format(_T("BCNO_MATCHED_[%05d]%.3f_%.3f.bmp"), frameNum, dBcrX, dBcrY);
-	strcpy_s(g_Defect.m_Defect[0].filename, sNGImageName.GetLength()+1, CW2A(sNGImageName));
+	strcpy_s(g_Defect.m_Defect[0].filename, sNGImageName.GetLength() + 1, CW2A(sNGImageName));
 
 	sNGImageFullName.Format(_T("%s%s\\%s\\%s"), NG_IMAGE_PATH, g_Temp.m_slotName, g_Temp.m_sMyComName, sNGImageName);
 	strcpy_s(g_Temp.m_cBcrFileName, sNGImageFullName.GetLength() + 1, CW2A(sNGImageFullName));
@@ -1980,7 +1968,7 @@ void CheckBcrLotDataError(CString strBcno)
 					break;
 				}
 			}
-			if (bFind == FALSE && strBcno != _T("no_barcode") && nBCNO_nowSize>0)
+			if (bFind == FALSE && strBcno != _T("no_barcode") && nBCNO_nowSize > 0)
 				WriteLog(strMsgNow);
 
 			// bFind = false; ??? 확인 필요함
@@ -1995,9 +1983,9 @@ void CheckBcrLotDataError(CString strBcno)
 			if (bFind == FALSE && strBcno != _T("no_barcode") && nBCNO_nextSize > 0)
 				WriteLog(strMsgNext);
 
-			if (g_Temp.m_isBcrFirstCode==true && strBcno != _T("no_barcode") && nBCNO_nowSize && bFind == FALSE)
+			if (g_Temp.m_isBcrFirstCode == true && strBcno != _T("no_barcode") && nBCNO_nowSize && bFind == FALSE)
 			{
-				if (g_Temp.m_bFirstCompare==false || g_Temp.m_nGrabFrame > 30)
+				if (g_Temp.m_bFirstCompare == false || g_Temp.m_nGrabFrame > 30)
 				{
 					if (strBcno.GetLength() > 9)
 					{
@@ -2021,11 +2009,11 @@ void CheckBcrLotDataError(CString strBcno)
 						}
 					}
 				}
-				if (g_Temp.m_bFirstCompare==true)
+				if (g_Temp.m_bFirstCompare == true)
 				{
 					g_Temp.m_bFirstCompare = false;		//처음 읽은 바코드는 비교하여 에러 메세지를 보내지 않는다.
 				}
 			}
-		} 
+		}
 	}
 }
