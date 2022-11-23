@@ -195,7 +195,7 @@ void CPacket::MakeBcrPacketData()	// BCR Vision Data 전달용 Patcket만드는 함수
 #endif
 #endif
 		dataSize = sizeof(BCR_DEFECT) * g_DefectSend.m_nBcrCount;
-		memcpy(m_pBuf + 28, &m_BcrInfo_Data, dataSize);
+		memcpy(m_pBuf + 32, &m_BcrInfo_Data, dataSize);
 		offset += dataSize;
 	}
 
@@ -206,7 +206,7 @@ void CPacket::MakeBcrPacketData()	// BCR Vision Data 전달용 Patcket만드는 함수
 		memcpy(m_pBcrAreaDel_Data, g_DefectSend.m_BcrAreaDefect, sizeof(AREA_MARK_DEFECT) * g_DefectSend.m_nBcrAreaDefectCount);
 
 		dataSize = sizeof(AREA_MARK_DEFECT) * g_DefectSend.m_nBcrAreaDefectCount;
-		memcpy(m_pBuf + 28 + offset, m_pBcrAreaDel_Data, dataSize);
+		memcpy(m_pBuf + 32 + offset, m_pBcrAreaDel_Data, dataSize);
 		offset += dataSize;
 	}
 
@@ -217,7 +217,7 @@ void CPacket::MakeBcrPacketData()	// BCR Vision Data 전달용 Patcket만드는 함수
 		memcpy(m_pBcrDefect_Data, g_DefectSend.m_BcrDefect, sizeof(MARK_DEFECT) * g_DefectSend.m_nBcrDefectCount);
 
 		dataSize = sizeof(MARK_DEFECT) * g_DefectSend.m_nBcrDefectCount;
-		memcpy(m_pBuf + 28 + offset, m_pBcrDefect_Data, dataSize);
+		memcpy(m_pBuf + 32 + offset, m_pBcrDefect_Data, dataSize);
 		offset += dataSize;
 	}
 }
@@ -371,7 +371,7 @@ void CPacket::MakeBcrPacketDataDelay(int N)
 #endif
 #endif
 		dataSize = sizeof(BCR_DEFECT) * g_DefectSendDelay[N].m_nBcrCount;
-		memcpy(m_pBuf + 28+4, &m_BcrInfo_Data, dataSize);
+		memcpy(m_pBuf + 32, &m_BcrInfo_Data, dataSize);
 		offset += dataSize;
 	}
 	
@@ -382,7 +382,7 @@ void CPacket::MakeBcrPacketDataDelay(int N)
 		memcpy(m_pBcrAreaDel_Data, g_DefectSendDelay[N].m_BcrAreaDefect, sizeof(AREA_MARK_DEFECT) * g_DefectSendDelay[N].m_nBcrAreaDefectCount);
 
 		dataSize = sizeof(AREA_MARK_DEFECT) * g_DefectSendDelay[N].m_nBcrAreaDefectCount;
-		memcpy(m_pBuf + 28 + 4 + offset, m_pBcrAreaDel_Data, dataSize);
+		memcpy(m_pBuf + 32 + offset, m_pBcrAreaDel_Data, dataSize);
 		offset += dataSize;
 	}
 
@@ -393,7 +393,7 @@ void CPacket::MakeBcrPacketDataDelay(int N)
 		memcpy(m_pBcrDefect_Data, g_DefectSendDelay[N].m_BcrDefect, sizeof(MARK_DEFECT) * g_DefectSendDelay[N].m_nBcrDefectCount);
 
 		dataSize = sizeof(MARK_DEFECT) * g_DefectSendDelay[N].m_nBcrDefectCount;
-		memcpy(m_pBuf + 28 + 4 + offset, m_pBcrDefect_Data, dataSize);
+		memcpy(m_pBuf + 32 + offset, m_pBcrDefect_Data, dataSize);
 		offset += dataSize;
 	}
 }

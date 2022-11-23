@@ -2387,11 +2387,16 @@ void CKoWebView::OnDraw(CDC* pDC)
 	DrawMainViewText(pDC);	 //각종 정보 (PC, 밝기 Lot등)
 	DrawResultViewText(pDC); //Result 정보
 	DrawDefectViewText(pDC); //Defect Info
-
+	
+	if (m_bShowImage)
+	{
 #ifdef MARKING_VISION
-	if(m_bShowImage)
 		DrawMarkingVisionROI(pDC);
 #endif
+#ifdef BARCODE_VISION
+		DrawBarcodeVisionROI(pDC);
+#endif
+	}
 /*
     //안깜박이게 아래와 같이 했는데 별 의미 없음. 이미 DrawBackGround 가 비슷한 역할 함
 	CRect rc;
@@ -2432,6 +2437,32 @@ void CKoWebView::DrawMarkingVisionROI(CDC *pDC)
 		m_pImage->DrawTextABS(NULL, g_MakringVision.m_rcInsp[i].left, g_MakringVision.m_rcInsp[i].top, RGB(255,255,255), str);
 		if(g_MakringVision.m_nResult[i]==2) m_pImage->DrawRectangle(NULL,g_MakringVision.m_rcInsp[i].left,g_MakringVision.m_rcInsp[i].top,g_MakringVision.m_rcInsp[i].right,g_MakringVision.m_rcInsp[i].bottom, colorBLUE);
 		else								m_pImage->DrawRectangle(NULL,g_MakringVision.m_rcInsp[i].left,g_MakringVision.m_rcInsp[i].top,g_MakringVision.m_rcInsp[i].right,g_MakringVision.m_rcInsp[i].bottom, colorYELLOW);
+	}
+}
+#endif
+
+#ifdef BARCODE_VISION
+void CKoWebView::DrawBarcodeVisionROI(CDC* pDC)		//결과 화면에 쓰기
+{
+	COLORREF colorYELLOW = RGB(255, 255, 0);
+	COLORREF colorBLUE = RGB(0, 0, 255);
+	COLORREF colorCYAN = RGB(0, 255, 255);
+	if (g_Temp.m_isBcrSuccessRead == true)
+	{
+		switch (g_Temp.m_nBcrPatFind)
+		{
+		case eFineRectOK:
+			m_pImage->DrawRectangle(NULL, g_Temp.m_BcrRectFine.left, g_Temp.m_BcrRectFine.top, g_Temp.m_BcrRectFine.right, g_Temp.m_BcrRectFine.bottom, colorYELLOW);
+			break;
+
+		case eReadDone:
+			m_pImage->DrawRectangle(NULL, g_Temp.m_BcrRectCodeRead.left, g_Temp.m_BcrRectCodeRead.top, g_Temp.m_BcrRectCodeRead.right, g_Temp.m_BcrRectCodeRead.bottom, colorBLUE);
+			break;
+
+		case eForceReadDone:
+			m_pImage->DrawRectangle(NULL, g_Temp.m_BcrRectCodeRead.left, g_Temp.m_BcrRectCodeRead.top, g_Temp.m_BcrRectCodeRead.right, g_Temp.m_BcrRectCodeRead.bottom, colorCYAN);
+			break;
+		}
 	}
 }
 #endif

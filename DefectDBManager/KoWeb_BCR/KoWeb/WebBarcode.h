@@ -6,4 +6,12 @@
 #define BCR_SCALE_REF 0.045
 #endif
 
+enum eBCRPatRead
+{
+	eNone = -1,
+	eFineRectOK,
+	eReadDone,
+	eForceReadDone,
+};
+
 void WEB_Barcode(LPVOID pParent);

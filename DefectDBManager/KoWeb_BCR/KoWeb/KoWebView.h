@@ -218,8 +218,12 @@ public:
 	void DrawDefectViewText(CDC* pDC);		//Defect정보 화면에 쓰기
 	void DrawDefectViewText();				//Defect정보 Invalidate기
 
+#ifdef MARKING_VISION
 	void DrawMarkingVisionROI(CDC* pDC);		//결과 화면에 쓰기
-
+#endif
+#ifdef BARCODE_VISION
+	void DrawBarcodeVisionROI(CDC* pDC);
+#endif
 
 	void SetSpreadData(int nRow, CString str, int nColor = 0);  //필요시점
 	void SetSpreadCount();						//COUNT (매 Frame)

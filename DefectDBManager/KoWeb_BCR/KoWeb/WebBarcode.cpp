@@ -18,14 +18,6 @@
 
 #define BCR_CODE_LENGTH 17
 
-enum eBCRPatRead
-{
-	eNone = -1,
-	eFineRectOK,
-	eReadDone,
-	eForceReadDone,
-};
-
 CallClassWrapperCodeReader g_CodeReader;
 
 extern CXManageSocket  l_Send_Server;
@@ -213,6 +205,8 @@ bool SearchBCR(LPVOID pParent)
 				// 이미지 상의 실제 좌표 위치로 이동
 				g_Temp.m_BcrRectCodeRead.OffsetRect(CPoint(tmpRect.left, tmpRect.top));
 				g_Temp.m_isBcrSuccessRead = true;
+				
+				g_Temp.m_nBcrPatFind = eReadDone; // Reader로 읽어들인 경우
 			}
 
 			delete[] pBcrImg;
@@ -248,7 +242,6 @@ bool SearchBCR(LPVOID pParent)
 					if (strForcedBcr.CompareNoCase(strTemp) != 0)
 					{
 						g_Temp.m_strBcrForceData = strTemp;
-
 						// 강제 알람
 						l_Send_Server.SendCommand_LocalHost(NM_FORCE_BCR_NOT_MATCHED_ALRAM);
 						strLog.Format(_T("[FORCE_BCR] Matching Error BCR and OCR :%s,%s"), strForcedBcr, strTemp);
@@ -258,10 +251,7 @@ bool SearchBCR(LPVOID pParent)
 			}
 
 			if (g_Temp.m_isBcrSuccessRead == true)
-			{
 				strBcrMsg = _T("Read");
-				g_Temp.m_nBcrPatFind = eReadDone; // Reader로 읽어들인 경우
-			}
 		}
 
 		if (strReadMsg == _T(""))
