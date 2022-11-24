@@ -1,1 +1,0 @@
-void MakeMultiImage(LPBYTE fm, LPBYTE fm0, LPBYTE fm1, LPBYTE fm2, LPBYTE fm3, LPBYTE fmS0,  LPBYTE fmS1,LPBYTE fmS2, LPBYTE fmAoP, LPBYTE fmDoLP, int width, int height);
