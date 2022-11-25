@@ -42,13 +42,12 @@ namespace CodeReaderDLL.CognexLib
             idTool.RunParams.NumToFind = 1;
             idTool.RunParams.Timeout = 50;
             idTool.RunParams.TimeoutEnabled = true;
-            Trace.WriteLine("CognexCodeReader() - 1");
+
             string groupFile = vppFilePath;
             if (groupFile != string.Empty)
             {
                 if (File.Exists(groupFile))
                 {
-                    Trace.WriteLine($"CognexCodeReader() - {groupFile}");
                     toolGroup = CogSerializer.LoadObjectFromFile(groupFile) as CogToolGroup;
                     imageTool = toolGroup.Tools["CogIPOneImageTool1"] as CogIPOneImageTool;
 
@@ -57,7 +56,6 @@ namespace CodeReaderDLL.CognexLib
                 }
                 else
                     InitComplete = false;
-                Trace.WriteLine($"CognexCodeReader() - Result is {InitComplete.ToString()}");
             }
             else
                 InitComplete = false;
