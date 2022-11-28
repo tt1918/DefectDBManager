@@ -137,7 +137,7 @@ namespace DefectDBManager
         bool IsTgUse(bool isNext);
         bool IsEtcUse(bool isNext);
         void LotChange();
-		int GetSearchResut();
+		int GetSearchResut(bool isNext);
         void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
         LotSearchResult[] GetSearchLotResults(bool isNext);
         int GetBcdReadWarningM();
@@ -164,12 +164,16 @@ namespace DefectDBManager
 		}
 		private DbManager dbManager = null;
 
-		public FormDB _FormDB
+		public FormDB _FormDB_Now
 		{
-			get { return dbManager._FormDB; }
+			get { return dbManager._FormDB_Now; }
 		}
+        public FormDB _FormDB_Next
+        {
+            get { return dbManager._FormDB_Next; }
+        }
 
-		public List<ICsvReadingEvents> _CsvReadingEventsListener =new List<ICsvReadingEvents>();
+        public List<ICsvReadingEvents> _CsvReadingEventsListener =new List<ICsvReadingEvents>();
 
         public Defects()
 		{
@@ -177,14 +181,16 @@ namespace DefectDBManager
             dbManager = new DbManager(this);
             markingData = new List<MarkingData>();
             markingAreaDefects = new List<MarkingAreaDefect>();
-            dbManager._FormDB.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager._FormDB_Now.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager._FormDB_Next.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
             dbManager.OnProcessEvent+= new DelegateProcessEvent(OnEventEndCsvReding);
         }
 		~Defects()
 		{
 			_CsvReadingEventsListener.Clear();
 
-            dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager._FormDB_Now.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager._FormDB_Next.OnEndCsvReading -= OnEventEndCsvReding;
             dbManager.OnProcessEvent -= OnEventEndCsvReding;
             dbManager._DestConfig.Write();
             defects?.Clear();
@@ -437,9 +443,14 @@ namespace DefectDBManager
             return results.ToArray();
 		}
 
-		public int GetSearchResut()
+		public int GetSearchResut(bool isNext)
 		{
-			return (int)_FormDB._SearchRes;
+			int count;
+			if (isNext == false)
+				count = (int)_FormDB_Now._SearchRes;
+			else
+                count = (int)_FormDB_Next._SearchRes;
+            return count;
 		}
         public int SearchModel(string lotName)
         {
