@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -411,8 +412,18 @@ namespace DefectDBManager
 		// 예약랏을 현재랏으로 변경
 		public void LotChange()
 		{
+			List<string> oldLoadedBcNo = dbManager._DbProc[0].LoadedBcNo;
+			dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
+			dbManager._DbProc[1].LoadedBcNo = new List<string>();
+            oldLoadedBcNo.Clear();
 
-		}
+            ResultData oldMarkingData;
+            oldMarkingData = DBManager._ResultData[0];
+			DBManager._ResultData[0] = DBManager._ResultData[1];
+			DBManager._ResultData[1] = new ResultData();
+            oldMarkingData.Data.Clear();
+            oldMarkingData.MarkFault.Data.Clear();
+        }
 
 		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
 		{
