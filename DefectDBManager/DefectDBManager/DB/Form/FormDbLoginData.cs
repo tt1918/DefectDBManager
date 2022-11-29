@@ -105,5 +105,12 @@ namespace DefectDBManager
         {
             enableCtrl();
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
     }
 }

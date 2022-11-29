@@ -247,5 +247,12 @@ namespace DefectDBManager
             e.Handled = true;
         }
 
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
+
     }
 }

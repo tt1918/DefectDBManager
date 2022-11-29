@@ -1682,5 +1682,11 @@ namespace DefectDBManager
         }
         #endregion Defect Edit
 
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
     }
 }

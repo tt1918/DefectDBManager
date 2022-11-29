@@ -85,5 +85,12 @@ namespace DefectDBManager
             if (float.TryParse(tbSizeMax.Text, out val) == true)
                 skipSize.max = val;
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
     }
 }

@@ -275,5 +275,12 @@ namespace DefectDBManager
                 formError.Close();
             this.Hide();
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
     }
 }

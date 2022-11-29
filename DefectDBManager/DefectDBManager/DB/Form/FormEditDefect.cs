@@ -227,5 +227,12 @@ namespace DefectDBManager
             }
             this.dgvDefect.ResumeLayout();
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion Language Update
     }
 }
