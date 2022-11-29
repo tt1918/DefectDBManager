@@ -419,16 +419,19 @@ namespace DefectDBManager
 		public void LotChange()
 		{
 			List<string> oldLoadedBcNo = dbManager._DbProc[0].LoadedBcNo;
-			dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
-			dbManager._DbProc[1].LoadedBcNo = new List<string>();
+            dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
+            dbManager._DbProc[1].LoadedBcNo = new List<string>();
             oldLoadedBcNo.Clear();
-
             ResultData oldMarkingData;
             oldMarkingData = DBManager._ResultData[0];
-			DBManager._ResultData[0] = DBManager._ResultData[1];
-			DBManager._ResultData[1] = new ResultData();
+            DBManager._ResultData[0] = DBManager._ResultData[1];
+            DBManager._ResultData[1] = new ResultData();
             oldMarkingData.Data.Clear();
             oldMarkingData.MarkFault.Data.Clear();
+            dbManager._FormDB_Now.ResetListView();
+            dbManager._FormDB_Next.ResetListView();
+			dbManager._DbProc[1].ResetDataAll();
+			dbManager._DbProc[1].ResetData_DE();
         }
 
 		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)

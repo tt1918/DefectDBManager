@@ -212,10 +212,10 @@ namespace DefectDBManager
         {
             if (DataBase.DbOption == null) return;
             if (DataBase.DbOption.FWPlace == null) return;
-
             if (DataBase.DbDestConfig.DicDest.ContainsKey(DataBase.DbOption.FWPlace) == true)
             {
                 DestConfigUnit u = DataBase.DbDestConfig.DicDest[DataBase.DbOption.FWPlace];
+                this.cbDestination.SelectedIndex = dataBase.DbOption.vendor;
                 this.cbUseES.Checked = u.UseES;
                 this.cbUseTG.Checked = u.UseTG;
                 this.cbUseETC.Checked = u.UseETC;
@@ -782,7 +782,7 @@ namespace DefectDBManager
                 this.dbSearchProgressTimer.Stop();
                 this.dbLoadingTime.Stop();
 
-                if(isSuccess==false)
+                if (isSuccess == false)
                     this._SearchRes = eSearchProcessRes.DB_NoExistES;
                 else
                     this._SearchRes = eSearchProcessRes.DB_SearchDone;
@@ -797,6 +797,16 @@ namespace DefectDBManager
             }
         }
 
+        public void ResetListView()
+        {
+            if (this.IsHandleCreated == true)
+            {
+                this.BeginInvoke((Action)(() =>
+                {
+                    resetListView();
+                }));
+            }
+        }
         private void resetListView()
         {
             //리스트 클리어
@@ -1055,7 +1065,6 @@ namespace DefectDBManager
             dataBase.DbOption.FWPlace = dest;
             if (dataBase.DbDestConfig.DicDest.ContainsKey(dest) == true)
                 dataBase.DbDestConfig.SelDestUnit = dataBase.DbDestConfig.DicDest[dest];
-
             dataBase.DbOption.checkES = cbUseES.Checked;
             dataBase.DbOption.checkTG = cbUseTG.Checked;
             dataBase.DbOption.checkETC = cbUseETC.Checked;
