@@ -61,11 +61,524 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   추가과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   적용과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   취소과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CANCEL {
+            get {
+                return ResourceManager.GetString("CANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   전체 삭제과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ClearAll {
+            get {
+                return ResourceManager.GetString("ClearAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   닫기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   연결됨과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Connected {
+            get {
+                return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   연결과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string Connection {
             get {
                 return ResourceManager.GetString("Connection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   접속과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginConnect {
+            get {
+                return ResourceManager.GetString("DBLoginConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   접속 해제과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginDisonnect {
+            get {
+                return ResourceManager.GetString("DBLoginDisonnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   DB Name과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginDomain {
+            get {
+                return ResourceManager.GetString("DBLoginDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   호스트 IP과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginHostIP {
+            get {
+                return ResourceManager.GetString("DBLoginHostIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   아이디과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginID {
+            get {
+                return ResourceManager.GetString("DBLoginID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   포트과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginPort {
+            get {
+                return ResourceManager.GetString("DBLoginPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비밀번호과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginPW {
+            get {
+                return ResourceManager.GetString("DBLoginPW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   DB 접속 정보과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginTitle {
+            get {
+                return ResourceManager.GetString("DBLoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   유형과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBLoginType {
+            get {
+                return ResourceManager.GetString("DBLoginType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 베이스 진행 상태과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBProgressTitle {
+            get {
+                return ResourceManager.GetString("DBProgressTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   불량 수정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectEditorTitle {
+            get {
+                return ResourceManager.GetString("DefectEditorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   삭제과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Del {
+            get {
+                return ResourceManager.GetString("Del", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   출하처과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Destination {
+            get {
+                return ResourceManager.GetString("Destination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   연결 끊김과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Disconnected {
+            get {
+                return ResourceManager.GetString("Disconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   불량 수정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string EditDefect {
+            get {
+                return ResourceManager.GetString("EditDefect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   불량 클레스 변경과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string EditDefectClass {
+            get {
+                return ResourceManager.GetString("EditDefectClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   불량 수정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string EditDefectTitle {
+            get {
+                return ResourceManager.GetString("EditDefectTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   연신과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ES {
+            get {
+                return ResourceManager.GetString("ES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   그외과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ETC {
+            get {
+                return ResourceManager.GetString("ETC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CSV 파일 저장과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ExportCSV {
+            get {
+                return ResourceManager.GetString("ExportCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   검사 데이터 마스크과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string gbInspDataMask {
+            get {
+                return ResourceManager.GetString("gbInspDataMask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   불량 제외 크기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string gbSizeSkip {
+            get {
+                return ResourceManager.GetString("gbSizeSkip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   점착 Lot과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string LotName {
+            get {
+                return ResourceManager.GetString("LotName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   마킹 선택과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string MarkingGroup {
+            get {
+                return ResourceManager.GetString("MarkingGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Max.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Max {
+            get {
+                return ResourceManager.GetString("Max", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Min.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Min {
+            get {
+                return ResourceManager.GetString("Min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   다음과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NextFaultPage {
+            get {
+                return ResourceManager.GetString("NextFaultPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   확인과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CSV 파일 열기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string OpenCSV {
+            get {
+                return ResourceManager.GetString("OpenCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   옵션과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Option {
+            get {
+                return ResourceManager.GetString("Option", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   이전과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string PrevFaultPage {
+            get {
+                return ResourceManager.GetString("PrevFaultPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   초기화과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Reset {
+            get {
+                return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   종료 시간과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SearchEndTime {
+            get {
+                return ResourceManager.GetString("SearchEndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   시작 시간과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SearchStartTime {
+            get {
+                return ResourceManager.GetString("SearchStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   검색 시간 설청과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SetSearchTime {
+            get {
+                return ResourceManager.GetString("SetSearchTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   기타 데이터 표시과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ShowMore {
+            get {
+                return ResourceManager.GetString("ShowMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   스킵 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ShowSkipParam {
+            get {
+                return ResourceManager.GetString("ShowSkipParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Size과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Size {
+            get {
+                return ResourceManager.GetString("Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SizeX과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SizeX {
+            get {
+                return ResourceManager.GetString("SizeX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SizeY과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SizeY {
+            get {
+                return ResourceManager.GetString("SizeY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   경계 반사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam1 {
+            get {
+                return ResourceManager.GetString("SkipParam1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정투과과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam2 {
+            get {
+                return ResourceManager.GetString("SkipParam2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   주기성 뷸량과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam3 {
+            get {
+                return ResourceManager.GetString("SkipParam3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   크로스 불량과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam4 {
+            get {
+                return ResourceManager.GetString("SkipParam4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정반사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam5 {
+            get {
+                return ResourceManager.GetString("SkipParam5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   미분 반사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SkipParam6 {
+            get {
+                return ResourceManager.GetString("SkipParam6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   도공과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string TG {
+            get {
+                return ResourceManager.GetString("TG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정보 갱신과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 갱신과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string UpdateData {
+            get {
+                return ResourceManager.GetString("UpdateData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   검사 데이터 마스크과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string UseMask {
+            get {
+                return ResourceManager.GetString("UseMask", resourceCulture);
             }
         }
     }

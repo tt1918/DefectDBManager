@@ -63,7 +63,7 @@
             this.gbCtrlName.Controls.Add(this.lblSize);
             this.gbCtrlName.Controls.Add(this.lblSizeY);
             this.gbCtrlName.Controls.Add(this.lblSizeX);
-            this.gbCtrlName.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbCtrlName.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbCtrlName.Location = new System.Drawing.Point(4, 0);
             this.gbCtrlName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gbCtrlName.Name = "gbCtrlName";
@@ -166,50 +166,50 @@
             // lblMax
             // 
             this.lblMax.AutoSize = true;
-            this.lblMax.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblMax.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblMax.Location = new System.Drawing.Point(115, 19);
             this.lblMax.Name = "lblMax";
-            this.lblMax.Size = new System.Drawing.Size(41, 13);
+            this.lblMax.Size = new System.Drawing.Size(38, 12);
             this.lblMax.TabIndex = 1;
             this.lblMax.Text = "Max.";
             // 
             // lblMin
             // 
             this.lblMin.AutoSize = true;
-            this.lblMin.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblMin.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblMin.Location = new System.Drawing.Point(66, 19);
             this.lblMin.Name = "lblMin";
-            this.lblMin.Size = new System.Drawing.Size(37, 13);
+            this.lblMin.Size = new System.Drawing.Size(34, 12);
             this.lblMin.TabIndex = 1;
             this.lblMin.Text = "Min.";
             // 
             // lblSize
             // 
             this.lblSize.AutoSize = true;
-            this.lblSize.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSize.Location = new System.Drawing.Point(6, 88);
+            this.lblSize.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSize.Location = new System.Drawing.Point(6, 90);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(40, 13);
+            this.lblSize.Size = new System.Drawing.Size(36, 12);
             this.lblSize.TabIndex = 1;
             this.lblSize.Text = "SIZE";
             // 
             // lblSizeY
             // 
             this.lblSizeY.AutoSize = true;
-            this.lblSizeY.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSizeY.Location = new System.Drawing.Point(6, 65);
+            this.lblSizeY.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSizeY.Location = new System.Drawing.Point(6, 67);
             this.lblSizeY.Name = "lblSizeY";
-            this.lblSizeY.Size = new System.Drawing.Size(54, 13);
+            this.lblSizeY.Size = new System.Drawing.Size(50, 12);
             this.lblSizeY.TabIndex = 1;
             this.lblSizeY.Text = "SIZE Y";
             // 
             // lblSizeX
             // 
             this.lblSizeX.AutoSize = true;
-            this.lblSizeX.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblSizeX.Location = new System.Drawing.Point(6, 41);
+            this.lblSizeX.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSizeX.Location = new System.Drawing.Point(6, 43);
             this.lblSizeX.Name = "lblSizeX";
-            this.lblSizeX.Size = new System.Drawing.Size(54, 13);
+            this.lblSizeX.Size = new System.Drawing.Size(50, 12);
             this.lblSizeX.TabIndex = 0;
             this.lblSizeX.Text = "SIZE X";
             // 

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using System.Windows.Forms.PropertyGridInternal;
+using System.Globalization;
 using static DefectDBManager.QueryMsg;
 
 namespace DefectDBManager
@@ -93,6 +94,22 @@ namespace DefectDBManager
         FormDbProgress formProgress = null;
         #endregion
 
+        #region Language
+        public int _LangType 
+        {
+            get
+            {
+                return langType;
+            }
+            set
+            {
+                langType = value;
+                setLangType();
+            }
+        } // 0: 한국어 1: 영어 2: 중국어
+        private int langType;
+        #endregion
+
         public event DelegateEndCsvReading OnEndCsvReading = null;
         public bool UpdateEndEvent = false;
         public eSearchProcessRes _SearchRes;
@@ -119,6 +136,8 @@ namespace DefectDBManager
             dbLoadingTime = new Stopwatch();
 
             this.FormClosing += Form_Closing;
+
+            _LangType = 0;
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
@@ -1378,7 +1397,7 @@ namespace DefectDBManager
             {
                 if (isOldConn == false)
                 {
-                    lblDbConnState.Text = "CONNECTED";
+                    lblDbConnState.Text = Language.Connected;
                     lblDbConnStateIcon.Image = ledOn;
                     isOldConn = true;
                 }
@@ -1387,7 +1406,7 @@ namespace DefectDBManager
             {
                 if (isOldConn == true)
                 {
-                    lblDbConnState.Text = "DISCONNECTED";
+                    lblDbConnState.Text = Language.Disconnected;
                     lblDbConnStateIcon.Image = ledOff;
                     isOldConn = false;
                 }
@@ -1683,9 +1702,62 @@ namespace DefectDBManager
         #endregion Defect Edit
 
         #region Language Update
+        public void setLangType()
+        {
+            switch(_LangType)
+            {
+                case 0: // 한국어
+                    {
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ko-KR");
+                    }
+                    break;
+                case 1: // 영어
+                    {
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+                    }
+                    break;
+
+                case 2: // 중국어
+                    {
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("zh-CN");
+                    }
+                    break;
+            }
+            UpdateLanguage();
+        }
         public void UpdateLanguage()
         {
+            this.SuspendLayout();
+            btnDBConn.Text = Language.Connection;
+            if (this.dbConn?.IsDBConnected == true)
+                lblDbConnState.Text = Language.Connected;
+            else
+                lblDbConnState.Text = Language.Disconnected;
 
+            lblLotName.Text = Language.LotName;
+            lblDestination.Text = Language.Destination;
+            cbSetSearchTime.Text = Language.SetSearchTime;
+            lblSearchStartTime.Text = Language.SearchStartTime;
+            lblSearchEndTime.Text = Language.SearchEndTime;
+            btnApplySearchTime.Text = Language.Apply;
+            btnSearchDB.Text = Language.Search;
+            btnOpenCSV.Text = Language.OpenCSV;
+            btnUpdateMarkingData.Text = Language.UpdateData;
+            btnExportCSV.Text = Language.ExportCSV;
+            btnReset.Text = Language.Reset;
+            gbMarkingGroup.Text = Language.MarkingGroup;
+            cbUseES.Text = Language.ES;
+            cbUseTG.Text = Language.TG;
+            cbUseETC.Text = Language.ETC;
+            gbOption.Text = Language.Option;
+            cbUseMask.Text = Language.UseMask;
+            btnShowSkipParam.Text = Language.ShowSkipParam;
+            btnEditDefectClass.Text = Language.EditDefectClass;
+            btnXOFSMST.Text = Language.ShowMore;
+            btnEditDefect.Text = Language.EditDefect;
+            btnPrevFaultPage.Text = Language.PrevFaultPage;
+            btnNextFaultPage.Text = Language.NextFaultPage;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

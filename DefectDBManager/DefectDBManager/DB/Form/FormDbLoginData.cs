@@ -55,6 +55,7 @@ namespace DefectDBManager
         {
             if(this.Visible==true)
             {
+                UpdateLanguage();
                 displayCtrl();
             }
         }
@@ -109,7 +110,17 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            lblTitle.Text = Language.DBLoginTitle;
+            lblType.Text = Language.DBLoginType;
+            lblHostIP.Text = Language.DBLoginHostIP;
+            lblPort.Text = Language.DBLoginPort;
+            lblDomain.Text = Language.DBLoginDomain;
+            lblUserID.Text = Language.DBLoginID;
+            lblPassword.Text = Language.DBLoginPW;
+            btnConnect.Text = Language.DBLoginConnect;
+            btnDisconnect.Text = Language.DBLoginDisonnect;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

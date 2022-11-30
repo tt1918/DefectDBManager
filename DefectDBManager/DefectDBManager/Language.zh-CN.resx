@@ -117,7 +117,178 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>CLEAR ALL</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>CLOSE</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
   <data name="Connection" xml:space="preserve">
     <value>Connection</value>
+  </data>
+  <data name="DBLoginConnect" xml:space="preserve">
+    <value>CONNECT</value>
+  </data>
+  <data name="DBLoginDisonnect" xml:space="preserve">
+    <value>DISCONNECT</value>
+  </data>
+  <data name="DBLoginDomain" xml:space="preserve">
+    <value>DB Name</value>
+  </data>
+  <data name="DBLoginHostIP" xml:space="preserve">
+    <value>HOST IP</value>
+  </data>
+  <data name="DBLoginID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="DBLoginPort" xml:space="preserve">
+    <value>PORT</value>
+  </data>
+  <data name="DBLoginPW" xml:space="preserve">
+    <value>PW</value>
+  </data>
+  <data name="DBLoginTitle" xml:space="preserve">
+    <value>DB LOGIN INFO</value>
+  </data>
+  <data name="DBLoginType" xml:space="preserve">
+    <value>TYPE</value>
+  </data>
+  <data name="DBProgressTitle" xml:space="preserve">
+    <value>DATA BASE PROGRESS</value>
+  </data>
+  <data name="DefectEditorTitle" xml:space="preserve">
+    <value>DEFECTS EDITOR</value>
+  </data>
+  <data name="Del" xml:space="preserve">
+    <value>DEL</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="EditDefect" xml:space="preserve">
+    <value>Edit Defect</value>
+  </data>
+  <data name="EditDefectClass" xml:space="preserve">
+    <value>Edit Class</value>
+  </data>
+  <data name="EditDefectTitle" xml:space="preserve">
+    <value>EDIT DEFECT</value>
+  </data>
+  <data name="ES" xml:space="preserve">
+    <value>ES</value>
+  </data>
+  <data name="ETC" xml:space="preserve">
+    <value>ETC</value>
+  </data>
+  <data name="ExportCSV" xml:space="preserve">
+    <value>Export CSV</value>
+  </data>
+  <data name="gbInspDataMask" xml:space="preserve">
+    <value>Inspection Data Mask</value>
+  </data>
+  <data name="gbSizeSkip" xml:space="preserve">
+    <value>Skip Size</value>
+  </data>
+  <data name="LotName" xml:space="preserve">
+    <value>Lot Name</value>
+  </data>
+  <data name="MarkingGroup" xml:space="preserve">
+    <value>Marking Group</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="NextFaultPage" xml:space="preserve">
+    <value>NEXT</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OpenCSV" xml:space="preserve">
+    <value>Open CSV</value>
+  </data>
+  <data name="Option" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="PrevFaultPage" xml:space="preserve">
+    <value>PREV</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="SearchEndTime" xml:space="preserve">
+    <value>End Time</value>
+  </data>
+  <data name="SearchStartTime" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
+  <data name="SetSearchTime" xml:space="preserve">
+    <value>Set Search Time</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Show More</value>
+  </data>
+  <data name="ShowSkipParam" xml:space="preserve">
+    <value>Skip Param</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SizeX" xml:space="preserve">
+    <value>SizeX</value>
+  </data>
+  <data name="SizeY" xml:space="preserve">
+    <value>SizeY</value>
+  </data>
+  <data name="SkipParam1" xml:space="preserve">
+    <value>EDGE REFLECT</value>
+  </data>
+  <data name="SkipParam2" xml:space="preserve">
+    <value>DIRECT TRAN.</value>
+  </data>
+  <data name="SkipParam3" xml:space="preserve">
+    <value>CYCLE DEFECT</value>
+  </data>
+  <data name="SkipParam4" xml:space="preserve">
+    <value>CROSS DEFECT</value>
+  </data>
+  <data name="SkipParam5" xml:space="preserve">
+    <value>DIRECT REFLECT</value>
+  </data>
+  <data name="SkipParam6" xml:space="preserve">
+    <value>DEREVATIVE REFECT</value>
+  </data>
+  <data name="TG" xml:space="preserve">
+    <value>TG</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
+  <data name="UpdateData" xml:space="preserve">
+    <value>Update Data</value>
+  </data>
+  <data name="UseMask" xml:space="preserve">
+    <value>Use Data Mask</value>
   </data>
 </root>

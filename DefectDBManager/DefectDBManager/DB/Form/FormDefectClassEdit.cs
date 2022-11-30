@@ -32,6 +32,7 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
+                UpdateLanguage();
                 displayDgvDefectClass();
                 displayDgvFLT();
             }
@@ -250,7 +251,10 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            btnOK.Text = Language.OK;
+            btnCancel.Text = Language.CANCEL;
+            this.ResumeLayout();
         }
         #endregion Language Update
 

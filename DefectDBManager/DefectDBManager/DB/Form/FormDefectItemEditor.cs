@@ -20,6 +20,7 @@ namespace DefectDBManager
 
             panelTitle.MouseDown += lblTitle_MouseDown;
             panelTitle.MouseMove += lblTitle_MouseMove;
+            UpdateLanguage();
         }
 
         #region 마우스로 폼 드래그
@@ -68,7 +69,11 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            lblTitle.Text = Language.EditDefectTitle;
+            btnOK.Text = Language.OK;
+            btnCancel.Text = Language.CANCEL;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

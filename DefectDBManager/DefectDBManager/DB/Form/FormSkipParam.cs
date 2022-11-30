@@ -39,6 +39,7 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
+                UpdateLanguage();
                 displaySkipSize();
                 displayListViewOffsetSkip();
             }
@@ -57,9 +58,6 @@ namespace DefectDBManager
             skipParamForm[3] = ucSkipParam4;
             skipParamForm[4] = ucSkipParam5;
             skipParamForm[5] = ucSkipParam6;
-
-            for (int i = 0; i < count; i++)
-                skipParamForm[i].Title = skipParamName[i];
         }
 
         private void updateSkipSize()
@@ -181,7 +179,21 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            gbSizeSkip.Text = Language.gbSizeSkip;
+            btnUpdateSizeSkip.Text = Language.Update;
+            btnUpdateSkipOffset.Text = Language.Update;
+            btnAddOffset.Text = Language.Add;
+            btnDelOffset.Text = Language.Del;
+            btnClose.Text = Language.Close;
+            gbInspDataMask.Text = Language.gbInspDataMask;
+            skipParamForm[0].Title = Language.SkipParam1;
+            skipParamForm[1].Title = Language.SkipParam2;
+            skipParamForm[2].Title = Language.SkipParam3;
+            skipParamForm[3].Title = Language.SkipParam4;
+            skipParamForm[4].Title = Language.SkipParam5;
+            skipParamForm[5].Title = Language.SkipParam6;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

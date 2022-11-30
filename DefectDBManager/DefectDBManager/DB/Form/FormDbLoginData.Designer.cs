@@ -39,11 +39,11 @@
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblPort = new System.Windows.Forms.Label();
             this.tbPort = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblHostIP = new System.Windows.Forms.Label();
             this.tbHostIP = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblType = new System.Windows.Forms.Label();
             this.rbConStringType1 = new System.Windows.Forms.RadioButton();
             this.rbConStringType2 = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
@@ -169,17 +169,17 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // label1
+            // lblPort
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.SystemColors.Control;
-            this.label1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 105);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 16);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "PORT";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPort.AutoSize = true;
+            this.lblPort.BackColor = System.Drawing.SystemColors.Control;
+            this.lblPort.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPort.Location = new System.Drawing.Point(9, 105);
+            this.lblPort.Name = "lblPort";
+            this.lblPort.Size = new System.Drawing.Size(43, 16);
+            this.lblPort.TabIndex = 5;
+            this.lblPort.Text = "PORT";
+            this.lblPort.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbPort
             // 
@@ -192,17 +192,17 @@
             this.tbPort.Text = "1521";
             this.tbPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label2
+            // lblHostIP
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.Control;
-            this.label2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(9, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 16);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "HOST IP";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblHostIP.AutoSize = true;
+            this.lblHostIP.BackColor = System.Drawing.SystemColors.Control;
+            this.lblHostIP.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHostIP.Location = new System.Drawing.Point(9, 81);
+            this.lblHostIP.Name = "lblHostIP";
+            this.lblHostIP.Size = new System.Drawing.Size(60, 16);
+            this.lblHostIP.TabIndex = 7;
+            this.lblHostIP.Text = "HOST IP";
+            this.lblHostIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tbHostIP
             // 
@@ -215,17 +215,17 @@
             this.tbHostIP.Text = "100.0.0.1";
             this.tbHostIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label3
+            // lblType
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.SystemColors.Control;
-            this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(10, 55);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 16);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "TYPE";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblType.AutoSize = true;
+            this.lblType.BackColor = System.Drawing.SystemColors.Control;
+            this.lblType.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblType.Location = new System.Drawing.Point(10, 55);
+            this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(40, 16);
+            this.lblType.TabIndex = 9;
+            this.lblType.Text = "TYPE";
+            this.lblType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // rbConStringType1
             // 
@@ -260,10 +260,10 @@
             this.ClientSize = new System.Drawing.Size(264, 290);
             this.Controls.Add(this.rbConStringType2);
             this.Controls.Add(this.rbConStringType1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblType);
+            this.Controls.Add(this.lblHostIP);
             this.Controls.Add(this.tbHostIP);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblPort);
             this.Controls.Add(this.tbPort);
             this.Controls.Add(this.lblDomain);
             this.Controls.Add(this.lblUserID);
@@ -303,11 +303,11 @@
         private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblPort;
         private System.Windows.Forms.TextBox tbPort;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblHostIP;
         private System.Windows.Forms.TextBox tbHostIP;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.RadioButton rbConStringType1;
         private System.Windows.Forms.RadioButton rbConStringType2;
     }

@@ -50,6 +50,7 @@ namespace DefectDBManager
             sw = new Stopwatch();
 
             initProcessCtrl();
+            UpdateLanguage();
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
@@ -279,7 +280,10 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            lblTitle.Text = Language.DBProgressTitle;
+            btnClose.Text = Language.Close;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

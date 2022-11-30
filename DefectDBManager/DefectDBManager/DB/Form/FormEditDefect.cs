@@ -45,6 +45,7 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
+                UpdateLanguage();
                 GetItems();
             }
         }
@@ -231,7 +232,12 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            this.SuspendLayout();
+            lblTitle.Text = Language.DefectEditorTitle;
+            btnClearAll.Text = Language.ClearAll;
+            btnOK.Text = Language.OK;
+            btnClose.Text = Language.Close;
+            this.ResumeLayout();
         }
         #endregion Language Update
     }

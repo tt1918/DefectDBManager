@@ -117,7 +117,178 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>전체 삭제</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>연결됨</value>
+  </data>
   <data name="Connection" xml:space="preserve">
     <value>연결</value>
+  </data>
+  <data name="DBLoginConnect" xml:space="preserve">
+    <value>접속</value>
+  </data>
+  <data name="DBLoginDisonnect" xml:space="preserve">
+    <value>접속 해제</value>
+  </data>
+  <data name="DBLoginDomain" xml:space="preserve">
+    <value>DB Name</value>
+  </data>
+  <data name="DBLoginHostIP" xml:space="preserve">
+    <value>호스트 IP</value>
+  </data>
+  <data name="DBLoginID" xml:space="preserve">
+    <value>아이디</value>
+  </data>
+  <data name="DBLoginPort" xml:space="preserve">
+    <value>포트</value>
+  </data>
+  <data name="DBLoginPW" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
+  <data name="DBLoginTitle" xml:space="preserve">
+    <value>DB 접속 정보</value>
+  </data>
+  <data name="DBLoginType" xml:space="preserve">
+    <value>유형</value>
+  </data>
+  <data name="DBProgressTitle" xml:space="preserve">
+    <value>데이터 베이스 진행 상태</value>
+  </data>
+  <data name="DefectEditorTitle" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="Del" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>출하처</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>연결 끊김</value>
+  </data>
+  <data name="EditDefect" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="EditDefectClass" xml:space="preserve">
+    <value>불량 클레스 변경</value>
+  </data>
+  <data name="EditDefectTitle" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="ES" xml:space="preserve">
+    <value>연신</value>
+  </data>
+  <data name="ETC" xml:space="preserve">
+    <value>그외</value>
+  </data>
+  <data name="ExportCSV" xml:space="preserve">
+    <value>CSV 파일 저장</value>
+  </data>
+  <data name="gbInspDataMask" xml:space="preserve">
+    <value>검사 데이터 마스크</value>
+  </data>
+  <data name="gbSizeSkip" xml:space="preserve">
+    <value>불량 제외 크기</value>
+  </data>
+  <data name="LotName" xml:space="preserve">
+    <value>점착 Lot</value>
+  </data>
+  <data name="MarkingGroup" xml:space="preserve">
+    <value>마킹 선택</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="NextFaultPage" xml:space="preserve">
+    <value>다음</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="OpenCSV" xml:space="preserve">
+    <value>CSV 파일 열기</value>
+  </data>
+  <data name="Option" xml:space="preserve">
+    <value>옵션</value>
+  </data>
+  <data name="PrevFaultPage" xml:space="preserve">
+    <value>이전</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="SearchEndTime" xml:space="preserve">
+    <value>종료 시간</value>
+  </data>
+  <data name="SearchStartTime" xml:space="preserve">
+    <value>시작 시간</value>
+  </data>
+  <data name="SetSearchTime" xml:space="preserve">
+    <value>검색 시간 설청</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>기타 데이터 표시</value>
+  </data>
+  <data name="ShowSkipParam" xml:space="preserve">
+    <value>스킵 파라미터</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SizeX" xml:space="preserve">
+    <value>SizeX</value>
+  </data>
+  <data name="SizeY" xml:space="preserve">
+    <value>SizeY</value>
+  </data>
+  <data name="SkipParam1" xml:space="preserve">
+    <value>경계 반사</value>
+  </data>
+  <data name="SkipParam2" xml:space="preserve">
+    <value>정투과</value>
+  </data>
+  <data name="SkipParam3" xml:space="preserve">
+    <value>주기성 뷸량</value>
+  </data>
+  <data name="SkipParam4" xml:space="preserve">
+    <value>크로스 불량</value>
+  </data>
+  <data name="SkipParam5" xml:space="preserve">
+    <value>정반사</value>
+  </data>
+  <data name="SkipParam6" xml:space="preserve">
+    <value>미분 반사</value>
+  </data>
+  <data name="TG" xml:space="preserve">
+    <value>도공</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>정보 갱신</value>
+  </data>
+  <data name="UpdateData" xml:space="preserve">
+    <value>데이터 갱신</value>
+  </data>
+  <data name="UseMask" xml:space="preserve">
+    <value>검사 데이터 마스크</value>
   </data>
 </root>

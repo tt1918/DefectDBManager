@@ -106,6 +106,7 @@ namespace DefectDBManager
         {
             if(this.Visible==true)
             {
+                UpdateLanguage();
                 updateXOFSMSTList();
                 updateAREADELList();
             }
@@ -114,7 +115,7 @@ namespace DefectDBManager
         #region Language Update
         public void UpdateLanguage()
         {
-
+            btnClose.Text = Language.Close;
         }
         #endregion Language Update
     }
