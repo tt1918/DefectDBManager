@@ -56,6 +56,10 @@ namespace DefectDBManager
         [MarshalAs(UnmanagedType.R4)]
         public float XPOS_M;
         [MarshalAs(UnmanagedType.R4)]
+        public float SIZE_X;
+        [MarshalAs(UnmanagedType.R4)]
+        public float SIZE_Y;
+        [MarshalAs(UnmanagedType.R4)]
         public float XOFFSET;
         [MarshalAs(UnmanagedType.Bool)]
         public bool UseCSVResult;
@@ -298,7 +302,9 @@ namespace DefectDBManager
 				item.XOFFSET = datum.XOFFSET;
 				item.XPOS_M = datum.XPOS_M;
 				item.YPOS_M = datum.YPOS_M;
-				markingData.Add(item);
+				item.SIZE_X = datum.SIZE_X;
+                item.SIZE_Y = datum.SIZE_Y;
+                markingData.Add(item);
             }
 
 			return markingData.ToArray();
@@ -325,6 +331,8 @@ namespace DefectDBManager
                     item.XOFFSET = datum.XOFFSET;
                     item.XPOS_M = datum.XPOS_M;
                     item.YPOS_M = datum.YPOS_M;
+                    item.SIZE_X = datum.SIZE_X;
+                    item.SIZE_Y = datum.SIZE_Y;
                     markingData.Add(item);
                 }
             }
