@@ -14,7 +14,7 @@ namespace DefectDBManager
         public float Top;
         public float Bottom;
 
-        public bool CheckSkip(float posX, float posY)
+        public bool CheckSkip(float posX, double posY)
         {
             bool bSkip = false;
             if (Top > 0 || Bottom > 0)

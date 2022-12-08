@@ -49,8 +49,8 @@ namespace DefectDBManager
         public string FLTNO;        // DB 탐색에서 얻어오는 불량 순번
         [MarshalAs(UnmanagedType.BStr)] 
 		public string FAULTID;      // 불량 항목 같음
-        [MarshalAs(UnmanagedType.R4)]
-        public float OFFSET;
+        [MarshalAs(UnmanagedType.R8)]
+        public double OFFSET;
         [MarshalAs(UnmanagedType.R4)]
         public float YPOS_M;
         [MarshalAs(UnmanagedType.R4)]

@@ -19,7 +19,7 @@ namespace DefectDBManager
 
         public string TCTLNO;
         public string FLTNO;
-        public float OFFSET;
+        public double OFFSET;
         public float YPOS_M;
         public float XPOS_M;
         public float SIZE_X;
@@ -48,7 +48,7 @@ namespace DefectDBManager
         public string BCNO;
         public string FLTNO;        // DB 탐색에서 얻어오는 불량 순번
         public string FAULTID;      // 불량 항목 같음
-        public float OFFSET;
+        public double OFFSET;
         public float YPOS_M;
         public float XPOS_M;
         public float XOFFSET;

@@ -68,7 +68,6 @@ namespace DefectDBManager
 
         #region 프로세스 진행 상태 확인
         int oldListStep = -1;
-        int oldProcessStep = -1;
         private void ProgressCheck(object sender, EventArgs e)
         {
             if (_Step == -1 || _Total == -1) return;
@@ -237,7 +236,6 @@ namespace DefectDBManager
                 btnClose.Visible = false;
 
                 oldListStep = -1;
-                oldProcessStep = -1;
                 countdown = 5;
 
                 this.btnClose.Text = "CLOSE";

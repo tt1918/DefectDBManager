@@ -1585,7 +1585,7 @@ namespace DefectDBManager
             return bXOfSErr;
         }
 
-        private bool isMaskedDefect(float xPos, float yPos)
+        private bool isMaskedDefect(float xPos, double yPos)
         {
             List<SkipOffsetParam> skip = CrtParam.OffsetSkip;
             int count = skip.Count;
@@ -1714,7 +1714,7 @@ namespace DefectDBManager
 
                     // 데이터 인덱스 수정 필요함
                     tmpData.FLTNO = items[0].Trim();
-                    tmpData.OFFSET = float.Parse(items[14]);
+                    tmpData.OFFSET = double.Parse(items[14]);
                     tmpData.XPOS_M = float.Parse(items[7]);
                     tmpData.YPOS_M = float.Parse(items[8]);
                     tmpData.SIZE_AREA = float.Parse(items[11]);
@@ -2166,7 +2166,7 @@ namespace DefectDBManager
                     tmpData.YPOS_M = float.Parse(items[4]);
                     tmpData.XPOS_M = float.Parse(items[5]);
                     tmpData.SIZE_AREA = float.Parse(items[6]);
-                    tmpData.OFFSET = float.Parse(items[9]);
+                    tmpData.OFFSET = double.Parse(items[9]);
                     strCamNo = items[10];
 
                     strbcr = items[16];
