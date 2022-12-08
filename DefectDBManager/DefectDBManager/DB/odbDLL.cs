@@ -503,8 +503,6 @@ namespace DefectDBManager
                 }
 
                 int count = 0;
-                string strData;
-
                 if (SearchModelList != null)
                     SearchModelList.Clear();
                 else

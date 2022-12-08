@@ -150,6 +150,7 @@ namespace DefectDBManager
         int GetSearchModelCount();
         string[] GetSearchModelResult();
 		string[] GetLoadedBCNO(bool isNext, ref int size);
+		void SetLanguage(int index);
     }
 
     [ComVisible(true)]
@@ -503,6 +504,12 @@ namespace DefectDBManager
             }
 
 			return null;
+        }
+
+        public void SetLanguage(int index)
+		{
+			_FormDB_Now._LangType = index;
+            _FormDB_Next._LangType = index;
         }
     }
 }
