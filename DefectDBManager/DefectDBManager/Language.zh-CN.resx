@@ -204,6 +204,82 @@
   <data name="gbSizeSkip" xml:space="preserve">
     <value>Skip Size</value>
   </data>
+  <data name="listBCNO_3" xml:space="preserve">
+    <value>Bad Cnt/M^2</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listBCNO_5" xml:space="preserve">
+    <value>Roll BCNO</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listFAULTDAT_1" xml:space="preserve">
+    <value>Managed NO</value>
+    <comment>FAULTDAT 1</comment>
+  </data>
+  <data name="listFAULTDAT_2" xml:space="preserve">
+    <value>Defect CNT</value>
+    <comment>FAULTDAT 2</comment>
+  </data>
+  <data name="listFAULTDAT_6" xml:space="preserve">
+    <value>Type</value>
+    <comment>FAULTDAT 6</comment>
+  </data>
+  <data name="listINSPDAT_0" xml:space="preserve">
+    <value>Managed NO</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listINSPDAT_1" xml:space="preserve">
+    <value>Type</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listMRKCTLMST_0" xml:space="preserve">
+    <value>Line Code</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_1" xml:space="preserve">
+    <value>Defect ID</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_2" xml:space="preserve">
+    <value>Type</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_3" xml:space="preserve">
+    <value>Size</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listPTRYLP_0" xml:space="preserve">
+    <value>원단 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_1" xml:space="preserve">
+    <value>점착 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_5" xml:space="preserve">
+    <value>Type</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYOP_0" xml:space="preserve">
+    <value>Type</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_1" xml:space="preserve">
+    <value>ES Lot</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_2" xml:space="preserve">
+    <value>Line Code</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_3" xml:space="preserve">
+    <value>ST Time</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_4" xml:space="preserve">
+    <value>ED Time</value>
+    <comment>PTRYOP</comment>
+  </data>
   <data name="LotName" xml:space="preserve">
     <value>Lot Name</value>
   </data>

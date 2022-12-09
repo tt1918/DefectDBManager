@@ -204,6 +204,86 @@
   <data name="gbSizeSkip" xml:space="preserve">
     <value>불량 제외 크기</value>
   </data>
+  <data name="listBCNO_3" xml:space="preserve">
+    <value>M^2 불량수</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listBCNO_5" xml:space="preserve">
+    <value>원단 BCNO</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listFAULTDAT_1" xml:space="preserve">
+    <value>관리 NO</value>
+    <comment>FAULTDAT 1</comment>
+  </data>
+  <data name="listFAULTDAT_2" xml:space="preserve">
+    <value>불량 CNT</value>
+    <comment>FAULTDAT 2</comment>
+  </data>
+  <data name="listFAULTDAT_6" xml:space="preserve">
+    <value>종류</value>
+    <comment>FAULTDAT 6</comment>
+  </data>
+  <data name="listFAULTDAT_7" xml:space="preserve">
+    <value>불량번호</value>
+    <comment>FAULTDAT 7</comment>
+  </data>
+  <data name="listINSPDAT_0" xml:space="preserve">
+    <value>관리NO</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listINSPDAT_1" xml:space="preserve">
+    <value>품종</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listMRKCTLMST_0" xml:space="preserve">
+    <value>라인코드</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_1" xml:space="preserve">
+    <value>불량 ID</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_2" xml:space="preserve">
+    <value>품종</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_3" xml:space="preserve">
+    <value>사이즈</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listPTRYLP_0" xml:space="preserve">
+    <value>원단 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_1" xml:space="preserve">
+    <value>점착 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_5" xml:space="preserve">
+    <value>품종</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYOP_0" xml:space="preserve">
+    <value>품종</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_1" xml:space="preserve">
+    <value>연신 Lot</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_2" xml:space="preserve">
+    <value>라인코드</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_3" xml:space="preserve">
+    <value>개시 시간</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_4" xml:space="preserve">
+    <value>종료 시간</value>
+    <comment>PTRYOP</comment>
+  </data>
   <data name="LotName" xml:space="preserve">
     <value>점착 Lot</value>
   </data>

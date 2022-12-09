@@ -138,6 +138,13 @@ namespace DefectDBManager
             this.FormClosing += Form_Closing;
 
             _LangType = 0;
+
+            initBCNOListView();
+            initPTRYLPListView();
+            initPTRYOPListView();
+            initMRKCTLMSTListView();
+            initINSPDATListView();
+            initFAULTDATListView();
         }
 
         private void Form_Closing(object sender, FormClosingEventArgs e)
@@ -151,12 +158,7 @@ namespace DefectDBManager
 
         private void FormDB_Load(object sender, EventArgs e)
         {
-            initBCNOListView();
-            initPTRYLPListView();
-            initPTRYOPListView();
-            initMRKCTLMSTListView();
-            initINSPDATListView();
-            initFAULTDATListView();
+            
         }
         private void FormDB_VisibleChanged(object sender, EventArgs e)
         {
@@ -451,6 +453,16 @@ namespace DefectDBManager
                 listViewBCNO.EndUpdate();
             }
         }
+
+        private void updateBCNOListViewLanguage()
+        {
+            if(listViewBCNO.Columns.Count>0)
+            {
+                listViewBCNO.Columns[3].Text = Language.listBCNO_3;
+                listViewBCNO.Columns[5].Text = Language.listBCNO_5;
+            }
+            
+        }
         #endregion
 
         #region PTRYLP List
@@ -485,6 +497,16 @@ namespace DefectDBManager
             finally
             {
                 listViewPTRYLP.EndUpdate();
+            }
+        }
+
+        private void updatePTRYLPListViewLanguage()
+        {
+            if(listViewPTRYLP.Columns.Count>0)
+            {
+                listViewPTRYLP.Columns[0].Text = Language.listPTRYLP_0;
+                listViewPTRYLP.Columns[1].Text = Language.listPTRYLP_1;
+                listViewPTRYLP.Columns[5].Text = Language.listPTRYLP_5;
             }
         }
         #endregion
@@ -523,6 +545,18 @@ namespace DefectDBManager
             finally
             {
                 listViewPTRYOP.EndUpdate();
+            }
+        }
+
+        private void updatePTRYOPListViewLanguage()
+        {
+            if(listViewPTRYOP.Columns.Count>0)
+            {
+                listViewPTRYOP.Columns[0].Text = Language.listPTRYOP_0;
+                listViewPTRYOP.Columns[1].Text = Language.listPTRYOP_1;
+                listViewPTRYOP.Columns[2].Text = Language.listPTRYOP_2;
+                listViewPTRYOP.Columns[3].Text = Language.listPTRYOP_3;
+                listViewPTRYOP.Columns[4].Text = Language.listPTRYOP_4;
             }
         }
         #endregion
@@ -580,6 +614,17 @@ namespace DefectDBManager
             finally
             {
                 listViewMRKCTLMST.EndUpdate();
+            }
+        }
+
+        private void updateMRKCTLMSTListViewLanguage()
+        {
+            if (listViewMRKCTLMST.Columns.Count > 0)
+            {
+                listViewMRKCTLMST.Columns[0].Text = Language.listMRKCTLMST_0;
+                listViewMRKCTLMST.Columns[1].Text = Language.listMRKCTLMST_1;
+                listViewMRKCTLMST.Columns[2].Text = Language.listMRKCTLMST_2;
+                listViewMRKCTLMST.Columns[3].Text = Language.listMRKCTLMST_3;
             }
         }
         #endregion
@@ -653,6 +698,15 @@ namespace DefectDBManager
                 listViewINSPDAT.EndUpdate();
             }
         }
+
+        private void updateINSPDATListViewLanguage()
+        {
+            if (listViewINSPDAT.Columns.Count > 0)
+            {
+                listViewINSPDAT.Columns[0].Text = Language.listINSPDAT_0;
+                listViewINSPDAT.Columns[1].Text = Language.listINSPDAT_1;
+            }
+        }
         #endregion
 
         #region FAULTDAT List
@@ -717,6 +771,17 @@ namespace DefectDBManager
             finally
             {
                 listViewFAULTDAT.EndUpdate();
+            }
+        }
+
+        private void updateFAULTDATListViewLanguage()
+        {
+            if (listViewFAULTDAT.Columns.Count > 0)
+            {
+                listViewFAULTDAT.Columns[1].Text = Language.listFAULTDAT_1;
+                listViewFAULTDAT.Columns[2].Text = Language.listFAULTDAT_2;
+                listViewFAULTDAT.Columns[6].Text = Language.listFAULTDAT_6;
+                listViewFAULTDAT.Columns[7].Text = Language.listFAULTDAT_7;
             }
         }
         #endregion
@@ -1757,6 +1822,13 @@ namespace DefectDBManager
             btnEditDefect.Text = Language.EditDefect;
             btnPrevFaultPage.Text = Language.PrevFaultPage;
             btnNextFaultPage.Text = Language.NextFaultPage;
+
+            updateBCNOListViewLanguage();
+            updatePTRYLPListViewLanguage();
+            updatePTRYOPListViewLanguage();
+            updateMRKCTLMSTListViewLanguage();
+            updateINSPDATListViewLanguage();
+            updateFAULTDATListViewLanguage();
             this.ResumeLayout();
         }
         #endregion Language Update
