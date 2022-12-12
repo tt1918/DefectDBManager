@@ -887,8 +887,16 @@ namespace DefectDBManager
             {
                 this.BeginInvoke((Action)(() =>
                 {
-                    resetListView();
+                    this.clearAllListView();
+                    this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
+                    displayFAULTDATListView();
                 }));
+            }
+            else
+            {
+                this.clearAllListView();
+                this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
+                displayFAULTDATListView();
             }
         }
         private void resetListView()
@@ -977,7 +985,7 @@ namespace DefectDBManager
         #region Form
         private void btnSearchDB_Click(object sender, EventArgs e)
         {
-            if (this.thread != null && this.thread.IsAlive == true)
+                if (this.thread != null && this.thread.IsAlive == true)
             {
                 MessageBox.Show($"DB 데이터 검색중입니다.");
                 return;
@@ -1103,7 +1111,7 @@ namespace DefectDBManager
 
             using (OpenFileDialog browser = new OpenFileDialog())
             {
-                browser.InitialDirectory = Define.MainPath;
+                //browser.InitialDirectory = Define.MainPath;
                 browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
                 browser.FilterIndex = 1;
                 browser.RestoreDirectory = true;

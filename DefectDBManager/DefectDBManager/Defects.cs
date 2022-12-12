@@ -432,15 +432,18 @@ namespace DefectDBManager
             dbManager._DbProc[1].LoadedBcNo = new List<string>();
             oldLoadedBcNo.Clear();
             ResultData oldMarkingData;
-            oldMarkingData = DBManager._ResultData[0];
-            DBManager._ResultData[0] = DBManager._ResultData[1];
-            DBManager._ResultData[1] = new ResultData();
+            oldMarkingData = dbManager._ResultData[0];
+            dbManager._ResultData[0] = dbManager._ResultData[1];
+            dbManager._DbProc[0].ResultDefect = dbManager._ResultData[1];
+
+            dbManager._ResultData[1] = new ResultData();
+            dbManager._DbProc[1].ResultDefect = dbManager._ResultData[1];
             oldMarkingData.Data.Clear();
             oldMarkingData.MarkFault.Data.Clear();
+            dbManager._DbProc[1].ResetDataAll();
+			dbManager._DbProc[1].ResetData_DE();
             dbManager._FormDB_Now.ResetListView();
             dbManager._FormDB_Next.ResetListView();
-			dbManager._DbProc[1].ResetDataAll();
-			dbManager._DbProc[1].ResetData_DE();
         }
 
 		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)

@@ -116,6 +116,7 @@ namespace DefectDBManager
             {
                 formDB[i] = new FormDB(this);
                 formDB[i].DBConn = _DbConn;
+                formDB[i].DataBase = _DbProc[i];
             }
 
             this.parent = parent;
