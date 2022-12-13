@@ -47,6 +47,7 @@
             this.btnSearchDB = new System.Windows.Forms.Button();
             this.btnEditDefectClass = new System.Windows.Forms.Button();
             this.btnShowSkipParam = new System.Windows.Forms.Button();
+            this.btnEditDefect = new System.Windows.Forms.Button();
             this.btnXOFSMST = new System.Windows.Forms.Button();
             this.gbDBConnection = new System.Windows.Forms.GroupBox();
             this.lblDbConnStateIcon = new System.Windows.Forms.Label();
@@ -90,7 +91,6 @@
             this.btnFormHide = new System.Windows.Forms.Button();
             this.btnFormMaximize = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.btnEditDefect = new System.Windows.Forms.Button();
             this.gbSearchTime.SuspendLayout();
             this.gbBasicInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -139,7 +139,7 @@
             // lblLotName
             // 
             this.lblLotName.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLotName.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblLotName.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblLotName.Location = new System.Drawing.Point(144, 14);
             this.lblLotName.Name = "lblLotName";
             this.lblLotName.Size = new System.Drawing.Size(84, 17);
@@ -150,16 +150,17 @@
             // tbLotName
             // 
             this.tbLotName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbLotName.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbLotName.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.tbLotName.Location = new System.Drawing.Point(233, 15);
             this.tbLotName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbLotName.Name = "tbLotName";
             this.tbLotName.Size = new System.Drawing.Size(166, 14);
             this.tbLotName.TabIndex = 1;
+            this.tbLotName.TextChanged += new System.EventHandler(this.tbLotName_TextChanged);
             // 
             // btnOpenCSV
             // 
-            this.btnOpenCSV.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenCSV.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOpenCSV.Location = new System.Drawing.Point(690, 4);
             this.btnOpenCSV.Name = "btnOpenCSV";
             this.btnOpenCSV.Size = new System.Drawing.Size(70, 38);
@@ -177,7 +178,7 @@
             this.gbSearchTime.Controls.Add(this.tbSearchEndTime);
             this.gbSearchTime.Controls.Add(this.tbSearchStartTime);
             this.gbSearchTime.Controls.Add(this.cbSetSearchTime);
-            this.gbSearchTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbSearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbSearchTime.Location = new System.Drawing.Point(406, 6);
             this.gbSearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbSearchTime.Name = "gbSearchTime";
@@ -199,7 +200,7 @@
             // btnApplySearchTime
             // 
             this.btnApplySearchTime.Enabled = false;
-            this.btnApplySearchTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplySearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnApplySearchTime.Location = new System.Drawing.Point(152, 16);
             this.btnApplySearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnApplySearchTime.Name = "btnApplySearchTime";
@@ -212,7 +213,7 @@
             // lblSearchEndTime
             // 
             this.lblSearchEndTime.AutoSize = true;
-            this.lblSearchEndTime.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSearchEndTime.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblSearchEndTime.Location = new System.Drawing.Point(8, 37);
             this.lblSearchEndTime.Name = "lblSearchEndTime";
             this.lblSearchEndTime.Size = new System.Drawing.Size(62, 12);
@@ -222,7 +223,7 @@
             // lblSearchStartTime
             // 
             this.lblSearchStartTime.AutoSize = true;
-            this.lblSearchStartTime.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSearchStartTime.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblSearchStartTime.Location = new System.Drawing.Point(8, 18);
             this.lblSearchStartTime.Name = "lblSearchStartTime";
             this.lblSearchStartTime.Size = new System.Drawing.Size(62, 12);
@@ -232,7 +233,7 @@
             // tbSearchEndTime
             // 
             this.tbSearchEndTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSearchEndTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearchEndTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSearchEndTime.Location = new System.Drawing.Point(78, 36);
             this.tbSearchEndTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSearchEndTime.Name = "tbSearchEndTime";
@@ -242,7 +243,7 @@
             // tbSearchStartTime
             // 
             this.tbSearchStartTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSearchStartTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearchStartTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSearchStartTime.Location = new System.Drawing.Point(78, 17);
             this.tbSearchStartTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSearchStartTime.Name = "tbSearchStartTime";
@@ -252,7 +253,7 @@
             // cbSetSearchTime
             // 
             this.cbSetSearchTime.AutoSize = true;
-            this.cbSetSearchTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSetSearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSetSearchTime.Location = new System.Drawing.Point(6, -1);
             this.cbSetSearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbSetSearchTime.Name = "cbSetSearchTime";
@@ -266,7 +267,7 @@
             // 
             this.cbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbDestination.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbDestination.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbDestination.FormattingEnabled = true;
             this.cbDestination.Location = new System.Drawing.Point(233, 36);
             this.cbDestination.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -280,7 +281,7 @@
             this.gbBasicInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbBasicInfo.Controls.Add(this.splitContainer1);
-            this.gbBasicInfo.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbBasicInfo.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbBasicInfo.Location = new System.Drawing.Point(3, 3);
             this.gbBasicInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbBasicInfo.Name = "gbBasicInfo";
@@ -324,7 +325,7 @@
             // 
             // btnUpdateMarkingData
             // 
-            this.btnUpdateMarkingData.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnUpdateMarkingData.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnUpdateMarkingData.Location = new System.Drawing.Point(763, 4);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
             this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 38);
@@ -335,7 +336,7 @@
             // 
             // btnSearchDB
             // 
-            this.btnSearchDB.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchDB.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchDB.Location = new System.Drawing.Point(617, 4);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
@@ -347,7 +348,7 @@
             // 
             // btnEditDefectClass
             // 
-            this.btnEditDefectClass.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnEditDefectClass.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnEditDefectClass.Location = new System.Drawing.Point(436, 67);
             this.btnEditDefectClass.Name = "btnEditDefectClass";
             this.btnEditDefectClass.Size = new System.Drawing.Size(75, 37);
@@ -358,7 +359,7 @@
             // 
             // btnShowSkipParam
             // 
-            this.btnShowSkipParam.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnShowSkipParam.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnShowSkipParam.Location = new System.Drawing.Point(358, 67);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
             this.btnShowSkipParam.Size = new System.Drawing.Size(75, 37);
@@ -367,9 +368,21 @@
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
             this.btnShowSkipParam.Click += new System.EventHandler(this.btnShowSkipParam_Click);
             // 
+            // btnEditDefect
+            // 
+            this.btnEditDefect.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnEditDefect.Location = new System.Drawing.Point(592, 67);
+            this.btnEditDefect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnEditDefect.Name = "btnEditDefect";
+            this.btnEditDefect.Size = new System.Drawing.Size(75, 37);
+            this.btnEditDefect.TabIndex = 8;
+            this.btnEditDefect.Text = "EDIT DEFECT";
+            this.btnEditDefect.UseVisualStyleBackColor = true;
+            this.btnEditDefect.Click += new System.EventHandler(this.btnEditDefect_Click);
+            // 
             // btnXOFSMST
             // 
-            this.btnXOFSMST.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnXOFSMST.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnXOFSMST.Location = new System.Drawing.Point(514, 67);
             this.btnXOFSMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXOFSMST.Name = "btnXOFSMST";
@@ -384,7 +397,7 @@
             this.gbDBConnection.Controls.Add(this.lblDbConnStateIcon);
             this.gbDBConnection.Controls.Add(this.btnDBConn);
             this.gbDBConnection.Controls.Add(this.lblDbConnState);
-            this.gbDBConnection.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbDBConnection.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDBConnection.Location = new System.Drawing.Point(6, 3);
             this.gbDBConnection.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbDBConnection.Name = "gbDBConnection";
@@ -407,7 +420,7 @@
             // 
             // btnDBConn
             // 
-            this.btnDBConn.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDBConn.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDBConn.Location = new System.Drawing.Point(23, 29);
             this.btnDBConn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDBConn.Name = "btnDBConn";
@@ -421,7 +434,7 @@
             // 
             this.lblDbConnState.AutoSize = true;
             this.lblDbConnState.BackColor = System.Drawing.SystemColors.Control;
-            this.lblDbConnState.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDbConnState.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblDbConnState.Location = new System.Drawing.Point(24, 14);
             this.lblDbConnState.Name = "lblDbConnState";
             this.lblDbConnState.Size = new System.Drawing.Size(103, 12);
@@ -431,7 +444,7 @@
             // 
             // btnExportCSV
             // 
-            this.btnExportCSV.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnExportCSV.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnExportCSV.Location = new System.Drawing.Point(690, 44);
             this.btnExportCSV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExportCSV.Name = "btnExportCSV";
@@ -444,7 +457,7 @@
             // gbOption
             // 
             this.gbOption.Controls.Add(this.cbUseMask);
-            this.gbOption.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbOption.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbOption.Location = new System.Drawing.Point(203, 66);
             this.gbOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbOption.Name = "gbOption";
@@ -457,7 +470,7 @@
             // cbUseMask
             // 
             this.cbUseMask.AutoSize = true;
-            this.cbUseMask.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseMask.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbUseMask.Location = new System.Drawing.Point(8, 17);
             this.cbUseMask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseMask.Name = "cbUseMask";
@@ -468,7 +481,7 @@
             // 
             // btnReset
             // 
-            this.btnReset.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReset.Location = new System.Drawing.Point(763, 43);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
@@ -483,7 +496,7 @@
             this.gbMarkingGroup.Controls.Add(this.cbUseETC);
             this.gbMarkingGroup.Controls.Add(this.cbUseTG);
             this.gbMarkingGroup.Controls.Add(this.cbUseES);
-            this.gbMarkingGroup.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbMarkingGroup.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbMarkingGroup.Location = new System.Drawing.Point(5, 67);
             this.gbMarkingGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMarkingGroup.Name = "gbMarkingGroup";
@@ -496,7 +509,7 @@
             // cbUseETC
             // 
             this.cbUseETC.AutoSize = true;
-            this.cbUseETC.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseETC.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbUseETC.Location = new System.Drawing.Point(134, 17);
             this.cbUseETC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseETC.Name = "cbUseETC";
@@ -508,7 +521,7 @@
             // cbUseTG
             // 
             this.cbUseTG.AutoSize = true;
-            this.cbUseTG.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseTG.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbUseTG.Location = new System.Drawing.Point(71, 17);
             this.cbUseTG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseTG.Name = "cbUseTG";
@@ -520,7 +533,7 @@
             // cbUseES
             // 
             this.cbUseES.AutoSize = true;
-            this.cbUseES.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseES.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.cbUseES.Location = new System.Drawing.Point(8, 17);
             this.cbUseES.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseES.Name = "cbUseES";
@@ -532,7 +545,7 @@
             // lblDestination
             // 
             this.lblDestination.BackColor = System.Drawing.SystemColors.Control;
-            this.lblDestination.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDestination.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblDestination.Location = new System.Drawing.Point(144, 38);
             this.lblDestination.Name = "lblDestination";
             this.lblDestination.Size = new System.Drawing.Size(84, 17);
@@ -543,7 +556,7 @@
             // listViewBCNO
             // 
             this.listViewBCNO.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewBCNO.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewBCNO.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewBCNO.HideSelection = false;
             this.listViewBCNO.Location = new System.Drawing.Point(0, 0);
             this.listViewBCNO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -557,7 +570,7 @@
             this.gbPTRYLP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPTRYLP.Controls.Add(this.listViewPTRYLP);
-            this.gbPTRYLP.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbPTRYLP.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbPTRYLP.Location = new System.Drawing.Point(0, 0);
             this.gbPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYLP.Name = "gbPTRYLP";
@@ -571,7 +584,7 @@
             // 
             this.listViewPTRYLP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPTRYLP.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewPTRYLP.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewPTRYLP.HideSelection = false;
             this.listViewPTRYLP.Location = new System.Drawing.Point(6, 17);
             this.listViewPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -584,7 +597,7 @@
             // 
             this.gbMRKCTLMST.Controls.Add(this.listViewMRKCTLMST);
             this.gbMRKCTLMST.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbMRKCTLMST.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbMRKCTLMST.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbMRKCTLMST.Location = new System.Drawing.Point(0, 0);
             this.gbMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMRKCTLMST.Name = "gbMRKCTLMST";
@@ -599,7 +612,7 @@
             this.listViewMRKCTLMST.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewMRKCTLMST.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewMRKCTLMST.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewMRKCTLMST.HideSelection = false;
             this.listViewMRKCTLMST.Location = new System.Drawing.Point(5, 18);
             this.listViewMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -614,7 +627,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPTRYOP.Controls.Add(this.listViewPTRYOP);
-            this.gbPTRYOP.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbPTRYOP.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbPTRYOP.Location = new System.Drawing.Point(0, 0);
             this.gbPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYOP.Name = "gbPTRYOP";
@@ -629,7 +642,7 @@
             this.listViewPTRYOP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPTRYOP.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewPTRYOP.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewPTRYOP.HideSelection = false;
             this.listViewPTRYOP.Location = new System.Drawing.Point(6, 18);
             this.listViewPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -644,7 +657,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbINSPDAT.Controls.Add(this.listViewINSPDAT);
-            this.gbINSPDAT.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbINSPDAT.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbINSPDAT.Location = new System.Drawing.Point(0, 0);
             this.gbINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbINSPDAT.Name = "gbINSPDAT";
@@ -659,7 +672,7 @@
             this.listViewINSPDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewINSPDAT.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewINSPDAT.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewINSPDAT.HideSelection = false;
             this.listViewINSPDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -674,7 +687,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbFAULTDAT.Controls.Add(this.listViewFAULTDAT);
-            this.gbFAULTDAT.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbFAULTDAT.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbFAULTDAT.Location = new System.Drawing.Point(0, 0);
             this.gbFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbFAULTDAT.Name = "gbFAULTDAT";
@@ -689,7 +702,7 @@
             this.listViewFAULTDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewFAULTDAT.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewFAULTDAT.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.listViewFAULTDAT.HideSelection = false;
             this.listViewFAULTDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -714,7 +727,7 @@
             // 
             this.lblTotalFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalFaultPage.AutoSize = true;
-            this.lblTotalFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalFaultPage.Location = new System.Drawing.Point(1068, 13);
             this.lblTotalFaultPage.Name = "lblTotalFaultPage";
             this.lblTotalFaultPage.Size = new System.Drawing.Size(46, 13);
@@ -725,7 +738,7 @@
             // 
             this.tbGRank.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbGRank.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbGRank.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbGRank.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbGRank.Location = new System.Drawing.Point(911, 12);
             this.tbGRank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbGRank.Name = "tbGRank";
@@ -738,7 +751,7 @@
             // 
             this.tbFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFaultPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbFaultPage.Location = new System.Drawing.Point(1022, 12);
             this.tbFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbFaultPage.Name = "tbFaultPage";
@@ -750,7 +763,7 @@
             // btnNextFaultPage
             // 
             this.btnNextFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNextFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNextFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNextFaultPage.Location = new System.Drawing.Point(1118, 5);
             this.btnNextFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNextFaultPage.Name = "btnNextFaultPage";
@@ -763,7 +776,7 @@
             // btnPrevFaultPage
             // 
             this.btnPrevFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrevFaultPage.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrevFaultPage.Location = new System.Drawing.Point(962, 5);
             this.btnPrevFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPrevFaultPage.Name = "btnPrevFaultPage";
@@ -777,7 +790,7 @@
             // 
             this.lblDownloadResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDownloadResult.AutoSize = true;
-            this.lblDownloadResult.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDownloadResult.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblDownloadResult.Location = new System.Drawing.Point(10, 14);
             this.lblDownloadResult.Name = "lblDownloadResult";
             this.lblDownloadResult.Size = new System.Drawing.Size(110, 12);
@@ -960,7 +973,7 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(5, 6);
             this.lblTitle.Name = "lblTitle";
@@ -968,25 +981,13 @@
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DEFECT VIEWER";
             // 
-            // btnEditDefect
-            // 
-            this.btnEditDefect.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnEditDefect.Location = new System.Drawing.Point(592, 67);
-            this.btnEditDefect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnEditDefect.Name = "btnEditDefect";
-            this.btnEditDefect.Size = new System.Drawing.Size(75, 37);
-            this.btnEditDefect.TabIndex = 8;
-            this.btnEditDefect.Text = "EDIT DEFECT";
-            this.btnEditDefect.UseVisualStyleBackColor = true;
-            this.btnEditDefect.Click += new System.EventHandler(this.btnEditDefect_Click);
-            // 
             // FormDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 819);
             this.Controls.Add(this.splitContainer8);
-            this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimizeBox = false;
             this.Name = "FormDB";

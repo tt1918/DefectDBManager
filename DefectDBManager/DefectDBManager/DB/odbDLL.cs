@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using static System.Net.WebRequestMethods;
 
 namespace DefectDBManager
 {
@@ -102,7 +103,7 @@ namespace DefectDBManager
             if (conn == null)
             {
                 // 이거 나중에 정리해야할듯....
-               
+
 
                 conn = new OracleConnection(dbConn);
             }
@@ -168,12 +169,12 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            if(ConStringType==0)
+            if (ConStringType == 0)
             {
                 DBConnString = String.Format($"Data Source={dbName};" +
                              $"User ID={UserID};Password={password};Connection Timeout=30;");
             }
-            else if(ConStringType == 1)
+            else if (ConStringType == 1)
             {
                 DBConnString = String.Format("Data Source=(DESCRIPTION="
                             + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={hostIP})(PORT={DBPort})))"
@@ -268,7 +269,6 @@ namespace DefectDBManager
 
         public string SearchLotName { get; set; }
 
-
         // 상위 객체
         private object owner;
 
@@ -352,7 +352,7 @@ namespace DefectDBManager
         /// </summary>
         public void ResetDataSplit()
         {
-            PTRLYP_Data.Clear(); 
+            PTRLYP_Data.Clear();
             AREADEL_Data.Clear();
             XOFSMST_Data.Clear();
             MRKCTLMST_Data.Clear();
@@ -384,7 +384,7 @@ namespace DefectDBManager
                 for (int j = 0; j < dicSizeMRKCTLMST[i].Count; j++)
                     dicSizeMRKCTLMST[i][j].Clear();
 
-                for(int j=0; j< dicMRKF1MRKCTLMST[i].Count; j++)
+                for (int j = 0; j < dicMRKF1MRKCTLMST[i].Count; j++)
                     dicMRKF1MRKCTLMST[i][j].Clear();
 
                 _MRKCTLMST_DE[i].Clear();
@@ -597,7 +597,7 @@ namespace DefectDBManager
                 success = SearchXOFSMST(lotID);
                 if (success == false) return false;
 
-                if(DbDestConfig.UseAREADEL==true)
+                if (DbDestConfig.UseAREADEL == true)
                 {
                     success = SearchAreaDel(lotID);
                     if (success == false) return false;
@@ -660,7 +660,7 @@ namespace DefectDBManager
                             XOFSMSTData data = new XOFSMSTData();
                             data.Parse(reader);
                             XOFSMST_Data.Add(data);
-                            
+
                             logData = string.Format($"{XOFSMST_Data.Count}\t-\t{data.ToString()}");
                             Log.WriteLoadData(logData, XOFSMST_Data.Count, "XOFSMST", 0.0);
                         }
@@ -668,7 +668,7 @@ namespace DefectDBManager
                 }
                 DB_Progress.Complete(eNittoDBProgress.XOFSMST);
                 return true;
-;
+                ;
             }
             catch (Exception ex)
             {
@@ -683,7 +683,7 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-            
+
             try
             {
                 QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
@@ -779,7 +779,7 @@ namespace DefectDBManager
 
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
-                            
+
                             //아래 구문은 Int형 범위초과로 에러...
                             //if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
                             //    continue;
@@ -928,7 +928,7 @@ namespace DefectDBManager
         private bool searchMRKCTLMSTfromBuffer(string logID)
         {
             int procStep = 0;
-            
+
             try
             {
                 DestConfigUnit destUnit = new DestConfigUnit();
@@ -937,7 +937,7 @@ namespace DefectDBManager
                 int fcdTotal = System.Enum.GetValues(typeof(eFCD)).Length;
                 int dataCnt = 0;
                 int valMRKF1 = 0;
-                bool boolMRKF1  = false;
+                bool boolMRKF1 = false;
                 string logData = "";
                 for (int fcdIdx = 0; fcdIdx < fcdTotal; fcdIdx++)
                 {
@@ -960,11 +960,11 @@ namespace DefectDBManager
 
                             valMRKF1 = Int32.Parse(data.MRKF1);
                             boolMRKF1 = false;
-                            if (valMRKF1 == 1) boolMRKF1  = true;
+                            if (valMRKF1 == 1) boolMRKF1 = true;
                             if (dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
-                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = boolMRKF1 ;
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = boolMRKF1;
                             else
-                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, boolMRKF1 );
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, boolMRKF1);
 
                             dataCnt++;
 
@@ -976,7 +976,7 @@ namespace DefectDBManager
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + procStep));
                 Log.WriteLog($"[Error] MRKCTLMST_Buffer_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
@@ -1081,7 +1081,7 @@ namespace DefectDBManager
             }
             catch (Exception ex)
             {
-                DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES+ procStep));
+                DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + procStep));
                 Log.WriteLog($"[Error] MRKCTLMST_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
                 return false;
             }
@@ -1175,10 +1175,10 @@ namespace DefectDBManager
                             using (var reader = comm.ExecuteReader())
                             {
                                 dbCnt = reader.RowSize;
-                                
+
                                 while (reader.Read())
                                 {
-                                    
+
                                     INSPDATData data = new INSPDATData();
                                     data.Parse(reader);
 
@@ -1297,7 +1297,7 @@ namespace DefectDBManager
             string query;
             int procStep = 0;
 
-            int[] defectCnt=new int[fcdCnt];
+            int[] defectCnt = new int[fcdCnt];
             defectCnt.Initialize();
 
             try
@@ -1398,11 +1398,11 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-                                        if (dicSizeData.ContainsKey(tmpKey) == true && dicMRKF1Data.ContainsKey(tmpKey)==true)
+                                        if (dicSizeData.ContainsKey(tmpKey) == true && dicMRKF1Data.ContainsKey(tmpKey) == true)
                                         {
                                             validMark = dicMRKF1Data[data.FLTID];
                                             faultSize = dicSizeData[data.FLTID];
-                                            if (faultSize <= (data.AREA_M + 0.00001f) && validMark==true) bValid = true;
+                                            if (faultSize <= (data.AREA_M + 0.00001f) && validMark == true) bValid = true;
                                             else bValid = false;
                                         }
 
@@ -1521,8 +1521,20 @@ namespace DefectDBManager
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                 }
 
-                if(minSize==999.0)
-                    minSize= 0;
+                if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK)
+                {
+                    if(DbDestConfig.SelDestUnit.useFaltIDCheck==true)
+                    {
+                        CrtParam.VerifyFLTID();
+
+                        if (checkInspectionRollMeter()==false)
+                            CrtParam.InspRollCheckError = true;
+                    }
+                    
+                }
+
+                if (minSize == 999.0)
+                    minSize = 0;
 
                 //   Defect 사이즈 처리
                 resultDefect.MarkFault.MinXPos = minXPos;
@@ -1531,7 +1543,7 @@ namespace DefectDBManager
 
                 // 불량 체크
                 bool isSuccess = true;
-                if(DbDestConfig.CSVType==eCSV_TYPE.KORENO|| DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
+                if (DbDestConfig.CSVType == eCSV_TYPE.KORENO || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
                 {
                     // 하나라도 검색이 되었으면 OK
                     isSuccess = false;
@@ -1583,6 +1595,122 @@ namespace DefectDBManager
             }
 
             return bXOfSErr;
+        }
+
+        private bool checkInspectionRollMeter()
+        {
+            bool bMatch = false;
+            bool bFindSepa2 = false, bFindSepa3 = false;
+            int i, j, k;
+            int nFindSepa1 = 0, nFindSepa2 = 0, nFindSepa3 = 0;
+            int nCompleteMCnt = 0, nINSPLengthCnt = 0, nINSPLengthCnt2 = 0;
+            int nTmp = 0, nLength1, nLength2;
+            float fLength = 0.0f, fStLength = 0.0f, fTmp;
+            string str, strTmp;
+            string strLotMatch;
+            List<int> nIndex1 = new List<int>();
+            List<int>[] nIndex2 = new List<int>[3];
+            for(i=0; i<3; i++) nIndex2[i] = new List<int>();
+            List<float> fINSPLength = new List<float>();
+
+            nFindSepa1 = DbOption.lotName.IndexOf("LL");
+            if (nFindSepa1 >= 0)
+            {
+                strLotMatch = DbOption.lotName.Substring(10);
+                for (i = 0; i < PTRLYP_Data.Count; i++)
+                {
+                    nFindSepa2 = PTRLYP_Data[i].YLMLOT.IndexOf(strLotMatch);
+                    if (nFindSepa2 >= 0)
+                    {
+                        if (PTRLYP_Data[i].YLMKAS == 0.0f)
+                            continue;
+                        nIndex1.Add(i);
+                        bFindSepa2 = true;
+                        Log.WriteLog($"PTRYLP LOT Match : {PTRLYP_Data[i].YLMKAS}");
+                    }
+                }
+
+                int fcdSize = System.Enum.GetValues(typeof(eFCD)).Length;
+                for (i = 0; i < fcdSize; i++)
+                {
+                    for (j = 0; j < PTRLYP_Data.Count; j++)
+                    {
+                        for (k = 0; k < INSPDAT_Data[i][j].Count; k++)
+                        {
+                            nFindSepa3 = INSPDAT_Data[i][j][k].LOTNO.IndexOf(strLotMatch);
+                            if (nFindSepa3 >= 0)
+                            {
+                                if (INSPDAT_Data[i][j][k].Length == 0.0f || nTmp == (int)INSPDAT_Data[i][j][k].Length)
+                                    continue;
+                                nTmp = (int)INSPDAT_Data[i][j][k].Length;
+                                nIndex2[0].Add(i);
+                                nIndex2[1].Add(j);
+                                nIndex2[2].Add(k);
+                                bFindSepa3 = false;
+                                Log.WriteLog($"INSP LOT Match : {INSPDAT_Data[i][j][k].Length}");
+                            }
+                        }
+                    }
+                }
+                if (bFindSepa2 && bFindSepa3)
+                {
+                    nCompleteMCnt = (int)nIndex1.Count;
+                    nINSPLengthCnt = (int)nIndex2[0].Count;
+                    fLength = 0.0f;
+                    fTmp = 0.0f;
+                    strTmp = "";
+                    for (i = 0; i < nINSPLengthCnt; i++)
+                    {
+                        if (fStLength != INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart)
+                        {
+                            fStLength = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart;
+                            fTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].Length;
+                            fTmp = fTmp / 1000.0f;
+                            fLength += fTmp;
+                        }
+                        if (strTmp != INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO)
+                        {
+                            if (strTmp == "")
+                                strTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                            else
+                            {
+                                strTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                                fINSPLength.Add(fLength);
+                                fLength = 0.0f;
+                            }
+                        }
+                    }
+                    fINSPLength.Add(fLength);
+                    nINSPLengthCnt2 = (int)fINSPLength.Count;
+                    for (i = 0; i < nINSPLengthCnt2; i++)
+                    {
+                        for (j = 0; j < nCompleteMCnt; j++)
+                        {
+                            nLength1 = (int)PTRLYP_Data[nIndex1[i]].YLMKAS;
+                            nLength2 = (int)fINSPLength[i];
+                            if (nLength1 - DbDestConfig.SelDestUnit.LengErrorRangeMinus <= nLength2 && nLength1 + DbDestConfig.SelDestUnit.LengErrorRangePlus >= nLength2)
+                                bMatch = true;
+                            else
+                                bMatch = false;
+                            Log.WriteLog($"CompleteMeter={nLength1} InspectionMeter={nLength2}");
+                        }
+                    }
+
+                    Log.WriteLog($"InspLengthCount={nINSPLengthCnt2} CompleteMeterCount={nCompleteMCnt}");
+                }
+                if (nINSPLengthCnt==0)
+                    bMatch = false;
+            }
+            else
+            {
+                bMatch = false;
+            }
+            nIndex1.Clear();
+            nIndex2[0].Clear();
+            nIndex2[1].Clear();
+            nIndex2[2].Clear();
+            fINSPLength.Clear();
+            return bMatch;
         }
 
         private bool isMaskedDefect(float xPos, double yPos)

@@ -22,7 +22,6 @@ namespace DefectDBManager
         {
 
         }
-
     }
 
     public class Option

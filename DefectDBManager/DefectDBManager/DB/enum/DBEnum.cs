@@ -277,6 +277,8 @@ namespace DefectDBManager
         eResetDataNext,
         eFinishedSearchLot,
         eFinishedSearchModel,
+        eBCR_FLTID_CheckError,
+        eBCR_INSPMETER_CheckError,
     }
     #endregion
 

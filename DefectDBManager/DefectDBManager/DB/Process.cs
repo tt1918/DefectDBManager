@@ -44,7 +44,7 @@ namespace DefectDBManager
         /// <summary>
         /// DB 검색 후 최종 불량 데이터
         /// </summary>
-        public ResultData[] _ResultData;
+ //       public ResultData[] _ResultData;
 
         public FormDB _FormDB_Now { get { return formDB[0]; } }
         public FormDB _FormDB_Next { get { return formDB[1]; } }
@@ -80,7 +80,6 @@ namespace DefectDBManager
             _DbConn = new OracleDbConnection();
 
             int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length + 1;
-            _ResultData = new ResultData[cnt];
             _DbProc = new NittoDB[cnt];
             _Param = new Param[cnt];
             _Option = new Option[cnt];
@@ -88,7 +87,6 @@ namespace DefectDBManager
 
             for (int i = 0; i < cnt; i++)
             {
-                _ResultData[i] = new ResultData();
                 _Option[i] = new Option();
                 _Param[i] = new Param();
                 _Param[i]._UserDefectClass.Load();
@@ -100,7 +98,7 @@ namespace DefectDBManager
                 _DbProc[i].DBCodeConfig = _CodeConfig[i];
                 _DbProc[i].DbOption = _Option[i];
                 _DbProc[i].CrtParam = _Param[i];
-                _DbProc[i].ResultDefect = _ResultData[i];
+                _DbProc[i].ResultDefect = new ResultData();
             }
 
             if (this.threadDBConnect != null)

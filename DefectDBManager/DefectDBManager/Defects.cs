@@ -197,7 +197,7 @@ namespace DefectDBManager
             dbManager._FormDB_Now.OnEndCsvReading -= OnEventEndCsvReding;
             dbManager._FormDB_Next.OnEndCsvReading -= OnEventEndCsvReding;
             dbManager.OnProcessEvent -= OnEventEndCsvReding;
-            dbManager._DestConfig.Write();
+            //dbManager._DestConfig.Write();
             defects?.Clear();
 			markingData?.Clear();
 			markingAreaDefects?.Clear();
@@ -286,9 +286,9 @@ namespace DefectDBManager
 
             List<MarkingFaultDatum> oriData;
             if (isNext == false)
-                oriData = DBManager._ResultData[0].MarkFault.Data;
+                oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
 			else
-                oriData = DBManager._ResultData[1].MarkFault.Data;
+                oriData = DBManager._DbProc[1].ResultDefect.MarkFault.Data;
 
 			foreach(MarkingFaultDatum datum in oriData)
 			{
@@ -315,7 +315,7 @@ namespace DefectDBManager
 		{
 			markingData.Clear();
             List<MarkingFaultDatum> oriData;
-            oriData = DBManager._ResultData[0].MarkFault.Data;
+            oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
 
 			foreach(MarkingFaultDatum datum in oriData)
 			{
@@ -432,18 +432,23 @@ namespace DefectDBManager
             dbManager._DbProc[1].LoadedBcNo = new List<string>();
             oldLoadedBcNo.Clear();
             ResultData oldMarkingData;
-            oldMarkingData = dbManager._ResultData[0];
-            dbManager._ResultData[0] = dbManager._ResultData[1];
-            dbManager._DbProc[0].ResultDefect = dbManager._ResultData[1];
-
-            dbManager._ResultData[1] = new ResultData();
-            dbManager._DbProc[1].ResultDefect = dbManager._ResultData[1];
+            oldMarkingData = dbManager._DbProc[0].ResultDefect;
+            dbManager._DbProc[0].ResultDefect = dbManager._DbProc[1].ResultDefect;
             oldMarkingData.Data.Clear();
             oldMarkingData.MarkFault.Data.Clear();
+
+			dbManager._DbProc[0].DbOption = dbManager._DbProc[1].DbOption;
+			dbManager._DbProc[1].DbOption = new Option();
+
+            dbManager._DbProc[1].ResultDefect = new ResultData();
             dbManager._DbProc[1].ResetDataAll();
 			dbManager._DbProc[1].ResetData_DE();
-            dbManager._FormDB_Now.ResetListView();
-            dbManager._FormDB_Next.ResetListView();
+			
+			dbManager._FormDB_Now.BCNO_LV_Data = dbManager._FormDB_Next.BCNO_LV_Data;
+			dbManager._FormDB_Next.CreateListViewData();
+
+            dbManager._FormDB_Now.UpdateListViewFromLotChange();
+            dbManager._FormDB_Next.UpdateListViewFromLotChange();
         }
 
 		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)

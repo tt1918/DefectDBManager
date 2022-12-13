@@ -51,6 +51,9 @@ namespace DefectDBManager
         public int OpticFreqCnt = 0;
         public int OpticSameCnt = 0;
 
+        public bool FLTIDCheckError = false;
+        public bool InspRollCheckError = false;
+
         #endregion
 
         public int UseKT = 0;
@@ -84,6 +87,46 @@ namespace DefectDBManager
             Optic4LineCnt = 0;
             OpticFreqCnt = 0;
             OpticSameCnt = 0;
+
+            DBFaultCount.Initialize();
+            CSVFalutCount.Initialize();
+            ESClassDefectCnt.Initialize();
+            ESFalutCount = 0;
+
+            FLTIDCheckError = false;
+            InspRollCheckError = false;
+        }
+
+        public void VerifyFLTID()
+        {
+            bool bMatch = true;
+            int i, j;
+            int size1 = FAULTDATFLTID.Count;
+            if (size1 == 0)
+                return true;
+
+            int size2 = MRKCTLMSTFLTID.Count;
+
+            for(i= 0; i < size1; i++) 
+            {
+                for(j = 0; j < size2; j++) 
+                    if (FAULTDATFLTID[i] != MRKCTLMSTFLTID[j])
+                        break;
+                if (j == size2 && j != 0)
+                    bMatch = false;
+            }
+
+            if (i == size1 && j == size2 && i != 0 && j != 0)
+                bMatch = false;
+
+            if (size2 == 0) bMatch = false;
+            FAULTDATFLTID.Clear();
+            MRKCTLMSTFLTID.Clear();
+
+            if(FLTIDCheckError==false && bMatch==false)
+                FLTIDCheckError = true;
+
+            return bMatch;
         }
     }
 

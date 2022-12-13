@@ -87,6 +87,7 @@
     <Compile Include="DB\define\DbProgress.cs" />
     <Compile Include="DB\define\DefectClass.cs" />
     <Compile Include="DB\define\Define.cs" />
+    <Compile Include="DB\define\ListViewData.cs" />
     <Compile Include="DB\DestData.cs" />
     <Compile Include="DB\Form\FormDB.cs">
       <SubType>Form</SubType>
