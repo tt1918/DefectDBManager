@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace DefectDBManager
         public float Top;
         public float Bottom;
 
-        public bool CheckSkip(float posX, float posY)
+        public bool CheckSkip(float posX, double posY)
         {
             bool bSkip = false;
             if (Top > 0 || Bottom > 0)
@@ -50,6 +51,9 @@ namespace DefectDBManager
         public int OpticFreqCnt = 0;
         public int OpticSameCnt = 0;
 
+        public bool FLTIDCheckError = false;
+        public bool InspRollCheckError = false;
+
         #endregion
 
         public int UseKT = 0;
@@ -83,36 +87,58 @@ namespace DefectDBManager
             Optic4LineCnt = 0;
             OpticFreqCnt = 0;
             OpticSameCnt = 0;
+
+            DBFaultCount.Initialize();
+            CSVFalutCount.Initialize();
+            ESClassDefectCnt.Initialize();
+            ESFalutCount = 0;
+
+            FLTIDCheckError = false;
+            InspRollCheckError = false;
+        }
+
+        public void VerifyFLTID()
+        {
+            bool bMatch = true;
+            int i=0, j=0;
+            int size1 = FAULTDATFLTID.Count;
+            if (size1 == 0)
+                return;
+
+            int size2 = MRKCTLMSTFLTID.Count;
+
+            for(i= 0; i < size1; i++) 
+            {
+                for(j = 0; j < size2; j++) 
+                    if (FAULTDATFLTID[i] != MRKCTLMSTFLTID[j])
+                        break;
+                if (j == size2 && j != 0)
+                    bMatch = false;
+            }
+
+            if (i == size1 && j == size2 && i != 0 && j != 0)
+                bMatch = false;
+
+            if (size2 == 0) bMatch = false;
+            FAULTDATFLTID.Clear();
+            MRKCTLMSTFLTID.Clear();
+
+            if(FLTIDCheckError==false && bMatch==false)
+                FLTIDCheckError = true;
         }
     }
 
 
     #region mrkctlmst 변수 (Defect Edit에서 사용)
-    public class MRKCTLMST_DE
-    {
-        //public int sizeIdx;
-        public string LNCD;
-        public string FLTID;
-        public string PPCD;
-        public float SIZE;
-        public string MRKF1;
-        public string ROLLNAME;
-
-        public override string ToString()
-        {
-            string msg = $"{FLTID}, , {MRKF1}, , ";
-            return msg;
-        }
-    }
-
+    
     public class MRKCTLMST_DE_Data
     {
-        public List<MRKCTLMST_DE> data;
+        public List<MRKCTLMSTData> data;
         public string query;
 
         public MRKCTLMST_DE_Data()
         {
-            data = new List<MRKCTLMST_DE>();
+            data = new List<MRKCTLMSTData>();
         }
     }
 

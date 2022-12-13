@@ -1,1 +1,0 @@
-int CheckBondingSheet(LPBYTE fm, int left, int top, int right, int bottom, int pitch, int nOverkillLevel);

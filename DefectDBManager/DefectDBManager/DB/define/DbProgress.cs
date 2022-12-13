@@ -9,19 +9,20 @@ namespace DefectDBManager
 {
     public class DbProgress
     {
-        public long Current { get; set; }
-        public long Total { get; set; }
-        public bool IsSkip { get; set; }
-        public int Step { get; set; }
-        public int MaxStep { get; set; }
-        public double Progress 
-        { 
-            get
+        public bool IsSkip 
+        {
+            get { return isSkip; } 
+            set
             {
-                return ((double)Current / (double)Total) * 100.0;
-            } 
+                isSkip = value;
+                if (isSkip == true)
+                    State = eProcessState.Complete;
+            }
         }
+        private bool isSkip;
 
+        public eProcessState State { get; private set; }
+        
         public DbProgress()
         {
             Reset();
@@ -29,19 +30,29 @@ namespace DefectDBManager
 
         public void Reset()
         {
-            Current = 0;
-            Total = 0;
             IsSkip = false;
-            Step = 0;
-            MaxStep = 1;
+            State = eProcessState.Ready;
+        }
+
+        public void Set()
+        {
+            State = eProcessState.Run;
+        }
+
+        public void Error()
+        {
+            State = eProcessState.Error;
+        }
+
+        public void Complete()
+        {
+            State = eProcessState.Complete;
         }
 
         public bool IsComplete()
         {
             if (IsSkip == true) return true;
-            if (Total == 0) return false;
-            if (Total == Current) return true;
-            
+            if(State == eProcessState.Complete) return true;
             return false;
         }
     }
@@ -50,12 +61,12 @@ namespace DefectDBManager
     {
         public DbProgress[] _Progress;
 
-        public bool IsComplete 
-        { 
-            get 
-            { 
-                return checkComplete(); 
-            } 
+        public bool IsComplete
+        {
+            get
+            {
+                return checkComplete();
+            }
 
             private set
             {
@@ -66,7 +77,7 @@ namespace DefectDBManager
 
         public bool IsError { get; private set; }
 
-        public eNittoDBProgress ErrorStep { get; private set;  }
+        public eNittoDBProgress ErrorStep { get; private set; }
 
         public NittoDBProgress()
         {
@@ -74,7 +85,7 @@ namespace DefectDBManager
 
             _Progress = new DbProgress[count];
 
-            for(int i=0; i<count; i++)
+            for (int i = 0; i < count; i++)
             {
                 _Progress[i] = new DbProgress();
             }
@@ -102,23 +113,14 @@ namespace DefectDBManager
             _Progress[(int)index].Reset();
         }
 
-        public void SetMatStep(eNittoDBProgress index, int val)
+        public void Set(eNittoDBProgress index)
         {
-            _Progress[(int)index].MaxStep = val;
+            _Progress[(int)index].Set();
         }
 
-        public void SetTotal(eNittoDBProgress index, long total, int step=1)
+        public void Complete(eNittoDBProgress index)
         {
-            _Progress[(int)index].Step = step;
-            _Progress[(int)index].Total = total;
-        }
-        public void AddCount(eNittoDBProgress index)
-        {
-            _Progress[(int)index].Current++;
-        }
-        public void SetCount(eNittoDBProgress index, long count)
-        {
-            _Progress[(int)index].Current = count;
+            _Progress[(int)index].Complete();
         }
 
         public void SetSkip(eNittoDBProgress index)
@@ -131,9 +133,10 @@ namespace DefectDBManager
             IsComplete = true;
             IsError = true;
             ErrorStep = errStep;
+            _Progress[(int)errStep].Error();
         }
 
-        public bool IsCompelete(eNittoDBProgress index)
+        public bool CheckComplete(eNittoDBProgress index)
         {
             return _Progress[(int)index].IsComplete();
         }

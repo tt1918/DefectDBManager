@@ -25,7 +25,7 @@ namespace DefectDBManager
                         sw.WriteLine(str);
                     else
                     {
-                        sw.WriteLine($"{time}");
+                        sw.Write($"[{time}] ");
                         sw.WriteLine(str);
                     }
                 }
@@ -33,6 +33,30 @@ namespace DefectDBManager
             finally
             {
                 
+            }
+        }
+
+        public static void WriteLog(string str)
+        {
+            int nDay;
+            
+            DateTime time = DateTime.Now;
+            string data, fileName;
+
+            nDay = time.Day;
+            
+            fileName = $"{Define.LogPath}\\Day_{nDay}.txt";
+            try
+            {
+                using (StreamWriter sw = File.AppendText(fileName))
+                {
+                    data = $"{time.Hour}:{time.Minute}:{time.Second} {str}";
+                    sw.WriteLine(data);
+                }
+            }
+            finally
+            {
+
             }
         }
     }

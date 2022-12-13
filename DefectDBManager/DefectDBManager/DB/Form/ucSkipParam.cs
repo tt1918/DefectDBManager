@@ -37,6 +37,7 @@ namespace DefectDBManager
         public ucSkipParam()
         {
             InitializeComponent();
+            UpdateLanguage();
         }
 
         private void ucSkipParam_Load(object sender, EventArgs e)
@@ -85,5 +86,18 @@ namespace DefectDBManager
             if (float.TryParse(tbSizeMax.Text, out val) == true)
                 skipSize.max = val;
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+            this.SuspendLayout();
+            lblMin.Text = Language.Min;
+            lblMax.Text = Language.Max;
+            lblSizeX.Text = Language.SizeX;
+            lblSizeY.Text = Language.SizeY;
+            lblSize.Text = Language.Size;
+            this.ResumeLayout();
+        }
+        #endregion Language Update
     }
 }

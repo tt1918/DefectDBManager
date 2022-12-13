@@ -20,7 +20,9 @@ namespace DefectDBManager
 
             Defects _Defects = new Defects();
             _Defects.DBManager.SetDataState(false);
-            Application.Run(_Defects._FormDB);
+            _Defects._FormDB_Now._FormCloseBtnType = true;
+            _Defects._FormDB_Now._LangType = 1;
+            Application.Run(_Defects._FormDB_Now);
         }
     }
 }

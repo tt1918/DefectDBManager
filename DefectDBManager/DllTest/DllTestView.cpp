@@ -41,7 +41,7 @@ CDllTestView::CDllTestView() noexcept
 	m_Defect = new CallClassWrapper;
 #ifdef USE_CODEREADERDLL
 	m_CodeReader = new CallClassWrapperCodeReader;
-	if (!m_CodeReader->Initialize(false, 2048, 2048, _T("C:\\Users\\bonaf\\Downloads\\BCR\\DataMatrixTool.vpp")))
+	if (!m_CodeReader->Initialize(false, 2048, 2048, _T("C:\\COSS\\codeRead.vpp")))
 	{
 		AfxMessageBox(_T("CodeReaderDll Initialize failed"));
 	}
@@ -175,7 +175,7 @@ void CDllTestView::OnBnClickedButton4()
 	}
 #endif
 
-	m_Defect->ShowDefectView();
+//	m_Defect->ShowDefectView();
 }
 
 #ifdef USE_CODEREADERDLL

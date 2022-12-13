@@ -6,6 +6,24 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
+    public class SearchOption
+    {
+        public bool useDefectEdit;
+        public bool useMask;
+        public bool useSplit;
+
+        public string MKCD;
+
+        public string Title;
+
+        public float splitStartX;
+        public float splitEndX;
+        public SearchOption()
+        {
+
+        }
+    }
+
     public class Option
     {
         public string lotName;
@@ -30,20 +48,13 @@ namespace DefectDBManager
         public bool useESTime;
         public bool useOffsetX;
         public bool useSameDefect;
-        public bool useDefectEdit;
-        public bool useMask;
+        
         public bool useKT;
-
-        public bool useSplit;
-        public float splitStartX;
-        public float splitEndX;
 
         public bool useAIfromDB;
 
-        public string MKCD;
-
         public string FWPlace;
-        public string Title;
+        
 
         // 도공 광학계 선택
         public bool useCSVAll;
@@ -57,6 +68,8 @@ namespace DefectDBManager
         // 생산 가능 경과시간
         public int prodAvaliableSpan;
         public float xOffset;
+
+        public  SearchOption searchOP;
 
         public Option()
         {
@@ -79,6 +92,8 @@ namespace DefectDBManager
 
             prodAvaliableSpan = 0;
             xOffset = 0;
+
+            searchOP = new SearchOption();
         }
     }
 

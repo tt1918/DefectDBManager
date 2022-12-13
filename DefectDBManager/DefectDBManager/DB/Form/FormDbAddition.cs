@@ -15,8 +15,8 @@ namespace DefectDBManager
         readonly string[] XOFSMSTHeader = { "KYCD", "PPCD", "LNCD", "YLMZKN2", "YLSZKN", "X_OFFSET" };
         readonly int[] listXOFSMSTWidth = { 50, 50, 50, 180, 180, 70 };
 
-        readonly string[] AREADELHeader = { "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD" };
-        readonly int[] listAREADELWidth = { 50, 50, 50, 180, 100, 100, 100, 100 };
+        readonly string[] AREADELHeader = { "No", "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD" };
+        readonly int[] listAREADELWidth = { 30, 50, 50, 50, 180, 100, 100, 100, 100 };
 
         public List<XOFSMSTData> _XOFSMSTData = null;
         public List<AREADELData> _AREADELData = null;
@@ -34,7 +34,7 @@ namespace DefectDBManager
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         private void initXOFSMSTList()
@@ -84,9 +84,11 @@ namespace DefectDBManager
             if (_AREADELData == null) return;
 
             listViewAREADEL.BeginUpdate();
+            int index = 0;
             foreach (AREADELData data in _AREADELData)
             {
-                ListViewItem item = new ListViewItem(data.KYCD);
+                ListViewItem item = new ListViewItem(index.ToString());
+                item.SubItems.Add(data.KYCD);
                 item.SubItems.Add(data.PPCD.ToString());
                 item.SubItems.Add(data.LNCD);
                 item.SubItems.Add(data.LOTNO);
@@ -95,6 +97,7 @@ namespace DefectDBManager
                 item.SubItems.Add(data.STR_MD.ToString());
                 item.SubItems.Add(data.END_MD.ToString());
                 listViewAREADEL.Items.Add(item);
+                index++;
             }
             listViewAREADEL.EndUpdate();
         }
@@ -103,9 +106,17 @@ namespace DefectDBManager
         {
             if(this.Visible==true)
             {
+                UpdateLanguage();
                 updateXOFSMSTList();
                 updateAREADELList();
             }
         }
+
+        #region Language Update
+        public void UpdateLanguage()
+        {
+            btnClose.Text = Language.Close;
+        }
+        #endregion Language Update
     }
 }

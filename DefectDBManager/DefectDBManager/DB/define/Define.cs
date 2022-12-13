@@ -15,6 +15,8 @@ namespace DefectDBManager
         public static string DestPath { get { return Path.Combine(MainPath, "Dest.Ini"); } }
 
         public static string DBResultName { get { return "DBResult.txt"; } }
+
+        public static string LogPath { get { return Path.Combine(MainPath, "SystemLog"); } }
     }
 
     public class Global

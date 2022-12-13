@@ -1,0 +1,374 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>전체 삭제</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>닫기</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>연결됨</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>연결</value>
+  </data>
+  <data name="DBLoginConnect" xml:space="preserve">
+    <value>접속</value>
+  </data>
+  <data name="DBLoginDisonnect" xml:space="preserve">
+    <value>접속 해제</value>
+  </data>
+  <data name="DBLoginDomain" xml:space="preserve">
+    <value>DB Name</value>
+  </data>
+  <data name="DBLoginHostIP" xml:space="preserve">
+    <value>호스트 IP</value>
+  </data>
+  <data name="DBLoginID" xml:space="preserve">
+    <value>아이디</value>
+  </data>
+  <data name="DBLoginPort" xml:space="preserve">
+    <value>포트</value>
+  </data>
+  <data name="DBLoginPW" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
+  <data name="DBLoginTitle" xml:space="preserve">
+    <value>DB 접속 정보</value>
+  </data>
+  <data name="DBLoginType" xml:space="preserve">
+    <value>유형</value>
+  </data>
+  <data name="DBProgressTitle" xml:space="preserve">
+    <value>데이터 베이스 진행 상태</value>
+  </data>
+  <data name="DefectEditorTitle" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="Del" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>출하처</value>
+  </data>
+  <data name="Disconnected" xml:space="preserve">
+    <value>연결 끊김</value>
+  </data>
+  <data name="EditDefect" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="EditDefectClass" xml:space="preserve">
+    <value>불량 클레스 변경</value>
+  </data>
+  <data name="EditDefectTitle" xml:space="preserve">
+    <value>불량 수정</value>
+  </data>
+  <data name="ES" xml:space="preserve">
+    <value>연신</value>
+  </data>
+  <data name="ETC" xml:space="preserve">
+    <value>그외</value>
+  </data>
+  <data name="ExportCSV" xml:space="preserve">
+    <value>CSV 파일 저장</value>
+  </data>
+  <data name="gbInspDataMask" xml:space="preserve">
+    <value>검사 데이터 마스크</value>
+  </data>
+  <data name="gbSizeSkip" xml:space="preserve">
+    <value>불량 제외 크기</value>
+  </data>
+  <data name="listBCNO_3" xml:space="preserve">
+    <value>M^2 불량수</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listBCNO_5" xml:space="preserve">
+    <value>원단 BCNO</value>
+    <comment>BCnoHeader</comment>
+  </data>
+  <data name="listFAULTDAT_1" xml:space="preserve">
+    <value>관리 NO</value>
+    <comment>FAULTDAT 1</comment>
+  </data>
+  <data name="listFAULTDAT_2" xml:space="preserve">
+    <value>불량 CNT</value>
+    <comment>FAULTDAT 2</comment>
+  </data>
+  <data name="listFAULTDAT_6" xml:space="preserve">
+    <value>종류</value>
+    <comment>FAULTDAT 6</comment>
+  </data>
+  <data name="listFAULTDAT_7" xml:space="preserve">
+    <value>불량번호</value>
+    <comment>FAULTDAT 7</comment>
+  </data>
+  <data name="listINSPDAT_0" xml:space="preserve">
+    <value>관리NO</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listINSPDAT_1" xml:space="preserve">
+    <value>품종</value>
+    <comment>INSPDAT</comment>
+  </data>
+  <data name="listMRKCTLMST_0" xml:space="preserve">
+    <value>라인코드</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_1" xml:space="preserve">
+    <value>불량 ID</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_2" xml:space="preserve">
+    <value>품종</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listMRKCTLMST_3" xml:space="preserve">
+    <value>사이즈</value>
+    <comment>MRKCTLMSTHeader</comment>
+  </data>
+  <data name="listPTRYLP_0" xml:space="preserve">
+    <value>원단 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_1" xml:space="preserve">
+    <value>점착 Lot</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYLP_5" xml:space="preserve">
+    <value>품종</value>
+    <comment>PTRYLPHeader</comment>
+  </data>
+  <data name="listPTRYOP_0" xml:space="preserve">
+    <value>품종</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_1" xml:space="preserve">
+    <value>연신 Lot</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_2" xml:space="preserve">
+    <value>라인코드</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_3" xml:space="preserve">
+    <value>개시 시간</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="listPTRYOP_4" xml:space="preserve">
+    <value>종료 시간</value>
+    <comment>PTRYOP</comment>
+  </data>
+  <data name="LotName" xml:space="preserve">
+    <value>점착 Lot</value>
+  </data>
+  <data name="MarkingGroup" xml:space="preserve">
+    <value>마킹 선택</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="NextFaultPage" xml:space="preserve">
+    <value>다음</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="OpenCSV" xml:space="preserve">
+    <value>CSV 파일 열기</value>
+  </data>
+  <data name="Option" xml:space="preserve">
+    <value>옵션</value>
+  </data>
+  <data name="PrevFaultPage" xml:space="preserve">
+    <value>이전</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>검색</value>
+  </data>
+  <data name="SearchEndTime" xml:space="preserve">
+    <value>종료 시간</value>
+  </data>
+  <data name="SearchStartTime" xml:space="preserve">
+    <value>시작 시간</value>
+  </data>
+  <data name="SetSearchTime" xml:space="preserve">
+    <value>검색 시간 설청</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>기타 데이터 표시</value>
+  </data>
+  <data name="ShowSkipParam" xml:space="preserve">
+    <value>스킵 파라미터</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="SizeX" xml:space="preserve">
+    <value>SizeX</value>
+  </data>
+  <data name="SizeY" xml:space="preserve">
+    <value>SizeY</value>
+  </data>
+  <data name="SkipParam1" xml:space="preserve">
+    <value>경계 반사</value>
+  </data>
+  <data name="SkipParam2" xml:space="preserve">
+    <value>정투과</value>
+  </data>
+  <data name="SkipParam3" xml:space="preserve">
+    <value>주기성 뷸량</value>
+  </data>
+  <data name="SkipParam4" xml:space="preserve">
+    <value>크로스 불량</value>
+  </data>
+  <data name="SkipParam5" xml:space="preserve">
+    <value>정반사</value>
+  </data>
+  <data name="SkipParam6" xml:space="preserve">
+    <value>미분 반사</value>
+  </data>
+  <data name="TG" xml:space="preserve">
+    <value>도공</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>정보 갱신</value>
+  </data>
+  <data name="UpdateData" xml:space="preserve">
+    <value>데이터 갱신</value>
+  </data>
+  <data name="UseMask" xml:space="preserve">
+    <value>검사 데이터 마스크</value>
+  </data>
+</root>

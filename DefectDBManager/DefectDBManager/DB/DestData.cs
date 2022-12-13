@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace DefectDBManager
 {
@@ -93,11 +95,6 @@ namespace DefectDBManager
         public bool UseES;
         public bool UseETC;
         public bool UseSameDefect;
-        public bool IsSplit;
-
-        public DestSplitUnit UnitA = new DestSplitUnit();
-        public DestSplitUnit UnitB = new DestSplitUnit();
-        public DestSplitUnit UnitC = new DestSplitUnit();
 
         // Edge Defect Skip
         public int SkipLeftMM;
@@ -120,17 +117,9 @@ namespace DefectDBManager
         public bool UsePTRYLPYLMYKHCheck;
         public string[] FLTIDCheck = new string[10];
 
-        public SkipSize[] _SkipSize;
-
         public DestConfigUnit()
         {
             int count = System.Enum.GetValues(typeof(eOpticClass)).Length;
-            _SkipSize = new SkipSize[count];
-            for (int i = 0; i < count; i++)
-            {
-                _SkipSize[i] = new SkipSize();
-            }
-
             Reset();
         }
 
@@ -185,9 +174,6 @@ namespace DefectDBManager
             DB_DT = u.DB_DT;
 
             Index = u.Index;
-
-            for (int i = 0; i < _SkipSize.Length; i++)
-                _SkipSize[i].SetData(u._SkipSize[i]);
         }
 
         public int GetSize()
@@ -218,9 +204,12 @@ namespace DefectDBManager
 
     public class DBLoginInfo
     {
-        public string DbID;
-        public string DbPW;
-        public string DbName;
+        public string   DbID;
+        public string   DbPW;
+        public string   DbName;
+        public string   DBPort;
+        public string   DBIP;
+        public int      DBConStringType;
 
         public bool GetDBLoginInfo(ref string id, ref string pw, ref string name)
         {
@@ -314,8 +303,23 @@ namespace DefectDBManager
 
         public int Read()
         {
+            if (File.Exists(Define.DestPath) == false) return -1;
+
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
             string key;
+
+            key = "SKIP SIZE";
+            for (int j = 0; j < opticSize; j++)
+            {
+                SkipData[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", 0.0f);
+                SkipData[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
+                SkipData[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
+
+                SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
+                SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
+                SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
+            }
+
             for (int i = 0; i < Global.MaxDestItemCnt; i++)
             {
                 DestConfigUnit unit = new DestConfigUnit();
@@ -326,18 +330,6 @@ namespace DefectDBManager
                 unit.UseES = NativeFunc.ReadIni(Define.DestPath, key, "ES", false);
                 unit.UseETC = NativeFunc.ReadIni(Define.DestPath, key, "ETC", false);
                 unit.UseSameDefect = NativeFunc.ReadIni(Define.DestPath, key, "SAME_DEFECT", false);
-                unit.IsSplit = NativeFunc.ReadIni(Define.DestPath, key, "SPLIT", false);
-
-                for (int j = 0; j < opticSize; j++)
-                {
-                    unit._SkipSize[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j+1}", 0.0f);
-                    unit._SkipSize[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
-                    unit._SkipSize[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
-
-                    unit._SkipSize[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
-                    unit._SkipSize[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
-                    unit._SkipSize[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
-                }
 
                 unit.SkipLeftMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_MM",  0);
                 unit.SkipRightMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_MM", 0);
@@ -362,36 +354,6 @@ namespace DefectDBManager
 
                 unit.Index = i;
 
-                if(unit.IsSplit==true)
-                {
-                    unit.UnitA.Title = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_Title", "");
-                    unit.UnitA.IsUse = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_IsUse", false);
-                    unit.UnitA.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_StartX", 0.0f);
-                    unit.UnitA.EndX = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_EndX", 0.0f);
-                    unit.UnitA.MKCD = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_MKCD", "62");
-                    unit.UnitA.TG = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_TG", true);
-                    unit.UnitA.ES = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_ES", true);
-                    unit.UnitA.ETC = NativeFunc.ReadIni(Define.DestPath, key, "UnitA_ETC", false);
-
-                    unit.UnitB.Title = NativeFunc.ReadIni(Define.DestPath, key,  "UnitB_Title", "");
-                    unit.UnitB.IsUse = NativeFunc.ReadIni(Define.DestPath, key,  "UnitB_IsUse", false);
-                    unit.UnitB.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitB_StartX", 0);
-                    unit.UnitB.EndX = NativeFunc.ReadIni(Define.DestPath, key,   "UnitB_EndX", 0);
-                    unit.UnitB.MKCD = NativeFunc.ReadIni(Define.DestPath, key,   "UnitB_MKCD", "62");
-                    unit.UnitB.TG = NativeFunc.ReadIni(Define.DestPath, key,     "UnitB_TG", true);
-                    unit.UnitB.ES = NativeFunc.ReadIni(Define.DestPath, key,     "UnitB_ES", true);
-                    unit.UnitB.ETC = NativeFunc.ReadIni(Define.DestPath, key,    "UnitB_ETC", false);
-
-                    unit.UnitC.Title = NativeFunc.ReadIni(Define.DestPath, key,  "UnitC_Title", "");
-                    unit.UnitC.IsUse = NativeFunc.ReadIni(Define.DestPath, key,  "UnitC_IsUse", false);
-                    unit.UnitC.StartX = NativeFunc.ReadIni(Define.DestPath, key, "UnitC_StartX", 0);
-                    unit.UnitC.EndX = NativeFunc.ReadIni(Define.DestPath, key,   "UnitC_EndX", 0);
-                    unit.UnitC.MKCD = NativeFunc.ReadIni(Define.DestPath, key,   "UnitC_MKCD", "62");
-                    unit.UnitC.TG = NativeFunc.ReadIni(Define.DestPath, key,     "UnitC_TG", true);
-                    unit.UnitC.ES = NativeFunc.ReadIni(Define.DestPath, key,     "UnitC_ES", true);
-                    unit.UnitC.ETC = NativeFunc.ReadIni(Define.DestPath, key,    "UnitC_ETC", false);
-                }
-
                 if(unit.Title.Length>0 && unit.Title!="")
                     this.DicDest.Add(unit.Title, unit);
             }
@@ -401,6 +363,9 @@ namespace DefectDBManager
             dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
             dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
             dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
+            dbLogin.DBPort = NativeFunc.ReadIni(Define.DestPath, key, "DB_PORT", "");
+            dbLogin.DBIP = NativeFunc.ReadIni(Define.DestPath, key, "DB_IP", "");
+            dbLogin.DBConStringType = NativeFunc.ReadIni(Define.DestPath, key, "DB_CON_STRING_TYPE", 0);
 
             this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
             this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
@@ -430,6 +395,21 @@ namespace DefectDBManager
             string key;
             DestConfigUnit unit = null;
             int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
+
+            File.Delete(Define.DestPath);
+
+            key = "SKIP SIZE";
+            for (int j = 0; j < opticSize; j++)
+            {
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", SkipData[j].minX);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", SkipData[j].minY);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", SkipData[j].min);
+
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", SkipData[j].maxX);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", SkipData[j].maxY);
+                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", SkipData[j].max);
+            }
+
             for (int i = 0; i < this.DicDest.Count; i++)
             {
                 if (GetData(i, ref unit) == true)
@@ -441,18 +421,6 @@ namespace DefectDBManager
                     NativeFunc.WriteIni(Define.DestPath, key, "ES", unit.UseES);
                     NativeFunc.WriteIni(Define.DestPath, key, "ETC", unit.UseETC);
                     NativeFunc.WriteIni(Define.DestPath, key, "SAME_DEFECT", unit.UseSameDefect);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SPLIT", unit.IsSplit);
-
-                    for (int j = 0; j < opticSize; j++)
-                    {
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", unit._SkipSize[j].minX);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", unit._SkipSize[j].minY);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", unit._SkipSize[j].min);
-
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", unit._SkipSize[j].maxX);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", unit._SkipSize[j].maxY);
-                        NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", unit._SkipSize[j].max);
-                    }
 
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_MM", unit.SkipLeftMM);
                     NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_MM", unit.SkipRightMM);
@@ -482,6 +450,9 @@ namespace DefectDBManager
             NativeFunc.WriteIni(Define.DestPath, key, "DB_ID", dbLogin.DbID);
             NativeFunc.WriteIni(Define.DestPath, key, "DB_PW", dbLogin.DbPW);
             NativeFunc.WriteIni(Define.DestPath, key, "DB_NAME", dbLogin.DbName);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_PORT", dbLogin.DBPort);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_IP", dbLogin.DBIP);
+            NativeFunc.WriteIni(Define.DestPath, key, "DB_CON_STRING_TYPE", dbLogin.DBConStringType);
 
             NativeFunc.WriteIni(Define.DestPath, key, "CSV_TYPE", (int)this.CSVType);
             NativeFunc.WriteIni(Define.DestPath, key, "CSV_VER", this.csvVer);

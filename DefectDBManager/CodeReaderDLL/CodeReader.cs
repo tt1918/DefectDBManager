@@ -11,6 +11,7 @@ using CodeReaderDLL.CognexLib;
 using System.Threading;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace CodeReaderDLL
 {

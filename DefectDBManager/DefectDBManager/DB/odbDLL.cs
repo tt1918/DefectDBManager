@@ -1,4 +1,6 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿//#define FAST_FLTID
+
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,12 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using static System.Net.WebRequestMethods;
 
 namespace DefectDBManager
 {
+    public delegate void DelegateDBConnect(bool state);
     public class OracleDbConnection : IDisposable
     {
         public string DBConnString
@@ -17,6 +22,13 @@ namespace DefectDBManager
             get;
             private set;
         }
+        public int ConStringType { get; set; }
+        public string HostIP
+        {
+            get { return hostIP; }
+            set { hostIP = value; }
+        }
+        private string hostIP;
         public string UserID
         {
             get { return userID; }
@@ -31,13 +43,6 @@ namespace DefectDBManager
         }
         private string password;
 
-        public string IP
-        {
-            get { return dbIP; }
-            set { dbIP = value; }
-        }
-        private string dbIP;
-
         public string DBName
         {
             get { return dbName; }
@@ -45,12 +50,12 @@ namespace DefectDBManager
         }
         private string dbName;
 
-        public int DBPort
+        public string DBPort
         {
             get { return dbPort; }
             set { dbPort = value; }
         }
-        private int dbPort;
+        private string dbPort;
 
         public OracleConnection Connection
         {
@@ -61,6 +66,8 @@ namespace DefectDBManager
         bool disposed = false;
 
         public bool bDBConnCheck = false;
+
+        public event DelegateDBConnect OnDbConnect = null;
 
         public OracleDbConnection()
         {
@@ -95,10 +102,8 @@ namespace DefectDBManager
         {
             if (conn == null)
             {
-                //  DBConnString = String.Format("Data Source=(DESCRIPTION="
-                //+ "(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=LOCALHOST)(PORT=1521)))"
-                //+ "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORCL)));"
-                //+ "User Id=test;Password=1234");
+                // 이거 나중에 정리해야할듯....
+
 
                 conn = new OracleConnection(dbConn);
             }
@@ -108,16 +113,23 @@ namespace DefectDBManager
                 if (!IsDBConnected)
                 {
                     conn.Open();
-
                     if (conn.State == System.Data.ConnectionState.Open)
+                    {
                         bDBConnCheck = true;
+                        this.OnDbConnect(true);
+                        Log.WriteLog("DB 연결에 성공하였습니다.");
+                    }
                     else
+                    {
                         bDBConnCheck = false;
+                        Log.WriteLog("DB 연결에 실패하였습니다.");
+                    }
                 }
             }
             catch (Exception e)
             {
-                string message = String.Format($"Error Message : {e.Message}");
+                string message = String.Format($"[Error] DB Login is Failed. Message : {e.Message}");
+                Log.WriteLog(message);
             }
 
             return true;
@@ -157,13 +169,18 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            DBConnString = String.Format($"Data Source={dbName};" +
-                    $"User ID={UserID};Password={password};Connection Timeout=30;");
-
-            //DBConnString = string.Format($"Data Source=(DESCRIPTION="
-            //        + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={dbIP})(PORT={dbPort})))"
-            //        + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
-            //        + $"User ID={UserID};Password={password};Connection Timeout=30;");
+            if (ConStringType == 0)
+            {
+                DBConnString = String.Format($"Data Source={dbName};" +
+                             $"User ID={UserID};Password={password};Connection Timeout=30;");
+            }
+            else if (ConStringType == 1)
+            {
+                DBConnString = String.Format("Data Source=(DESCRIPTION="
+                            + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={hostIP})(PORT={DBPort})))"
+                            + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
+                            + $"User Id={userID};Password={password}");
+            }
 
             connectToDB(DBConnString);
 
@@ -192,11 +209,13 @@ namespace DefectDBManager
 
         public List<MRKCTLMSTData> MRKCTLMST_Data;
         public List<Dictionary<string, float>>[] dicSizeMRKCTLMST;
+        public List<Dictionary<string, bool>>[] dicMRKF1MRKCTLMST;
         public List<MRKCTLMST_DE_Data>[] _MRKCTLMST_DE;
 
         public List<List<INSPDATData>>[] INSPDAT_Data;
 
         public Dictionary<string, float> dicSizeData;
+        public Dictionary<string, bool> dicMRKF1Data;
 
         public List<string> LoadedBcNo;
 
@@ -244,13 +263,12 @@ namespace DefectDBManager
         private List<FaultDatum> faultData;
 
         public IRollDefectInfo _RollDefectInfo { get; set; }
-        public CSV_DEFECT_HEADER _CsvDefectHeader=null;
+        public CSV_DEFECT_HEADER _CsvDefectHeader = null;
 
         public NittoDBProgress DB_Progress { get; private set; }
 
         public string SearchLotName { get; set; }
 
-       
         // 상위 객체
         private object owner;
 
@@ -271,15 +289,17 @@ namespace DefectDBManager
                 PTRY0P_Data[i] = new List<PTRY0PData>();
 
             INSPDAT_Data = new List<List<INSPDATData>>[count];
-            for(int i=0; i<count; i++)
+            for (int i = 0; i < count; i++)
                 INSPDAT_Data[i] = new List<List<INSPDATData>>();
 
             MRKCTLMST_Data = new List<MRKCTLMSTData>();
             dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
+            dicMRKF1MRKCTLMST = new List<Dictionary<string, bool>>[count];
             _MRKCTLMST_DE = new List<MRKCTLMST_DE_Data>[count];
             for (int i = 0; i < count; i++)
             {
                 dicSizeMRKCTLMST[i] = new List<Dictionary<string, float>>();
+                dicMRKF1MRKCTLMST[i] = new List<Dictionary<string, bool>>();
                 _MRKCTLMST_DE[i] = new List<MRKCTLMST_DE_Data>();
             }
 
@@ -298,13 +318,17 @@ namespace DefectDBManager
             conn?.Dispose();
         }
 
-        public void ResetAll()
+        public void ResetDataAll()
         {
             LoadedBcNo.Clear();
             ProductEndTime.Clear();
             ProductLotName.Clear();
 
+            AREADEL_Data.Clear();
             XOFSMST_Data.Clear();
+            PTRLYP_Data.Clear();
+            MRKCTLMST_Data.Clear();
+
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)
@@ -317,7 +341,6 @@ namespace DefectDBManager
             // 각 광학별 불량 갯수 초기화
             CrtParam.ClearEachOpticDefectCnt();
 
-            ResetData_DE();
             ResultDefect.ResetAll();
 
             CrtParam.isProductAvaliable = false;
@@ -329,7 +352,11 @@ namespace DefectDBManager
         /// </summary>
         public void ResetDataSplit()
         {
+            PTRLYP_Data.Clear();
+            AREADEL_Data.Clear();
             XOFSMST_Data.Clear();
+            MRKCTLMST_Data.Clear();
+
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)
@@ -357,6 +384,9 @@ namespace DefectDBManager
                 for (int j = 0; j < dicSizeMRKCTLMST[i].Count; j++)
                     dicSizeMRKCTLMST[i][j].Clear();
 
+                for (int j = 0; j < dicMRKF1MRKCTLMST[i].Count; j++)
+                    dicMRKF1MRKCTLMST[i][j].Clear();
+
                 _MRKCTLMST_DE[i].Clear();
             }
         }
@@ -375,7 +405,7 @@ namespace DefectDBManager
                 for (j = 30 - 1; j >= 0; j--)
                 {
                     if (j == 0) strLowPath = Path.Combine(Define.BCRPath, lotID);
-                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:2D}");
+                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:D2}");
 
                     if (Directory.Exists(strLowPath)) nLotCnt = j;
 
@@ -390,57 +420,119 @@ namespace DefectDBManager
             return nNewCnt;
         }
 
-        public bool SearchModel(string lotID, bool bMsgOut=true)
+        public bool SearchModel(string lotID, bool bMsgOut = true)
         {
             bool isRes = true;
             CrtParam.Model = "";
-
-            lotID = lotID.ToUpper();
-
-            eCSV_TYPE type = DbDestConfig.CSVType;
-            if(type == eCSV_TYPE.NITTO || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
+            try
             {
-                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
-                int newLotCnt = GetNextLotCnt(lotID);
-                if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:2D}";
-                else Log.LotLog = lotID;
-            }
+                lotID = lotID.ToUpper();
 
-            int count = 0;
-            string strData;
-
-            if (SearchModelList != null)
-                SearchModelList.Clear();
-            else
-                SearchModelList = new List<string>();
-
-            if (SearchPTRYOP_Model(lotID)==true)
-            {
-                int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
-                for(int i=0; i<fcdCnt; i++)
+                eCSV_TYPE type = DbDestConfig.CSVType;
+                if (type == eCSV_TYPE.NITTO || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
                 {
-                    for(int j=0; j< PTRY0P_Data[i].Count; i++)
+                    // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                    int newLotCnt = GetNextLotCnt(lotID);
+                    if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
+                    else Log.LotLog = lotID;
+                }
+
+                int count = 0;
+                string strData;
+
+                if (SearchModelList != null)
+                    SearchModelList.Clear();
+                else
+                    SearchModelList = new List<string>();
+
+                DB_Progress.SetSkip(eNittoDBProgress.PTRYLP);
+                DB_Progress.SetSkip(eNittoDBProgress.XOFSMST);
+                DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
+
+                if (SearchPTRYOP_Model(lotID) == true)
+                {
+                    int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
+                    for (int i = 0; i < fcdCnt; i++)
                     {
-                        if(PTRY0P_Data[i][j].Y0ZKNM.Length>0)
+                        for (int j = 0; j < PTRY0P_Data[i].Count; i++)
                         {
-                            count++;
-                            CrtParam.Model = PTRY0P_Data[i][j].Y0ZKNM;
-                            strData = string.Format($"{count}\t-\t{PTRY0P_Data[i][j].Y0ZKNM}");
-                            Log.WriteLoadData(strData, count, "MODEL", 0.0);
-                            isRes = true;
-                            SearchModelList.Add(PTRY0P_Data[i][j].Y0ZKNM);
-                            break;
+                            if (PTRY0P_Data[i][j].Y0ZKNM.Length > 0)
+                            {
+                                count++;
+                                CrtParam.Model = PTRY0P_Data[i][j].Y0ZKNM;
+                                strData = string.Format($"{count}\t-\t{PTRY0P_Data[i][j].Y0ZKNM}");
+                                Log.WriteLoadData(strData, count, "MODEL", 0.0);
+                                isRes = true;
+                                SearchModelList.Add(PTRY0P_Data[i][j].Y0ZKNM);
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            if(count>0)
+                if (count > 0)
+                {
+
+                }
+                return isRes;
+            }
+            catch (Exception ex)
             {
-
+                string strLog = $"[Error] DB Serach Model error message : [{ex.Message}]";
+                Trace.WriteLine(strLog);
+                Log.WriteLog(strLog);
+                return false;
             }
+        }
 
-            return isRes;
+        public bool SearchModelDummy(string lotID, bool bMsgOut = true)
+        {
+            bool isRes = true;
+            CrtParam.Model = "";
+            try
+            {
+                lotID = lotID.ToUpper();
+
+                eCSV_TYPE type = DbDestConfig.CSVType;
+                if (type == eCSV_TYPE.NITTO || type == eCSV_TYPE.NITTO_RTS || type == eCSV_TYPE.NITTO_RK)
+                {
+                    // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                    int newLotCnt = GetNextLotCnt(lotID);
+                    if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
+                    else Log.LotLog = lotID;
+                }
+
+                int count = 0;
+                if (SearchModelList != null)
+                    SearchModelList.Clear();
+                else
+                    SearchModelList = new List<string>();
+
+                DB_Progress.SetSkip(eNittoDBProgress.PTRYLP);
+                DB_Progress.SetSkip(eNittoDBProgress.XOFSMST);
+                DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
+
+                System.Threading.Thread.Sleep(100);
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+                DB_Progress.Set(eNittoDBProgress.PTRYOP);
+                System.Threading.Thread.Sleep(500);
+                SearchModelList.Add("12345678");
+                SearchModelList.Add("87654321");
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+
+                if (count > 0)
+                {
+
+                }
+                return isRes;
+            }
+            catch (Exception ex)
+            {
+                string strLog = $"[Error] DB Serach Model error message : [{ex.Message}]";
+                Trace.WriteLine(strLog);
+                Log.WriteLog(strLog);
+                return false;
+            }
         }
 
         public bool SearchLot(string lotID, bool bMsgOut, ref int errOut)
@@ -448,81 +540,92 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-
             bool success = false;
-
-            lotID = lotID.ToUpper();
-
-            this.SearchLotName = lotID;
-
-            if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
-                CrtParam.UseKT = 1;
-            else
-                CrtParam.UseKT = 0;
-
-            // 이전 랏데이터 확인해서 스플라이스 처리해야 함
-            int newLotCnt = GetNextLotCnt(lotID);
-            if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:2D}";
-            else Log.LotLog = lotID;
-
-            DB_Progress.ResetAll();
-
-            QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
-            string query = ptrylp.GetQuery();
-            long dbCnt = 0;
-
-            using (var comm = new OracleCommand(query, conn.Connection))
+            try
             {
-                using (var reader = comm.ExecuteReader())
+                lotID = lotID.ToUpper();
+
+                this.SearchLotName = lotID;
+
+                if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
+                    CrtParam.UseKT = 1;
+                else
+                    CrtParam.UseKT = 0;
+
+                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                int newLotCnt = GetNextLotCnt(lotID);
+                if (newLotCnt > 0) Log.LotLog = $"{lotID}_{newLotCnt:D2}";
+                else Log.LotLog = lotID;
+                DB_Progress.ResetAll();
+
+                QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
+                string query = ptrylp.GetQuery();
+                long dbCnt = 0;
+                Log.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
+
+                if (query == "")
                 {
-                    dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.PTRYLP, dbCnt);
-                    while (reader.Read())
-                    {
-                        PTRYLPdata data = new PTRYLPdata();
-                        data.Parse(reader);
-                        PTRLYP_Data.Add(data);
-                        DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
-                    }
-                    success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
+                    Log.WriteLog($"[Error] DB Serach PTRYLP query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
                 }
+
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
+                    {
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.PTRYLP);
+                        while (reader.Read())
+                        {
+                            PTRYLPdata data = new PTRYLPdata();
+                            data.Parse(reader);
+                            PTRLYP_Data.Add(data);
+                            string logData = string.Format($"{PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, 0, "PTRYLP", 0);
+                        }
+
+                        DB_Progress.Complete(eNittoDBProgress.PTRYLP);
+                        success = true;
+                    }
+                }
+
+                if (success == false)
+                {
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                    return false;
+                }
+                success = SearchXOFSMST(lotID);
+                if (success == false) return false;
+
+                if (DbDestConfig.UseAREADEL == true)
+                {
+                    success = SearchAreaDel(lotID);
+                    if (success == false) return false;
+                }
+
+                success = SearchPTRYOP(lotID);
+                if (success == false) return false;
+                success = SearchMRKCTLMST(lotID);
+                if (success == false) return false;
+                success = SearchINSPDAT(lotID);
+                if (success == false) return false;
+                success = SearchFLTDAT(lotID);
+                if (success == false) return false;
+                if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
+                {
+                    if (dbOption.dbWhen == eDbIdWhen.Now && dbOption.prodAvaliableSpan > 0)
+                    {
+                        CrtParam.isProductAvaliable = IsProductAvaliable(dbOption.prodAvaliableSpan);
+                        CrtParam.isXOffsetError = CheckOffsetError();
+                    }
+                }
+                return success;
             }
-            
-            if(success==false)
+            catch (Exception ex)
             {
-                DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                Log.WriteLog($"[Error] DB Serach Lot error message : [{ex.Message}]");
                 return false;
             }
-
-            success = SearchXOFSMST(lotID);
-            if (success == false) return false;
-
-            success = SearchAreaDel(lotID);
-            if (success == false) return false;
-
-            success = SearchPTRYOP(lotID);
-            if (success == false) return false;
-
-            success = SearchMRKCTLMST(lotID);
-            if (success == false) return false;
-
-            success = SearchINSPDAT(lotID);
-            if (success == false) return false;
-
-            success = SearchFLTDAT(lotID);
-            if (success == false) return false;
-
-            if(DbDestConfig.CSVType==eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
-            {
-                if(dbOption.dbWhen== eDbIdWhen.Now && dbOption.prodAvaliableSpan>0)
-                {
-                    CrtParam.isProductAvaliable = IsProductAvaliable(dbOption.prodAvaliableSpan);
-                    CrtParam.isXOffsetError = CheckOffsetError();
-                }
-            }
-                
-
-            return success;
         }
 
         public bool SearchXOFSMST(string lotID)
@@ -531,37 +634,48 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
-
-            XOFSMST_Data.Clear();
-            QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
-            string query = msg.GetQuery();
-            long dbCnt = 0;
-
-            string logData;
-
-            using (var comm = new OracleCommand(query, conn.Connection))
+            try
             {
-                using (var reader = comm.ExecuteReader())
+                QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
+                string query = msg.GetQuery();
+                Log.WriteLoadData(query, 0, "XOFSMST", 0.0);
+                if (query == "")
                 {
-                    DB_Progress.Reset(eNittoDBProgress.XOFSMST);
-                    dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.XOFSMST, dbCnt);
-                    while (reader.Read())
-                    {
-                        XOFSMSTData data = new XOFSMSTData();
-                        data.Parse(reader);
-                        XOFSMST_Data.Add(data);
-                        DB_Progress.AddCount(eNittoDBProgress.XOFSMST);
+                    Log.WriteLog($"[Error] DB Serach XOFSMST query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.XOFSMST);
+                    return false;
+                }
 
-                        logData = string.Format($"{XOFSMST_Data.Count}\t-\t{data.ToString()}");
-                        Log.WriteLoadData(logData, XOFSMST_Data.Count, "XOFSMST", 0.0);
+                long dbCnt = 0;
+                string logData;
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
+                    {
+                        DB_Progress.Reset(eNittoDBProgress.XOFSMST);
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.XOFSMST);
+                        while (reader.Read())
+                        {
+                            XOFSMSTData data = new XOFSMSTData();
+                            data.Parse(reader);
+                            XOFSMST_Data.Add(data);
+
+                            logData = string.Format($"{XOFSMST_Data.Count}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, XOFSMST_Data.Count, "XOFSMST", 0.0);
+                        }
                     }
                 }
+                DB_Progress.Complete(eNittoDBProgress.XOFSMST);
+                return true;
+                ;
             }
-            success = DB_Progress.IsCompelete(eNittoDBProgress.XOFSMST);
-
-            return success;
+            catch (Exception ex)
+            {
+                Log.WriteLog($"[Error] DB Serach XOFSMST error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.XOFSMST);
+                return false;
+            }
         }
 
         public bool SearchAreaDel(string lotID)
@@ -570,37 +684,48 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
-
-            AREADEL_Data.Clear();
-            QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
-            string query = msg.GetQuery();
-            long dbCnt = 0;
-            int crtRead = 0;
-            string logData;
-            using (var comm = new OracleCommand(query, conn.Connection))
+            try
             {
-                using (var reader = comm.ExecuteReader())
+                QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
+                string query = msg.GetQuery();
+                Log.WriteLoadData(query, 0, "AREADEL", 0.0);
+                if (query == "")
                 {
-                    DB_Progress.Reset(eNittoDBProgress.AREADEL);
-                    dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.AREADEL, dbCnt);
+                    Log.WriteLog($"[Error] DB Serach AREADEL query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.AREADEL);
+                    return false;
+                }
 
-                    while (reader.Read())
+                long dbCnt = 0;
+                string logData;
+                DB_Progress.Reset(eNittoDBProgress.AREADEL);
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
                     {
-                        AREADELData data = new AREADELData();
-                        data.Parse(reader);
-                        AREADEL_Data.Add(data);
-                        DB_Progress.AddCount(eNittoDBProgress.AREADEL);
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.AREADEL);
 
-                        logData = string.Format($"{AREADEL_Data.Count}\t-\t{data.ToString()}");
-                        Log.WriteLoadData(logData, AREADEL_Data.Count, "XOFSMST", 0.0);
+                        while (reader.Read())
+                        {
+                            AREADELData data = new AREADELData();
+                            data.Parse(reader);
+                            AREADEL_Data.Add(data);
+
+                            logData = string.Format($"{AREADEL_Data.Count}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, AREADEL_Data.Count, "AREADEL", 0.0);
+                        }
                     }
                 }
+                DB_Progress.Complete(eNittoDBProgress.AREADEL);
+                return true;
             }
-            success = DB_Progress.IsCompelete(eNittoDBProgress.AREADEL);
-
-            return success;
+            catch (Exception ex)
+            {
+                Log.WriteLog($"[Error] DB Serach AREADEL error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.AREADEL);
+                return false;
+            }
         }
 
         public bool SearchPTRYOP(string lotID)
@@ -609,73 +734,88 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
-
-            QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
-
-            // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-            string query = msg.GetQuery(PTRLYP_Data);
-            long dbCnt = 0;
-            string logData="";
-            int logCnt = 0;
-            using (var comm = new OracleCommand(query, conn.Connection))
+            try
             {
-                using (OracleDataReader reader = comm.ExecuteReader())
+                QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
+
+                // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
+                string query = msg.GetQuery(PTRLYP_Data);
+                Log.WriteLoadData(query, 0, "PTRY0P", 0.0);
+
+                if (query == "")
                 {
-                    DB_Progress.Reset(eNittoDBProgress.PTRYLP);
-                    dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.PTRYLP, dbCnt);
+                    Log.WriteLog($"[Error] DB Serach PTRYOP query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                    return false;
+                }
 
-                    while (reader.Read())
+                long dbCnt = 0;
+                string logData = "";
+                int logCnt = 0;
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (OracleDataReader reader = comm.ExecuteReader())
                     {
-                        string strYOKLOT = reader[8].ToString();
-                        string strY0LNSN = reader[10].ToString();
-                        int nY0PPCD = Int32.Parse(reader[3].ToString());
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
 
-                        if (Char.IsLetter(strYOKLOT, 0) == true)
+                        while (reader.Read())
                         {
-                            strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
+                            string strYOKLOT = reader[7].ToString();
+                            string strY0LNSN = reader[9].ToString();
+                            int nY0PPCD = Int32.Parse(reader[2].ToString());
+
+                            if (Char.IsLetter(strYOKLOT, 0) == true)
+                            {
+                                strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
+                            }
+                            else
+                            {
+                                int pos = strYOKLOT.IndexOf(' ');
+                                if (pos > 0)
+                                    strYOKLOT = strYOKLOT.Substring(0, pos);
+                            }
+
+                            PTRY0PData data = new PTRY0PData();
+                            data.Parse(reader);
+
+                            //아래 구문은 Int형 범위초과로 에러...
+                            //if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
+                            //    continue;
+
+                            if (dbOption.checkES == true && nY0PPCD == 100)
+                            {
+                                PTRY0P_Data[(int)eFCD.ES].Add(data);
+                                logCnt = PTRY0P_Data[(int)eFCD.ES].Count;
+                            }
+
+                            if (dbOption.checkTG == true && nY0PPCD == 400)
+                            {
+                                PTRY0P_Data[(int)eFCD.TG].Add(data);
+                                logCnt = PTRY0P_Data[(int)eFCD.TG].Count;
+                            }
+
+                            if (dbOption.checkETC == true && nY0PPCD != 100 && nY0PPCD != 400)
+                            {
+                                PTRY0P_Data[(int)eFCD.ETC].Add(data);
+                                logCnt = PTRY0P_Data[(int)eFCD.ETC].Count;
+                            }
+
+                            logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
+                            Log.WriteLoadData(logData, logCnt, "PTRY0P", 0.0);
                         }
-                        else
-                        {
-                            int pos = strYOKLOT.IndexOf(' ');
-                            if (pos > 0)
-                                strYOKLOT = strYOKLOT.Substring(0, pos);
-                        }
-
-                        PTRY0PData data = new PTRY0PData();
-                        data.Parse(reader);
-                        DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
-
-                        if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
-                            continue;
-
-                        if (dbOption.checkES == true && nY0PPCD == 100)
-                        {
-                            PTRY0P_Data[(int)eFCD.ES].Add(data);
-                            logCnt = PTRY0P_Data[(int)eFCD.ES].Count;
-                        }
-
-                        if (dbOption.checkTG == true && nY0PPCD == 400)
-                        {
-                            PTRY0P_Data[(int)eFCD.TG].Add(data);
-                            logCnt = PTRY0P_Data[(int)eFCD.TG].Count;
-                        }
-
-                        if (dbOption.checkETC == true && nY0PPCD != 100 && nY0PPCD != 400)
-                        {
-                            PTRY0P_Data[(int)eFCD.ETC].Add(data);
-                            logCnt = PTRY0P_Data[(int)eFCD.ETC].Count;
-                        }
-
-                        logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
-                        Log.WriteLoadData(logData, logCnt, "PTRY0P", 0.0);
                     }
                 }
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                return true;
             }
-            success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
-
-            return success;
+            catch (Exception ex)
+            {
+                Log.WriteLog($"[Error] DB Serach PTRYOP error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                return false;
+            }
         }
 
         public bool SearchPTRYOP_Model(string lotID)
@@ -684,66 +824,85 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
-
-            QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
-
-            // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-            string query = msg.GetQuery(PTRLYP_Data, true);
-            long dbCnt = 0;
-
-            using (var comm = new OracleCommand(query, conn.Connection))
+            try
             {
-                using (OracleDataReader reader = comm.ExecuteReader())
+                QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
+
+                // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
+                string query = msg.GetQuery(PTRLYP_Data, true);
+                long dbCnt = 0;
+                Log.WriteLoadData(query, 0, "PTRYOP_MODEL", 0.0);
+                if (query == "")
                 {
-                    DB_Progress.Reset(eNittoDBProgress.PTRYLP);
-                    dbCnt = reader.RowSize;
-                    DB_Progress.SetTotal(eNittoDBProgress.PTRYLP, dbCnt);
+                    Log.WriteLog($"[Error] DB Serach PTRYOP query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                    return false;
+                }
 
-                    while (reader.Read())
+                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (OracleDataReader reader = comm.ExecuteReader())
                     {
-                        string strYOKLOT = reader[8].ToString();
-                        string strY0LNSN = reader[10].ToString();
-                        int nY0PPCD = Int32.Parse(reader[3].ToString());
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
 
-                        if (Char.IsLetter(strYOKLOT, 0) == true)
+                        while (reader.Read())
                         {
-                            strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
-                        }
-                        else
-                        {
-                            int pos = strYOKLOT.IndexOf(' ');
-                            if (pos > 0)
-                                strYOKLOT = strYOKLOT.Substring(0, pos);
-                        }
+                            string strYOKLOT = reader[8].ToString();
+                            string strY0LNSN = reader[10].ToString();
+                            int nY0PPCD = Int32.Parse(reader[3].ToString());
 
-                        PTRY0PData data = new PTRY0PData();
-                        data.Parse(reader);
-                        DB_Progress.AddCount(eNittoDBProgress.PTRYLP);
+                            if (Char.IsLetter(strYOKLOT, 0) == true)
+                            {
+                                strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
+                            }
+                            else
+                            {
+                                int pos = strYOKLOT.IndexOf(' ');
+                                if (pos > 0)
+                                    strYOKLOT = strYOKLOT.Substring(0, pos);
+                            }
 
-                        if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
-                            continue;
+                            PTRY0PData data = new PTRY0PData();
+                            data.Parse(reader);
 
-                        if (nY0PPCD == 100)
-                        {
-                            PTRY0P_Data[(int)eFCD.ES].Add(data);
-                        }
+                            if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
+                                continue;
 
-                        if (nY0PPCD == 400)
-                        {
-                            PTRY0P_Data[(int)eFCD.TG].Add(data);
-                        }
+                            if (nY0PPCD == 100)
+                            {
+                                PTRY0P_Data[(int)eFCD.ES].Add(data);
+                                string logData = string.Format($"{(int)eFCD.ES}\t-\t{data.ToString()}");
+                                Log.WriteLoadData(logData, 0, "PTRYOP_MODEL_ES", 0.0);
+                            }
 
-                        if (nY0PPCD != 100 && nY0PPCD != 400)
-                        {
-                            PTRY0P_Data[(int)eFCD.ETC].Add(data);
+                            if (nY0PPCD == 400)
+                            {
+                                PTRY0P_Data[(int)eFCD.TG].Add(data);
+                                string logData = string.Format($"{(int)eFCD.TG}\t-\t{data.ToString()}");
+                                Log.WriteLoadData(logData, 0, "PTRYOP_MODEL_TG", 0.0);
+                            }
+
+                            if (nY0PPCD != 100 && nY0PPCD != 400)
+                            {
+                                PTRY0P_Data[(int)eFCD.ETC].Add(data);
+                                string logData = string.Format($"{(int)eFCD.ETC}\t-\t{data.ToString()}");
+                                Log.WriteLoadData(logData, 0, "PTRYOP_MODEL_ETC", 0.0);
+                            }
                         }
                     }
                 }
+                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                return true;
             }
-            success = DB_Progress.IsCompelete(eNittoDBProgress.PTRYLP);
-
-            return success;
+            catch (Exception ex)
+            {
+                Log.WriteLog($"[Error] DB Serach PTRYOP_MODEL error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                return false;
+            }
         }
 
         private void checkDicMRKCTLMST(int targetCnt, int fcdIdx)
@@ -752,11 +911,15 @@ namespace DefectDBManager
             if (targetCnt > dicSizeMRKCTLMST[fcdIdx].Count)
                 for (int dicIdx = dicSizeMRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
                     dicSizeMRKCTLMST[fcdIdx].Add(new Dictionary<string, float>());
+
+            if (targetCnt > dicMRKF1MRKCTLMST[fcdIdx].Count)
+                for (int dicIdx = dicMRKF1MRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
+                    dicMRKF1MRKCTLMST[fcdIdx].Add(new Dictionary<string, bool>());
         }
 
         public bool SearchMRKCTLMST(string logID)
         {
-            if (dbOption.useDefectEdit)
+            if (dbOption.searchOP.useDefectEdit)
                 return searchMRKCTLMSTfromBuffer(logID);
             else
                 return searchMRKCTLMSTfromDB(logID);
@@ -764,40 +927,61 @@ namespace DefectDBManager
 
         private bool searchMRKCTLMSTfromBuffer(string logID)
         {
-            bool success = false;
+            int procStep = 0;
 
-            DestConfigUnit destUnit = new DestConfigUnit();
-            destConfig.GetData(dbOption.FWPlace, ref destUnit);
-
-            int fcdTotal = System.Enum.GetValues(typeof(eFCD)).Length;
-            int dataCnt = 0;
-            string logData = "";
-            for (int fcdIdx = 0; fcdIdx < fcdTotal; fcdIdx++)
+            try
             {
-                int PTRY0Pcnt = PTRY0P_Data[fcdIdx].Count;
+                DestConfigUnit destUnit = new DestConfigUnit();
+                destConfig.GetData(dbOption.FWPlace, ref destUnit);
 
-                checkDicMRKCTLMST(PTRY0Pcnt, fcdIdx);
-
-                for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
+                int fcdTotal = System.Enum.GetValues(typeof(eFCD)).Length;
+                int dataCnt = 0;
+                int valMRKF1 = 0;
+                bool boolMRKF1 = false;
+                string logData = "";
+                for (int fcdIdx = 0; fcdIdx < fcdTotal; fcdIdx++)
                 {
-
-                    dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
-
-                    foreach (MRKCTLMST_DE data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
+                    procStep = fcdIdx;
+                    int PTRY0Pcnt = PTRY0P_Data[fcdIdx].Count;
+                    DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
+                    checkDicMRKCTLMST(PTRY0Pcnt, fcdIdx);
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
+                    for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
                     {
-                        if (dicSizeMRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
-                            dicSizeMRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = data.SIZE;
-                        else
-                            dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, data.SIZE);
-                        dataCnt++;
+                        dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Clear();
+                        dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Clear();
 
-                        logData = string.Format($"{dataCnt}\t_\t{data.ToString()}");
-                        Log.WriteLoadData(logData, dataCnt, "MRKCTLMST-BUFFER", 0.0);
+                        foreach (MRKCTLMSTData data in _MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
+                        {
+                            if (dicSizeMRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
+                                dicSizeMRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = data.SIZE;
+                            else
+                                dicSizeMRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, data.SIZE);
+
+                            valMRKF1 = Int32.Parse(data.MRKF1);
+                            boolMRKF1 = false;
+                            if (valMRKF1 == 1) boolMRKF1 = true;
+                            if (dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].ContainsKey(data.FLTID) == true)
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx][data.FLTID] = boolMRKF1;
+                            else
+                                dicMRKF1MRKCTLMST[fcdIdx][ptry0Idx].Add(data.FLTID, boolMRKF1);
+
+                            dataCnt++;
+
+                            logData = string.Format($"{dataCnt}\t_\t{data.ToString()}");
+                            Log.WriteLoadData(logData, dataCnt, "MRKCTLMST-BUFFER", 0.0);
+                        }
                     }
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
                 }
+                return true;
             }
-
-            return success;
+            catch (Exception ex)
+            {
+                DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + procStep));
+                Log.WriteLog($"[Error] MRKCTLMST_Buffer_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
+            }
         }
 
         private bool searchMRKCTLMSTfromDB(string lotID)
@@ -806,92 +990,101 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = false;
+            int procStep = 0;
 
-            DestConfigUnit destUnit = new DestConfigUnit();
-            destConfig.GetData(dbOption.FWPlace, ref destUnit);
-
-            long dbCnt = 0;
-
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-
-            string logData="";
-
-            for (int i = 0; i < count; i++)
+            try
             {
-                int PTRY0Pcnt = PTRY0P_Data[i].Count;
+                DestConfigUnit destUnit = new DestConfigUnit();
+                destConfig.GetData(dbOption.FWPlace, ref destUnit);
 
-                checkDicMRKCTLMST(PTRY0Pcnt, i);
-                
-                DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
-                DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i), PTRY0Pcnt);
-                for (int j = 0; j < PTRY0Pcnt; j++)
+                long dbCnt = 0;
+                int count = System.Enum.GetValues(typeof(eFCD)).Length;
+                string logData = "";
+
+                for (int i = 0; i < count; i++)
                 {
-                    if ((dbOption.checkES ==true && (eFCD)i == eFCD.ES) ||
-                       (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
-                       (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && PTRY0P_Data[i][j].Y0KLOT.Length > 0)
+                    procStep = i;
+                    int PTRY0Pcnt = PTRY0P_Data[i].Count;
+                    DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+                    checkDicMRKCTLMST(PTRY0Pcnt, i);
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+
+                    for (int j = 0; j < PTRY0Pcnt; j++)
                     {
-                        QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
-                        msg.MKCD = dbOption.MKCD;
-                        msg.Y0KLOT = PTRY0P_Data[i][j].Y0KLOT;
-                        string query = msg.GetQuery((eFCD)i);
+                        dicSizeMRKCTLMST[i][j].Clear();
+                        dicMRKF1MRKCTLMST[i][j].Clear();
 
-                        Log.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
-
-                        using (var comm = new OracleCommand(query, conn.Connection))
+                        if ((dbOption.checkES == true && (eFCD)i == eFCD.ES) ||
+                           (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
+                           (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && PTRY0P_Data[i][j].Y0KLOT.Length > 0)
                         {
-                            using (var reader = comm.ExecuteReader())
+                            QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
+                            msg.MKCD = dbOption.searchOP.MKCD;
+                            msg.Y0KLOT = PTRY0P_Data[i][j].Y0KLOT;
+                            string query = msg.GetQuery((eFCD)i);
+                            Log.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
+
+                            if (query == "")
                             {
-                                dbCnt = reader.RowSize;
-                                DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i), dbCnt, j);
-                                while (reader.Read())
+                                Log.WriteLog($"[Error] MRKCTLMST_{((eFCD)i).ToString()} Query message is empty.");
+                                DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+                                return false;
+                            }
+
+                            using (var comm = new OracleCommand(query, conn.Connection))
+                            {
+                                using (var reader = comm.ExecuteReader())
                                 {
-                                    DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+                                    dbCnt = reader.RowSize;
 
-                                    MRKCTLMSTData data = new MRKCTLMSTData();
-                                    data.Parse(reader);
-                                    MRKCTLMST_Data.Add(data);
-
-                                    logData = string.Format($"{MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
-                                    Log.WriteLoadData(query, MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
-                                    // 조건문 추가해야 함
-                                    CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
-                                    if (dicSizeMRKCTLMST[i][j].ContainsKey(data.FLTID) == true)
-                                        dicSizeMRKCTLMST[i][j][data.FLTID] = data.SIZE;
-                                    else
-                                        dicSizeMRKCTLMST[i][j].Add(data.FLTID, data.SIZE);
-
-                                    for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                    while (reader.Read())
                                     {
-                                        if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                            CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
+                                        MRKCTLMSTData data = new MRKCTLMSTData();
+                                        data.Parse(reader);
+                                        MRKCTLMST_Data.Add(data);
+
+                                        logData = string.Format($"{MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
+                                        Log.WriteLoadData(logData, MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
+                                        // 조건문 추가해야 함
+                                        CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
+                                        if (dicSizeMRKCTLMST[i][j].ContainsKey(data.FLTID) == true)
+                                            dicSizeMRKCTLMST[i][j][data.FLTID] = data.SIZE;
+                                        else
+                                            dicSizeMRKCTLMST[i][j].Add(data.FLTID, data.SIZE);
+
+                                        int nVal = Int32.Parse(data.MRKF1);
+                                        bool boolVal = false;
+                                        if (nVal == 1) boolVal = true;
+                                        if (dicMRKF1MRKCTLMST[i][j].ContainsKey(data.FLTID) == true)
+                                            dicMRKF1MRKCTLMST[i][j][data.FLTID] = boolVal;
+                                        else
+                                            dicMRKF1MRKCTLMST[i][j].Add(data.FLTID, boolVal);
+
+                                        for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                        {
+                                            if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                                CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
+                                        }
                                     }
                                 }
                             }
                         }
+                        else
+                        {
+                            DB_Progress.SetSkip((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
+                        }
                     }
-                    else
-                    {
-                        if ((eFCD)i == eFCD.ES && dbOption.checkES == false) DB_Progress.SetSkip(eNittoDBProgress.MRKCTLMST_ES);
-                        if ((eFCD)i == eFCD.TG && dbOption.checkTG == false) DB_Progress.SetSkip(eNittoDBProgress.MRKCTLMST_TG);
-                        if ((eFCD)i == eFCD.ETC && dbOption.checkETC == false) DB_Progress.SetSkip(eNittoDBProgress.MRKCTLMST_ETC);
-                    }
-
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                 }
-            }
 
-            eCSV_TYPE csvType = destConfig.GetCsvType();
-            if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK)
+                return true;
+            }
+            catch (Exception ex)
             {
-                if (dbOption.checkES == true)
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_ES);
-                if (dbOption.checkTG == true)
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_TG);
-                if (dbOption.checkETC == true)
-                    success &= DB_Progress.IsCompelete(eNittoDBProgress.MRKCTLMST_ETC);
+                DB_Progress.SetError((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + procStep));
+                Log.WriteLog($"[Error] MRKCTLMST_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
             }
-
-            return success;
         }
 
         public bool SearchINSPDAT(string lotID)
@@ -900,148 +1093,162 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            bool success = true;
-
-            LoadedBcNo.Clear();
-            ProductEndTime.Clear();
-            ProductLotName.Clear();
-
-            long dbCnt = 0;
-            int dataCnt=0;
-
-            eCSV_TYPE csvType = destConfig.GetCsvType();
-
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-
-            for (int idx = 0; idx < count; idx++)
+            int procStep = 0;
+            try
             {
-                DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
-                
-                if (dbOption.checkES == true && idx == (int)eFCD.ES)
-                {
-                }
-                else if (dbOption.checkTG == true && idx == (int)eFCD.TG)
-                {   
-                }
-                else if (dbOption.checkETC == true && idx == (int)eFCD.ETC)
-                {   
-                }
-                else
-                {
-                    if(dbOption.checkES == false && idx == (int)eFCD.ES) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_ES);
-                    if (dbOption.checkTG == false && idx == (int)eFCD.TG) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_TG);
-                    if (dbOption.checkETC == false && idx == (int)eFCD.ETC) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_ETC);
-                    
-                    continue;
-                }
+                LoadedBcNo.Clear();
+                ProductEndTime.Clear();
+                ProductLotName.Clear();
 
-                int PTRY0Pcnt = PTRY0P_Data[idx].Count;
-                DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx), PTRY0Pcnt);
+                long dbCnt = 0;
+                int dataCnt = 0;
 
-                for (int i = 0; i < PTRY0Pcnt; i++)
+                eCSV_TYPE csvType = destConfig.GetCsvType();
+
+                int count = System.Enum.GetValues(typeof(eFCD)).Length;
+
+                for (int idx = 0; idx < count; idx++)
                 {
-                    string query = "";
-                    QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
-                    msg.SetTime(PTRY0P_Data[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
-                    msg.SetTime(PTRY0P_Data[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
+                    procStep = idx;
+                    DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
-                    if (PTRY0P_Data[idx][i].Y0KLOT.Substring(0, 2).ToUpper() == "LL")
+                    if (dbOption.checkES == true && idx == (int)eFCD.ES)
                     {
-                        ProductEndTime.Add(msg.EndTime);
-                        ProductLotName.Add(PTRY0P_Data[idx][i].Y0KLOT);
                     }
-
-                    if (dbOption.useESTime == true &&
-                        ((dbOption.checkES && idx == (int)eFCD.ES) || (dbOption.checkETC && idx == (int)eFCD.ETC)))
+                    else if (dbOption.checkTG == true && idx == (int)eFCD.TG)
                     {
-                        query = msg.GetQuery(0, dbOption);
+                    }
+                    else if (dbOption.checkETC == true && idx == (int)eFCD.ETC)
+                    {
                     }
                     else
                     {
-                        query = msg.GetQuery(1, dbOption);
+                        if (dbOption.checkES == false && idx == (int)eFCD.ES) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_ES);
+                        if (dbOption.checkTG == false && idx == (int)eFCD.TG) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_TG);
+                        if (dbOption.checkETC == false && idx == (int)eFCD.ETC) DB_Progress.SetSkip(eNittoDBProgress.INSPDAT_ETC);
+                        continue;
                     }
-                    Log.WriteLoadData(query, 0, "INSPDAT", 0.0);
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
-                    bool isBcnoFind = false;
+                    int PTRY0Pcnt = PTRY0P_Data[idx].Count;
 
-                    List<INSPDATData> inspDataList = new List<INSPDATData>();
-
-                    using (var comm = new OracleCommand(query, conn.Connection))
+                    for (int i = 0; i < PTRY0Pcnt; i++)
                     {
-                        using (var reader = comm.ExecuteReader())
+                        string query = "";
+                        QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
+                        msg.LNCD = PTRY0P_Data[idx][i].LNCD;
+                        msg.SetTime(PTRY0P_Data[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
+                        msg.SetTime(PTRY0P_Data[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
+
+                        if (PTRY0P_Data[idx][i].Y0KLOT.Substring(0, 2).ToUpper() == "LL")
                         {
-                            dbCnt = reader.RowSize;
-                            DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx), dbCnt, i);
-                            while (reader.Read())
+                            ProductEndTime.Add(msg.EndTime);
+                            ProductLotName.Add(PTRY0P_Data[idx][i].Y0KLOT);
+                        }
+
+                        if (dbOption.useESTime == true &&
+                            ((dbOption.checkES && idx == (int)eFCD.ES) || (dbOption.checkETC && idx == (int)eFCD.ETC)))
+                        {
+                            query = msg.GetQuery(0, dbOption);
+                        }
+                        else
+                        {
+                            query = msg.GetQuery(1, dbOption);
+                        }
+                        Log.WriteLoadData(query, 0, "INSPDAT", 0.0);
+
+                        if (query == "")
+                        {
+                            Log.WriteLog($"[Error] INSPDAT{((eFCD)i).ToString()} Query message is empty.");
+                            if ((eFCD)i == eFCD.ES) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ES);
+                            if ((eFCD)i == eFCD.TG) DB_Progress.SetError(eNittoDBProgress.INSPDAT_TG);
+                            if ((eFCD)i == eFCD.ETC) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ETC);
+                            return false;
+                        }
+
+                        bool isBcnoFind = false;
+
+                        List<INSPDATData> inspDataList = new List<INSPDATData>();
+
+                        using (var comm = new OracleCommand(query, conn.Connection))
+                        {
+                            using (var reader = comm.ExecuteReader())
                             {
-                                DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
-                                
-                                INSPDATData data = new INSPDATData();
-                                data.Parse(reader);
-                                
-                                if (dbOption.useOffsetX)
-                                {
-                                    int offsetDataCnt = XOFSMST_Data.Count;
+                                dbCnt = reader.RowSize;
 
-                                    for (int offsetIdx = 0; offsetIdx < offsetDataCnt; offsetIdx++)
-                                    {
-                                        int ppcd = XOFSMST_Data[i].PPCD;
-                                        if (data.KYCD == XOFSMST_Data[i].KYCD &&
-                                            ((idx == (int)eFCD.ES && ppcd == 100) ||
-                                            (idx == (int)eFCD.TG && ppcd == 400) ||
-                                            (idx == (int)eFCD.ETC && ppcd != 100 && ppcd != 400)) &&
-                                            PTRY0P_Data[idx][i].Y0ZKNM == XOFSMST_Data[i].YLSZKN &&
-                                            PTRY0P_Data[idx][i].LNCD == XOFSMST_Data[i].LNCD)
-                                        {
-                                            data.OffsetX = XOFSMST_Data[i].X_OFFSET;
-                                        }
-                                    }
-                                }
-                                
-                                int bcnoCnt = LoadedBcNo.Count;
-                                isBcnoFind = false;
-                                if (bcnoCnt < 10) // 9개가 넘어가면 BCD Wrong Error
+                                while (reader.Read())
                                 {
-                                    for (int bcnoIdx = 0; bcnoIdx < bcnoCnt; bcnoIdx++)
+
+                                    INSPDATData data = new INSPDATData();
+                                    data.Parse(reader);
+
+                                    if (dbOption.useOffsetX)
                                     {
-                                        if (LoadedBcNo[bcnoIdx] == data.BCNO)
+                                        int offsetDataCnt = XOFSMST_Data.Count;
+
+                                        for (int offsetIdx = 0; offsetIdx < offsetDataCnt; offsetIdx++)
                                         {
-                                            isBcnoFind = true;
-                                            break;
+                                            int ppcd = XOFSMST_Data[i].PPCD;
+                                            if (data.KYCD == XOFSMST_Data[i].KYCD &&
+                                                ((idx == (int)eFCD.ES && ppcd == 100) ||
+                                                (idx == (int)eFCD.TG && ppcd == 400) ||
+                                                (idx == (int)eFCD.ETC && ppcd != 100 && ppcd != 400)) &&
+                                                PTRY0P_Data[idx][i].Y0ZKNM == XOFSMST_Data[i].YLSZKN &&
+                                                PTRY0P_Data[idx][i].LNCD == XOFSMST_Data[i].LNCD)
+                                            {
+                                                data.OffsetX = XOFSMST_Data[i].X_OFFSET;
+                                            }
                                         }
                                     }
 
-                                    if (bcnoCnt == 0)
+                                    int bcnoCnt = LoadedBcNo.Count;
+                                    isBcnoFind = false;
+                                    if (bcnoCnt < 10) // 9개가 넘어가면 BCD Wrong Error
                                     {
-                                        LoadedBcNo.Add(data.BCNO);
-                                        LoadedBcNo.Add(data.LOTNO);
-                                    }
-                                    else
-                                    {
-                                        if (isBcnoFind == false) LoadedBcNo.Add(data.BCNO);
-                                    }
-                                }
+                                        for (int bcnoIdx = 0; bcnoIdx < bcnoCnt; bcnoIdx++)
+                                        {
+                                            if (LoadedBcNo[bcnoIdx] == data.BCNO)
+                                            {
+                                                isBcnoFind = true;
+                                                break;
+                                            }
+                                        }
 
-                                // 리스트에 데이터 추가함
-                                inspDataList.Add(data);
-                                dataCnt++;
-                                Log.WriteLoadData(data.ToString(), dataCnt, "INSPDAT", 0.0);
+                                        if (bcnoCnt == 0)
+                                        {
+                                            LoadedBcNo.Add(data.BCNO);
+                                            LoadedBcNo.Add(data.LOTNO);
+                                        }
+                                        else
+                                        {
+                                            if (isBcnoFind == false) LoadedBcNo.Add(data.BCNO);
+                                        }
+                                    }
+
+                                    // 리스트에 데이터 추가함
+                                    inspDataList.Add(data);
+                                    dataCnt++;
+                                    Log.WriteLoadData(data.ToString(), dataCnt, "INSPDAT", 0.0);
+                                }
                             }
                         }
+                        // 최종 데이터 입력
+                        INSPDAT_Data[idx].Add(inspDataList);
                     }
-                    // 최종 데이터 입력
-                    INSPDAT_Data[idx].Add(inspDataList);
+
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
                 }
-            }
 
-            if (csvType == eCSV_TYPE.NITTO || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
+                return true;
+            }
+            catch (Exception ex)
             {
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_ES);
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_TG);
-                success &= DB_Progress.IsCompelete(eNittoDBProgress.INSPDAT_ETC);
+                if (procStep == (int)eFCD.ES) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ES);
+                else if (procStep == (int)eFCD.TG) DB_Progress.SetError(eNittoDBProgress.INSPDAT_TG);
+                else if (procStep == (int)eFCD.ETC) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ETC);
+                Log.WriteLog($"[Error] INSPDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
             }
-
-            return success;
         }
 
         public bool SearchFLTDAT(string lotID)
@@ -1049,8 +1256,6 @@ namespace DefectDBManager
             // 연결 확인
             if (conn?.IsConnected() == false)
                 return false;
-
-            bool success = true;
 
             faultData = resultDefect.Data;
             markFaultData = resultDefect.MarkFault.Data;
@@ -1060,13 +1265,13 @@ namespace DefectDBManager
 
             bool useXOffset = destConfig.UseXOffset;
             bool useXOffsetAlarm = destConfig.UseXOffsetAlarm;
-            bool useMask = DbOption.useMask;
-            bool bXOffsetError = false;
+            bool useMask = DbOption.searchOP.useMask;
+            //bool bXOffsetError = false;
             bool useAIFromDB = DbOption.useAIfromDB;
 
-            bool useSplit = DbOption.useSplit;
-            float splitStartX = DbOption.splitStartX;
-            float splitEndX = DbOption.splitEndX;
+            bool useSplit = DbOption.searchOP.useSplit;
+            float splitStartX = DbOption.searchOP.splitStartX;
+            float splitEndX = DbOption.searchOP.splitEndX;
 
             float maxXPos = 0;
             float minXPos = float.MaxValue;
@@ -1075,225 +1280,298 @@ namespace DefectDBManager
             eCSV_TYPE csvType = destConfig.GetCsvType();
 
             int defectLine;
-
             string tmpKey;
             bool bValid;
             float faultSize;
             float finalXPos;
             string tmpFaltID;
 
+            bool validMark;
+
             INSPDATData inspdata;
 
-            long dbCnt=0;
+            long dbCnt = 0;
             int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
-            int dataCnt=0;
-            string logData="";
-            for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
+            int dataCnt = 0;
+            string logData = "";
+            string query;
+            int procStep = 0;
+
+            int[] defectCnt = new int[fcdCnt];
+            defectCnt.Initialize();
+
+            try
             {
-                DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
-
-                if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)
-                {   
-                }
-                else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)
-                {   
-                }
-                else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)
-                {   
-                }
-                else
+                for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
                 {
-                    if (dbOption.checkES == false && fcdIdx == (int)eFCD.ES) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_ES);
-                    if (dbOption.checkTG == false && fcdIdx == (int)eFCD.TG) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_TG);
-                    if (dbOption.checkETC == false && fcdIdx == (int)eFCD.ETC) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_ETC);
+                    procStep = fcdIdx;
+                    DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
 
-                    continue;
-                }
-
-                int nItemCnt = 0;
-                for (int iIdx = 0; iIdx < INSPDAT_Data[fcdIdx].Count; iIdx++)
-                    nItemCnt += INSPDAT_Data[fcdIdx][iIdx].Count;
-                DB_Progress.SetMatStep((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx), nItemCnt);
-                nItemCnt = 0;
-                for (int opIdx = 0; opIdx < PTRY0P_Data[fcdIdx].Count; opIdx++)
-                {
-                    dicSizeData.Clear();
-
-                    foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcdIdx][opIdx])
+                    if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)
                     {
-                        dicSizeData.Add(pair.Key, pair.Value);
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
+                    }
+                    else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)
+                    {
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
+                    }
+                    else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)
+                    {
+                        defectCnt[fcdIdx] = -1;// 확인 안 함
+                    }
+                    else
+                    {
+                        if (dbOption.checkES == false && fcdIdx == (int)eFCD.ES) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_ES);
+                        if (dbOption.checkTG == false && fcdIdx == (int)eFCD.TG) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_TG);
+                        if (dbOption.checkETC == false && fcdIdx == (int)eFCD.ETC) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_ETC);
+
+                        continue;
                     }
 
-                    int inspCnt = INSPDAT_Data[fcdIdx][opIdx].Count;
-                    for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
+                    int nItemCnt = 0;
+                    for (int iIdx = 0; iIdx < INSPDAT_Data[fcdIdx].Count; iIdx++)
+                        nItemCnt += INSPDAT_Data[fcdIdx][iIdx].Count;
+
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
+                    nItemCnt = 0;
+                    for (int opIdx = 0; opIdx < PTRY0P_Data[fcdIdx].Count; opIdx++)
                     {
-                        QueryMsg.FLTDAT_Query msg = new QueryMsg.FLTDAT_Query();
-                        inspdata = INSPDAT_Data[fcdIdx][opIdx][inspIdx];
-                        msg.CTLNO = inspdata.CTLNO;
+                        dicSizeData.Clear();
+                        dicMRKF1Data.Clear();
 
-                        Log.WriteLoadData(msg.GetQuery(), 0, "FAULTDAT", 0.0);
-                        using (var comm = new OracleCommand(msg.GetQuery(), conn.Connection))
+                        foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcdIdx][opIdx])
+                            dicSizeData.Add(pair.Key, pair.Value);
+
+                        foreach (KeyValuePair<string, bool> pair in dicMRKF1MRKCTLMST[fcdIdx][opIdx])
+                            dicMRKF1Data.Add(pair.Key, pair.Value);
+
+                        int inspCnt = INSPDAT_Data[fcdIdx][opIdx].Count;
+                        for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                         {
-                            using (var reader = comm.ExecuteReader())
+                            inspdata = INSPDAT_Data[fcdIdx][opIdx][inspIdx];
+#if (FAST_FLTID)
+                            QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
+                            fastMsg.BCNO = inspdata.BCNO;
+                            query = fastMsg.GetQuery();
+#else
+                            QueryMsg.FLTDAT_Query msg = new QueryMsg.FLTDAT_Query();
+                            msg.CTLNO = inspdata.CTLNO;
+                            query = msg.GetQuery();
+#endif
+                            Log.WriteLoadData(query, 0, "FAULTDAT", 0.0);
+
+                            if (query == "")
                             {
-                                dbCnt = reader.RowSize;
+                                Log.WriteLog($"[Error] FAULTDAT_{((eFCD)fcdIdx).ToString()} Query message is empty.");
+                                if ((eFCD)fcdIdx == eFCD.ES) DB_Progress.SetError(eNittoDBProgress.FAULTDAT_ES);
+                                if ((eFCD)fcdIdx == eFCD.TG) DB_Progress.SetError(eNittoDBProgress.FAULTDAT_TG);
+                                if ((eFCD)fcdIdx == eFCD.ETC) DB_Progress.SetError(eNittoDBProgress.FAULTDAT_ETC);
+                                return false;
+                            }
 
-                                DB_Progress.SetTotal((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx), dbCnt, nItemCnt);
-                                nItemCnt++;
-
-                                while (reader.Read())
+                            using (var comm = new OracleCommand(query, conn.Connection))
+                            {
+                                using (var reader = comm.ExecuteReader())
                                 {
-                                    DB_Progress.AddCount((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
-                                    FLTDATAData data = new FLTDATAData();
-                                    data.Parse(reader);
+                                    dbCnt = reader.RowSize;
 
-                                    tmpFaltID = data.FLTID.ToUpper();
+                                    nItemCnt++;
 
-                                    finalXPos = data.XPOS_M;
-                                    if (useXOffset == true)
-                                        finalXPos += inspdata.OffsetX;
-                                    bValid = false;
-                                    if (useAIFromDB == false)
+                                    while (reader.Read())
                                     {
-                                        tmpKey = data.MNTTAN.TrimStart();
-                                        //mnttid = mnttid.TrimStart('\s');
-                                        if (string.IsNullOrEmpty(tmpKey))
-                                            tmpKey = data.FLTID;
-                                    }
-                                    else
-                                        tmpKey = data.FLTID;
+                                        FLTDATAData data = new FLTDATAData();
+                                        data.Parse(reader);
 
-                                    if (dicSizeData.ContainsKey(tmpKey) == true)
-                                    {
-                                        faultSize = dicSizeData[data.FLTID];
-                                        if (faultSize <= (data.AREA_M + 0.00001f)) bValid = true;
-                                        else bValid = false;
-                                    }
+                                        tmpFaltID = data.FLTID.ToUpper();
 
-                                    if (bValid == true)    // 소수점 오차 보정
-                                    {
-                                        if (finalXPos < 0.0f) continue;
-                                        if (useMask == true && isMaskedDefect(finalXPos, data.OFFSET) == true) continue;
-                                        if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
-
-                                        // Fault Data 처리
-                                        FaultDatum tmpFltData = new FaultDatum();
-
-                                        tmpFltData.FLTNO = data.FLTNO;
-                                        tmpFltData.OFFSET = data.OFFSET;
-                                        tmpFltData.YPOS_M = data.YPOS_M;
-                                        tmpFltData.XPOS_M = data.XPOS_M;
-
-                                        // 코드 불량 카운트 증가
-                                        if (inspdata.CTLNO == data.CTLNO)
-                                            inspdata.RollCtlCnt++;
-
-                                        // FLTID비교기능
-                                        for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                        finalXPos = data.XPOS_M;
+                                        if (useXOffset == true)
+                                            finalXPos += inspdata.OffsetX;
+                                        bValid = false;
+                                        if (useAIFromDB == false)
                                         {
-                                            if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                                CrtParam.FAULTDATFLTID.Add(data.FLTID);
-                                        }
-
-                                        if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
-                                        if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-                                        if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
-                                        {
-                                            if (tmpFaltID == "610" || tmpFaltID == "611" || tmpFaltID == "612")
-                                                if (minSize > data.AREA_M) minSize = data.AREA_M;
-                                        }
-
-                                        // fault data 추가
-                                        tmpFltData.RANK = data.RANK;
-                                        tmpFltData.KND = data.KND;
-                                        tmpFltData.JIGCD = data.JIGCD;
-                                        tmpFltData.MACNO = data.MACNO;
-
-                                        // Marking fault data 추가
-                                        MarkingFaultDatum markData = new MarkingFaultDatum();
-
-                                        markData.BCNO = inspdata.BCNO;
-                                        markData.FLTNO = data.FLTNO;
-                                        markData.FAULTID = data.FLTID;
-                                        markData.OFFSET = tmpFltData.OFFSET;
-                                        markData.YPOS_M = tmpFltData.YPOS_M;
-                                        markData.XPOS_M = tmpFltData.XPOS_M;
-                                        markData.XOFFSET = inspdata.OffsetX;
-                                        markData.UseCSVResult = false;
-                                        markData.CAM_NO = data.CAMNO;
-                                        markData.CTLNO = data.CTLNO;
-                                        markData.SIZE = data.AREA_M;
-                                        markData.MNTTID = data.MNTTAN;
-                                        markData.MACNO = data.MACNO;
-
-                                        if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
-                                        else markData.XOFFSET_ALARM = float.MaxValue;
-
-                                        if (csvType == eCSV_TYPE.NITTO)
-                                        {
-                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
-                                            else markData.DefectLine = 8; // 그외
-                                        }
-                                        else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                        {
-                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
-                                            else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
-                                            else markData.DefectLine = 7; // 그외
+                                            tmpKey = data.MNTTAN.TrimStart();
+                                            //mnttid = mnttid.TrimStart('\s');
+                                            if (string.IsNullOrEmpty(tmpKey))
+                                                tmpKey = data.FLTID;
                                         }
                                         else
+                                            tmpKey = data.FLTID;
+
+                                        if (dicSizeData.ContainsKey(tmpKey) == true && dicMRKF1Data.ContainsKey(tmpKey) == true)
                                         {
-                                            if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
+                                            validMark = dicMRKF1Data[data.FLTID];
+                                            faultSize = dicSizeData[data.FLTID];
+                                            if (faultSize <= (data.AREA_M + 0.00001f) && validMark == true) bValid = true;
+                                            else bValid = false;
+                                        }
+
+                                        if (bValid == true)    // 소수점 오차 보정
+                                        {
+                                            if (finalXPos < 0.0f) continue;
+                                            if (useMask == true && isMaskedDefect(finalXPos, data.OFFSET) == true) continue;
+                                            if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
+
+                                            // Fault Data 처리
+                                            FaultDatum tmpFltData = new FaultDatum();
+
+                                            tmpFltData.FLTNO = data.FLTNO;
+                                            tmpFltData.OFFSET = data.OFFSET;
+                                            tmpFltData.YPOS_M = data.YPOS_M;
+                                            tmpFltData.XPOS_M = data.XPOS_M;
+
+                                            // 코드 불량 카운트 증가
+                                            if (inspdata.CTLNO == data.CTLNO)
+                                                inspdata.RollCtlCnt++;
+
+                                            // FLTID비교기능
+                                            for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
                                             {
-                                                int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
-                                                markData.DefectLine = getDefectFromFLTID(fldID);
-                                                if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
+                                                if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                                    CrtParam.FAULTDATFLTID.Add(data.FLTID);
                                             }
-                                            else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
-                                                (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
+
+                                            if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
+                                            if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
+                                            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
                                             {
-                                                markData.DefectLine = 0;
-                                                CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
+                                                if (tmpFaltID == "610" || tmpFaltID == "611" || tmpFaltID == "612")
+                                                    if (minSize > data.AREA_M) minSize = data.AREA_M;
                                             }
+
+                                            // fault data 추가
+                                            tmpFltData.RANK = data.RANK;
+                                            tmpFltData.KND = data.KND;
+                                            tmpFltData.JIGCD = data.JIGCD;
+                                            tmpFltData.MACNO = data.MACNO;
+
+                                            // Marking fault data 추가
+                                            MarkingFaultDatum markData = new MarkingFaultDatum();
+
+                                            markData.BCNO = inspdata.BCNO;
+                                            markData.FLTNO = data.FLTNO;
+                                            markData.FAULTID = data.FLTID;
+                                            markData.OFFSET = tmpFltData.OFFSET;
+                                            markData.YPOS_M = tmpFltData.YPOS_M;
+                                            markData.XPOS_M = tmpFltData.XPOS_M;
+                                            markData.XOFFSET = inspdata.OffsetX;
+                                            markData.UseCSVResult = false;
+                                            markData.CAM_NO = data.CAMNO;
+                                            markData.CTLNO = data.CTLNO;
+                                            markData.SIZE = data.AREA_M;
+                                            markData.MNTTID = data.MNTTAN;
+                                            markData.MACNO = data.MACNO;
+
+                                            if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
+                                            else markData.XOFFSET_ALARM = float.MaxValue;
+
+                                            if (csvType == eCSV_TYPE.NITTO)
+                                            {
+                                                if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
+                                                else markData.DefectLine = 8; // 그외
+                                            }
+                                            else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                            {
+                                                if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
+                                                else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
+                                                else markData.DefectLine = 7; // 그외
+                                            }
+                                            else
+                                            {
+                                                if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
+                                                {
+                                                    int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                                                    markData.DefectLine = getDefectFromFLTID(fldID);
+                                                    if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
+                                                }
+                                                else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
+                                                    (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
+                                                {
+                                                    markData.DefectLine = 0;
+                                                    CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
+                                                }
+                                            }
+
+                                            // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+                                            defectLine = markData.DefectLine;
+
+                                            if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
+                                            {
+                                                markData.DefectLine = defectLine;
+                                            }
+
+                                            //RK는 CAMNO별로 Defect Class 를 구분
+                                            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                            {
+                                                markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
+                                            }
+
+                                            resultDefect.Data.Add(tmpFltData);
+                                            resultDefect.MarkFault.Data.Add(markData);
+                                            dataCnt++;
+                                            logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
+                                            Log.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                            defectCnt[fcdIdx]++;
                                         }
-
-                                        // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
-                                        defectLine = markData.DefectLine;
-
-                                        if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
-                                        {
-                                            markData.DefectLine = defectLine;
-                                        }
-
-                                        //RK는 CAMNO별로 Defect Class 를 구분
-                                        if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                        {
-                                            markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
-                                        }
-
-                                        resultDefect.Data.Add(tmpFltData);
-                                        resultDefect.MarkFault.Data.Add(markData);
-                                        dataCnt++;
-                                        logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
-                                        Log.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
                                     }
                                 }
                             }
                         }
                     }
+                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                 }
+
+                if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK)
+                {
+                    if(DbDestConfig.SelDestUnit.useFaltIDCheck==true)
+                    {
+                        CrtParam.VerifyFLTID();
+
+                        if (checkInspectionRollMeter()==false)
+                            CrtParam.InspRollCheckError = true;
+                    }
+                    
+                }
+
+                if (minSize == 999.0)
+                    minSize = 0;
+
+                //   Defect 사이즈 처리
+                resultDefect.MarkFault.MinXPos = minXPos;
+                resultDefect.MarkFault.MaxXPos = maxXPos;
+                resultDefect.MarkFault.MinSize = minSize;
+
+                // 불량 체크
+                bool isSuccess = true;
+                if (DbDestConfig.CSVType == eCSV_TYPE.KORENO || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
+                {
+                    // 하나라도 검색이 되었으면 OK
+                    isSuccess = false;
+                    for (int i = 0; i < fcdCnt; i++)
+                    {
+                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
+                            isSuccess = true;
+                    }
+                }
+                else
+                {
+                    // 전체가 다 불량이 있어야 OK
+                    for (int i = 0; i < fcdCnt; i++)
+                    {
+                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
+                            isSuccess &= false;
+                    }
+                }
+                return true;
             }
-
-
-            //   Defect 사이즈 처리
-            resultDefect.MarkFault.MinXPos = minXPos;
-            resultDefect.MarkFault.MaxXPos = maxXPos;
-            resultDefect.MarkFault.MinSize = minSize;
-
-            success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_ES);
-            success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_TG);
-            success &= DB_Progress.IsCompelete(eNittoDBProgress.FAULTDAT_ETC);
-
-            return success;
+            catch (Exception ex)
+            {
+                if (procStep == (int)eFCD.ES) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ES);
+                else if (procStep == (int)eFCD.TG) DB_Progress.SetError(eNittoDBProgress.INSPDAT_TG);
+                else if (procStep == (int)eFCD.ETC) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ETC);
+                Log.WriteLog($"[Error] FAULTDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
+            }
         }
 
         public bool CheckOffsetError()
@@ -1301,11 +1579,11 @@ namespace DefectDBManager
             bool bXOfSErr = false;
             float refXOffset = dbOption.xOffset;
             int count = 0;
-            if (DbDestConfig.UseXOffset==true && DbDestConfig.UseXOffsetAlarm==true)
+            if (DbDestConfig.UseXOffset == true && DbDestConfig.UseXOffsetAlarm == true)
             {
-                foreach(MarkingFaultDatum item in resultDefect.MarkFault.Data)
+                foreach (MarkingFaultDatum item in resultDefect.MarkFault.Data)
                 {
-                    if(item.XOFFSET_ALARM!=float.MaxValue && (Math.Abs(item.XOFFSET_ALARM+1.0f)>+0.000001f) && Math.Abs(refXOffset - item.XOFFSET_ALARM)>=0.1f)
+                    if (item.XOFFSET_ALARM != float.MaxValue && (Math.Abs(item.XOFFSET_ALARM + 1.0f) > +0.000001f) && Math.Abs(refXOffset - item.XOFFSET_ALARM) >= 0.1f)
                     {
                         bXOfSErr = true;
                         string errData = string.Format($"ERROR X-Offset:{dbOption.dbWhen.ToString()}, {item.XOFFSET_ALARM:0.0}, Ref:{refXOffset:0.0}, index:{count}");
@@ -1319,7 +1597,123 @@ namespace DefectDBManager
             return bXOfSErr;
         }
 
-        private bool isMaskedDefect(float xPos, float yPos)
+        private bool checkInspectionRollMeter()
+        {
+            bool bMatch = false;
+            bool bFindSepa2 = false, bFindSepa3 = false;
+            int i, j, k;
+            int nFindSepa1 = 0, nFindSepa2 = 0, nFindSepa3 = 0;
+            int nCompleteMCnt = 0, nINSPLengthCnt = 0, nINSPLengthCnt2 = 0;
+            int nTmp = 0, nLength1, nLength2;
+            float fLength = 0.0f, fStLength = 0.0f, fTmp;
+            string str, strTmp;
+            string strLotMatch;
+            List<int> nIndex1 = new List<int>();
+            List<int>[] nIndex2 = new List<int>[3];
+            for(i=0; i<3; i++) nIndex2[i] = new List<int>();
+            List<float> fINSPLength = new List<float>();
+
+            nFindSepa1 = DbOption.lotName.IndexOf("LL");
+            if (nFindSepa1 >= 0)
+            {
+                strLotMatch = DbOption.lotName.Substring(10);
+                for (i = 0; i < PTRLYP_Data.Count; i++)
+                {
+                    nFindSepa2 = PTRLYP_Data[i].YLMLOT.IndexOf(strLotMatch);
+                    if (nFindSepa2 >= 0)
+                    {
+                        if (PTRLYP_Data[i].YLMKAS == 0.0f)
+                            continue;
+                        nIndex1.Add(i);
+                        bFindSepa2 = true;
+                        Log.WriteLog($"PTRYLP LOT Match : {PTRLYP_Data[i].YLMKAS}");
+                    }
+                }
+
+                int fcdSize = System.Enum.GetValues(typeof(eFCD)).Length;
+                for (i = 0; i < fcdSize; i++)
+                {
+                    for (j = 0; j < PTRLYP_Data.Count; j++)
+                    {
+                        for (k = 0; k < INSPDAT_Data[i][j].Count; k++)
+                        {
+                            nFindSepa3 = INSPDAT_Data[i][j][k].LOTNO.IndexOf(strLotMatch);
+                            if (nFindSepa3 >= 0)
+                            {
+                                if (INSPDAT_Data[i][j][k].Length == 0.0f || nTmp == (int)INSPDAT_Data[i][j][k].Length)
+                                    continue;
+                                nTmp = (int)INSPDAT_Data[i][j][k].Length;
+                                nIndex2[0].Add(i);
+                                nIndex2[1].Add(j);
+                                nIndex2[2].Add(k);
+                                bFindSepa3 = false;
+                                Log.WriteLog($"INSP LOT Match : {INSPDAT_Data[i][j][k].Length}");
+                            }
+                        }
+                    }
+                }
+                if (bFindSepa2 && bFindSepa3)
+                {
+                    nCompleteMCnt = (int)nIndex1.Count;
+                    nINSPLengthCnt = (int)nIndex2[0].Count;
+                    fLength = 0.0f;
+                    fTmp = 0.0f;
+                    strTmp = "";
+                    for (i = 0; i < nINSPLengthCnt; i++)
+                    {
+                        if (fStLength != INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart)
+                        {
+                            fStLength = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart;
+                            fTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].Length;
+                            fTmp = fTmp / 1000.0f;
+                            fLength += fTmp;
+                        }
+                        if (strTmp != INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO)
+                        {
+                            if (strTmp == "")
+                                strTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                            else
+                            {
+                                strTmp = INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                                fINSPLength.Add(fLength);
+                                fLength = 0.0f;
+                            }
+                        }
+                    }
+                    fINSPLength.Add(fLength);
+                    nINSPLengthCnt2 = (int)fINSPLength.Count;
+                    for (i = 0; i < nINSPLengthCnt2; i++)
+                    {
+                        for (j = 0; j < nCompleteMCnt; j++)
+                        {
+                            nLength1 = (int)PTRLYP_Data[nIndex1[i]].YLMKAS;
+                            nLength2 = (int)fINSPLength[i];
+                            if (nLength1 - DbDestConfig.SelDestUnit.LengErrorRangeMinus <= nLength2 && nLength1 + DbDestConfig.SelDestUnit.LengErrorRangePlus >= nLength2)
+                                bMatch = true;
+                            else
+                                bMatch = false;
+                            Log.WriteLog($"CompleteMeter={nLength1} InspectionMeter={nLength2}");
+                        }
+                    }
+
+                    Log.WriteLog($"InspLengthCount={nINSPLengthCnt2} CompleteMeterCount={nCompleteMCnt}");
+                }
+                if (nINSPLengthCnt==0)
+                    bMatch = false;
+            }
+            else
+            {
+                bMatch = false;
+            }
+            nIndex1.Clear();
+            nIndex2[0].Clear();
+            nIndex2[1].Clear();
+            nIndex2[2].Clear();
+            fINSPLength.Clear();
+            return bMatch;
+        }
+
+        private bool isMaskedDefect(float xPos, double yPos)
         {
             List<SkipOffsetParam> skip = CrtParam.OffsetSkip;
             int count = skip.Count;
@@ -1375,7 +1769,7 @@ namespace DefectDBManager
         {
             DateTime dt = DateTime.Now;
             Debug.Assert(ProductEndTime.Count == ProductLotName.Count);
-            string strE, strC, strD, str;
+            string strE, strC, str;
             strC = dt.ToString("yyyyMMddHHmmdd");
 
             int count = 0;
@@ -1390,7 +1784,7 @@ namespace DefectDBManager
                 Log.WriteLoadData(str, 0, "PRODUCTION_ABLE", 0);
                 count++;
 
-                if(sp< refTs)
+                if (sp < refTs)
                 {
                     Log.WriteLoadData("생산가능시간 NG", 0, "PRODUCTION_ABLE", 0);
                     return false;
@@ -1424,7 +1818,7 @@ namespace DefectDBManager
         private void openCsvKoh(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
             // 우선 fault Data 초기화.. 
             // 나중에 CrtParam._FaultData 내에 다른 데이터 초기화 해야하는지 확인이 필요함.
             // CrtParam._FaultData는 인덱스가 0으로 바뀌는데 CrtParam._MarkFaultData는 초기화 안 함
@@ -1432,7 +1826,7 @@ namespace DefectDBManager
             resultDefect.Data.Clear();
 
             _RollDefectInfo = new RollDefectInfo();
-            string tmpBCInfo=null;
+            string tmpBCInfo = null;
             _RollDefectInfo.InitData("");
 
             using (var file = new StreamReader(path, Encoding.Default))
@@ -1448,7 +1842,7 @@ namespace DefectDBManager
 
                     // 데이터 인덱스 수정 필요함
                     tmpData.FLTNO = items[0].Trim();
-                    tmpData.OFFSET = float.Parse(items[14]);
+                    tmpData.OFFSET = double.Parse(items[14]);
                     tmpData.XPOS_M = float.Parse(items[7]);
                     tmpData.YPOS_M = float.Parse(items[8]);
                     tmpData.SIZE_AREA = float.Parse(items[11]);
@@ -1473,7 +1867,7 @@ namespace DefectDBManager
                     tmpMarkData.UseCSVResult = true;
                     tmpMarkData.CTLNO = "CSV";
                     tmpMarkData.MACNO = tmpData.MACNO;
-                    tmpMarkData.CAM_NO=tmpData.CAM_NO;
+                    tmpMarkData.CAM_NO = tmpData.CAM_NO;
 
                     if (dbOption.checkES == true && dbOption.checkTG == false && dbOption.checkETC == false) // 연신
                         tmpMarkData.DefectLine = 8;
@@ -1487,7 +1881,7 @@ namespace DefectDBManager
 
                 }
 
-                if(tmpBCInfo!=null)
+                if (tmpBCInfo != null)
                     _RollDefectInfo.InitData(tmpBCInfo, false);
             }
         }
@@ -1495,7 +1889,7 @@ namespace DefectDBManager
         private void openCsvKor(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
             // 우선 fault Data 초기화.. 
             // 나중에 CrtParam._FaultData 내에 다른 데이터 초기화 해야하는지 확인이 필요함.
             // CrtParam._FaultData는 인덱스가 0으로 바뀌는데 CrtParam._MarkFaultData는 초기화 안 함
@@ -1514,8 +1908,7 @@ namespace DefectDBManager
             int nThru, nDiff, nCross, nThru1, nThru2, nFreq, nSame;
             nDiff = nThru = nCross = nThru1 = nThru2 = nFreq = nSame = 0;
 
-            string tmpBCR, tmpDefect;
-            string[] tmpBuf;
+            string tmpDefect;
             int tmpDefectId = 0, defectKind = 0;
 
             bool bCSVOption = false;
@@ -1531,7 +1924,7 @@ namespace DefectDBManager
                 if (file == null) return;
 
                 CSV_DEFECT_HEADER csvInspData = new CSV_DEFECT_HEADER();
-                
+
                 file.ReadLine(); // Title 
                 text = file.ReadLine();
                 text = text.Replace("\"", "");
@@ -1539,14 +1932,14 @@ namespace DefectDBManager
 
                 // INSPDATA 표시용 데이터 처리
                 csvInspData.bcrInfo = items[2].Trim(' ');
-                csvInspData.lotNo   = csvInspData.bcrInfo.Substring(0, 7);
-                csvInspData.rollNo  = csvInspData.bcrInfo.Substring(csvInspData.bcrInfo.Length - 2, 2);
-                csvInspData.startY  = items[9];
-                csvInspData.endY    = items[10];
-                csvInspData.rollY   = items[13].Trim(' ');
-                csvInspData.rollSY  = items[14].Trim(' ');
-                csvInspData.rollEY  = items[15].Trim(' ');
-                csvInspData.jig     = items[3];
+                csvInspData.lotNo = csvInspData.bcrInfo.Substring(0, 7);
+                csvInspData.rollNo = csvInspData.bcrInfo.Substring(csvInspData.bcrInfo.Length - 2, 2);
+                csvInspData.startY = items[9];
+                csvInspData.endY = items[10];
+                csvInspData.rollY = items[13].Trim(' ');
+                csvInspData.rollSY = items[14].Trim(' ');
+                csvInspData.rollEY = items[15].Trim(' ');
+                csvInspData.jig = items[3];
                 csvInspData.machine = items[8];
                 _CsvDefectHeader = csvInspData;
 
@@ -1811,15 +2204,15 @@ namespace DefectDBManager
                 }
 
                 float defect2M = 0;
-                float fEnd=0.0f, fRoll=0.0f;
+                float fEnd = 0.0f, fRoll = 0.0f;
                 bool isParse = true;
-                if (float.TryParse(csvInspData.endY, out float tmpVal) == true)                    fEnd = tmpVal;
-                else                    isParse = false;
-                if (float.TryParse(csvInspData.rollY, out tmpVal) == true)                    fRoll = tmpVal;
-                else                    isParse = false;
+                if (float.TryParse(csvInspData.endY, out float tmpVal) == true) fEnd = tmpVal;
+                else isParse = false;
+                if (float.TryParse(csvInspData.rollY, out tmpVal) == true) fRoll = tmpVal;
+                else isParse = false;
 
-                if (isParse == true && fEnd>0.0 && fRoll>0.0)
-                    defect2M = (float)_RollDefectInfo.BadCnt/((fEnd * fRoll) / 1000.0f / 1000.0f);
+                if (isParse == true && fEnd > 0.0 && fRoll > 0.0)
+                    defect2M = (float)_RollDefectInfo.BadCnt / ((fEnd * fRoll) / 1000.0f / 1000.0f);
                 tmpRollInfo.SetDefectPerM(defect2M);
 
                 _RollDefectInfo = tmpRollInfo;
@@ -1861,7 +2254,7 @@ namespace DefectDBManager
         private void openCsvNitto(string path)
         {
             string text;
-            bool useMask = dbOption.useMask;
+            bool useMask = dbOption.searchOP.useMask;
 
 
             // 에러 대비 초기화
@@ -1879,7 +2272,7 @@ namespace DefectDBManager
             string[] items;
             bool bBcrExist = false;
 
-            int totalLine = File.ReadAllLines(path).Length;
+            int totalLine = System.IO.File.ReadAllLines(path).Length;
 
             using (var file = new StreamReader(path, Encoding.Default))
             {
@@ -1890,7 +2283,7 @@ namespace DefectDBManager
 
                 while ((text = file.ReadLine()) != null)
                 {
-                    string text1 = text.Replace("\"","");
+                    string text1 = text.Replace("\"", "");
                     items = text1.Split(',');
                     FaultDatum tmpData = new FaultDatum();
                     MarkingFaultDatum tmpMarkData = new MarkingFaultDatum();
@@ -1901,7 +2294,7 @@ namespace DefectDBManager
                     tmpData.YPOS_M = float.Parse(items[4]);
                     tmpData.XPOS_M = float.Parse(items[5]);
                     tmpData.SIZE_AREA = float.Parse(items[6]);
-                    tmpData.OFFSET = float.Parse(items[9]);
+                    tmpData.OFFSET = double.Parse(items[9]);
                     strCamNo = items[10];
 
                     strbcr = items[16];
@@ -1961,7 +2354,7 @@ namespace DefectDBManager
                     faultData.Add(tmpData);
                     markFaultData.Add(tmpMarkData);
 
-                    if(isInit==false && strbcr!=null)
+                    if (isInit == false && strbcr != null)
                     {
                         rollDefectInfo.InitData(strbcr);
                         isInit = true;

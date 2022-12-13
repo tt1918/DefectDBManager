@@ -52,12 +52,13 @@ namespace CodeReaderDLL.CognexLib
                     imageTool = toolGroup.Tools["CogIPOneImageTool1"] as CogIPOneImageTool;
 
                     InitComplete = true;
+                    
                 }
                 else
                     InitComplete = false;
             }
-
-            InitComplete = true;
+            else
+                InitComplete = false;
         }
 
         public bool PutCogImage8Grey(Mat image)

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -46,12 +49,16 @@ namespace DefectDBManager
         public string FLTNO;        // DB 탐색에서 얻어오는 불량 순번
         [MarshalAs(UnmanagedType.BStr)] 
 		public string FAULTID;      // 불량 항목 같음
-        [MarshalAs(UnmanagedType.R4)]
-        public float OFFSET;
+        [MarshalAs(UnmanagedType.R8)]
+        public double OFFSET;
         [MarshalAs(UnmanagedType.R4)]
         public float YPOS_M;
         [MarshalAs(UnmanagedType.R4)]
         public float XPOS_M;
+        [MarshalAs(UnmanagedType.R4)]
+        public float SIZE_X;
+        [MarshalAs(UnmanagedType.R4)]
+        public float SIZE_Y;
         [MarshalAs(UnmanagedType.R4)]
         public float XOFFSET;
         [MarshalAs(UnmanagedType.Bool)]
@@ -66,6 +73,8 @@ namespace DefectDBManager
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct MarkingAreaDefect
 	{
+        [MarshalAs(UnmanagedType.I4)]
+        public Int32 idx;
         [MarshalAs(UnmanagedType.R4)]
         public float stX;                // 구간 마킹 시작 위치 X mm
         [MarshalAs(UnmanagedType.R4)]
@@ -124,19 +133,25 @@ namespace DefectDBManager
         MarkingData[] GetMarkingData(bool isNext);
 		int GetMarkingDefectMeter();
 		MarkingData[] GetMarkDefectData(string bcno, double start, double end);
-		MarkingAreaDefect[] GetMarkAreaDefectData(double start, double end);
-
+        bool UseAreaDelCheck();
+        MarkingAreaDefect[] GetMarkAreaDelDefectData(double start, double end, ref int count);
         string GetLotName(bool isNext);
 		int GetCSV_Type();
-		void LotChange();
-		void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
-		LotSearchResult[] GetSearchLotResults(bool isNext);
+		bool IsEsUse(bool isNext);
+        bool IsTgUse(bool isNext);
+        bool IsEtcUse(bool isNext);
+        void LotChange();
+		int GetSearchResut(bool isNext);
+        void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
+        LotSearchResult[] GetSearchLotResults(bool isNext);
         int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
-		string[] GetSearchModelResult();
+        int GetSearchModelCount();
+        string[] GetSearchModelResult();
+		string[] GetLoadedBCNO(bool isNext, ref int size);
+		void SetLanguage(int index);
     }
-
 
     [ComVisible(true)]
     [ClassInterface(ClassInterfaceType.AutoDispatch)]
@@ -154,12 +169,16 @@ namespace DefectDBManager
 		}
 		private DbManager dbManager = null;
 
-		public FormDB _FormDB
+		public FormDB _FormDB_Now
 		{
-			get { return dbManager._FormDB; }
+			get { return dbManager._FormDB_Now; }
 		}
+        public FormDB _FormDB_Next
+        {
+            get { return dbManager._FormDB_Next; }
+        }
 
-		public List<ICsvReadingEvents> _CsvReadingEventsListener =new List<ICsvReadingEvents>();
+        public List<ICsvReadingEvents> _CsvReadingEventsListener =new List<ICsvReadingEvents>();
 
         public Defects()
 		{
@@ -167,14 +186,18 @@ namespace DefectDBManager
             dbManager = new DbManager(this);
             markingData = new List<MarkingData>();
             markingAreaDefects = new List<MarkingAreaDefect>();
-            dbManager._FormDB.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager._FormDB_Now.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager._FormDB_Next.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager.OnProcessEvent+= new DelegateProcessEvent(OnEventEndCsvReding);
         }
 		~Defects()
 		{
 			_CsvReadingEventsListener.Clear();
 
-            dbManager._FormDB.OnEndCsvReading -= OnEventEndCsvReding;
-            dbManager._DestConfig.Write();
+            dbManager._FormDB_Now.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager._FormDB_Next.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager.OnProcessEvent -= OnEventEndCsvReding;
+            //dbManager._DestConfig.Write();
             defects?.Clear();
 			markingData?.Clear();
 			markingAreaDefects?.Clear();
@@ -263,9 +286,9 @@ namespace DefectDBManager
 
             List<MarkingFaultDatum> oriData;
             if (isNext == false)
-                oriData = DBManager._ResultData[0].MarkFault.Data;
+                oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
 			else
-                oriData = DBManager._ResultData[1].MarkFault.Data;
+                oriData = DBManager._DbProc[1].ResultDefect.MarkFault.Data;
 
 			foreach(MarkingFaultDatum datum in oriData)
 			{
@@ -280,7 +303,9 @@ namespace DefectDBManager
 				item.XOFFSET = datum.XOFFSET;
 				item.XPOS_M = datum.XPOS_M;
 				item.YPOS_M = datum.YPOS_M;
-				markingData.Add(item);
+				item.SIZE_X = datum.SIZE_X;
+                item.SIZE_Y = datum.SIZE_Y;
+                markingData.Add(item);
             }
 
 			return markingData.ToArray();
@@ -290,7 +315,7 @@ namespace DefectDBManager
 		{
 			markingData.Clear();
             List<MarkingFaultDatum> oriData;
-            oriData = DBManager._ResultData[0].MarkFault.Data;
+            oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
 
 			foreach(MarkingFaultDatum datum in oriData)
 			{
@@ -307,6 +332,8 @@ namespace DefectDBManager
                     item.XOFFSET = datum.XOFFSET;
                     item.XPOS_M = datum.XPOS_M;
                     item.YPOS_M = datum.YPOS_M;
+                    item.SIZE_X = datum.SIZE_X;
+                    item.SIZE_Y = datum.SIZE_Y;
                     markingData.Add(item);
                 }
             }
@@ -314,27 +341,33 @@ namespace DefectDBManager
             return markingData.ToArray();
         }
 
-		public MarkingAreaDefect[] GetMarkAreaDefectData(double start, double end)
+		public MarkingAreaDefect[] GetMarkAreaDelDefectData(double start, double end, ref int count)
 		{
 			markingAreaDefects.Clear();
-
-			List<AREADELData> delData = DBManager._DbProc[0].AREADEL_Data;
-			foreach(AREADELData item in delData)
+            if(dbManager._DestConfig.UseAREADEL==true)
 			{
-				if((item.STR_MD<=start && end<item.END_MD) || (item.END_MD<=start && end<item.STR_MD) || 
-					(start <=item.STR_MD && item.STR_MD<end) || (start<=item.END_MD && item.END_MD<end))
-				{
-                    MarkingAreaDefect data = new MarkingAreaDefect();
+                List<AREADELData> delData = DBManager._DbProc[0].AREADEL_Data;
+				int idx = 0;
+                foreach (AREADELData item in delData)
+                {
+                    if ((item.STR_MD <= start && end < item.END_MD) || (item.END_MD <= start && end < item.STR_MD) ||
+                        (start <= item.STR_MD && item.STR_MD < end) || (start <= item.END_MD && item.END_MD < end))
+                    {
+                        MarkingAreaDefect data = new MarkingAreaDefect();
 
 
-                    //현재위치에 AreaDel마킹영역이 존재시
-                    data.stX = item.STR_WD;
-                    data.edX = item.END_WD;
-					data.stY = item.STR_MD;
-					data.edY = item.END_MD;
-					markingAreaDefects.Add(data);
+						//현재위치에 AreaDel마킹영역이 존재시
+						data.idx = idx;
+                        data.stX = item.STR_WD;
+                        data.edX = item.END_WD;
+                        data.stY = item.STR_MD;
+                        data.edY = item.END_MD;
+                        markingAreaDefects.Add(data);
+                    }
+					idx++;
                 }
             }
+			count = markingAreaDefects.Count;
             return markingAreaDefects.ToArray();
         }
 
@@ -361,11 +394,62 @@ namespace DefectDBManager
 			return type;
 		}
 
+
+        public bool IsEsUse(bool isNext)
+		{
+			int idx = 0;
+			if (isNext == true)
+				idx = 1;
+			return dbManager._Option[idx].checkES;
+        }
+        
+		public bool IsTgUse(bool isNext)
+		{
+            int idx = 0;
+            if (isNext == true)
+                idx = 1;
+            return dbManager._Option[idx].checkTG;
+        }
+
+        public bool IsEtcUse(bool isNext)
+		{
+            int idx = 0;
+            if (isNext == true)
+                idx = 1;
+            return dbManager._Option[idx].checkETC;
+        }
+
+        public bool UseAreaDelCheck()
+		{
+			return dbManager._DestConfig.UseAREADEL;
+		}
+
 		// 예약랏을 현재랏으로 변경
 		public void LotChange()
 		{
+			List<string> oldLoadedBcNo = dbManager._DbProc[0].LoadedBcNo;
+            dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
+            dbManager._DbProc[1].LoadedBcNo = new List<string>();
+            oldLoadedBcNo.Clear();
+            ResultData oldMarkingData;
+            oldMarkingData = dbManager._DbProc[0].ResultDefect;
+            dbManager._DbProc[0].ResultDefect = dbManager._DbProc[1].ResultDefect;
+            oldMarkingData.Data.Clear();
+            oldMarkingData.MarkFault.Data.Clear();
 
-		}
+			dbManager._DbProc[0].DbOption = dbManager._DbProc[1].DbOption;
+			dbManager._DbProc[1].DbOption = new Option();
+
+            dbManager._DbProc[1].ResultDefect = new ResultData();
+            dbManager._DbProc[1].ResetDataAll();
+			dbManager._DbProc[1].ResetData_DE();
+			
+			dbManager._FormDB_Now.BCNO_LV_Data = dbManager._FormDB_Next.BCNO_LV_Data;
+			dbManager._FormDB_Next.CreateListViewData();
+
+            dbManager._FormDB_Now.UpdateListViewFromLotChange();
+            dbManager._FormDB_Next.UpdateListViewFromLotChange();
+        }
 
 		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
 		{
@@ -379,6 +463,29 @@ namespace DefectDBManager
             return results.ToArray();
 		}
 
+		public int GetSearchResut(bool isNext)
+		{
+			int count;
+			if (isNext == false)
+				count = (int)_FormDB_Now._SearchRes;
+			else
+                count = (int)_FormDB_Next._SearchRes;
+            return count;
+		}
+        public int SearchModel(string lotName)
+        {
+            dbManager.SearchModel(lotName);
+            return 0;
+        }
+		public int GetSearchModelCount()
+		{
+            return dbManager._DbProc[2].SearchModelList.Count;
+        }
+        public string[] GetSearchModelResult()
+        {
+            return dbManager._DbProc[2].SearchModelList.ToArray();
+        }
+
         public int GetBcdReadWarningM()
 		{
 			return dbManager._DestConfig.NoBcrWarning;
@@ -388,16 +495,29 @@ namespace DefectDBManager
 		{
 			return dbManager._DestConfig.NoBcrError;
         }
-
-		public int SearchModel(string lotName)
+        public string[] GetLoadedBCNO(bool isNext, ref int size)
 		{
-			dbManager.SearchModel(lotName);
-			return 0;
-		}
+            size = 0;
+            if (isNext == false)// 현재랏
+			{
+				if(dbManager._DbProc[0].LoadedBcNo!=null)
+					size = dbManager._DbProc[0].LoadedBcNo.Count;
+                return dbManager._DbProc[0].LoadedBcNo.ToArray();
+			}
+			else
+			{
+                if (dbManager._DbProc[1].LoadedBcNo != null)
+                    size = dbManager._DbProc[1].LoadedBcNo.Count;
+                return dbManager._DbProc[1].LoadedBcNo.ToArray();
+            }
 
-		public string[] GetSearchModelResult()
+			return null;
+        }
+
+        public void SetLanguage(int index)
 		{
-			return dbManager._DbProc[2].SearchModelList.ToArray();
+			_FormDB_Now._LangType = index;
+            _FormDB_Next._LangType = index;
         }
     }
 }

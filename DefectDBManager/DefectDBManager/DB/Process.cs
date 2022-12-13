@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DefectDBManager.UserDefectClass;
@@ -10,6 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager
 {
+    public delegate void DelegateProcessEvent(int eventID);
     public sealed class DbManager : IDisposable
     {
         /// <summary>
@@ -41,13 +44,14 @@ namespace DefectDBManager
         /// <summary>
         /// DB 검색 후 최종 불량 데이터
         /// </summary>
-        public ResultData[] _ResultData;
+ //       public ResultData[] _ResultData;
 
-        public FormDB _FormDB { get { return formDB; } }
+        public FormDB _FormDB_Now { get { return formDB[0]; } }
+        public FormDB _FormDB_Next { get { return formDB[1]; } }
         /// <summary>
         /// DB에서 받은 데이터 표시 및 컨트롤 
         /// </summary>
-        private FormDB formDB = null;
+        private FormDB[] formDB = new FormDB[2];
         /// <summary>
         /// FormDB에 표시하는 데이터 상태
         /// Current Data : false
@@ -60,18 +64,22 @@ namespace DefectDBManager
 
         private object parent = null;
 
-        
+        private Thread threadDBConnect = null;
+        public event DelegateProcessEvent OnProcessEvent = null;
+
         public DbManager(object parent)
         {
             this.parent = parent;
 
             _DestConfig = new DestConfig();
-            _DestConfig.Read();//Dest.Ini 파일 읽어들임
+            if (_DestConfig.Read() < 0) //Dest.Ini 파일 읽어들임
+            {
+                MessageBox.Show($"Failed to read {Define.DestPath}");
+            }
 
             _DbConn = new OracleDbConnection();
 
-            int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length+1;
-            _ResultData = new ResultData[cnt];
+            int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length + 1;
             _DbProc = new NittoDB[cnt];
             _Param = new Param[cnt];
             _Option = new Option[cnt];
@@ -79,7 +87,6 @@ namespace DefectDBManager
 
             for (int i = 0; i < cnt; i++)
             {
-                _ResultData[i] = new ResultData();
                 _Option[i] = new Option();
                 _Param[i] = new Param();
                 _Param[i]._UserDefectClass.Load();
@@ -91,11 +98,25 @@ namespace DefectDBManager
                 _DbProc[i].DBCodeConfig = _CodeConfig[i];
                 _DbProc[i].DbOption = _Option[i];
                 _DbProc[i].CrtParam = _Param[i];
-                _DbProc[i].ResultDefect = _ResultData[i];
+                _DbProc[i].ResultDefect = new ResultData();
             }
 
-            formDB = new FormDB(this);
-            formDB.DBConn = _DbConn;
+            if (this.threadDBConnect != null)
+            {
+                this.threadDBConnect.Join(100);
+                this.threadDBConnect = null;
+            }
+
+            this.threadDBConnect = new Thread(this.DbConnect);
+            this.threadDBConnect.Start();
+
+            for (int i = 0; i < 2; i++)
+            {
+                formDB[i] = new FormDB(this);
+                formDB[i].DBConn = _DbConn;
+                formDB[i].DataBase = _DbProc[i];
+            }
+
             this.parent = parent;
         }
 
@@ -108,7 +129,8 @@ namespace DefectDBManager
         public void Dispose()
         {
             this.Dispose(true);
-            formDB.Dispose();
+            for (int i = 0; i < 2; i++)
+                formDB[i].Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -123,29 +145,40 @@ namespace DefectDBManager
             this.disposed = true;
         }
 
+        private void DbConnect()
+        {
+            try
+            {
+                _DbConn.UserID = _DestConfig.dbLogin.DbID;
+                _DbConn.Password = _DestConfig.dbLogin.DbPW;
+                _DbConn.DBName = _DestConfig.dbLogin.DbName;
+                _DbConn.Connect();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLog($"[Error] : {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// 현재랏/이전랏 연결 처리
         /// </summary>
         /// <param name="isNext"></param>
         public void SetDataState(bool isNext)
         {
-            if (formDB == null) return;
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            if (formDB[idx] == null) return;
 
             if (isFirst == true || isNextDBView != isNext)
             {
                 // Data 연결
-                if (isNext == false)    // 현재랏
-                {
-                    this._Option[0].dbWhen = eDbIdWhen.Now;
-                    formDB.DataBase = _DbProc[(int)eDbIdWhen.Now];
-                }
-                else // 예약랏
-                {
-                    this._Option[1].dbWhen = eDbIdWhen.Next;
-                    formDB.DataBase = _DbProc[(int)eDbIdWhen.Next];
-                }
+                this._Option[idx].dbWhen = (eDbIdWhen)idx;
+                formDB[idx].DataBase = _DbProc[idx];
+                formDB[idx].RedrawAll = true;
 
-                formDB.RedrawAll = true;
                 isNextDBView = isNext;
                 isFirst = false;
             }
@@ -153,15 +186,20 @@ namespace DefectDBManager
 
         public void ShowDBViewer(bool isNext)
         {
-            if (formDB == null) return;
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            if (formDB[idx] == null) return;
 
             SetDataState(isNext);
-            formDB.Show();
+            formDB[idx].Show();
         }
 
         public void HideDBViewer()
         {
-            formDB.Hide();
+            formDB[0].Hide();
+            formDB[1].Hide();
         }
 
         public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
@@ -170,7 +208,21 @@ namespace DefectDBManager
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            if (formDB.IsSearchDefect() == true) return;
+            formDB[idx]._SearchRes = eSearchProcessRes.Process_None;
+            if (_DbConn.IsDBConnected == false)
+            {
+                formDB[idx]._SearchRes = eSearchProcessRes.DB_Disconnected;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
+
+            if (formDB[idx].IsSearchDefect() == true)
+            {
+                formDB[idx]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
+
 
             _Option[idx].dbWhen = (eDbIdWhen)idx;
             _Option[idx].vendor = vendor;
@@ -178,16 +230,20 @@ namespace DefectDBManager
             _Option[idx].checkTG = useTG;
             _Option[idx].checkETC = useETC;
             _Option[idx].lotName = lotName;
-
-            formDB.DataBase = _DbProc[idx];
-            formDB.UpdateEndEvent = true;
-            formDB.SearchLotDefect();
+            formDB[idx].DataBase = _DbProc[idx];
+            formDB[idx].DataBase.ResetDataAll();
+            formDB[idx].UpdateEndEvent = true;
+            formDB[idx].SearchDefect();
         }
 
         public void GetSearchLotResultSummery(bool isNext, ref List<LotSearchResult> results)
         {
-            int size = formDB.DataBase.INSPDAT_Data.Length;
-            foreach (List<List<INSPDATData>> data in formDB.DataBase.INSPDAT_Data)
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            int size = formDB[idx].DataBase.INSPDAT_Data.Length;
+            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase.INSPDAT_Data)
             {
                 if (data == null) continue;
                 foreach (List<INSPDATData> items in data)
@@ -197,7 +253,7 @@ namespace DefectDBManager
                         LotSearchResult result = new LotSearchResult();
                         result.LotNo = item.LOTNO;
                         result.DefectCnt = item.RollCtlCnt;
-                        result.Line = item.LOTNO.Substring(0,2); // 확인 필요
+                        result.Line = item.LOTNO.Substring(0, 2); // 확인 필요
                         result.TimeST = item.STRTM;
                         result.DateST = item.STRDT;
                         result.TimeED = item.ENDTM;
@@ -210,12 +266,26 @@ namespace DefectDBManager
 
         public void SearchModel(string lotName)
         {
-            if (formDB.IsSearchDefect() == true) return;
+            formDB[0]._SearchRes = eSearchProcessRes.Process_None;
+            if (_DbConn.IsDBConnected == false)
+            {
+                formDB[0]._SearchRes = eSearchProcessRes.DB_Disconnected;
+                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                return;
+            }
+
+            if (formDB[0].IsSearchDefect() == true)
+            {
+                formDB[0]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
+                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                return;
+            }
             _Option[2].dbWhen = (eDbIdWhen)0;
             _Option[2].lotName = lotName;
 
-            formDB.DataBase = _DbProc[2];
-            formDB.SearchModel();
+            formDB[0].DataBase = _DbProc[2];
+            formDB[0].DataBase.ResetDataAll();
+            formDB[0].SearchModel();
         }
     }
 }

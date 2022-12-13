@@ -31,21 +31,21 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            YLMLOT = reader[1].ToString();
+            YLMLOT = reader[0].ToString();
 
-            YLMZKY = reader[7].ToString();
-            YLMZKN = reader[8].ToString();
+            YLMZKY = reader[6].ToString();
+            YLMZKN = reader[7].ToString();
 
             float valF = 0.0f;
-            if (float.TryParse(reader[10].ToString(), out valF) == true)
+            if (float.TryParse(reader[9].ToString(), out valF) == true)
                 YLMTON = valF;
-            if (float.TryParse(reader[11].ToString(), out valF) == true)
+            if (float.TryParse(reader[10].ToString(), out valF) == true)
                 YLMKAS = valF;
 
-            YLMYKH = reader[12].ToString();
-            YLSLOT = reader[16].ToString();
-            YLSZKY = reader[20].ToString();
-            YLSZKN = reader[21].ToString();
+            YLMYKH = reader[11].ToString();
+            YLSLOT = reader[15].ToString();
+            YLSZKY = reader[19].ToString();
+            YLSZKN = reader[20].ToString();
         }
 
         public override string ToString()
@@ -71,12 +71,12 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            KYCD = reader[1].ToString();
-            PPCD = Int32.Parse(reader[2].ToString());
-            LNCD = reader[3].ToString();
-            YLMZKN2 = reader[4].ToString();
-            YLSZKN = reader[5].ToString();
-            X_OFFSET = float.Parse(reader[6].ToString());
+            KYCD = reader[0].ToString();
+            PPCD = Int32.Parse(reader[1].ToString());
+            LNCD = reader[2].ToString();
+            YLMZKN2 = reader[3].ToString();
+            YLSZKN = reader[4].ToString();
+            X_OFFSET = float.Parse(reader[5].ToString());
         }
 
         public override string ToString()
@@ -105,23 +105,23 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            KYCD = reader[1].ToString();
-            PPCD = reader[2].ToString();
-            LNCD = reader[3].ToString();
-            LOTNO = reader[4].ToString();
-            ENTRY_NUM = reader[5].ToString();
+            KYCD = reader[0].ToString();
+            PPCD = reader[1].ToString();
+            LNCD = reader[2].ToString();
+            LOTNO = reader[3].ToString();
+            ENTRY_NUM = reader[4].ToString();
 
             float ret = 0.0f;
-            if (float.TryParse(reader[6].ToString(), out ret)) STR_WD = ret;
+            if (float.TryParse(reader[5].ToString(), out ret)) STR_WD = ret;
             else STR_WD = 0.0f;
 
-            if (float.TryParse(reader[7].ToString(), out ret)) END_WD = ret;
+            if (float.TryParse(reader[6].ToString(), out ret)) END_WD = ret;
             else END_WD = 0.0f
                     ;
-            if (float.TryParse(reader[8].ToString(), out ret)) STR_MD = ret;
+            if (float.TryParse(reader[7].ToString(), out ret)) STR_MD = ret;
             else STR_MD = 0.0f;
 
-            if (float.TryParse(reader[9].ToString(), out ret)) END_MD = ret;
+            if (float.TryParse(reader[8].ToString(), out ret)) END_MD = ret;
             else END_MD = 0.0f;
         }
 
@@ -154,26 +154,26 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            LotData = reader[10].ToString();
+            LotData = reader[9].ToString();
 
-            StartTime = reader[12].ToString();
+            StartTime = reader[11].ToString();
             int pos = StartTime.IndexOf(' ');
             if (pos > 0)
                 StartTime = StartTime.Substring(0, pos);
 
-            EndTime = reader[13].ToString();
+            EndTime = reader[12].ToString();
             pos = EndTime.IndexOf(' ');
             if (pos > 0)
                 EndTime = EndTime.Substring(0, pos);
 
-            Y0KYCD = reader[1].ToString();
-            Y0KLOT = reader[8].ToString();
-            LNCD = reader[9].ToString();
-            Y0LNSN = reader[10].ToString();
-            Y0ZKNM = reader[11].ToString();
-            Y0KKOL = reader[12].ToString();
-            Y0KSOL = reader[13].ToString();
-            Y0KASS = reader[14].ToString();
+            Y0KYCD = reader[0].ToString();
+            Y0KLOT = reader[7].ToString();
+            LNCD = reader[8].ToString();
+            Y0LNSN = reader[9].ToString();
+            Y0ZKNM = reader[10].ToString();
+            Y0KKOL = reader[11].ToString();
+            Y0KSOL = reader[12].ToString();
+            Y0KASS = reader[13].ToString();
         }
 
         public override string ToString()
@@ -199,6 +199,7 @@ namespace DefectDBManager
         public string ROLLNAME;
         public string MRKF1;
         public string MRKF2;
+        public string PPCD;
         public float SIZE;
 
         // Dic 구현해야함
@@ -206,12 +207,13 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            LNCD = reader[4].ToString();
-            FLTID = reader[5].ToString();
-            ROLLNAME = reader[6].ToString();
-            MRKF1 = reader[7].ToString();
-            MRKF2 = reader[8].ToString();
-            SIZE = float.Parse(reader[9].ToString());
+            PPCD = reader[2].ToString();
+            LNCD = reader[3].ToString();
+            FLTID = reader[4].ToString();
+            ROLLNAME = reader[5].ToString();
+            MRKF1 = reader[6].ToString();
+            MRKF2 = reader[7].ToString();
+            SIZE = float.Parse(reader[8].ToString());
         }
 
         public override string ToString()
@@ -265,25 +267,25 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            CTLNO = reader[1].ToString();
-            HINMEI = reader[3].ToString();
-            LOTNO = reader[4].ToString();
-            ROLLNO = reader[5].ToString();
-            BCNO = reader[7].ToString();
-            TimeInspStart = float.Parse(reader[8].ToString());
-            TimeInspEnd = float.Parse(reader[9].ToString());
-            Width = float.Parse(reader[14].ToString());
-            YPosStart = float.Parse(reader[15].ToString());
-            YPosEnd = float.Parse(reader[16].ToString());
-            Length = float.Parse(reader[19].ToString());
-            STRDT = reader[22].ToString();
-            STRTM = reader[23].ToString();
-            ENDDT = reader[24].ToString();
-            ENDTM = reader[25].ToString();
-            USEFLG = reader[35].ToString();
-            CUSTCD = reader[43].ToString();
-            KYCD = reader[47].ToString();
-            KTCD = reader[48].ToString();
+            CTLNO = reader[0].ToString();
+            HINMEI = reader[2].ToString();
+            LOTNO = reader[3].ToString();
+            ROLLNO = reader[4].ToString();
+            BCNO = reader[6].ToString();
+            TimeInspStart = float.Parse(reader[7].ToString());
+            TimeInspEnd = float.Parse(reader[8].ToString());
+            Width = float.Parse(reader[13].ToString());
+            YPosStart = float.Parse(reader[14].ToString());
+            YPosEnd = float.Parse(reader[15].ToString());
+            Length = float.Parse(reader[18].ToString());
+            STRDT = reader[21].ToString();
+            STRTM = reader[22].ToString();
+            ENDDT = reader[23].ToString();
+            ENDTM = reader[24].ToString();
+            USEFLG = reader[34].ToString();
+            CUSTCD = reader[42].ToString();
+            KYCD = reader[46].ToString();
+            KTCD = reader[47].ToString();
         }
 
         public override string ToString()
@@ -319,19 +321,19 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
-            CTLNO = reader[1].ToString();
-            FLTNO = reader[2].ToString();
-            OFFSET = float.Parse(reader[5].ToString());
-            YPOS_M = float.Parse(reader[6].ToString());
-            XPOS_M = float.Parse(reader[8].ToString());
-            AREA_M = float.Parse(reader[10].ToString());
-            RANK = reader[16].ToString();
-            KND = reader[17].ToString();
-            CAMNO = Int32.Parse(reader[21].ToString());
-            MNTTAN = reader[29].ToString();
-            JIGCD = reader[30].ToString();
-            MACNO = reader[31].ToString();
-            FLTID = reader[35].ToString();
+            CTLNO = reader[0].ToString();
+            FLTNO = reader[1].ToString();
+            OFFSET = float.Parse(reader[4].ToString());
+            YPOS_M = float.Parse(reader[5].ToString());
+            XPOS_M = float.Parse(reader[7].ToString());
+            AREA_M = float.Parse(reader[9].ToString());
+            RANK = reader[15].ToString();
+            KND = reader[16].ToString();
+            CAMNO = Int32.Parse(reader[20].ToString());
+            MNTTAN = reader[28].ToString();
+            JIGCD = reader[29].ToString();
+            MACNO = reader[30].ToString();
+            FLTID = reader[34].ToString();
         }
 
         public string GetString(int index, int defectLine, string bcno, float xOffset)
