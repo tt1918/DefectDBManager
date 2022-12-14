@@ -203,7 +203,8 @@ namespace DefectDBManager
             {
                 this.lblTitle.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
 
-                displayMarkingOption();
+                if(DataBase.DbOption.isLoaded==true) displayUIOptionFromDBOption();
+                else                                 displayMarkingOption();
                 dbCommTimer.Start();
                 dbConn.OnDbConnect += OnDbConnect;
             }
@@ -980,6 +981,8 @@ namespace DefectDBManager
 
                 // Fault Data 표시
                 this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
+
+                DataBase.DbOption.isLoaded = true;
             }
             finally
             {
@@ -1109,7 +1112,7 @@ namespace DefectDBManager
         private void threadFromCSV()
         {
             this.dataBase.OpenCsvFile(this.csvPath);
-
+            DataBase.DbOption.isLoaded = true;
             this.Invoke(new MethodInvoker(delegate ()
             {
                 this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
@@ -1178,7 +1181,7 @@ namespace DefectDBManager
         public void SearchDefect()
         {
             if (IsSearchDefect() == true) return;
-
+            DataBase.DbOption.isLoaded = false;
             // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
             displayUIOptionFromDBOption();
             DestConfigUnit u = new DestConfigUnit();
@@ -1343,6 +1346,8 @@ namespace DefectDBManager
                 OnEndCsvReading((int)eEventReport.eResetDataNow);
             else
                 OnEndCsvReading((int)eEventReport.eResetDataNext);
+
+            DataBase.DbOption.isLoaded = false;
         }
         private void btnPrevFaultPage_Click(object sender, EventArgs e)
         {

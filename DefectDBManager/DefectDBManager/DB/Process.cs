@@ -57,7 +57,6 @@ namespace DefectDBManager
         /// Current Data : false
         /// Next Data : true
         /// </summary>
-        private bool isNextDBView = false;
         private bool isFirst = true;
 
         bool disposed = false;
@@ -87,7 +86,7 @@ namespace DefectDBManager
 
             for (int i = 0; i < cnt; i++)
             {
-                _Option[i] = new Option();
+                _Option[i] = new Option(i);
                 _Param[i] = new Param();
                 _Param[i]._UserDefectClass.Load();
                 _CodeConfig[i] = new CodeConfig();
@@ -160,30 +159,6 @@ namespace DefectDBManager
             }
         }
 
-        /// <summary>
-        /// 현재랏/이전랏 연결 처리
-        /// </summary>
-        /// <param name="isNext"></param>
-        public void SetDataState(bool isNext)
-        {
-            int idx = 0;
-            if (isNext == false) idx = 0;
-            else idx = 1;
-
-            if (formDB[idx] == null) return;
-
-            if (isFirst == true || isNextDBView != isNext)
-            {
-                // Data 연결
-                this._Option[idx].dbWhen = (eDbIdWhen)idx;
-                formDB[idx].DataBase = _DbProc[idx];
-                formDB[idx].RedrawAll = true;
-
-                isNextDBView = isNext;
-                isFirst = false;
-            }
-        }
-
         public void ShowDBViewer(bool isNext)
         {
             int idx = 0;
@@ -192,7 +167,6 @@ namespace DefectDBManager
 
             if (formDB[idx] == null) return;
 
-            SetDataState(isNext);
             formDB[idx].Show();
         }
 

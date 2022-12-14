@@ -255,6 +255,9 @@ namespace DefectDBManager
 
         public void ShowViewer(bool isNext)
         {
+			int ii = 0;
+			if (isNext == true) ii = 1;
+            Trace.WriteLine($"isNext = {isNext}, useES={dbManager._DbProc[ii].DbOption.checkES}, useTG={dbManager._DbProc[ii].DbOption.checkTG}, useETC={dbManager._DbProc[ii].DbOption.checkETC}, dbNow = {dbManager._DbProc[ii].DbOption.dbWhen}");
             dbManager.ShowDBViewer(isNext);
         }
 
@@ -437,8 +440,7 @@ namespace DefectDBManager
             oldMarkingData.Data.Clear();
             oldMarkingData.MarkFault.Data.Clear();
 
-			dbManager._DbProc[0].DbOption = dbManager._DbProc[1].DbOption;
-			dbManager._DbProc[1].DbOption = new Option();
+			dbManager._DbProc[0].DbOption.Copy(dbManager._DbProc[1].DbOption);
 
             dbManager._DbProc[1].ResultDefect = new ResultData();
             dbManager._DbProc[1].ResetDataAll();
@@ -449,9 +451,11 @@ namespace DefectDBManager
 
             dbManager._FormDB_Now.UpdateListViewFromLotChange();
             dbManager._FormDB_Next.UpdateListViewFromLotChange();
+
+			Trace.WriteLine($"useES={dbManager._DbProc[0].DbOption.checkES}, useTG={dbManager._DbProc[0].DbOption.checkTG}, useETC={dbManager._DbProc[0].DbOption.checkETC}, dbNow = {dbManager._DbProc[0].DbOption.dbWhen}");
         }
 
-		public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
+        public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
 		{
             dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
         }
