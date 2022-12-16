@@ -1606,7 +1606,7 @@ namespace DefectDBManager
             int nCompleteMCnt = 0, nINSPLengthCnt = 0, nINSPLengthCnt2 = 0;
             int nTmp = 0, nLength1, nLength2;
             float fLength = 0.0f, fStLength = 0.0f, fTmp;
-            string str, strTmp;
+            string strTmp;
             string strLotMatch;
             List<int> nIndex1 = new List<int>();
             List<int>[] nIndex2 = new List<int>[3];

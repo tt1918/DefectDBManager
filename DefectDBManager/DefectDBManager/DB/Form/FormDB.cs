@@ -1556,6 +1556,28 @@ namespace DefectDBManager
                 OnEndCsvReading((int)eEventReport.eUpdateDataNow);
             else
                 OnEndCsvReading((int)eEventReport.eUpdateDataNext);
+
+            // 임시 데이터 생성
+
+            //if (eDbIdWhen.Now == dataBase.DbOption.dbWhen)
+            //{
+            //    DataBase.AREADEL_Data.Clear();
+
+            //    for(int i=0; i<100; i++)
+            //    {
+            //        AREADELData data = new AREADELData();
+
+            //        data.ENTRY_NUM = i.ToString();
+            //        data.STR_WD = 100;
+            //        data.END_WD = 300;
+            //        data.STR_MD = 1406500.0f + (float)i * 10000.0f;
+            //        data.END_MD = 1407000.0f + (float)i * 10000.0f;
+
+            //        DataBase.AREADEL_Data.Add(data);
+            //    }
+
+            //    Trace.WriteLine($"Area Defect Count : {DataBase.AREADEL_Data.Count}");
+            //}
         }
 
         private void btnFormMaximize_Click(object sender, EventArgs e)

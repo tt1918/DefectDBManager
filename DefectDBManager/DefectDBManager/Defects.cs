@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -121,7 +122,8 @@ namespace DefectDBManager
 		bool ReadDBFile(string path);
 		Defect[] SearchDefects(int classID);
 		bool ReadCSVFile(string path);
-		Defect[] GetDefect();
+        void ReroadDestFile();
+        Defect[] GetDefect();
 		void ResetDefectsData();
 		bool IsDownLoadComplete();
 		Defect[] GetDefectListRange(double start, double end);
@@ -162,8 +164,10 @@ namespace DefectDBManager
 		private static List<Defect> defects = null;
 		private static List<MarkingData> markingData = null;
 		private static List<MarkingAreaDefect> markingAreaDefects = null;
+        
+		private Thread thread = null;
 
-		public DbManager DBManager
+        public DbManager DBManager
 		{
 			get { return dbManager; }
 		}
@@ -223,9 +227,23 @@ namespace DefectDBManager
 			view.Show();
 			return view.ReadCSVFile(path);
 		}
+        public void ReroadDestFile()
+		{
+            if (this.thread != null)
+            {
+                this.thread.Join(100);
+                this.thread = null;
+            }
+            
+            thread = new Thread(this.readDestConfig);
+            thread.Start();
+        }
+        private void readDestConfig()
+        {
+            dbManager._DestConfig.Read();
+        }
 
-
-		public bool ReadDBFile(string path)
+        public bool ReadDBFile(string path)
 		{
 			defects.Clear();
 			isDownloadComplete = false;

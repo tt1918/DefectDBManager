@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
+using System.Diagnostics;
 
 namespace DefectDBManager
 {
@@ -303,176 +304,192 @@ namespace DefectDBManager
 
         public int Read()
         {
-            if (File.Exists(Define.DestPath) == false) return -1;
-
-            int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
-            string key;
-
-            key = "SKIP SIZE";
-            for (int j = 0; j < opticSize; j++)
+            try
             {
-                SkipData[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", 0.0f);
-                SkipData[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
-                SkipData[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
+                if (File.Exists(Define.DestPath) == false) return -1;
 
-                SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
-                SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
-                SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
+                int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
+                string key;
+
+                key = "SKIP SIZE";
+                for (int j = 0; j < opticSize; j++)
+                {
+                    SkipData[j].minX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", 0.0f);
+                    SkipData[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
+                    SkipData[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
+
+                    SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
+                    SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
+                    SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
+                }
+
+                this.DicDest.Clear();
+                for (int i = 0; i < Global.MaxDestItemCnt; i++)
+                {
+                    DestConfigUnit unit = new DestConfigUnit();
+                    key = $"DEST-{i}";
+                    unit.Title = NativeFunc.ReadIni(Define.DestPath, key, "TITLE", "");
+                    unit.MKCD = NativeFunc.ReadIni(Define.DestPath, key, "MKCD", "62");
+                    unit.UseTG = NativeFunc.ReadIni(Define.DestPath, key, "TG", false);
+                    unit.UseES = NativeFunc.ReadIni(Define.DestPath, key, "ES", false);
+                    unit.UseETC = NativeFunc.ReadIni(Define.DestPath, key, "ETC", false);
+                    unit.UseSameDefect = NativeFunc.ReadIni(Define.DestPath, key, "SAME_DEFECT", false);
+
+                    unit.SkipLeftMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_MM", 0);
+                    unit.SkipRightMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_MM", 0);
+                    unit.SkipLeftCnt = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_CNT", 0);
+                    unit.SkipRightCnt = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_CNT", 0);
+
+                    unit.OPTIC1 = NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_1", 1);
+                    unit.OPTIC2 = NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_2", 1);
+                    unit.OPTIC3 = NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_3", 1);
+                    unit.OPTIC4 = NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_4", 1);
+
+                    unit.DB_ES = NativeFunc.ReadIni(Define.DestPath, key, "DB_ES", 1);
+                    unit.DB_DT = NativeFunc.ReadIni(Define.DestPath, key, "DB_DT", 1);
+
+                    unit.LengErrorRangeMinus = NativeFunc.ReadIni(Define.DestPath, key, "LengErrorRangeMinus", 9999999);
+                    unit.LengErrorRangePlus = NativeFunc.ReadIni(Define.DestPath, key, "LengErrorRangePlus", 9999999);
+                    unit.useFaltIDCheck = NativeFunc.ReadIni(Define.DestPath, key, "UseFaltIDCheck", false);
+                    unit.UsePTRYLPYLMYKHCheck = NativeFunc.ReadIni(Define.DestPath, key, "UsePTRYLPYLMYKHCheck", false);
+
+                    for (int j = 0; j < unit.FLTIDCheck.Length; j++)
+                        unit.FLTIDCheck[j] = NativeFunc.ReadIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", "");
+
+                    unit.Index = i;
+
+                    if (unit.Title.Length > 0 && unit.Title != "")
+                        this.DicDest.Add(unit.Title, unit);
+                }
+
+                key = "DB_CONFIG";
+                dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
+                dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
+                dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
+                dbLogin.DBPort = NativeFunc.ReadIni(Define.DestPath, key, "DB_PORT", "");
+                dbLogin.DBIP = NativeFunc.ReadIni(Define.DestPath, key, "DB_IP", "");
+                dbLogin.DBConStringType = NativeFunc.ReadIni(Define.DestPath, key, "DB_CON_STRING_TYPE", 0);
+
+                this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
+                this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
+                this.useXOffset = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST", true);
+                this.useXOffsetAlarm = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST_ALARM", false);
+                this.useAREADEL = NativeFunc.ReadIni(Define.DestPath, key, "USE_AREADEL", false);
+
+                DbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "DB_START", 10);
+                DbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "DB_END", 10);
+
+                ESDbTime.IsUse = NativeFunc.ReadIni(Define.DestPath, key, "ES_USE", true);
+                ESDbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "ES_START", 120);
+                ESDbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "ES_END", 10);
+
+                key = "SYSTEM";
+                this.MarkingIP = NativeFunc.ReadIni(Define.DestPath, key, "MARKING_ADDR", "");
+                this.NoBcrWarning = NativeFunc.ReadIni(Define.DestPath, key, "NO_BCR_WARNING", 10);
+                this.NoBcrError = NativeFunc.ReadIni(Define.DestPath, key, "NO_BCR_ERROR", 30);
+
+                everMarkDefectMeter = NativeFunc.ReadIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", 10);
             }
-
-            for (int i = 0; i < Global.MaxDestItemCnt; i++)
+            catch(Exception ex)
             {
-                DestConfigUnit unit = new DestConfigUnit();
-                key = $"DEST-{i}";
-                unit.Title = NativeFunc.ReadIni(Define.DestPath, key, "TITLE", "");
-                unit.MKCD = NativeFunc.ReadIni(Define.DestPath, key, "MKCD", "62");
-                unit.UseTG = NativeFunc.ReadIni(Define.DestPath, key, "TG", false);
-                unit.UseES = NativeFunc.ReadIni(Define.DestPath, key, "ES", false);
-                unit.UseETC = NativeFunc.ReadIni(Define.DestPath, key, "ETC", false);
-                unit.UseSameDefect = NativeFunc.ReadIni(Define.DestPath, key, "SAME_DEFECT", false);
-
-                unit.SkipLeftMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_MM",  0);
-                unit.SkipRightMM = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_MM", 0);
-                unit.SkipLeftCnt = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_LEFT_CNT",  0);
-                unit.SkipRightCnt = NativeFunc.ReadIni(Define.DestPath, key, "SKIP_RIGHT_CNT", 0);
-
-                unit.OPTIC1 = NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_1", 1);
-                unit.OPTIC2=NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_2", 1);
-                unit.OPTIC3=NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_3", 1);
-                unit.OPTIC4=NativeFunc.ReadIni(Define.DestPath, key, "OPTIC_4", 1);
-
-                unit.DB_ES = NativeFunc.ReadIni(Define.DestPath, key, "DB_ES", 1);
-                unit.DB_DT  = NativeFunc.ReadIni(Define.DestPath, key, "DB_DT", 1);
-
-                unit.LengErrorRangeMinus = NativeFunc.ReadIni(Define.DestPath, key, "LengErrorRangeMinus", 9999999);
-                unit.LengErrorRangePlus =  NativeFunc.ReadIni(Define.DestPath, key, "LengErrorRangePlus", 9999999);
-                unit.useFaltIDCheck = NativeFunc.ReadIni(Define.DestPath, key, "UseFaltIDCheck", false);
-                unit.UsePTRYLPYLMYKHCheck = NativeFunc.ReadIni(Define.DestPath, key, "UsePTRYLPYLMYKHCheck", false);
-
-                for (int j = 0; j < unit.FLTIDCheck.Length; j++)
-                    unit.FLTIDCheck[j] = NativeFunc.ReadIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", "");
-
-                unit.Index = i;
-
-                if(unit.Title.Length>0 && unit.Title!="")
-                    this.DicDest.Add(unit.Title, unit);
+                Trace.WriteLine(ex.Message);
+                Log.WriteLog(ex.Message);
+                return 0;
             }
-
-
-            key = "DB_CONFIG";
-            dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
-            dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
-            dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
-            dbLogin.DBPort = NativeFunc.ReadIni(Define.DestPath, key, "DB_PORT", "");
-            dbLogin.DBIP = NativeFunc.ReadIni(Define.DestPath, key, "DB_IP", "");
-            dbLogin.DBConStringType = NativeFunc.ReadIni(Define.DestPath, key, "DB_CON_STRING_TYPE", 0);
-
-            this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
-            this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
-            this.useXOffset = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST", true);
-            this.useXOffsetAlarm =  NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST_ALARM", false);
-            this.useAREADEL = NativeFunc.ReadIni(Define.DestPath, key, "USE_AREADEL", false);
-
-            DbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "DB_START", 10);
-            DbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "DB_END", 10);
-
-            ESDbTime.IsUse = NativeFunc.ReadIni(Define.DestPath, key, "ES_USE", true);
-            ESDbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "ES_START", 120);
-            ESDbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "ES_END", 10);
-
-            key = "SYSTEM";
-            this.MarkingIP = NativeFunc.ReadIni(Define.DestPath, key, "MARKING_ADDR", "");
-            this.NoBcrWarning = NativeFunc.ReadIni(Define.DestPath, key, "NO_BCR_WARNING", 10);
-            this.NoBcrError = NativeFunc.ReadIni(Define.DestPath, key, "NO_BCR_ERROR", 30);
-
-            everMarkDefectMeter = NativeFunc.ReadIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", 10);
-
             return 0;
         }
 
         public void Write()
         {
-            string key;
-            DestConfigUnit unit = null;
-            int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
-
-            File.Delete(Define.DestPath);
-
-            key = "SKIP SIZE";
-            for (int j = 0; j < opticSize; j++)
+            try
             {
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", SkipData[j].minX);
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", SkipData[j].minY);
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", SkipData[j].min);
+                string key;
+                DestConfigUnit unit = null;
+                int opticSize = System.Enum.GetValues(typeof(eOpticClass)).Length;
 
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", SkipData[j].maxX);
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", SkipData[j].maxY);
-                NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", SkipData[j].max);
-            }
+                File.Delete(Define.DestPath);
 
-            for (int i = 0; i < this.DicDest.Count; i++)
-            {
-                if (GetData(i, ref unit) == true)
+                key = "SKIP SIZE";
+                for (int j = 0; j < opticSize; j++)
                 {
-                    key = $"DEST-{i}";
-                    NativeFunc.WriteIni(Define.DestPath, key, "TITLE", unit.Title);
-                    NativeFunc.WriteIni(Define.DestPath, key, "MKCD", unit.MKCD);
-                    NativeFunc.WriteIni(Define.DestPath, key, "TG", unit.UseTG);
-                    NativeFunc.WriteIni(Define.DestPath, key, "ES", unit.UseES);
-                    NativeFunc.WriteIni(Define.DestPath, key, "ETC", unit.UseETC);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SAME_DEFECT", unit.UseSameDefect);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MIN{j + 1}", SkipData[j].minX);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", SkipData[j].minY);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", SkipData[j].min);
 
-                    NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_MM", unit.SkipLeftMM);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_MM", unit.SkipRightMM);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_CNT", unit.SkipLeftCnt);
-                    NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_CNT", unit.SkipRightCnt);
-
-                    NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_1", unit.OPTIC1);
-                    NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_2", unit.OPTIC2);
-                    NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_3", unit.OPTIC3);
-                    NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_4", unit.OPTIC4);
-
-                    NativeFunc.WriteIni(Define.DestPath, key, "DB_ES", unit.DB_ES);
-                    NativeFunc.WriteIni(Define.DestPath, key, "DB_DT", unit.DB_DT);
-
-                    NativeFunc.WriteIni(Define.DestPath, key, "LengErrorRangeMinus", unit.LengErrorRangeMinus);
-                    NativeFunc.WriteIni(Define.DestPath, key, "LengErrorRangePlus", unit.LengErrorRangePlus);
-                    NativeFunc.WriteIni(Define.DestPath, key, "UseFaltIDCheck", unit.useFaltIDCheck);
-                    NativeFunc.WriteIni(Define.DestPath, key, "UsePTRYLPYLMYKHCheck", unit.UsePTRYLPYLMYKHCheck);
-
-                    for (int j = 0; j < unit.FLTIDCheck.Length; j++)
-                        NativeFunc.WriteIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", unit.FLTIDCheck[j]);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", SkipData[j].maxX);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", SkipData[j].maxY);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", SkipData[j].max);
                 }
 
+                for (int i = 0; i < this.DicDest.Count; i++)
+                {
+                    if (GetData(i, ref unit) == true)
+                    {
+                        key = $"DEST-{i}";
+                        NativeFunc.WriteIni(Define.DestPath, key, "TITLE", unit.Title);
+                        NativeFunc.WriteIni(Define.DestPath, key, "MKCD", unit.MKCD);
+                        NativeFunc.WriteIni(Define.DestPath, key, "TG", unit.UseTG);
+                        NativeFunc.WriteIni(Define.DestPath, key, "ES", unit.UseES);
+                        NativeFunc.WriteIni(Define.DestPath, key, "ETC", unit.UseETC);
+                        NativeFunc.WriteIni(Define.DestPath, key, "SAME_DEFECT", unit.UseSameDefect);
+
+                        NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_MM", unit.SkipLeftMM);
+                        NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_MM", unit.SkipRightMM);
+                        NativeFunc.WriteIni(Define.DestPath, key, "SKIP_LEFT_CNT", unit.SkipLeftCnt);
+                        NativeFunc.WriteIni(Define.DestPath, key, "SKIP_RIGHT_CNT", unit.SkipRightCnt);
+
+                        NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_1", unit.OPTIC1);
+                        NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_2", unit.OPTIC2);
+                        NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_3", unit.OPTIC3);
+                        NativeFunc.WriteIni(Define.DestPath, key, "OPTIC_4", unit.OPTIC4);
+
+                        NativeFunc.WriteIni(Define.DestPath, key, "DB_ES", unit.DB_ES);
+                        NativeFunc.WriteIni(Define.DestPath, key, "DB_DT", unit.DB_DT);
+
+                        NativeFunc.WriteIni(Define.DestPath, key, "LengErrorRangeMinus", unit.LengErrorRangeMinus);
+                        NativeFunc.WriteIni(Define.DestPath, key, "LengErrorRangePlus", unit.LengErrorRangePlus);
+                        NativeFunc.WriteIni(Define.DestPath, key, "UseFaltIDCheck", unit.useFaltIDCheck);
+                        NativeFunc.WriteIni(Define.DestPath, key, "UsePTRYLPYLMYKHCheck", unit.UsePTRYLPYLMYKHCheck);
+
+                        for (int j = 0; j < unit.FLTIDCheck.Length; j++)
+                            NativeFunc.WriteIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", unit.FLTIDCheck[j]);
+                    }
+
+                }
+
+                key = "DB_CONFIG";
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_ID", dbLogin.DbID);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_PW", dbLogin.DbPW);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_NAME", dbLogin.DbName);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_PORT", dbLogin.DBPort);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_IP", dbLogin.DBIP);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_CON_STRING_TYPE", dbLogin.DBConStringType);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "CSV_TYPE", (int)this.CSVType);
+                NativeFunc.WriteIni(Define.DestPath, key, "CSV_VER", this.csvVer);
+                NativeFunc.WriteIni(Define.DestPath, key, "USE_XOFSMST", this.UseXOffset);
+                NativeFunc.WriteIni(Define.DestPath, key, "USE_XOFSMST_ALARM", this.useXOffsetAlarm);
+                NativeFunc.WriteIni(Define.DestPath, key, "USE_AREADEL", this.UseAREADEL);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_START", DbTime.start);
+                NativeFunc.WriteIni(Define.DestPath, key, "DB_END", DbTime.end);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "ES_USE", ESDbTime.IsUse);
+                NativeFunc.WriteIni(Define.DestPath, key, "ES_START", ESDbTime.start);
+                NativeFunc.WriteIni(Define.DestPath, key, "ES_END", ESDbTime.end);
+
+                key = "SYSTEM";
+                NativeFunc.WriteIni(Define.DestPath, key, "MARKING_ADDR", this.MarkingIP);
+                NativeFunc.WriteIni(Define.DestPath, key, "NO_BCR_WARNING", this.NoBcrWarning);
+                NativeFunc.WriteIni(Define.DestPath, key, "NO_BCR_ERROR", this.NoBcrError);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", EverMarkDefectMeter);
             }
-
-            key = "DB_CONFIG";
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_ID", dbLogin.DbID);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_PW", dbLogin.DbPW);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_NAME", dbLogin.DbName);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_PORT", dbLogin.DBPort);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_IP", dbLogin.DBIP);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_CON_STRING_TYPE", dbLogin.DBConStringType);
-
-            NativeFunc.WriteIni(Define.DestPath, key, "CSV_TYPE", (int)this.CSVType);
-            NativeFunc.WriteIni(Define.DestPath, key, "CSV_VER", this.csvVer);
-            NativeFunc.WriteIni(Define.DestPath, key, "USE_XOFSMST", this.UseXOffset);
-            NativeFunc.WriteIni(Define.DestPath, key, "USE_XOFSMST_ALARM", this.useXOffsetAlarm);
-            NativeFunc.WriteIni(Define.DestPath, key, "USE_AREADEL", this.UseAREADEL);
-
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_START", DbTime.start);
-            NativeFunc.WriteIni(Define.DestPath, key, "DB_END", DbTime.end);
-
-            NativeFunc.WriteIni(Define.DestPath, key, "ES_USE", ESDbTime.IsUse);
-            NativeFunc.WriteIni(Define.DestPath, key, "ES_START", ESDbTime.start);
-            NativeFunc.WriteIni(Define.DestPath, key, "ES_END", ESDbTime.end);
-
-            key = "SYSTEM";
-            NativeFunc.WriteIni(Define.DestPath, key, "MARKING_ADDR", this.MarkingIP);
-            NativeFunc.WriteIni(Define.DestPath, key, "NO_BCR_WARNING", this.NoBcrWarning);
-            NativeFunc.WriteIni(Define.DestPath, key, "NO_BCR_ERROR", this.NoBcrError);
-
-            NativeFunc.WriteIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", EverMarkDefectMeter);
+            catch(Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+                Log.WriteLog(ex.Message);
+            }
         }
 
         public int GetSize()

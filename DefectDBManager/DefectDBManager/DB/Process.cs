@@ -52,13 +52,7 @@ namespace DefectDBManager
         /// DB에서 받은 데이터 표시 및 컨트롤 
         /// </summary>
         private FormDB[] formDB = new FormDB[2];
-        /// <summary>
-        /// FormDB에 표시하는 데이터 상태
-        /// Current Data : false
-        /// Next Data : true
-        /// </summary>
-        private bool isFirst = true;
-
+        
         bool disposed = false;
 
         private object parent = null;
