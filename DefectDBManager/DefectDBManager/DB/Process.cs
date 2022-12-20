@@ -100,8 +100,6 @@ namespace DefectDBManager
                 this.threadDBConnect = null;
             }
 
-            this.threadDBConnect = new Thread(this.DbConnect);
-            this.threadDBConnect.Start();
 
             for (int i = 0; i < 2; i++)
             {
@@ -110,6 +108,8 @@ namespace DefectDBManager
                 formDB[i].DataBase = _DbProc[i];
             }
 
+            this.threadDBConnect = new Thread(this.DbConnect);
+            this.threadDBConnect.Start();
             this.parent = parent;
         }
 
@@ -145,6 +145,9 @@ namespace DefectDBManager
                 _DbConn.UserID = _DestConfig.dbLogin.DbID;
                 _DbConn.Password = _DestConfig.dbLogin.DbPW;
                 _DbConn.DBName = _DestConfig.dbLogin.DbName;
+                _DbConn.ConStringType = _DestConfig.dbLogin.DBConStringType;
+                _DbConn.HostIP = _DestConfig.dbLogin.DBIP;
+                _DbConn.DBPort = _DestConfig.dbLogin.DBPort;
                 _DbConn.Connect();
             }
             catch (Exception ex)
@@ -190,7 +193,6 @@ namespace DefectDBManager
                 OnProcessEvent((int)eEventReport.eFinishedSearchLot);
                 return;
             }
-
 
             _Option[idx].dbWhen = (eDbIdWhen)idx;
             _Option[idx].vendor = vendor;

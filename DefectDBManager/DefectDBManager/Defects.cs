@@ -533,7 +533,7 @@ namespace DefectDBManager
                 return dbManager._DbProc[1].LoadedBcNo.ToArray();
             }
 
-			return null;
+			//return null;
         }
 
         public void SetLanguage(int index)

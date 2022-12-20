@@ -222,7 +222,6 @@ namespace DefectDBManager
         }
     }
 
-
     public class DestConfig
     {
         public const int MaxOptic = 6;
@@ -531,36 +530,28 @@ namespace DefectDBManager
             return CSVType;
         }
 
-        // DB 
-
-        private void updateIni(string fileName, bool bLoad, int keyIndex, DestConfigUnit u)
+        public bool SetSelDest(int index)
         {
-
-        }
-
-        private void updateIni2(string fileName, bool bLaod)
-        {
-
-        }
-
-        private bool getData(string title, ref DestConfigUnit u)
-        {
-            bool isFind = false;
-            isFind = DicDest.ContainsKey(title);
-            if (isFind == true)
+            bool bRes = false;
+            DestConfigUnit u = new DestConfigUnit();
+            if (GetData(index, ref u)==true)
             {
-                u = DicDest[title];
+                SelDestUnit = u;
+                bRes = true;
             }
-
-            return isFind;
+            return bRes;
         }
 
-        private void setData(string title, DestConfigUnit u)
+        public bool SetSelDest(string dest)
         {
-            bool isFind = false;
-            isFind = DicDest.ContainsKey(title);
-            if (isFind == true)
-                DicDest[title] = u;
+            bool bRes = false;
+            DestConfigUnit u = new DestConfigUnit();
+            if (GetData(dest, ref u) == true)
+            {
+                SelDestUnit = u;
+                bRes = true;
+            }
+            return bRes;
         }
     }
 }

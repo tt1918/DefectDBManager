@@ -597,7 +597,7 @@ namespace DefectDBManager
             try
             {
                 listViewPTRYOP.BeginUpdate();
-                listViewPTRYOP.Clear();
+                listViewPTRYOP.Items.Clear();
 
                 foreach (DBListViewBuf data in PTRYOP_LV_Data.Data)
                 {
@@ -685,7 +685,7 @@ namespace DefectDBManager
             try
             {
                 listViewMRKCTLMST.BeginUpdate();
-                listViewMRKCTLMST.Clear();
+                listViewMRKCTLMST.Items.Clear();
 
                 foreach (DBListViewBuf data in MRKCTLMST_LV_Data.Data)
                 {
@@ -1185,6 +1185,8 @@ namespace DefectDBManager
             // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
             displayUIOptionFromDBOption();
             DestConfigUnit u = new DestConfigUnit();
+            this.dataBase.DbDestConfig.GetData(dataBase.DbOption.vendor, ref u);
+            dataBase.DbDestConfig.SelDestUnit = u;
             dataBase.DbOption.FWPlace = u.Title;
             searchLotDefect();
         }
@@ -1305,8 +1307,7 @@ namespace DefectDBManager
             this.dataBase.DbOption.vendor = cbDestination.SelectedIndex;
             string dest = cbDestination.SelectedItem.ToString();
             dataBase.DbOption.FWPlace = dest;
-            if (dataBase.DbDestConfig.DicDest.ContainsKey(dest) == true)
-                dataBase.DbDestConfig.SelDestUnit = dataBase.DbDestConfig.DicDest[dest];
+            dataBase.DbDestConfig.SetSelDest(dest);
             dataBase.DbOption.checkES = cbUseES.Checked;
             dataBase.DbOption.checkTG = cbUseTG.Checked;
             dataBase.DbOption.checkETC = cbUseETC.Checked;

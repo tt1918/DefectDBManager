@@ -102,10 +102,14 @@ namespace DefectDBManager
         {
             if (conn == null)
             {
-                // 이거 나중에 정리해야할듯....
-
-
                 conn = new OracleConnection(dbConn);
+            }
+            else
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                    conn.Close();
+
+                conn.ConnectionString = dbConn;
             }
 
             try
@@ -116,7 +120,8 @@ namespace DefectDBManager
                     if (conn.State == System.Data.ConnectionState.Open)
                     {
                         bDBConnCheck = true;
-                        this.OnDbConnect(true);
+                        if(this.OnDbConnect!=null)
+                            this.OnDbConnect(true);
                         Log.WriteLog("DB 연결에 성공하였습니다.");
                     }
                     else
@@ -172,7 +177,7 @@ namespace DefectDBManager
             if (ConStringType == 0)
             {
                 DBConnString = String.Format($"Data Source={dbName};" +
-                             $"User ID={UserID};Password={password};Connection Timeout=30;");
+                             $"User Id={UserID};Password={password};Connection Timeout=30;");
             }
             else if (ConStringType == 1)
             {
@@ -304,6 +309,7 @@ namespace DefectDBManager
             }
 
             dicSizeData = new Dictionary<string, float>();
+            dicMRKF1Data = new Dictionary<string, bool>();
 
             LoadedBcNo = new List<string>();
 
@@ -931,8 +937,12 @@ namespace DefectDBManager
 
             try
             {
-                DestConfigUnit destUnit = new DestConfigUnit();
-                destConfig.GetData(dbOption.FWPlace, ref destUnit);
+                DestConfigUnit destUnit = destConfig.SelDestUnit;
+                if(destUnit==null)
+                {
+                    destConfig.SetSelDest(dbOption.FWPlace);
+                    destConfig.SelDestUnit = destUnit;
+                }
 
                 int fcdTotal = System.Enum.GetValues(typeof(eFCD)).Length;
                 int dataCnt = 0;
@@ -994,8 +1004,12 @@ namespace DefectDBManager
 
             try
             {
-                DestConfigUnit destUnit = new DestConfigUnit();
-                destConfig.GetData(dbOption.FWPlace, ref destUnit);
+                DestConfigUnit destUnit = destConfig.SelDestUnit;
+                if (destUnit == null)
+                {
+                    destConfig.SetSelDest(dbOption.FWPlace);
+                    destConfig.SelDestUnit = destUnit;
+                }
 
                 long dbCnt = 0;
                 int count = System.Enum.GetValues(typeof(eFCD)).Length;
@@ -1062,7 +1076,8 @@ namespace DefectDBManager
 
                                         for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
                                         {
-                                            if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                            if (destUnit.FLTIDCheck[checkCnt].Length > 0)
+                                                if(destUnit.FLTIDCheck[checkCnt] == data.FLTID)
                                                 CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
                                         }
                                     }
@@ -1260,8 +1275,12 @@ namespace DefectDBManager
             faultData = resultDefect.Data;
             markFaultData = resultDefect.MarkFault.Data;
 
-            DestConfigUnit destUnit = new DestConfigUnit();
-            destConfig.GetData(dbOption.FWPlace, ref destUnit);
+            DestConfigUnit destUnit = destConfig.SelDestUnit;
+            if (destUnit == null)
+            {
+                destConfig.SetSelDest(dbOption.FWPlace);
+                destConfig.SelDestUnit = destUnit;
+            }
 
             bool useXOffset = destConfig.UseXOffset;
             bool useXOffsetAlarm = destConfig.UseXOffsetAlarm;
@@ -1518,7 +1537,7 @@ namespace DefectDBManager
                             }
                         }
                     }
-                    DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
+                    DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                 }
 
                 if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK)
