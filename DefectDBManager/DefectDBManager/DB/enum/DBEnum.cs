@@ -103,6 +103,7 @@ namespace DefectDBManager
     #region AREADEL List
     public enum eAREADELList
     {
+        NO,
         KYCD,
         PPCD,
         LNCD,

@@ -178,7 +178,7 @@ namespace DefectDBManager
 
         public override string ToString()
         {
-            string msg = $"{Y0KYCD}, {Y0KLOT}, {LNCD}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {Y0KASS}";
+            string msg = $"{Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
 
             return msg;
         }
@@ -290,7 +290,7 @@ namespace DefectDBManager
 
         public override string ToString()
         {
-            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{LOTNO}\t\t{BCNO}\t\t{TimeInspStart:F3}\t\t{TimeInspEnd:F3}\t\t{Width:F3}\t\t{YPosStart:F3}\t\t{YPosEnd:F3}\t\t{Length:F3}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
+            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{LOTNO}\t\t{BCNO}\t\t{TimeInspStart:F2}\t\t{TimeInspEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
             return msg;
         }
     }

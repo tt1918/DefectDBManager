@@ -335,6 +335,8 @@ namespace DefectDBManager
             PTRLYP_Data.Clear();
             MRKCTLMST_Data.Clear();
 
+            LoadedBcNo.Clear();
+
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)
@@ -552,7 +554,7 @@ namespace DefectDBManager
                 lotID = lotID.ToUpper();
 
                 this.SearchLotName = lotID;
-
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
                 if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
                     CrtParam.UseKT = 1;
                 else
@@ -642,6 +644,7 @@ namespace DefectDBManager
 
             try
             {
+                DB_Progress._CurrentStep = eNittoDBProgress.XOFSMST;
                 QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
                 string query = msg.GetQuery();
                 Log.WriteLoadData(query, 0, "XOFSMST", 0.0);
@@ -692,6 +695,7 @@ namespace DefectDBManager
 
             try
             {
+                DB_Progress._CurrentStep = eNittoDBProgress.AREADEL;
                 QueryMsg.AREADEL_Query msg = new QueryMsg.AREADEL_Query(lotID);
                 string query = msg.GetQuery();
                 Log.WriteLoadData(query, 0, "AREADEL", 0.0);
@@ -742,6 +746,7 @@ namespace DefectDBManager
 
             try
             {
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRYOP;
                 QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
@@ -1017,6 +1022,7 @@ namespace DefectDBManager
 
                 for (int i = 0; i < count; i++)
                 {
+                    DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                     procStep = i;
                     int PTRY0Pcnt = PTRY0P_Data[i].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
@@ -1124,6 +1130,7 @@ namespace DefectDBManager
 
                 for (int idx = 0; idx < count; idx++)
                 {
+                    DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
                     procStep = idx;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
@@ -1324,6 +1331,7 @@ namespace DefectDBManager
                 for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
                 {
                     procStep = fcdIdx;
+                    DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
 
                     if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)

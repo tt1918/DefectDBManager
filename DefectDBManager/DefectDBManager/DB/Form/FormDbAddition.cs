@@ -16,7 +16,7 @@ namespace DefectDBManager
         readonly int[] listXOFSMSTWidth = { 50, 50, 50, 180, 180, 70 };
 
         readonly string[] AREADELHeader = { "No", "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD" };
-        readonly int[] listAREADELWidth = { 30, 50, 50, 50, 180, 100, 100, 100, 100 };
+        readonly int[] listAREADELWidth = { 30, 50, 50, 50, 100, 80, 80, 80, 80 };
 
         public List<XOFSMSTData> _XOFSMSTData = null;
         public List<AREADELData> _AREADELData = null;

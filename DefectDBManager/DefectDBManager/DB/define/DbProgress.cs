@@ -61,6 +61,8 @@ namespace DefectDBManager
     {
         public DbProgress[] _Progress;
 
+        public eNittoDBProgress _CurrentStep;
+
         public bool IsComplete
         {
             get
@@ -106,6 +108,7 @@ namespace DefectDBManager
             IsComplete = false;
             IsError = false;
             ErrorStep = eNittoDBProgress.PTRYLP;
+            _CurrentStep = eNittoDBProgress.PTRYLP;
         }
 
         public void Reset(eNittoDBProgress index)

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace DefectDBManager
 {
@@ -144,6 +145,7 @@ namespace DefectDBManager
         bool IsEtcUse(bool isNext);
         void LotChange();
 		int GetSearchResut(bool isNext);
+        int GetSearchProgress(bool isNext);
         void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
         LotSearchResult[] GetSearchLotResults(bool isNext);
         int GetBcdReadWarningM();
@@ -452,6 +454,13 @@ namespace DefectDBManager
             dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
             dbManager._DbProc[1].LoadedBcNo = new List<string>();
             oldLoadedBcNo.Clear();
+
+            dbManager._DbProc[0].XOFSMST_Data = dbManager._DbProc[1].XOFSMST_Data;
+            dbManager._DbProc[1].XOFSMST_Data = new List<XOFSMSTData>();
+
+            dbManager._DbProc[0].AREADEL_Data = dbManager._DbProc[1].AREADEL_Data;
+            dbManager._DbProc[1].AREADEL_Data = new List<AREADELData>();
+
             ResultData oldMarkingData;
             oldMarkingData = dbManager._DbProc[0].ResultDefect;
             dbManager._DbProc[0].ResultDefect = dbManager._DbProc[1].ResultDefect;
@@ -465,7 +474,11 @@ namespace DefectDBManager
 			dbManager._DbProc[1].ResetData_DE();
 			
 			dbManager._FormDB_Now.BCNO_LV_Data = dbManager._FormDB_Next.BCNO_LV_Data;
-			dbManager._FormDB_Next.CreateListViewData();
+            dbManager._FormDB_Now.PTRYLP_LV_Data = dbManager._FormDB_Next.PTRYLP_LV_Data;
+            dbManager._FormDB_Now.MRKCTLMST_LV_Data = dbManager._FormDB_Next.MRKCTLMST_LV_Data;
+            dbManager._FormDB_Now.PTRYOP_LV_Data = dbManager._FormDB_Next.PTRYOP_LV_Data;
+            dbManager._FormDB_Now.INSPDAT_LV_Data = dbManager._FormDB_Next.INSPDAT_LV_Data;
+            dbManager._FormDB_Next.CreateListViewData();
 
             dbManager._FormDB_Now.UpdateListViewFromLotChange();
             dbManager._FormDB_Next.UpdateListViewFromLotChange();
@@ -494,6 +507,17 @@ namespace DefectDBManager
                 count = (int)_FormDB_Next._SearchRes;
             return count;
 		}
+
+        public int GetSearchProgress(bool isNext)
+        {
+            int step= 0 ;
+            if (isNext == false)
+                step = (int)dbManager._DbProc[0].DB_Progress._CurrentStep;
+            else
+                step = (int)dbManager._DbProc[1].DB_Progress._CurrentStep;
+            return step;
+        }
+
         public int SearchModel(string lotName)
         {
             dbManager.SearchModel(lotName);

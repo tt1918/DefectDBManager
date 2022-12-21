@@ -345,7 +345,7 @@ namespace DefectDBManager
                 switch (type)
                 {
                     case 0:
-                        query = "SELECT * FROM INSPDAT WHERE BCNO IN (SELECT DISTINCT BCNO FROM INSPDAT WHERE CONCAT(STRDT,STRTM)>='" + startTime[0].ToString("yyyyMMddhhmmss") +
+                        query = "SELECT * FROM INSPDAT WHERE BCNO IN (SELECT DISTINCT BCNO FROM INSPDAT WHERE CONCAT(STRDT,STRTM)>='" + startTime[0].ToString("yyyyMMddHHmmss") +
                                 "' AND CONCAT(ENDDT,ENDTM)<='" + endTime[1].ToString("yyyyMMddHHmmss") +
                                 "' AND INSPDAT.CUSTCD='" + LNCD +
                                 "') AND CONCAT(STRDT,STRTM)>='" + start_ES_Time[0].ToString("yyyyMMddHHmmss") +

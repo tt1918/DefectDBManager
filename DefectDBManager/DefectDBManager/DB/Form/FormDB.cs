@@ -478,6 +478,7 @@ namespace DefectDBManager
 
         private void displayBCNOListView()
         {
+            if (BCNO_LV_Data.Data == null) return;
             try
             {
                 listViewBCNO.BeginUpdate();
@@ -534,6 +535,7 @@ namespace DefectDBManager
 
         private void displayPTRYLPListView()
         {
+            if (PTRYLP_LV_Data.Data == null) return;
             try
             {
                 listViewPTRYLP.BeginUpdate();
@@ -594,6 +596,7 @@ namespace DefectDBManager
 
         private void displayPTRYOPListView()
         {
+            if (PTRYOP_LV_Data.Data == null) return;
             try
             {
                 listViewPTRYOP.BeginUpdate();
@@ -682,6 +685,7 @@ namespace DefectDBManager
         /// </summary>
         private void displayMRKCTLMSTListView()
         {
+            if (MRKCTLMST_LV_Data.Data == null) return;
             try
             {
                 listViewMRKCTLMST.BeginUpdate();
@@ -778,38 +782,28 @@ namespace DefectDBManager
             }
             finally
             {
-                listViewINSPDAT.EndUpdate();
             }
         }
         private void displayINSPDATListView()
         {
-            if (DataBase.INSPDAT_Data == null) return;
+            if (INSPDAT_LV_Data.Data == null) return;
             try
             {
                 listViewINSPDAT.BeginUpdate();
-
+                listViewINSPDAT.Items.Clear();
                 // 리스트 초기화는 따로
-
-                foreach (List<List<INSPDATData>> data in DataBase.INSPDAT_Data)
+                foreach(var data in INSPDAT_LV_Data.Data)
                 {
-                    if (data == null) continue;
-                    foreach (List<INSPDATData> items in data)
-                    {
-                        foreach (INSPDATData item in items)
-                        {
-                            ListViewItem listItem = new ListViewItem(item.CTLNO);
-                            listItem.SubItems.Add(item.HINMEI);
-                            listItem.SubItems.Add(item.LOTNO);
-                            listItem.SubItems.Add(item.STRDT);
-                            listItem.SubItems.Add(item.STRTM);
-                            listItem.SubItems.Add(item.ENDDT);
-                            listItem.SubItems.Add(item.ENDTM);
-                            listItem.SubItems.Add($"{item.Width:F3}");
-                            listItem.SubItems.Add($"{item.Length:F3}");
-
-                            listViewINSPDAT.Items.Add(listItem);
-                        }
-                    }
+                    ListViewItem listItem = new ListViewItem(data.items[0]);
+                    listItem.SubItems.Add(data.items[1]);
+                    listItem.SubItems.Add(data.items[2]);
+                    listItem.SubItems.Add(data.items[3]);
+                    listItem.SubItems.Add(data.items[4]);
+                    listItem.SubItems.Add(data.items[5]);
+                    listItem.SubItems.Add(data.items[6]);
+                    listItem.SubItems.Add(data.items[7]);
+                    listItem.SubItems.Add(data.items[8]);
+                    listViewINSPDAT.Items.Add(listItem);
                 }
             }
             finally
@@ -1031,6 +1025,10 @@ namespace DefectDBManager
             this.clearAllListView();
             this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
             displayBCNOListView();
+            displayPTRYLPListView();
+            displayPTRYOPListView();
+            displayMRKCTLMSTListView();
+            displayINSPDATListView();
             displayFAULTDATListView();
 
             if (this.dataBase.DbOption.dbWhen == eDbIdWhen.Now)
@@ -1181,6 +1179,10 @@ namespace DefectDBManager
         public void SearchDefect()
         {
             if (IsSearchDefect() == true) return;
+
+            // delete last defect list data
+            ResetListViewData();
+
             DataBase.DbOption.isLoaded = false;
             // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
             displayUIOptionFromDBOption();
