@@ -321,15 +321,21 @@ namespace DefectDBManager
 
         public void Parse(OracleDataReader reader)
         {
+            float fVal;
             CTLNO = reader[0].ToString();
             FLTNO = reader[1].ToString();
-            OFFSET = float.Parse(reader[4].ToString());
-            YPOS_M = float.Parse(reader[5].ToString());
-            XPOS_M = float.Parse(reader[7].ToString());
-            AREA_M = float.Parse(reader[9].ToString());
+            if(float.TryParse(reader[4].ToString(), out fVal)==true)
+                OFFSET = fVal;
+            if(float.TryParse(reader[5].ToString(), out fVal) == true)
+                YPOS_M = fVal;
+            if (float.TryParse(reader[7].ToString(), out fVal) == true)
+                XPOS_M = fVal;
+            if (float.TryParse(reader[9].ToString(), out fVal) == true)
+                AREA_M = fVal;
             RANK = reader[15].ToString();
             KND = reader[16].ToString();
-            CAMNO = Int32.Parse(reader[20].ToString());
+            if(Int32.TryParse(reader[20].ToString(), out int iVal)==true)
+                CAMNO = iVal;
             MNTTAN = reader[28].ToString();
             JIGCD = reader[29].ToString();
             MACNO = reader[30].ToString();
@@ -338,8 +344,8 @@ namespace DefectDBManager
 
         public string GetString(int index, int defectLine, string bcno, float xOffset)
         {
-            string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.000}, {YPOS_M:0.000}, {XPOS_M:0.000}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
-                $"{FLTID}, {AREA_M:0.000}, {CAMNO}, {MNTTAN}, {defectLine}, {bcno}, {xOffset}");
+            string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
+                $"{FLTID}, {AREA_M:0.00}, {CAMNO}, {MNTTAN}, {defectLine}, {bcno}, {xOffset}");
             return msg;
         }
     }

@@ -56,7 +56,6 @@ namespace DefectDBManager
 
         #endregion
 
-        public int UseKT = 0;
         public string Model;
 
         public bool isProductAvaliable = false;

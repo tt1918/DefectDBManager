@@ -1314,6 +1314,8 @@ namespace DefectDBManager
             dataBase.DbOption.checkTG = cbUseTG.Checked;
             dataBase.DbOption.checkETC = cbUseETC.Checked;
             dataBase.DbOption.searchOP.useMask = cbUseMask.Checked;
+            dataBase.DbOption.useSameDefect = dataBase.DbDestConfig.SelDestUnit.UseSameDefect;
+
             if (Int32.TryParse(tbSearchEndTime.Text, out int val) == true)
                 dataBase.DbOption.timeGabEdMinute2 = val;
             if (Int32.TryParse(tbSearchStartTime.Text, out val) == true)
@@ -1332,9 +1334,7 @@ namespace DefectDBManager
         private void btnReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("데이터를 초기화 하시겠습니까?", "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
-            {
                 return;
-            }
 
             // ListView 초기화
             this.clearAllListView();
@@ -1351,6 +1351,10 @@ namespace DefectDBManager
                 OnEndCsvReading((int)eEventReport.eResetDataNext);
 
             DataBase.DbOption.isLoaded = false;
+
+            // Update dbconfig from FWPlace
+            displayMarkingOption();
+            displaySearchTime();
         }
         private void btnPrevFaultPage_Click(object sender, EventArgs e)
         {
@@ -1432,29 +1436,29 @@ namespace DefectDBManager
                     {
                         StringBuilder sb = new StringBuilder();
 
-                        sb.Append($"{idx},");           // 0
-                        sb.Append($",");                // 1
-                        sb.Append($"{data.FLTNO},");    // 2
+                        sb.Append($"\"{idx}\",");           // 0
+                        sb.Append($"\"\",");                // 1
+                        sb.Append($"\"{data.FAULTID}\",");    // 2
 
                         //3
-                        if (isES) sb.Append("100,");
-                        else if (isTG) sb.Append("400,");
-                        else sb.Append("200,");
+                        if (isES) sb.Append("\"100\",");
+                        else if (isTG) sb.Append("\"400\",");
+                        else sb.Append("\"200\",");
 
-                        sb.Append($"{data.YPOS_M:F3},"); // 4
-                        sb.Append($"{data.XPOS_M:F3},"); // 5
-                        sb.Append($"{data.SIZE:F3},");   // 6
-                        sb.Append($"{data.SIZE_Y:F3},"); // 7
-                        sb.Append($"{data.SIZE_X:F3},"); // 8
-                        sb.Append($"{data.OFFSET:F3},"); // 9
-                        sb.Append($"{data.CAM_NO},");    // 10
-                        sb.Append($",");                 // 11
-                        sb.Append($",");                 // 12
-                        sb.Append($",");                 // 13
-                        sb.Append($",");                 // 14
-                        sb.Append($"0,");                // 15
-                        sb.Append($"{data.BCNO},");      // 16
-                        sb.Append("0");                  // 17
+                        sb.Append($"\"{data.YPOS_M:F2}\","); // 4
+                        sb.Append($"\"{data.XPOS_M:F2}\","); // 5
+                        sb.Append($"\"{data.SIZE:F2}\",");   // 6
+                        sb.Append($"\"{data.SIZE_Y:F2}\","); // 7
+                        sb.Append($"\"{data.SIZE_X:F2}\","); // 8
+                        sb.Append($"\"{data.OFFSET:F2}\","); // 9
+                        sb.Append($"\"{data.CAM_NO}\",");    // 10
+                        sb.Append($"\"\",");                 // 11
+                        sb.Append($"\"\",");                 // 12
+                        sb.Append($"\"\",");                 // 13
+                        sb.Append($"\"\",");                 // 14
+                        sb.Append($"\"0\",");                // 15
+                        sb.Append($"\"{data.BCNO}\",");      // 16
+                        sb.Append("\"0\"");                  // 17
                         wr.WriteLine(sb.ToString());
 
                         idx++;

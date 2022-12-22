@@ -556,9 +556,9 @@ namespace DefectDBManager
                 this.SearchLotName = lotID;
                 DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
                 if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
-                    CrtParam.UseKT = 1;
+                    dbOption.useKT = true;
                 else
-                    CrtParam.UseKT = 0;
+                    dbOption.useKT = false;
 
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 int newLotCnt = GetNextLotCnt(lotID);
@@ -1123,6 +1123,7 @@ namespace DefectDBManager
 
                 long dbCnt = 0;
                 int dataCnt = 0;
+                bool useXOffset = destConfig.UseXOffset;
 
                 eCSV_TYPE csvType = destConfig.GetCsvType();
 
@@ -1204,7 +1205,7 @@ namespace DefectDBManager
                                     INSPDATData data = new INSPDATData();
                                     data.Parse(reader);
 
-                                    if (dbOption.useOffsetX)
+                                    if (useXOffset)
                                     {
                                         int offsetDataCnt = XOFSMST_Data.Count;
 
@@ -1357,7 +1358,11 @@ namespace DefectDBManager
 
                     int nItemCnt = 0;
                     for (int iIdx = 0; iIdx < INSPDAT_Data[fcdIdx].Count; iIdx++)
+                    {
+                        if (INSPDAT_Data[fcdIdx][iIdx] == null) continue;
                         nItemCnt += INSPDAT_Data[fcdIdx][iIdx].Count;
+                    }
+                        
 
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     nItemCnt = 0;
@@ -1365,6 +1370,8 @@ namespace DefectDBManager
                     {
                         dicSizeData.Clear();
                         dicMRKF1Data.Clear();
+
+                        if (INSPDAT_Data[fcdIdx][opIdx] == null) continue;
 
                         foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcdIdx][opIdx])
                             dicSizeData.Add(pair.Key, pair.Value);
@@ -1375,6 +1382,8 @@ namespace DefectDBManager
                         int inspCnt = INSPDAT_Data[fcdIdx][opIdx].Count;
                         for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                         {
+                            if (INSPDAT_Data[fcdIdx][opIdx][inspIdx] == null) continue;
+
                             inspdata = INSPDAT_Data[fcdIdx][opIdx][inspIdx];
 #if (FAST_FLTID)
                             QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
@@ -1452,11 +1461,15 @@ namespace DefectDBManager
                                                 inspdata.RollCtlCnt++;
 
                                             // FLTID비교기능
-                                            for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                            if(destUnit.FLTIDCheck!=null)
                                             {
-                                                if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                                    CrtParam.FAULTDATFLTID.Add(data.FLTID);
+                                                for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                                {
+                                                    if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                                        CrtParam.FAULTDATFLTID.Add(data.FLTID);
+                                                }
                                             }
+                                            
 
                                             if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
                                             if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
@@ -2244,7 +2257,7 @@ namespace DefectDBManager
 
                 _RollDefectInfo = tmpRollInfo;
 
-                CrtParam.UseKT = 1;
+                dbOption.useKT = true;
             }
 
             int ktTotal = 0;

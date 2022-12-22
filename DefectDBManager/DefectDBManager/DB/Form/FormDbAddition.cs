@@ -49,18 +49,22 @@ namespace DefectDBManager
 
         private void updateXOFSMSTList()
         {
-            listViewXOFSMST.Items.Clear();
-
             if (_XOFSMSTData == null) return;
 
             listViewXOFSMST.BeginUpdate();
+            listViewXOFSMST.Items.Clear();
             foreach (XOFSMSTData data in _XOFSMSTData)
             {
-                ListViewItem item = new ListViewItem(data.KYCD);
+                ListViewItem item;
+                if (data.KYCD != null) item = new ListViewItem(data.KYCD);
+                else item = new ListViewItem("");
                 item.SubItems.Add(data.PPCD.ToString());
-                item.SubItems.Add(data.LNCD);
-                item.SubItems.Add(data.YLMZKN2);
-                item.SubItems.Add(data.YLSZKN);
+                if (data.LNCD != null) item.SubItems.Add(data.LNCD);
+                else item.SubItems.Add("");
+                if (data.YLMZKN2 != null) item.SubItems.Add(data.YLMZKN2);
+                else item.SubItems.Add("");
+                if (data.YLSZKN != null) item.SubItems.Add(data.YLSZKN);
+                else item.SubItems.Add("");
                 item.SubItems.Add(data.X_OFFSET.ToString());
                 listViewXOFSMST.Items.Add(item);
             }
@@ -79,19 +83,22 @@ namespace DefectDBManager
 
         private void updateAREADELList()
         {
-            listViewAREADEL.Items.Clear();
-
             if (_AREADELData == null) return;
 
             listViewAREADEL.BeginUpdate();
+            listViewAREADEL.Items.Clear();
             int index = 0;
             foreach (AREADELData data in _AREADELData)
             {
                 ListViewItem item = new ListViewItem(index.ToString());
-                item.SubItems.Add(data.KYCD);
-                item.SubItems.Add(data.PPCD.ToString());
-                item.SubItems.Add(data.LNCD);
-                item.SubItems.Add(data.LOTNO);
+                if (data.KYCD != null) item.SubItems.Add(data.KYCD);
+                else item.SubItems.Add("");
+                if(data.PPCD!=null) item.SubItems.Add(data.PPCD.ToString());
+                else item.SubItems.Add("");
+                if (data.LNCD != null) item.SubItems.Add(data.LNCD);
+                else item.SubItems.Add("");
+                if (data.LOTNO != null) item.SubItems.Add(data.LOTNO);
+                else item.SubItems.Add("");
                 item.SubItems.Add(data.STR_WD.ToString());
                 item.SubItems.Add(data.END_WD.ToString());
                 item.SubItems.Add(data.STR_MD.ToString());
