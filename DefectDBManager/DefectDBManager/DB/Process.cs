@@ -164,6 +164,7 @@ namespace DefectDBManager
 
             if (formDB[idx] == null) return;
 
+            formDB[idx].DataBase = _DbProc[idx];
             formDB[idx].Show();
         }
 
@@ -253,8 +254,9 @@ namespace DefectDBManager
             _Option[2].dbWhen = (eDbIdWhen)0;
             _Option[2].lotName = lotName;
 
+            _DbProc[2].ResetDataAll();
+            formDB[0].IsDataBaseChanged = true;
             formDB[0].DataBase = _DbProc[2];
-            formDB[0].DataBase.ResetDataAll();
             formDB[0].SearchModel();
         }
     }

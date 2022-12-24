@@ -861,9 +861,13 @@ namespace DefectDBManager
 
                         while (reader.Read())
                         {
-                            string strYOKLOT = reader[8].ToString();
-                            string strY0LNSN = reader[10].ToString();
-                            int nY0PPCD = Int32.Parse(reader[3].ToString());
+                            string strYOKLOT = reader[7].ToString();
+                            string strY0LNSN = reader[9].ToString();
+                            int nY0PPCD = 0;
+                            if (Int32.TryParse(reader[2].ToString(), out nY0PPCD) ==false )
+                            {
+                                continue;
+                            }
 
                             if (Char.IsLetter(strYOKLOT, 0) == true)
                             {
@@ -879,7 +883,7 @@ namespace DefectDBManager
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
 
-                            if (Int32.Parse(data.StartTime) == 0 || Int32.Parse(data.EndTime) == 0)
+                            if (long.Parse(data.StartTime) == 0 || long.Parse(data.EndTime) == 0)
                                 continue;
 
                             if (nY0PPCD == 100)
@@ -2331,7 +2335,7 @@ namespace DefectDBManager
                     strMACNO = items[0];
                     strFltID = items[2];
                     strCode = items[3];
-                    tmpData.YPOS_M = float.Parse(items[4]);
+                    tmpData.YPOS_M = float.Parse(items[4])-1000000.0f;
                     tmpData.XPOS_M = float.Parse(items[5]);
                     tmpData.SIZE_AREA = float.Parse(items[6]);
                     tmpData.OFFSET = double.Parse(items[9]);
