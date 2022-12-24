@@ -2335,7 +2335,7 @@ namespace DefectDBManager
                     strMACNO = items[0];
                     strFltID = items[2];
                     strCode = items[3];
-                    tmpData.YPOS_M = float.Parse(items[4])-1000000.0f;
+                    tmpData.YPOS_M = float.Parse(items[4]);
                     tmpData.XPOS_M = float.Parse(items[5]);
                     tmpData.SIZE_AREA = float.Parse(items[6]);
                     tmpData.OFFSET = double.Parse(items[9]);
