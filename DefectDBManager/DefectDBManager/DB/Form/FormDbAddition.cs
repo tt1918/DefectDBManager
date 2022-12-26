@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,7 @@ namespace DefectDBManager
         readonly string[] AREADELHeader = { "No", "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD" };
         readonly int[] listAREADELWidth = { 30, 50, 50, 50, 100, 80, 80, 80, 80 };
 
-        public List<XOFSMSTData> _XOFSMSTData = null;
-        public List<AREADELData> _AREADELData = null;
+        public NittoDB _DBData = null;
 
         public FormDbAddition()
         {
@@ -49,11 +49,11 @@ namespace DefectDBManager
 
         private void updateXOFSMSTList()
         {
-            if (_XOFSMSTData == null) return;
+            if (_DBData._DbResult.XOFSMST_Data == null) return;
 
             listViewXOFSMST.BeginUpdate();
             listViewXOFSMST.Items.Clear();
-            foreach (XOFSMSTData data in _XOFSMSTData)
+            foreach (XOFSMSTData data in _DBData._DbResult.XOFSMST_Data)
             {
                 ListViewItem item;
                 if (data.KYCD != null) item = new ListViewItem(data.KYCD);
@@ -83,12 +83,12 @@ namespace DefectDBManager
 
         private void updateAREADELList()
         {
-            if (_AREADELData == null) return;
+            if (_DBData._DbResult.AREADEL_Data == null) return;
 
             listViewAREADEL.BeginUpdate();
             listViewAREADEL.Items.Clear();
             int index = 0;
-            foreach (AREADELData data in _AREADELData)
+            foreach (AREADELData data in _DBData._DbResult.AREADEL_Data)
             {
                 ListViewItem item = new ListViewItem(index.ToString());
                 if (data.KYCD != null) item.SubItems.Add(data.KYCD);
@@ -125,5 +125,45 @@ namespace DefectDBManager
             btnClose.Text = Language.Close;
         }
         #endregion Language Update
+
+        private void btnLoadtAreaDel_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog browser = new OpenFileDialog())
+            {
+                //browser.InitialDirectory = Define.MainPath;
+                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.FilterIndex = 1;
+                browser.RestoreDirectory = true;
+
+                if (browser.ShowDialog() == DialogResult.OK)
+                {
+                    if (System.IO.File.Exists(browser.FileName) == false)
+                    {
+                        MessageBox.Show($"파일이 존재하지 않습니다. : [{browser.SafeFileName}]");
+                        return;
+                    }
+
+                    if(_DBData.LoadAreaDelCSV(browser.FileName)==true)
+                        updateAREADELList();
+                }
+            }
+        }
+
+        private void btnSaveAreaDel_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog browser = new SaveFileDialog())
+            {
+                browser.InitialDirectory = Define.MainPath;
+                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.FilterIndex = 1;
+                browser.RestoreDirectory = true;
+
+                if (browser.ShowDialog() == DialogResult.OK)
+                {
+                    string path = browser.FileName;
+                    _DBData.SaveAreaDelCSV(path);
+                }
+            }
+        }
     }
 }

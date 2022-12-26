@@ -369,7 +369,7 @@ namespace DefectDBManager
 			markingAreaDefects.Clear();
             if(dbManager._DestConfig.UseAREADEL==true)
 			{
-                List<AREADELData> delData = DBManager._DbProc[0].AREADEL_Data;
+                List<AREADELData> delData = DBManager._DbProc[0]._DbResult.AREADEL_Data;
 				int idx = 0;
                 foreach (AREADELData item in delData)
                 {
@@ -450,16 +450,8 @@ namespace DefectDBManager
 		// 예약랏을 현재랏으로 변경
 		public void LotChange()
 		{
-			List<string> oldLoadedBcNo = dbManager._DbProc[0].LoadedBcNo;
-            dbManager._DbProc[0].LoadedBcNo = dbManager._DbProc[1].LoadedBcNo;
-            dbManager._DbProc[1].LoadedBcNo = new List<string>();
-            oldLoadedBcNo.Clear();
-
-            dbManager._DbProc[0].XOFSMST_Data = dbManager._DbProc[1].XOFSMST_Data;
-            dbManager._DbProc[1].XOFSMST_Data = new List<XOFSMSTData>();
-
-            dbManager._DbProc[0].AREADEL_Data = dbManager._DbProc[1].AREADEL_Data;
-            dbManager._DbProc[1].AREADEL_Data = new List<AREADELData>();
+            dbManager._DbProc[0]._DbResult = dbManager._DbProc[1]._DbResult;
+            dbManager._DbProc[1]._DbResult = new DbSearchResult();
 
             ResultData oldMarkingData;
             oldMarkingData = dbManager._DbProc[0].ResultDefect;
@@ -471,13 +463,7 @@ namespace DefectDBManager
 
             dbManager._DbProc[1].ResultDefect = new ResultData();
             dbManager._DbProc[1].ResetDataAll();
-			dbManager._DbProc[1].ResetData_DE();
 			
-			dbManager._FormDB_Now.BCNO_LV_Data = dbManager._FormDB_Next.BCNO_LV_Data;
-            dbManager._FormDB_Now.PTRYLP_LV_Data = dbManager._FormDB_Next.PTRYLP_LV_Data;
-            dbManager._FormDB_Now.MRKCTLMST_LV_Data = dbManager._FormDB_Next.MRKCTLMST_LV_Data;
-            dbManager._FormDB_Now.PTRYOP_LV_Data = dbManager._FormDB_Next.PTRYOP_LV_Data;
-            dbManager._FormDB_Now.INSPDAT_LV_Data = dbManager._FormDB_Next.INSPDAT_LV_Data;
             dbManager._FormDB_Next.CreateListViewData();
 
             dbManager._FormDB_Now.UpdateListViewFromLotChange();
@@ -546,15 +532,15 @@ namespace DefectDBManager
             size = 0;
             if (isNext == false)// 현재랏
 			{
-				if(dbManager._DbProc[0].LoadedBcNo!=null)
-					size = dbManager._DbProc[0].LoadedBcNo.Count;
-                return dbManager._DbProc[0].LoadedBcNo.ToArray();
+				if(dbManager._DbProc[0]._DbResult.LoadedBcNo !=null)
+					size = dbManager._DbProc[0]._DbResult.LoadedBcNo.Count;
+                return dbManager._DbProc[0]._DbResult.LoadedBcNo.ToArray();
 			}
 			else
 			{
-                if (dbManager._DbProc[1].LoadedBcNo != null)
-                    size = dbManager._DbProc[1].LoadedBcNo.Count;
-                return dbManager._DbProc[1].LoadedBcNo.ToArray();
+                if (dbManager._DbProc[1]._DbResult.LoadedBcNo != null)
+                    size = dbManager._DbProc[1]._DbResult.LoadedBcNo.Count;
+                return dbManager._DbProc[1]._DbResult.LoadedBcNo.ToArray();
             }
 
 			//return null;

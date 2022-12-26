@@ -9,37 +9,10 @@ namespace DefectDBManager
 {
     public static class Log
     {
-        public static string LotLog { get; set; }
-        public static void WriteLoadData(string str, int nc, string name, double time)
-        {
-            string path = Path.Combine(Define.BCRPath, LotLog);
-            if(Directory.Exists(path)==false)
-                Directory.CreateDirectory(path);
-            path = Path.Combine(path, $"{name}_{Define.DBResultName}");
-
-            try
-            {
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    if (time == 0)
-                        sw.WriteLine(str);
-                    else
-                    {
-                        sw.Write($"[{time}] ");
-                        sw.WriteLine(str);
-                    }
-                }
-            }
-            finally
-            {
-                
-            }
-        }
-
-        public static void WriteLog(string str)
+        public static void Write(string str)
         {
             int nDay;
-            
+
             DateTime time = DateTime.Now;
             string data, fileName;
 
@@ -52,6 +25,36 @@ namespace DefectDBManager
                 {
                     data = $"{time.Hour}:{time.Minute}:{time.Second} {str}";
                     sw.WriteLine(data);
+                }
+            }
+            finally
+            {
+                
+            }
+        }
+    }
+
+    public class LogDB
+        {
+        public string Lot { get; set; }
+        public void WriteLoadData(string str, int nc, string name, double time)
+        {
+            string path = Path.Combine(Define.BCRPath, Lot);
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+            path = Path.Combine(path, $"{name}_{Define.DBResultName}");
+            
+            try
+            {
+                using (StreamWriter sw = File.AppendText(path))
+                {
+                    if (time == 0)
+                        sw.WriteLine(str);
+                    else
+                    {
+                        sw.Write($"[{time}] ");
+                        sw.WriteLine(str);
+                    }
                 }
             }
             finally

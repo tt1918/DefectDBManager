@@ -392,7 +392,7 @@ namespace DefectDBManager
             catch(Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                Log.WriteLog(ex.Message);
+                Log.Write(ex.Message);
                 return 0;
             }
             return 0;
@@ -487,7 +487,7 @@ namespace DefectDBManager
             catch(Exception ex)
             {
                 Trace.WriteLine(ex.Message);
-                Log.WriteLog(ex.Message);
+                Log.Write(ex.Message);
             }
         }
 

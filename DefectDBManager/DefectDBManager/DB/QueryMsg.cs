@@ -40,7 +40,7 @@ namespace DefectDBManager
                 }
                 catch(Exception ex)
                 {
-                    Log.WriteLog($"[Error] PTRYLP_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] PTRYLP_Query Exception : {ex.Message}");
                     return "";
                 }
             }
@@ -72,7 +72,7 @@ namespace DefectDBManager
                 }
                 catch(System.Exception ex)
                 {
-                    Log.WriteLog($"[Error] XOFSMST_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] XOFSMST_Query Exception : {ex.Message}");
                     return "";
                 }
                 
@@ -102,7 +102,7 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.WriteLog($"[Error] AREADEL_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] AREADEL_Query Exception : {ex.Message}");
                     return "";
                 }
             }
@@ -145,7 +145,7 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.WriteLog($"[Error] PTRYOP_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] PTRYOP_Query Exception : {ex.Message}");
                     return "";
                 }
             }
@@ -190,7 +190,7 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.WriteLog($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
                     return "";
                 }
             }
@@ -235,7 +235,7 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.WriteLog($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] MRKCTLMST_Query Exception : {ex.Message}");
                     return "";
                 }
             }

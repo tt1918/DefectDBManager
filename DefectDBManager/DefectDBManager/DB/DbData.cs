@@ -1,7 +1,9 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -351,4 +353,223 @@ namespace DefectDBManager
     }
     #endregion DB Query
 
+    #region DB Search Result
+    public class DbSearchResult
+    {
+        public List<PTRYLPdata> PTRLYP_Data;
+        public List<PTRY0PData>[] PTRY0P_Data;
+        public List<MRKCTLMSTData> MRKCTLMST_Data;
+        public List<List<INSPDATData>>[] INSPDAT_Data;
+        public List<XOFSMSTData> XOFSMST_Data;
+        public List<AREADELData> AREADEL_Data;
+
+        public List<Dictionary<string, float>>[] dicSizeMRKCTLMST;
+        public List<Dictionary<string, bool>>[] dicMRKF1MRKCTLMST;
+        public List<MRKCTLMST_DE_Data>[] _MRKCTLMST_DE;
+
+        public Dictionary<string, float> dicSizeData;
+        public Dictionary<string, bool> dicMRKF1Data;
+
+        public List<string> LoadedBcNo;
+
+        public List<DateTime> ProductEndTime;
+        public List<string> ProductLotName;
+
+        public DbSearchResult()
+        {
+            Init();
+        }
+
+        public void Init()
+        {
+            PTRLYP_Data = new List<PTRYLPdata>();
+            XOFSMST_Data = new List<XOFSMSTData>();
+            AREADEL_Data = new List<AREADELData>();
+
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            PTRY0P_Data = new List<PTRY0PData>[count];
+            for (int i = 0; i < count; i++)
+                PTRY0P_Data[i] = new List<PTRY0PData>();
+
+            INSPDAT_Data = new List<List<INSPDATData>>[count];
+            for (int i = 0; i < count; i++)
+                INSPDAT_Data[i] = new List<List<INSPDATData>>();
+
+            MRKCTLMST_Data = new List<MRKCTLMSTData>();
+            dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
+            dicMRKF1MRKCTLMST = new List<Dictionary<string, bool>>[count];
+            _MRKCTLMST_DE = new List<MRKCTLMST_DE_Data>[count];
+            for (int i = 0; i < count; i++)
+            {
+                dicSizeMRKCTLMST[i] = new List<Dictionary<string, float>>();
+                dicMRKF1MRKCTLMST[i] = new List<Dictionary<string, bool>>();
+                _MRKCTLMST_DE[i] = new List<MRKCTLMST_DE_Data>();
+            }
+
+            dicSizeData = new Dictionary<string, float>();
+            dicMRKF1Data = new Dictionary<string, bool>();
+
+            LoadedBcNo = new List<string>();
+
+            ProductEndTime = new List<DateTime>();
+            ProductLotName = new List<string>();
+        }
+
+        public void ClearAll ()
+        {
+            LoadedBcNo.Clear();
+            AREADEL_Data.Clear();
+            XOFSMST_Data.Clear();
+            PTRLYP_Data.Clear();
+            MRKCTLMST_Data.Clear();
+
+            LoadedBcNo.Clear();
+
+            ProductEndTime.Clear();
+            ProductLotName.Clear();
+
+            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
+
+            for (int i = 0; i < INSPDAT_Data.Length; i++)
+            {
+                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
+                    INSPDAT_Data[i][j].Clear();
+                INSPDAT_Data[i].Clear();
+            }
+        }
+
+        public void ClearProductInfo()
+        {
+            LoadedBcNo.Clear();
+            ProductEndTime.Clear();
+            ProductLotName.Clear();
+        }
+
+        public void CheckAndUpdateProductInfo(int i, int j, DateTime edTime)
+        {
+            if (PTRY0P_Data[i][j].Y0KLOT.Substring(0, 2).ToUpper() == "LL")
+            {
+                ProductEndTime.Add(edTime);
+                ProductLotName.Add(PTRY0P_Data[i][j].Y0KLOT);
+            }
+        }
+        public bool IsProductAvaliable(Option opt, LogDB log)
+        {
+            DateTime dt = DateTime.Now;
+            Debug.Assert(ProductEndTime.Count == ProductLotName.Count);
+            string strE, strC, str;
+            strC = dt.ToString("yyyyMMddHHmmdd");
+
+            int count = 0;
+
+            TimeSpan refTs = new TimeSpan(0, opt.prodAvaliableSpan, 0, 0);
+            foreach (DateTime time in ProductEndTime)
+            {
+                TimeSpan sp = dt - time;
+                strE = time.ToString("yyyyMMddHHmmdd");
+                str = string.Format($"{opt.dbWhen.ToString()}, {ProductLotName[count]}, 현재시각:{strC}, " +
+                    $"생산종료시각:{strE}, 설정시간:{opt.prodAvaliableSpan}, 차이시간:{sp.Hours}");
+                log.WriteLoadData(str, 0, "PRODUCTION_ABLE", 0);
+                count++;
+
+                if (sp < refTs)
+                {
+                    log.WriteLoadData("생산가능시간 NG", 0, "PRODUCTION_ABLE", 0);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void ClearSplit()
+        {
+            PTRLYP_Data.Clear();
+            AREADEL_Data.Clear();
+            XOFSMST_Data.Clear();
+            MRKCTLMST_Data.Clear();
+
+            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
+
+            for (int i = 0; i < INSPDAT_Data.Length; i++)
+            {
+                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
+                    INSPDAT_Data[i][j].Clear();
+                INSPDAT_Data[i].Clear();
+            }
+        }
+        public void ResetData_DE()
+        {
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < dicSizeMRKCTLMST[i].Count; j++)
+                    dicSizeMRKCTLMST[i][j].Clear();
+
+                for (int j = 0; j < dicMRKF1MRKCTLMST[i].Count; j++)
+                    dicMRKF1MRKCTLMST[i][j].Clear();
+
+                _MRKCTLMST_DE[i].Clear();
+            }
+        }
+
+        public void ClearDicMRKCTLMST(int fdIdx, int ptryoIdx)
+        {
+            dicSizeMRKCTLMST[fdIdx][ptryoIdx].Clear();
+            dicMRKF1MRKCTLMST[fdIdx][ptryoIdx].Clear();
+        }
+        public void CheckSizeOfDicMRKCTLMST(int targetCnt, int fcdIdx)
+        {
+            // Dic 부족한 인덱스 만큼 초기화 처리
+            if (targetCnt > dicSizeMRKCTLMST[fcdIdx].Count)
+                for (int dicIdx = dicSizeMRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
+                    dicSizeMRKCTLMST[fcdIdx].Add(new Dictionary<string, float>());
+
+            if (targetCnt > dicMRKF1MRKCTLMST[fcdIdx].Count)
+                for (int dicIdx = dicMRKF1MRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
+                    dicMRKF1MRKCTLMST[fcdIdx].Add(new Dictionary<string, bool>());
+        }
+
+        public void AddDicMRKCTLMST(int fdIdx, int ptryoIdx, MRKCTLMSTData data)
+        {
+            if (dicSizeMRKCTLMST[fdIdx][ptryoIdx].ContainsKey(data.FLTID) == true)
+                dicSizeMRKCTLMST[fdIdx][ptryoIdx][data.FLTID] = data.SIZE;
+            else
+                dicSizeMRKCTLMST[fdIdx][ptryoIdx].Add(data.FLTID, data.SIZE);
+
+            int valMRKF1 = Int32.Parse(data.MRKF1);
+            bool boolMRKF1 = false;
+            if (valMRKF1 == 1) boolMRKF1 = true;
+            if (dicMRKF1MRKCTLMST[fdIdx][ptryoIdx].ContainsKey(data.FLTID) == true)
+                dicMRKF1MRKCTLMST[fdIdx][ptryoIdx][data.FLTID] = boolMRKF1;
+            else
+                dicMRKF1MRKCTLMST[fdIdx][ptryoIdx].Add(data.FLTID, boolMRKF1);
+        }
+
+        public void UpdateDicSizeData(int fcd, int op)
+        {
+            dicSizeData.Clear();
+            foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcd][op])
+                dicSizeData.Add(pair.Key, pair.Value);
+        }
+
+        public void UpdateDicMRKF1Data(int fcd, int op)
+        {
+            dicMRKF1Data.Clear();
+            foreach (KeyValuePair<string, bool> pair in dicMRKF1MRKCTLMST[fcd][op])
+                dicMRKF1Data.Add(pair.Key, pair.Value);
+        }
+
+        public bool CheckValidSize(string key, string fldID, float size)
+        {
+            bool bValid = false;
+            if (dicSizeData.ContainsKey(key) == true && dicMRKF1Data.ContainsKey(key) == true)
+            {
+                if (dicSizeData[fldID] <= ( + 0.00001f) && dicMRKF1Data[fldID] == true) 
+                    bValid = true;
+            }
+
+            return bValid;
+        }
+    }
+    #endregion
 }

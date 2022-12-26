@@ -429,7 +429,7 @@ namespace DefectDBManager
         private void makeBCNOListData()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            List<List<INSPDATData>>[] data = DataBase.INSPDAT_Data;
+            List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT_Data;
 
             // 리스트 초기화는 따로 불러서 처리
 
@@ -526,7 +526,8 @@ namespace DefectDBManager
 
         private void makePTRYLPListViewData()
         {
-            foreach (PTRYLPdata data in DataBase.PTRLYP_Data)
+            PTRYLP_LV_Data.Data.Clear();
+            foreach (PTRYLPdata data in DataBase._DbResult.PTRLYP_Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(6);
                 bufData.items[0] = data.YLMLOT;
@@ -583,7 +584,8 @@ namespace DefectDBManager
 
         private void makePTRYOPListViewData()
         {
-            List<PTRY0PData>[] tmpData = DataBase.PTRY0P_Data;
+            PTRYOP_LV_Data.Data.Clear();
+            List<PTRY0PData>[] tmpData = DataBase._DbResult.PTRY0P_Data;
             int cnt = tmpData.Length;
             for (int i = 0; i < cnt; i++)
             {
@@ -648,10 +650,11 @@ namespace DefectDBManager
 
         private void makeMRKCTLMSTListViewData()
         {
+            MRKCTLMST_LV_Data.Data.Clear();
             // 리스트 초기화는 따로
             if (DataBase.DbOption.searchOP.useDefectEdit == false)
             {
-                foreach (MRKCTLMSTData data in DataBase.MRKCTLMST_Data)
+                foreach (MRKCTLMSTData data in DataBase._DbResult.MRKCTLMST_Data)
                 {
                     DBListViewBuf bufData = new DBListViewBuf(4);
                     bufData.items[0] = data.LNCD;
@@ -663,13 +666,13 @@ namespace DefectDBManager
             }
             else
             {
-                for (int i = 0; i < DataBase._MRKCTLMST_DE.Length; i++)
+                for (int i = 0; i < DataBase._DbResult._MRKCTLMST_DE.Length; i++)
                 {
-                    if (DataBase._MRKCTLMST_DE[i] == null)
+                    if (DataBase._DbResult._MRKCTLMST_DE[i] == null)
                         continue;
-                    for (int j = 0; j < DataBase._MRKCTLMST_DE[i].Count; j++)
+                    for (int j = 0; j < DataBase._DbResult._MRKCTLMST_DE[i].Count; j++)
                     {
-                        foreach (MRKCTLMSTData data in DataBase._MRKCTLMST_DE[i][j].data)
+                        foreach (MRKCTLMSTData data in DataBase._DbResult._MRKCTLMST_DE[i][j].data)
                         {
                             DBListViewBuf bufData = new DBListViewBuf(4);
                             bufData.items[0] = data.LNCD;
@@ -735,6 +738,7 @@ namespace DefectDBManager
 
         private void makeINSPDATALiseViewByCSV()
         {
+            INSPDAT_LV_Data.Data.Clear();
             try
             {
                 DBListViewBuf bufData = new DBListViewBuf(11);
@@ -759,10 +763,10 @@ namespace DefectDBManager
 
         private void makeINSPDATListView()
         {
-            if (DataBase.INSPDAT_Data == null) return;
+            if (DataBase._DbResult.INSPDAT_Data == null) return;
             try
             {
-                foreach (List<List<INSPDATData>> data in DataBase.INSPDAT_Data)
+                foreach (List<List<INSPDATData>> data in DataBase._DbResult.INSPDAT_Data)
                 {
                     if (data == null) continue;
                     foreach (List<INSPDATData> items in data)
@@ -1348,7 +1352,7 @@ namespace DefectDBManager
             this.initFaultPage();
             this.ResetListViewData();
             dataBase.ResetDataAll();
-            dataBase.ResetData_DE();
+            dataBase._DbResult.ResetData_DE();
 
             tbLotName.Text = "";
 
@@ -1413,17 +1417,12 @@ namespace DefectDBManager
             if (formDbAddition.Visible == true)
                 return;
 
-            formDbAddition._XOFSMSTData = DataBase.XOFSMST_Data;
-            formDbAddition._AREADELData = DataBase.AREADEL_Data;
-
+            formDbAddition._DBData = DataBase;
             formDbAddition.Show();
         }
 
         private void btnExportCSV_Click(object sender, EventArgs e)
         {
-            bool isES = dataBase.DbOption.checkES;
-            bool isTG = dataBase.DbOption.checkTG;
-
             using (SaveFileDialog browser = new SaveFileDialog())
             {
                 browser.InitialDirectory = Define.MainPath;
@@ -1434,44 +1433,7 @@ namespace DefectDBManager
                 if (browser.ShowDialog() == DialogResult.OK)
                 {
                     string path = browser.FileName;
-
-                    StreamWriter wr = new StreamWriter(path);
-
-                    wr.WriteLine("Header line");
-                    int idx = 0;
-                    foreach (MarkingFaultDatum data in DataBase.ResultDefect.MarkFault.Data)
-                    {
-                        StringBuilder sb = new StringBuilder();
-
-                        sb.Append($"\"{idx}\",");           // 0
-                        sb.Append($"\"\",");                // 1
-                        sb.Append($"\"{data.FAULTID}\",");    // 2
-
-                        //3
-                        if (isES) sb.Append("\"100\",");
-                        else if (isTG) sb.Append("\"400\",");
-                        else sb.Append("\"200\",");
-
-                        sb.Append($"\"{data.YPOS_M:F2}\","); // 4
-                        sb.Append($"\"{data.XPOS_M:F2}\","); // 5
-                        sb.Append($"\"{data.SIZE:F2}\",");   // 6
-                        sb.Append($"\"{data.SIZE_Y:F2}\","); // 7
-                        sb.Append($"\"{data.SIZE_X:F2}\","); // 8
-                        sb.Append($"\"{data.OFFSET:F2}\","); // 9
-                        sb.Append($"\"{data.CAM_NO}\",");    // 10
-                        sb.Append($"\"\",");                 // 11
-                        sb.Append($"\"\",");                 // 12
-                        sb.Append($"\"\",");                 // 13
-                        sb.Append($"\"\",");                 // 14
-                        sb.Append($"\"0\",");                // 15
-                        sb.Append($"\"{data.BCNO}\",");      // 16
-                        sb.Append("\"0\"");                  // 17
-                        wr.WriteLine(sb.ToString());
-
-                        idx++;
-                    }
-
-                    wr.Close();
+                    DataBase.SaveCSV(path);
                 }
             }
         }
@@ -1885,47 +1847,47 @@ namespace DefectDBManager
             int vendorIdx = this.cbDestination.SelectedIndex;
             dataBase.DbDestConfig.GetData(vendorIdx, ref unit);
 
-            DataBase.ResetData_DE();
+            DataBase._DbResult.ResetData_DE();
 
             for (int i = 0; i < 10; i++)
             {
                 PTRY0PData data = new PTRY0PData();
                 data.Y0KLOT = $"{i}";
-                DataBase.PTRY0P_Data[0].Add(data);
+                DataBase._DbResult.PTRY0P_Data[0].Add(data);
             }
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             int queryCount = 0;
             for (int i = 0; i < count; i++)
             {
-                for (int j = 0; j < DataBase.PTRY0P_Data[i].Count; j++)
+                for (int j = 0; j < DataBase._DbResult.PTRY0P_Data[i].Count; j++)
                 {
                     QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
-                    msg.Y0KLOT = DataBase.PTRY0P_Data[i][j].Y0KLOT;
+                    msg.Y0KLOT = DataBase._DbResult.PTRY0P_Data[i][j].Y0KLOT;
                     msg.MKCD = unit.MKCD;
                     MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
                     if (cbUseES.Checked == true && i == (int)eFCD.ES)
                     {
                         de_data.query = msg.GetQuery(eFCD.ES);
-                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        DataBase._DbResult._MRKCTLMST_DE[i].Add(de_data);
                         queryCount++;
                     }
                     else if (cbUseETC.Checked == true && i == (int)eFCD.ETC)
                     {
                         de_data.query = msg.GetQuery(eFCD.ETC);
-                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        DataBase._DbResult._MRKCTLMST_DE[i].Add(de_data);
                         queryCount++;
                     }
                     else if (cbUseTG.Checked == true && i == (int)eFCD.TG)
                     {
                         de_data.query = msg.GetQuery(eFCD.TG);
-                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        DataBase._DbResult._MRKCTLMST_DE[i].Add(de_data);
                         queryCount++;
                     }
                     else
                     {
                         de_data.query = "";
-                        DataBase._MRKCTLMST_DE[i].Add(de_data);
+                        DataBase._DbResult._MRKCTLMST_DE[i].Add(de_data);
                     }
                 }
             }

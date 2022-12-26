@@ -137,12 +137,12 @@ namespace DefectDBManager
 
                 for (int i = 0; i < count; i++)
                 {
-                    for (int j = 0; j < _DataBase._MRKCTLMST_DE[i].Count; j++)
+                    for (int j = 0; j < _DataBase._DbResult._MRKCTLMST_DE[i].Count; j++)
                     {
-                        if (_DataBase._MRKCTLMST_DE[i][j].query == "")
+                        if (_DataBase._DbResult._MRKCTLMST_DE[i][j].query == "")
                             continue;
 
-                        using (var comm = new OracleCommand(_DataBase._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
+                        using (var comm = new OracleCommand(_DataBase._DbResult._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
                         {
                             using (var reader = comm.ExecuteReader())
                             {
@@ -151,12 +151,12 @@ namespace DefectDBManager
                                     MRKCTLMSTData data = new MRKCTLMSTData();
                                     data.Parse(reader);
                                     addItem(data);
-                                    _DataBase._MRKCTLMST_DE[i][j].data.Add(data);
+                                    _DataBase._DbResult._MRKCTLMST_DE[i][j].data.Add(data);
 
                                     _mrk_de.Add(resCnt, data);
 
                                     logData = string.Format($"{resCnt}\t-\t{data.ToString()}");
-                                    Log.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
+                                    this._DataBase._LOG.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
                                     resCnt++;
                                 }
                             }
@@ -170,7 +170,7 @@ namespace DefectDBManager
             catch(Exception ex)
             {
                 string log = $"[ERROR] MRKCTLMST-EDIT : {ex.Message}";
-                Log.WriteLog(log);
+                Log.Write(log);
                 dgvDefect.ResumeLayout();
                 return false;
             }

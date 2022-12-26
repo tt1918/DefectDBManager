@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.gbXOFSMST = new System.Windows.Forms.GroupBox();
-            this.gbAREADEL = new System.Windows.Forms.GroupBox();
-            this.btnClose = new System.Windows.Forms.Button();
             this.listViewXOFSMST = new System.Windows.Forms.ListView();
+            this.gbAREADEL = new System.Windows.Forms.GroupBox();
             this.listViewAREADEL = new System.Windows.Forms.ListView();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnLoadtAreaDel = new System.Windows.Forms.Button();
+            this.btnSaveAreaDel = new System.Windows.Forms.Button();
             this.gbXOFSMST.SuspendLayout();
             this.gbAREADEL.SuspendLayout();
             this.SuspendLayout();
@@ -48,6 +50,15 @@
             this.gbXOFSMST.TabStop = false;
             this.gbXOFSMST.Text = "XOFSMST";
             // 
+            // listViewXOFSMST
+            // 
+            this.listViewXOFSMST.HideSelection = false;
+            this.listViewXOFSMST.Location = new System.Drawing.Point(7, 20);
+            this.listViewXOFSMST.Name = "listViewXOFSMST";
+            this.listViewXOFSMST.Size = new System.Drawing.Size(726, 257);
+            this.listViewXOFSMST.TabIndex = 0;
+            this.listViewXOFSMST.UseCompatibleStateImageBehavior = false;
+            // 
             // gbAREADEL
             // 
             this.gbAREADEL.Controls.Add(this.listViewAREADEL);
@@ -58,6 +69,15 @@
             this.gbAREADEL.TabIndex = 0;
             this.gbAREADEL.TabStop = false;
             this.gbAREADEL.Text = "AREADEL";
+            // 
+            // listViewAREADEL
+            // 
+            this.listViewAREADEL.HideSelection = false;
+            this.listViewAREADEL.Location = new System.Drawing.Point(7, 20);
+            this.listViewAREADEL.Name = "listViewAREADEL";
+            this.listViewAREADEL.Size = new System.Drawing.Size(726, 257);
+            this.listViewAREADEL.TabIndex = 0;
+            this.listViewAREADEL.UseCompatibleStateImageBehavior = false;
             // 
             // btnClose
             // 
@@ -70,23 +90,27 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // listViewXOFSMST
+            // btnLoadtAreaDel
             // 
-            this.listViewXOFSMST.HideSelection = false;
-            this.listViewXOFSMST.Location = new System.Drawing.Point(7, 20);
-            this.listViewXOFSMST.Name = "listViewXOFSMST";
-            this.listViewXOFSMST.Size = new System.Drawing.Size(726, 257);
-            this.listViewXOFSMST.TabIndex = 0;
-            this.listViewXOFSMST.UseCompatibleStateImageBehavior = false;
+            this.btnLoadtAreaDel.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnLoadtAreaDel.Location = new System.Drawing.Point(12, 586);
+            this.btnLoadtAreaDel.Name = "btnLoadtAreaDel";
+            this.btnLoadtAreaDel.Size = new System.Drawing.Size(77, 33);
+            this.btnLoadtAreaDel.TabIndex = 2;
+            this.btnLoadtAreaDel.Text = "LOAD";
+            this.btnLoadtAreaDel.UseVisualStyleBackColor = true;
+            this.btnLoadtAreaDel.Click += new System.EventHandler(this.btnLoadtAreaDel_Click);
             // 
-            // listViewAREADEL
+            // btnSaveAreaDel
             // 
-            this.listViewAREADEL.HideSelection = false;
-            this.listViewAREADEL.Location = new System.Drawing.Point(7, 20);
-            this.listViewAREADEL.Name = "listViewAREADEL";
-            this.listViewAREADEL.Size = new System.Drawing.Size(726, 257);
-            this.listViewAREADEL.TabIndex = 0;
-            this.listViewAREADEL.UseCompatibleStateImageBehavior = false;
+            this.btnSaveAreaDel.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnSaveAreaDel.Location = new System.Drawing.Point(95, 586);
+            this.btnSaveAreaDel.Name = "btnSaveAreaDel";
+            this.btnSaveAreaDel.Size = new System.Drawing.Size(77, 33);
+            this.btnSaveAreaDel.TabIndex = 2;
+            this.btnSaveAreaDel.Text = "SAVE";
+            this.btnSaveAreaDel.UseVisualStyleBackColor = true;
+            this.btnSaveAreaDel.Click += new System.EventHandler(this.btnSaveAreaDel_Click);
             // 
             // FormDbAddition
             // 
@@ -94,6 +118,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 623);
             this.ControlBox = false;
+            this.Controls.Add(this.btnSaveAreaDel);
+            this.Controls.Add(this.btnLoadtAreaDel);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.gbAREADEL);
             this.Controls.Add(this.gbXOFSMST);
@@ -114,5 +140,7 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ListView listViewXOFSMST;
         private System.Windows.Forms.ListView listViewAREADEL;
+        private System.Windows.Forms.Button btnLoadtAreaDel;
+        private System.Windows.Forms.Button btnSaveAreaDel;
     }
 }

@@ -152,7 +152,7 @@ namespace DefectDBManager
             }
             catch (Exception ex)
             {
-                Log.WriteLog($"[Error] : {ex.Message}");
+                Log.Write($"[Error] : {ex.Message}");
             }
         }
 
@@ -213,8 +213,8 @@ namespace DefectDBManager
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            int size = formDB[idx].DataBase.INSPDAT_Data.Length;
-            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase.INSPDAT_Data)
+            int size = formDB[idx].DataBase._DbResult.INSPDAT_Data.Length;
+            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT_Data)
             {
                 if (data == null) continue;
                 foreach (List<INSPDATData> items in data)

@@ -217,7 +217,7 @@ namespace DefectDBManager
             catch (Exception ex)
             {
                 string text = $"[Error] Process List Bug :[{ex.Message}]";
-                Log.WriteLog(text);
+                Log.Write(text);
                 lblText.Text = text;
                 listBoxProcess.EndUpdate();
             }
