@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
@@ -474,6 +475,10 @@ namespace DefectDBManager
 
         public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
 		{
+            if (dbManager._DbConn.Connection == null ||
+                dbManager._DbConn.Connection.State != System.Data.ConnectionState.Open)
+                dbManager._DbConn.Connect();
+
             dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
         }
 
@@ -506,6 +511,10 @@ namespace DefectDBManager
 
         public int SearchModel(string lotName)
         {
+            if (dbManager._DbConn.Connection==null || 
+                dbManager._DbConn.Connection.State != System.Data.ConnectionState.Open)
+                dbManager._DbConn.Connect();
+
             dbManager.SearchModel(lotName);
             return 0;
         }
