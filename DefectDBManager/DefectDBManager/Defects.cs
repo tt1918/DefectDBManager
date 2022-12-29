@@ -338,29 +338,30 @@ namespace DefectDBManager
 		public MarkingData[] GetMarkDefectData(string bcno, double start, double end)
 		{
 			markingData.Clear();
-            List<MarkingFaultDatum> oriData;
-            oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
-
-			foreach(MarkingFaultDatum datum in oriData)
-			{
-				if(datum.YPOS_M>=start && datum.YPOS_M <= end)
-				{
-                    MarkingData item = new MarkingData();
-                    item.DefectLine = datum.DefectLine;
-                    item.BCNO = datum.BCNO;
-                    item.CAM_NO = datum.CAM_NO;
-                    item.FAULTID = datum.FAULTID;
-                    item.FLTNO = datum.FLTNO;
-                    item.OFFSET = datum.OFFSET;
-                    item.UseCSVResult = datum.UseCSVResult;
-                    item.XOFFSET = datum.XOFFSET;
-                    item.XPOS_M = datum.XPOS_M;
-                    item.YPOS_M = datum.YPOS_M;
-                    item.SIZE_X = datum.SIZE_X;
-                    item.SIZE_Y = datum.SIZE_Y;
-                    markingData.Add(item);
-                }
-            }
+            DBManager._DbProc[0].ResultDefect.MarkFault.GetData(start, end, ref markingData);
+            
+//          List<MarkingFaultDatum> oriData;
+//          oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
+//          foreach (MarkingFaultDatum datum in oriData)
+//          {
+//              if (datum.YPOS_M>=start && datum.YPOS_M <= end)
+//	            {
+//                 MarkingData item = new MarkingData();
+//                 item.DefectLine = datum.DefectLine;
+//                 item.BCNO = datum.BCNO;
+//                 item.CAM_NO = datum.CAM_NO;
+//                 item.FAULTID = datum.FAULTID;
+//                 item.FLTNO = datum.FLTNO;
+//                 item.OFFSET = datum.OFFSET;
+//                 item.UseCSVResult = datum.UseCSVResult;
+//                 item.XOFFSET = datum.XOFFSET;
+//                 item.XPOS_M = datum.XPOS_M;
+//                 item.YPOS_M = datum.YPOS_M;
+//                 item.SIZE_X = datum.SIZE_X;
+//                 item.SIZE_Y = datum.SIZE_Y;
+//                 markingData.Add(item);
+//             }
+//         }
 
             return markingData.ToArray();
         }
@@ -457,8 +458,7 @@ namespace DefectDBManager
             ResultData oldMarkingData;
             oldMarkingData = dbManager._DbProc[0].ResultDefect;
             dbManager._DbProc[0].ResultDefect = dbManager._DbProc[1].ResultDefect;
-            oldMarkingData.Data.Clear();
-            oldMarkingData.MarkFault.Data.Clear();
+            oldMarkingData.ResetAll();
 
 			dbManager._DbProc[0].DbOption.Copy(dbManager._DbProc[1].DbOption);
 

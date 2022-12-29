@@ -860,7 +860,6 @@ namespace DefectDBManager
                 DestConfigUnit destUnit = dataBase.DbDestConfig.SelDestUnit;
 
                 int enaCnt = tmpData.Count;
-
                 if (enaCnt > maxFaultDat * crtFaultDatPage)
                 {
                     if (enaCnt >= maxFaultDat * (crtFaultDatPage + 1)) enaCnt = maxFaultDat * (crtFaultDatPage + 1);

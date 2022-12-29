@@ -76,21 +76,65 @@ namespace DefectDBManager
         //////////////////////////////////////////////////////////
     }
 
-
     public class MarkingFaultData
     {
-        public List<MarkingFaultDatum> Data = new List<MarkingFaultDatum>();
-
+        /// <summary>
+        /// 10M 기준으로 구분하여 데이터 입력함
+        /// </summary>
+        public List<MarkingFaultDatum> Data = null;
+        public Dictionary<int, List<MarkingFaultDatum>> Dic = null;
         public float MinXPos;
         public float MaxXPos;
         public float MinSize;
 
+        
+
+        public MarkingFaultData()
+        {
+            Data = new List<MarkingFaultDatum>();
+            Dic = new Dictionary<int, List<MarkingFaultDatum>>();
+        }
+
         public void Reset()
         {
             Data.Clear();
+            Dic.Clear();
             MinXPos = 0.0f;
             MaxXPos = 0.0f;
             MinSize = 0.0f;
+        }
+
+        public void GetData(double start, double end, ref List<MarkingData> data)
+        {
+            int key1 = (int)(start / 10000.0);
+            int key2 = (int)(end / 10000.0);
+
+            for (int i = key1; i <= key2; i++)
+            {
+                if (Dic.ContainsKey(i) == true)
+                {
+                    foreach (MarkingFaultDatum datum in Dic[i])
+                    {
+                        if (datum.YPOS_M >= start && datum.YPOS_M <= end)
+                        {
+                            MarkingData item = new MarkingData();
+                            item.DefectLine = datum.DefectLine;
+                            item.BCNO = datum.BCNO;
+                            item.CAM_NO = datum.CAM_NO;
+                            item.FAULTID = datum.FAULTID;
+                            item.FLTNO = datum.FLTNO;
+                            item.OFFSET = datum.OFFSET;
+                            item.UseCSVResult = datum.UseCSVResult;
+                            item.XOFFSET = datum.XOFFSET;
+                            item.XPOS_M = datum.XPOS_M;
+                            item.YPOS_M = datum.YPOS_M;
+                            item.SIZE_X = datum.SIZE_X;
+                            item.SIZE_Y = datum.SIZE_Y;
+                            data.Add(item);
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -1408,6 +1408,12 @@ namespace DefectDBManager
 
                                             resultDefect.Data.Add(tmpFltData);
                                             resultDefect.MarkFault.Data.Add(markData);
+                                            int key = (int)(markData.YPOS_M / 10000.0f);
+                                            if (resultDefect.MarkFault.Dic.ContainsKey(key) == true)
+                                                resultDefect.MarkFault.Dic[key].Add(markData);
+                                            else
+                                                resultDefect.MarkFault.Dic[key] = new List<MarkingFaultDatum> { markData };
+
                                             dataCnt++;
                                             logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
                                             _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
@@ -1751,6 +1757,13 @@ namespace DefectDBManager
                         tmpMarkData.DefectLine = 7;
 
                     resultDefect.MarkFault.Data.Add(tmpMarkData);
+
+                    int key = (int)(tmpMarkData.YPOS_M / 10000.0f);
+                    if (resultDefect.MarkFault.Dic.ContainsKey(key) == true)
+                        resultDefect.MarkFault.Dic[key].Add(tmpMarkData);
+                    else
+                        resultDefect.MarkFault.Dic[key] = new List<MarkingFaultDatum> { tmpMarkData };
+
                     _RollDefectInfo.AddYPos(tmpMarkData.YPOS_M);
 
                 }
@@ -2074,6 +2087,12 @@ namespace DefectDBManager
                     resultDefect.MarkFault.Data.Add(tmpMarkData);
                     resultDefect.Data.Add(tmpData);
 
+                    int key = (int)(tmpMarkData.YPOS_M / 10000.0f);
+                    if (resultDefect.MarkFault.Dic.ContainsKey(key) == true)
+                        resultDefect.MarkFault.Dic[key].Add(tmpMarkData);
+                    else
+                        resultDefect.MarkFault.Dic[key] = new List<MarkingFaultDatum> { tmpMarkData };
+
                     _RollDefectInfo.AddYPos(tmpData.YPOS_M);
                 }
 
@@ -2227,6 +2246,12 @@ namespace DefectDBManager
 
                     faultData.Add(tmpData);
                     markFaultData.Add(tmpMarkData);
+
+                    int key = (int)(tmpMarkData.YPOS_M / 10000.0f);
+                    if (resultDefect.MarkFault.Dic.ContainsKey(key) ==true)
+                        resultDefect.MarkFault.Dic[key].Add(tmpMarkData);
+                    else
+                        resultDefect.MarkFault.Dic[key] = new List<MarkingFaultDatum> { tmpMarkData };
 
                     if (isInit == false && strbcr != null)
                     {
