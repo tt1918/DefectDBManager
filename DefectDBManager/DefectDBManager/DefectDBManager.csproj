@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C3D43DC7-C1D7-406A-A16A-A62587A424A7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DefectDBManager</RootNamespace>
     <AssemblyName>DefectDBManager</AssemblyName>
@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\CSV\CSV.cs" />
     <Compile Include="DB\DbData.cs" />
     <Compile Include="DB\define\CsvLoadInfo.cs" />
     <Compile Include="DB\define\DbProgress.cs" />

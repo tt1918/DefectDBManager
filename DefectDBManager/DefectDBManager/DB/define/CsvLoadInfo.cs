@@ -152,4 +152,11 @@ namespace DefectDBManager
         public string jig;
         public string machine;
     }
+
+    public struct CSVLoadInfo
+    {
+        public string LotNo;
+        public int BadCnt;
+        public float DefectPerM;
+    }
 };

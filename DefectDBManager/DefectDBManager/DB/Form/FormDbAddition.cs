@@ -143,7 +143,7 @@ namespace DefectDBManager
                         return;
                     }
 
-                    if(_DBData.LoadAreaDelCSV(browser.FileName)==true)
+                    if(AreaDelCSV.Load(browser.FileName, _DBData)==true)
                         updateAREADELList();
                 }
             }
@@ -161,7 +161,7 @@ namespace DefectDBManager
                 if (browser.ShowDialog() == DialogResult.OK)
                 {
                     string path = browser.FileName;
-                    _DBData.SaveAreaDelCSV(path);
+                    AreaDelCSV.Save(path, _DBData);
                 }
             }
         }

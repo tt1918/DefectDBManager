@@ -104,6 +104,16 @@ namespace DefectDBManager
             MinSize = 0.0f;
         }
 
+        public void Add(MarkingFaultDatum val)
+        {
+            Data.Add(val);
+            int key = (int)(val.YPOS_M / 10000.0f);
+            if (Dic.ContainsKey(key) == true)
+                Dic[key].Add(val);
+            else
+                Dic[key] = new List<MarkingFaultDatum> { val };
+        }
+
         public void GetData(double start, double end, ref List<MarkingData> data)
         {
             int key1 = (int)(start / 10000.0);
@@ -159,5 +169,7 @@ namespace DefectDBManager
             Data.Clear();
             MarkFault.Reset();
         }
+
+        
     }
 }

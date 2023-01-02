@@ -38,4 +38,5 @@ namespace DefectDBManager
             Data.Clear();
         }
     }
+
 }

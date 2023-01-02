@@ -125,6 +125,47 @@ namespace DefectDBManager
             if(FLTIDCheckError==false && bMatch==false)
                 FLTIDCheckError = true;
         }
+
+        public void AddCSVFalut(int id)
+        {
+            CSVFalutCount[id]++;
+        }
+        public void AddESCount(int id)
+        {
+            if (id == 2305 || id == 2321) ESClassDefectCnt[(int)eESDefectClass.CROSS1]++;
+            else if (id == 2306 || id == 2322) ESClassDefectCnt[(int)eESDefectClass.CROSS2]++;
+            else if (id == 2307 || id == 2323) ESClassDefectCnt[(int)eESDefectClass.CROSS3]++;
+            else if (id == 2308 || id == 2324) ESClassDefectCnt[(int)eESDefectClass.CROSS4]++;
+            else if (id == 2310 || id == 2326) ESClassDefectCnt[(int)eESDefectClass.CROSS5]++;
+            else if (id == 2311 || id == 2327) ESClassDefectCnt[(int)eESDefectClass.CROSS6]++;
+            else if (id == 2309 || id == 2325) ESClassDefectCnt[(int)eESDefectClass.CROSS7]++;
+            else if (id == 1025 || id == 1041) ESClassDefectCnt[(int)eESDefectClass.THRU1]++;
+            else if (id == 1026 || id == 1042) ESClassDefectCnt[(int)eESDefectClass.THRU2]++;
+            else if (id == 1027 || id == 1043) ESClassDefectCnt[(int)eESDefectClass.THRU3]++;
+            else if (id == 1030 || id == 1046) ESClassDefectCnt[(int)eESDefectClass.THRU4]++;
+            else if (id >= 1537 && id < 1567) ESClassDefectCnt[(int)eESDefectClass.REF1]++;
+            else if (id == 513) ESClassDefectCnt[(int)eESDefectClass.FREQ1]++;
+            else if (id == 514) ESClassDefectCnt[(int)eESDefectClass.FREQ2]++;
+            else if (id == 515) ESClassDefectCnt[(int)eESDefectClass.FREQ3]++;
+            else if (id == 516) ESClassDefectCnt[(int)eESDefectClass.FREQ4]++;
+            else if (id == 517) ESClassDefectCnt[(int)eESDefectClass.FREQ5]++;
+            else if (id == 518) ESClassDefectCnt[(int)eESDefectClass.FREQ6]++;
+            else if (id == 593) ESClassDefectCnt[(int)eESDefectClass.SAME1]++;
+            else if (id == 594) ESClassDefectCnt[(int)eESDefectClass.SAME2]++;
+            else if (id == 595) ESClassDefectCnt[(int)eESDefectClass.SAME3]++;
+            else if (id == 596) ESClassDefectCnt[(int)eESDefectClass.SAME4]++;
+            else if (id == 597) ESClassDefectCnt[(int)eESDefectClass.SAME5]++;
+            else ESClassDefectCnt[(int)eESDefectClass.ETC]++;
+        }
+
+        public int GetTotalDefect()
+        {
+            int total = 0;  
+            for (int i = 0; i < ESClassDefectCnt.Length; i++)
+                total += ESClassDefectCnt[i];
+
+            return total;
+        }
     }
 
 

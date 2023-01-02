@@ -38,7 +38,7 @@ namespace DefectDBManager
 
     public class Option
     {
-        public bool isLoaded;
+        public bool isLoadCSV;
         public string lotName;
         public eDbIdWhen dbWhen;
 
@@ -108,14 +108,14 @@ namespace DefectDBManager
             prodAvaliableSpan = 0;
             xOffset = 0;
 
-            isLoaded = false;
+            isLoadCSV = false;
 
             searchOP = new SearchOption();
         }
 
         public void Copy(Option src)
         {
-            isLoaded = src.isLoaded;
+            isLoadCSV = src.isLoadCSV;
             lotName = src.lotName;
 
             vendor = src.vendor;

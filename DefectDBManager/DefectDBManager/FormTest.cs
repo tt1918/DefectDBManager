@@ -40,9 +40,7 @@ namespace DefectDBManager
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //_TemDefects.SearchLot("TKN0710-33", true, 0, true, true, false);
-            MarkingData[] data = _TemDefects.GetMarkDefectData("aaa", 1430000.0f, 1430200.0f);
-            int size = data.Length;
+            _TemDefects.SearchLot("TKN0710-33", true, 0, true, true, false);
         }
 
         private void button6_Click(object sender, EventArgs e)

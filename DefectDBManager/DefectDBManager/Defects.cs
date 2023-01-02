@@ -455,6 +455,12 @@ namespace DefectDBManager
             dbManager._DbProc[0]._DbResult = dbManager._DbProc[1]._DbResult;
             dbManager._DbProc[1]._DbResult = new DbSearchResult();
 
+            if(dbManager._DbProc[1].DbOption.isLoadCSV==true)
+            {
+                dbManager._DbProc[0]._CSVLoadInfo = dbManager._DbProc[1]._CSVLoadInfo;
+                dbManager._DbProc[1]._CSVLoadInfo = new List<CSVLoadInfo>();
+            }
+            
             ResultData oldMarkingData;
             oldMarkingData = dbManager._DbProc[0].ResultDefect;
             dbManager._DbProc[0].ResultDefect = dbManager._DbProc[1].ResultDefect;
@@ -465,8 +471,6 @@ namespace DefectDBManager
             dbManager._DbProc[1].ResultDefect = new ResultData();
             dbManager._DbProc[1].ResetDataAll();
 			
-            dbManager._FormDB_Next.CreateListViewData();
-
             dbManager._FormDB_Now.UpdateListViewFromLotChange();
             dbManager._FormDB_Next.UpdateListViewFromLotChange();
 

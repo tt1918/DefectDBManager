@@ -204,11 +204,11 @@ namespace DefectDBManager
             {
                 this.lblTitle.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
 
-                if(DataBase.DbOption.isLoaded==true) displayUIOptionFromDBOption();
-                else                                 displayMarkingOption();
+                if (DataBase.DbOption.isLoadCSV == true) displayUIOptionFromDBOption();
+                else displayMarkingOption();
                 dbCommTimer.Start();
                 dbConn.OnDbConnect += OnDbConnect;
-                if(this.IsDataBaseChanged==true)
+                if (this.IsDataBaseChanged == true)
                 {
                     makeAllListViewData();
                     updateLotChangeResult();
@@ -408,77 +408,85 @@ namespace DefectDBManager
                 listViewBCNO.Columns.Add(BCnoHeader[i], listBCnoWidth[i]);
         }
 
-        private void makeBCNOListDataByCSV()
+
+        private void makeBCNOListData()
         {
-            int headCnt = listViewBCNO.Items.Count + 1;
             try
             {
-                DBListViewBuf itemBuf = new DBListViewBuf(4);
-                itemBuf.items[0] = headCnt.ToString();
-                itemBuf.items[1] = dataBase._RollDefectInfo.LotNo + "(CSV)";
-                itemBuf.items[2] = dataBase._RollDefectInfo.BadCnt.ToString();
-                itemBuf.items[3] = $"{dataBase._RollDefectInfo.GetDefectPerM():F3}";
-                BCNO_LV_Data.Data.Add(itemBuf);
+                if (DataBase.DbOption.isLoadCSV == false)
+                {
+                    int count = System.Enum.GetValues(typeof(eFCD)).Length;
+                    List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT_Data;
+
+                    // 리스트 초기화는 따로 불러서 처리
+
+                    bool useSplit = DataBase.DbOption.searchOP.useSplit;
+                    string title = DataBase.DbOption.searchOP.Title;
+                    eCSV_TYPE type = dataBase.DbDestConfig.CSVType;
+
+                    int total = 0;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        int subCnt = data[i].Count;
+                        for (int j = 0; j < subCnt; j++)
+                        {
+                            int cnt = data[i][j].Count;
+                            for (int k = 0; k < cnt; k++)
+                            {
+                                INSPDATData tmpData = data[i][j][k];
+
+                                DBListViewBuf itemBuf = new DBListViewBuf(6);
+                                // No.0
+                                if (useSplit == true) itemBuf.items[0] = $"{total + 1}({title})";
+                                else itemBuf.items[0] = $"{total + 1}";
+                                total++;
+                                // No.1
+                                if (type == eCSV_TYPE.KORENO || type == eCSV_TYPE.KORENO_RK || type == eCSV_TYPE.KORENO_RK_IJP)
+                                {
+                                    if (i == (int)eFCD.TG) itemBuf.items[1] = this.dataBase.DbOption.lotName;
+                                    else itemBuf.items[1] = tmpData.BCNO;
+                                }
+                                else
+                                {
+                                    itemBuf.items[1] = tmpData.LOTNO;
+                                }
+
+                                // No.2
+                                itemBuf.items[2] = $"{tmpData.RollCtlCnt}";
+                                // No.3
+                                if (tmpData.Width != 0 && tmpData.Length != 0)
+                                    itemBuf.items[3] = $"{(double)(tmpData.RollCtlCnt) / (double)((tmpData.Width / 1000) * (tmpData.Length / 1000)):F02}";
+                                else
+                                    itemBuf.items[3] = "0.0";
+                                // No.4
+                                itemBuf.items[4] = "0";
+                                // No.5
+                                itemBuf.items[5] = tmpData.BCNO;
+                                BCNO_LV_Data.Data.Add(itemBuf);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    BCNO_LV_Data.Data.Clear();
+                    int index = 0;
+                    foreach(var item in DataBase._CSVLoadInfo)
+                    {
+                        DBListViewBuf itemBuf = new DBListViewBuf(4);
+                        itemBuf.items[0] = index.ToString();
+                        itemBuf.items[1] = item.LotNo;
+                        itemBuf.items[2] = item.BadCnt.ToString();
+                        itemBuf.items[3] = $"{item.DefectPerM:F3}";
+                        BCNO_LV_Data.Data.Add(itemBuf);
+                        index++;
+                    }
+                }
             }
             finally
             {
 
-            }
-        }
-
-        private void makeBCNOListData()
-        {
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT_Data;
-
-            // 리스트 초기화는 따로 불러서 처리
-
-            bool useSplit = DataBase.DbOption.searchOP.useSplit;
-            string title = DataBase.DbOption.searchOP.Title;
-            eCSV_TYPE type = dataBase.DbDestConfig.CSVType;
-
-            int total = 0;
-
-            for (int i = 0; i < count; i++)
-            {
-                int subCnt = data[i].Count;
-                for (int j = 0; j < subCnt; j++)
-                {
-                    int cnt = data[i][j].Count;
-                    for (int k = 0; k < cnt; k++)
-                    {
-                        INSPDATData tmpData = data[i][j][k];
-
-                        DBListViewBuf itemBuf = new DBListViewBuf(6);
-                        // No.0
-                        if (useSplit == true) itemBuf.items[0] = $"{total + 1}({title})";
-                        else itemBuf.items[0] = $"{total + 1}";
-                        total++;
-                        // No.1
-                        if (type == eCSV_TYPE.KORENO || type == eCSV_TYPE.KORENO_RK || type == eCSV_TYPE.KORENO_RK_IJP)
-                        {
-                            if (i == (int)eFCD.TG) itemBuf.items[1] = this.dataBase.DbOption.lotName;
-                            else itemBuf.items[1] = tmpData.BCNO;
-                        }
-                        else
-                        {
-                            itemBuf.items[1] = tmpData.LOTNO;
-                        }
-
-                        // No.2
-                        itemBuf.items[2] = $"{tmpData.RollCtlCnt}";
-                        // No.3
-                        if (tmpData.Width != 0 && tmpData.Length != 0)
-                            itemBuf.items[3] = $"{(double)(tmpData.RollCtlCnt) / (double)((tmpData.Width / 1000) * (tmpData.Length / 1000)):F02}";
-                        else
-                            itemBuf.items[3] = "0.0";
-                        // No.4
-                        itemBuf.items[4] = "0";
-                        // No.5
-                        itemBuf.items[5] = tmpData.BCNO;
-                        BCNO_LV_Data.Data.Add(itemBuf);
-                    }
-                }
             }
         }
 
@@ -802,7 +810,7 @@ namespace DefectDBManager
                 listViewINSPDAT.BeginUpdate();
                 listViewINSPDAT.Items.Clear();
                 // 리스트 초기화는 따로
-                foreach(var data in INSPDAT_LV_Data.Data)
+                foreach (var data in INSPDAT_LV_Data.Data)
                 {
                     ListViewItem listItem = new ListViewItem(data.items[0]);
                     listItem.SubItems.Add(data.items[1]);
@@ -985,7 +993,7 @@ namespace DefectDBManager
                 // Fault Data 표시
                 this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
 
-                DataBase.DbOption.isLoaded = true;
+                DataBase.DbOption.isLoadCSV = true;
             }
             finally
             {
@@ -1004,10 +1012,10 @@ namespace DefectDBManager
                 }
 
                 // FLTID 비교 발생 시 에러 알람
-                if(dataBase.CrtParam.FLTIDCheckError==true)
+                if (dataBase.CrtParam.FLTIDCheckError == true)
                     OnEndCsvReading((int)eEventReport.eBCR_FLTID_CheckError);
                 // ROLL MAP 거리 비교 에러 시 알람 처리
-                if(dataBase.CrtParam.InspRollCheckError==true)
+                if (dataBase.CrtParam.InspRollCheckError == true)
                     OnEndCsvReading((int)eEventReport.eBCR_INSPMETER_CheckError);
 
                 this.updateSearchResult(isSuccess, 0);
@@ -1033,6 +1041,11 @@ namespace DefectDBManager
         {
             this.clearAllListView();
             this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
+            makeBCNOListData();
+            makePTRYLPListViewData();
+            makePTRYOPListViewData();
+            makeMRKCTLMSTListViewData();
+            makeINSPDATListView();
             displayBCNOListView();
             displayPTRYLPListView();
             displayPTRYOPListView();
@@ -1043,7 +1056,7 @@ namespace DefectDBManager
             if (this.dataBase.DbOption.dbWhen == eDbIdWhen.Now)
             {
                 lblDownloadResult.Text = "Lot Change is finished.";
-            }   
+            }
             else
             {
                 lblDownloadResult.Text = "ResultFault :";
@@ -1118,13 +1131,13 @@ namespace DefectDBManager
 
         private void threadFromCSV()
         {
-            this.dataBase.OpenCsvFile(this.csvPath);
-            DataBase.DbOption.isLoaded = true;
+            DefectCSV.Open(this.csvPath, dataBase);
+            DataBase.DbOption.isLoadCSV = true;
             this.Invoke(new MethodInvoker(delegate ()
             {
                 this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
                 // CSV 파일에서 BCNO Data 버퍼 생성
-                this.makeBCNOListDataByCSV();
+                this.makeBCNOListData();
                 this.displayBCNOListView();
                 this.displayFAULTDATListView();
 
@@ -1193,7 +1206,7 @@ namespace DefectDBManager
             // delete last defect list data
             ResetListViewData();
 
-            DataBase.DbOption.isLoaded = false;
+            DataBase.DbOption.isLoadCSV = false;
             // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
             displayUIOptionFromDBOption();
             DestConfigUnit u = new DestConfigUnit();
@@ -1360,7 +1373,7 @@ namespace DefectDBManager
             else
                 OnEndCsvReading((int)eEventReport.eResetDataNext);
 
-            DataBase.DbOption.isLoaded = false;
+            DataBase.DbOption.isLoadCSV = false;
 
             // Update dbconfig from FWPlace
             displayMarkingOption();
@@ -1432,7 +1445,7 @@ namespace DefectDBManager
                 if (browser.ShowDialog() == DialogResult.OK)
                 {
                     string path = browser.FileName;
-                    DataBase.SaveCSV(path);
+                    DefectCSV.Save(path, DataBase);
                 }
             }
         }
