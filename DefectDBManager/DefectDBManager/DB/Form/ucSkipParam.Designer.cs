@@ -63,7 +63,7 @@
             this.gbCtrlName.Controls.Add(this.lblSize);
             this.gbCtrlName.Controls.Add(this.lblSizeY);
             this.gbCtrlName.Controls.Add(this.lblSizeX);
-            this.gbCtrlName.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbCtrlName.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbCtrlName.Location = new System.Drawing.Point(4, 0);
             this.gbCtrlName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gbCtrlName.Name = "gbCtrlName";
@@ -76,140 +76,140 @@
             // tbSizeMax
             // 
             this.tbSizeMax.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeMax.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeMax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeMax.Location = new System.Drawing.Point(111, 89);
             this.tbSizeMax.Name = "tbSizeMax";
-            this.tbSizeMax.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeMax.Size = new System.Drawing.Size(47, 16);
             this.tbSizeMax.TabIndex = 2;
             this.tbSizeMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeMin
             // 
             this.tbSizeMin.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeMin.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeMin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeMin.Location = new System.Drawing.Point(61, 89);
             this.tbSizeMin.Name = "tbSizeMin";
-            this.tbSizeMin.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeMin.Size = new System.Drawing.Size(47, 16);
             this.tbSizeMin.TabIndex = 2;
             this.tbSizeMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeYMax
             // 
             this.tbSizeYMax.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeYMax.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeYMax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeYMax.Location = new System.Drawing.Point(111, 66);
             this.tbSizeYMax.Name = "tbSizeYMax";
-            this.tbSizeYMax.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeYMax.Size = new System.Drawing.Size(47, 16);
             this.tbSizeYMax.TabIndex = 2;
             this.tbSizeYMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeYMin
             // 
             this.tbSizeYMin.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeYMin.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeYMin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeYMin.Location = new System.Drawing.Point(61, 66);
             this.tbSizeYMin.Name = "tbSizeYMin";
-            this.tbSizeYMin.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeYMin.Size = new System.Drawing.Size(47, 16);
             this.tbSizeYMin.TabIndex = 2;
             this.tbSizeYMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeXMax
             // 
             this.tbSizeXMax.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeXMax.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeXMax.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeXMax.Location = new System.Drawing.Point(111, 42);
             this.tbSizeXMax.Name = "tbSizeXMax";
-            this.tbSizeXMax.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeXMax.Size = new System.Drawing.Size(47, 16);
             this.tbSizeXMax.TabIndex = 2;
             this.tbSizeXMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tbSizeXMin
             // 
             this.tbSizeXMin.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSizeXMin.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbSizeXMin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSizeXMin.Location = new System.Drawing.Point(60, 42);
             this.tbSizeXMin.Name = "tbSizeXMin";
-            this.tbSizeXMin.Size = new System.Drawing.Size(47, 14);
+            this.tbSizeXMin.Size = new System.Drawing.Size(47, 16);
             this.tbSizeXMin.TabIndex = 2;
             this.tbSizeXMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(164, 88);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.Size = new System.Drawing.Size(29, 15);
             this.label3.TabIndex = 1;
             this.label3.Text = "mm";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(164, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.Size = new System.Drawing.Size(29, 15);
             this.label2.TabIndex = 1;
             this.label2.Text = "mm";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(164, 41);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.Size = new System.Drawing.Size(29, 15);
             this.label1.TabIndex = 1;
             this.label1.Text = "mm";
             // 
             // lblMax
             // 
             this.lblMax.AutoSize = true;
-            this.lblMax.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblMax.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMax.Location = new System.Drawing.Point(115, 19);
             this.lblMax.Name = "lblMax";
-            this.lblMax.Size = new System.Drawing.Size(38, 12);
+            this.lblMax.Size = new System.Drawing.Size(33, 15);
             this.lblMax.TabIndex = 1;
             this.lblMax.Text = "Max.";
             // 
             // lblMin
             // 
             this.lblMin.AutoSize = true;
-            this.lblMin.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblMin.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMin.Location = new System.Drawing.Point(66, 19);
             this.lblMin.Name = "lblMin";
-            this.lblMin.Size = new System.Drawing.Size(34, 12);
+            this.lblMin.Size = new System.Drawing.Size(31, 15);
             this.lblMin.TabIndex = 1;
             this.lblMin.Text = "Min.";
             // 
             // lblSize
             // 
             this.lblSize.AutoSize = true;
-            this.lblSize.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSize.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSize.Location = new System.Drawing.Point(6, 90);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(36, 12);
+            this.lblSize.Size = new System.Drawing.Size(31, 15);
             this.lblSize.TabIndex = 1;
             this.lblSize.Text = "SIZE";
             // 
             // lblSizeY
             // 
             this.lblSizeY.AutoSize = true;
-            this.lblSizeY.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSizeY.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSizeY.Location = new System.Drawing.Point(6, 67);
             this.lblSizeY.Name = "lblSizeY";
-            this.lblSizeY.Size = new System.Drawing.Size(50, 12);
+            this.lblSizeY.Size = new System.Drawing.Size(41, 15);
             this.lblSizeY.TabIndex = 1;
             this.lblSizeY.Text = "SIZE Y";
             // 
             // lblSizeX
             // 
             this.lblSizeX.AutoSize = true;
-            this.lblSizeX.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSizeX.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSizeX.Location = new System.Drawing.Point(6, 43);
             this.lblSizeX.Name = "lblSizeX";
-            this.lblSizeX.Size = new System.Drawing.Size(50, 12);
+            this.lblSizeX.Size = new System.Drawing.Size(41, 15);
             this.lblSizeX.TabIndex = 0;
             this.lblSizeX.Text = "SIZE X";
             // 

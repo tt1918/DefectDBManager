@@ -133,6 +133,7 @@ namespace DefectDBManager
                 return;
             if (disposing)
             {
+                _DbConn.LoginInfo.Write();
                 _DbConn.Dispose();
             }
             this.disposed = true;
@@ -142,12 +143,6 @@ namespace DefectDBManager
         {
             try
             {
-                _DbConn.UserID = _DestConfig.dbLogin.DbID;
-                _DbConn.Password = _DestConfig.dbLogin.DbPW;
-                _DbConn.DBName = _DestConfig.dbLogin.DbName;
-                _DbConn.ConStringType = _DestConfig.dbLogin.DBConStringType;
-                _DbConn.HostIP = _DestConfig.dbLogin.DBIP;
-                _DbConn.DBPort = _DestConfig.dbLogin.DBPort;
                 _DbConn.Connect();
             }
             catch (Exception ex)

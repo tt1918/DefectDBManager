@@ -27,40 +27,8 @@ namespace DefectDBManager
             get;
             private set;
         }
-        public int ConStringType { get; set; }
-        public string HostIP
-        {
-            get { return hostIP; }
-            set { hostIP = value; }
-        }
-        private string hostIP;
-        public string UserID
-        {
-            get { return userID; }
-            set { userID = value; }
-        }
-        private string userID;
 
-        public string Password
-        {
-            get { return password; }
-            set { password = value; }
-        }
-        private string password;
-
-        public string DBName
-        {
-            get { return dbName; }
-            set { dbName = value; }
-        }
-        private string dbName;
-
-        public string DBPort
-        {
-            get { return dbPort; }
-            set { dbPort = value; }
-        }
-        private string dbPort;
+        public DBLoginInfo LoginInfo { get; set; }
 
         public OracleConnection Connection
         {
@@ -76,7 +44,7 @@ namespace DefectDBManager
 
         public OracleDbConnection()
         {
-
+            LoginInfo = new DBLoginInfo();
         }
 
         ~OracleDbConnection()
@@ -179,17 +147,17 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            if (ConStringType == 0)
+            if (LoginInfo.StringType == 0)
             {
-                DBConnString = String.Format($"Data Source={dbName};" +
-                             $"User Id={UserID};Password={password};Connection Timeout=30;");
+                DBConnString = String.Format($"Data Source={LoginInfo.Name};" +
+                             $"User Id={LoginInfo.ID};Password={LoginInfo.PW};Connection Timeout=30;");
             }
-            else if (ConStringType == 1)
+            else if (LoginInfo.StringType == 1)
             {
                 DBConnString = String.Format("Data Source=(DESCRIPTION="
-                            + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={hostIP})(PORT={DBPort})))"
-                            + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={dbName})));"
-                            + $"User Id={userID};Password={password}");
+                            + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={LoginInfo.IP})(PORT={LoginInfo.Port})))"
+                            + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={LoginInfo.Name})));"
+                            + $"User Id={LoginInfo.ID};Password={LoginInfo.PW}");
             }
 
             connectToDB(DBConnString);

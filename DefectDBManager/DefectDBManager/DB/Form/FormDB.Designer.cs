@@ -139,7 +139,7 @@
             // lblLotName
             // 
             this.lblLotName.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLotName.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLotName.Location = new System.Drawing.Point(144, 14);
             this.lblLotName.Name = "lblLotName";
             this.lblLotName.Size = new System.Drawing.Size(84, 17);
@@ -150,20 +150,20 @@
             // tbLotName
             // 
             this.tbLotName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbLotName.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.tbLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbLotName.Location = new System.Drawing.Point(233, 15);
             this.tbLotName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbLotName.Name = "tbLotName";
-            this.tbLotName.Size = new System.Drawing.Size(166, 14);
+            this.tbLotName.Size = new System.Drawing.Size(166, 16);
             this.tbLotName.TabIndex = 1;
             this.tbLotName.TextChanged += new System.EventHandler(this.tbLotName_TextChanged);
             // 
             // btnOpenCSV
             // 
-            this.btnOpenCSV.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenCSV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOpenCSV.Location = new System.Drawing.Point(690, 4);
             this.btnOpenCSV.Name = "btnOpenCSV";
-            this.btnOpenCSV.Size = new System.Drawing.Size(70, 38);
+            this.btnOpenCSV.Size = new System.Drawing.Size(70, 41);
             this.btnOpenCSV.TabIndex = 2;
             this.btnOpenCSV.Text = "OPEN CSV";
             this.btnOpenCSV.UseVisualStyleBackColor = true;
@@ -178,7 +178,7 @@
             this.gbSearchTime.Controls.Add(this.tbSearchEndTime);
             this.gbSearchTime.Controls.Add(this.tbSearchStartTime);
             this.gbSearchTime.Controls.Add(this.cbSetSearchTime);
-            this.gbSearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbSearchTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbSearchTime.Location = new System.Drawing.Point(406, 6);
             this.gbSearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbSearchTime.Name = "gbSearchTime";
@@ -200,7 +200,7 @@
             // btnApplySearchTime
             // 
             this.btnApplySearchTime.Enabled = false;
-            this.btnApplySearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplySearchTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnApplySearchTime.Location = new System.Drawing.Point(152, 16);
             this.btnApplySearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnApplySearchTime.Name = "btnApplySearchTime";
@@ -213,51 +213,51 @@
             // lblSearchEndTime
             // 
             this.lblSearchEndTime.AutoSize = true;
-            this.lblSearchEndTime.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSearchEndTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSearchEndTime.Location = new System.Drawing.Point(8, 37);
             this.lblSearchEndTime.Name = "lblSearchEndTime";
-            this.lblSearchEndTime.Size = new System.Drawing.Size(62, 12);
+            this.lblSearchEndTime.Size = new System.Drawing.Size(58, 15);
             this.lblSearchEndTime.TabIndex = 2;
             this.lblSearchEndTime.Text = "종료 시간";
             // 
             // lblSearchStartTime
             // 
             this.lblSearchStartTime.AutoSize = true;
-            this.lblSearchStartTime.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblSearchStartTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSearchStartTime.Location = new System.Drawing.Point(8, 18);
             this.lblSearchStartTime.Name = "lblSearchStartTime";
-            this.lblSearchStartTime.Size = new System.Drawing.Size(62, 12);
+            this.lblSearchStartTime.Size = new System.Drawing.Size(58, 15);
             this.lblSearchStartTime.TabIndex = 2;
             this.lblSearchStartTime.Text = "시작 시간";
             // 
             // tbSearchEndTime
             // 
             this.tbSearchEndTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSearchEndTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearchEndTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSearchEndTime.Location = new System.Drawing.Point(78, 36);
             this.tbSearchEndTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSearchEndTime.Name = "tbSearchEndTime";
-            this.tbSearchEndTime.Size = new System.Drawing.Size(71, 15);
+            this.tbSearchEndTime.Size = new System.Drawing.Size(71, 16);
             this.tbSearchEndTime.TabIndex = 1;
             // 
             // tbSearchStartTime
             // 
             this.tbSearchStartTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbSearchStartTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearchStartTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbSearchStartTime.Location = new System.Drawing.Point(78, 17);
             this.tbSearchStartTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSearchStartTime.Name = "tbSearchStartTime";
-            this.tbSearchStartTime.Size = new System.Drawing.Size(71, 15);
+            this.tbSearchStartTime.Size = new System.Drawing.Size(71, 16);
             this.tbSearchStartTime.TabIndex = 1;
             // 
             // cbSetSearchTime
             // 
             this.cbSetSearchTime.AutoSize = true;
-            this.cbSetSearchTime.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSetSearchTime.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSetSearchTime.Location = new System.Drawing.Point(6, -1);
             this.cbSetSearchTime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbSetSearchTime.Name = "cbSetSearchTime";
-            this.cbSetSearchTime.Size = new System.Drawing.Size(120, 17);
+            this.cbSetSearchTime.Size = new System.Drawing.Size(104, 19);
             this.cbSetSearchTime.TabIndex = 0;
             this.cbSetSearchTime.Text = "검색 시간 설정";
             this.cbSetSearchTime.UseVisualStyleBackColor = true;
@@ -267,12 +267,12 @@
             // 
             this.cbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbDestination.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbDestination.FormattingEnabled = true;
             this.cbDestination.Location = new System.Drawing.Point(233, 36);
             this.cbDestination.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbDestination.Name = "cbDestination";
-            this.cbDestination.Size = new System.Drawing.Size(166, 20);
+            this.cbDestination.Size = new System.Drawing.Size(166, 23);
             this.cbDestination.TabIndex = 0;
             this.cbDestination.SelectedIndexChanged += new System.EventHandler(this.cbDestination_SelectedIndexChanged);
             // 
@@ -325,10 +325,10 @@
             // 
             // btnUpdateMarkingData
             // 
-            this.btnUpdateMarkingData.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnUpdateMarkingData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdateMarkingData.Location = new System.Drawing.Point(763, 4);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
-            this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 38);
+            this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 41);
             this.btnUpdateMarkingData.TabIndex = 13;
             this.btnUpdateMarkingData.Text = "UPDATE DATA";
             this.btnUpdateMarkingData.UseVisualStyleBackColor = true;
@@ -336,11 +336,11 @@
             // 
             // btnSearchDB
             // 
-            this.btnSearchDB.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchDB.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchDB.Location = new System.Drawing.Point(617, 4);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
-            this.btnSearchDB.Size = new System.Drawing.Size(70, 38);
+            this.btnSearchDB.Size = new System.Drawing.Size(70, 41);
             this.btnSearchDB.TabIndex = 8;
             this.btnSearchDB.Text = "검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
@@ -348,10 +348,10 @@
             // 
             // btnEditDefectClass
             // 
-            this.btnEditDefectClass.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnEditDefectClass.Location = new System.Drawing.Point(436, 67);
+            this.btnEditDefectClass.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEditDefectClass.Location = new System.Drawing.Point(436, 72);
             this.btnEditDefectClass.Name = "btnEditDefectClass";
-            this.btnEditDefectClass.Size = new System.Drawing.Size(75, 37);
+            this.btnEditDefectClass.Size = new System.Drawing.Size(75, 42);
             this.btnEditDefectClass.TabIndex = 12;
             this.btnEditDefectClass.Text = "EDIT CLASS";
             this.btnEditDefectClass.UseVisualStyleBackColor = true;
@@ -359,10 +359,10 @@
             // 
             // btnShowSkipParam
             // 
-            this.btnShowSkipParam.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnShowSkipParam.Location = new System.Drawing.Point(358, 67);
+            this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnShowSkipParam.Location = new System.Drawing.Point(358, 72);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
-            this.btnShowSkipParam.Size = new System.Drawing.Size(75, 37);
+            this.btnShowSkipParam.Size = new System.Drawing.Size(77, 42);
             this.btnShowSkipParam.TabIndex = 11;
             this.btnShowSkipParam.Text = "SKIP PARAM";
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
@@ -370,11 +370,11 @@
             // 
             // btnEditDefect
             // 
-            this.btnEditDefect.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnEditDefect.Location = new System.Drawing.Point(592, 67);
+            this.btnEditDefect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEditDefect.Location = new System.Drawing.Point(592, 72);
             this.btnEditDefect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEditDefect.Name = "btnEditDefect";
-            this.btnEditDefect.Size = new System.Drawing.Size(75, 37);
+            this.btnEditDefect.Size = new System.Drawing.Size(75, 42);
             this.btnEditDefect.TabIndex = 8;
             this.btnEditDefect.Text = "EDIT DEFECT";
             this.btnEditDefect.UseVisualStyleBackColor = true;
@@ -382,11 +382,11 @@
             // 
             // btnXOFSMST
             // 
-            this.btnXOFSMST.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnXOFSMST.Location = new System.Drawing.Point(514, 67);
+            this.btnXOFSMST.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnXOFSMST.Location = new System.Drawing.Point(514, 72);
             this.btnXOFSMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXOFSMST.Name = "btnXOFSMST";
-            this.btnXOFSMST.Size = new System.Drawing.Size(75, 37);
+            this.btnXOFSMST.Size = new System.Drawing.Size(75, 42);
             this.btnXOFSMST.TabIndex = 8;
             this.btnXOFSMST.Text = "Show More";
             this.btnXOFSMST.UseVisualStyleBackColor = true;
@@ -397,7 +397,7 @@
             this.gbDBConnection.Controls.Add(this.lblDbConnStateIcon);
             this.gbDBConnection.Controls.Add(this.btnDBConn);
             this.gbDBConnection.Controls.Add(this.lblDbConnState);
-            this.gbDBConnection.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbDBConnection.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDBConnection.Location = new System.Drawing.Point(6, 3);
             this.gbDBConnection.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbDBConnection.Name = "gbDBConnection";
@@ -414,13 +414,13 @@
             this.lblDbConnStateIcon.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblDbConnStateIcon.Location = new System.Drawing.Point(3, 14);
             this.lblDbConnStateIcon.Name = "lblDbConnStateIcon";
-            this.lblDbConnStateIcon.Size = new System.Drawing.Size(20, 12);
+            this.lblDbConnStateIcon.Size = new System.Drawing.Size(16, 15);
             this.lblDbConnStateIcon.TabIndex = 9;
             this.lblDbConnStateIcon.Text = "   ";
             // 
             // btnDBConn
             // 
-            this.btnDBConn.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDBConn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDBConn.Location = new System.Drawing.Point(23, 29);
             this.btnDBConn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDBConn.Name = "btnDBConn";
@@ -434,21 +434,21 @@
             // 
             this.lblDbConnState.AutoSize = true;
             this.lblDbConnState.BackColor = System.Drawing.SystemColors.Control;
-            this.lblDbConnState.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDbConnState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDbConnState.Location = new System.Drawing.Point(24, 14);
             this.lblDbConnState.Name = "lblDbConnState";
-            this.lblDbConnState.Size = new System.Drawing.Size(103, 12);
+            this.lblDbConnState.Size = new System.Drawing.Size(84, 15);
             this.lblDbConnState.TabIndex = 0;
             this.lblDbConnState.Text = "DISCONECTED";
             this.lblDbConnState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnExportCSV
             // 
-            this.btnExportCSV.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnExportCSV.Location = new System.Drawing.Point(690, 44);
+            this.btnExportCSV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportCSV.Location = new System.Drawing.Point(690, 45);
             this.btnExportCSV.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnExportCSV.Name = "btnExportCSV";
-            this.btnExportCSV.Size = new System.Drawing.Size(70, 38);
+            this.btnExportCSV.Size = new System.Drawing.Size(70, 41);
             this.btnExportCSV.TabIndex = 8;
             this.btnExportCSV.Text = "EXPORT CSV";
             this.btnExportCSV.UseVisualStyleBackColor = true;
@@ -457,8 +457,8 @@
             // gbOption
             // 
             this.gbOption.Controls.Add(this.cbUseMask);
-            this.gbOption.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.gbOption.Location = new System.Drawing.Point(203, 66);
+            this.gbOption.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbOption.Location = new System.Drawing.Point(203, 71);
             this.gbOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbOption.Name = "gbOption";
             this.gbOption.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -470,22 +470,22 @@
             // cbUseMask
             // 
             this.cbUseMask.AutoSize = true;
-            this.cbUseMask.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseMask.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbUseMask.Location = new System.Drawing.Point(8, 17);
             this.cbUseMask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseMask.Name = "cbUseMask";
-            this.cbUseMask.Size = new System.Drawing.Size(138, 16);
+            this.cbUseMask.Size = new System.Drawing.Size(128, 19);
             this.cbUseMask.TabIndex = 0;
             this.cbUseMask.Text = "검사 데이터 마스크";
             this.cbUseMask.UseVisualStyleBackColor = true;
             // 
             // btnReset
             // 
-            this.btnReset.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(763, 43);
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Location = new System.Drawing.Point(763, 45);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(70, 38);
+            this.btnReset.Size = new System.Drawing.Size(70, 41);
             this.btnReset.TabIndex = 8;
             this.btnReset.Text = "초기화";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -496,8 +496,8 @@
             this.gbMarkingGroup.Controls.Add(this.cbUseETC);
             this.gbMarkingGroup.Controls.Add(this.cbUseTG);
             this.gbMarkingGroup.Controls.Add(this.cbUseES);
-            this.gbMarkingGroup.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.gbMarkingGroup.Location = new System.Drawing.Point(5, 67);
+            this.gbMarkingGroup.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbMarkingGroup.Location = new System.Drawing.Point(5, 72);
             this.gbMarkingGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMarkingGroup.Name = "gbMarkingGroup";
             this.gbMarkingGroup.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -509,11 +509,11 @@
             // cbUseETC
             // 
             this.cbUseETC.AutoSize = true;
-            this.cbUseETC.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseETC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbUseETC.Location = new System.Drawing.Point(134, 17);
             this.cbUseETC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseETC.Name = "cbUseETC";
-            this.cbUseETC.Size = new System.Drawing.Size(50, 16);
+            this.cbUseETC.Size = new System.Drawing.Size(50, 19);
             this.cbUseETC.TabIndex = 0;
             this.cbUseETC.Text = "그외";
             this.cbUseETC.UseVisualStyleBackColor = true;
@@ -521,11 +521,11 @@
             // cbUseTG
             // 
             this.cbUseTG.AutoSize = true;
-            this.cbUseTG.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseTG.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbUseTG.Location = new System.Drawing.Point(71, 17);
             this.cbUseTG.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseTG.Name = "cbUseTG";
-            this.cbUseTG.Size = new System.Drawing.Size(50, 16);
+            this.cbUseTG.Size = new System.Drawing.Size(50, 19);
             this.cbUseTG.TabIndex = 0;
             this.cbUseTG.Text = "점착";
             this.cbUseTG.UseVisualStyleBackColor = true;
@@ -533,11 +533,11 @@
             // cbUseES
             // 
             this.cbUseES.AutoSize = true;
-            this.cbUseES.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.cbUseES.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbUseES.Location = new System.Drawing.Point(8, 17);
             this.cbUseES.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbUseES.Name = "cbUseES";
-            this.cbUseES.Size = new System.Drawing.Size(50, 16);
+            this.cbUseES.Size = new System.Drawing.Size(50, 19);
             this.cbUseES.TabIndex = 0;
             this.cbUseES.Text = "연신";
             this.cbUseES.UseVisualStyleBackColor = true;
@@ -545,7 +545,7 @@
             // lblDestination
             // 
             this.lblDestination.BackColor = System.Drawing.SystemColors.Control;
-            this.lblDestination.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDestination.Location = new System.Drawing.Point(144, 38);
             this.lblDestination.Name = "lblDestination";
             this.lblDestination.Size = new System.Drawing.Size(84, 17);
@@ -556,7 +556,7 @@
             // listViewBCNO
             // 
             this.listViewBCNO.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewBCNO.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewBCNO.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewBCNO.HideSelection = false;
             this.listViewBCNO.Location = new System.Drawing.Point(0, 0);
             this.listViewBCNO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -570,7 +570,7 @@
             this.gbPTRYLP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPTRYLP.Controls.Add(this.listViewPTRYLP);
-            this.gbPTRYLP.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbPTRYLP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbPTRYLP.Location = new System.Drawing.Point(0, 0);
             this.gbPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYLP.Name = "gbPTRYLP";
@@ -584,7 +584,7 @@
             // 
             this.listViewPTRYLP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPTRYLP.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewPTRYLP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPTRYLP.HideSelection = false;
             this.listViewPTRYLP.Location = new System.Drawing.Point(6, 17);
             this.listViewPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -597,7 +597,7 @@
             // 
             this.gbMRKCTLMST.Controls.Add(this.listViewMRKCTLMST);
             this.gbMRKCTLMST.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbMRKCTLMST.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbMRKCTLMST.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbMRKCTLMST.Location = new System.Drawing.Point(0, 0);
             this.gbMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMRKCTLMST.Name = "gbMRKCTLMST";
@@ -612,7 +612,7 @@
             this.listViewMRKCTLMST.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewMRKCTLMST.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewMRKCTLMST.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewMRKCTLMST.HideSelection = false;
             this.listViewMRKCTLMST.Location = new System.Drawing.Point(5, 18);
             this.listViewMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -627,7 +627,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPTRYOP.Controls.Add(this.listViewPTRYOP);
-            this.gbPTRYOP.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbPTRYOP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbPTRYOP.Location = new System.Drawing.Point(0, 0);
             this.gbPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYOP.Name = "gbPTRYOP";
@@ -642,7 +642,7 @@
             this.listViewPTRYOP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPTRYOP.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewPTRYOP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPTRYOP.HideSelection = false;
             this.listViewPTRYOP.Location = new System.Drawing.Point(6, 18);
             this.listViewPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -657,7 +657,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbINSPDAT.Controls.Add(this.listViewINSPDAT);
-            this.gbINSPDAT.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbINSPDAT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbINSPDAT.Location = new System.Drawing.Point(0, 0);
             this.gbINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbINSPDAT.Name = "gbINSPDAT";
@@ -672,7 +672,7 @@
             this.listViewINSPDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewINSPDAT.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewINSPDAT.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewINSPDAT.HideSelection = false;
             this.listViewINSPDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -687,7 +687,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbFAULTDAT.Controls.Add(this.listViewFAULTDAT);
-            this.gbFAULTDAT.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbFAULTDAT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbFAULTDAT.Location = new System.Drawing.Point(0, 0);
             this.gbFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbFAULTDAT.Name = "gbFAULTDAT";
@@ -702,7 +702,7 @@
             this.listViewFAULTDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewFAULTDAT.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.listViewFAULTDAT.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewFAULTDAT.HideSelection = false;
             this.listViewFAULTDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -715,10 +715,10 @@
             // 
             this.lblGRANK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGRANK.AutoSize = true;
-            this.lblGRANK.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGRANK.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGRANK.Location = new System.Drawing.Point(852, 11);
             this.lblGRANK.Name = "lblGRANK";
-            this.lblGRANK.Size = new System.Drawing.Size(53, 16);
+            this.lblGRANK.Size = new System.Drawing.Size(52, 17);
             this.lblGRANK.TabIndex = 10;
             this.lblGRANK.Text = "GRANK";
             this.lblGRANK.Visible = false;
@@ -727,10 +727,10 @@
             // 
             this.lblTotalFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalFaultPage.AutoSize = true;
-            this.lblTotalFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalFaultPage.Location = new System.Drawing.Point(1068, 13);
+            this.lblTotalFaultPage.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalFaultPage.Location = new System.Drawing.Point(1068, 11);
             this.lblTotalFaultPage.Name = "lblTotalFaultPage";
-            this.lblTotalFaultPage.Size = new System.Drawing.Size(46, 13);
+            this.lblTotalFaultPage.Size = new System.Drawing.Size(39, 17);
             this.lblTotalFaultPage.TabIndex = 10;
             this.lblTotalFaultPage.Text = "/1000";
             // 
@@ -738,11 +738,11 @@
             // 
             this.tbGRank.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbGRank.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbGRank.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbGRank.Location = new System.Drawing.Point(911, 12);
+            this.tbGRank.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbGRank.Location = new System.Drawing.Point(911, 10);
             this.tbGRank.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbGRank.Name = "tbGRank";
-            this.tbGRank.Size = new System.Drawing.Size(43, 15);
+            this.tbGRank.Size = new System.Drawing.Size(43, 18);
             this.tbGRank.TabIndex = 11;
             this.tbGRank.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbGRank.Visible = false;
@@ -751,11 +751,11 @@
             // 
             this.tbFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFaultPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFaultPage.Location = new System.Drawing.Point(1022, 12);
+            this.tbFaultPage.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbFaultPage.Location = new System.Drawing.Point(1022, 10);
             this.tbFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbFaultPage.Name = "tbFaultPage";
-            this.tbFaultPage.Size = new System.Drawing.Size(43, 15);
+            this.tbFaultPage.Size = new System.Drawing.Size(43, 18);
             this.tbFaultPage.TabIndex = 11;
             this.tbFaultPage.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tbFaultPage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFaultPage_KeyDown);
@@ -763,7 +763,7 @@
             // btnNextFaultPage
             // 
             this.btnNextFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNextFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNextFaultPage.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNextFaultPage.Location = new System.Drawing.Point(1118, 5);
             this.btnNextFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnNextFaultPage.Name = "btnNextFaultPage";
@@ -776,7 +776,7 @@
             // btnPrevFaultPage
             // 
             this.btnPrevFaultPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrevFaultPage.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPrevFaultPage.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrevFaultPage.Location = new System.Drawing.Point(962, 5);
             this.btnPrevFaultPage.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPrevFaultPage.Name = "btnPrevFaultPage";
@@ -790,10 +790,10 @@
             // 
             this.lblDownloadResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDownloadResult.AutoSize = true;
-            this.lblDownloadResult.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblDownloadResult.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDownloadResult.Location = new System.Drawing.Point(10, 14);
             this.lblDownloadResult.Name = "lblDownloadResult";
-            this.lblDownloadResult.Size = new System.Drawing.Size(110, 12);
+            this.lblDownloadResult.Size = new System.Drawing.Size(94, 15);
             this.lblDownloadResult.TabIndex = 13;
             this.lblDownloadResult.Text = "DownloadResult";
             // 
@@ -827,6 +827,7 @@
             // 
             this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.IsSplitterFixed = true;
             this.splitContainer3.Location = new System.Drawing.Point(0, 0);
             this.splitContainer3.Name = "splitContainer3";
             this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -973,11 +974,11 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(5, 6);
+            this.lblTitle.Location = new System.Drawing.Point(5, 4);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(121, 13);
+            this.lblTitle.Size = new System.Drawing.Size(104, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DEFECT VIEWER";
             // 

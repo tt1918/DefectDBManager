@@ -13,7 +13,7 @@ namespace DefectDBManager
         public static string UserDefectClassPath { get { return Path.Combine(MainPath, "UserDefectClass.Ini"); } }
         public static string BCRPath { get { return Path.Combine(MainPath, "Barcode"); } }
         public static string DestPath { get { return Path.Combine(MainPath, "Dest.Ini"); } }
-
+        public static string DbInfoPath { get { return Path.Combine(MainPath, "DBInfo.Ini"); } }
         public static string DBResultName { get { return "DBResult.txt"; } }
 
         public static string LogPath { get { return Path.Combine(MainPath, "SystemLog"); } }

@@ -47,18 +47,20 @@
             // lblProcessName
             // 
             this.lblProcessName.AutoSize = true;
-            this.lblProcessName.Location = new System.Drawing.Point(26, 5);
+            this.lblProcessName.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProcessName.Location = new System.Drawing.Point(26, 3);
             this.lblProcessName.Name = "lblProcessName";
-            this.lblProcessName.Size = new System.Drawing.Size(29, 12);
+            this.lblProcessName.Size = new System.Drawing.Size(30, 15);
             this.lblProcessName.TabIndex = 1;
             this.lblProcessName.Text = "Title";
             // 
             // lblState
             // 
             this.lblState.AutoSize = true;
-            this.lblState.Location = new System.Drawing.Point(157, 5);
+            this.lblState.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblState.Location = new System.Drawing.Point(157, 3);
             this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(45, 12);
+            this.lblState.Size = new System.Drawing.Size(44, 15);
             this.lblState.TabIndex = 1;
             this.lblState.Text = "READY";
             // 

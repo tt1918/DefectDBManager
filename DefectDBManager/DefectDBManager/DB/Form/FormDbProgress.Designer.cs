@@ -56,11 +56,11 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(5, 5);
+            this.lblTitle.Location = new System.Drawing.Point(5, 2);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(173, 13);
+            this.lblTitle.Size = new System.Drawing.Size(143, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DATA BASE PROGRESS";
             // 
@@ -100,6 +100,7 @@
             // 
             this.listBoxProcess.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxProcess.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.listBoxProcess.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxProcess.FormattingEnabled = true;
             this.listBoxProcess.ItemHeight = 18;
             this.listBoxProcess.Location = new System.Drawing.Point(3, 3);
@@ -114,6 +115,7 @@
             this.flpProgress.BackColor = System.Drawing.Color.White;
             this.flpProgress.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpProgress.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.flpProgress.Location = new System.Drawing.Point(153, 3);
             this.flpProgress.Name = "flpProgress";
             this.flpProgress.Size = new System.Drawing.Size(322, 411);
@@ -136,7 +138,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Location = new System.Drawing.Point(356, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(119, 23);

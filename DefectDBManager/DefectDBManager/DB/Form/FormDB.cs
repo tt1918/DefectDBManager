@@ -1399,26 +1399,14 @@ namespace DefectDBManager
         {
             if (this.dbConn == null) return;
 
-            this.dbConn.UserID = dataBase.DbDestConfig.dbLogin.DbID;
-            this.dbConn.Password = dataBase.DbDestConfig.dbLogin.DbPW;
-            this.dbConn.DBName = dataBase.DbDestConfig.dbLogin.DbName;
-            this.dbConn.DBPort = dataBase.DbDestConfig.dbLogin.DBPort;
-            this.dbConn.HostIP = dataBase.DbDestConfig.dbLogin.DBIP;
-            this.dbConn.ConStringType = dataBase.DbDestConfig.dbLogin.DBConStringType;
+            this.dbConn.LoginInfo = dataBase.Conn.LoginInfo;
 
             if (formLogin == null) formLogin = new FormDbLoginData(this.dbConn);
 
             formLogin.Conn = this.dbConn;
             formLogin.ShowDialog();
             if (this.dbConn.IsDBConnected == true)
-            {
-                dataBase.DbDestConfig.dbLogin.DbID = this.dbConn.UserID;
-                dataBase.DbDestConfig.dbLogin.DbPW = this.dbConn.Password;
-                dataBase.DbDestConfig.dbLogin.DbName = this.dbConn.DBName;
-                dataBase.DbDestConfig.dbLogin.DBConStringType = this.dbConn.ConStringType;
-                dataBase.DbDestConfig.dbLogin.DBIP = this.dbConn.HostIP;
-                dataBase.DbDestConfig.dbLogin.DBPort = this.dbConn.DBPort;
-            }
+                dataBase.Conn.LoginInfo = this.dbConn.LoginInfo;
         }
 
         private void btnXOFSMST_Click(object sender, EventArgs e)

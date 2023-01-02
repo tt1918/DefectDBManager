@@ -79,8 +79,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.btnClose);
-            this.splitContainer1.Size = new System.Drawing.Size(749, 497);
-            this.splitContainer1.SplitterDistance = 446;
+            this.splitContainer1.Size = new System.Drawing.Size(749, 498);
+            this.splitContainer1.SplitterDistance = 445;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -96,7 +96,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(749, 446);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(749, 445);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // gbInspDataMask
@@ -116,20 +116,20 @@
             this.gbInspDataMask.Controls.Add(this.lblSizeX);
             this.gbInspDataMask.Controls.Add(this.lvOffsetSkip);
             this.gbInspDataMask.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbInspDataMask.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbInspDataMask.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbInspDataMask.Location = new System.Drawing.Point(441, 3);
             this.gbInspDataMask.Name = "gbInspDataMask";
-            this.gbInspDataMask.Size = new System.Drawing.Size(305, 440);
+            this.gbInspDataMask.Size = new System.Drawing.Size(305, 439);
             this.gbInspDataMask.TabIndex = 1;
             this.gbInspDataMask.TabStop = false;
             this.gbInspDataMask.Text = "검사 데이터 마스크";
             // 
             // btnDelOffset
             // 
-            this.btnDelOffset.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelOffset.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelOffset.Location = new System.Drawing.Point(73, 408);
             this.btnDelOffset.Name = "btnDelOffset";
-            this.btnDelOffset.Size = new System.Drawing.Size(53, 24);
+            this.btnDelOffset.Size = new System.Drawing.Size(53, 25);
             this.btnDelOffset.TabIndex = 0;
             this.btnDelOffset.Text = "DEL";
             this.btnDelOffset.UseVisualStyleBackColor = true;
@@ -137,10 +137,10 @@
             // 
             // btnUpdateSkipOffset
             // 
-            this.btnUpdateSkipOffset.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateSkipOffset.Location = new System.Drawing.Point(224, 405);
+            this.btnUpdateSkipOffset.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateSkipOffset.Location = new System.Drawing.Point(224, 408);
             this.btnUpdateSkipOffset.Name = "btnUpdateSkipOffset";
-            this.btnUpdateSkipOffset.Size = new System.Drawing.Size(74, 27);
+            this.btnUpdateSkipOffset.Size = new System.Drawing.Size(74, 25);
             this.btnUpdateSkipOffset.TabIndex = 0;
             this.btnUpdateSkipOffset.Text = "UPDATE";
             this.btnUpdateSkipOffset.UseVisualStyleBackColor = true;
@@ -148,10 +148,10 @@
             // 
             // btnAddOffset
             // 
-            this.btnAddOffset.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddOffset.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddOffset.Location = new System.Drawing.Point(14, 408);
             this.btnAddOffset.Name = "btnAddOffset";
-            this.btnAddOffset.Size = new System.Drawing.Size(53, 24);
+            this.btnAddOffset.Size = new System.Drawing.Size(53, 25);
             this.btnAddOffset.TabIndex = 0;
             this.btnAddOffset.Text = "ADD";
             this.btnAddOffset.UseVisualStyleBackColor = true;
@@ -196,10 +196,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(176, 387);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 16);
+            this.label4.Size = new System.Drawing.Size(29, 15);
             this.label4.TabIndex = 1;
             this.label4.Text = "mm";
             // 
@@ -216,20 +216,20 @@
             // lblSizeY
             // 
             this.lblSizeY.AutoSize = true;
-            this.lblSizeY.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSizeY.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSizeY.Location = new System.Drawing.Point(11, 386);
             this.lblSizeY.Name = "lblSizeY";
-            this.lblSizeY.Size = new System.Drawing.Size(23, 16);
+            this.lblSizeY.Size = new System.Drawing.Size(20, 15);
             this.lblSizeY.TabIndex = 1;
             this.lblSizeY.Text = "Y :";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(176, 362);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(31, 16);
+            this.label3.Size = new System.Drawing.Size(29, 15);
             this.label3.TabIndex = 1;
             this.label3.Text = "mm";
             // 
@@ -246,15 +246,16 @@
             // lblSizeX
             // 
             this.lblSizeX.AutoSize = true;
-            this.lblSizeX.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSizeX.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSizeX.Location = new System.Drawing.Point(11, 361);
             this.lblSizeX.Name = "lblSizeX";
-            this.lblSizeX.Size = new System.Drawing.Size(24, 16);
+            this.lblSizeX.Size = new System.Drawing.Size(20, 15);
             this.lblSizeX.TabIndex = 1;
             this.lblSizeX.Text = "X :";
             // 
             // lvOffsetSkip
             // 
+            this.lvOffsetSkip.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lvOffsetSkip.HideSelection = false;
             this.lvOffsetSkip.Location = new System.Drawing.Point(6, 20);
             this.lvOffsetSkip.Name = "lvOffsetSkip";
@@ -272,12 +273,12 @@
             this.gbSizeSkip.Controls.Add(this.ucSkipParam3);
             this.gbSizeSkip.Controls.Add(this.ucSkipParam2);
             this.gbSizeSkip.Controls.Add(this.ucSkipParam1);
-            this.gbSizeSkip.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbSizeSkip.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbSizeSkip.Location = new System.Drawing.Point(3, 4);
             this.gbSizeSkip.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gbSizeSkip.Name = "gbSizeSkip";
             this.gbSizeSkip.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.gbSizeSkip.Size = new System.Drawing.Size(431, 438);
+            this.gbSizeSkip.Size = new System.Drawing.Size(431, 437);
             this.gbSizeSkip.TabIndex = 0;
             this.gbSizeSkip.TabStop = false;
             this.gbSizeSkip.Text = "Size Skip";
@@ -285,7 +286,7 @@
             // ucSkipParam6
             // 
             this.ucSkipParam6._SkipSize = null;
-            this.ucSkipParam6.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam6.Location = new System.Drawing.Point(214, 264);
             this.ucSkipParam6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam6.Name = "ucSkipParam6";
@@ -295,10 +296,10 @@
             // 
             // btnUpdateSizeSkip
             // 
-            this.btnUpdateSizeSkip.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateSizeSkip.Location = new System.Drawing.Point(300, 405);
+            this.btnUpdateSizeSkip.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateSizeSkip.Location = new System.Drawing.Point(300, 404);
             this.btnUpdateSizeSkip.Name = "btnUpdateSizeSkip";
-            this.btnUpdateSizeSkip.Size = new System.Drawing.Size(123, 27);
+            this.btnUpdateSizeSkip.Size = new System.Drawing.Size(123, 29);
             this.btnUpdateSizeSkip.TabIndex = 0;
             this.btnUpdateSizeSkip.Text = "UPDATE";
             this.btnUpdateSizeSkip.UseVisualStyleBackColor = true;
@@ -307,7 +308,7 @@
             // ucSkipParam5
             // 
             this.ucSkipParam5._SkipSize = null;
-            this.ucSkipParam5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam5.Location = new System.Drawing.Point(6, 264);
             this.ucSkipParam5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam5.Name = "ucSkipParam5";
@@ -318,7 +319,7 @@
             // ucSkipParam4
             // 
             this.ucSkipParam4._SkipSize = null;
-            this.ucSkipParam4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam4.Location = new System.Drawing.Point(214, 145);
             this.ucSkipParam4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam4.Name = "ucSkipParam4";
@@ -329,7 +330,7 @@
             // ucSkipParam3
             // 
             this.ucSkipParam3._SkipSize = null;
-            this.ucSkipParam3.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam3.Location = new System.Drawing.Point(6, 145);
             this.ucSkipParam3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam3.Name = "ucSkipParam3";
@@ -340,7 +341,7 @@
             // ucSkipParam2
             // 
             this.ucSkipParam2._SkipSize = null;
-            this.ucSkipParam2.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam2.Location = new System.Drawing.Point(214, 24);
             this.ucSkipParam2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam2.Name = "ucSkipParam2";
@@ -351,7 +352,7 @@
             // ucSkipParam1
             // 
             this.ucSkipParam1._SkipSize = null;
-            this.ucSkipParam1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ucSkipParam1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ucSkipParam1.Location = new System.Drawing.Point(5, 24);
             this.ucSkipParam1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ucSkipParam1.Name = "ucSkipParam1";
@@ -361,10 +362,10 @@
             // 
             // btnClose
             // 
-            this.btnClose.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Location = new System.Drawing.Point(556, 6);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(186, 32);
+            this.btnClose.Size = new System.Drawing.Size(186, 33);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "CLOSE";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -374,10 +375,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(749, 497);
+            this.ClientSize = new System.Drawing.Size(749, 498);
             this.ControlBox = false;
             this.Controls.Add(this.splitContainer1);
-            this.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormSkipParam";

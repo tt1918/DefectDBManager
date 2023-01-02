@@ -56,19 +56,20 @@
             this.panelTitle.BackColor = System.Drawing.Color.DarkGray;
             this.panelTitle.Controls.Add(this.lblTitle);
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTitle.Location = new System.Drawing.Point(3, 3);
+            this.panelTitle.Location = new System.Drawing.Point(3, 4);
+            this.panelTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(520, 26);
+            this.panelTitle.Size = new System.Drawing.Size(520, 25);
             this.panelTitle.TabIndex = 2;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(9, 6);
+            this.lblTitle.Location = new System.Drawing.Point(4, 3);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(130, 13);
+            this.lblTitle.Size = new System.Drawing.Size(108, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DEFECTS EDITOR";
             // 
@@ -82,14 +83,15 @@
             this.tableLayoutPanel1.Controls.Add(this.dgvDefect, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 447F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(526, 564);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 566F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(526, 705);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel2
@@ -100,20 +102,22 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 320F));
             this.tableLayoutPanel2.Controls.Add(this.btnClearAll, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 482);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 603);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(520, 36);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(520, 44);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // btnClearAll
             // 
             this.btnClearAll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClearAll.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnClearAll.Location = new System.Drawing.Point(3, 3);
+            this.btnClearAll.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearAll.Location = new System.Drawing.Point(3, 4);
+            this.btnClearAll.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClearAll.Name = "btnClearAll";
-            this.btnClearAll.Size = new System.Drawing.Size(94, 30);
+            this.btnClearAll.Size = new System.Drawing.Size(94, 36);
             this.btnClearAll.TabIndex = 0;
             this.btnClearAll.Text = "CLEAR ALL";
             this.btnClearAll.UseVisualStyleBackColor = true;
@@ -129,20 +133,22 @@
             this.tableLayoutPanel3.Controls.Add(this.btnOK, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnClose, 2, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 524);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 655);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(520, 37);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(520, 46);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // btnOK
             // 
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnOK.Location = new System.Drawing.Point(163, 3);
+            this.btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOK.Location = new System.Drawing.Point(163, 4);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(94, 31);
+            this.btnOK.Size = new System.Drawing.Size(94, 38);
             this.btnOK.TabIndex = 0;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -151,10 +157,11 @@
             // btnClose
             // 
             this.btnClose.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClose.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnClose.Location = new System.Drawing.Point(263, 3);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Location = new System.Drawing.Point(263, 4);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(94, 31);
+            this.btnClose.Size = new System.Drawing.Size(94, 38);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "CLOSE";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -175,13 +182,14 @@
             this.ColPPCD,
             this.ColROLLNAME});
             this.dgvDefect.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDefect.Location = new System.Drawing.Point(3, 35);
+            this.dgvDefect.Location = new System.Drawing.Point(3, 37);
+            this.dgvDefect.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dgvDefect.MultiSelect = false;
             this.dgvDefect.Name = "dgvDefect";
             this.dgvDefect.RowHeadersVisible = false;
             this.dgvDefect.RowTemplate.Height = 23;
             this.dgvDefect.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvDefect.Size = new System.Drawing.Size(520, 441);
+            this.dgvDefect.Size = new System.Drawing.Size(520, 558);
             this.dgvDefect.TabIndex = 6;
             this.dgvDefect.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDefect_CellDoubleClick);
             // 
@@ -236,11 +244,13 @@
             // 
             // FormEditDefect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 564);
+            this.ClientSize = new System.Drawing.Size(526, 705);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormEditDefect";
             this.Text = "FormEditDefect";
             this.VisibleChanged += new System.EventHandler(this.FormEditDefect_VisibleChanged);

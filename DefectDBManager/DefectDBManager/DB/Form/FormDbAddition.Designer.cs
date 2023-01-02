@@ -42,7 +42,7 @@
             // gbXOFSMST
             // 
             this.gbXOFSMST.Controls.Add(this.listViewXOFSMST);
-            this.gbXOFSMST.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbXOFSMST.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbXOFSMST.Location = new System.Drawing.Point(5, 7);
             this.gbXOFSMST.Name = "gbXOFSMST";
             this.gbXOFSMST.Size = new System.Drawing.Size(741, 284);
@@ -52,6 +52,7 @@
             // 
             // listViewXOFSMST
             // 
+            this.listViewXOFSMST.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewXOFSMST.HideSelection = false;
             this.listViewXOFSMST.Location = new System.Drawing.Point(7, 20);
             this.listViewXOFSMST.Name = "listViewXOFSMST";
@@ -62,7 +63,7 @@
             // gbAREADEL
             // 
             this.gbAREADEL.Controls.Add(this.listViewAREADEL);
-            this.gbAREADEL.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbAREADEL.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbAREADEL.Location = new System.Drawing.Point(5, 297);
             this.gbAREADEL.Name = "gbAREADEL";
             this.gbAREADEL.Size = new System.Drawing.Size(741, 284);
@@ -72,6 +73,7 @@
             // 
             // listViewAREADEL
             // 
+            this.listViewAREADEL.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewAREADEL.HideSelection = false;
             this.listViewAREADEL.Location = new System.Drawing.Point(7, 20);
             this.listViewAREADEL.Name = "listViewAREADEL";
@@ -81,7 +83,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Location = new System.Drawing.Point(671, 586);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(72, 33);
@@ -92,7 +94,7 @@
             // 
             // btnLoadtAreaDel
             // 
-            this.btnLoadtAreaDel.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnLoadtAreaDel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLoadtAreaDel.Location = new System.Drawing.Point(12, 586);
             this.btnLoadtAreaDel.Name = "btnLoadtAreaDel";
             this.btnLoadtAreaDel.Size = new System.Drawing.Size(77, 33);
@@ -103,7 +105,7 @@
             // 
             // btnSaveAreaDel
             // 
-            this.btnSaveAreaDel.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btnSaveAreaDel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveAreaDel.Location = new System.Drawing.Point(95, 586);
             this.btnSaveAreaDel.Name = "btnSaveAreaDel";
             this.btnSaveAreaDel.Size = new System.Drawing.Size(77, 33);

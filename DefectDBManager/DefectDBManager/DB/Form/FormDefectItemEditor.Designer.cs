@@ -51,13 +51,14 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(265, 106);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(265, 117);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panelTitle
@@ -65,19 +66,20 @@
             this.panelTitle.BackColor = System.Drawing.Color.DarkGray;
             this.panelTitle.Controls.Add(this.lblTitle);
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTitle.Location = new System.Drawing.Point(3, 3);
+            this.panelTitle.Location = new System.Drawing.Point(3, 4);
+            this.panelTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(259, 25);
+            this.panelTitle.Size = new System.Drawing.Size(259, 26);
             this.panelTitle.TabIndex = 3;
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.Black;
-            this.lblTitle.Location = new System.Drawing.Point(9, 6);
+            this.lblTitle.Location = new System.Drawing.Point(5, 5);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(99, 13);
+            this.lblTitle.Size = new System.Drawing.Size(84, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "EDIT DEFECT";
             // 
@@ -91,18 +93,20 @@
             this.tableLayoutPanel2.Controls.Add(this.btnOK, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnCancel, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 75);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 83);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(259, 28);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(259, 30);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
             // btnOK
             // 
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnOK.Location = new System.Drawing.Point(28, 3);
+            this.btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOK.Location = new System.Drawing.Point(28, 4);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(97, 22);
             this.btnOK.TabIndex = 0;
@@ -113,8 +117,9 @@
             // btnCancel
             // 
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btnCancel.Location = new System.Drawing.Point(131, 3);
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(131, 4);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(97, 22);
             this.btnCancel.TabIndex = 0;
@@ -130,29 +135,34 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel3.Controls.Add(this.tbEditData, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 34);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 38);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(259, 27);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(259, 25);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // tbEditData
             // 
             this.tbEditData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbEditData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbEditData.Location = new System.Drawing.Point(54, 3);
+            this.tbEditData.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbEditData.Location = new System.Drawing.Point(54, 4);
+            this.tbEditData.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbEditData.Name = "tbEditData";
-            this.tbEditData.Size = new System.Drawing.Size(149, 14);
+            this.tbEditData.Size = new System.Drawing.Size(149, 16);
             this.tbEditData.TabIndex = 0;
             // 
             // FormDefectItemEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(265, 106);
+            this.ClientSize = new System.Drawing.Size(265, 117);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormDefectItemEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormDefectItemEditor";

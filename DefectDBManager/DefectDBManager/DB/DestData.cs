@@ -205,20 +205,47 @@ namespace DefectDBManager
 
     public class DBLoginInfo
     {
-        public string   DbID;
-        public string   DbPW;
-        public string   DbName;
-        public string   DBPort;
-        public string   DBIP;
-        public int      DBConStringType;
+        public string   ID;
+        public string   PW;
+        public string   Name;
+        public string   Port;
+        public string   IP;
+        public int      StringType;
+
+        public DBLoginInfo()
+        {
+            Read();
+        }
 
         public bool GetDBLoginInfo(ref string id, ref string pw, ref string name)
         {
-            id = DbID;
-            pw = DbPW;
-            name = DbName;
+            id = ID;
+            pw = PW;
+            name = Name;
 
             return true;
+        }
+
+        public void Read()
+        {
+            string key = "DB_CONFIG";
+            ID = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_ID", "");
+            PW = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_PW", "");
+            Name = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_NAME", "");
+            Port = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_PORT", "");
+            IP = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_IP", "");
+            StringType = NativeFunc.ReadIni(Define.DbInfoPath, key, "DB_CON_STRING_TYPE", 0);
+        }
+
+        public void Write()
+        {
+            string key = "DB_CONFIG";
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_ID", ID);
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_PW", PW);
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_NAME", Name);
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_PORT", Port);
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_IP", IP);
+            NativeFunc.WriteIni(Define.DbInfoPath, key, "DB_CON_STRING_TYPE", StringType);
         }
     }
 
@@ -362,13 +389,6 @@ namespace DefectDBManager
                 }
 
                 key = "DB_CONFIG";
-                dbLogin.DbID = NativeFunc.ReadIni(Define.DestPath, key, "DB_ID", "");
-                dbLogin.DbPW = NativeFunc.ReadIni(Define.DestPath, key, "DB_PW", "");
-                dbLogin.DbName = NativeFunc.ReadIni(Define.DestPath, key, "DB_NAME", "");
-                dbLogin.DBPort = NativeFunc.ReadIni(Define.DestPath, key, "DB_PORT", "");
-                dbLogin.DBIP = NativeFunc.ReadIni(Define.DestPath, key, "DB_IP", "");
-                dbLogin.DBConStringType = NativeFunc.ReadIni(Define.DestPath, key, "DB_CON_STRING_TYPE", 0);
-
                 this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
                 this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
                 this.useXOffset = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST", true);
@@ -457,13 +477,6 @@ namespace DefectDBManager
                 }
 
                 key = "DB_CONFIG";
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_ID", dbLogin.DbID);
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_PW", dbLogin.DbPW);
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_NAME", dbLogin.DbName);
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_PORT", dbLogin.DBPort);
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_IP", dbLogin.DBIP);
-                NativeFunc.WriteIni(Define.DestPath, key, "DB_CON_STRING_TYPE", dbLogin.DBConStringType);
-
                 NativeFunc.WriteIni(Define.DestPath, key, "CSV_TYPE", (int)this.CSVType);
                 NativeFunc.WriteIni(Define.DestPath, key, "CSV_VER", this.csvVer);
                 NativeFunc.WriteIni(Define.DestPath, key, "USE_XOFSMST", this.UseXOffset);

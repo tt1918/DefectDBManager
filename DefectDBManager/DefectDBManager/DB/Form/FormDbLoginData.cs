@@ -29,14 +29,14 @@ namespace DefectDBManager
         private void btnConnect_Click(object sender, EventArgs e)
         {
             if (rbConStringType1.Checked == true)
-                Conn.ConStringType = 0;
+                Conn.LoginInfo.StringType = 0;
             else if (rbConStringType2.Checked == true)
-                Conn.ConStringType = 1;
-            Conn.DBName = tbDbName.Text;
-            Conn.UserID = tbUserID.Text;
-            Conn.Password = tbPassword.Text;
-            Conn.HostIP = tbHostIP.Text;
-            Conn.DBPort = tbPort.Text;
+                Conn.LoginInfo.StringType = 1;
+            Conn.LoginInfo.Name = tbDbName.Text;
+            Conn.LoginInfo.ID = tbUserID.Text;
+            Conn.LoginInfo.PW = tbPassword.Text;
+            Conn.LoginInfo.IP = tbHostIP.Text;
+            Conn.LoginInfo.Port = tbPort.Text;
             Conn.Connect();
         }
 
@@ -62,25 +62,25 @@ namespace DefectDBManager
 
         private void displayCtrl()
         {
-            if(Conn.ConStringType==0)
+            if(Conn.LoginInfo.StringType ==0)
             {
                 rbConStringType1.Checked = true;
                 rbConStringType2.Checked = false;
                 tbHostIP.Enabled = false;
                 tbPort.Enabled = false;
             }
-            else if(Conn.ConStringType == 1)
+            else if(Conn.LoginInfo.StringType == 1)
             {
                 rbConStringType1.Checked = false;
                 rbConStringType2.Checked = true;
                 tbHostIP.Enabled = true;
                 tbPort.Enabled = true;
             }
-            tbHostIP.Text = Conn.HostIP;
-            tbPort.Text = Conn.DBPort;
-            tbDbName.Text = Conn.DBName;
-            tbUserID.Text = Conn.UserID;
-            tbPassword.Text = Conn.Password;
+            tbHostIP.Text = Conn.LoginInfo.IP;
+            tbPort.Text = Conn.LoginInfo.Port;
+            tbDbName.Text = Conn.LoginInfo.Name;
+            tbUserID.Text = Conn.LoginInfo.ID;
+            tbPassword.Text = Conn.LoginInfo.PW;
         }
 
         private void enableCtrl()
