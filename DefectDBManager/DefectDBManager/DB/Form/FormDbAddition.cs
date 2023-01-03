@@ -131,7 +131,7 @@ namespace DefectDBManager
             using (OpenFileDialog browser = new OpenFileDialog())
             {
                 //browser.InitialDirectory = Define.MainPath;
-                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
                 browser.FilterIndex = 1;
                 browser.RestoreDirectory = true;
 
@@ -139,7 +139,7 @@ namespace DefectDBManager
                 {
                     if (System.IO.File.Exists(browser.FileName) == false)
                     {
-                        MessageBox.Show($"파일이 존재하지 않습니다. : [{browser.SafeFileName}]");
+                        MessageBox.Show($"{Language.FileDoesNotExist} : [{browser.SafeFileName}]");
                         return;
                     }
 
@@ -154,7 +154,7 @@ namespace DefectDBManager
             using (SaveFileDialog browser = new SaveFileDialog())
             {
                 browser.InitialDirectory = Define.MainPath;
-                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
                 browser.FilterIndex = 1;
                 browser.RestoreDirectory = true;
 

@@ -79,6 +79,15 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 선택된 결점정보를 적용하시겠습니까?.
+        /// </summary>
+        internal static string ApplySelectedDefectInfos {
+            get {
+                return ResourceManager.GetString("ApplySelectedDefectInfos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 취소.
         /// </summary>
         internal static string CANCEL {
@@ -300,6 +309,15 @@ namespace DefectDBManager {
         internal static string ExportCSV {
             get {
                 return ResourceManager.GetString("ExportCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 파일이 존재하지 않습니다..
+        /// </summary>
+        internal static string FileDoesNotExist {
+            get {
+                return ResourceManager.GetString("FileDoesNotExist", resourceCulture);
             }
         }
         
@@ -574,6 +592,42 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lot 번호를 입력하세요!.
+        /// </summary>
+        internal static string PleaseInsertLotNumber {
+            get {
+                return ResourceManager.GetString("PleaseInsertLotNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 숫자를 입력해주십시요..
+        /// </summary>
+        internal static string PleaseInsertNumbers {
+            get {
+                return ResourceManager.GetString("PleaseInsertNumbers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 10자리의 Lot 번호를 입력하세요!.
+        /// </summary>
+        internal static string PleaseInsertTenDigitsOfLotNumber {
+            get {
+                return ResourceManager.GetString("PleaseInsertTenDigitsOfLotNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 먼저 DB에 접속해주십시요..
+        /// </summary>
+        internal static string PleaseLoginToTheDB {
+            get {
+                return ResourceManager.GetString("PleaseLoginToTheDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 이전.
         /// </summary>
         internal static string PrevFaultPage {
@@ -583,11 +637,38 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV 데이터 검색중입니다..
+        /// </summary>
+        internal static string ProgramIsSearchingCSV {
+            get {
+                return ResourceManager.GetString("ProgramIsSearchingCSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DB 데이터 검색중입니다..
+        /// </summary>
+        internal static string ProgramIsSearchingDB {
+            get {
+                return ResourceManager.GetString("ProgramIsSearchingDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 초기화.
         /// </summary>
         internal static string Reset {
             get {
                 return ResourceManager.GetString("Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 데이터를 초기화 하시겠습니까?.
+        /// </summary>
+        internal static string ResetAllData {
+            get {
+                return ResourceManager.GetString("ResetAllData", resourceCulture);
             }
         }
         
@@ -615,6 +696,15 @@ namespace DefectDBManager {
         internal static string SearchStartTime {
             get {
                 return ResourceManager.GetString("SearchStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 선택된 CSV형식이 없습니다.Dest.ini파일을 확인하시길 바랍니다..
+        /// </summary>
+        internal static string SelectedCSVFormatTypeDoesNotExist {
+            get {
+                return ResourceManager.GetString("SelectedCSVFormatTypeDoesNotExist", resourceCulture);
             }
         }
         
@@ -732,6 +822,24 @@ namespace DefectDBManager {
         internal static string TG {
             get {
                 return ResourceManager.GetString("TG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 결점 정보가 존재하지 않습니다..
+        /// </summary>
+        internal static string ThereAreNoDefectInfs {
+            get {
+                return ResourceManager.GetString("ThereAreNoDefectInfs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 해당하는 출하처의 정보가 존재하지 않습니다..
+        /// </summary>
+        internal static string ThereIsNoDestinationInfomation {
+            get {
+                return ResourceManager.GetString("ThereIsNoDestinationInfomation", resourceCulture);
             }
         }
         

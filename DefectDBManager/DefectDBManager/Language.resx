@@ -123,6 +123,9 @@
   <data name="Apply" xml:space="preserve">
     <value>적용</value>
   </data>
+  <data name="ApplySelectedDefectInfos" xml:space="preserve">
+    <value>선택된 결점정보를 적용하시겠습니까?</value>
+  </data>
   <data name="CANCEL" xml:space="preserve">
     <value>취소</value>
   </data>
@@ -197,6 +200,9 @@
   </data>
   <data name="ExportCSV" xml:space="preserve">
     <value>CSV 파일 저장</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>파일이 존재하지 않습니다.</value>
   </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>검사 데이터 마스크</value>
@@ -308,11 +314,32 @@
   <data name="Option" xml:space="preserve">
     <value>옵션</value>
   </data>
+  <data name="PleaseInsertLotNumber" xml:space="preserve">
+    <value>Lot 번호를 입력하세요!</value>
+  </data>
+  <data name="PleaseInsertNumbers" xml:space="preserve">
+    <value>숫자를 입력해주십시요.</value>
+  </data>
+  <data name="PleaseInsertTenDigitsOfLotNumber" xml:space="preserve">
+    <value>10자리의 Lot 번호를 입력하세요!</value>
+  </data>
+  <data name="PleaseLoginToTheDB" xml:space="preserve">
+    <value>먼저 DB에 접속해주십시요.</value>
+  </data>
   <data name="PrevFaultPage" xml:space="preserve">
     <value>이전</value>
   </data>
+  <data name="ProgramIsSearchingCSV" xml:space="preserve">
+    <value>CSV 데이터 검색중입니다.</value>
+  </data>
+  <data name="ProgramIsSearchingDB" xml:space="preserve">
+    <value>DB 데이터 검색중입니다.</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>초기화</value>
+  </data>
+  <data name="ResetAllData" xml:space="preserve">
+    <value>데이터를 초기화 하시겠습니까?</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>검색</value>
@@ -322,6 +349,9 @@
   </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>시작 시간</value>
+  </data>
+  <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
+    <value>선택된 CSV형식이 없습니다.Dest.ini파일을 확인하시길 바랍니다.</value>
   </data>
   <data name="SetSearchTime" xml:space="preserve">
     <value>검색 시간 설청</value>
@@ -361,6 +391,12 @@
   </data>
   <data name="TG" xml:space="preserve">
     <value>도공</value>
+  </data>
+  <data name="ThereAreNoDefectInfs" xml:space="preserve">
+    <value>결점 정보가 존재하지 않습니다.</value>
+  </data>
+  <data name="ThereIsNoDestinationInfomation" xml:space="preserve">
+    <value>해당하는 출하처의 정보가 존재하지 않습니다.</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>정보 갱신</value>

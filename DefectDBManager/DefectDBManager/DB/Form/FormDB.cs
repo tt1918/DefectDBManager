@@ -1158,24 +1158,24 @@ namespace DefectDBManager
         {
             if (this.thread != null && this.thread.IsAlive == true)
             {
-                MessageBox.Show($"DB 데이터 검색중입니다.");
+                MessageBox.Show(Language.ProgramIsSearchingDB);
                 return;
             }
 
             if (dataBase.Conn.IsConnected() == false)
             {
-                MessageBox.Show($"먼저 DB에 접속해주십시요.");
+                MessageBox.Show(Language.PleaseLoginToTheDB);
                 return;
             }
 
             if (tbLotName.Text.Length == 0)
             {
-                MessageBox.Show("Lot 번호를 입력하세요!");
+                MessageBox.Show(Language.PleaseInsertLotNumber);
                 return;
             }
             if (tbLotName.Text.Length < Global.LotNameLength)
             {
-                MessageBox.Show("10자리의 Lot 번호를 입력하세요!");
+                MessageBox.Show(Language.PleaseInsertTenDigitsOfLotNumber);
                 return;
             }
 
@@ -1231,7 +1231,7 @@ namespace DefectDBManager
             }
             else
             {
-                MessageBox.Show($"해당하는 출하처 정보가 존재하지 않습니다. : [{destName}]");
+                MessageBox.Show($"{Language.ThereIsNoDestinationInfomation} : [{destName}]");
                 return;
             }
 
@@ -1282,14 +1282,14 @@ namespace DefectDBManager
         {
             if (this.thread != null && this.thread.IsAlive == true)
             {
-                MessageBox.Show($"데이터 검색중입니다.");
+                MessageBox.Show(Language.ProgramIsSearchingCSV);
                 return;
             }
 
             using (OpenFileDialog browser = new OpenFileDialog())
             {
                 //browser.InitialDirectory = Define.MainPath;
-                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*";
                 browser.FilterIndex = 1;
                 browser.RestoreDirectory = true;
 
@@ -1297,7 +1297,7 @@ namespace DefectDBManager
                 {
                     if (File.Exists(browser.FileName) == false)
                     {
-                        MessageBox.Show($"파일이 존재하지 않습니다. : [{browser.SafeFileName}]");
+                        MessageBox.Show($"{Language.FileDoesNotExist} : [{browser.SafeFileName}]");
                         return;
                     }
 
@@ -1306,7 +1306,7 @@ namespace DefectDBManager
                         config.CSVType != eCSV_TYPE.NITTO_RK && config.CSVType != eCSV_TYPE.KORENO &&
                         config.CSVType != eCSV_TYPE.KORENO_RK && config.CSVType != eCSV_TYPE.KORENO_RK_IJP)
                     {
-                        MessageBox.Show("선택된 CSV형식이 없습니다.Dest.ini파일을 확인하시길 바랍니다.");
+                        MessageBox.Show(Language.SelectedCSVFormatTypeDoesNotExist);
                         return;
                     }
 
@@ -1356,7 +1356,7 @@ namespace DefectDBManager
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("데이터를 초기화 하시겠습니까?", "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(Language.ResetAllData, "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // ListView 초기화
@@ -1426,7 +1426,7 @@ namespace DefectDBManager
             using (SaveFileDialog browser = new SaveFileDialog())
             {
                 browser.InitialDirectory = Define.MainPath;
-                browser.Filter = "CSV Files (*.csv)|*.csv|모든 파일 (*.*)|*.*";
+                browser.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
                 browser.FilterIndex = 1;
                 browser.RestoreDirectory = true;
 
@@ -1454,7 +1454,7 @@ namespace DefectDBManager
             }
             else
             {
-                MessageBox.Show("숫자를 입력해주십시요.");
+                MessageBox.Show(Language.PleaseInsertNumbers);
                 return;
             }
 
@@ -1464,7 +1464,7 @@ namespace DefectDBManager
             }
             else
             {
-                MessageBox.Show("숫자를 입력해주십시요.");
+                MessageBox.Show(Language.PleaseInsertNumbers);
                 return;
             }
         }
@@ -1899,7 +1899,7 @@ namespace DefectDBManager
                     form._DataBase = DataBase;
                     if (form.ShowDialog() == DialogResult.OK)
                     {
-                        if (MessageBox.Show("선택된 결점정보를 적용하시겠습니까?", "Defect Editor",
+                        if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
                             MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
                             DataBase.ResetDataAll();
@@ -1921,7 +1921,7 @@ namespace DefectDBManager
             }
             else
             {
-                MessageBox.Show("결점 정보가 존재하지 않습니다.");
+                MessageBox.Show(Language.ThereAreNoDefectInfs);
             }
         }
         #endregion Defect Edit

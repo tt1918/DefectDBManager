@@ -123,6 +123,9 @@
   <data name="Apply" xml:space="preserve">
     <value>Apply</value>
   </data>
+  <data name="ApplySelectedDefectInfos" xml:space="preserve">
+    <value>Apply selected defect informations?</value>
+  </data>
   <data name="CANCEL" xml:space="preserve">
     <value>CANCEL</value>
   </data>
@@ -199,6 +202,9 @@
   </data>
   <data name="ExportCSV" xml:space="preserve">
     <value>Export CSV</value>
+  </data>
+  <data name="FileDoesNotExist" xml:space="preserve">
+    <value>Selected file does not eixst.</value>
   </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>Inspection Data Mask</value>
@@ -310,11 +316,32 @@
   <data name="Option" xml:space="preserve">
     <value>Option</value>
   </data>
+  <data name="PleaseInsertLotNumber" xml:space="preserve">
+    <value>Please Insert Lot Name!</value>
+  </data>
+  <data name="PleaseInsertNumbers" xml:space="preserve">
+    <value>Please insert numbers.</value>
+  </data>
+  <data name="PleaseInsertTenDigitsOfLotNumber" xml:space="preserve">
+    <value>Please Insert 10 Digits Of Lot Name!</value>
+  </data>
+  <data name="PleaseLoginToTheDB" xml:space="preserve">
+    <value>Please Login to the DB</value>
+  </data>
   <data name="PrevFaultPage" xml:space="preserve">
     <value>PREV</value>
   </data>
+  <data name="ProgramIsSearchingCSV" xml:space="preserve">
+    <value>Now Reading CSV File. </value>
+  </data>
+  <data name="ProgramIsSearchingDB" xml:space="preserve">
+    <value>Running DB Search</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="ResetAllData" xml:space="preserve">
+    <value>Reset all data?</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
@@ -324,6 +351,9 @@
   </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>Start Time</value>
+  </data>
+  <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
+    <value>Selected CSV format does not exist. Please check dest.ini file.</value>
   </data>
   <data name="SetSearchTime" xml:space="preserve">
     <value>Set Search Time</value>
@@ -363,6 +393,12 @@
   </data>
   <data name="TG" xml:space="preserve">
     <value>TG</value>
+  </data>
+  <data name="ThereAreNoDefectInfs" xml:space="preserve">
+    <value>There is no defect informations.</value>
+  </data>
+  <data name="ThereIsNoDestinationInfomation" xml:space="preserve">
+    <value>There is no destination infomation.</value>
   </data>
   <data name="Update" xml:space="preserve">
     <value>UPDATE</value>
