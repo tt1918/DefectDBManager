@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
-    interface CSVFile
+    interface ICSVFile
     {
         int Type { get; }
         string Path { get; }
@@ -18,7 +18,7 @@ namespace DefectDBManager
         bool Save();
     }
 
-    public class CSVKoh : CSVFile
+    public class CSVKoh : ICSVFile
     {
         public int Type { get; }
         public string Path { get; private set; }
@@ -162,7 +162,7 @@ namespace DefectDBManager
         }
     }
 
-    public class CSVNitto : CSVFile
+    public class CSVNitto : ICSVFile
     {
         public int Type { get; }
         public string Path { get; private set; }
@@ -240,8 +240,6 @@ namespace DefectDBManager
 
                     if (useMask == true && DB.IsMaskedDefect(tmpData.XPOS_M, tmpData.OFFSET))
                         continue;
-
-
 
                     tmpData.MACNO = strMACNO;
                     tmpData.CAM_NO = Int32.Parse(strCamNo);
@@ -351,7 +349,7 @@ namespace DefectDBManager
         }
     }
 
-    public class CSVKor : CSVFile
+    public class CSVKor : ICSVFile
     {
         public int Type { get; }
         public string Path { get; private set; }
@@ -766,7 +764,7 @@ namespace DefectDBManager
         #region Control CSV 
         public static void Open(string path, NittoDB db)
         {
-            CSVFile file = null;
+            ICSVFile file = null;
             switch (db.DbDestConfig.CSVType)
             {
                 case eCSV_TYPE.NITTO:
@@ -790,7 +788,7 @@ namespace DefectDBManager
 
         public static void Save(string path, NittoDB db)
         {
-            CSVFile file = null;
+            ICSVFile file = null;
             switch (db.DbDestConfig.CSVType)
             {
                 case eCSV_TYPE.NITTO:

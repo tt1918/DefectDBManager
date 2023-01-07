@@ -402,7 +402,7 @@
             this.gbDBConnection.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbDBConnection.Name = "gbDBConnection";
             this.gbDBConnection.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbDBConnection.Size = new System.Drawing.Size(134, 59);
+            this.gbDBConnection.Size = new System.Drawing.Size(128, 63);
             this.gbDBConnection.TabIndex = 10;
             this.gbDBConnection.TabStop = false;
             this.gbDBConnection.Text = "DB";
@@ -421,7 +421,7 @@
             // btnDBConn
             // 
             this.btnDBConn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDBConn.Location = new System.Drawing.Point(23, 29);
+            this.btnDBConn.Location = new System.Drawing.Point(14, 33);
             this.btnDBConn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDBConn.Name = "btnDBConn";
             this.btnDBConn.Size = new System.Drawing.Size(101, 24);
