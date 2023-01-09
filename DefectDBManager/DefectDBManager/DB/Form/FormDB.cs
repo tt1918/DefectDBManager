@@ -935,6 +935,7 @@ namespace DefectDBManager
                 unit = DataBase.DbDestConfig.DicDest[this.destName];
                 this.dbSearchProgressTimer.Start();
                 // 검사 옵션 업데이트
+                DataBase.DbOption.isLoadCSV = false;
                 Option option = dataBase.DbOption;
                 SearchOption searchOp = new SearchOption();
                 option.searchOP = searchOp;
@@ -992,8 +993,6 @@ namespace DefectDBManager
 
                 // Fault Data 표시
                 this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
-
-                DataBase.DbOption.isLoadCSV = true;
             }
             finally
             {
@@ -1533,24 +1532,24 @@ namespace DefectDBManager
             else
                 OnEndCsvReading((int)eEventReport.eUpdateDataNext);
 
-            // 임시 데이터 생성
+            //임시 데이터 생성
             //if (eDbIdWhen.Now == dataBase.DbOption.dbWhen)
             //{
-            //    DataBase.AREADEL_Data.Clear();
+            //    DataBase._DbResult.AREADEL_Data.Clear();
 
-            //    for (int i = 0; i < 1500; i++)
+            //    for (int i = 0; i < 12500; i++)
             //    {
             //        AREADELData data = new AREADELData();
 
             //        data.ENTRY_NUM = i.ToString();
             //        data.STR_WD = 100;
             //        data.END_WD = 300;
-            //        data.STR_MD = 06500.0f + (float)i * 2000.0f;
-            //        data.END_MD = 07000.0f + (float)i * 2000.0f;
-            //        DataBase.AREADEL_Data.Add(data);
+            //        data.STR_MD = 0500.0f + (float)i * 2000.0f;
+            //        data.END_MD = 01000.0f + (float)i * 2000.0f;
+            //        DataBase._DbResult.AREADEL_Data.Add(data);
             //    }
 
-            //    Trace.WriteLine($"Area Defect Count : {DataBase.AREADEL_Data.Count}");
+            //    Trace.WriteLine($"Area Defect Count : {DataBase._DbResult.AREADEL_Data.Count}");
             //}
         }
 

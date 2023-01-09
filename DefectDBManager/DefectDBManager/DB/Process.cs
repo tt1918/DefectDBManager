@@ -133,7 +133,6 @@ namespace DefectDBManager
                 return;
             if (disposing)
             {
-                _DbConn.LoginInfo.Write();
                 _DbConn.Dispose();
             }
             this.disposed = true;

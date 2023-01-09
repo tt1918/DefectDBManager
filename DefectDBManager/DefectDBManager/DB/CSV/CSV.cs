@@ -838,11 +838,11 @@ namespace DefectDBManager
                     data.LOTNO = items[4];
                     if (float.TryParse(items[5], out float valf) == true) data.STR_WD = valf;
                     else data.STR_WD = 0.0f;
-                    if (float.TryParse(items[5], out valf) == true) data.END_WD = valf;
+                    if (float.TryParse(items[6], out valf) == true) data.END_WD = valf;
                     else data.END_WD = 0.0f;
-                    if (float.TryParse(items[5], out valf) == true) data.STR_MD = valf;
+                    if (float.TryParse(items[7], out valf) == true) data.STR_MD = valf;
                     else data.STR_MD = 0.0f;
-                    if (float.TryParse(items[5], out valf) == true) data.END_MD = valf;
+                    if (float.TryParse(items[8], out valf) == true) data.END_MD = valf;
                     else data.END_MD = 0.0f;
 
                     db._DbResult.AREADEL_Data.Add(data);
