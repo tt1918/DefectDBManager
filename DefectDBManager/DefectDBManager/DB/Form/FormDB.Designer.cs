@@ -281,7 +281,7 @@
             this.gbBasicInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbBasicInfo.Controls.Add(this.splitContainer1);
-            this.gbBasicInfo.Font = new System.Drawing.Font("Gulim", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbBasicInfo.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbBasicInfo.Location = new System.Drawing.Point(3, 3);
             this.gbBasicInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbBasicInfo.Name = "gbBasicInfo";
@@ -293,7 +293,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 17);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 16);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -315,11 +315,12 @@
             this.splitContainer1.Panel1.Controls.Add(this.lblDestination);
             this.splitContainer1.Panel1.Controls.Add(this.tbLotName);
             this.splitContainer1.Panel1.Controls.Add(this.lblLotName);
+            this.splitContainer1.Panel1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listViewBCNO);
-            this.splitContainer1.Size = new System.Drawing.Size(1171, 122);
+            this.splitContainer1.Size = new System.Drawing.Size(1171, 123);
             this.splitContainer1.SplitterDistance = 839;
             this.splitContainer1.TabIndex = 13;
             // 
@@ -561,7 +562,7 @@
             this.listViewBCNO.Location = new System.Drawing.Point(0, 0);
             this.listViewBCNO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewBCNO.Name = "listViewBCNO";
-            this.listViewBCNO.Size = new System.Drawing.Size(328, 122);
+            this.listViewBCNO.Size = new System.Drawing.Size(328, 123);
             this.listViewBCNO.TabIndex = 7;
             this.listViewBCNO.UseCompatibleStateImageBehavior = false;
             // 
@@ -791,7 +792,7 @@
             this.lblDownloadResult.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblDownloadResult.AutoSize = true;
             this.lblDownloadResult.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDownloadResult.Location = new System.Drawing.Point(10, 14);
+            this.lblDownloadResult.Location = new System.Drawing.Point(10, 10);
             this.lblDownloadResult.Name = "lblDownloadResult";
             this.lblDownloadResult.Size = new System.Drawing.Size(94, 15);
             this.lblDownloadResult.TabIndex = 13;

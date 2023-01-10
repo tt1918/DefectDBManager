@@ -380,34 +380,33 @@ namespace DefectDBManager
                 //          "AND FAULTDAT.OFFSET<=(INSPDAT.E_INSP+150000))   "+
                 //          "OR (INSPDAT.S_INSP>INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.E_INSP-150000) AND FAULTDAT.OFFSET<=(INSPDAT.S_INSP+150000)) )AND " + 
                 //          "INSPDAT.BCNO = 'EE11006-09'  AND (INSPDAT.KTCD = '100' OR INSPDAT.KTCD = '400' OR (INSPDAT.KTCD <> '100' AND INSPDAT.KTCD <> '400')) ORDER BY FAULTDAT.OFFSET";
+               
                 return message;
             }
         }
 
         public class FLTDAT_FAST_Query : QueryMsg
         {
-            public string BCNO = "";
-            public string GetQuery()
+            public string CTLNO = "";
+
+            public string GetQuery(Dictionary<string, float> dicSize)
             {
-                string strBCNO = $"'{BCNO}'";
-                StringBuilder sbMsg = new StringBuilder(); 
-                sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID, ");
-                sbMsg.Append("MRK_WRK_4.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M, MRK_WRK_4.X_OFFSET, INSPDAT.WIDTH ");
-                sbMsg.Append("FROM FAULTDAT,FLTMST,MRK_WRK_4,INSPDAT ");
-                sbMsg.Append("WHERE ");
-                sbMsg.Append("FAULTDAT.FLTID=MRK_WRK_4.FLTID AND ");
-                sbMsg.Append("FAULTDAT.FLTID=FLTMST.FLTID AND ");
-                sbMsg.Append("FAULTDAT.CTLNO = MRK_WRK_4.CTLNO AND ");
-                sbMsg.Append("FAULTDAT.AREA_M >= MRK_WRK_4.MIN_SIZE AND ");
-                sbMsg.Append("FAULTDAT.CTLNO = INSPDAT.CTLNO AND ");
-                sbMsg.Append("MRK_WRK_4.PPCD = INSPDAT.KTCD AND ");
-                sbMsg.Append("MRK_WRK_4.LNCD = INSPDAT.CUSTCD AND ");
-                sbMsg.Append("( (INSPDAT.S_INSP<=INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.S_INSP-150000) AND FAULTDAT.OFFSET<=(INSPDAT.E_INSP+150000))   ");
-                sbMsg.Append("OR (INSPDAT.S_INSP>INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.E_INSP-150000) AND FAULTDAT.OFFSET<=(INSPDAT.S_INSP+150000)) )AND ");
-                sbMsg.Append("INSPDAT.BCNO = ");
-                sbMsg.Append(strBCNO);
-                sbMsg.Append("  AND ");
-                sbMsg.Append("(INSPDAT.KTCD = '100' OR INSPDAT.KTCD = '400' OR (INSPDAT.KTCD <> '100' AND INSPDAT.KTCD <> '400')) ORDER BY FAULTDAT.OFFSET");
+                StringBuilder sbMsg = new StringBuilder();
+                sbMsg.Append("SELECT * FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'");
+                if (dicSize.Count > 0)
+                {
+                    sbMsg.Append("AND (");
+
+                    int size = dicSize.Count;
+                    int count = 0;
+                    foreach (KeyValuePair<string, float> pair in dicSize)
+                    {
+                        sbMsg.Append($"(FAULTDAT.FLTID = {pair.Key} AND FAULTDAT.AREA_M>={pair.Value + 0.00001f})");
+                        if (count < size - 1)
+                            sbMsg.Append(" OR ");
+                    }
+                    sbMsg.Append(")");
+                }
 
                 return sbMsg.ToString();
             }

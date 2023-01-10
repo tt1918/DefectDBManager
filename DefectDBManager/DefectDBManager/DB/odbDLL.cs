@@ -834,12 +834,13 @@ namespace DefectDBManager
                     procStep = fcdIdx;
                     int PTRY0Pcnt = _DbResult.PTRY0P_Data[fcdIdx].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
-                    _DbResult.CheckSizeOfDicMRKCTLMST(PTRY0Pcnt, fcdIdx);
+                    _DbResult.CheckDicMRKCTLMSTSize(PTRY0Pcnt, fcdIdx);
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
                     for (int ptry0Idx = 0; ptry0Idx < PTRY0Pcnt; ptry0Idx++)
                     {
                         _DbResult.ClearDicMRKCTLMST(fcdIdx, ptry0Idx);
 
+                        // Defect Edit에 의해서 수정한 데이터를 실제 FLTID 검색 시 사용하도록 함.
                         foreach (MRKCTLMSTData data in _DbResult._MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
                         {
                             _DbResult.AddDicMRKCTLMST(fcdIdx, ptry0Idx, data);
@@ -888,7 +889,7 @@ namespace DefectDBManager
                     procStep = i;
                     int PTRY0Pcnt = _DbResult.PTRY0P_Data[i].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
-                    _DbResult.CheckSizeOfDicMRKCTLMST(PTRY0Pcnt, i);
+                    _DbResult.CheckDicMRKCTLMSTSize(PTRY0Pcnt, i);
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
 
                     for (int j = 0; j < PTRY0Pcnt; j++)
@@ -1266,9 +1267,8 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-                                        bValid = _DbResult.CheckValidSize(tmpKey, data.FLTID, data.AREA_M);
+                                        bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
                                         
-
                                         if (bValid == true)    // 소수점 오차 보정
                                         {
                                             if (finalXPos < 0.0f) continue;
@@ -1297,7 +1297,6 @@ namespace DefectDBManager
                                                 }
                                             }
                                             
-
                                             if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
                                             if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
                                             if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)

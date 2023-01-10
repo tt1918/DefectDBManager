@@ -23,7 +23,7 @@ namespace DefectDBManager
             _TestForm._TemDefects = _Defects;
             _Defects._FormDB_Now._FormCloseBtnType = false;
             _Defects._FormDB_Next._FormCloseBtnType = false;
-            _Defects._FormDB_Now._LangType = 0;
+            _Defects._FormDB_Now._LangType = 1;
             Application.Run(_TestForm);
         }
     }

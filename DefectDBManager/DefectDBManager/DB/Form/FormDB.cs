@@ -472,7 +472,7 @@ namespace DefectDBManager
                 {
                     BCNO_LV_Data.Data.Clear();
                     int index = 0;
-                    foreach(var item in DataBase._CSVLoadInfo)
+                    foreach (var item in DataBase._CSVLoadInfo)
                     {
                         DBListViewBuf itemBuf = new DBListViewBuf(4);
                         itemBuf.items[0] = index.ToString();
@@ -774,6 +774,7 @@ namespace DefectDBManager
             if (DataBase._DbResult.INSPDAT_Data == null) return;
             try
             {
+                INSPDAT_LV_Data.Data.Clear();
                 foreach (List<List<INSPDATData>> data in DataBase._DbResult.INSPDAT_Data)
                 {
                     if (data == null) continue;
@@ -1991,6 +1992,5 @@ namespace DefectDBManager
             this.ResumeLayout();
         }
         #endregion Language Update
-
     }
 }

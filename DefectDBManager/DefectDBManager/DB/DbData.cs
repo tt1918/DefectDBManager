@@ -517,7 +517,7 @@ namespace DefectDBManager
             dicSizeMRKCTLMST[fdIdx][ptryoIdx].Clear();
             dicMRKF1MRKCTLMST[fdIdx][ptryoIdx].Clear();
         }
-        public void CheckSizeOfDicMRKCTLMST(int targetCnt, int fcdIdx)
+        public void CheckDicMRKCTLMSTSize(int targetCnt, int fcdIdx)
         {
             // Dic 부족한 인덱스 만큼 초기화 처리
             if (targetCnt > dicSizeMRKCTLMST[fcdIdx].Count)
@@ -559,12 +559,12 @@ namespace DefectDBManager
                 dicMRKF1Data.Add(pair.Key, pair.Value);
         }
 
-        public bool CheckValidSize(string key, string fldID, float size)
+        public bool CheckValidSize(string key, float size)
         {
             bool bValid = false;
             if (dicSizeData.ContainsKey(key) == true && dicMRKF1Data.ContainsKey(key) == true)
             {
-                if (dicSizeData[fldID] <= ( + 0.00001f) && dicMRKF1Data[fldID] == true) 
+                if (dicSizeData[key] <= (size + 0.00001f) && dicMRKF1Data[key] == true) 
                     bValid = true;
             }
 
