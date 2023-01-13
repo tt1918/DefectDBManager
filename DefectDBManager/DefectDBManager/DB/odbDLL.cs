@@ -410,7 +410,6 @@ namespace DefectDBManager
                 SearchModelList.Add("12345678");
                 SearchModelList.Add("87654321");
                 DB_Progress.Complete(eNittoDBProgress.PTRYOP);
-
                 if (count > 0)
                 {
 

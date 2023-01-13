@@ -47,5 +47,24 @@ namespace DefectDBManager
         {
             _TemDefects.SearchModel("LQN1031-03");
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            FLTDAT_WRK3_Query query = new FLTDAT_WRK3_Query();
+            query.InspRange = 10;
+            query.FromPos[0] = 0;
+            query.FromPos[1] = 1000;
+            query.ToPos[0] = 1000000;
+            query.ToPos[1] = 100000000;
+            List<string> CTLNO = new List<string>();
+
+            CTLNO.Add("11111111");
+            CTLNO.Add("22222222");
+            CTLNO.Add("33333333");
+
+            string strQuery = query.GetQuery(CTLNO);
+
+            MessageBox.Show(strQuery);
+        }
     }
 }

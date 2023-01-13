@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace DefectDBManager
 {
@@ -410,6 +411,81 @@ namespace DefectDBManager
 
                 return sbMsg.ToString();
             }
+        }
+    }
+
+    public class FLTDAT_WRK3_Query : QueryMsg
+    {
+        public double[] FromPos { get; set; }  =  new double[2];
+        public double[] ToPos { get; set; } = new double[2];
+        public int InspRange { get; set; }
+        public int SlitType { get; set; }
+        public double SlitPos { get; set; }
+
+        public FLTDAT_WRK3_Query()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                FromPos[i] = -99990000.0;
+                ToPos[i] = -99990000.0;
+            }
+
+            InspRange = 5;
+            SlitType = 0;
+            SlitPos = -99990000.0;
+        }
+
+        public string GetQuery(List<string> CTLNO)
+        {
+            StringBuilder sbMsg = new StringBuilder();
+            bool isPosFind = false;
+
+            sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID, MRK_WRK_3.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M ");
+            sbMsg.Append("FROM FAULTDAT,FLTMST,MRK_WRK_3,INSPDAT ");
+            sbMsg.Append("WHERE FAULTDAT.FLTID=MRK_WRK_3.FLTID ");
+            sbMsg.Append("AND FAULTDAT.FLTID=FLTMST.FLTID ");
+            sbMsg.Append("AND FAULTDAT.AREA_M >= MRK_WRK_3.MIN_SIZE ");
+            sbMsg.Append("AND FAULTDAT.CTLNO = INSPDAT.CTLNO ");
+            sbMsg.Append("AND MRK_WRK_3.PPCD = INSPDAT.KTCD ");
+            sbMsg.Append("AND MRK_WRK_3.LNCD = INSPDAT.CUSTCD ");
+            sbMsg.Append($"AND ( (INSPDAT.S_INSP<=INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.S_INSP-{InspRange}) AND FAULTDAT.OFFSET<=(INSPDAT.E_INSP+{InspRange}))");
+            sbMsg.Append($" OR (INSPDAT.S_INSP>INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.E_INSP-{InspRange}) AND FAULTDAT.OFFSET<=(INSPDAT.S_INSP+{InspRange})) )");
+
+            // 검색 거리 추가
+            if(FromPos[0] > -99990000.0 && ToPos[0] > -99990000.0 || FromPos[1] > -99990000.0 && ToPos[1] > -99990000.0)
+            {
+                sbMsg.Append(" AND ");
+                if (FromPos[0] > -99990000.0 && ToPos[0] > -99990000.0)
+                {
+                    isPosFind = true;
+                    sbMsg.Append($"( (FAULTDAT.XPOS_M>={FromPos[0]:F2} AND FAULTDAT.XPOS_M<={ToPos[0]:F2}) ");
+                }
+                if (FromPos[1] > -99990000.0 && ToPos[1] > -99990000.0)
+                {
+                    if (isPosFind == true)
+                        sbMsg.Append("OR ");
+                    sbMsg.Append($"(FAULTDAT.XPOS_M>={FromPos[1]:F2} AND FAULTDAT.XPOS_M<={ToPos[1]:F2}) ");
+                }
+
+                if (isPosFind == true)
+                    sbMsg.Append(") ");
+            }
+
+            // Slit Type 사용하나봄 
+            if(SlitType==1 && SlitPos> -99990000.0)
+                sbMsg.Append($" AND FAULTDAT.XPOS_M<={SlitPos:F2} ");
+            else if(SlitType== 2 && SlitPos > -99990000.0)
+                sbMsg.Append($" AND FAULTDAT.XPOS_M>{SlitPos:F2} ");
+            
+            // CTLNO 탐색
+            for(int i=0; i< CTLNO.Count; i++)
+            {
+                sbMsg.Append($" AND FAULTDAT.CTLNO<>'{CTLNO[i]}' ");
+            }
+
+            sbMsg.Append(" ORDER BY FAULTDAT.OFFSET ");
+
+            return sbMsg.ToString();
         }
     }
 }

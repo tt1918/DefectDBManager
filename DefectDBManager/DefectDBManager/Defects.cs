@@ -522,6 +522,14 @@ namespace DefectDBManager
             dbManager.SearchModel(lotName);
             return 0;
         }
+
+        public int SearchModelDummy(string lotName)
+        {
+            dbManager._DbProc[0].SearchModelDummy(lotName);
+            
+            return 0;
+        }
+
 		public int GetSearchModelCount()
 		{
             return dbManager._DbProc[2].SearchModelList.Count;

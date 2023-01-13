@@ -351,6 +351,47 @@ namespace DefectDBManager
             return msg;
         }
     }
+
+    // MRK_WRK_3 Query를 이용하여 탐색한 데이터 결과 처리
+    // 테스트 완료되지 않았음.
+    public class FAULT_WRK3_Data
+    {
+        // FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,
+        // FLTMST.FLTNAM,FAULTDAT.FLTID, MRK_WRK_3.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M
+        string CTLNO;
+        string FLTNO;
+        string OFFSET;
+        string XPOS_M;
+        string KND;
+        string CAMNO;
+        string FLTMST_FLTNAM;
+        string FLTID;
+        string MRK_WRK_3_PPCD;
+        string YPOS_M;
+        string WID_M;
+
+        public void Parse(OracleDataReader reader)
+        {
+            CTLNO = reader[0].ToString();
+            FLTNO = reader[1].ToString();
+            OFFSET = reader[2].ToString();
+            XPOS_M = reader[3].ToString();
+            KND = reader[4].ToString();
+            CAMNO = reader[5].ToString();
+            FLTMST_FLTNAM = reader[6].ToString();
+            FLTID = reader[7].ToString();
+            MRK_WRK_3_PPCD = reader[8].ToString();
+            YPOS_M = reader[9].ToString();
+            WID_M = reader[10].ToString();
+        }
+        public string GetString(int index)
+        {
+            string msg = string.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET}, {XPOS_M}, {KND}, {CAMNO}, {FLTMST_FLTNAM}, " +
+                $"{FLTID}, {MRK_WRK_3_PPCD}, {YPOS_M}, {WID_M}");
+            return msg;
+        }
+
+    }
     #endregion DB Query
 
     #region DB Search Result
@@ -564,6 +605,8 @@ namespace DefectDBManager
             bool bValid = false;
             if (dicSizeData.ContainsKey(key) == true && dicMRKF1Data.ContainsKey(key) == true)
             {
+                // 원래는 사이즈 비교만 하였으나 Defect Edit 시 버퍼 내용에서 마킹 체크가 변경이 가능하기 때문에 
+                // MRKF1도 확인해서 비교하도록 해야함. 
                 if (dicSizeData[key] <= (size + 0.00001f) && dicMRKF1Data[key] == true) 
                     bValid = true;
             }
