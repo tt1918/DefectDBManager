@@ -52,11 +52,11 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.lblTitle.Location = new System.Drawing.Point(67, 5);
+            this.lblTitle.Location = new System.Drawing.Point(80, 3);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(116, 20);
+            this.lblTitle.Size = new System.Drawing.Size(99, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "DB LOGIN INFO";
             // 
@@ -66,7 +66,7 @@
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Location = new System.Drawing.Point(4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(254, 31);
+            this.panel1.Size = new System.Drawing.Size(242, 25);
             this.panel1.TabIndex = 1;
             // 
             // lblDomain
@@ -74,7 +74,7 @@
             this.lblDomain.AutoSize = true;
             this.lblDomain.BackColor = System.Drawing.SystemColors.Control;
             this.lblDomain.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDomain.Location = new System.Drawing.Point(9, 128);
+            this.lblDomain.Location = new System.Drawing.Point(9, 115);
             this.lblDomain.Name = "lblDomain";
             this.lblDomain.Size = new System.Drawing.Size(67, 17);
             this.lblDomain.TabIndex = 2;
@@ -85,9 +85,9 @@
             // 
             this.tbDbName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbDbName.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDbName.Location = new System.Drawing.Point(90, 128);
+            this.tbDbName.Location = new System.Drawing.Point(90, 115);
             this.tbDbName.Name = "tbDbName";
-            this.tbDbName.Size = new System.Drawing.Size(164, 18);
+            this.tbDbName.Size = new System.Drawing.Size(147, 18);
             this.tbDbName.TabIndex = 3;
             this.tbDbName.Text = "1";
             this.tbDbName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -97,7 +97,7 @@
             this.lblUserID.AutoSize = true;
             this.lblUserID.BackColor = System.Drawing.SystemColors.Control;
             this.lblUserID.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserID.Location = new System.Drawing.Point(9, 151);
+            this.lblUserID.Location = new System.Drawing.Point(9, 138);
             this.lblUserID.Name = "lblUserID";
             this.lblUserID.Size = new System.Drawing.Size(21, 17);
             this.lblUserID.TabIndex = 2;
@@ -108,9 +108,9 @@
             // 
             this.tbUserID.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbUserID.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbUserID.Location = new System.Drawing.Point(90, 151);
+            this.tbUserID.Location = new System.Drawing.Point(90, 138);
             this.tbUserID.Name = "tbUserID";
-            this.tbUserID.Size = new System.Drawing.Size(164, 18);
+            this.tbUserID.Size = new System.Drawing.Size(147, 18);
             this.tbUserID.TabIndex = 3;
             this.tbUserID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -119,7 +119,7 @@
             this.lblPassword.AutoSize = true;
             this.lblPassword.BackColor = System.Drawing.SystemColors.Control;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassword.Location = new System.Drawing.Point(9, 175);
+            this.lblPassword.Location = new System.Drawing.Point(9, 162);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(29, 17);
             this.lblPassword.TabIndex = 2;
@@ -130,16 +130,16 @@
             // 
             this.tbPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbPassword.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPassword.Location = new System.Drawing.Point(90, 175);
+            this.tbPassword.Location = new System.Drawing.Point(90, 162);
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(164, 18);
+            this.tbPassword.Size = new System.Drawing.Size(147, 18);
             this.tbPassword.TabIndex = 3;
             this.tbPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnDisconnect
             // 
             this.btnDisconnect.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDisconnect.Location = new System.Drawing.Point(137, 205);
+            this.btnDisconnect.Location = new System.Drawing.Point(124, 192);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(101, 36);
             this.btnDisconnect.TabIndex = 4;
@@ -150,7 +150,7 @@
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(192, 247);
+            this.btnClose.Location = new System.Drawing.Point(179, 234);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(66, 36);
             this.btnClose.TabIndex = 4;
@@ -161,7 +161,7 @@
             // btnConnect
             // 
             this.btnConnect.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnect.Location = new System.Drawing.Point(33, 205);
+            this.btnConnect.Location = new System.Drawing.Point(20, 192);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(101, 36);
             this.btnConnect.TabIndex = 4;
@@ -174,7 +174,7 @@
             this.lblPort.AutoSize = true;
             this.lblPort.BackColor = System.Drawing.SystemColors.Control;
             this.lblPort.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPort.Location = new System.Drawing.Point(9, 105);
+            this.lblPort.Location = new System.Drawing.Point(9, 92);
             this.lblPort.Name = "lblPort";
             this.lblPort.Size = new System.Drawing.Size(41, 17);
             this.lblPort.TabIndex = 5;
@@ -185,9 +185,9 @@
             // 
             this.tbPort.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbPort.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPort.Location = new System.Drawing.Point(90, 105);
+            this.tbPort.Location = new System.Drawing.Point(90, 92);
             this.tbPort.Name = "tbPort";
-            this.tbPort.Size = new System.Drawing.Size(164, 18);
+            this.tbPort.Size = new System.Drawing.Size(147, 18);
             this.tbPort.TabIndex = 6;
             this.tbPort.Text = "1521";
             this.tbPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -197,7 +197,7 @@
             this.lblHostIP.AutoSize = true;
             this.lblHostIP.BackColor = System.Drawing.SystemColors.Control;
             this.lblHostIP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHostIP.Location = new System.Drawing.Point(9, 81);
+            this.lblHostIP.Location = new System.Drawing.Point(9, 68);
             this.lblHostIP.Name = "lblHostIP";
             this.lblHostIP.Size = new System.Drawing.Size(58, 17);
             this.lblHostIP.TabIndex = 7;
@@ -208,9 +208,9 @@
             // 
             this.tbHostIP.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbHostIP.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbHostIP.Location = new System.Drawing.Point(90, 81);
+            this.tbHostIP.Location = new System.Drawing.Point(90, 68);
             this.tbHostIP.Name = "tbHostIP";
-            this.tbHostIP.Size = new System.Drawing.Size(164, 18);
+            this.tbHostIP.Size = new System.Drawing.Size(147, 18);
             this.tbHostIP.TabIndex = 8;
             this.tbHostIP.Text = "100.0.0.1";
             this.tbHostIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -220,7 +220,7 @@
             this.lblType.AutoSize = true;
             this.lblType.BackColor = System.Drawing.SystemColors.Control;
             this.lblType.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblType.Location = new System.Drawing.Point(10, 55);
+            this.lblType.Location = new System.Drawing.Point(10, 42);
             this.lblType.Name = "lblType";
             this.lblType.Size = new System.Drawing.Size(38, 17);
             this.lblType.TabIndex = 9;
@@ -231,7 +231,7 @@
             // 
             this.rbConStringType1.AutoSize = true;
             this.rbConStringType1.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbConStringType1.Location = new System.Drawing.Point(87, 50);
+            this.rbConStringType1.Location = new System.Drawing.Point(87, 37);
             this.rbConStringType1.Name = "rbConStringType1";
             this.rbConStringType1.Size = new System.Drawing.Size(50, 21);
             this.rbConStringType1.TabIndex = 10;
@@ -244,7 +244,7 @@
             // 
             this.rbConStringType2.AutoSize = true;
             this.rbConStringType2.Font = new System.Drawing.Font("Segoe UI Symbol", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbConStringType2.Location = new System.Drawing.Point(154, 50);
+            this.rbConStringType2.Location = new System.Drawing.Point(154, 37);
             this.rbConStringType2.Name = "rbConStringType2";
             this.rbConStringType2.Size = new System.Drawing.Size(68, 21);
             this.rbConStringType2.TabIndex = 10;
@@ -257,7 +257,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 290);
+            this.ClientSize = new System.Drawing.Size(250, 274);
             this.Controls.Add(this.rbConStringType2);
             this.Controls.Add(this.rbConStringType1);
             this.Controls.Add(this.lblType);

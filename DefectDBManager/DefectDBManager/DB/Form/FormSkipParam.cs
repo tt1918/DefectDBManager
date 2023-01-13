@@ -28,6 +28,9 @@ namespace DefectDBManager
         {
             InitializeComponent();
             initSkipParamForm();
+
+            panelTitle.MouseDown += lblTitle_MouseDown;
+            panelTitle.MouseMove += lblTitle_MouseMove;
         }
 
         private void FormSkipParam_Load(object sender, EventArgs e)
@@ -196,5 +199,26 @@ namespace DefectDBManager
             this.ResumeLayout();
         }
         #endregion Language Update
+
+        #region 마우스로 폼 드래그
+        private Point mouseDownLocation;
+        private void lblTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.mouseDownLocation = e.Location;
+            }
+        }
+        private void lblTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized) return;
+
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.Left = e.X + this.Left - this.mouseDownLocation.X;
+                this.Top = e.Y + this.Top - this.mouseDownLocation.Y;
+            }
+        }
+        #endregion
     }
 }
