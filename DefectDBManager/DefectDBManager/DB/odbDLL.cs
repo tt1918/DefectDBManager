@@ -1,4 +1,4 @@
-﻿//#define FAST_FLTID
+﻿#define FAST_FLTID
 
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -1055,15 +1055,15 @@ namespace DefectDBManager
 
                                         for (int offsetIdx = 0; offsetIdx < offsetDataCnt; offsetIdx++)
                                         {
-                                            int ppcd = _DbResult.XOFSMST_Data[i].PPCD;
-                                            if (data.KYCD == _DbResult.XOFSMST_Data[i].KYCD &&
+                                            int ppcd = _DbResult.XOFSMST_Data[offsetIdx].PPCD;
+                                            if (data.KYCD == _DbResult.XOFSMST_Data[offsetIdx].KYCD &&
                                                 ((idx == (int)eFCD.ES && ppcd == 100) ||
                                                 (idx == (int)eFCD.TG && ppcd == 400) ||
                                                 (idx == (int)eFCD.ETC && ppcd != 100 && ppcd != 400)) &&
-                                                _DbResult.PTRY0P_Data[idx][i].Y0ZKNM == _DbResult.XOFSMST_Data[i].YLSZKN &&
-                                                _DbResult.PTRY0P_Data[idx][i].LNCD == _DbResult.XOFSMST_Data[i].LNCD)
+                                                _DbResult.PTRY0P_Data[idx][i].Y0ZKNM == _DbResult.XOFSMST_Data[offsetIdx].YLSZKN &&
+                                                _DbResult.PTRY0P_Data[idx][i].LNCD == _DbResult.XOFSMST_Data[offsetIdx].LNCD)
                                             {
-                                                data.OffsetX = _DbResult.XOFSMST_Data[i].X_OFFSET;
+                                                data.OffsetX = _DbResult.XOFSMST_Data[offsetIdx].X_OFFSET;
                                             }
                                         }
                                     }
@@ -1217,10 +1217,14 @@ namespace DefectDBManager
                             if (_DbResult.INSPDAT_Data[fcdIdx][opIdx][inspIdx] == null) continue;
 
                             inspdata = _DbResult.INSPDAT_Data[fcdIdx][opIdx][inspIdx];
+
+                            if (_DbResult.dicMRKF1Data.Count == 0 && _DbResult.dicSizeData.Count == 0)
+                                continue;
+
 #if (FAST_FLTID)
                             QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
-                            fastMsg.BCNO = inspdata.BCNO;
-                            query = fastMsg.GetQuery();
+                            fastMsg.CTLNO = inspdata.CTLNO;
+                            query = fastMsg.GetQuery(_DbResult.dicSizeData, _DbResult.dicMRKF1Data);
 #else
                             QueryMsg.FLTDAT_Query msg = new QueryMsg.FLTDAT_Query();
                             msg.CTLNO = inspdata.CTLNO;
@@ -1266,9 +1270,8 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-                                        bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
-                                        
-                                        if (bValid == true)    // 소수점 오차 보정
+                                        //bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
+                                        //if (bValid == true)    // 소수점 오차 보정
                                         {
                                             if (finalXPos < 0.0f) continue;
                                             if (useMask == true && IsMaskedDefect(finalXPos, data.OFFSET) == true) continue;

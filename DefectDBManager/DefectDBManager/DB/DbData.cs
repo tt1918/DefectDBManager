@@ -16,10 +16,14 @@ namespace DefectDBManager
         // Search Item = YLMLOT(점착LOT) 
         // 18번 RollNo 일때 20번 혹은 21번 추출 "YLSGEB"
         //  
-        //1			2		3		4		5		6		7		8		9		10		11		12		13		14		15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31
-        //YLMLOT	YLMKYC	YLMMAC	YLMPPC	YLMKNC	YLMKSB	YLMZKY	YLMZKN	YLMSAG	YLMTON	YLMKAS	YLMYKH	YLMSOK	YLYIEL	YLLEVE	YLSLOT	YLSSEQ	YLSGEB	YLSZKB	YLSZKY	YLSZKN	YLSTON	YLYSKH	YLCRDT	YLCRTM	YLOPDT	YLRPTM	YLNMID	YLLGID	YLPCID	YLPGID
-        //점착LOT	x		x		x		x		x		품종	    x		x		투입M	완성M	원단폭	X		X		X		연신LOT	X		X		X		X-----------------------------------------
-        //20												X						8		5		5								42				42				40		42
+        //1			2		3		4		5		6		7		8		9		10		11		12		13		14		
+        //YLMLOT	YLMKYC	YLMMAC	YLMPPC	YLMKNC	YLMKSB	YLMZKY	YLMZKN	YLMSAG	YLMTON	YLMKAS	YLMYKH	YLMSOK	YLYIEL	
+        //점착LOT	x		x		x		x		x		품종	    x		x		투입M	완성M	원단폭	X		X		
+        //20												X						8		5		5								
+        //15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31
+        //YLLEVE	YLSLOT	YLSSEQ	YLSGEB	YLSZKB	YLSZKY	YLSZKN	YLSTON	YLYSKH	YLCRDT	YLCRTM	YLOPDT	YLRPTM	YLNMID	YLLGID	YLPCID	YLPGID
+        //X		연신LOT	X		X		X		X-----------------------------------------
+        //42				42				40		42
 
         public string YLMLOT;   //g1 점착lot
         public string YLMZKY;   //g8 품종
@@ -321,27 +325,50 @@ namespace DefectDBManager
         public string MACNO;
         public string FLTID;
 
+        //public void Parse(OracleDataReader reader)
+        //{
+        //    float fVal;
+        //    CTLNO = reader[0].ToString();
+        //    FLTNO = reader[1].ToString();
+        //    if (float.TryParse(reader[4].ToString(), out fVal) == true)
+        //        OFFSET = fVal;
+        //    if (float.TryParse(reader[5].ToString(), out fVal) == true)
+        //        YPOS_M = fVal;
+        //    if (float.TryParse(reader[7].ToString(), out fVal) == true)
+        //        XPOS_M = fVal;
+        //    if (float.TryParse(reader[9].ToString(), out fVal) == true)
+        //        AREA_M = fVal;
+        //    RANK = reader[15].ToString();
+        //    KND = reader[16].ToString();
+        //    if (Int32.TryParse(reader[20].ToString(), out int iVal) == true)
+        //        CAMNO = iVal;
+        //    MNTTAN = reader[28].ToString();
+        //    JIGCD = reader[29].ToString();
+        //    MACNO = reader[30].ToString();
+        //    FLTID = reader[34].ToString();
+        //}
+
         public void Parse(OracleDataReader reader)
         {
             float fVal;
             CTLNO = reader[0].ToString();
             FLTNO = reader[1].ToString();
-            if(float.TryParse(reader[4].ToString(), out fVal)==true)
+            if (float.TryParse(reader[2].ToString(), out fVal) == true)
                 OFFSET = fVal;
-            if(float.TryParse(reader[5].ToString(), out fVal) == true)
+            if (float.TryParse(reader[3].ToString(), out fVal) == true)
                 YPOS_M = fVal;
-            if (float.TryParse(reader[7].ToString(), out fVal) == true)
+            if (float.TryParse(reader[4].ToString(), out fVal) == true)
                 XPOS_M = fVal;
-            if (float.TryParse(reader[9].ToString(), out fVal) == true)
+            if (float.TryParse(reader[5].ToString(), out fVal) == true)
                 AREA_M = fVal;
-            RANK = reader[15].ToString();
-            KND = reader[16].ToString();
-            if(Int32.TryParse(reader[20].ToString(), out int iVal)==true)
+            RANK = reader[6].ToString();
+            KND = reader[7].ToString();
+            if (Int32.TryParse(reader[8].ToString(), out int iVal) == true)
                 CAMNO = iVal;
-            MNTTAN = reader[28].ToString();
-            JIGCD = reader[29].ToString();
-            MACNO = reader[30].ToString();
-            FLTID = reader[34].ToString();
+            MNTTAN = reader[9].ToString();
+            JIGCD = reader[10].ToString();
+            MACNO = reader[11].ToString();
+            FLTID = reader[12].ToString();
         }
 
         public string GetString(int index, int defectLine, string bcno, float xOffset)
@@ -610,7 +637,7 @@ namespace DefectDBManager
                 if (dicSizeData[key] <= (size + 0.00001f) && dicMRKF1Data[key] == true) 
                     bValid = true;
             }
-
+            
             return bValid;
         }
     }

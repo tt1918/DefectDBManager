@@ -56,11 +56,8 @@ namespace DefectDBManager
             query.FromPos[1] = 1000;
             query.ToPos[0] = 1000000;
             query.ToPos[1] = 100000000;
-            List<string> CTLNO = new List<string>();
 
-            CTLNO.Add("11111111");
-            CTLNO.Add("22222222");
-            CTLNO.Add("33333333");
+            string CTLNO = "11111111";
 
             string strQuery = query.GetQuery(CTLNO);
 
