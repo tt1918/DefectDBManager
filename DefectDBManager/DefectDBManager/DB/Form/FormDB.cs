@@ -1022,6 +1022,74 @@ namespace DefectDBManager
             }
         }
 
+        private void threadFromDefectEdit()
+        {
+            bool isSuccess = true;
+            try
+            {
+                this.dbLoadingTime.Reset();
+                this.dbLoadingTime.Start();
+                int errorOut = 0;
+                
+                this.dbSearchProgressTimer.Start();
+
+                DataBase.ResetDataAll();
+                Option option = DataBase.DbOption;
+                SearchOption searchOP = new SearchOption();
+                searchOP.MKCD = option.searchOP.MKCD; // 혹시 몰라서 다시 추가함... 확인 필요
+                option.searchOP = searchOP;
+                searchOP.useMask = cbUseMask.Checked;
+                searchOP.useDefectEdit = true;
+
+                if (formProgress != null) formProgress._Step = 0;
+
+               
+                isSuccess &= dataBase.SearchLot(this.dataBase.DbOption.lotName, false, ref errorOut);
+                // 데이터 처리 필요
+                if (dataBase.CrtParam.isProductAvaliable == false)
+                {
+
+                }
+
+                if (dataBase.CrtParam.isXOffsetError == true)
+                {
+
+                }
+
+                // List View 업데이트 데이터 생성
+                this.makeAllListViewData();
+                this.displayAllListView();
+
+                // Fault Data 표시
+                this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
+            }
+            finally
+            {
+                this.dbSearchProgressTimer.Stop();
+                this.dbLoadingTime.Stop();
+
+                if (isSuccess == false)
+                    this._SearchRes = eSearchProcessRes.DB_NoExistES;
+                else
+                    this._SearchRes = eSearchProcessRes.DB_SearchDone;
+
+                if (this.UpdateEndEvent == true)
+                {
+                    OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
+                    this.UpdateEndEvent = false;
+                }
+
+                // FLTID 비교 발생 시 에러 알람
+                if (dataBase.CrtParam.FLTIDCheckError == true)
+                    OnEndCsvReading((int)eEventReport.eBCR_FLTID_CheckError);
+                // ROLL MAP 거리 비교 에러 시 알람 처리
+                if (dataBase.CrtParam.InspRollCheckError == true)
+                    OnEndCsvReading((int)eEventReport.eBCR_INSPMETER_CheckError);
+
+                this.updateSearchResult(isSuccess, 0);
+            }
+        }
+
         public void UpdateListViewFromLotChange()
         {
             if (this.IsHandleCreated == true)
@@ -1523,6 +1591,12 @@ namespace DefectDBManager
 
         private void btnEditDefect_Click(object sender, EventArgs e)
         {
+            if (IsSearchDefect() == true)
+            {
+                MessageBox.Show("Now program is searching DB");
+                return;
+            }
+
             RunDefectEdit();
         }
 
@@ -1902,19 +1976,31 @@ namespace DefectDBManager
                         if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
                             MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            DataBase.ResetDataAll();
-                            Option option = DataBase.DbOption;
-                            SearchOption searchOP = new SearchOption();
-                            option.searchOP = searchOP;
-                            searchOP.useMask = cbUseMask.Checked;
-                            searchOP.useDefectEdit = true;
-                            DataBase.SearchLot(this.dataBase.DbOption.lotName, false, ref errorIdx);
+                            //DataBase.ResetDataAll();
+                            //Option option = DataBase.DbOption;
+                            //SearchOption searchOP = new SearchOption();
+                            //option.searchOP = searchOP;
+                            //searchOP.useMask = cbUseMask.Checked;
+                            //searchOP.useDefectEdit = true;
 
                             clearAllListView();
                             ResetListViewData();
-                            displayAllListView();
-                            // Fault Data 표시
-                            this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
+
+                            //DataBase.SearchLot(this.dataBase.DbOption.lotName, false, ref errorIdx);
+
+                            //makeAllListViewData();
+                            //displayAllListView();
+                            //// Fault Data 표시
+                            //this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
+
+                            if (this.thread != null)
+                            {
+                                this.thread.Join(100);
+                                this.thread = null;
+                            }
+
+                            this.thread = new Thread(this.threadFromDefectEdit);
+                            this.thread.Start();
                         }
                     }
                 }
