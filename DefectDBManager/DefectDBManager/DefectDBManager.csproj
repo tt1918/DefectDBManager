@@ -238,6 +238,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Language.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Language.zh-TW.resx" />
     <EmbeddedResource Include="Language.zh-CN.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

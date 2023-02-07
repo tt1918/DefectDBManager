@@ -126,6 +126,12 @@
   <data name="ApplySelectedDefectInfos" xml:space="preserve">
     <value>Apply selected defect informations?</value>
   </data>
+  <data name="btnLoadtAreaDel" xml:space="preserve">
+    <value>LOAD</value>
+  </data>
+  <data name="btnSaveAreaDel" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
   <data name="CANCEL" xml:space="preserve">
     <value>CANCEL</value>
   </data>
@@ -233,7 +239,7 @@
     <comment>FAULTDAT 6</comment>
   </data>
   <data name="listFAULTDAT_7" xml:space="preserve">
-    <value>Defect No</value>
+    <value>NG No</value>
     <comment>FAULTDAT 7</comment>
   </data>
   <data name="listINSPDAT_0" xml:space="preserve">
@@ -261,11 +267,11 @@
     <comment>MRKCTLMSTHeader</comment>
   </data>
   <data name="listPTRYLP_0" xml:space="preserve">
-    <value>원단 Lot</value>
+    <value>LOT</value>
     <comment>PTRYLPHeader</comment>
   </data>
   <data name="listPTRYLP_1" xml:space="preserve">
-    <value>점착 Lot</value>
+    <value>TG LOT</value>
     <comment>PTRYLPHeader</comment>
   </data>
   <data name="listPTRYLP_5" xml:space="preserve">

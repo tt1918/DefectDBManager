@@ -43,9 +43,9 @@ namespace DefectDBManager
         readonly string[] PTRYLPHeader = { "원단 Lot", "점착 Lot", "Insert M", "Complete M", "Width", "품종" };
         readonly int[] listPTRYLPWidth = { 100, 300, 100, 100, 100, 100 };
         readonly string[] PTRYOPHeader = { "품종", "연신 Lot", "라인코드", "개시 시간", "종료 시간" };
-        readonly int[] listPTRYOPWidth = { 70, 70, 60, 140, 140 };
+        readonly int[] listPTRYOPWidth = { 70, 70, 80, 140, 140 };
         readonly string[] MRKCTLMSTHeader = { "라인코드", "불량 ID", "품종", "사이즈" };
-        readonly int[] listMRKCTLMSTWidth = { 70, 50, 180, 80 };
+        readonly int[] listMRKCTLMSTWidth = { 80, 80, 180, 80 };
         readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH" };
         readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 70, 80, 80, 80, 90 };
         readonly string[] FAULTDATHeader = { "CNT", "관리 NO", "불량 CNT", "OFFSET", "XPOS_M", "YPOS_M", "종류", "불량번호",
@@ -2028,7 +2028,12 @@ namespace DefectDBManager
                     }
                     break;
 
-                case 2: // 중국어
+                case 2: // 중국어 번체
+                    {
+                        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("zh-TW");
+                    }
+                    break;
+                case 3: // 중국어 간체
                     {
                         Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("zh-CN");
                     }

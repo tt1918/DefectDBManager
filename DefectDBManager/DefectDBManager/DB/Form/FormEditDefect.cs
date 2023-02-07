@@ -20,7 +20,7 @@ namespace DefectDBManager
     public partial class FormEditDefect : Form
     {
         #region const param
-        readonly string[] DE_Header = { " ", "마킹", "FALTID", "SIZE", "PPCD", "ROLLNAME" };
+        readonly string[] DE_Header = { " ", "MARK", "FALTID", "SIZE", "PPCD", "ROLLNAME" };
         readonly int[] listDE_Width = { 30, 60, 60, 60, 60, 100};
         #endregion
 

@@ -126,6 +126,8 @@ namespace DefectDBManager
         public void UpdateLanguage()
         {
             btnClose.Text = Language.Close;
+            btnLoadtAreaDel.Text = Language.btnLoadtAreaDel;
+            btnSaveAreaDel.Text = Language.btnSaveAreaDel;
         }
         #endregion Language Update
 

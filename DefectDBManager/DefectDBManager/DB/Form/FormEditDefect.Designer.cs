@@ -204,7 +204,7 @@
             // 
             // ColLNCD
             // 
-            this.ColLNCD.HeaderText = "마킹";
+            this.ColLNCD.HeaderText = "MARK";
             this.ColLNCD.Name = "ColLNCD";
             this.ColLNCD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColLNCD.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -236,7 +236,7 @@
             // 
             // ColROLLNAME
             // 
-            this.ColROLLNAME.HeaderText = "ROLLNAME";
+            this.ColROLLNAME.HeaderText = "ROLL NAME";
             this.ColROLLNAME.Name = "ColROLLNAME";
             this.ColROLLNAME.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColROLLNAME.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;

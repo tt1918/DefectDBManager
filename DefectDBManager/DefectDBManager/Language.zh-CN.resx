@@ -118,79 +118,85 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>ADD</value>
+    <value>追加</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>应用</value>
   </data>
   <data name="ApplySelectedDefectInfos" xml:space="preserve">
-    <value>Apply selected defect informations?</value>
+    <value>确定要应用选中的缺陷信息吗？</value>
+  </data>
+  <data name="btnLoadtAreaDel" xml:space="preserve">
+    <value>載入</value>
+  </data>
+  <data name="btnSaveAreaDel" xml:space="preserve">
+    <value>保存</value>
   </data>
   <data name="CANCEL" xml:space="preserve">
-    <value>CANCEL</value>
+    <value>取消</value>
   </data>
   <data name="ClearAll" xml:space="preserve">
-    <value>CLEAR ALL</value>
+    <value>全部 取消</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>CLOSE</value>
+    <value>关闭</value>
   </data>
   <data name="Connected" xml:space="preserve">
-    <value>Connected</value>
+    <value>已连接</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>Connection</value>
+    <value>连接</value>
   </data>
   <data name="DBLoginConnect" xml:space="preserve">
-    <value>CONNECT</value>
+    <value>连接</value>
   </data>
   <data name="DBLoginDisonnect" xml:space="preserve">
-    <value>DISCONNECT</value>
+    <value>断开连接</value>
   </data>
   <data name="DBLoginDomain" xml:space="preserve">
-    <value>DB Name</value>
+    <value>DB 名称</value>
   </data>
   <data name="DBLoginHostIP" xml:space="preserve">
-    <value>HOST IP</value>
+    <value>主机 IP</value>
   </data>
   <data name="DBLoginID" xml:space="preserve">
-    <value>ID</value>
+    <value>用户名</value>
   </data>
   <data name="DBLoginPort" xml:space="preserve">
-    <value>PORT</value>
+    <value>输入输出端子</value>
   </data>
   <data name="DBLoginPW" xml:space="preserve">
-    <value>PW</value>
+    <value>密码</value>
   </data>
   <data name="DBLoginTitle" xml:space="preserve">
-    <value>DB LOGIN INFO</value>
+    <value>DB 连接信息</value>
   </data>
   <data name="DBLoginType" xml:space="preserve">
-    <value>TYPE</value>
+    <value>类型</value>
   </data>
   <data name="DBProgressTitle" xml:space="preserve">
-    <value>DATA BASE PROGRESS</value>
+    <value>数据库进度</value>
   </data>
   <data name="DefectEditorTitle" xml:space="preserve">
-    <value>DEFECTS EDITOR</value>
+    <value>修正不良</value>
   </data>
   <data name="Del" xml:space="preserve">
-    <value>DEL</value>
+    <value>删除</value>
   </data>
   <data name="Destination" xml:space="preserve">
-    <value>Destination</value>
+    <value>出荷处</value>
   </data>
   <data name="Disconnected" xml:space="preserve">
-    <value>Disconnected</value>
+    <value>断开连接</value>
   </data>
   <data name="EditDefect" xml:space="preserve">
-    <value>Edit Defect</value>
+    <value>修正不良</value>
   </data>
   <data name="EditDefectClass" xml:space="preserve">
-    <value>Edit Class</value>
+    <value>更改不良级别</value>
   </data>
   <data name="EditDefectTitle" xml:space="preserve">
-    <value>EDIT DEFECT</value>
+    <value>修正不良</value>
   </data>
   <data name="ES" xml:space="preserve">
     <value>ES</value>
@@ -199,208 +205,212 @@
     <value>ETC</value>
   </data>
   <data name="ExportCSV" xml:space="preserve">
-    <value>Export CSV</value>
+    <value>保存 CSV 文件</value>
   </data>
   <data name="FileDoesNotExist" xml:space="preserve">
-    <value>Selected file does not eixst.</value>
+    <value>不存在文件</value>
   </data>
   <data name="gbInspDataMask" xml:space="preserve">
-    <value>Inspection Data Mask</value>
+    <value>校验数据掩码</value>
   </data>
   <data name="gbSizeSkip" xml:space="preserve">
-    <value>Skip Size</value>
+    <value>排除缺陷大小</value>
   </data>
   <data name="listBCNO_3" xml:space="preserve">
-    <value>Bad Cnt/M^2</value>
+    <value>M^2 不良数</value>
     <comment>BCnoHeader</comment>
   </data>
   <data name="listBCNO_5" xml:space="preserve">
-    <value>Roll BCNO</value>
+    <value>面料 BCNO</value>
     <comment>BCnoHeader</comment>
   </data>
   <data name="listFAULTDAT_1" xml:space="preserve">
-    <value>Managed NO</value>
+    <value>管理 NO</value>
     <comment>FAULTDAT 1</comment>
   </data>
   <data name="listFAULTDAT_2" xml:space="preserve">
-    <value>Defect CNT</value>
+    <value>不良 CNT</value>
     <comment>FAULTDAT 2</comment>
   </data>
   <data name="listFAULTDAT_6" xml:space="preserve">
-    <value>Type</value>
+    <value>类型</value>
     <comment>FAULTDAT 6</comment>
   </data>
+  <data name="listFAULTDAT_7" xml:space="preserve">
+    <value>NG No</value>
+    <comment>FAULTDAT 7</comment>
+  </data>
   <data name="listINSPDAT_0" xml:space="preserve">
-    <value>Managed NO</value>
+    <value>管理 NO</value>
     <comment>INSPDAT</comment>
   </data>
   <data name="listINSPDAT_1" xml:space="preserve">
-    <value>Type</value>
+    <value>品种</value>
     <comment>INSPDAT</comment>
   </data>
   <data name="listMRKCTLMST_0" xml:space="preserve">
-    <value>Line Code</value>
+    <value>生产线代码</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
   <data name="listMRKCTLMST_1" xml:space="preserve">
-    <value>Defect ID</value>
+    <value>不良 用户名</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
   <data name="listMRKCTLMST_2" xml:space="preserve">
-    <value>Type</value>
+    <value>品种</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
   <data name="listMRKCTLMST_3" xml:space="preserve">
-    <value>Size</value>
+    <value>尺寸</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
   <data name="listPTRYLP_0" xml:space="preserve">
-    <value>원단 Lot</value>
+    <value>LOT</value>
     <comment>PTRYLPHeader</comment>
   </data>
   <data name="listPTRYLP_1" xml:space="preserve">
-    <value>점착 Lot</value>
+    <value>TG LOT</value>
     <comment>PTRYLPHeader</comment>
   </data>
   <data name="listPTRYLP_5" xml:space="preserve">
-    <value>Type</value>
+    <value>品种</value>
     <comment>PTRYLPHeader</comment>
   </data>
   <data name="listPTRYOP_0" xml:space="preserve">
-    <value>Type</value>
+    <value>品种</value>
     <comment>PTRYOP</comment>
   </data>
   <data name="listPTRYOP_1" xml:space="preserve">
-    <value>ES Lot</value>
+    <value>ES LOT</value>
     <comment>PTRYOP</comment>
   </data>
   <data name="listPTRYOP_2" xml:space="preserve">
-    <value>Line Code</value>
+    <value>生产线代码</value>
     <comment>PTRYOP</comment>
   </data>
   <data name="listPTRYOP_3" xml:space="preserve">
-    <value>ST Time</value>
+    <value>开始时间</value>
     <comment>PTRYOP</comment>
   </data>
   <data name="listPTRYOP_4" xml:space="preserve">
-    <value>ED Time</value>
+    <value>結束时间</value>
     <comment>PTRYOP</comment>
   </data>
   <data name="LotName" xml:space="preserve">
-    <value>Lot Name</value>
+    <value>Lot 名</value>
   </data>
   <data name="MarkingGroup" xml:space="preserve">
-    <value>Marking Group</value>
+    <value>選擇組</value>
   </data>
   <data name="Max" xml:space="preserve">
-    <value>Max.</value>
+    <value>最大限度</value>
   </data>
   <data name="Min" xml:space="preserve">
-    <value>Min.</value>
+    <value>最小值</value>
   </data>
   <data name="NextFaultPage" xml:space="preserve">
-    <value>NEXT</value>
+    <value>下一个</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
+    <value>确认</value>
   </data>
   <data name="OpenCSV" xml:space="preserve">
-    <value>Open CSV</value>
+    <value>打开 CSV 文件</value>
   </data>
   <data name="Option" xml:space="preserve">
-    <value>Option</value>
+    <value>选项</value>
   </data>
   <data name="PleaseInsertLotNumber" xml:space="preserve">
-    <value>Please Insert Lot Name!</value>
+    <value>请输入LOT编码</value>
   </data>
   <data name="PleaseInsertNumbers" xml:space="preserve">
-    <value>Please insert numbers.</value>
+    <value>请输入数字</value>
   </data>
   <data name="PleaseInsertTenDigitsOfLotNumber" xml:space="preserve">
-    <value>Please Insert 10 Digits Of Lot Name!</value>
+    <value>请输入10位数的编码</value>
   </data>
   <data name="PleaseLoginToTheDB" xml:space="preserve">
-    <value>Please Login to the DB</value>
+    <value>请先连接DB</value>
   </data>
   <data name="PrevFaultPage" xml:space="preserve">
-    <value>PREV</value>
+    <value>之前</value>
   </data>
   <data name="ProgramIsSearchingCSV" xml:space="preserve">
-    <value>Now Reading CSV File.</value>
+    <value>正在搜索 CSV数据</value>
   </data>
   <data name="ProgramIsSearchingDB" xml:space="preserve">
-    <value>Running DB Search</value>
+    <value>正在搜索 DB 数据</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+    <value>初始化</value>
   </data>
   <data name="ResetAllData" xml:space="preserve">
-    <value>Reset all data?</value>
+    <value>確定要初始化数据吗？</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>搜索</value>
   </data>
   <data name="SearchEndTime" xml:space="preserve">
-    <value>End Time</value>
+    <value>結束时间</value>
   </data>
   <data name="SearchStartTime" xml:space="preserve">
-    <value>Start Time</value>
+    <value>开始时间</value>
   </data>
   <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
-    <value>Selected CSV format does not exist. Please check dest.ini file.</value>
+    <value>沒有选中(選中)的 CSV 格式。 请检查(請檢查) Dest.ini 文件</value>
   </data>
   <data name="SetSearchTime" xml:space="preserve">
-    <value>Set Search Time</value>
+    <value>请设置搜索时间</value>
   </data>
   <data name="ShowMore" xml:space="preserve">
-    <value>Show More</value>
+    <value>显示其它数据</value>
   </data>
   <data name="ShowSkipParam" xml:space="preserve">
-    <value>Skip Param</value>
+    <value>跳过参数</value>
   </data>
   <data name="Size" xml:space="preserve">
-    <value>Size</value>
+    <value>尺寸</value>
   </data>
   <data name="SizeX" xml:space="preserve">
-    <value>SizeX</value>
+    <value>X 尺寸</value>
   </data>
   <data name="SizeY" xml:space="preserve">
-    <value>SizeY</value>
+    <value>Y 尺寸</value>
   </data>
   <data name="SkipParam1" xml:space="preserve">
-    <value>EDGE REFLECT</value>
+    <value>边界反射</value>
   </data>
   <data name="SkipParam2" xml:space="preserve">
-    <value>DIRECT TRAN.</value>
+    <value>净透射</value>
   </data>
   <data name="SkipParam3" xml:space="preserve">
-    <value>CYCLE DEFECT</value>
+    <value>周期性不良</value>
   </data>
   <data name="SkipParam4" xml:space="preserve">
-    <value>CROSS DEFECT</value>
+    <value>交叉不良</value>
   </data>
   <data name="SkipParam5" xml:space="preserve">
-    <value>DIRECT REFLECT</value>
+    <value>正反射</value>
   </data>
   <data name="SkipParam6" xml:space="preserve">
-    <value>DEREVATIVE REFECT</value>
+    <value>微分反射</value>
   </data>
   <data name="TG" xml:space="preserve">
     <value>TG</value>
   </data>
   <data name="ThereAreNoDefectInfs" xml:space="preserve">
-    <value>There is no defect informations.</value>
+    <value>不存在缺陷信息</value>
   </data>
   <data name="ThereIsNoDestinationInfomation" xml:space="preserve">
-    <value>There is no destination infomation.</value>
+    <value>不存在相应发货方(相應發貨方)的信息</value>
   </data>
   <data name="Update" xml:space="preserve">
-    <value>UPDATE</value>
+    <value>更新信息</value>
   </data>
   <data name="UpdateData" xml:space="preserve">
-    <value>Update Data</value>
+    <value>更新数据</value>
   </data>
   <data name="UseMask" xml:space="preserve">
-    <value>Use Data Mask</value>
+    <value>校验数据掩码</value>
   </data>
 </root>

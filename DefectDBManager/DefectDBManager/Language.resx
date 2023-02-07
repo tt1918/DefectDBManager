@@ -126,6 +126,12 @@
   <data name="ApplySelectedDefectInfos" xml:space="preserve">
     <value>선택된 결점정보를 적용하시겠습니까?</value>
   </data>
+  <data name="btnLoadtAreaDel" xml:space="preserve">
+    <value>읽어오기</value>
+  </data>
+  <data name="btnSaveAreaDel" xml:space="preserve">
+    <value>저장</value>
+  </data>
   <data name="CANCEL" xml:space="preserve">
     <value>취소</value>
   </data>
@@ -294,7 +300,7 @@
     <value>점착 Lot</value>
   </data>
   <data name="MarkingGroup" xml:space="preserve">
-    <value>마킹 선택</value>
+    <value>마킹 그룹</value>
   </data>
   <data name="Max" xml:space="preserve">
     <value>Max.</value>

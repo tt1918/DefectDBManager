@@ -281,7 +281,7 @@
             this.gbBasicInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbBasicInfo.Controls.Add(this.splitContainer1);
-            this.gbBasicInfo.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbBasicInfo.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbBasicInfo.Location = new System.Drawing.Point(3, 3);
             this.gbBasicInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbBasicInfo.Name = "gbBasicInfo";
@@ -315,7 +315,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.lblDestination);
             this.splitContainer1.Panel1.Controls.Add(this.tbLotName);
             this.splitContainer1.Panel1.Controls.Add(this.lblLotName);
-            this.splitContainer1.Panel1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.splitContainer1.Panel1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             // 
             // splitContainer1.Panel2
             // 
@@ -350,9 +350,9 @@
             // btnEditDefectClass
             // 
             this.btnEditDefectClass.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditDefectClass.Location = new System.Drawing.Point(436, 72);
+            this.btnEditDefectClass.Location = new System.Drawing.Point(430, 72);
             this.btnEditDefectClass.Name = "btnEditDefectClass";
-            this.btnEditDefectClass.Size = new System.Drawing.Size(75, 42);
+            this.btnEditDefectClass.Size = new System.Drawing.Size(70, 42);
             this.btnEditDefectClass.TabIndex = 12;
             this.btnEditDefectClass.Text = "EDIT CLASS";
             this.btnEditDefectClass.UseVisualStyleBackColor = true;
@@ -363,7 +363,7 @@
             this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnShowSkipParam.Location = new System.Drawing.Point(358, 72);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
-            this.btnShowSkipParam.Size = new System.Drawing.Size(77, 42);
+            this.btnShowSkipParam.Size = new System.Drawing.Size(70, 42);
             this.btnShowSkipParam.TabIndex = 11;
             this.btnShowSkipParam.Text = "SKIP PARAM";
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
@@ -372,10 +372,10 @@
             // btnEditDefect
             // 
             this.btnEditDefect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEditDefect.Location = new System.Drawing.Point(592, 72);
+            this.btnEditDefect.Location = new System.Drawing.Point(574, 72);
             this.btnEditDefect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEditDefect.Name = "btnEditDefect";
-            this.btnEditDefect.Size = new System.Drawing.Size(75, 42);
+            this.btnEditDefect.Size = new System.Drawing.Size(70, 42);
             this.btnEditDefect.TabIndex = 8;
             this.btnEditDefect.Text = "EDIT DEFECT";
             this.btnEditDefect.UseVisualStyleBackColor = true;
@@ -384,10 +384,10 @@
             // btnXOFSMST
             // 
             this.btnXOFSMST.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnXOFSMST.Location = new System.Drawing.Point(514, 72);
+            this.btnXOFSMST.Location = new System.Drawing.Point(502, 72);
             this.btnXOFSMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnXOFSMST.Name = "btnXOFSMST";
-            this.btnXOFSMST.Size = new System.Drawing.Size(75, 42);
+            this.btnXOFSMST.Size = new System.Drawing.Size(70, 42);
             this.btnXOFSMST.TabIndex = 8;
             this.btnXOFSMST.Text = "Show More";
             this.btnXOFSMST.UseVisualStyleBackColor = true;
@@ -989,7 +989,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 819);
             this.Controls.Add(this.splitContainer8);
-            this.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimizeBox = false;
             this.Name = "FormDB";
