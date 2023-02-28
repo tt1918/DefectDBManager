@@ -265,10 +265,12 @@
             // 
             // cbDestination
             // 
+            this.cbDestination.DropDownHeight = 100;
             this.cbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbDestination.FormattingEnabled = true;
+            this.cbDestination.IntegralHeight = false;
             this.cbDestination.Location = new System.Drawing.Point(233, 36);
             this.cbDestination.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cbDestination.Name = "cbDestination";

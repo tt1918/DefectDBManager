@@ -23,7 +23,7 @@ namespace DefectDBManager
     {
         public const int MaxDefectLine = 1000;
         public const int LotNameLength = 10;
-        public const int MaxDestItemCnt = 16;
+        public const int MaxDestItemCnt = 100;
         public const int MaxEditDefectClassCnt = 20;
     }
 }

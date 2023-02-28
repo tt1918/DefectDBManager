@@ -344,9 +344,9 @@ namespace DefectDBManager
                     SkipData[j].minY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MIN{j + 1}", 0.0f);
                     SkipData[j].min = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MIN{j + 1}", 0.0f);
 
-                    SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 0.0f);
-                    SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 0.0f);
-                    SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 0.0f);
+                    SkipData[j].maxX = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_X_MAX{j + 1}", 99990.0f);
+                    SkipData[j].maxY = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_Y_MAX{j + 1}", 99990.0f);
+                    SkipData[j].max = NativeFunc.ReadIni(Define.DestPath, key, $"SKIP_SIZE_MAX{j + 1}", 99990.0f);
                 }
 
                 this.DicDest.Clear();
