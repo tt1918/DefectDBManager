@@ -201,6 +201,24 @@ namespace DefectDBManager
             formDB[idx].SearchDefect();
         }
 
+        public void SearchCSVFile(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            _Option[idx].dbWhen = (eDbIdWhen)idx;
+            _Option[idx].vendor = vendor;
+            _Option[idx].checkES = useES;
+            _Option[idx].checkTG = useTG;
+            _Option[idx].checkETC = useETC;
+            _Option[idx].lotName = lotName;
+            formDB[idx].DataBase = _DbProc[idx];
+            formDB[idx].DataBase.ResetDataAll();
+            formDB[idx].UpdateEndEvent = true;
+            formDB[idx].SearchCSVFile(filePath);
+        }
+
         public void GetSearchLotResultSummery(bool isNext, ref List<LotSearchResult> results)
         {
             int idx = 0;

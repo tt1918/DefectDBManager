@@ -40,7 +40,7 @@ namespace DefectDBManager
 
         private void button5_Click(object sender, EventArgs e)
         {
-            _TemDefects.SearchLot("TKN0710-33", true, 0, true, true, false);
+            _TemDefects.SearchCSV("TKN0710-33", "D:\\Project\\TOT\\01. DOC\\Nitto_CSV_샘플\\Nitto_CSV\\500mm,1000mm마다마킹_PPCD별구분\\T7F0408-07C(100)-1.csv", true, 0, true, true, false);
         }
 
         private void button6_Click(object sender, EventArgs e)

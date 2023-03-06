@@ -19,7 +19,7 @@ using static DefectDBManager.QueryMsg;
 namespace DefectDBManager
 {
 
-    public delegate void DelegateEndCsvReading(int eventID);
+    public delegate void DelegateEndJob(int eventID);
 
     public partial class FormDB : Form
     {
@@ -144,7 +144,7 @@ namespace DefectDBManager
         }
         #endregion
 
-        public event DelegateEndCsvReading OnEndCsvReading = null;
+        public event DelegateEndJob OnEndJob = null;
         public bool UpdateEndEvent = false;
         public eSearchProcessRes _SearchRes;
         public bool IsDataBaseChanged = false;
@@ -1007,16 +1007,16 @@ namespace DefectDBManager
 
                 if (this.UpdateEndEvent == true)
                 {
-                    OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
+                    OnEndJob((int)eEventReport.eFinishedSearchLot);
                     this.UpdateEndEvent = false;
                 }
 
                 // FLTID 비교 발생 시 에러 알람
                 if (dataBase.CrtParam.FLTIDCheckError == true)
-                    OnEndCsvReading((int)eEventReport.eBCR_FLTID_CheckError);
+                    OnEndJob((int)eEventReport.eBCR_FLTID_CheckError);
                 // ROLL MAP 거리 비교 에러 시 알람 처리
                 if (dataBase.CrtParam.InspRollCheckError == true)
-                    OnEndCsvReading((int)eEventReport.eBCR_INSPMETER_CheckError);
+                    OnEndJob((int)eEventReport.eBCR_INSPMETER_CheckError);
 
                 this.updateSearchResult(isSuccess, 0);
             }
@@ -1075,16 +1075,16 @@ namespace DefectDBManager
 
                 if (this.UpdateEndEvent == true)
                 {
-                    OnEndCsvReading((int)eEventReport.eFinishedSearchLot);
+                    OnEndJob((int)eEventReport.eFinishedSearchLot);
                     this.UpdateEndEvent = false;
                 }
 
                 // FLTID 비교 발생 시 에러 알람
                 if (dataBase.CrtParam.FLTIDCheckError == true)
-                    OnEndCsvReading((int)eEventReport.eBCR_FLTID_CheckError);
+                    OnEndJob((int)eEventReport.eBCR_FLTID_CheckError);
                 // ROLL MAP 거리 비교 에러 시 알람 처리
                 if (dataBase.CrtParam.InspRollCheckError == true)
-                    OnEndCsvReading((int)eEventReport.eBCR_INSPMETER_CheckError);
+                    OnEndJob((int)eEventReport.eBCR_INSPMETER_CheckError);
 
                 this.updateSearchResult(isSuccess, 0);
             }
@@ -1192,7 +1192,7 @@ namespace DefectDBManager
                 this._SearchRes = eSearchProcessRes.DB_SearchDone;
                 this.dbSearchProgressTimer.Stop();
                 this.dbLoadingTime.Stop();
-                OnEndCsvReading((int)eEventReport.eFinishedSearchModel);
+                OnEndJob((int)eEventReport.eFinishedSearchModel);
                 this.updateSearchResult(isSuccess, 1);
             }
         }
@@ -1201,23 +1201,36 @@ namespace DefectDBManager
         {
             DefectCSV.Open(this.csvPath, dataBase);
             DataBase.DbOption.isLoadCSV = true;
-            this.Invoke(new MethodInvoker(delegate ()
+            OnEndJob((int)eEventReport.eFinishedReadCSVFile);
+            if(this.InvokeRequired==true)
             {
-                this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
-                // CSV 파일에서 BCNO Data 버퍼 생성
-                this.makeBCNOListData();
-                this.displayBCNOListView();
-                this.displayFAULTDATListView();
-
-                if (this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO || this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK ||
-                this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
+                this.Invoke(new MethodInvoker(delegate ()
                 {
-                    this.makeINSPDATALiseViewByCSV();
-                    this.displayINSPDATListView();
-                }
+                    updateReadingCsvResult();
+                }));
+            }
+            else
+            {
+                updateReadingCsvResult();
+            }
+        }
 
-                lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
-            }));
+        private void updateReadingCsvResult()
+        {
+            this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
+            // CSV 파일에서 BCNO Data 버퍼 생성
+            this.makeBCNOListData();
+            this.displayBCNOListView();
+            this.displayFAULTDATListView();
+
+            if (this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO || this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK ||
+            this.dataBase.DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
+            {
+                this.makeINSPDATALiseViewByCSV();
+                this.displayINSPDATListView();
+            }
+
+            lblDownloadResult.Text = $"ResultFault : {dataBase._RollDefectInfo.BadCnt}";
         }
         #endregion
 
@@ -1346,6 +1359,52 @@ namespace DefectDBManager
             this.thread.Start();
         }
 
+        public void SearchCSVFile(string path)
+        {
+            // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
+            displayUIOptionFromDBOption();
+            DestConfigUnit u = new DestConfigUnit();
+            this.dataBase.DbDestConfig.GetData(dataBase.DbOption.vendor, ref u);
+            dataBase.DbDestConfig.SelDestUnit = u;
+            dataBase.DbOption.FWPlace = u.Title;
+
+            if (this.thread != null && this.thread.IsAlive == true)
+            {
+                if (UpdateEndEvent == true) OnEndJob((int)eEventReport.eFailedReadCSVFile);
+                else                        MessageBox.Show(Language.ProgramIsSearchingCSV);
+                return;
+            }
+
+            if (File.Exists(path) == false)
+            {
+                if(UpdateEndEvent==true)    OnEndJob((int)eEventReport.eFailedReadCSVFile);
+                else                        MessageBox.Show($"{Language.FileDoesNotExist} : [{path}]");
+                return;
+            }
+
+            DestConfig config = dataBase.DbDestConfig;
+            if (config.CSVType != eCSV_TYPE.NITTO && config.CSVType != eCSV_TYPE.NITTO_RTS &&
+                config.CSVType != eCSV_TYPE.NITTO_RK && config.CSVType != eCSV_TYPE.KORENO &&
+                config.CSVType != eCSV_TYPE.KORENO_RK && config.CSVType != eCSV_TYPE.KORENO_RK_IJP)
+            {
+                if (UpdateEndEvent == true)     OnEndJob((int)eEventReport.eFailedReadCSVFile);
+                else                            MessageBox.Show(Language.SelectedCSVFormatTypeDoesNotExist);
+                return;
+            }
+
+            this.csvPath = path;
+
+            if (this.thread != null)
+            {
+                this.thread.Join(100);
+                this.thread = null;
+            }
+
+            this.thread = new Thread(this.threadFromCSV);
+            this.thread.Start();
+
+        }
+
         private void btnOpenCSV_Click(object sender, EventArgs e)
         {
             if (this.thread != null && this.thread.IsAlive == true)
@@ -1353,6 +1412,8 @@ namespace DefectDBManager
                 MessageBox.Show(Language.ProgramIsSearchingCSV);
                 return;
             }
+
+            UpdateEndEvent = false;
 
             using (OpenFileDialog browser = new OpenFileDialog())
             {
@@ -1437,9 +1498,9 @@ namespace DefectDBManager
             tbLotName.Text = "";
 
             if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                OnEndCsvReading((int)eEventReport.eResetDataNow);
+                OnEndJob((int)eEventReport.eResetDataNow);
             else
-                OnEndCsvReading((int)eEventReport.eResetDataNext);
+                OnEndJob((int)eEventReport.eResetDataNext);
 
             DataBase.DbOption.isLoadCSV = false;
 
@@ -1603,9 +1664,9 @@ namespace DefectDBManager
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
         {
             if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                OnEndCsvReading((int)eEventReport.eUpdateDataNow);
+                OnEndJob((int)eEventReport.eUpdateDataNow);
             else
-                OnEndCsvReading((int)eEventReport.eUpdateDataNext);
+                OnEndJob((int)eEventReport.eUpdateDataNext);
 
             //임시 데이터 생성
             //if (eDbIdWhen.Now == dataBase.DbOption.dbWhen)

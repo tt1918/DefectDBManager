@@ -278,6 +278,8 @@ namespace DefectDBManager
         eResetDataNext,
         eFinishedSearchLot,
         eFinishedSearchModel,
+        eFinishedReadCSVFile,
+        eFailedReadCSVFile,
         eBCR_FLTID_CheckError,
         eBCR_INSPMETER_CheckError,
     }

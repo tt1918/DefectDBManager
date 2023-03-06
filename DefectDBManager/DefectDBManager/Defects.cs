@@ -152,6 +152,9 @@ namespace DefectDBManager
         int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
+
+        void SearchCSV(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
+
         int GetSearchModelCount();
         string[] GetSearchModelResult();
 		string[] GetLoadedBCNO(bool isNext, ref int size);
@@ -193,16 +196,16 @@ namespace DefectDBManager
             dbManager = new DbManager(this);
             markingData = new List<MarkingData>();
             markingAreaDefects = new List<MarkingAreaDefect>();
-            dbManager._FormDB_Now.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
-            dbManager._FormDB_Next.OnEndCsvReading += new DelegateEndCsvReading(OnEventEndCsvReding);
+            dbManager._FormDB_Now.OnEndJob += new DelegateEndJob(OnEventEndCsvReding);
+            dbManager._FormDB_Next.OnEndJob += new DelegateEndJob(OnEventEndCsvReding);
             dbManager.OnProcessEvent+= new DelegateProcessEvent(OnEventEndCsvReding);
         }
 		~Defects()
 		{
 			_CsvReadingEventsListener.Clear();
 
-            dbManager._FormDB_Now.OnEndCsvReading -= OnEventEndCsvReding;
-            dbManager._FormDB_Next.OnEndCsvReading -= OnEventEndCsvReding;
+            dbManager._FormDB_Now.OnEndJob -= OnEventEndCsvReding;
+            dbManager._FormDB_Next.OnEndJob -= OnEventEndCsvReding;
             dbManager.OnProcessEvent -= OnEventEndCsvReding;
             //dbManager._DestConfig.Write();
             defects?.Clear();
@@ -521,6 +524,11 @@ namespace DefectDBManager
 
             dbManager.SearchModel(lotName);
             return 0;
+        }
+
+        public void SearchCSV(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
+        {
+            dbManager.SearchCSVFile(lotName, filePath, isNext, vendor, useES, useTG, useETC);
         }
 
         public int SearchModelDummy(string lotName)
