@@ -107,7 +107,7 @@ namespace DefectDBManager
         public void Add(MarkingFaultDatum val)
         {
             Data.Add(val);
-            int key = (int)(val.YPOS_M / 10000.0f);
+            int key = (int)(val.OFFSET / 10000.0);
             if (Dic.ContainsKey(key) == true)
                 Dic[key].Add(val);
             else
@@ -125,7 +125,7 @@ namespace DefectDBManager
                 {
                     foreach (MarkingFaultDatum datum in Dic[i])
                     {
-                        if (datum.YPOS_M >= start && datum.YPOS_M <= end)
+                        if (datum.OFFSET >= start && datum.OFFSET <= end)
                         {
                             MarkingData item = new MarkingData();
                             item.DefectLine = datum.DefectLine;
