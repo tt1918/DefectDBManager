@@ -148,6 +148,9 @@ namespace DefectDBManager
         public bool UpdateEndEvent = false;
         public eSearchProcessRes _SearchRes;
         public bool IsDataBaseChanged = false;
+
+        // 상위에서 랏 검색 명령 받았을 때 화면 갱신 예외 처리
+        private bool isHoldFW = false;
         public FormDB(object parent)
         {
             InitializeComponent();
@@ -213,6 +216,7 @@ namespace DefectDBManager
                     makeAllListViewData();
                     updateLotChangeResult();
                 }
+                isHoldFW = false;
             }
             else
             {
@@ -281,9 +285,12 @@ namespace DefectDBManager
             {
                 DestConfigUnit u = DataBase.DbDestConfig.DicDest[DataBase.DbOption.FWPlace];
                 this.cbDestination.SelectedIndex = u.Index;
-                this.cbUseES.Checked = u.UseES;
-                this.cbUseTG.Checked = u.UseTG;
-                this.cbUseETC.Checked = u.UseETC;
+                if(isHoldFW == false)
+                {
+                    this.cbUseES.Checked = u.UseES;
+                    this.cbUseTG.Checked = u.UseTG;
+                    this.cbUseETC.Checked = u.UseETC;
+                }
             }
             this.tbLotName.Text = this.dataBase.DbOption.lotName;
         }
@@ -1481,6 +1488,7 @@ namespace DefectDBManager
             cbUseES.Checked = dataBase.DbOption.checkES;
             cbUseTG.Checked = dataBase.DbOption.checkTG;
             cbUseETC.Checked = dataBase.DbOption.checkETC;
+            isHoldFW = true;
         }
 
         private void btnReset_Click(object sender, EventArgs e)

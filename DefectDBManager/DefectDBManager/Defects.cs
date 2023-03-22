@@ -477,7 +477,7 @@ namespace DefectDBManager
             dbManager._FormDB_Now.UpdateListViewFromLotChange();
             dbManager._FormDB_Next.UpdateListViewFromLotChange();
 
-			Trace.WriteLine($"useES={dbManager._DbProc[0].DbOption.checkES}, useTG={dbManager._DbProc[0].DbOption.checkTG}, useETC={dbManager._DbProc[0].DbOption.checkETC}, dbNow = {dbManager._DbProc[0].DbOption.dbWhen}");
+			Log.Write($"LotChange() useES={dbManager._DbProc[0].DbOption.checkES}, useTG={dbManager._DbProc[0].DbOption.checkTG}, useETC={dbManager._DbProc[0].DbOption.checkETC}, dbNow = {dbManager._DbProc[0].DbOption.dbWhen}");
         }
 
         public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)

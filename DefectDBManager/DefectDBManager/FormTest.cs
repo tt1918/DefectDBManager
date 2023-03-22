@@ -35,7 +35,7 @@ namespace DefectDBManager
 
         private void button4_Click(object sender, EventArgs e)
         {
-            _TemDefects.SearchLot("LNN0227-11", false, 0, true, true, false);
+            _TemDefects.SearchLot("LNN0227-11", false, 0, true, true, true);
         }
 
         private void button5_Click(object sender, EventArgs e)
