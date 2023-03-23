@@ -149,7 +149,11 @@ namespace DefectDBManager
         public eSearchProcessRes _SearchRes;
         public bool IsDataBaseChanged = false;
 
-        // 상위에서 랏 검색 명령 받았을 때 화면 갱신 예외 처리
+        public bool IsHoldFW { get { return isHoldFW; } set { isHoldFW = value; } }
+        /// <summary>
+        /// 상위에서 랏 검색 명령 받았을 때 화면 갱신 예외 처리 
+        /// cbDestination에서는 실제 클릭이 된 상황이 아니면 파라미터 변경하지 않음
+        /// </summary>
         private bool isHoldFW = false;
         public FormDB(object parent)
         {
@@ -216,7 +220,6 @@ namespace DefectDBManager
                     makeAllListViewData();
                     updateLotChangeResult();
                 }
-                isHoldFW = false;
             }
             else
             {
@@ -290,6 +293,12 @@ namespace DefectDBManager
                     this.cbUseES.Checked = u.UseES;
                     this.cbUseTG.Checked = u.UseTG;
                     this.cbUseETC.Checked = u.UseETC;
+                }
+                else
+                {
+                    this.cbUseES.Checked = DataBase.DbOption.checkES;
+                    this.cbUseTG.Checked = DataBase.DbOption.checkTG;
+                    this.cbUseETC.Checked = DataBase.DbOption.checkETC;
                 }
             }
             this.tbLotName.Text = this.dataBase.DbOption.lotName;
@@ -1496,6 +1505,9 @@ namespace DefectDBManager
             if (MessageBox.Show(Language.ResetAllData, "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
+            // 출하처 옵션 표시 Flag 리셋
+            isHoldFW = false;
+
             // ListView 초기화
             this.clearAllListView();
             this.initFaultPage();
@@ -1579,8 +1591,14 @@ namespace DefectDBManager
         {
             DataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
             DataBase.DbOption.vendor = cbDestination.SelectedIndex;
-            displayMarkingOption();
+
             displaySearchTime();
+
+            if (cbDestination.Focused == true)
+            {
+                isHoldFW = false;
+                displayMarkingOption();
+            }
         }
 
         private void btnApplySearchTime_Click(object sender, EventArgs e)
