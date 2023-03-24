@@ -1123,6 +1123,7 @@ namespace DefectDBManager
 
         private void updateLotChangeResult()
         {
+            ResetListViewData();
             this.clearAllListView();
             this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
             makeBCNOListData();
