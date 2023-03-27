@@ -241,6 +241,8 @@ namespace DefectDBManager
                         result.DateST = item.STRDT;
                         result.TimeED = item.ENDTM;
                         result.DateED = item.ENDDT;
+                        result.Length = (item.Length/1000.0f);
+                        result.DefectPerM = ((float)(item.RollCtlCnt) / (float)((item.Width / 1000.0f) * (item.Length / 1000.0f)));
                         results.Add(result);
                     }
                 }

@@ -106,6 +106,10 @@ namespace DefectDBManager
         public string TimeED;
         [MarshalAs(UnmanagedType.I4)]
         public Int32 DefectCnt;
+        [MarshalAs(UnmanagedType.R4)]
+        public float Length;
+        [MarshalAs(UnmanagedType.R4)]
+        public float DefectPerM;
     }
 
     [ComVisible(true)]
