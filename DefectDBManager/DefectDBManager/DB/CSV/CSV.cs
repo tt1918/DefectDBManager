@@ -201,6 +201,10 @@ namespace DefectDBManager
             string[] items;
             bool bBcrExist = false;
 
+            float fVal;
+            double dVal;
+            int iVal;
+
             int totalLine = System.IO.File.ReadAllLines(Path).Length;
 
             using (var file = new StreamReader(Path, Encoding.Default))
@@ -220,10 +224,16 @@ namespace DefectDBManager
                     strMACNO = items[0];
                     strFltID = items[2];
                     strCode = items[3];
-                    tmpData.YPOS_M = float.Parse(items[4]);
-                    tmpData.XPOS_M = float.Parse(items[5]);
-                    tmpData.SIZE_AREA = float.Parse(items[6]);
-                    tmpData.OFFSET = double.Parse(items[9]);
+                    
+                    if (float.TryParse(items[4], out fVal) == true) tmpData.YPOS_M = fVal;
+                    else                                            tmpData.YPOS_M = 0.0f;
+                    if (float.TryParse(items[5], out fVal) == true) tmpData.XPOS_M = fVal;
+                    else                                            tmpData.XPOS_M = 0.0f;
+                    if (float.TryParse(items[6], out fVal) == true) tmpData.SIZE_AREA = fVal;
+                    else                                            tmpData.SIZE_AREA = 0.0f;
+                    if (double.TryParse(items[9], out dVal) == true) tmpData.OFFSET = dVal;
+                    else                                             tmpData.OFFSET = 0.0; 
+
                     strCamNo = items[10];
 
                     strbcr = items[16];
@@ -242,7 +252,9 @@ namespace DefectDBManager
                         continue;
 
                     tmpData.MACNO = strMACNO;
-                    tmpData.CAM_NO = Int32.Parse(strCamNo);
+                    if (Int32.TryParse(strCamNo, out iVal) == true) tmpData.CAM_NO = iVal;
+                    else
+                        tmpData.CAM_NO = 1;
 
                     tmpMarkData.OFFSET = tmpData.OFFSET;
                     tmpMarkData.YPOS_M = tmpData.YPOS_M;
