@@ -1047,6 +1047,7 @@ namespace DefectDBManager
                                 {
 
                                     INSPDATData data = new INSPDATData();
+                                    data.Y0KLOT = _DbResult.PTRY0P_Data[idx][i].Y0KLOT;
                                     data.Parse(reader);
 
                                     if (useXOffset)

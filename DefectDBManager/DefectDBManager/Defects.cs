@@ -94,7 +94,9 @@ namespace DefectDBManager
 	{
         [MarshalAs(UnmanagedType.BStr)]
         public string LotNo;
-		[MarshalAs(UnmanagedType.BStr)]
+        [MarshalAs(UnmanagedType.BStr)]
+        public string BCNO;
+        [MarshalAs(UnmanagedType.BStr)]
 		public string Line;
 		[MarshalAs(UnmanagedType.BStr)]
 		public string DateST;
@@ -499,7 +501,12 @@ namespace DefectDBManager
 		public LotSearchResult[] GetSearchLotResults(bool isNext)
 		{
 			List<LotSearchResult> results = new List<LotSearchResult>();
-			dbManager.GetSearchLotResultSummery(isNext, ref results);
+            if(dbManager._DestConfig.CSVType == eCSV_TYPE.NITTO || dbManager._DestConfig.CSVType == eCSV_TYPE.NITTO_RK ||
+                dbManager._DestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
+                dbManager.GetSearchLotResultSummery_TOT(isNext, ref results);
+            else
+                dbManager.GetSearchLotResultSummery(isNext, ref results);
+
             return results.ToArray();
 		}
 

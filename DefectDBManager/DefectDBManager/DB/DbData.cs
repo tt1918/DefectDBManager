@@ -271,6 +271,9 @@ namespace DefectDBManager
         // DB 데이터와는 상관 없음
         public int RollCtlCnt = 0;
 
+        // 화면 표시용 Y0KLOT 추가
+        public string Y0KLOT;
+
         public void Parse(OracleDataReader reader)
         {
             CTLNO = reader[0].ToString();
@@ -296,7 +299,7 @@ namespace DefectDBManager
 
         public override string ToString()
         {
-            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{LOTNO}\t\t{BCNO}\t\t{TimeInspStart:F2}\t\t{TimeInspEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
+            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{TimeInspStart:F2}\t\t{TimeInspEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
             return msg;
         }
     }

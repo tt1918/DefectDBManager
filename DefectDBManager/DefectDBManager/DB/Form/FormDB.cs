@@ -465,7 +465,8 @@ namespace DefectDBManager
                                 }
                                 else
                                 {
-                                    itemBuf.items[1] = tmpData.LOTNO;
+                                    //itemBuf.items[1] = tmpData.LOTNO;
+                                    itemBuf.items[1] = tmpData.Y0KLOT;
                                 }
 
                                 // No.2

@@ -249,6 +249,37 @@ namespace DefectDBManager
             }
         }
 
+        public void GetSearchLotResultSummery_TOT(bool isNext, ref List<LotSearchResult> results)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            int size = formDB[idx].DataBase._DbResult.INSPDAT_Data.Length;
+            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT_Data)
+            {
+                if (data == null) continue;
+                foreach (List<INSPDATData> items in data)
+                {
+                    foreach (INSPDATData item in items)
+                    {
+                        LotSearchResult result = new LotSearchResult();
+                        result.LotNo = item.Y0KLOT;
+                        result.BCNO = item.BCNO;
+                        result.DefectCnt = item.RollCtlCnt;
+                        result.Line = item.LOTNO.Substring(0, 2); // 확인 필요
+                        result.TimeST = item.STRTM;
+                        result.DateST = item.STRDT;
+                        result.TimeED = item.ENDTM;
+                        result.DateED = item.ENDDT;
+                        result.Length = (item.Length / 1000.0f);
+                        result.DefectPerM = ((float)(item.RollCtlCnt) / (float)((item.Width / 1000.0f) * (item.Length / 1000.0f)));
+                        results.Add(result);
+                    }
+                }
+            }
+        }
+
         public void SearchModel(string lotName)
         {
             formDB[0]._SearchRes = eSearchProcessRes.Process_None;
