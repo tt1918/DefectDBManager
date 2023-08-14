@@ -390,7 +390,8 @@ namespace DefectDBManager
 
                 key = "DB_CONFIG";
                 this.CSVType = (eCSV_TYPE)NativeFunc.ReadIni(Define.DestPath, key, "CSV_TYPE", (int)eCSV_TYPE.None);
-                this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 0);
+                this.csvVer = NativeFunc.ReadIni(Define.DestPath, key, "CSV_VER", 1);
+                this.csvVer = 1;
                 this.useXOffset = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST", true);
                 this.useXOffsetAlarm = NativeFunc.ReadIni(Define.DestPath, key, "USE_XOFSMST_ALARM", false);
                 this.useAREADEL = NativeFunc.ReadIni(Define.DestPath, key, "USE_AREADEL", false);

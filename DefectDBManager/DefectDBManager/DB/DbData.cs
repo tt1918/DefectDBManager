@@ -96,7 +96,7 @@ namespace DefectDBManager
     {
         //1			2		3		4		5			6			7			8				9				10			11
         //KYCD		PPCD	LNCD	LOTNO	ENTRY_NUM	STR_WD		END_WD		STR_MD			END_MD			DELFLG		TAKNDTM	
-        //거점		공정	라인	롯		        일련번호	    시작폭좌표	종료폭좌표	시작흐름좌표	    종료흐름좌표	    삭제플러그	읽기일시		
+        //거점		공정	라인	롯		일련번호	시작폭좌표	종료폭좌표	시작흐름좌표	종료흐름좌표	삭제플러그	읽기일시		
         //3			3		4		30		2			7.2			7.2			11.2			11.2			1			14
 
         public string KYCD;
