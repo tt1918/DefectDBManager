@@ -1432,7 +1432,7 @@ namespace DefectDBManager
             }
 
             UpdateEndEvent = false;
-
+             
             using (OpenFileDialog browser = new OpenFileDialog())
             {
                 //browser.InitialDirectory = Define.MainPath;

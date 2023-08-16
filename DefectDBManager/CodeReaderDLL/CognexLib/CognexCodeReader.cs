@@ -16,6 +16,7 @@ using OpenCvSharp.Extensions;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq.Expressions;
 
 namespace CodeReaderDLL.CognexLib
 {
@@ -68,6 +69,7 @@ namespace CodeReaderDLL.CognexLib
 
             if (idTool != null)
             {
+                ((CogImage8Grey)cogImage)?.Dispose();
                 cogImage = aImage;
                 return true;
             }
@@ -77,85 +79,97 @@ namespace CodeReaderDLL.CognexLib
 
         public bool CodeRead(bool isPreprocess)
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            using (new CogWaitCursor())
+            try
             {
-                if (isPreprocess)
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+                using (new CogWaitCursor())
                 {
-                    // image preprocess
-                    imageTool.InputImage = cogImage;
-                    imageTool.Run();
-                    ICogRunStatus imageToolStatus = imageTool.RunStatus;
-                    if (imageToolStatus.Result == CogToolResultConstants.Error)
+                    if (isPreprocess)
                     {
-                        LastErrorMessage = imageToolStatus.Message;
+                        // image preprocess
+                        imageTool.InputImage = cogImage;
+                        imageTool.Run();
+                        ICogRunStatus imageToolStatus = imageTool.RunStatus;
+                        if (imageToolStatus.Result == CogToolResultConstants.Error)
+                        {
+                            LastErrorMessage = imageToolStatus.Message;
+                            ReadMatrixCode = string.Empty;
+                            sw.Stop();
+                            CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
+                            return false;
+                        }
+                        idTool.InputImage = imageTool.OutputImage;
+                    }
+                    else
+                    {
+                        idTool.InputImage = cogImage;
+                    }
+                    // Run the CogIDTool
+                    idTool.Run();
+
+                    ICogRunStatus runStatus = idTool.RunStatus;
+                    if (runStatus.Result == CogToolResultConstants.Error)
+                    {
+                        LastErrorMessage = runStatus.Message;
                         ReadMatrixCode = string.Empty;
                         sw.Stop();
                         CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
                         return false;
                     }
-                    idTool.InputImage = imageTool.OutputImage;
-                }
-                else
-                {
-                    idTool.InputImage = cogImage;
-                }
-                // Run the CogIDTool
-                idTool.Run();
+                    if (idTool.Results.Count < 1)
+                    {
+                        LastErrorMessage = "Symbol not found.";
+                        ReadMatrixCode = string.Empty;
+                        sw.Stop();
+                        CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
+                        return false;
+                    }
 
-                ICogRunStatus runStatus = idTool.RunStatus;
-                if (runStatus.Result == CogToolResultConstants.Error)
-                {
-                    LastErrorMessage = runStatus.Message;
-                    ReadMatrixCode = string.Empty;
+                    CogIDResultDecoded rd = idTool.Results[0].DecodedData;
+                    if (rd == null)
+                    {
+                        LastErrorMessage = "Symbol not decoded.";
+                        ReadMatrixCode = string.Empty;
+                        sw.Stop();
+                        CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
+                        return false;
+                    }
+
+                    LastErrorMessage = String.Empty;
+                    // 읽은 바코드
+                    ReadMatrixCode = rd.DecodedString;
+                    // 읽은 바코드 위치
+                    CogPolygon cogPolygon = idTool.Results[0].BoundsPolygon.ConvexHull();
+                    int sizeV = cogPolygon.VertexCapacity;
+                    double minX = double.MaxValue, maxX = double.MinValue, minY = double.MaxValue, maxY = double.MinValue;
+
+                    for (int i = 0; i < sizeV; i++)
+                    {
+                        cogPolygon.GetVertex(i, out double posX, out double posY);
+                        if (minX > posX) minX = posX;
+                        if (minY > posY) minY = posY;
+                        if (maxX < posX) maxX = posX;
+                        if (maxY < posY) maxY = posY;
+                    }
+
+                    lastCodeRect = new System.Drawing.Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
+                    // 폴리곤 삭제
+                    cogPolygon.Dispose();
                     sw.Stop();
                     CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
-                    return false;
+
+                    return true;
                 }
-                if (idTool.Results.Count < 1)
-                {
-                    LastErrorMessage = "Symbol not found.";
-                    ReadMatrixCode= string.Empty;
-                    sw.Stop();
-                    CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
-                    return false;
-                }
-
-                CogIDResultDecoded rd = idTool.Results[0].DecodedData;
-                if (rd == null)
-                {
-                    LastErrorMessage = "Symbol not decoded.";
-                    ReadMatrixCode = string.Empty;
-                    sw.Stop();
-                    CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
-                    return false;
-                }
-
-                LastErrorMessage = String.Empty;
-                // 읽은 바코드
-                ReadMatrixCode = rd.DecodedString;
-                // 읽은 바코드 위치
-                CogPolygon cogPolygon = idTool.Results[0].BoundsPolygon.ConvexHull();
-                int sizeV = cogPolygon.VertexCapacity;
-                double minX = double.MaxValue, maxX = double.MinValue, minY = double.MaxValue, maxY = double.MinValue;
-
-                for (int i = 0; i < sizeV; i++)
-                {
-                    cogPolygon.GetVertex(i, out double posX, out double posY);
-                    if (minX > posX) minX = posX;
-                    if (minY > posY) minY = posY;
-                    if (maxX < posX) maxX = posX;
-                    if (maxY < posY) maxY = posY;
-                }
-
-                lastCodeRect = new System.Drawing.Rectangle((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY));
-
-                sw.Stop();
-                CodeReadElapsedTime = sw.ElapsedMilliseconds.ToString();
-
-                return true;
             }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+            }
+            return true;
         }
         #region Disposable
         private bool disposing = false;

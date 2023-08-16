@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -205,6 +206,11 @@ namespace DefectDBManager
             dbManager._FormDB_Now.OnEndJob += new DelegateEndJob(OnEventEndCsvReding);
             dbManager._FormDB_Next.OnEndJob += new DelegateEndJob(OnEventEndCsvReding);
             dbManager.OnProcessEvent+= new DelegateProcessEvent(OnEventEndCsvReding);
+
+            //Application.ThreadException += Application_ThreadException;
+            //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.Automatic);
+            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
         }
 		~Defects()
 		{
@@ -218,7 +224,28 @@ namespace DefectDBManager
 			markingData?.Clear();
 			markingAreaDefects?.Clear();
         }
-		public static List<Defect> DefectsList
+        //private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        //{
+        //    Log.Write("[Error] Application_ThreadException  " + e.Exception.Message);
+        //    Log.Write("[Error] " + e.Exception.StackTrace);
+
+        //    Directory.CreateDirectory("c:\\COSS\\DUMP");
+
+        //    int pid = Process.GetCurrentProcess().Id;
+        //    MinidumpWriter.MakeDump(String.Format(@"{0}\app_{1}.dmp", "c:\\COSS\\DUMP", DateTime.Now.ToString("yyyyMMdd_HHmmss")), pid);
+        //    //Application.Exit(new System.ComponentModel.CancelEventArgs(false));
+        //}
+        //private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        //{
+        //    Log.Write("[Error] CurrentDomain_UnhandledException  " + ((Exception)e.ExceptionObject).Message);
+        //    Log.Write("[Error] " + ((Exception)e.ExceptionObject).StackTrace);
+        //    Directory.CreateDirectory("c:\\COSS\\DUMP");
+
+        //    int pid = Process.GetCurrentProcess().Id;
+        //    MinidumpWriter.MakeDump(String.Format(@"{0}\domain_{1}.dmp", "c:\\COSS\\DUMP", DateTime.Now.ToString("yyyyMMdd_HHmmss")), pid);
+        //}
+
+        public static List<Defect> DefectsList
 		{
             get { return defects; }
             set { defects = value; }

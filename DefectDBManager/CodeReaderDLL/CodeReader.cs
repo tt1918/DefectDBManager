@@ -32,35 +32,48 @@ namespace CodeReaderDLL
         private MilCodeReader milCodeReader = null; // dot spacing 0
         private CognexCodeReader cognexCodeReader = null;
 
+        private IntPtr ptrRect = IntPtr.Zero;
+
         public string CodeRead(IntPtr img, int width, int height, bool usePreprocess)
         {
             string strReturn = string.Empty;
-            if (isMil)
+            try
             {
-                using (Mat bcrImg = new Mat(height, width, MatType.CV_8UC1, img))
+                if (isMil)
                 {
-                    if (milCodeReader.InitComplete)
+                    using (Mat bcrImg = new Mat(height, width, MatType.CV_8UC1, img))
                     {
-                        milCodeReader.PutMilImageBuffer(bcrImg);
-                        if (milCodeReader.CodeRead())
+                        if (milCodeReader.InitComplete)
                         {
-                            strReturn = milCodeReader.ReadMatrixCode;
+                            milCodeReader.PutMilImageBuffer(bcrImg);
+                            if (milCodeReader.CodeRead())
+                            {
+                                strReturn = milCodeReader.ReadMatrixCode;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (Mat bcrImg = new Mat(height, width, MatType.CV_8UC1, img))
+                    {
+                        if (cognexCodeReader.PutCogImage8Grey(bcrImg))
+                        {
+                            if (cognexCodeReader.CodeRead(usePreprocess))
+                            {
+                                strReturn = cognexCodeReader.ReadMatrixCode;
+                            }
                         }
                     }
                 }
             }
-            else
+            catch (Exception e)
             {
-                using (Mat bcrImg = new Mat(height, width, MatType.CV_8UC1, img))
-                {
-                    if (cognexCodeReader.PutCogImage8Grey(bcrImg))
-                    {
-                        if (cognexCodeReader.CodeRead(usePreprocess))
-                        {
-                            strReturn = cognexCodeReader.ReadMatrixCode;
-                        }
-                    }
-                }
+
+            }
+            finally
+            {
+
             }
 
             return strReturn;
@@ -68,18 +81,38 @@ namespace CodeReaderDLL
 
         public IntPtr GetCodePosition()
         {
-            if (isMil)
+            try
             {
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(milCodeReader.LastCodeRect));
-                Marshal.StructureToPtr(milCodeReader.LastCodeRect, ptr, false);
-                return ptr;
+                if(ptrRect!=IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(ptrRect);
+                    ptrRect = IntPtr.Zero;
+                }
+
+                if (isMil)
+                {
+                    ptrRect = Marshal.AllocHGlobal(Marshal.SizeOf(milCodeReader.LastCodeRect));
+                    Marshal.StructureToPtr(milCodeReader.LastCodeRect, ptrRect, false);
+                    
+                }
+                else
+                {
+                    ptrRect = Marshal.AllocHGlobal(Marshal.SizeOf(cognexCodeReader.LastCodeRect));
+                    Marshal.StructureToPtr(cognexCodeReader.LastCodeRect, ptrRect, false);
+                }
             }
-            else
+            catch(Exception e)
             {
-                var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(cognexCodeReader.LastCodeRect));
-                Marshal.StructureToPtr(cognexCodeReader.LastCodeRect, ptr, false);
-                return ptr;
+                if(ptrRect!=IntPtr.Zero)
+                    Marshal.FreeHGlobal(ptrRect);
+                ptrRect = IntPtr.Zero;
+                return IntPtr.Zero;
             }
+            finally
+            {
+
+            }
+            return ptrRect;
         }
 
         public bool Initialize(bool isMIL, int sizeX, int sizeY, string path)
