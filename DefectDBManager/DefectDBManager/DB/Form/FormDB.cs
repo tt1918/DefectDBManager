@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.PropertyGridInternal;
 using System.Globalization;
 using static DefectDBManager.QueryMsg;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DefectDBManager
 {
@@ -84,6 +85,8 @@ namespace DefectDBManager
             set { dbConn = value; }
         }
         private OracleDbConnection dbConn = null;
+
+        private string _areaDelLotName = null;
 
         #endregion
 
@@ -1039,6 +1042,37 @@ namespace DefectDBManager
             }
         }
 
+        private void threadSearchAreaDelFromDB()
+        {
+            bool isSuccess = true;
+            try
+            {
+                this.dbLoadingTime.Reset();
+                this.dbLoadingTime.Start();
+                int errorOut = 0;
+                
+                isSuccess = dataBase.SearchAreaDelFromServer(this._areaDelLotName, false, ref errorOut);
+                
+            }
+            finally
+            {
+                this.dbLoadingTime.Stop();
+
+                if (isSuccess == false)
+                    this._SearchRes = eSearchProcessRes.DB_NoExistES;
+                else
+                    this._SearchRes = eSearchProcessRes.DB_SearchDone;
+
+                if (this.UpdateEndEvent == true)
+                {
+                    OnEndJob((int)eEventReport.eFinishedSearchLot);
+                    this.UpdateEndEvent = false;
+                }
+
+                this.updateSearchResult(isSuccess, 0);
+            }
+        }
+
         private void threadFromDefectEdit()
         {
             bool isSuccess = true;
@@ -1315,6 +1349,7 @@ namespace DefectDBManager
             searchLotDefect();
         }
 
+
         /// <summary>
         /// Lot 이름으로 불량 데이터 탐색
         /// </summary>
@@ -1377,6 +1412,21 @@ namespace DefectDBManager
             this.thread.Start();
         }
 
+
+        public void SearchAreaDelDB(string lotName)
+        {
+            if (this.thread != null)
+            {
+                this.thread.Join(100);
+                this.thread = null;
+            }
+
+            _areaDelLotName = lotName;
+
+            this.thread = new Thread(this.threadSearchAreaDelFromDB);
+            this.thread.Start();
+        }
+
         public void SearchCSVFile(string path)
         {
             // 화면에서 데이터 얻어온게 아니라서 화면에 현재 데이터 출력해줘야 함.
@@ -1421,6 +1471,63 @@ namespace DefectDBManager
             this.thread = new Thread(this.threadFromCSV);
             this.thread.Start();
 
+        }
+
+        public void ResetDBData()
+        {
+            if (InvokeRequired==true)
+            {
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    // 출하처 옵션 표시 Flag 리셋
+                    isHoldFW = false;
+
+                    // ListView 초기화
+                    this.clearAllListView();
+                    this.initFaultPage();
+                    this.ResetListViewData();
+                    dataBase.ResetDataAll();
+                    dataBase._DbResult.ResetData_DE();
+
+                    tbLotName.Text = "";
+
+                    if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                        OnEndJob((int)eEventReport.eResetDataNow);
+                    else
+                        OnEndJob((int)eEventReport.eResetDataNext);
+
+                    DataBase.DbOption.isLoadCSV = false;
+
+                    // Update dbconfig from FWPlace
+                    displayMarkingOption();
+                    displaySearchTime();
+                }));
+            }
+            else
+            {
+                // 출하처 옵션 표시 Flag 리셋
+                isHoldFW = false;
+
+                // ListView 초기화
+                this.clearAllListView();
+                this.initFaultPage();
+                this.ResetListViewData();
+                dataBase.ResetDataAll();
+                dataBase._DbResult.ResetData_DE();
+
+                tbLotName.Text = "";
+
+                if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                    OnEndJob((int)eEventReport.eResetDataNow);
+                else
+                    OnEndJob((int)eEventReport.eResetDataNext);
+
+                DataBase.DbOption.isLoadCSV = false;
+
+                // Update dbconfig from FWPlace
+                displayMarkingOption();
+                displaySearchTime();
+            }
         }
 
         private void btnOpenCSV_Click(object sender, EventArgs e)
@@ -1507,28 +1614,7 @@ namespace DefectDBManager
             if (MessageBox.Show(Language.ResetAllData, "Reset Fault Data", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            // 출하처 옵션 표시 Flag 리셋
-            isHoldFW = false;
-
-            // ListView 초기화
-            this.clearAllListView();
-            this.initFaultPage();
-            this.ResetListViewData();
-            dataBase.ResetDataAll();
-            dataBase._DbResult.ResetData_DE();
-
-            tbLotName.Text = "";
-
-            if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                OnEndJob((int)eEventReport.eResetDataNow);
-            else
-                OnEndJob((int)eEventReport.eResetDataNext);
-
-            DataBase.DbOption.isLoadCSV = false;
-
-            // Update dbconfig from FWPlace
-            displayMarkingOption();
-            displaySearchTime();
+            ResetDBData();
         }
         private void btnPrevFaultPage_Click(object sender, EventArgs e)
         {

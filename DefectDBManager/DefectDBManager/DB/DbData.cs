@@ -94,10 +94,10 @@ namespace DefectDBManager
 
     public class AREADELData
     {
-        //1			2		3		4		5			6			7			8				9				10			11
-        //KYCD		PPCD	LNCD	LOTNO	ENTRY_NUM	STR_WD		END_WD		STR_MD			END_MD			DELFLG		TAKNDTM	
-        //거점		공정	라인	롯		일련번호	시작폭좌표	종료폭좌표	시작흐름좌표	종료흐름좌표	삭제플러그	읽기일시		
-        //3			3		4		30		2			7.2			7.2			11.2			11.2			1			14
+        //1			2		3		4		5			6			7			8				9				10			11          12          13
+        //KYCD		PPCD	LNCD	LOTNO	ENTRY_NUM	STR_WD		END_WD		STR_MD			END_MD			DELFLG		TAKNDTM	    REMOVEKBN   BCNO
+        //거점		공정	라인	롯		일련번호	시작폭좌표	종료폭좌표	시작흐름좌표	종료흐름좌표	삭제플러그	읽기일시	?           	
+        //3			3		4		30		2			7.2			7.2			11.2			11.2			1			14          1           10
 
         public string KYCD;
         public string PPCD;
@@ -108,6 +108,7 @@ namespace DefectDBManager
         public float END_WD;
         public float STR_MD;
         public float END_MD;
+        public string BCNO;
 
         public void Parse(OracleDataReader reader)
         {
@@ -129,11 +130,13 @@ namespace DefectDBManager
 
             if (float.TryParse(reader[8].ToString(), out ret)) END_MD = ret;
             else END_MD = 0.0f;
+
+            BCNO = reader[9].ToString();
         }
 
         public override string ToString()
         {
-            string msg = $"{KYCD}, {PPCD}, {LNCD}, {LOTNO}, {ENTRY_NUM}, {STR_WD:F3}, {END_WD:F3}, {STR_MD:F3}, {END_MD:F3}";
+            string msg = $"{KYCD}, {PPCD}, {LNCD}, {LOTNO}, {ENTRY_NUM}, {STR_WD:F3}, {END_WD:F3}, {STR_MD:F3}, {END_MD:F3}, {BCNO}";
             return msg;
         }
     }
@@ -441,6 +444,8 @@ namespace DefectDBManager
         public Dictionary<string, float> dicSizeData;
         public Dictionary<string, bool> dicMRKF1Data;
 
+        public Dictionary<string, int> DicCSVDefectCnt;
+
         public List<string> LoadedBcNo;
 
         public List<DateTime> ProductEndTime;
@@ -484,6 +489,8 @@ namespace DefectDBManager
 
             ProductEndTime = new List<DateTime>();
             ProductLotName = new List<string>();
+
+            DicCSVDefectCnt = new Dictionary<string, int>();
         }
 
         public void ClearAll ()
@@ -507,6 +514,8 @@ namespace DefectDBManager
                     INSPDAT_Data[i][j].Clear();
                 INSPDAT_Data[i].Clear();
             }
+
+            DicCSVDefectCnt.Clear();
         }
 
         public void ClearProductInfo()

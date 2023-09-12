@@ -206,6 +206,9 @@ namespace DefectDBManager
             int iVal;
 
             int totalLine = System.IO.File.ReadAllLines(Path).Length;
+            Dictionary<string, int> dicCSVDefectCnt = DB._DbResult.DicCSVDefectCnt;
+
+            int bcrDefectCnt;
 
             using (var file = new StreamReader(Path, Encoding.Default))
             {
@@ -300,11 +303,24 @@ namespace DefectDBManager
                     }
                     rollInfo.AddYPos((float)(tmpData.YPOS_M / 1000.0f));
 
+                    if(dicCSVDefectCnt.ContainsKey(strbcr))
+                    {
+                        bcrDefectCnt = dicCSVDefectCnt[strbcr];
+                        bcrDefectCnt++;
+                        dicCSVDefectCnt[strbcr] = bcrDefectCnt;
+                    }
+                    else
+                    {
+                        dicCSVDefectCnt.Add(strbcr, 1);
+                    }
+
                     dataCnt++;
                 }
             }
 
             DB._RollDefectInfo = rollInfo;
+
+            DB._DbResult.DicCSVDefectCnt = dicCSVDefectCnt;
 
             // 데이터 후처리 추가 필요
             CSVLoadInfo csvInfo = new CSVLoadInfo();
@@ -830,6 +846,10 @@ namespace DefectDBManager
             bool bRes = true;
             string text;
             string[] items;
+
+            if (path == "") return false;
+            if (File.Exists(path) == false) return false;
+
             using (var file = new StreamReader(path, Encoding.Default))
             {
                 if (file == null)
@@ -844,18 +864,19 @@ namespace DefectDBManager
 
                     AREADELData data = new AREADELData();
 
-                    data.KYCD = items[1];
-                    data.PPCD = items[2];
-                    data.LNCD = items[3];
-                    data.LOTNO = items[4];
-                    if (float.TryParse(items[5], out float valf) == true) data.STR_WD = valf;
+                    data.KYCD = items[0];
+                    data.PPCD = items[1];
+                    data.LNCD = items[2];
+                    data.LOTNO = items[3];
+                    if (float.TryParse(items[4], out float valf) == true) data.STR_WD = valf;
                     else data.STR_WD = 0.0f;
-                    if (float.TryParse(items[6], out valf) == true) data.END_WD = valf;
+                    if (float.TryParse(items[5], out valf) == true) data.END_WD = valf;
                     else data.END_WD = 0.0f;
-                    if (float.TryParse(items[7], out valf) == true) data.STR_MD = valf;
+                    if (float.TryParse(items[6], out valf) == true) data.STR_MD = valf;
                     else data.STR_MD = 0.0f;
-                    if (float.TryParse(items[8], out valf) == true) data.END_MD = valf;
+                    if (float.TryParse(items[7], out valf) == true) data.END_MD = valf;
                     else data.END_MD = 0.0f;
+                    data.BCNO = items[8];
 
                     db._DbResult.AREADEL_Data.Add(data);
                 }
@@ -875,7 +896,6 @@ namespace DefectDBManager
             {
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append($"{idx},");               // 0
                 sb.Append($"{data.KYCD},");         // 1
                 sb.Append($"{data.PPCD},");         // 2
                 sb.Append($"{data.LNCD},");         // 3
@@ -884,6 +904,7 @@ namespace DefectDBManager
                 sb.Append($"{data.END_WD:F2},");    // 6
                 sb.Append($"{data.STR_MD:F2},");    // 7
                 sb.Append($"{data.END_MD:F2}");     // 8
+                sb.Append($"{data.BCNO}");          // 9
                 wr.WriteLine(sb.ToString());
 
                 idx++;

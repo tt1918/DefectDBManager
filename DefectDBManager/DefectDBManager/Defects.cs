@@ -145,7 +145,7 @@ namespace DefectDBManager
 		int GetMarkingDefectMeter();
 		MarkingData[] GetMarkDefectData(string bcno, double start, double end);
         bool UseAreaDelCheck();
-        MarkingAreaDefect[] GetMarkAreaDelDefectData(double start, double end, ref int count);
+        MarkingAreaDefect[] GetMarkAreaDelDefectData(string bcno, double start, double end, ref int count);
         string GetLotName(bool isNext);
 		int GetCSV_Type();
 		bool IsEsUse(bool isNext);
@@ -159,13 +159,14 @@ namespace DefectDBManager
         int GetBcdReadWarningM();
 		int GetBcdReadErrorM();
 		int SearchModel(string lotName);
-
+        void SearchAreaDel(string lotName, bool isNext);
         void SearchCSV(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC);
-
+        void SearchAreaDelCSV(string lotName, string filePath, bool isNext);
         int GetSearchModelCount();
         string[] GetSearchModelResult();
 		string[] GetLoadedBCNO(bool isNext, ref int size);
 		void SetLanguage(int index);
+        void ResetDBData(bool isNext);
     }
 
     [ComVisible(true)]
@@ -402,7 +403,7 @@ namespace DefectDBManager
             return markingData.ToArray();
         }
 
-		public MarkingAreaDefect[] GetMarkAreaDelDefectData(double start, double end, ref int count)
+		public MarkingAreaDefect[] GetMarkAreaDelDefectData(string bcno, double start, double end, ref int count)
 		{
 			markingAreaDefects.Clear();
             if(dbManager._DestConfig.UseAREADEL==true)
@@ -411,6 +412,8 @@ namespace DefectDBManager
 				int idx = 0;
                 foreach (AREADELData item in delData)
                 {
+                    if (bcno != item.BCNO) continue;
+
                     if ((item.STR_MD <= start && end < item.END_MD) || (item.END_MD <= start && end < item.STR_MD) ||
                         (start <= item.STR_MD && item.STR_MD < end) || (start <= item.END_MD && item.END_MD < end))
                     {
@@ -518,14 +521,21 @@ namespace DefectDBManager
 
         public void SearchLot(string lotName, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
 		{
-            if (dbManager._DbConn.Connection == null ||
-                dbManager._DbConn.Connection.State != System.Data.ConnectionState.Open)
+            if (dbManager._DbConn.Connection == null || dbManager._DbConn.Connection.State != System.Data.ConnectionState.Open)
                 dbManager._DbConn.Connect();
 
             dbManager.SearchLot(lotName, isNext, vendor, useES, useTG, useETC);
         }
 
-		public LotSearchResult[] GetSearchLotResults(bool isNext)
+        public void SearchAreaDel(string lotName, bool isNext)
+        {
+            if (dbManager._DbConn.Connection == null || dbManager._DbConn.Connection.State != System.Data.ConnectionState.Open)
+                dbManager._DbConn.Connect();
+
+            dbManager.SearchAreaDel(lotName, isNext);
+        }
+
+        public LotSearchResult[] GetSearchLotResults(bool isNext)
 		{
 			List<LotSearchResult> results = new List<LotSearchResult>();
             if(dbManager._DestConfig.CSVType == eCSV_TYPE.NITTO || dbManager._DestConfig.CSVType == eCSV_TYPE.NITTO_RK ||
@@ -570,6 +580,16 @@ namespace DefectDBManager
         public void SearchCSV(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
         {
             dbManager.SearchCSVFile(lotName, filePath, isNext, vendor, useES, useTG, useETC);
+        }
+
+        public void SearchAreaDelCSV(string lotName, string filePath, bool isNext)
+        {
+            dbManager.SearchAreaDelCSV(lotName, filePath, isNext);
+        }
+
+        public void ResetDBData(bool isNext)
+        {
+            dbManager.ResetDBData(isNext);
         }
 
         public int SearchModelDummy(string lotName)

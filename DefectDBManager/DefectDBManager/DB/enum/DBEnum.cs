@@ -112,6 +112,7 @@ namespace DefectDBManager
         END_WD,
         STR_MD,
         END_MD,
+        BCNO,
     }
     #endregion
     #endregion FormDB

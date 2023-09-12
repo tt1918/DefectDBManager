@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -201,11 +202,37 @@ namespace DefectDBManager
             formDB[idx].SearchDefect();
         }
 
+        public void SearchAreaDel(string lotName, bool isNext)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            formDB[idx]._SearchRes = eSearchProcessRes.Process_None;
+            if (_DbConn.IsDBConnected == false)
+            {
+                formDB[idx]._SearchRes = eSearchProcessRes.DB_Disconnected;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
+
+            if (formDB[idx].IsSearchDefect() == true)
+            {
+                formDB[idx]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
+                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                return;
+            }
+
+            formDB[idx].SearchAreaDelDB(lotName);
+        }
+
         public void SearchCSVFile(string lotName, string filePath, bool isNext, int vendor, bool useES, bool useTG, bool useETC)
         {
             int idx = 0;
             if (isNext == false) idx = 0;
             else idx = 1;
+
+            //_DbProc[idx].ResetDataAll();
 
             _Option[idx].dbWhen = (eDbIdWhen)idx;
             _Option[idx].vendor = vendor;
@@ -214,9 +241,27 @@ namespace DefectDBManager
             _Option[idx].checkETC = useETC;
             _Option[idx].lotName = lotName;
             formDB[idx].DataBase = _DbProc[idx];
-            formDB[idx].DataBase.ResetDataAll();
             formDB[idx].UpdateEndEvent = true;
             formDB[idx].SearchCSVFile(filePath);
+        }
+
+        public void SearchAreaDelCSV(string lotName, string filePath, bool isNext)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            AreaDelCSV.Load(filePath, _DbProc[idx]);
+            OnProcessEvent((int)eEventReport.eFinishedReadCSVFile);
+        }
+
+        public void ResetDBData(bool isNext)
+        {
+            int idx = 0;
+            if (isNext == false) idx = 0;
+            else idx = 1;
+
+            formDB[idx].ResetDBData();
         }
 
         public void GetSearchLotResultSummery(bool isNext, ref List<LotSearchResult> results)
@@ -278,6 +323,88 @@ namespace DefectDBManager
                     }
                 }
             }
+
+            #region  CSV 파일 결점 표시 영역
+            if (_DbProc[idx]._DbResult.DicCSVDefectCnt.Count > 0)
+            {
+                List<string> keys = _DbProc[idx]._DbResult.DicCSVDefectCnt.Keys.ToList();
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    int defectCnt = _DbProc[idx]._DbResult.DicCSVDefectCnt[keys[i]];
+                    LotSearchResult result = new LotSearchResult();
+                    result.LotNo = "";
+                    result.BCNO = keys[i];
+                    result.DefectCnt = defectCnt;
+                    result.Line = "CSV";
+                    result.TimeST = "";
+                    result.DateST = "";
+                    result.TimeED = "";
+                    result.DateED = "";
+                    result.Length = 0.0f;
+                    result.DefectPerM = 0.0f;
+                    results.Add(result);
+                }
+            }
+            #endregion
+
+            #region Area Del Data 표시 영역
+            Dictionary<string, List<string>> dicAreaDel = new Dictionary<string, List<string>>();
+            foreach(AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL_Data)
+            {
+                if(dicAreaDel.ContainsKey(aREADELData.LOTNO))
+                {
+                    List<string> data = dicAreaDel[aREADELData.LOTNO];
+
+                    bool isFind = false;
+                    foreach(string bcno in data)
+                    {
+                        if (bcno == aREADELData.BCNO)
+                            isFind = true;
+                    }
+
+                    if (isFind == false)
+                        data.Add(aREADELData.BCNO);
+                    dicAreaDel[aREADELData.LOTNO] = data;
+                }
+                else
+                {
+                    List<string> data = new List<string>();
+                    dicAreaDel.Add(aREADELData.LOTNO, data);
+                }
+            }
+
+            int delCnt = 0;
+            if(dicAreaDel.Count>0)
+            {
+                List<string> keys = dicAreaDel.Keys.ToList();
+                for (int i=0; i< keys.Count; i++)
+                {
+                    List<string> data = dicAreaDel[keys[i]];
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        delCnt = 0;
+                        foreach (AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL_Data)
+                        {
+                            if (keys[i] == aREADELData.LOTNO && data[j] == aREADELData.BCNO)
+                                delCnt++;
+                        }
+
+                        LotSearchResult result = new LotSearchResult();
+                        result.LotNo = keys[i];
+                        result.BCNO = data[j];
+                        result.DefectCnt = delCnt;
+                        result.Line = "AREA";
+                        result.TimeST = "";
+                        result.DateST = "";
+                        result.TimeED = "";
+                        result.DateED = "";
+                        result.Length = 0.0f;
+                        result.DefectPerM = 0.0f;
+                        results.Add(result);
+                    }
+                }
+            }
+            #endregion
         }
 
         public void SearchModel(string lotName)

@@ -16,8 +16,8 @@ namespace DefectDBManager
         readonly string[] XOFSMSTHeader = { "KYCD", "PPCD", "LNCD", "YLMZKN2", "YLSZKN", "X_OFFSET" };
         readonly int[] listXOFSMSTWidth = { 50, 50, 50, 180, 180, 70 };
 
-        readonly string[] AREADELHeader = { "No", "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD" };
-        readonly int[] listAREADELWidth = { 30, 50, 50, 50, 100, 80, 80, 80, 80 };
+        readonly string[] AREADELHeader = { "No", "KYCD", "PPCD", "LNCD", "LOTNO", "STR_WD", "END_WD", "STR_MD", "END_MD", "BCNO" };
+        readonly int[] listAREADELWidth = { 30, 50, 50, 50, 100, 80, 80, 80, 80, 110 };
 
         public NittoDB _DBData = null;
 
@@ -106,6 +106,7 @@ namespace DefectDBManager
                 item.SubItems.Add(data.END_WD.ToString());
                 item.SubItems.Add(data.STR_MD.ToString());
                 item.SubItems.Add(data.END_MD.ToString());
+                item.SubItems.Add(data.BCNO);
                 listViewAREADEL.Items.Add(item);
                 index++;
             }

@@ -489,10 +489,9 @@ namespace DefectDBManager
 
                 if (DbDestConfig.UseAREADEL == true)
                 {
-                    success = SearchAreaDel(lotID);
+                    success = SearchAreaDel(lotID, ref _DbResult.AREADEL_Data);
                     if (success == false) return false;
                 }
-
                 success = SearchPTRYOP(lotID);
                 if (success == false) return false;
                 success = SearchMRKCTLMST(lotID);
@@ -518,6 +517,33 @@ namespace DefectDBManager
             }
         }
 
+        public bool SearchAreaDelFromServer(string lotID, bool bMsgOut, ref int errOut)
+        {
+            // 연결 확인
+            if (conn?.IsConnected() == false)
+                return false;
+            bool success = false;
+            try
+            {
+                List<AREADELData> listAreaDel = new List<AREADELData>();
+                lotID = lotID.ToUpper();
+                success = SearchAreaDel(lotID, ref listAreaDel);
+                if (success == false) return false;
+
+                if (listAreaDel.Count > 0)
+                {
+                    for(int i=0;i<listAreaDel.Count;i++)
+                        _DbResult.AREADEL_Data.Add(listAreaDel[i]);
+                }
+
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
+                return false;
+            }
+        }
         public bool SearchXOFSMST(string lotID)
         {
             // 연결 확인
@@ -569,7 +595,7 @@ namespace DefectDBManager
             }
         }
 
-        public bool SearchAreaDel(string lotID)
+        public bool SearchAreaDel(string lotID, ref List<AREADELData> listAreaDel)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -602,10 +628,10 @@ namespace DefectDBManager
                         {
                             AREADELData data = new AREADELData();
                             data.Parse(reader);
-                            _DbResult.AREADEL_Data.Add(data);
+                            listAreaDel.Add(data);
 
-                            logData = string.Format($"{_DbResult.AREADEL_Data.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, _DbResult.AREADEL_Data.Count, "AREADEL", 0.0);
+                            logData = string.Format($"{listAreaDel.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, listAreaDel.Count, "AREADEL", 0.0);
                         }
                     }
                 }
