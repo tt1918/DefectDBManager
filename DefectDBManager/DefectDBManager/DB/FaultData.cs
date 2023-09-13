@@ -114,7 +114,7 @@ namespace DefectDBManager
                 Dic[key] = new List<MarkingFaultDatum> { val };
         }
 
-        public void GetData(double start, double end, ref List<MarkingData> data)
+        public void GetData(string bcno, double start, double end, ref List<MarkingData> data)
         {
             int key1 = (int)(start / 10000.0);
             int key2 = (int)(end / 10000.0);
@@ -125,7 +125,7 @@ namespace DefectDBManager
                 {
                     foreach (MarkingFaultDatum datum in Dic[i])
                     {
-                        if (datum.OFFSET >= start && datum.OFFSET <= end)
+                        if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
                         {
                             MarkingData item = new MarkingData();
                             item.DefectLine = datum.DefectLine;

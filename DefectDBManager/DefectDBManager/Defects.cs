@@ -375,7 +375,7 @@ namespace DefectDBManager
 		public MarkingData[] GetMarkDefectData(string bcno, double start, double end)
 		{
 			markingData.Clear();
-            DBManager._DbProc[0].ResultDefect.MarkFault.GetData(start, end, ref markingData);
+            DBManager._DbProc[0].ResultDefect.MarkFault.GetData(bcno, start, end, ref markingData);
             
 //          List<MarkingFaultDatum> oriData;
 //          oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
