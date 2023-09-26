@@ -890,21 +890,21 @@ namespace DefectDBManager
 
             StreamWriter wr = new StreamWriter(path);
 
-            wr.WriteLine("Header line");
+            wr.WriteLine("KYCD,PPCD,LNCD,LOTNO,STR_WD,END_WD,STR_MD,END_MD,BCNO");
             int idx = 0;
             foreach (AREADELData data in db._DbResult.AREADEL_Data)
             {
                 StringBuilder sb = new StringBuilder();
 
-                sb.Append($"{data.KYCD},");         // 1
-                sb.Append($"{data.PPCD},");         // 2
-                sb.Append($"{data.LNCD},");         // 3
-                sb.Append($"{data.LOTNO},");        // 4
-                sb.Append($"{data.STR_WD:F2},");    // 5
-                sb.Append($"{data.END_WD:F2},");    // 6
-                sb.Append($"{data.STR_MD:F2},");    // 7
-                sb.Append($"{data.END_MD:F2}");     // 8
-                sb.Append($"{data.BCNO}");          // 9
+                sb.Append($"\"{data.KYCD}\",");         // 1
+                sb.Append($"\"{data.PPCD}\",");         // 2
+                sb.Append($"\"{data.LNCD}\",");         // 3
+                sb.Append($"\"{data.LOTNO}\",");        // 4
+                sb.Append($"\"{data.STR_WD:F2}\",");    // 5
+                sb.Append($"\"{data.END_WD:F2}\",");    // 6
+                sb.Append($"\"{data.STR_MD:F2}\",");    // 7
+                sb.Append($"\"{data.END_MD:F2}\",");     // 8
+                sb.Append($"\"{data.BCNO}\"");          // 9
                 wr.WriteLine(sb.ToString());
 
                 idx++;
