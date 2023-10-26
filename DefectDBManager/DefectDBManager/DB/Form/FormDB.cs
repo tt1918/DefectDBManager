@@ -1052,7 +1052,6 @@ namespace DefectDBManager
                 int errorOut = 0;
                 
                 isSuccess = dataBase.SearchAreaDelFromServer(this._areaDelLotName, false, ref errorOut);
-                
             }
             finally
             {

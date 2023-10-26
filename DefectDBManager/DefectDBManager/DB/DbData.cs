@@ -131,7 +131,7 @@ namespace DefectDBManager
             if (float.TryParse(reader[8].ToString(), out ret)) END_MD = ret;
             else END_MD = 0.0f;
 
-            BCNO = reader[9].ToString();
+            BCNO = reader[12].ToString();
         }
 
         public override string ToString()

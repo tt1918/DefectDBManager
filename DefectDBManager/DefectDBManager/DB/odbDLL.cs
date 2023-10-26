@@ -527,6 +527,11 @@ namespace DefectDBManager
             {
                 List<AREADELData> listAreaDel = new List<AREADELData>();
                 lotID = lotID.ToUpper();
+                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                // int newLotCnt = GetNextLotCnt(lotID);
+                //if (newLotCnt > 0) _LOG.Lot = $"{lotID}_{newLotCnt:D2}";
+                //else _LOG.Lot = lotID;
+				_LOG.Lot = lotID;
                 success = SearchAreaDel(lotID, ref listAreaDel);
                 if (success == false) return false;
 

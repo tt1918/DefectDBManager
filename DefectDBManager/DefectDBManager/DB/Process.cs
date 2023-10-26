@@ -223,6 +223,7 @@ namespace DefectDBManager
                 return;
             }
 
+            formDB[idx].UpdateEndEvent = true;
             formDB[idx].SearchAreaDelDB(lotName);
         }
 
