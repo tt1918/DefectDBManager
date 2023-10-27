@@ -14,7 +14,7 @@ namespace DefectDBManager
         string Path { get; }
         NittoDB DB { get; }
 
-        void Load();
+        bool Load();
         bool Save();
     }
 
@@ -37,7 +37,7 @@ namespace DefectDBManager
             deferct = db.ResultDefect;
         }
 
-        public void Load()
+        public bool Load()
         {
             string text;
             bool useMask = option.searchOP.useMask;
@@ -46,6 +46,8 @@ namespace DefectDBManager
             // CrtParam._FaultData는 인덱스가 0으로 바뀌는데 CrtParam._MarkFaultData는 초기화 안 함
             // 나중에 확인 필요
             DB.ResultDefect.Data.Clear();
+
+            int total = 0;
 
             RollDefectInfo rollInfo = new RollDefectInfo();
             string tmpBCInfo = null;
@@ -100,6 +102,8 @@ namespace DefectDBManager
 
                     deferct.MarkFault.Add(tmpMarkData);
                     rollInfo.AddYPos(tmpMarkData.YPOS_M);
+
+                    total++;
                 }
 
                 if (tmpBCInfo != null)
@@ -113,6 +117,10 @@ namespace DefectDBManager
             csvInfo.BadCnt = rollInfo.BadCnt;
             csvInfo.LotNo = rollInfo.LotNo + "(CSV)";
             DB._CSVLoadInfo.Add(csvInfo);
+
+            if (total == 0) return false;
+
+            return true;
         }
 
         public bool Save()
@@ -183,7 +191,7 @@ namespace DefectDBManager
             deferct = db.ResultDefect;
         }
 
-        public void Load()
+        public bool Load()
         {
             string text;
             bool useMask = option.searchOP.useMask;
@@ -213,7 +221,7 @@ namespace DefectDBManager
             using (var file = new StreamReader(Path, Encoding.Default))
             {
                 if (file == null)
-                    return;
+                    return false;
 
                 text = file.ReadLine(); // Title 
 
@@ -221,6 +229,9 @@ namespace DefectDBManager
                 {
                     string text1 = text.Replace("\"", "");
                     items = text1.Split(',');
+
+                    if (items.Length < 18) break;
+
                     FaultDatum tmpData = new FaultDatum();
                     MarkingFaultDatum tmpMarkData = new MarkingFaultDatum();
 
@@ -328,6 +339,9 @@ namespace DefectDBManager
             csvInfo.BadCnt = rollInfo.BadCnt;
             csvInfo.LotNo = rollInfo.LotNo + "(CSV)";
             DB._CSVLoadInfo.Add(csvInfo);
+            if (dataCnt == 0) return false;
+
+            return true;
         }
 
         public bool Save()
@@ -398,7 +412,7 @@ namespace DefectDBManager
             deferct = db.ResultDefect;
         }
 
-        public void Load()
+        public bool Load()
         {
             string text;
             bool useMask = option.searchOP.useMask;
@@ -433,7 +447,7 @@ namespace DefectDBManager
 
             using (var file = new StreamReader(Path, Encoding.Default))
             {
-                if (file == null) return;
+                if (file == null) return false;
 
                 CSV_DEFECT_HEADER csvInspData = new CSV_DEFECT_HEADER();
 
@@ -738,6 +752,10 @@ namespace DefectDBManager
             csvInfo.BadCnt = rollInfo.BadCnt;
             csvInfo.LotNo = rollInfo.LotNo + "(CSV)";
             DB._CSVLoadInfo.Add(csvInfo);
+
+            if (ktTotal == 0) return false;
+
+            return true;
         }
 
         public bool Save()
@@ -790,7 +808,7 @@ namespace DefectDBManager
     public static class DefectCSV
     {
         #region Control CSV 
-        public static void Open(string path, NittoDB db)
+        public static bool Open(string path, NittoDB db)
         {
             ICSVFile file = null;
             switch (db.DbDestConfig.CSVType)
@@ -811,7 +829,7 @@ namespace DefectDBManager
                     break;
             }
 
-            file.Load();
+            return file.Load();
         }
 
         public static void Save(string path, NittoDB db)
@@ -861,6 +879,12 @@ namespace DefectDBManager
                 {
                     string text1 = text.Replace("\"", "");
                     items = text1.Split(',');
+
+                    if(items.Length!=9)
+                    {
+                        bRes = false;
+                        break;
+                    }
 
                     AREADELData data = new AREADELData();
 

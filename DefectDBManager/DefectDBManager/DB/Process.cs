@@ -252,8 +252,10 @@ namespace DefectDBManager
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            AreaDelCSV.Load(filePath, _DbProc[idx]);
-            OnProcessEvent((int)eEventReport.eFinishedReadCSVFile);
+            bool bRes = AreaDelCSV.Load(filePath, _DbProc[idx]);
+
+            if (bRes == true) OnProcessEvent((int)eEventReport.eFinishedReadCSVFile);
+            else              OnProcessEvent((int)eEventReport.eFailedReadCSVFile);
         }
 
         public void ResetDBData(bool isNext)

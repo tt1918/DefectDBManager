@@ -1250,10 +1250,12 @@ namespace DefectDBManager
 
         private void threadFromCSV()
         {
-            DefectCSV.Open(this.csvPath, dataBase);
+
+            bool bRes = DefectCSV.Open(this.csvPath, dataBase);
             DataBase.DbOption.isLoadCSV = true;
-            OnEndJob((int)eEventReport.eFinishedReadCSVFile);
-            if(this.InvokeRequired==true)
+            if (bRes == true) OnEndJob((int)eEventReport.eFinishedReadCSVFile);
+            else OnEndJob((int)eEventReport.eFailedReadCSVFile);
+            if (this.InvokeRequired==true)
             {
                 this.Invoke(new MethodInvoker(delegate ()
                 {
@@ -1261,9 +1263,7 @@ namespace DefectDBManager
                 }));
             }
             else
-            {
                 updateReadingCsvResult();
-            }
         }
 
         private void updateReadingCsvResult()
