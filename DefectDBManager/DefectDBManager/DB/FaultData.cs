@@ -125,7 +125,7 @@ namespace DefectDBManager
                 {
                     foreach (MarkingFaultDatum datum in Dic[i])
                     {
-                        if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
+                        if (datum.OFFSET >= start && datum.OFFSET <= end/* && datum.BCNO == bcno*/)
                         {
                             MarkingData item = new MarkingData();
                             item.DefectLine = datum.DefectLine;

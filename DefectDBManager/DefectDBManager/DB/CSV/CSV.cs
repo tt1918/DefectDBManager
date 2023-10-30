@@ -249,8 +249,9 @@ namespace DefectDBManager
                     else                                             tmpData.OFFSET = 0.0; 
 
                     strCamNo = items[10];
-
+                    // BCNO 데이터 처리
                     strbcr = items[16];
+                    tmpData.TBCNO = strbcr;
                     bBcrExist = false;
                     foreach (string bcr in DB._DbResult.LoadedBcNo)
                     {
@@ -280,6 +281,7 @@ namespace DefectDBManager
                     tmpMarkData.CTLNO = "CSV";
                     tmpMarkData.FAULTID = strFltID;
                     tmpMarkData.MACNO = tmpData.MACNO;
+                    tmpMarkData.BCNO = tmpData.TBCNO;   // BCNO 데이터 입력 추가
 
                     int defectLine = 0;
                     if (destCfg.CSV_Ver == 1)
@@ -321,16 +323,13 @@ namespace DefectDBManager
                         dicCSVDefectCnt[strbcr] = bcrDefectCnt;
                     }
                     else
-                    {
                         dicCSVDefectCnt.Add(strbcr, 1);
-                    }
 
                     dataCnt++;
                 }
             }
 
             DB._RollDefectInfo = rollInfo;
-
             DB._DbResult.DicCSVDefectCnt = dicCSVDefectCnt;
 
             // 데이터 후처리 추가 필요
