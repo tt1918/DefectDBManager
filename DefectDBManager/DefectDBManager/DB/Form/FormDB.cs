@@ -212,22 +212,27 @@ namespace DefectDBManager
         {
             if (this.Visible == true)
             {
-                this.lblTitle.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
-
-                if (DataBase.DbOption.isLoadCSV == true) displayUIOptionFromDBOption();
-                else displayMarkingOption();
-                dbCommTimer.Start();
-                dbConn.OnDbConnect += OnDbConnect;
-                if (this.IsDataBaseChanged == true)
+                if (this.dataBase != null)
                 {
-                    makeAllListViewData();
-                    updateLotChangeResult();
+                    this.lblTitle.Text = $"DEFECT DATA VIEWER [{this.dataBase.DbOption.dbWhen.ToString()}]";
+                    if (DataBase.DbOption.isLoadCSV == true) displayUIOptionFromDBOption();
+                    else displayMarkingOption();
+                    dbCommTimer.Start();
+                    dbConn.OnDbConnect += OnDbConnect;
+                    if (this.IsDataBaseChanged == true)
+                    {
+                        makeAllListViewData();
+                        updateLotChangeResult();
+                    }
                 }
             }
             else
             {
-                dbCommTimer.Stop();
-                dbConn.OnDbConnect -= OnDbConnect;
+                if (this.dataBase != null)
+                {
+                    dbCommTimer.Stop();
+                    dbConn.OnDbConnect -= OnDbConnect;
+                }
             }
         }
 
