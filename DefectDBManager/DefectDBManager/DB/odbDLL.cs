@@ -833,8 +833,6 @@ namespace DefectDBManager
             }
         }
 
-        
-
         public bool SearchMRKCTLMST(string logID)
         {
             if (dbOption.searchOP.useDefectEdit)
@@ -1181,7 +1179,6 @@ namespace DefectDBManager
 
             int defectLine;
             string tmpKey;
-            bool bValid;
             float finalXPos;
             string tmpFaltID;
 

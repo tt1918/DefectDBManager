@@ -79,6 +79,18 @@ namespace DefectDBManager
         }
         private NittoDB dataBase = null;
 
+
+        public PreProcCompDB TodayDataBase
+        {
+            get { return todayDataBase; }
+            set
+            {
+                todayDataBase = value;
+                displayUI();
+            }
+        }
+        private PreProcCompDB todayDataBase = null;
+
         public OracleDbConnection DBConn
         {
             get { return dbConn; }
@@ -2095,7 +2107,6 @@ namespace DefectDBManager
         #region Defect Edit
         public void RunDefectEdit()
         {
-            int errorIdx = -1;
             DestConfigUnit unit = new DestConfigUnit();
             int vendorIdx = this.cbDestination.SelectedIndex;
             dataBase.DbDestConfig.GetData(vendorIdx, ref unit);
@@ -2155,22 +2166,8 @@ namespace DefectDBManager
                         if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
                             MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            //DataBase.ResetDataAll();
-                            //Option option = DataBase.DbOption;
-                            //SearchOption searchOP = new SearchOption();
-                            //option.searchOP = searchOP;
-                            //searchOP.useMask = cbUseMask.Checked;
-                            //searchOP.useDefectEdit = true;
-
                             clearAllListView();
                             ResetListViewData();
-
-                            //DataBase.SearchLot(this.dataBase.DbOption.lotName, false, ref errorIdx);
-
-                            //makeAllListViewData();
-                            //displayAllListView();
-                            //// Fault Data 표시
-                            //this.initFaultPage(this.dataBase.ResultDefect.MarkFault.Data.Count);
 
                             if (this.thread != null)
                             {

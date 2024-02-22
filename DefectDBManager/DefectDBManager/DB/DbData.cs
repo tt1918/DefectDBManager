@@ -20,9 +20,10 @@ namespace DefectDBManager
         //YLMLOT	YLMKYC	YLMMAC	YLMPPC	YLMKNC	YLMKSB	YLMZKY	YLMZKN	YLMSAG	YLMTON	YLMKAS	YLMYKH	YLMSOK	YLYIEL	
         //점착LOT	x		x		x		x		x		품종	    x		x		투입M	완성M	원단폭	X		X		
         //20												X						8		5		5								
+        //
         //15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31
         //YLLEVE	YLSLOT	YLSSEQ	YLSGEB	YLSZKB	YLSZKY	YLSZKN	YLSTON	YLYSKH	YLCRDT	YLCRTM	YLOPDT	YLRPTM	YLNMID	YLLGID	YLPCID	YLPGID
-        //X		연신LOT	X		X		X		X-----------------------------------------
+        //X		    연신LOT	X		X		X		X-----------------------------------------
         //42				42				40		42
 
         public string YLMLOT;   //g1 점착lot
@@ -143,11 +144,11 @@ namespace DefectDBManager
 
     public class PTRY0PData
     {
-        //	1		2		3		4		5		6		7		8		9		10		11		12		13		14		15
-        //	거점		제부		공정		작업구분	품종		기계		색코드	원단LOT	라인		라인식별	원단명칭	개시		종료		완성M	랏품종		
-        //	Y0KYCD	Y0MACD	Y0PPCD	Y0SAGK	Y0HINC	Y0KIKC	Y0IROC	Y0KLOT	Y0LNCD	Y0LNSN	Y0ZKNM	Y0KKOL	Y0KSOL	Y0KASS	Y0ZKNM2
-        //	3		3		3		2		5		5		2		20		4		4		80		14		14		5		100
-        //	x		x		x		x		o		x		x		o		x		o		x		o		o		x		o
+        //	1		2		3		4		    5		6		7		8		9		10		    11		    12		13		14		15        
+        //	거점	제부	공정	작업구분    품종	기계	색코드	원단LOT	라인	라인식별    원단명칭	개시	종료	완성M	랏품종		
+        //	Y0KYCD	Y0MACD	Y0PPCD	Y0SAGK	    Y0HINC	Y0KIKC	Y0IROC	Y0KLOT	Y0LNCD	Y0LNSN	    Y0ZKNM	    Y0KKOL	Y0KSOL	Y0KASS	Y0ZKNM2
+        //	3		3		3		2		    5		5		2		20		4		4		    80		    14		14		5		100
+        //	x		x		x		x		    o		x		x		o		x		o		    x		    o		o		x		o
 
         public string LotData;
         public string StartTime;
@@ -652,6 +653,59 @@ namespace DefectDBManager
             
             return bValid;
         }
+    }
+    #endregion
+
+    #region PreProcCompDB용 결과
+    public class PreProcCompDBResult
+    {
+        // 당일 생산할 PTRYOP 데이터
+        public List<PTRY0PData> PTRY0P_Today_Data;
+        // 현재 Lot 이름 기준 PTRYOP 데이터
+        public List<PTRY0PData>[] PTRY0P_Data;
+        // LOT 기준 INSPDATA 탐색 결과
+        public List<List<INSPDATData>>[] INSPDAT_Data;
+
+        // 현재 생산중인 Lot의 이전 공정 데이터
+        public List<INSPDATData>[] Matched_INSPDAT_Data;
+
+        public PreProcCompDBResult()
+        {
+            Init();
+        }
+
+        public void Init()
+        {
+            PTRY0P_Today_Data = new List<PTRY0PData>();
+
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            PTRY0P_Data = new List<PTRY0PData>[count];
+            for (int i = 0; i < count; i++)
+                PTRY0P_Data[i] = new List<PTRY0PData>();
+
+            INSPDAT_Data = new List<List<INSPDATData>>[count];
+            for (int i = 0; i < count; i++)
+                INSPDAT_Data[i] = new List<List<INSPDATData>>();
+
+            Matched_INSPDAT_Data = new List<INSPDATData>[count];
+            for (int i = 0; i < count; i++)
+                Matched_INSPDAT_Data[i] = new List<INSPDATData>();
+        }
+
+        public void ClearAll()
+        {
+            PTRY0P_Today_Data.Clear();
+
+            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
+
+            for (int i = 0; i < INSPDAT_Data.Length; i++)
+            {
+                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
+                    INSPDAT_Data[i][j].Clear();
+                INSPDAT_Data[i].Clear();
+            }
+        }
+
     }
     #endregion
 }

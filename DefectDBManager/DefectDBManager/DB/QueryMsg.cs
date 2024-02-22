@@ -129,7 +129,7 @@ namespace DefectDBManager
                     sbMsg.Append("SELECT * FROM PTRY0P WHERE");
                     sbMsg.Append($" Y0KLOT='{Vender}'");
 
-                    if (isModelSearch == false)
+                    if (isModelSearch == false && data!=null)
                     {
                         foreach (PTRYLPdata datum in data)
                         {
@@ -147,6 +147,44 @@ namespace DefectDBManager
                 catch (System.Exception ex)
                 {
                     Log.Write($"[Error] PTRYOP_Query Exception : {ex.Message}");
+                    return "";
+                }
+            }
+        }
+
+        /// <summary>
+        /// 이전 공정 결점 비교 시스템용 PTRYOP Query
+        /// </summary>
+        public class PTRYOP_Today_Query : QueryMsg
+        {
+            public string Y0LNCD;
+            public DateTime DateToday = DateTime.Today;
+            public DateTime DataTomorrow = DateTime.Today.AddDays(1);
+
+            public PTRYOP_Today_Query()
+            {
+
+            }
+
+            public PTRYOP_Today_Query(string name)
+            {
+                Vender = name;
+            }
+
+            public string GetQuery()
+            {
+                try
+                {
+                    StringBuilder sbMsg = new StringBuilder();
+                    sbMsg.Append("SELECT * FROM PTRY0P WHERE");
+                    sbMsg.Append($" Y0LNCD='{Y0LNCD}'");
+                    sbMsg.Append($" AND (SUBSTR(Y0KKOL,1,8)='{DateToday.ToString("yyyyMMdd")}' OR SUBSTR(Y0KKOL,1,8)='{DataTomorrow.ToString("yyyyMMdd")}')");
+
+                    return sbMsg.ToString();
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Write($"[Error] PTRYOP_Today_Query Exception : {ex.Message}");
                     return "";
                 }
             }
@@ -438,6 +476,20 @@ namespace DefectDBManager
                 return sbMsg.ToString();
             }
         }
+
+        public class FLTDAT_Daily_Query : QueryMsg
+        {
+            public string CTLNO = "";
+
+            public string GetQuery()
+            {
+                string message;
+                message = "SELECT* FROM FAULTDAT, FLTMST, INSPDAT WHERE FAULTDAT.FLTID=FLTMST.FLTID AND FAULTDAT.CTLNO=" +
+                          "INSPDAT.CTLNO AND FAULTDAT.CTLNO='" + CTLNO + "'";
+                return message;
+            }
+        }
+
     }
 
     public class FLTDAT_WRK3_Query : QueryMsg
