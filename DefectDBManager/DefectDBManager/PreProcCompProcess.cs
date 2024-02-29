@@ -8,8 +8,17 @@ using System.Windows.Forms;
 
 namespace DefectDBManager
 {
+    public delegate void DelegateEndSearchingTodayProduct();
+    public delegate void DelegateEndSearchingAvailableLot();
+    public delegate void DelegatePopupError(string errString);
+
     public sealed class PreProcCompProcess : IDisposable
     {
+        // 상위 이벤트 보고 
+        public event DelegateEndSearchingTodayProduct OnEndTodayProductSearching;
+        public event DelegateEndSearchingAvailableLot OnEndSearchingAvailableLot;
+        public event DelegatePopupError OnPopupError;
+
         /// <summary>
         /// DB Query 및 탐색
         /// </summary>
@@ -36,15 +45,12 @@ namespace DefectDBManager
         /// </summary>
         public Param[] _Param;
 
-        public FormDB _FormDB_Now { get { return formDB[0]; } }
-        public FormDB _FormDB_Next { get { return formDB[1]; } }
-        /// <summary>
-        /// DB에서 받은 데이터 표시 및 컨트롤 
-        /// </summary>
-        private FormDB[] formDB = new FormDB[2];
-        
-        bool disposed = false;
+        // 현재랏 인덱스 번호
+        public UInt16 CrtY0KLOTIdx { get; set; }
+        // 다음랏 인덱스 번호
+        public UInt16 NextY0KLOTIdx { get; set; }
 
+        bool disposed = false;
         private object parent = null;
 
         private Thread threadDBConnect = null;
@@ -83,23 +89,15 @@ namespace DefectDBManager
                 _DBProc[i].CrtParam = _Param[i];
 
                 int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                _DBProc[i].ResultDefect = new ResultData[count];
+                _DBProc[i].ResultDefect = new List<PreProcDefect>[count];
                 for (int idx = 0; idx < count; i++)
-                    _DBProc[i].ResultDefect[i] = new ResultData();
+                    _DBProc[i].ResultDefect[i] = new List<PreProcDefect>();
             }
 
             if (this.threadDBConnect != null)
             {
                 this.threadDBConnect.Join(100);
                 this.threadDBConnect = null;
-            }
-
-
-            for (int i = 0; i < 2; i++)
-            {
-                formDB[i] = new FormDB(this);
-                formDB[i].DBConn = _DbConn;
-                formDB[i].TodayDataBase = _DBProc[i];
             }
 
             this.threadDBConnect = new Thread(this.DbConnect);
@@ -116,8 +114,6 @@ namespace DefectDBManager
         public void Dispose()
         {
             this.Dispose(true);
-            for (int i = 0; i < 2; i++)
-                formDB[i].Dispose();
             GC.SuppressFinalize(this);
         }
 
@@ -144,47 +140,124 @@ namespace DefectDBManager
             }
         }
 
-        public void ShowDBViewer(bool isNext)
+        private void searchDailyLot(object obj)
         {
-            int idx = 0;
-            if (isNext == false) idx = 0;
-            else idx = 1;
+            StopCheckAvaliableINSPDAT();
+            PreProcCompDB procNow = _DBProc[(int)eDbIdWhen.Now];
+            PreProcCompDB procNext = _DBProc[(int)eDbIdWhen.Next];
+            string lotID = procNow.SearchLotName;
+            if(procNow.SearchLot(lotID)==true)
+            {
+                // 데이터 탐색이 완료되었으면 기본 데이터는 복사
+                procNext._DbResult.PTRY0P_Today_Data = procNow._DbResult.PTRY0P_Today_Data;
+                
+                // 검사 완료 처리
+                OnEndTodayProductSearching();
+                // 체크 스레드 시작
+                StartCheckAvaliableINSPDAT();
+            }
 
-            if (formDB[idx] == null) return;
-
-            formDB[idx].TodayDataBase= _DBProc[idx];
-            formDB[idx].Show();
         }
 
-        public void HideDBViewer()
-        {
-            formDB[0].Hide();
-            formDB[1].Hide();
-        }
-
-        static void searchDailyLot(object obj)
-        {
-            PreProcCompDB dbProc = (PreProcCompDB)obj;
-            string lotID = dbProc.SearchLotName;
-            string Y0LNCD = dbProc.SearchY0LNCD;
-            dbProc.SearchLot(Y0LNCD, lotID);
-            
-            // 
-        }
-
-        public void SearchDailyLot(bool isNext, string lotID, string Y0LNCD)
+        public void SearchDailyLot(string lotID)
         {
             PreProcCompDB proc = null;
-
-            if (isNext == false)    proc = _DBProc[(int)eDbIdWhen.Now];
-            else                    proc = _DBProc[(int)eDbIdWhen.Next];
-
+            proc = _DBProc[(int)eDbIdWhen.Now];
+            
             proc.SearchLotName = lotID;
-            proc.SearchY0LNCD = Y0LNCD;
+            proc.SearchY0LNCD = _DestConfig.MainLNCD;
 
             Task task = new Task(searchDailyLot, proc);
             task.Start();
         }
 
+        #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
+        private string crtBCNO = "";
+        private double crtRollPosY = 0.0;
+        private bool enableCheckINSPDAT = false;
+        private Thread CheckAvailableLotthread = null;
+
+        public void StartCheckAvaliableINSPDAT()
+        {
+            StopCheckAvaliableINSPDAT();
+
+            this.CheckAvailableLotthread = new Thread(this.threadCheckAvaliableINSPDAT);
+            this.CheckAvailableLotthread.Start();
+        }
+
+        public void StopCheckAvaliableINSPDAT()
+        {
+            if (this.CheckAvailableLotthread != null)
+            {
+                this.CheckAvailableLotthread.Abort();
+                this.CheckAvailableLotthread.Join(100);
+                this.CheckAvailableLotthread = null;
+            }
+        }
+
+        // 수정 필요
+        // 인덱스 기준으로 현재/예약 랏 검색 방식 변경이 필요함. 
+        private void threadCheckAvaliableINSPDAT()
+        {
+
+            while (true)
+            {
+                // 검색
+                if (enableCheckINSPDAT == false)
+                {
+                    Thread.Sleep(500);
+                    continue;
+                }
+
+                //현재 생산하고 있는 랏이 데이터에 없으면 다음 Lot을 탐색한다. 
+                if (_DBProc[(int)eDbIdWhen.Now].IsCrtDataAvaliable(crtBCNO, crtRollPosY) == false)
+                {
+                    // 다음 랏을 기준으로 탐색한다.
+                    string strLotID;
+                    bool success;
+
+                    if (_DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
+                    {
+                        OnPopupError("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
+                        return;
+                    }
+
+                    strLotID = _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
+                    success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
+                    if (success == false)
+                    {
+                        NextY0KLOTIdx++;
+                        continue;
+                    }
+                    success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
+
+                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(crtBCNO, crtRollPosY) == true)
+                    {
+                        success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
+                        // 현재 랏 인덱스 정보를 업데이트 함
+                        CrtY0KLOTIdx = NextY0KLOTIdx;
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        // 예약랏 데이터 탐색함.
+                        NextY0KLOTIdx++;
+                        if(NextY0KLOTIdx< _DBProc[(int)eDbIdWhen.Next]._DbResult.PTRY0P_Today_Data.Count)
+                        {
+                            strLotID = _DBProc[(int)eDbIdWhen.Next]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
+                            success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
+                            success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
+                            success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
+                        }
+                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        
+                        OnEndSearchingAvailableLot();
+                    }
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+
+
+        #endregion
     }
 }

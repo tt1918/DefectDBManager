@@ -169,7 +169,27 @@ namespace DefectDBManager
             Data.Clear();
             MarkFault.Reset();
         }
+    }
 
-        
+    public class PreProcDefect
+    {
+        // 이전 공정 라인 코드
+        public string LNCD;
+
+        public List<FaultDatum> Data;
+
+        public PreProcDefect()
+        {
+            Data = new List<FaultDatum>();
+        }
+        ~PreProcDefect()
+        {
+            ResetAll();
+        }
+
+        public void ResetAll()
+        {
+            Data.Clear();
+        }
     }
 }

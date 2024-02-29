@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -10,15 +11,8 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
-    public delegate void DelegateEndSearchingTodayProduct();
-    public delegate void DelegateEndSearchingAvailableLot();
-    public delegate void DelegatePopupError(string errString);
     public class PreProcCompDB
     {
-        // 
-        public event DelegateEndSearchingTodayProduct OnEndTodayProductSearching;
-        public event DelegateEndSearchingAvailableLot OnEndSearchingAvailableLot;
-        public event DelegatePopupError OnPopupError;
         public OracleDbConnection Conn { get { return conn; } }
         private OracleDbConnection conn = null;
 
@@ -58,12 +52,16 @@ namespace DefectDBManager
             set;
         }
 
-        public ResultData[] ResultDefect
+        /// <summary>
+        /// FAULTData 저장
+        /// 데이터는 각 공정 및 LNCD 기준으로 처리하도록 한다. 
+        /// </summary>
+        public List<PreProcDefect>[] ResultDefect
         {
             get { return resultDefect; }
             set { resultDefect = value; }
         }
-        private ResultData[] resultDefect;
+        private List<PreProcDefect>[] resultDefect;
 
         public IRollDefectInfo _RollDefectInfo { get; set; }
         public CSV_DEFECT_HEADER _CsvDefectHeader = null;
@@ -74,9 +72,6 @@ namespace DefectDBManager
         public string SearchLotName { get; set; }
 
         public string SearchY0LNCD { get; set; }
-
-        public UInt16 CrtY0KLOTIdx { get; set; }
-        public UInt16 NextY0KLOTIdx { get; set; }
 
         public LogDB _LOG;
 
@@ -93,8 +88,9 @@ namespace DefectDBManager
             _LOG = new LogDB();
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            for(int i= 0; i < count; i++)
-                ResultDefect[i] = new ResultData();
+            resultDefect =new List<PreProcDefect>[count];
+            for (int i= 0; i < count; i++)
+                resultDefect[i] = new List<PreProcDefect>();
         }
 
         ~PreProcCompDB()
@@ -110,7 +106,15 @@ namespace DefectDBManager
             CrtParam.ClearEachOpticDefectCnt();
 
             for(int i=0; i<resultDefect.Length; i++)
-                ResultDefect[i].ResetAll();
+            {
+                // 내부 데이터 삭제
+                for (int j = 0; j < ResultDefect[i].Count; j++)
+                    ResultDefect[i][j].ResetAll();
+
+                // 공정 별 데이터 리스트 삭제
+                ResultDefect[i].Clear();
+            }
+
             _CSVLoadInfo.Clear();
 
             CrtParam.isProductAvaliable = false;
@@ -146,14 +150,11 @@ namespace DefectDBManager
             return nNewCnt;
         }
 
-        public bool SearchLot(string Y0LNCD, string lotID)
+        public bool SearchLot(string lotID)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)   return false;
             bool success = false;
-
-            // Lot 확인하는 스레드 중지
-            StopCheckAvaliableINSPDAT();
 
             try
             {
@@ -161,7 +162,9 @@ namespace DefectDBManager
                 DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
 
                 QueryMsg.PTRYOP_Today_Query ptryop = new QueryMsg.PTRYOP_Today_Query();
-                ptryop.Y0LNCD = Y0LNCD;
+                
+                // 해당 LNCD는 현재 공정 LINE CODE임
+                ptryop.Y0LNCD = destConfig.MainLNCD;
 
                 string query = ptryop.GetQuery();
                 _LOG.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
@@ -191,9 +194,12 @@ namespace DefectDBManager
                     }
                 }
 
-                success = SearchPTRYOP(lotID);
+                // 처음 랏을 탐색하였다면 생산하지 않은 제일 처음 랏을 가지고 온다.
+                string firstLotID = _DbResult.PTRY0P_Today_Data[0].Y0KLOT;
+
+                success = SearchPTRYOP(firstLotID);
                 if (success == false) return false;
-                success = SearchINSPDAT(lotID);
+                success = SearchINSPDAT(firstLotID);
                 if (success == false) return false;
             }
             catch ( Exception ex)
@@ -201,9 +207,6 @@ namespace DefectDBManager
                 Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
                 return false;
             }
-
-            // BCNO와 yPos 이용해서 검사하는 Lot Check 스레드 재시작
-            StartCheckAvaliableINSPDAT();
 
             return true;
         }
@@ -218,8 +221,9 @@ namespace DefectDBManager
         public bool IsCrtDataAvaliable(string bcno, double dPosY)
         {
             bool[] isAvaliable = null;
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
 
+            // 각 공정 별 INSPDAT 데이터의 갯수를 확인한다.
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
             isAvaliable = new bool[count];
 
             for (int i=0; i<count; i++)
@@ -426,6 +430,7 @@ namespace DefectDBManager
 
                                     INSPDATData data = new INSPDATData();
                                     data.Y0KLOT = _DbResult.PTRY0P_Data[idx][i].Y0KLOT;
+                                    data.LNCD = _DbResult.PTRY0P_Data[idx][i].LNCD;
                                     data.Parse(reader);
 
                                     // 리스트에 데이터 추가함
@@ -490,7 +495,7 @@ namespace DefectDBManager
             long dbCnt;
             string logData;
 
-            int[] defectCnt = new int[fcdCnt];
+            int[] defectCnt = new int[fcdCnt]; 
             defectCnt.Initialize();
 
             try
@@ -551,8 +556,11 @@ namespace DefectDBManager
                             using (var reader = comm.ExecuteReader())
                             {
                                 dbCnt = reader.RowSize;
-
                                 nItemCnt++;
+
+                                PreProcDefect defectData = new PreProcDefect();
+                                // 
+                                defectData.LNCD = inspdata.LNCD;
 
                                 while (reader.Read())
                                 {
@@ -576,6 +584,7 @@ namespace DefectDBManager
                                     // Fault Data 처리
                                     FaultDatum tmpFltData = new FaultDatum();
 
+                                    tmpFltData.TBCNO = inspdata.BCNO;
                                     tmpFltData.FLTNO = data.FLTNO;
                                     tmpFltData.OFFSET = data.OFFSET;
                                     tmpFltData.YPOS_M = data.YPOS_M;
@@ -598,82 +607,23 @@ namespace DefectDBManager
                                     tmpFltData.JIGCD = data.JIGCD;
                                     tmpFltData.MACNO = data.MACNO;
 
-                                    // Marking fault data 추가
-                                    MarkingFaultDatum markData = new MarkingFaultDatum();
-
-                                    markData.BCNO = inspdata.BCNO;
-                                    markData.FLTNO = data.FLTNO;
-                                    markData.FAULTID = data.FLTID;
-                                    markData.OFFSET = tmpFltData.OFFSET;
-                                    markData.YPOS_M = tmpFltData.YPOS_M;
-                                    markData.XPOS_M = tmpFltData.XPOS_M;
-                                    markData.XOFFSET = inspdata.OffsetX;
-                                    markData.UseCSVResult = false;
-                                    markData.CAM_NO = data.CAMNO;
-                                    markData.CTLNO = data.CTLNO;
-                                    markData.SIZE = data.AREA_M;
-                                    markData.MNTTID = data.MNTTAN;
-                                    markData.MACNO = data.MACNO;
-
-                                    if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
-                                    else                 markData.XOFFSET_ALARM = float.MaxValue;
-
-                                    if (csvType == eCSV_TYPE.NITTO)
-                                    {
-                                        if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
-                                        else                        markData.DefectLine = 8; // 그외
-                                    }
-                                    else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                    {
-                                        if (fcdIdx == (int)eFCD.TG)         markData.DefectLine = 9; //점착 
-                                        else if (fcdIdx == (int)eFCD.ES)    markData.DefectLine = 8; // 연신 - 기타
-                                        else                                markData.DefectLine = 7; // 그외
-                                    }
-                                    else
-                                    {
-                                        if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
-                                        {
-                                            int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
-                                            markData.DefectLine = getDefectFromFLTID(fldID);
-                                            if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
-                                        }
-                                        else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
-                                            (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
-                                        {
-                                            markData.DefectLine = 0;
-                                            CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
-                                        }
-                                    }
-
-                                    // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
-                                    defectLine = markData.DefectLine;
-
-                                    if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
-                                        markData.DefectLine = defectLine;
-
-                                    //RK는 CAMNO별로 Defect Class 를 구분
-                                    if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                        markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
-
-                                    resultDefect[fcdIdx].Data.Add(tmpFltData);
-                                    resultDefect[fcdIdx].MarkFault.Add(markData);
-
+                                    defectData.Data.Add(tmpFltData);
                                     dataCnt++;
-                                    logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
+                                    logData = data.GetString(dataCnt, tmpFltData.TBCNO);
                                     _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
                                     defectCnt[fcdIdx]++;
                                 }
+
+                                // 각 공정 별 불량 데이터를 입력한다. 
+                                resultDefect[fcdIdx].Add(defectData);
                             }
                         }
+                        
                     }
+                    
                     DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
 
                     if (minSize == 999.0)   minSize = 0;
-
-                    //   Defect 사이즈 처리
-                    resultDefect[fcdIdx].MarkFault.MinXPos = minXPos;
-                    resultDefect[fcdIdx].MarkFault.MaxXPos = maxXPos;
-                    resultDefect[fcdIdx].MarkFault.MinSize = minSize;
                 }
 
 
@@ -739,78 +689,5 @@ namespace DefectDBManager
 
             return defectLine;
         }
-
-        #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
-        private string crtBCNO = "";
-        private double crtRollPosY = 0.0;
-        private bool enableCheckINSPDAT=false; 
-        private Thread CheckAvailableLotthread = null;
-
-        public void StartCheckAvaliableINSPDAT()
-        {
-            StopCheckAvaliableINSPDAT();
-
-            this.CheckAvailableLotthread = new Thread(this.threadCheckAvaliableINSPDAT);
-            this.CheckAvailableLotthread.Start();
-        }
-
-        public void StopCheckAvaliableINSPDAT()
-        {
-            if (this.CheckAvailableLotthread != null)
-            {
-                this.CheckAvailableLotthread.Abort();
-                this.CheckAvailableLotthread.Join(100);
-                this.CheckAvailableLotthread = null;
-            }
-        }
-
-        private void threadCheckAvaliableINSPDAT()
-        {
-
-            while(true)
-            {
-                // 검색
-                if(enableCheckINSPDAT==false)
-                {
-                    Thread.Sleep(500);
-                    continue;
-                }
-
-                //현재 생산하고 있는 랏이 데이터에 없으면 다음 Lot을 탐색한다. 
-                if(IsCrtDataAvaliable(crtBCNO, crtRollPosY)==false)
-                {
-                    // 다음 랏을 기준으로 탐색한다.
-                    string strLotID;
-                    bool success;
-
-                    if (_DbResult.PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
-                    {
-                        OnPopupError("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
-                        return;
-                    }
-
-                    strLotID = _DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
-                    success = SearchPTRYOP(strLotID);
-                    if(success==false)
-                    {
-                        NextY0KLOTIdx++;
-                        continue;
-                    }
-                    success = SearchINSPDAT(strLotID);
-                    
-                    if(SearchMatchedBCNOLot(crtBCNO, crtRollPosY)==true)
-                    {
-                        success = SearchFLTDAT();
-                        OnEndSearchingAvailableLot();
-                    }
-                }
-
-                // 
-                Thread.Sleep(500);
-            }
-        }
-
-
-        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using Microsoft.SqlServer.Server;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -276,7 +277,10 @@ namespace DefectDBManager
         public int RollCtlCnt = 0;
 
         // 화면 표시용 Y0KLOT 추가
-        public string Y0KLOT;
+        public string Y0KLOT { get; set; }
+
+        // 검사 라인 확인용 LNCD 추가
+        public string LNCD { get; set; }
 
         public void Parse(OracleDataReader reader)
         {
@@ -311,12 +315,12 @@ namespace DefectDBManager
     public class FLTDATAData
     {
         // Search Item = YLMLOT(점착LOT)
-        //	1		2		3		4		5		6		7		8		9		10      11		12		13		14		15		16		17		18		    19		    20		
-        //	CTLNO	FLTNO	DT	    TM  	OFFSET	YPOS_M	YPOS_P	XPOS_M	XPOS_P	AREA_M	AREA_P	LEN_M	LEN_P	WID_M	WID_P	RANK	KND 	S_SLIT	    E_SLIT	    CMT	
-        //	관리No	결점Ｎｏ	발생일   발생시각 원단장위치 흐르는 방향    폭방향          면적mm   면적pxl 길이mm   길이pxl 길이mm  길이pxl  랭크    종류수   개시슬리터   완료 슬리터  코멘트
-        //  21		22		23		24		25		26	    27	    28	    29	    30	        31	        32	      33	    34	    35	    36	        
-        //  CAMNO	MAGNIF	PICFLG	PICSIZE	PICFNAME MNTINF	MNTDT	MNTTM	MNTTAN	JIGCD	    MACNO	    GRANK	  PICTYPE	PICFSIZE FLTID  FLTORG		
-        //  카메라No Y배율   화상유무 화상크기 화상필름명 보수정보 보수일 보수시각 보수담당 사무실코드   검사장치No   외관 랭크  화상 타임  화상사이즈 결점ID 결점ID(검사장치)
+        //	1		2		3		4           5		    6		7       8		9		10      11		12		13		14		15		16		17		18		    19		    20		
+        //	CTLNO	FLTNO	DT	    TM  	    OFFSET      YPOS_M	YPOS_P	XPOS_M	XPOS_P	AREA_M	AREA_P	LEN_M	LEN_P	WID_M	WID_P	RANK	KND 	S_SLIT	    E_SLIT	    CMT	
+        //	관리No	결점No	발생일   발생시각   원단장위치  흐르는 방향     폭방향          면적mm  면적pxl 길이mm  길이pxl 길이mm  길이pxl 랭크    종류수  개시슬리터  완료 슬리터 코멘트
+        //  21		22		23		    24		    25		    26	     27	    28	        29	        30	        31	        32	      33	    34	        35	    36	        
+        //  CAMNO	MAGNIF	PICFLG	    PICSIZE	    PICFNAME    MNTINF	 MNTDT	MNTTM	    MNTTAN	    JIGCD	    MACNO	    GRANK	  PICTYPE	PICFSIZE    FLTID  FLTORG		
+        //  카메라No Y배율  화상유무    화상크기    화상필름명  보수정보 보수일 보수시각    보수담당    사무실코드  검사장치No  외관 랭크 화상 타임 화상사이즈  결점ID 결점ID(검사장치)
 
         public string CTLNO;
         public string FLTNO;
@@ -382,6 +386,13 @@ namespace DefectDBManager
         {
             string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
                 $"{FLTID}, {AREA_M:0.00}, {CAMNO}, {MNTTAN}, {defectLine}, {bcno}, {xOffset}");
+            return msg;
+        }
+
+        public string GetString(int index, string bcno)
+        {
+            string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
+                $"{FLTID}, {AREA_M:0.00}, {CAMNO}, {MNTTAN}, {bcno}");
             return msg;
         }
     }

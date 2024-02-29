@@ -1179,6 +1179,7 @@ namespace DefectDBManager
 
             int defectLine;
             string tmpKey;
+            bool bValid;
             float finalXPos;
             string tmpFaltID;
 

@@ -273,6 +273,9 @@ namespace DefectDBManager
         public int NoBcrWarning;
         public int NoBcrError;
 
+        // 현재 장비 공정 코드
+        public string MainLNCD;
+
         public int EverMarkDefectMeter
         {
             get { return everMarkDefectMeter; }
@@ -409,6 +412,8 @@ namespace DefectDBManager
                 this.NoBcrError = NativeFunc.ReadIni(Define.DestPath, key, "NO_BCR_ERROR", 30);
 
                 everMarkDefectMeter = NativeFunc.ReadIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", 10);
+
+                this.MainLNCD = NativeFunc.ReadIni(Define.DestPath, key, "MACHINE_LNCD", "");
             }
             catch(Exception ex)
             {
