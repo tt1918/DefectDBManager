@@ -46,17 +46,17 @@
             this.lblSizeX = new System.Windows.Forms.Label();
             this.lvOffsetSkip = new System.Windows.Forms.ListView();
             this.gbSizeSkip = new System.Windows.Forms.GroupBox();
-            this.btnUpdateSizeSkip = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.panelTitle = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
             this.ucSkipParam6 = new DefectDBManager.ucSkipParam();
+            this.btnUpdateSizeSkip = new System.Windows.Forms.Button();
             this.ucSkipParam5 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam4 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam3 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam2 = new DefectDBManager.ucSkipParam();
             this.ucSkipParam1 = new DefectDBManager.ucSkipParam();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.panelTitle = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -84,7 +84,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.btnClose);
             this.splitContainer1.Size = new System.Drawing.Size(743, 496);
-            this.splitContainer1.SplitterDistance = 449;
+            this.splitContainer1.SplitterDistance = 448;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -100,7 +100,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(743, 449);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(743, 448);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // gbInspDataMask
@@ -123,7 +123,7 @@
             this.gbInspDataMask.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbInspDataMask.Location = new System.Drawing.Point(437, 3);
             this.gbInspDataMask.Name = "gbInspDataMask";
-            this.gbInspDataMask.Size = new System.Drawing.Size(303, 443);
+            this.gbInspDataMask.Size = new System.Drawing.Size(303, 442);
             this.gbInspDataMask.TabIndex = 1;
             this.gbInspDataMask.TabStop = false;
             this.gbInspDataMask.Text = "검사 데이터 마스크";
@@ -283,69 +283,10 @@
             this.gbSizeSkip.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gbSizeSkip.Name = "gbSizeSkip";
             this.gbSizeSkip.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.gbSizeSkip.Size = new System.Drawing.Size(428, 441);
+            this.gbSizeSkip.Size = new System.Drawing.Size(428, 440);
             this.gbSizeSkip.TabIndex = 0;
             this.gbSizeSkip.TabStop = false;
             this.gbSizeSkip.Text = "Size Skip";
-            // 
-            // btnUpdateSizeSkip
-            // 
-            this.btnUpdateSizeSkip.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateSizeSkip.Location = new System.Drawing.Point(299, 405);
-            this.btnUpdateSizeSkip.Name = "btnUpdateSizeSkip";
-            this.btnUpdateSizeSkip.Size = new System.Drawing.Size(123, 29);
-            this.btnUpdateSizeSkip.TabIndex = 0;
-            this.btnUpdateSizeSkip.Text = "UPDATE";
-            this.btnUpdateSizeSkip.UseVisualStyleBackColor = true;
-            this.btnUpdateSizeSkip.Click += new System.EventHandler(this.btnUpdateSizeSkip_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(556, 6);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(186, 33);
-            this.btnClose.TabIndex = 0;
-            this.btnClose.Text = "CLOSE";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.panelTitle, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.splitContainer1, 0, 1);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(749, 534);
-            this.tableLayoutPanel2.TabIndex = 1;
-            // 
-            // panelTitle
-            // 
-            this.panelTitle.BackColor = System.Drawing.Color.DarkGray;
-            this.panelTitle.Controls.Add(this.lblTitle);
-            this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTitle.Location = new System.Drawing.Point(3, 4);
-            this.panelTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(743, 22);
-            this.panelTitle.TabIndex = 3;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(4, 2);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(132, 17);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "SKIP PARAM EDITOR";
             // 
             // ucSkipParam6
             // 
@@ -357,6 +298,17 @@
             this.ucSkipParam6.Size = new System.Drawing.Size(211, 117);
             this.ucSkipParam6.TabIndex = 1;
             this.ucSkipParam6.Title = "Skip Data";
+            // 
+            // btnUpdateSizeSkip
+            // 
+            this.btnUpdateSizeSkip.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateSizeSkip.Location = new System.Drawing.Point(299, 405);
+            this.btnUpdateSizeSkip.Name = "btnUpdateSizeSkip";
+            this.btnUpdateSizeSkip.Size = new System.Drawing.Size(123, 29);
+            this.btnUpdateSizeSkip.TabIndex = 0;
+            this.btnUpdateSizeSkip.Text = "UPDATE";
+            this.btnUpdateSizeSkip.UseVisualStyleBackColor = true;
+            this.btnUpdateSizeSkip.Click += new System.EventHandler(this.btnUpdateSizeSkip_Click);
             // 
             // ucSkipParam5
             // 
@@ -412,6 +364,54 @@
             this.ucSkipParam1.Size = new System.Drawing.Size(211, 117);
             this.ucSkipParam1.TabIndex = 1;
             this.ucSkipParam1.Title = "Skip Data";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Location = new System.Drawing.Point(556, 6);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(186, 33);
+            this.btnClose.TabIndex = 0;
+            this.btnClose.Text = "CLOSE";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.panelTitle, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.splitContainer1, 0, 1);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 2;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(749, 534);
+            this.tableLayoutPanel2.TabIndex = 1;
+            // 
+            // panelTitle
+            // 
+            this.panelTitle.BackColor = System.Drawing.Color.DarkGray;
+            this.panelTitle.Controls.Add(this.lblTitle);
+            this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelTitle.Location = new System.Drawing.Point(3, 4);
+            this.panelTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.panelTitle.Name = "panelTitle";
+            this.panelTitle.Size = new System.Drawing.Size(743, 22);
+            this.panelTitle.TabIndex = 3;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(4, 2);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(132, 17);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "SKIP PARAM EDITOR";
             // 
             // FormSkipParam
             // 

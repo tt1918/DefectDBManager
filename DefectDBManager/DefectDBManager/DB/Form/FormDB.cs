@@ -1738,14 +1738,28 @@ namespace DefectDBManager
 
         private void btnShowSkipParam_Click(object sender, EventArgs e)
         {
-            using (FormSkipParam form = new FormSkipParam())
+            switch(dataBase.DbDestConfig.ProgType)
             {
-                form._Param = dataBase.CrtParam;
-                form.Config = dataBase.DbDestConfig;
-                form.FWPlace = dataBase.DbOption.FWPlace;
+                case eProgramType.DB_DEFECT:
+                    using (FormSkipParam form = new FormSkipParam())
+                    {
+                        form._Param = dataBase.CrtParam;
+                        form.Config = dataBase.DbDestConfig;
+                        form.FWPlace = dataBase.DbOption.FWPlace;
 
-                form.ShowDialog();
+                        form.ShowDialog();
+                    }
+                    break;
+
+                case eProgramType.PRE_COMP:
+                    var listBinding = new BindingList<DefectSizeTH>(dataBase.DbDestConfig.DefectSizeTHs);
+                    using (FormDefectSkip form = new FormDefectSkip(listBinding))
+                    {
+                        form.ShowDialog();
+                    }
+                    break;
             }
+            
         }
 
         private void btnEditDefectClass_Click(object sender, EventArgs e)

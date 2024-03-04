@@ -27,6 +27,7 @@ namespace DefectDBManager
         }
     }
 
+
     // 공통으로 사용되는  임시 파라미터
     public class Param
     {

@@ -117,8 +117,15 @@ namespace DefectDBManager
     #endregion
     #endregion FormDB
 
-    #region Nitto Database
+    #region 
+    public enum eProgramType
+    {
+        DB_DEFECT = 0, // 전공정 결점 마킹용
+        PRE_COMP,      // 이전 공정 데이터 비교 
+    }
+    #endregion
 
+    #region Nitto Database
     public enum eNittoDBProgress
     {
         PTRYLP = 0,

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices.ComTypes;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace DefectDBManager
 {
@@ -84,6 +85,89 @@ namespace DefectDBManager
         public bool Check(float sizeX, float sizeY, float size)
         {
             if (sizeX < minX || sizeX > maxX || sizeY < minY || sizeY > maxY || size < min || size > max)
+                return true;
+            return false;
+        }
+    }
+
+    public class DefectSizeTH : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Title Name
+        public string Name 
+        { 
+            get { return _name; } 
+            set
+            {
+                _name = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Name)));
+            } 
+        }
+        private string _name;
+        /// <summary>
+        /// 공정 코드
+        /// </summary>
+        public string LNCD 
+        { 
+            get { return _lncd; } 
+            set
+            { 
+                _lncd = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LNCD)));
+            } 
+        }
+        private string _lncd;
+        /// <summary>
+        /// 최소 사이즈
+        /// </summary>
+        public float MinSize 
+        { 
+            get { return _minSize; } 
+            set 
+            { 
+                _minSize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MinSize)));
+            } 
+        }
+        private float _minSize;
+        /// <summary>
+        /// 불량 최대 사이즈
+        /// </summary>
+        public float MaxSize 
+        { 
+            get { return _maxSize; } 
+            set 
+            { 
+                _maxSize = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MaxSize)));
+            } 
+        }
+        private float _maxSize;
+
+        public DefectSizeTH()
+        {
+            _name = "";
+            _lncd = "";
+            _minSize = 0.0f;
+            _maxSize = 999.0f;
+        }
+
+        public void Reset()
+        {
+            MinSize = 0.0f;
+            MaxSize = 999.0f;
+        }
+
+        public void SetData(DefectSizeTH src)
+        {
+            this._maxSize = src.MinSize;
+            this._maxSize = src.MaxSize;
+        }
+
+        public bool Check(float size)
+        {
+            if (size >= _minSize && size <= _maxSize)
                 return true;
             return false;
         }
@@ -273,8 +357,13 @@ namespace DefectDBManager
         public int NoBcrWarning;
         public int NoBcrError;
 
+        // 프로그램 형식 정의 
+        public eProgramType ProgType;
         // 현재 장비 공정 코드
         public string MainLNCD;
+
+        // 이전 공정 데이터 비교 시 사용할 데이터 스킵 사이즈
+        public List<DefectSizeTH> DefectSizeTHs = null;
 
         public int EverMarkDefectMeter
         {
@@ -318,12 +407,14 @@ namespace DefectDBManager
                 SkipData[i] = new SkipSize();
             }
 
+            DefectSizeTHs = new List<DefectSizeTH>();
+
             Reset();
         }
 
         ~DestConfig()
         {
-            //Reset();
+            DefectSizeTHs.Clear();
         }
 
         public void Reset()
@@ -413,9 +504,25 @@ namespace DefectDBManager
 
                 everMarkDefectMeter = NativeFunc.ReadIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", 10);
 
+                this.ProgType = (eProgramType)NativeFunc.ReadIni(Define.DestPath, key, "PROGRAM_TYPE", 0);
+
                 this.MainLNCD = NativeFunc.ReadIni(Define.DestPath, key, "MACHINE_LNCD", "");
+
+                key = "PRE_SKIP_PARAM";
+                int preSkipCount = NativeFunc.ReadIni(Define.DestPath, key, "COUNT", 0);
+                DefectSizeTHs = new List<DefectSizeTH>();
+                for(int i=0; i<preSkipCount; i++)
+                {
+                    DefectSizeTH defectItem = new DefectSizeTH();
+
+                    defectItem.Name = NativeFunc.ReadIni(Define.DestPath, key, $"{i}_NAME", "");
+                    defectItem.LNCD = NativeFunc.ReadIni(Define.DestPath, key, $"{i}_LNCD", "");
+                    defectItem.MinSize = NativeFunc.ReadIni(Define.DestPath, key, $"{i}_MIN_SIZE", 0.1f);
+                    defectItem.MaxSize = NativeFunc.ReadIni(Define.DestPath, key, $"{i}_MAX_SIZE", 999.0f);
+                    DefectSizeTHs.Add(defectItem);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
                 Log.Write(ex.Message);
@@ -502,6 +609,23 @@ namespace DefectDBManager
                 NativeFunc.WriteIni(Define.DestPath, key, "NO_BCR_ERROR", this.NoBcrError);
 
                 NativeFunc.WriteIni(Define.DestPath, key, "EVER_MARK_DEFECT_METER", EverMarkDefectMeter);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "PROGRAM_TYPE", (int)this.ProgType);
+
+                NativeFunc.WriteIni(Define.DestPath, key, "MACHINE_LNCD", this.MainLNCD);
+
+                key = "PRE_SKIP_PARAM";
+                int preSkipCount = DefectSizeTHs.Count;
+                NativeFunc.WriteIni(Define.DestPath, key, "COUNT", preSkipCount);
+                
+                for (int i = 0; i < preSkipCount; i++)
+                {
+                    DefectSizeTH defectItem = DefectSizeTHs[i];
+                    NativeFunc.WriteIni(Define.DestPath, key, $"{i}_NAME", defectItem.Name);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"{i}_LNCD", defectItem.LNCD);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"{i}_MIN_SIZE", defectItem.MinSize);
+                    NativeFunc.WriteIni(Define.DestPath, key, $"{i}_MAX_SIZE", defectItem.MaxSize);
+                }
             }
             catch(Exception ex)
             {
