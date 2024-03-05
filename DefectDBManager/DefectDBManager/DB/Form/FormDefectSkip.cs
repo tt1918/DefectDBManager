@@ -25,6 +25,8 @@ namespace DefectDBManager
 
         private BindingList<DefectSizeTH> _defectSizeThs;
 
+        public bool IsApply = false;
+
         public FormDefectSkip(BindingList<DefectSizeTH> data)
         {
             InitializeComponent();
@@ -36,6 +38,8 @@ namespace DefectDBManager
 
             _defectSizeThs = data;
             dgvDefectSize.DataSource = _defectSizeThs;
+
+            UpdateLanguage();
         }
 
         #region 마우스로 폼 드래그
@@ -59,11 +63,31 @@ namespace DefectDBManager
         }
         #endregion
 
-        #region
+        #region 언어 설정
+        public void UpdateLanguage()
+        {
+            this.SuspendLayout();
+           
+            lblTitle.Text = Language.DefectSkipTitle;
+            btnAdd.Text = Language.Add;
+            btnDelete.Text = Language.Del;
+            btnApply.Text = Language.Apply;
+            btnClose.Text = Language.Close;
+
+            if (dgvDefectSize.Columns.Count <= 4)
+            {
+                dgvDefectSize.Columns[0].HeaderText = Language.DefectSkip_Name;
+                dgvDefectSize.Columns[1].HeaderText = Language.DefectSkip_LNCD;
+                dgvDefectSize.Columns[2].HeaderText = Language.DefectSkip_Min;
+                dgvDefectSize.Columns[3].HeaderText = Language.DefectSkip_Max;
+            }
+
+            this.ResumeLayout();
+        }
 
         #endregion
 
-        #region
+        #region Contorl Button
         private void btnAdd_Click(object sender, EventArgs e)
         {
             DefectSizeTH data = new DefectSizeTH();
@@ -72,12 +96,23 @@ namespace DefectDBManager
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (dgvDefectSize.SelectedCells.Count <= 0)
+            {
+                MessageBox.Show("선택된 열이 없습니다.");
+                return;
+            }
+            int selected = dgvDefectSize.SelectedCells[0].RowIndex;
 
+            string text = $"Index {selected}: {_defectSizeThs[selected].ToString()}를 삭제하시겠습니까?";
+            if(MessageBox.Show(text, "DATA DELETE", MessageBoxButtons.YesNo)==DialogResult.Yes)
+            {
+                _defectSizeThs.RemoveAt(selected);
+            }
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-
+            IsApply = true;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

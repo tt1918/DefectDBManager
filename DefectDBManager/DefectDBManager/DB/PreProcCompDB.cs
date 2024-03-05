@@ -562,6 +562,11 @@ namespace DefectDBManager
                                 // 
                                 defectData.LNCD = inspdata.LNCD;
 
+                                // 불량 스킵 데이터 갖고 오기
+                                DefectSizeTH skipData = DbDestConfig.DefectSizeTHs.Find(x=> x.LNCD.Equals(defectData.LNCD));
+                                float minSizeTh = skipData.MinSize;
+                                float maxSizeTh = skipData.MaxSize;
+
                                 while (reader.Read())
                                 {
                                     FLTDATAData data = new FLTDATAData();
@@ -580,6 +585,9 @@ namespace DefectDBManager
                                     else    tmpKey = data.FLTID;
                                         
                                     if (finalXPos < 0.0f) continue;
+
+                                    // 사이즈 스킵 처리
+                                    if (data.AREA_M < minSizeTh || data.AREA_M > maxSizeTh) continue;
 
                                     // Fault Data 처리
                                     FaultDatum tmpFltData = new FaultDatum();

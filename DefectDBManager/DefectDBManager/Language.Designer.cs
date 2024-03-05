@@ -250,6 +250,51 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   공정 이름과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectSkip_LNCD {
+            get {
+                return ResourceManager.GetString("DefectSkip_LNCD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최대 크기(mm)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectSkip_Max {
+            get {
+                return ResourceManager.GetString("DefectSkip_Max", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최소 크기(mm)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectSkip_Min {
+            get {
+                return ResourceManager.GetString("DefectSkip_Min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   이름과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectSkip_Name {
+            get {
+                return ResourceManager.GetString("DefectSkip_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   공정 별 불량 크기 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectSkipTitle {
+            get {
+                return ResourceManager.GetString("DefectSkipTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   삭제과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string Del {

@@ -1752,10 +1752,19 @@ namespace DefectDBManager
                     break;
 
                 case eProgramType.PRE_COMP:
-                    var listBinding = new BindingList<DefectSizeTH>(dataBase.DbDestConfig.DefectSizeTHs);
+                    // 복사본 생성
+                    var copyList = new List<DefectSizeTH>(dataBase.DbDestConfig.DefectSizeTHs);
+                    // 바인딩 리스트로 변경
+                    var listBinding = new BindingList<DefectSizeTH>(copyList);
+                    // 화면 표시
                     using (FormDefectSkip form = new FormDefectSkip(listBinding))
                     {
                         form.ShowDialog();
+                        if(form.IsApply==true)
+                        {
+                            dataBase.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
+                            dataBase.DbDestConfig.Write();
+                        }
                     }
                     break;
             }

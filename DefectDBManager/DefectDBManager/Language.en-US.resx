@@ -182,6 +182,21 @@
   <data name="DefectEditorTitle" xml:space="preserve">
     <value>DEFECTS EDITOR</value>
   </data>
+  <data name="DefectSkipTitle" xml:space="preserve">
+    <value>SKIP PARAM EDITOR</value>
+  </data>
+  <data name="DefectSkip_LNCD" xml:space="preserve">
+    <value>LNCD</value>
+  </data>
+  <data name="DefectSkip_Max" xml:space="preserve">
+    <value>Max Size(mm)</value>
+  </data>
+  <data name="DefectSkip_Min" xml:space="preserve">
+    <value>Min Size(mm)</value>
+  </data>
+  <data name="DefectSkip_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="Del" xml:space="preserve">
     <value>DEL</value>
   </data>

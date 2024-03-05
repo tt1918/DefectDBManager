@@ -90,11 +90,12 @@ namespace DefectDBManager
         }
     }
 
-    public class DefectSizeTH : INotifyPropertyChanged
+    public class DefectSizeTH : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Title Name
+        [DisplayName("이름")]
         public string Name 
         { 
             get { return _name; } 
@@ -108,6 +109,7 @@ namespace DefectDBManager
         /// <summary>
         /// 공정 코드
         /// </summary>
+        [DisplayName("라인 코드")]
         public string LNCD 
         { 
             get { return _lncd; } 
@@ -121,6 +123,7 @@ namespace DefectDBManager
         /// <summary>
         /// 최소 사이즈
         /// </summary>
+        [DisplayName("최소(mm)")]
         public float MinSize 
         { 
             get { return _minSize; } 
@@ -134,6 +137,7 @@ namespace DefectDBManager
         /// <summary>
         /// 불량 최대 사이즈
         /// </summary>
+        [DisplayName("최대(mm)")]
         public float MaxSize 
         { 
             get { return _maxSize; } 
@@ -170,6 +174,30 @@ namespace DefectDBManager
             if (size >= _minSize && size <= _maxSize)
                 return true;
             return false;
+        }
+
+        public object Clone()
+        {
+            var clone = new DefectSizeTH()
+            {
+                _name = Name,
+                _lncd = LNCD,
+                _minSize = MinSize,
+                _maxSize = MaxSize,
+            };
+
+            return clone;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Name:{_name}, ");
+            sb.Append($"LNCD:{_lncd}, ");
+            sb.Append($"Min:{_minSize:F1}, ");
+            sb.Append($"Max:{_maxSize:F1}");
+
+            return sb.ToString();
         }
     }
 

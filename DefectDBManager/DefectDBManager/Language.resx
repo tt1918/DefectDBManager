@@ -180,6 +180,21 @@
   <data name="DefectEditorTitle" xml:space="preserve">
     <value>불량 수정</value>
   </data>
+  <data name="DefectSkipTitle" xml:space="preserve">
+    <value>공정 별 불량 크기 설정</value>
+  </data>
+  <data name="DefectSkip_LNCD" xml:space="preserve">
+    <value>공정 이름</value>
+  </data>
+  <data name="DefectSkip_Max" xml:space="preserve">
+    <value>최대 크기(mm)</value>
+  </data>
+  <data name="DefectSkip_Min" xml:space="preserve">
+    <value>최소 크기(mm)</value>
+  </data>
+  <data name="DefectSkip_Name" xml:space="preserve">
+    <value>이름</value>
+  </data>
   <data name="Del" xml:space="preserve">
     <value>삭제</value>
   </data>
