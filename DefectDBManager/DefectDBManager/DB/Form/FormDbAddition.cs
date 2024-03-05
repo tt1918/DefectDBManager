@@ -52,6 +52,12 @@ namespace DefectDBManager
 
         private void updateXOFSMSTList()
         {
+            if(_DBData==null)
+            {
+                MessageBox.Show("현재 모드에서는 지원하지 않습니다.");
+                return;
+            }
+
             if (_DBData._DbResult.XOFSMST_Data == null) return;
 
             listViewXOFSMST.BeginUpdate();
@@ -86,6 +92,7 @@ namespace DefectDBManager
 
         private void updateAREADELList()
         {
+            if (_DBData == null) return;
             if (_DBData._DbResult.AREADEL_Data == null) return;
 
             listViewAREADEL.BeginUpdate();

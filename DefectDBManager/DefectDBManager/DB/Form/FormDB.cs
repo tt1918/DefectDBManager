@@ -257,27 +257,54 @@ namespace DefectDBManager
         private void displayCbcbDestination()
         {
             cbDestination.Items.Clear();
-
-            DestConfigUnit u = new DestConfigUnit();
-            for (int i = 0; i < DataBase.DbDestConfig.DicDest.Count; i++)
+            if (DataBase != null)
             {
-                if (DataBase.DbDestConfig.GetData(i, ref u) == true)
+                DestConfigUnit u = new DestConfigUnit();
+                for (int i = 0; i < DataBase.DbDestConfig.DicDest.Count; i++)
                 {
-                    cbDestination.Items.Add(u.Title);
+                    if (DataBase.DbDestConfig.GetData(i, ref u) == true)
+                    {
+                        cbDestination.Items.Add(u.Title);
+                    }
+                }
+
+                if (DataBase.DbOption.FWPlace != null)
+                {
+                    if (DataBase.DbDestConfig.DicDest.ContainsKey(DataBase.DbOption.FWPlace) == true)
+                        cbDestination.SelectedText = DataBase.DbOption.FWPlace;
+                }
+                else
+                {
+                    if (cbDestination.Items.Count > 0)
+                    {
+                        cbDestination.SelectedIndex = 0;
+                        DataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                    }
                 }
             }
-
-            if (DataBase.DbOption.FWPlace != null)
+            else if (TodayDataBase != null)
             {
-                if (DataBase.DbDestConfig.DicDest.ContainsKey(DataBase.DbOption.FWPlace) == true)
-                    cbDestination.SelectedText = DataBase.DbOption.FWPlace;
-            }
-            else
-            {
-                if (cbDestination.Items.Count > 0)
+                DestConfigUnit u = new DestConfigUnit();
+                for (int i = 0; i < TodayDataBase.DbDestConfig.DicDest.Count; i++)
                 {
-                    cbDestination.SelectedIndex = 0;
-                    DataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                    if (TodayDataBase.DbDestConfig.GetData(i, ref u) == true)
+                    {
+                        cbDestination.Items.Add(u.Title);
+                    }
+                }
+
+                if (TodayDataBase.DbOption.FWPlace != null)
+                {
+                    if (TodayDataBase.DbDestConfig.DicDest.ContainsKey(TodayDataBase.DbOption.FWPlace) == true)
+                        cbDestination.SelectedText = TodayDataBase.DbOption.FWPlace;
+                }
+                else
+                {
+                    if (cbDestination.Items.Count > 0)
+                    {
+                        cbDestination.SelectedIndex = 0;
+                        TodayDataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                    }
                 }
             }
         }
@@ -302,32 +329,66 @@ namespace DefectDBManager
 
         private void displayMarkingOption()
         {
-            if (DataBase.DbOption == null) return;
-            if (DataBase.DbOption.FWPlace == null) return;
-            if (DataBase.DbDestConfig.DicDest.ContainsKey(DataBase.DbOption.FWPlace) == true)
+            if (DataBase != null)
             {
-                DestConfigUnit u = DataBase.DbDestConfig.DicDest[DataBase.DbOption.FWPlace];
-                this.cbDestination.SelectedIndex = u.Index;
-                if(isHoldFW == false)
+                if (DataBase.DbOption == null) return;
+                if (DataBase.DbOption.FWPlace == null) return;
+                if (DataBase.DbDestConfig.DicDest.ContainsKey(DataBase.DbOption.FWPlace) == true)
                 {
-                    this.cbUseES.Checked = u.UseES;
-                    this.cbUseTG.Checked = u.UseTG;
-                    this.cbUseETC.Checked = u.UseETC;
+                    DestConfigUnit u = DataBase.DbDestConfig.DicDest[DataBase.DbOption.FWPlace];
+                    this.cbDestination.SelectedIndex = u.Index;
+                    if (isHoldFW == false)
+                    {
+                        this.cbUseES.Checked = u.UseES;
+                        this.cbUseTG.Checked = u.UseTG;
+                        this.cbUseETC.Checked = u.UseETC;
+                    }
+                    else
+                    {
+                        this.cbUseES.Checked = DataBase.DbOption.checkES;
+                        this.cbUseTG.Checked = DataBase.DbOption.checkTG;
+                        this.cbUseETC.Checked = DataBase.DbOption.checkETC;
+                    }
                 }
-                else
-                {
-                    this.cbUseES.Checked = DataBase.DbOption.checkES;
-                    this.cbUseTG.Checked = DataBase.DbOption.checkTG;
-                    this.cbUseETC.Checked = DataBase.DbOption.checkETC;
-                }
+                this.tbLotName.Text = this.dataBase.DbOption.lotName;
             }
-            this.tbLotName.Text = this.dataBase.DbOption.lotName;
+            else if (TodayDataBase != null)
+            {
+                if (TodayDataBase.DbOption == null) return;
+                if (TodayDataBase.DbOption.FWPlace == null) return;
+                if (TodayDataBase.DbDestConfig.DicDest.ContainsKey(TodayDataBase.DbOption.FWPlace) == true)
+                {
+                    DestConfigUnit u = TodayDataBase.DbDestConfig.DicDest[TodayDataBase.DbOption.FWPlace];
+                    this.cbDestination.SelectedIndex = u.Index;
+                    if (isHoldFW == false)
+                    {
+                        this.cbUseES.Checked = u.UseES;
+                        this.cbUseTG.Checked = u.UseTG;
+                        this.cbUseETC.Checked = u.UseETC;
+                    }
+                    else
+                    {
+                        this.cbUseES.Checked = TodayDataBase.DbOption.checkES;
+                        this.cbUseTG.Checked = TodayDataBase.DbOption.checkTG;
+                        this.cbUseETC.Checked = TodayDataBase.DbOption.checkETC;
+                    }
+                }
+                this.tbLotName.Text = this.TodayDataBase.DbOption.lotName;
+            }
         }
 
         private void displaySearchTime()
         {
-            tbSearchStartTime.Text = $"{DataBase.DbOption.timeGabStMinute1}";
-            tbSearchEndTime.Text = $"{DataBase.DbOption.timeGabEdMinute2}";
+            if (DataBase != null)
+            {
+                tbSearchStartTime.Text = $"{DataBase.DbOption.timeGabStMinute1}";
+                tbSearchEndTime.Text = $"{DataBase.DbOption.timeGabEdMinute2}";
+            }
+            else if (TodayDataBase != null)
+            {
+                tbSearchStartTime.Text = $"{TodayDataBase.DbOption.timeGabStMinute1}";
+                tbSearchEndTime.Text = $"{TodayDataBase.DbOption.timeGabEdMinute2}";
+            }
         }
 
         #region ListView
@@ -417,20 +478,43 @@ namespace DefectDBManager
 
         private void displayFaultPage()
         {
-            int total = dataBase.ResultDefect.MarkFault.Data.Count;
-            if (this.InvokeRequired == true)
+            if (dataBase != null)
             {
-                this.Invoke(new MethodInvoker(delegate ()
+                int total = dataBase.ResultDefect.MarkFault.Data.Count;
+                if (this.InvokeRequired == true)
+                {
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        tbFaultPage.Text = $"{crtFaultDatPage * 100}";
+                        lblTotalFaultPage.Text = $"/{total}";
+                    }));
+                }
+                else
                 {
                     tbFaultPage.Text = $"{crtFaultDatPage * 100}";
                     lblTotalFaultPage.Text = $"/{total}";
-                }));
+                }
             }
-            else
+            else if (TodayDataBase != null)
             {
-                tbFaultPage.Text = $"{crtFaultDatPage * 100}";
-                lblTotalFaultPage.Text = $"/{total}";
+                if (TodayDataBase.FaultData == null) return;
+
+                int total = TodayDataBase.FaultData.DefectPt.Count;
+                if (this.InvokeRequired == true)
+                {
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        tbFaultPage.Text = $"{crtFaultDatPage * 100}";
+                        lblTotalFaultPage.Text = $"/{total}";
+                    }));
+                }
+                else
+                {
+                    tbFaultPage.Text = $"{crtFaultDatPage * 100}";
+                    lblTotalFaultPage.Text = $"/{total}";
+                }
             }
+
         }
         #endregion
 
@@ -1067,7 +1151,7 @@ namespace DefectDBManager
                 this.dbLoadingTime.Reset();
                 this.dbLoadingTime.Start();
                 int errorOut = 0;
-                
+
                 isSuccess = dataBase.SearchAreaDelFromServer(this._areaDelLotName, false, ref errorOut);
             }
             finally
@@ -1097,7 +1181,7 @@ namespace DefectDBManager
                 this.dbLoadingTime.Reset();
                 this.dbLoadingTime.Start();
                 int errorOut = 0;
-                
+
                 this.dbSearchProgressTimer.Start();
 
                 DataBase.ResetDataAll();
@@ -1110,7 +1194,7 @@ namespace DefectDBManager
 
                 if (formProgress != null) formProgress._Step = 0;
 
-               
+
                 isSuccess &= dataBase.SearchLot(this.dataBase.DbOption.lotName, false, ref errorOut);
                 // 데이터 처리 필요
                 if (dataBase.CrtParam.isProductAvaliable == false)
@@ -1272,7 +1356,7 @@ namespace DefectDBManager
             DataBase.DbOption.isLoadCSV = true;
             if (bRes == true) OnEndJob((int)eEventReport.eFinishedReadCSVFile);
             else OnEndJob((int)eEventReport.eFailedReadCSVFile);
-            if (this.InvokeRequired==true)
+            if (this.InvokeRequired == true)
             {
                 this.Invoke(new MethodInvoker(delegate ()
                 {
@@ -1311,10 +1395,21 @@ namespace DefectDBManager
                 return;
             }
 
-            if (dataBase.Conn.IsConnected() == false)
+            if (dataBase != null)
             {
-                MessageBox.Show(Language.PleaseLoginToTheDB);
-                return;
+                if (dataBase.Conn.IsConnected() == false)
+                {
+                    MessageBox.Show(Language.PleaseLoginToTheDB);
+                    return;
+                }
+            }
+            else if (TodayDataBase != null)
+            {
+                if (TodayDataBase.Conn.IsConnected() == false)
+                {
+                    MessageBox.Show(Language.PleaseLoginToTheDB);
+                    return;
+                }
             }
 
             if (tbLotName.Text.Length == 0)
@@ -1455,14 +1550,14 @@ namespace DefectDBManager
             if (this.thread != null && this.thread.IsAlive == true)
             {
                 if (UpdateEndEvent == true) OnEndJob((int)eEventReport.eFailedReadCSVFile);
-                else                        MessageBox.Show(Language.ProgramIsSearchingCSV);
+                else MessageBox.Show(Language.ProgramIsSearchingCSV);
                 return;
             }
 
             if (File.Exists(path) == false)
             {
-                if(UpdateEndEvent==true)    OnEndJob((int)eEventReport.eFailedReadCSVFile);
-                else                        MessageBox.Show($"{Language.FileDoesNotExist} : [{path}]");
+                if (UpdateEndEvent == true) OnEndJob((int)eEventReport.eFailedReadCSVFile);
+                else MessageBox.Show($"{Language.FileDoesNotExist} : [{path}]");
                 return;
             }
 
@@ -1471,8 +1566,8 @@ namespace DefectDBManager
                 config.CSVType != eCSV_TYPE.NITTO_RK && config.CSVType != eCSV_TYPE.KORENO &&
                 config.CSVType != eCSV_TYPE.KORENO_RK && config.CSVType != eCSV_TYPE.KORENO_RK_IJP)
             {
-                if (UpdateEndEvent == true)     OnEndJob((int)eEventReport.eFailedReadCSVFile);
-                else                            MessageBox.Show(Language.SelectedCSVFormatTypeDoesNotExist);
+                if (UpdateEndEvent == true) OnEndJob((int)eEventReport.eFailedReadCSVFile);
+                else MessageBox.Show(Language.SelectedCSVFormatTypeDoesNotExist);
                 return;
             }
 
@@ -1491,7 +1586,7 @@ namespace DefectDBManager
 
         public void ResetDBData()
         {
-            if (InvokeRequired==true)
+            if (InvokeRequired == true)
             {
                 this.Invoke(new MethodInvoker(delegate ()
                 {
@@ -1502,17 +1597,32 @@ namespace DefectDBManager
                     this.clearAllListView();
                     this.initFaultPage();
                     this.ResetListViewData();
-                    dataBase.ResetDataAll();
-                    dataBase._DbResult.ResetData_DE();
-
                     tbLotName.Text = "";
 
-                    if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                        OnEndJob((int)eEventReport.eResetDataNow);
-                    else
-                        OnEndJob((int)eEventReport.eResetDataNext);
+                    if (dataBase != null)
+                    {
+                        dataBase.ResetDataAll();
+                        dataBase._DbResult.ResetData_DE();
 
-                    DataBase.DbOption.isLoadCSV = false;
+
+                        if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                            OnEndJob((int)eEventReport.eResetDataNow);
+                        else
+                            OnEndJob((int)eEventReport.eResetDataNext);
+
+                        DataBase.DbOption.isLoadCSV = false;
+                    }
+                    else if (TodayDataBase != null)
+                    {
+                        TodayDataBase.ResetDataAll();
+
+                        if (TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                            if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNow);
+                            else
+                            if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNext);
+
+                        TodayDataBase.DbOption.isLoadCSV = false;
+                    }
 
                     // Update dbconfig from FWPlace
                     displayMarkingOption();
@@ -1528,17 +1638,33 @@ namespace DefectDBManager
                 this.clearAllListView();
                 this.initFaultPage();
                 this.ResetListViewData();
-                dataBase.ResetDataAll();
-                dataBase._DbResult.ResetData_DE();
 
                 tbLotName.Text = "";
 
-                if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                    OnEndJob((int)eEventReport.eResetDataNow);
-                else
-                    OnEndJob((int)eEventReport.eResetDataNext);
+                if (dataBase != null)
+                {
+                    dataBase.ResetDataAll();
+                    dataBase._DbResult.ResetData_DE();
 
-                DataBase.DbOption.isLoadCSV = false;
+
+                    if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                        OnEndJob((int)eEventReport.eResetDataNow);
+                    else
+                        OnEndJob((int)eEventReport.eResetDataNext);
+
+                    DataBase.DbOption.isLoadCSV = false;
+                }
+                else if(TodayDataBase!=null)
+                {
+                    TodayDataBase.ResetDataAll();
+
+                    if (TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                        if(OnEndJob!=null) OnEndJob((int)eEventReport.eResetDataNow);
+                    else
+                        if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNext);
+
+                    TodayDataBase.DbOption.isLoadCSV = false;
+                }
 
                 // Update dbconfig from FWPlace
                 displayMarkingOption();
@@ -1555,7 +1681,7 @@ namespace DefectDBManager
             }
 
             UpdateEndEvent = false;
-             
+
             using (OpenFileDialog browser = new OpenFileDialog())
             {
                 //browser.InitialDirectory = Define.MainPath;
@@ -1693,8 +1819,17 @@ namespace DefectDBManager
 
         private void cbDestination_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
-            DataBase.DbOption.vendor = cbDestination.SelectedIndex;
+            if (DataBase != null)
+            {
+                DataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                DataBase.DbOption.vendor = cbDestination.SelectedIndex;
+            }
+            else if (TodayDataBase != null)
+            {
+                TodayDataBase.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                TodayDataBase.DbOption.vendor = cbDestination.SelectedIndex;
+            }
+
 
             displaySearchTime();
 
@@ -1738,7 +1873,18 @@ namespace DefectDBManager
 
         private void btnShowSkipParam_Click(object sender, EventArgs e)
         {
-            switch(dataBase.DbDestConfig.ProgType)
+            eProgramType type = eProgramType.DB_DEFECT;
+            DestConfig config = null;
+            if (dataBase != null)
+            {
+                type = dataBase.DbDestConfig.ProgType;
+            }
+            else if (TodayDataBase != null)
+            {
+                type = todayDataBase.DbDestConfig.ProgType;
+            }
+
+            switch (type)
             {
                 case eProgramType.DB_DEFECT:
                     using (FormSkipParam form = new FormSkipParam())
@@ -1753,26 +1899,32 @@ namespace DefectDBManager
 
                 case eProgramType.PRE_COMP:
                     // 복사본 생성
-                    var copyList = new List<DefectSizeTH>(dataBase.DbDestConfig.DefectSizeTHs);
+                    var copyList = new List<DefectSizeTH>(TodayDataBase.DbDestConfig.DefectSizeTHs);
                     // 바인딩 리스트로 변경
                     var listBinding = new BindingList<DefectSizeTH>(copyList);
                     // 화면 표시
                     using (FormDefectSkip form = new FormDefectSkip(listBinding))
                     {
                         form.ShowDialog();
-                        if(form.IsApply==true)
+                        if (form.IsApply == true)
                         {
-                            dataBase.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
-                            dataBase.DbDestConfig.Write();
+                            TodayDataBase.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
+                            TodayDataBase.DbDestConfig.Write();
                         }
                     }
                     break;
             }
-            
+
         }
 
         private void btnEditDefectClass_Click(object sender, EventArgs e)
         {
+            if(dataBase==null)
+            {
+                MessageBox.Show("현재 모드에서는 지원하지 않습니다.");
+                return;
+            }
+
             using (FormDefectClassEdit form = new FormDefectClassEdit())
             {
                 form._UserDefectClass = dataBase.CrtParam._UserDefectClass;
@@ -1816,30 +1968,20 @@ namespace DefectDBManager
 
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
         {
-            if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
-                OnEndJob((int)eEventReport.eUpdateDataNow);
-            else
-                OnEndJob((int)eEventReport.eUpdateDataNext);
-
-            //임시 데이터 생성
-            //if (eDbIdWhen.Now == dataBase.DbOption.dbWhen)
-            //{
-            //    DataBase._DbResult.AREADEL_Data.Clear();
-
-            //    for (int i = 0; i < 12500; i++)
-            //    {
-            //        AREADELData data = new AREADELData();
-
-            //        data.ENTRY_NUM = i.ToString();
-            //        data.STR_WD = 100;
-            //        data.END_WD = 300;
-            //        data.STR_MD = 0500.0f + (float)i * 2000.0f;
-            //        data.END_MD = 01000.0f + (float)i * 2000.0f;
-            //        DataBase._DbResult.AREADEL_Data.Add(data);
-            //    }
-
-            //    Trace.WriteLine($"Area Defect Count : {DataBase._DbResult.AREADEL_Data.Count}");
-            //}
+            if (dataBase != null)
+            {
+                if (dataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                    OnEndJob((int)eEventReport.eUpdateDataNow);
+                else
+                    OnEndJob((int)eEventReport.eUpdateDataNext);
+            }
+            else if (TodayDataBase != null)
+            {
+                if (TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                    if (OnEndJob != null) OnEndJob((int)eEventReport.eUpdateDataNow);
+                    else
+                    if (OnEndJob != null) OnEndJob((int)eEventReport.eUpdateDataNext);
+            }
         }
 
         private void btnFormMaximize_Click(object sender, EventArgs e)
@@ -2130,6 +2272,12 @@ namespace DefectDBManager
         #region Defect Edit
         public void RunDefectEdit()
         {
+            if (dataBase == null)
+            {
+                MessageBox.Show("현재 모드에서는 지원하지 않습니다.");
+                return;
+            }
+
             DestConfigUnit unit = new DestConfigUnit();
             int vendorIdx = this.cbDestination.SelectedIndex;
             dataBase.DbDestConfig.GetData(vendorIdx, ref unit);

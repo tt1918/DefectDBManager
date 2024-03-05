@@ -39,29 +39,13 @@ namespace DefectDBManager
         }
         private Option dbOption;
 
-        public Param CrtParam
-        {
-            get { return currentParam; }
-            set { currentParam = value; }
-        }
-        private Param currentParam;
-
         public PreProcCompDBResult _DbResult
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// FAULTData 저장
-        /// 데이터는 각 공정 및 LNCD 기준으로 처리하도록 한다. 
-        /// </summary>
-        public List<PreProcDefect>[] ResultDefect
-        {
-            get { return resultDefect; }
-            set { resultDefect = value; }
-        }
-        private List<PreProcDefect>[] resultDefect;
+        public PrePocResultData FaultData { get; set; }
 
         public IRollDefectInfo _RollDefectInfo { get; set; }
         public CSV_DEFECT_HEADER _CsvDefectHeader = null;
@@ -87,10 +71,7 @@ namespace DefectDBManager
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();
 
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            resultDefect =new List<PreProcDefect>[count];
-            for (int i= 0; i < count; i++)
-                resultDefect[i] = new List<PreProcDefect>();
+            
         }
 
         ~PreProcCompDB()
@@ -103,22 +84,9 @@ namespace DefectDBManager
             _DbResult.ClearAll();
 
             // 각 광학별 불량 갯수 초기화
-            CrtParam.ClearEachOpticDefectCnt();
-
-            for(int i=0; i<resultDefect.Length; i++)
-            {
-                // 내부 데이터 삭제
-                for (int j = 0; j < ResultDefect[i].Count; j++)
-                    ResultDefect[i][j].ResetAll();
-
-                // 공정 별 데이터 리스트 삭제
-                ResultDefect[i].Clear();
-            }
-
             _CSVLoadInfo.Clear();
 
-            CrtParam.isProductAvaliable = false;
-            CrtParam.isXOffsetError = false;
+            FaultData?.ResetAll();
         }
 
         private int GetNextLotCnt(string lotID)
@@ -481,7 +449,6 @@ namespace DefectDBManager
 
             eCSV_TYPE csvType = destConfig.GetCsvType();
 
-            int defectLine;
             string tmpKey;
             float finalXPos;
             string tmpFaltID;
@@ -532,6 +499,10 @@ namespace DefectDBManager
                         if (_DbResult.Matched_INSPDAT_Data[fcdIdx][inspIdx] == null) continue;
 
                         inspdata = _DbResult.Matched_INSPDAT_Data[fcdIdx][inspIdx];
+
+                        // 데이터 삽입.
+                        // 추후 현재 입력된 데이터와 다른 경우 확인해야 함. 
+                        FaultData.BCNO = inspdata.BCNO;
                         
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
@@ -614,8 +585,14 @@ namespace DefectDBManager
                                     tmpFltData.KND = data.KND;
                                     tmpFltData.JIGCD = data.JIGCD;
                                     tmpFltData.MACNO = data.MACNO;
-
+                                    
+                                    
+                                    // 리스트에 데이터 삽입
                                     defectData.Data.Add(tmpFltData);
+
+                                    // 실시간 데이터용 데이터 삽입
+                                    FaultData.Add(tmpFltData);
+
                                     dataCnt++;
                                     logData = data.GetString(dataCnt, tmpFltData.TBCNO);
                                     _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
@@ -623,7 +600,7 @@ namespace DefectDBManager
                                 }
 
                                 // 각 공정 별 불량 데이터를 입력한다. 
-                                resultDefect[fcdIdx].Add(defectData);
+                                FaultData.FLTDAT[fcdIdx].Add(defectData);
                             }
                         }
                         
@@ -666,36 +643,6 @@ namespace DefectDBManager
                 Log.Write($"[Error] FAULTDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
                 return false;
             }
-        }
-
-        private int getDefectFromFLTID(int id)
-        {
-            int defectLine = 13;
-
-            switch ((eFLTID)id)
-            {
-                case eFLTID.JT_DOT_01: defectLine = 14; break;
-                case eFLTID.GB_GIPPO_02: defectLine = 12; break;
-                case eFLTID.PERIOD_GIPPO_03: defectLine = 18; break;
-                case eFLTID.SAME_04: defectLine = 19; break;
-                case eFLTID.SRKZ_05: defectLine = 17; break;
-                case eFLTID.JT_LINE_06: defectLine = 15; break;
-                case eFLTID.CROSS_07: defectLine = 11; break;
-                case eFLTID.SCRATCH_09: defectLine = 10; break;
-
-                default:
-                    if ((id >= (int)eFLTID.JH_DOT_W_31 && id <= (int)eFLTID.JH_GROUP_37) ||
-                        (id >= (int)eFLTID.MH_DOT_W_51 && id <= (int)eFLTID.MH_GROUP_57) ||
-                        (id >= (int)eFLTID.NEL7_HJK_5_61 && id <= (int)eFLTID.NEL7_HJK_1_65) ||
-                        (id >= (int)eFLTID.NEL8_W_71 && id <= (int)eFLTID.NEL8_WB_73) ||
-                        (id >= (int)eFLTID.SAME2_81 && id <= (int)eFLTID.SAME8_87))
-                    {
-                        defectLine = id;
-                    }
-                    break;
-            }
-
-            return defectLine;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -171,17 +172,118 @@ namespace DefectDBManager
         }
     }
 
+    public class PrePocResultData
+    {
+        public List<PointF> DefectPt = null;
+        public Dictionary<int, List<PointF>> DicPt = null;
+
+        /// <summary>
+        /// FAULTData 저장
+        /// 데이터는 각 공정 및 LNCD 기준으로 처리하도록 한다. 
+        /// </summary>
+        public List<PreProcDefect>[] FLTDAT
+        {
+            get { return _fltdat; }
+            set { _fltdat = value; }
+        }
+        private List<PreProcDefect>[] _fltdat;
+
+        // 현재 생산하고 있는 BCNO
+        public string BCNO
+        {
+            get { return _bcno; }
+            set { _bcno = value; }
+        }
+        private string _bcno;
+
+        public PrePocResultData()
+        {
+            DefectPt = new List<PointF>();
+            DicPt = new Dictionary<int, List<PointF>>();
+
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            _fltdat = new List<PreProcDefect>[count];
+            for (int i = 0; i < count; i++)
+                _fltdat[i] = new List<PreProcDefect>();
+        }
+
+        ~PrePocResultData()
+        {
+            ResetAll();
+        }
+
+        public void ResetAll()
+        {
+            // 문자열 초기화
+            _bcno = "";
+            
+            // 실시간 불량 전송용 데이터 
+            DefectPt.Clear();
+            DicPt.Clear();
+
+
+            for (int i = 0; i < _fltdat.Length; i++)
+            {
+                // 내부 데이터 삭제
+                for (int j = 0; j < _fltdat[i].Count; j++)
+                    _fltdat[i][j].ResetAll();
+
+                // 공정 별 데이터 리스트 삭제
+                _fltdat[i].Clear();
+            }
+        }
+
+        public void Add(FaultDatum data)
+        {
+            // 10M 단위로 데이터 자름
+            int key = (int)(data.OFFSET / 10000.0);
+            
+            PointF pt = new PointF();
+            pt.X = data.XPOS_M;
+            pt.Y = (float)data.OFFSET;
+
+            if (DicPt.ContainsKey(key) == true)
+                DicPt[key].Add(pt);
+            else
+                DicPt[key] = new List<PointF> { pt };
+        }
+
+        public List<PointF> GetDefectPts(string bcno, float startY, float endY)
+        {
+            // BCNO가 다르면 다시 탐색해야 함. 
+            if (bcno != _bcno) return null;
+
+            List<PointF> pts = new List<PointF>();
+            int key1 = (int)(startY / 10000.0);
+            int key2 = (int)(endY / 10000.0);
+
+            for (int i = key1; i <= key2; i++)
+            {
+                if (DicPt.ContainsKey(i) == true)
+                {
+                    foreach (PointF pt in DicPt[i])
+                    {
+                        if (pt.Y >= startY && pt.Y <= endY)
+                            pts.Add(pt);
+                    }
+                }
+            }
+            return pts;
+        }
+    }
+
+
     public class PreProcDefect
     {
         // 이전 공정 라인 코드
         public string LNCD;
-
         public List<FaultDatum> Data;
 
         public PreProcDefect()
         {
             Data = new List<FaultDatum>();
         }
+
         ~PreProcDefect()
         {
             ResetAll();

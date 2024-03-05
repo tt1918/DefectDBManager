@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,11 +41,6 @@ namespace DefectDBManager
         /// </summary>
         public Option[] _Option;
 
-        /// <summary>
-        /// 데이터 탐색 파라미터
-        /// </summary>
-        public Param[] _Param;
-
         // 현재랏 인덱스 번호
         public UInt16 CrtY0KLOTIdx { get; set; }
         // 다음랏 인덱스 번호
@@ -55,6 +51,11 @@ namespace DefectDBManager
 
         private Thread threadDBConnect = null;
         public event DelegateProcessEvent OnProcessEvent = null;
+
+        /// <summary>
+        /// 가동 중 불량 검색 가능 여부 확인 Flag
+        /// </summary>
+        private bool _enaDefectSearch = false;
 
         public PreProcCompProcess(object parent)
         {
@@ -70,15 +71,12 @@ namespace DefectDBManager
 
             int cnt = System.Enum.GetValues(typeof(eDbIdWhen)).Length + 1;
             _DBProc = new PreProcCompDB[cnt];
-            _Param = new Param[cnt];
             _Option = new Option[cnt];
             _CodeConfig = new CodeConfig[cnt];
 
             for (int i = 0; i < cnt; i++)
             {
                 _Option[i] = new Option(i);
-                _Param[i] = new Param();
-                _Param[i]._UserDefectClass.Load();
                 _CodeConfig[i] = new CodeConfig();
 
                 _DBProc[i] = new PreProcCompDB(this, _DbConn);
@@ -86,12 +84,6 @@ namespace DefectDBManager
                 _DBProc[i].DbDestConfig = _DestConfig;
                 _DBProc[i].DBCodeConfig = _CodeConfig[i];
                 _DBProc[i].DbOption = _Option[i];
-                _DBProc[i].CrtParam = _Param[i];
-
-                int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                _DBProc[i].ResultDefect = new List<PreProcDefect>[count];
-                for (int idx = 0; idx < count; i++)
-                    _DBProc[i].ResultDefect[i] = new List<PreProcDefect>();
             }
 
             if (this.threadDBConnect != null)
@@ -216,6 +208,9 @@ namespace DefectDBManager
                     string strLotID;
                     bool success;
 
+                    // 탐색 가능 여부를 Flase로 변경함
+                    _enaDefectSearch = false;
+                    
                     if (_DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
                     {
                         OnPopupError("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
@@ -233,7 +228,6 @@ namespace DefectDBManager
 
                     if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(crtBCNO, crtRollPosY) == true)
                     {
-                        success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
                         // 현재 랏 인덱스 정보를 업데이트 함
                         CrtY0KLOTIdx = NextY0KLOTIdx;
 
@@ -246,8 +240,12 @@ namespace DefectDBManager
                             success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
                             success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
                             success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
+
+                            // 불량 탐색 완료 후 Flag 변경
+                            if(success==true) _enaDefectSearch = true;
                         }
                         ////////////////////////////////////////////////////////////////////////////////////////////
+                        
                         
                         OnEndSearchingAvailableLot();
                     }
@@ -255,6 +253,32 @@ namespace DefectDBManager
 
                 Thread.Sleep(500);
             }
+        }
+
+        /// <summary>
+        /// 실시간 검색 데이터 송부
+        /// </summary>
+        /// <param name="bcno">현재 생산하고 있는 제품의 BCNO</param>
+        /// <param name="start">시작 지점</param>
+        /// <param name="end">끝 지점</param>
+        /// <returns></returns>
+        public List<PointF> GetMarkDefectData(string bcno, float start, float end)
+        {
+            if (_enaDefectSearch == false) return null;
+
+            float stY, edY;
+            if(end<start)
+            {
+                stY = end;
+                edY = start;
+            }
+            else
+            {
+                stY = start;
+                edY = end;
+            }
+            
+            return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
         }
 
 

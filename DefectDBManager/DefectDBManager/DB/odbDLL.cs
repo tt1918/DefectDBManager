@@ -1179,7 +1179,7 @@ namespace DefectDBManager
 
             int defectLine;
             string tmpKey;
-            bool bValid;
+            bool bValid=false;
             float finalXPos;
             string tmpFaltID;
 
