@@ -472,6 +472,7 @@ namespace DefectDBManager
                 }
 
                 this.DicDest.Clear();
+                int cntIdx=0;
                 for (int i = 0; i < Global.MaxDestItemCnt; i++)
                 {
                     DestConfigUnit unit = new DestConfigUnit();
@@ -504,10 +505,13 @@ namespace DefectDBManager
                     for (int j = 0; j < unit.FLTIDCheck.Length; j++)
                         unit.FLTIDCheck[j] = NativeFunc.ReadIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", "");
 
-                    unit.Index = i;
+                    unit.Index = cntIdx;
 
                     if (unit.Title.Length > 0 && unit.Title != "")
+                    {
                         this.DicDest.Add(unit.Title, unit);
+                        cntIdx++;
+                    }
                 }
 
                 key = "DB_CONFIG";

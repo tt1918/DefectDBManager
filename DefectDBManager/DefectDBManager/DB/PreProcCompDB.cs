@@ -427,6 +427,36 @@ namespace DefectDBManager
             }
         }
 
+        private int getDefectFromFLTID(int id)
+        {
+            int defectLine = 13;
+
+            switch ((eFLTID)id)
+            {
+                case eFLTID.JT_DOT_01: defectLine = 14; break;
+                case eFLTID.GB_GIPPO_02: defectLine = 12; break;
+                case eFLTID.PERIOD_GIPPO_03: defectLine = 18; break;
+                case eFLTID.SAME_04: defectLine = 19; break;
+                case eFLTID.SRKZ_05: defectLine = 17; break;
+                case eFLTID.JT_LINE_06: defectLine = 15; break;
+                case eFLTID.CROSS_07: defectLine = 11; break;
+                case eFLTID.SCRATCH_09: defectLine = 10; break;
+
+                default:
+                    if ((id >= (int)eFLTID.JH_DOT_W_31 && id <= (int)eFLTID.JH_GROUP_37) ||
+                        (id >= (int)eFLTID.MH_DOT_W_51 && id <= (int)eFLTID.MH_GROUP_57) ||
+                        (id >= (int)eFLTID.NEL7_HJK_5_61 && id <= (int)eFLTID.NEL7_HJK_1_65) ||
+                        (id >= (int)eFLTID.NEL8_W_71 && id <= (int)eFLTID.NEL8_WB_73) ||
+                        (id >= (int)eFLTID.SAME2_81 && id <= (int)eFLTID.SAME8_87))
+                    {
+                        defectLine = id;
+                    }
+                    break;
+            }
+
+            return defectLine;
+        }
+
         public bool SearchFLTDAT()
         {
             // 연결 확인
@@ -585,13 +615,64 @@ namespace DefectDBManager
                                     tmpFltData.KND = data.KND;
                                     tmpFltData.JIGCD = data.JIGCD;
                                     tmpFltData.MACNO = data.MACNO;
-                                    
-                                    
+
+                                    // Marking fault data 추가
+                                    MarkingFaultDatum markData = new MarkingFaultDatum();
+
+                                    markData.BCNO = inspdata.BCNO;
+                                    markData.FLTNO = data.FLTNO;
+                                    markData.FAULTID = data.FLTID;
+                                    markData.OFFSET = tmpFltData.OFFSET;
+                                    markData.YPOS_M = tmpFltData.YPOS_M;
+                                    markData.XPOS_M = tmpFltData.XPOS_M;
+                                    markData.XOFFSET = inspdata.OffsetX;
+                                    markData.UseCSVResult = false;
+                                    markData.CAM_NO = data.CAMNO;
+                                    markData.CTLNO = data.CTLNO;
+                                    markData.SIZE = data.AREA_M;
+                                    markData.MNTTID = data.MNTTAN;
+                                    markData.MACNO = data.MACNO;
+
+                                    if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
+                                    else markData.XOFFSET_ALARM = float.MaxValue;
+
+                                    if (csvType == eCSV_TYPE.NITTO)
+                                    {
+                                        if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
+                                        else markData.DefectLine = 8; // 그외
+                                    }
+                                    else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                    {
+                                        if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
+                                        else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
+                                        else markData.DefectLine = 7; // 그외
+                                    }
+                                    else
+                                    {
+                                        if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
+                                        {
+                                            int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                                            markData.DefectLine = getDefectFromFLTID(fldID);
+                                        }
+                                        else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
+                                            (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
+                                        {
+                                            markData.DefectLine = 0;
+                                        }
+                                    }
+
+                                    // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+                                    int defectLine = markData.DefectLine;
+
+                                    //RK는 CAMNO별로 Defect Class 를 구분
+                                    if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                        markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
+
                                     // 리스트에 데이터 삽입
                                     defectData.Data.Add(tmpFltData);
 
                                     // 실시간 데이터용 데이터 삽입
-                                    FaultData.Add(tmpFltData);
+                                    FaultData.Add(markData);
 
                                     dataCnt++;
                                     logData = data.GetString(dataCnt, tmpFltData.TBCNO);

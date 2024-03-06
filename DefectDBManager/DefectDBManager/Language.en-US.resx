@@ -313,6 +313,21 @@
     <value>ED Time</value>
     <comment>PTRYOP</comment>
   </data>
+  <data name="listTodayPTLYOP_0" xml:space="preserve">
+    <value>LOT</value>
+  </data>
+  <data name="listTodayPTLYOP_1" xml:space="preserve">
+    <value>공정</value>
+  </data>
+  <data name="listTodayPTLYOP_2" xml:space="preserve">
+    <value>LNCD</value>
+  </data>
+  <data name="listTodayPTLYOP_3" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
+  <data name="listTodayPTLYOP_4" xml:space="preserve">
+    <value>End Time</value>
+  </data>
   <data name="LotName" xml:space="preserve">
     <value>Lot Name</value>
   </data>
