@@ -39,6 +39,9 @@ namespace DefectDBManager
         }
         private Option dbOption;
 
+        // 당일 생산할 PTRYOP 데이터
+        public List<PTRY0PData> PTRY0P_Today_Data { get; private set; }
+
         public PreProcCompDBResult _DbResult
         {
             get;
@@ -71,7 +74,7 @@ namespace DefectDBManager
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();
 
-            
+            PTRY0P_Today_Data = new List<PTRY0PData>();
         }
 
         ~PreProcCompDB()
@@ -126,6 +129,9 @@ namespace DefectDBManager
 
             try
             {
+                // Daily Lot DATA 내용을 초기화 한다 
+                PTRY0P_Today_Data.Clear();
+
                 DB_Progress.ResetAll();
                 DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
 
@@ -155,7 +161,7 @@ namespace DefectDBManager
                             // 비어있는 데이터만 탐색한다. 
                             if(data.Y0KKOL.Substring(8)=="000000" && data.Y0KSOL.Substring(8) == "000000")
                             {
-                                _DbResult.PTRY0P_Today_Data.Add(data);
+                                PTRY0P_Today_Data.Add(data);
                             }
                         }
                         DB_Progress.Set(eNittoDBProgress.PTRYLP);
@@ -163,7 +169,7 @@ namespace DefectDBManager
                 }
 
                 // 처음 랏을 탐색하였다면 생산하지 않은 제일 처음 랏을 가지고 온다.
-                string firstLotID = _DbResult.PTRY0P_Today_Data[0].Y0KLOT;
+                string firstLotID = PTRY0P_Today_Data[0].Y0KLOT;
 
                 success = SearchPTRYOP(firstLotID);
                 if (success == false) return false;
@@ -245,6 +251,32 @@ namespace DefectDBManager
             _DbResult.Matched_INSPDAT_Data = inspDat;
 
             return success;
+        }
+
+        /// <summary>
+        ///  현재 랏 생산할 데이터가 확인이 되면 다음 예약랏 FAULTDAT 데이터 탐색 위해서 전체 복사한다.
+        ///  
+        /// </summary>
+        public void CopyInspDatToMatchedInspData()
+        {
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            List<INSPDATData>[] inspDat = new List<INSPDATData>[count];
+            for (int i = 0; i < count; i++)
+                inspDat[i] = new List<INSPDATData>();
+
+            // 각 공정별로 탐색
+            for (int i = 0; i < count; i++)
+            {
+                foreach (List<INSPDATData> data in _DbResult.INSPDAT_Data[i])
+                {
+                    foreach (INSPDATData datum in data)
+                    {
+                        inspDat[i].Add(datum);
+                    }
+                }
+            }
+
+            _DbResult.Matched_INSPDAT_Data = inspDat;
         }
 
         public bool SearchPTRYOP(string lotID)

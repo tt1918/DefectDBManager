@@ -845,7 +845,7 @@ namespace DefectDBManager
                     }
                     break;
                 case eProgramType.PRE_COMP:
-                    foreach (PTRY0PData data in TodayDataBase._DbResult.PTRY0P_Today_Data)
+                    foreach (PTRY0PData data in TodayDataBase.PTRY0P_Today_Data)
                     {
                         DBListViewBuf bufData = new DBListViewBuf(5);
                         bufData.items[0] = data.Y0KLOT;

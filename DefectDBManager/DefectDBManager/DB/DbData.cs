@@ -670,8 +670,7 @@ namespace DefectDBManager
     #region PreProcCompDB용 결과
     public class PreProcCompDBResult
     {
-        // 당일 생산할 PTRYOP 데이터
-        public List<PTRY0PData> PTRY0P_Today_Data;
+        
         // 현재 Lot 이름 기준 PTRYOP 데이터
         public List<PTRY0PData>[] PTRY0P_Data;
         // LOT 기준 INSPDATA 탐색 결과
@@ -687,7 +686,7 @@ namespace DefectDBManager
 
         public void Init()
         {
-            PTRY0P_Today_Data = new List<PTRY0PData>();
+            
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             PTRY0P_Data = new List<PTRY0PData>[count];
@@ -705,8 +704,6 @@ namespace DefectDBManager
 
         public void ClearAll()
         {
-            PTRY0P_Today_Data.Clear();
-
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)

@@ -139,10 +139,7 @@ namespace DefectDBManager
             PreProcCompDB procNext = _DBProc[(int)eDbIdWhen.Next];
             string lotID = procNow.SearchLotName;
             if(procNow.SearchLot(lotID)==true)
-            {
-                // 데이터 탐색이 완료되었으면 기본 데이터는 복사
-                procNext._DbResult.PTRY0P_Today_Data = procNow._DbResult.PTRY0P_Today_Data;
-                
+            {                
                 // 검사 완료 처리
                 OnEndTodayProductSearching();
                 // 체크 스레드 시작
@@ -210,14 +207,14 @@ namespace DefectDBManager
                     // 탐색 가능 여부를 False로 변경함
                     _enaDefectSearch = false;
                     
-                    if (_DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
+                    if (_DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
                     {
                         OnProcessEvent((int)eEventReport.eEmptyDailyLotData);
                         OnPopupError("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
                         return;
                     }
 
-                    strLotID = _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
+                    strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
                     success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
                     if(success==true) success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
 
@@ -258,15 +255,20 @@ namespace DefectDBManager
                         /// PTRY0P_Today_Data는 현재 랏이 관리함. 
                         /// BCNO 처리 어떻게 할지 확인 필요함. 
                         /// 확인되면 예약랏 불러오기와 랏 체인지 시에 Falut data 바꾸기 필요함. 
-                        //if (NextY0KLOTIdx+1 < _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count)
-                        //{
-                        //    strLotID = _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx+1].Y0KLOT;
+                        if (NextY0KLOTIdx + 1 < _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
+                        {
+                            strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx + 1].Y0KLOT;
 
-                        //    // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 단계 작업을 진행하도록 함
-                        //    success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
-                        //    if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchINSPDAT(strLotID);
-                        //    if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchFLTDAT();
-                        //}
+                            // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 단계 작업을 진행하도록 함
+                            success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
+                            if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchINSPDAT(strLotID);
+                            if (success == true)
+                            {
+                                // 아직 BCNO와 거리를 알지 못하므로 그냥 전체 INSPDAT 복사하여 FLTDAT 검색한다.
+                                _DBProc[(int)eDbIdWhen.Next].CopyInspDatToMatchedInspData();
+                                success = _DBProc[(int)eDbIdWhen.Next].SearchFLTDAT();
+                            }
+                        }
                         ////////////////////////////////////////////////////////////////////////////////////////////
                     }
                     else // 실패 보고 
@@ -325,6 +327,33 @@ namespace DefectDBManager
         public void StopCheckingBCNO()
         {
             _enaCheckINSPDAT = false;
+        }
+
+        /// <summary>
+        /// 랏 변경
+        /// </summary>
+        /// <returns> </returns>
+        public bool ChnageLot()
+        {
+            bool isSuccess = true;
+            _DBProc[0]._DbResult = _DBProc[1]._DbResult;
+            _DBProc[1]._DbResult = new PreProcCompDBResult();
+
+            PrePocResultData oldMarkingData;
+            oldMarkingData = _DBProc[0].FaultData;
+            _DBProc[0].FaultData = _DBProc[1].FaultData;
+            oldMarkingData.ResetAll();
+
+            _DBProc[0].DbOption.Copy(_DBProc[1].DbOption);
+
+            _DBProc[1].FaultData = new PrePocResultData();
+            _DBProc[1].ResetDataAll();
+
+            OnEndSearchingAvailableLot();
+
+            Log.Write($"Changing lot is finished.");
+
+            return isSuccess;
         }
 
         #endregion
