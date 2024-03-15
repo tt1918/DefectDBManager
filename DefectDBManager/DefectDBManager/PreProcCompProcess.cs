@@ -148,7 +148,6 @@ namespace DefectDBManager
                 // 체크 스레드 시작
                 StartCheckAvaliableINSPDAT();
             }
-
         }
 
         public void SearchDailyLot(string lotID)
@@ -164,9 +163,9 @@ namespace DefectDBManager
         }
 
         #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
-        private string crtBCNO = "";
-        private double crtRollPosY = 0.0;
-        private bool enableCheckINSPDAT = false;
+        private string _crtBCNO = "";
+        private double _crtRollPosY = 0.0;
+        private bool _enaCheckINSPDAT = false;
         private Thread CheckAvailableLotthread = null;
 
         public void StartCheckAvaliableINSPDAT()
@@ -195,14 +194,14 @@ namespace DefectDBManager
             while (true)
             {
                 // 검색
-                if (enableCheckINSPDAT == false)
+                if (_enaCheckINSPDAT == false)
                 {
                     Thread.Sleep(500);
                     continue;
                 }
 
                 //현재 생산하고 있는 랏이 데이터에 없으면 다음 Lot을 탐색한다. 
-                if (_DBProc[(int)eDbIdWhen.Now].IsCrtDataAvaliable(crtBCNO, crtRollPosY) == false)
+                if (_DBProc[(int)eDbIdWhen.Now].IsCrtDataAvaliable(_crtBCNO, _crtRollPosY) == false)
                 {
                     // 다음 랏을 기준으로 탐색한다.
                     string strLotID;
@@ -230,7 +229,7 @@ namespace DefectDBManager
                     }
 
                     // 유효 모델 탐색
-                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(crtBCNO, crtRollPosY) == true)
+                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(_crtBCNO, _crtRollPosY) == true)
                     {
                         // 현재 랏 인덱스 정보를 업데이트 함
                         CrtY0KLOTIdx = NextY0KLOTIdx;
@@ -303,10 +302,30 @@ namespace DefectDBManager
                 stY = start;
                 edY = end;
             }
-            
+
+            // 현재 생산하고 있는 BCNO 데이터를 업데이트 함. 
+            _crtBCNO = bcno;
+            // 검사 진행 거리는 중간 지점으로 처리함
+            _crtRollPosY = (stY + edY) / 2.0;
+
             return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
         }
 
+        /// <summary>
+        /// 검사 시작 시 해당 함수를 실행하여 실시간 BCNO 확인 가능하도록 처리
+        /// </summary>
+        public void RunCheckingBCNO()
+        {
+            _enaCheckINSPDAT = true;
+        }
+
+        /// <summary>
+        /// 검사 증지하여 BCNO 확인 기능을 유휴 상태로 변경
+        /// </summary>
+        public void StopCheckingBCNO()
+        {
+            _enaCheckINSPDAT = false;
+        }
 
         #endregion
     }
