@@ -26,8 +26,21 @@ namespace SharpDllTest
             formDB.Location = new System.Drawing.Point(10, 10);
             formDB.Margin = new System.Windows.Forms.Padding(3,4,3,4);
             formDB.Name = "FormDB";
+
+            ///////////////////////////////////////////////////////////////////////
+            // 화면은 1개로 동일하게 사용하고 DB 검색 데이터만 연결 처리한다. 
+            // 현재 랏인 경우
             formDB.TodayDataBase = defectProc._DBProc[(int)(eDbIdWhen.Now)];
+
+            // 예약 랏인 경우
+            //formDB.TodayDataBase = defectProc._DBProc[(int)(eDbIdWhen.Next)];
+
+            ///////////////////////////////////////////////////////////////////////
+
             formDB.TopLevel = false;
+
+            // 정보 데이터 검색 완료 후 화면 표시
+            defectProc.OnEndSearchingAvailableLot += formDB.OnUpdateAvailableLot;
 
             this.MainPanel.Controls.Add(formDB);
             formDB.Show();

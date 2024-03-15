@@ -280,16 +280,75 @@ namespace DefectDBManager
     #region 이벤트 보고용 
     public enum eEventReport
     {
+        /// <summary>
+        /// 현재 랏 데이터 업데이트 완료
+        /// </summary>
         eUpdateDataNow = 1,
+        
+        /// <summary>
+        /// 예약 랏 데이터 업데이트 완료
+        /// </summary>
         eUpdateDataNext,
+        
+        /// <summary>
+        /// 현재 랏 초기화 완료
+        /// </summary>
         eResetDataNow,
+        
+        /// <summary>
+        /// 예약 랏 초기화 완료
+        /// </summary>
         eResetDataNext,
+        
+        /// <summary>
+        /// 랏 정보 탐색 완료
+        /// </summary>
         eFinishedSearchLot,
+        
+        /// <summary>
+        /// 모델 정보 탐색 완료
+        /// </summary>
         eFinishedSearchModel,
+        
+        /// <summary>
+        /// CSV 파일 읽기 완료
+        /// </summary>
         eFinishedReadCSVFile,
+        
+        /// <summary>
+        /// CSV 파일 읽기 실패
+        /// </summary>
         eFailedReadCSVFile,
+        
+        /// <summary>
+        /// FLTID 비교 에러 발생시 알람
+        /// </summary>
         eBCR_FLTID_CheckError,
+        
+        /// <summary>
+        /// Roll Map 거리 비교 에러 발생시 알람
+        /// </summary>
         eBCR_INSPMETER_CheckError,
+
+        /// <summary>
+        /// Daily Fault Data 탐색 완료시 완료 상위 보고
+        /// </summary>
+        eFinishedSearchDailyLotData,
+
+        /// <summary>
+        /// Daily Fault Data 탐색 실패 알람
+        /// </summary>
+        eFailedSearchDailyLotData,
+
+        /// <summary>
+        /// Daily Fault Data 탐색했지만 결점 데이터 존재하지 않음
+        /// </summary>
+        eEmptyDailyLotData,
+
+        /// <summary>
+        /// Daily Fault Data 탐색했지만 Lot 데이터 존재하지 않음
+        /// </summary>
+        eEmptyDailyLotFaultData,
     }
     #endregion
 

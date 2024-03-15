@@ -2623,5 +2623,15 @@ namespace DefectDBManager
             this.ResumeLayout();
         }
         #endregion Language Update
+
+        #region 검색 결과 업데이트
+        public void OnUpdateAvailableLot()
+        {
+            // List View 업데이트 데이터 생성
+            this.makeAllListViewData();
+            this.displayAllListView();
+        }
+
+        #endregion
     }
 }

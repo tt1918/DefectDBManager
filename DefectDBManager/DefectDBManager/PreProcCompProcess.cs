@@ -206,52 +206,78 @@ namespace DefectDBManager
                 {
                     // 다음 랏을 기준으로 탐색한다.
                     string strLotID;
-                    bool success;
+                    bool success=false;
 
-                    // 탐색 가능 여부를 Flase로 변경함
+                    // 탐색 가능 여부를 False로 변경함
                     _enaDefectSearch = false;
                     
                     if (_DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
                     {
+                        OnProcessEvent((int)eEventReport.eEmptyDailyLotData);
                         OnPopupError("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
                         return;
                     }
 
                     strLotID = _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
                     success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
+                    if(success==true) success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
+
                     if (success == false)
                     {
                         NextY0KLOTIdx++;
+                        Thread.Sleep(100);
                         continue;
                     }
-                    success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
 
+                    // 유효 모델 탐색
                     if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(crtBCNO, crtRollPosY) == true)
                     {
                         // 현재 랏 인덱스 정보를 업데이트 함
                         CrtY0KLOTIdx = NextY0KLOTIdx;
-
                         ////////////////////////////////////////////////////////////////////////////////////////////
-                        // 예약랏 데이터 탐색함.
-                        NextY0KLOTIdx++;
-                        if(NextY0KLOTIdx< _DBProc[(int)eDbIdWhen.Next]._DbResult.PTRY0P_Today_Data.Count)
+                        /// 현재랏 데이터 검색
+                        /// 위에서 SearchINSPDAT 검색 까지 완료했으므로 Falut data만 검색하면 됨.
+                        if (success == true) success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
+                        if(success == true) 
                         {
-                            strLotID = _DBProc[(int)eDbIdWhen.Next]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
-                            success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
-                            success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
-                            success = _DBProc[(int)eDbIdWhen.Now].SearchFLTDAT();
-
                             // 불량 탐색 완료 후 Flag 변경
-                            if(success==true) _enaDefectSearch = true;
+                            _enaDefectSearch = success;
+                            if (success == true) // 검색 완료 결과 보고
+                            {
+                                OnProcessEvent((int)eEventReport.eFinishedSearchDailyLotData);
+
+                                // 검색 결과 상위 업데이트 함
+                                OnEndSearchingAvailableLot();
+                            }
+                            else // 실패 보고
+                                OnProcessEvent((int)eEventReport.eEmptyDailyLotFaultData);
                         }
                         ////////////////////////////////////////////////////////////////////////////////////////////
-                        
-                        
-                        OnEndSearchingAvailableLot();
+
+                        ////////////////////////////////////////////////////////////////////////////////////////////
+                        /// 예약랏 데이터 탐색함.
+                        /// PTRY0P_Today_Data는 현재 랏이 관리함. 
+                        /// BCNO 처리 어떻게 할지 확인 필요함. 
+                        /// 확인되면 예약랏 불러오기와 랏 체인지 시에 Falut data 바꾸기 필요함. 
+                        //if (NextY0KLOTIdx+1 < _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data.Count)
+                        //{
+                        //    strLotID = _DBProc[(int)eDbIdWhen.Now]._DbResult.PTRY0P_Today_Data[NextY0KLOTIdx+1].Y0KLOT;
+
+                        //    // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 단계 작업을 진행하도록 함
+                        //    success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
+                        //    if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchINSPDAT(strLotID);
+                        //    if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchFLTDAT();
+                        //}
+                        ////////////////////////////////////////////////////////////////////////////////////////////
                     }
+                    else // 실패 보고 
+                        OnProcessEvent((int)eEventReport.eFailedSearchDailyLotData);
+
+                    // 검색 완료되면 실폐든 아니든 인덱스 업데이트함
+                    NextY0KLOTIdx++;
                 }
 
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
             }
         }
 

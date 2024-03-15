@@ -69,6 +69,7 @@ namespace CodeReaderDLL
             }
             catch (Exception e)
             {
+                string msg = e.Message;
 
             }
             finally
@@ -103,6 +104,8 @@ namespace CodeReaderDLL
             }
             catch(Exception e)
             {
+                string msg = e.Message;
+
                 if(ptrRect!=IntPtr.Zero)
                     Marshal.FreeHGlobal(ptrRect);
                 ptrRect = IntPtr.Zero;

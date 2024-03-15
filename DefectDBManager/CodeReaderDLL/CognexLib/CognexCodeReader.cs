@@ -164,7 +164,7 @@ namespace CodeReaderDLL.CognexLib
             }
             catch(Exception ex)
             {
-
+                string msg = ex.Message;     
             }
             finally
             {

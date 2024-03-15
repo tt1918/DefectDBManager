@@ -475,8 +475,7 @@ namespace DefectDBManager
 
             float maxXPos = 0;
             float minXPos = float.MaxValue;
-            float minSize = float.MaxValue;
-
+         
             eCSV_TYPE csvType = destConfig.GetCsvType();
 
             string tmpKey;
@@ -502,8 +501,7 @@ namespace DefectDBManager
                     // 데이터 초기화
                     maxXPos = 0;
                     minXPos = float.MaxValue;
-                    minSize = float.MaxValue;
-
+                    
                     // 
                     procStep = fcdIdx;
                     DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
@@ -604,12 +602,7 @@ namespace DefectDBManager
 
                                     if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
                                     if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-                                    if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
-                                    {
-                                        if (tmpFaltID == "610" || tmpFaltID == "611" || tmpFaltID == "612")
-                                            if (minSize > data.AREA_M) minSize = data.AREA_M;
-                                    }
-
+                                  
                                     // fault data 추가
                                     tmpFltData.RANK = data.RANK;
                                     tmpFltData.KND = data.KND;
@@ -688,8 +681,6 @@ namespace DefectDBManager
                     }
                     
                     DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
-
-                    if (minSize == 999.0)   minSize = 0;
                 }
 
 

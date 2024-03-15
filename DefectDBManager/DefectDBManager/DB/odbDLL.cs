@@ -1179,7 +1179,6 @@ namespace DefectDBManager
 
             int defectLine;
             string tmpKey;
-            bool bValid=false;
             float finalXPos;
             string tmpFaltID;
 
@@ -1289,7 +1288,7 @@ namespace DefectDBManager
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true)
                                             finalXPos += inspdata.OffsetX;
-                                        bValid = false;
+                                        
                                         if (useAIFromDB == false)
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
@@ -1300,114 +1299,111 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-                                        //bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
-                                        //if (bValid == true)    // 소수점 오차 보정
+ 
+                                        if (finalXPos < 0.0f) continue;
+                                        if (useMask == true && IsMaskedDefect(finalXPos, data.OFFSET) == true) continue;
+                                        if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
+
+                                        // Fault Data 처리
+                                        FaultDatum tmpFltData = new FaultDatum();
+
+                                        tmpFltData.FLTNO = data.FLTNO;
+                                        tmpFltData.OFFSET = data.OFFSET;
+                                        tmpFltData.YPOS_M = data.YPOS_M;
+                                        tmpFltData.XPOS_M = data.XPOS_M;
+
+                                        // 코드 불량 카운트 증가
+                                        if (inspdata.CTLNO == data.CTLNO)
+                                            inspdata.RollCtlCnt++;
+
+                                        // FLTID비교기능
+                                        if(destUnit.FLTIDCheck!=null)
                                         {
-                                            if (finalXPos < 0.0f) continue;
-                                            if (useMask == true && IsMaskedDefect(finalXPos, data.OFFSET) == true) continue;
-                                            if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
-
-                                            // Fault Data 처리
-                                            FaultDatum tmpFltData = new FaultDatum();
-
-                                            tmpFltData.FLTNO = data.FLTNO;
-                                            tmpFltData.OFFSET = data.OFFSET;
-                                            tmpFltData.YPOS_M = data.YPOS_M;
-                                            tmpFltData.XPOS_M = data.XPOS_M;
-
-                                            // 코드 불량 카운트 증가
-                                            if (inspdata.CTLNO == data.CTLNO)
-                                                inspdata.RollCtlCnt++;
-
-                                            // FLTID비교기능
-                                            if(destUnit.FLTIDCheck!=null)
+                                            for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
                                             {
-                                                for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
-                                                {
-                                                    if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                                        CrtParam.FAULTDATFLTID.Add(data.FLTID);
-                                                }
+                                                if (destUnit.FLTIDCheck[checkCnt].Length > 0 && destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                                    CrtParam.FAULTDATFLTID.Add(data.FLTID);
                                             }
-                                            
-                                            if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
-                                            if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-                                            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
-                                            {
-                                                if (tmpFaltID == "610" || tmpFaltID == "611" || tmpFaltID == "612")
-                                                    if (minSize > data.AREA_M) minSize = data.AREA_M;
-                                            }
-
-                                            // fault data 추가
-                                            tmpFltData.RANK = data.RANK;
-                                            tmpFltData.KND = data.KND;
-                                            tmpFltData.JIGCD = data.JIGCD;
-                                            tmpFltData.MACNO = data.MACNO;
-
-                                            // Marking fault data 추가
-                                            MarkingFaultDatum markData = new MarkingFaultDatum();
-
-                                            markData.BCNO = inspdata.BCNO;
-                                            markData.FLTNO = data.FLTNO;
-                                            markData.FAULTID = data.FLTID;
-                                            markData.OFFSET = tmpFltData.OFFSET;
-                                            markData.YPOS_M = tmpFltData.YPOS_M;
-                                            markData.XPOS_M = tmpFltData.XPOS_M;
-                                            markData.XOFFSET = inspdata.OffsetX;
-                                            markData.UseCSVResult = false;
-                                            markData.CAM_NO = data.CAMNO;
-                                            markData.CTLNO = data.CTLNO;
-                                            markData.SIZE = data.AREA_M;
-                                            markData.MNTTID = data.MNTTAN;
-                                            markData.MACNO = data.MACNO;
-
-                                            if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
-                                            else markData.XOFFSET_ALARM = float.MaxValue;
-
-                                            if (csvType == eCSV_TYPE.NITTO)
-                                            {
-                                                if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
-                                                else markData.DefectLine = 8; // 그외
-                                            }
-                                            else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                            {
-                                                if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
-                                                else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
-                                                else markData.DefectLine = 7; // 그외
-                                            }
-                                            else
-                                            {
-                                                if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
-                                                {
-                                                    int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
-                                                    markData.DefectLine = getDefectFromFLTID(fldID);
-                                                    if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
-                                                }
-                                                else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
-                                                    (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
-                                                {
-                                                    markData.DefectLine = 0;
-                                                    CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
-                                                }
-                                            }
-
-                                            // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
-                                            defectLine = markData.DefectLine;
-
-                                            if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
-                                                markData.DefectLine = defectLine;
-
-                                            //RK는 CAMNO별로 Defect Class 를 구분
-                                            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                                markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
-
-                                            resultDefect.Data.Add(tmpFltData);
-                                            resultDefect.MarkFault.Add(markData);
-
-                                            dataCnt++;
-                                            logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
-                                            _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
-                                            defectCnt[fcdIdx]++;
                                         }
+                                            
+                                        if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
+                                        if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
+                                        if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS)
+                                        {
+                                            if (tmpFaltID == "610" || tmpFaltID == "611" || tmpFaltID == "612")
+                                                if (minSize > data.AREA_M) minSize = data.AREA_M;
+                                        }
+
+                                        // fault data 추가
+                                        tmpFltData.RANK = data.RANK;
+                                        tmpFltData.KND = data.KND;
+                                        tmpFltData.JIGCD = data.JIGCD;
+                                        tmpFltData.MACNO = data.MACNO;
+
+                                        // Marking fault data 추가
+                                        MarkingFaultDatum markData = new MarkingFaultDatum();
+
+                                        markData.BCNO = inspdata.BCNO;
+                                        markData.FLTNO = data.FLTNO;
+                                        markData.FAULTID = data.FLTID;
+                                        markData.OFFSET = tmpFltData.OFFSET;
+                                        markData.YPOS_M = tmpFltData.YPOS_M;
+                                        markData.XPOS_M = tmpFltData.XPOS_M;
+                                        markData.XOFFSET = inspdata.OffsetX;
+                                        markData.UseCSVResult = false;
+                                        markData.CAM_NO = data.CAMNO;
+                                        markData.CTLNO = data.CTLNO;
+                                        markData.SIZE = data.AREA_M;
+                                        markData.MNTTID = data.MNTTAN;
+                                        markData.MACNO = data.MACNO;
+
+                                        if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
+                                        else markData.XOFFSET_ALARM = float.MaxValue;
+
+                                        if (csvType == eCSV_TYPE.NITTO)
+                                        {
+                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
+                                            else markData.DefectLine = 8; // 그외
+                                        }
+                                        else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                        {
+                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
+                                            else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
+                                            else markData.DefectLine = 7; // 그외
+                                        }
+                                        else
+                                        {
+                                            if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
+                                            {
+                                                int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                                                markData.DefectLine = getDefectFromFLTID(fldID);
+                                                if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
+                                            }
+                                            else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
+                                                (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
+                                            {
+                                                markData.DefectLine = 0;
+                                                CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
+                                            }
+                                        }
+
+                                        // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+                                        defectLine = markData.DefectLine;
+
+                                        if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
+                                            markData.DefectLine = defectLine;
+
+                                        //RK는 CAMNO별로 Defect Class 를 구분
+                                        if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                                            markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
+
+                                        resultDefect.Data.Add(tmpFltData);
+                                        resultDefect.MarkFault.Add(markData);
+
+                                        dataCnt++;
+                                        logData = data.GetString(dataCnt, markData.DefectLine, markData.BCNO, markData.XOFFSET);
+                                        _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                        defectCnt[fcdIdx]++;
                                     }
                                 }
                             }

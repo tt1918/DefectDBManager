@@ -187,12 +187,16 @@ namespace DefectDBManager
         public List<PreProcDefect>[] FLTDAT
         {
             get { return _fltdat; }
-            set { _fltdat = value; }
+            private set { _fltdat = value; }
         }
         private List<PreProcDefect>[] _fltdat;
 
 
-        public List<MarkingFaultDatum> DispData = null;
+        public List<MarkingFaultDatum> DispData
+        {
+            get { return _dispData; }
+            private set { _dispData = value; }
+        }
         private List<MarkingFaultDatum> _dispData;
 
         // 현재 생산하고 있는 BCNO
