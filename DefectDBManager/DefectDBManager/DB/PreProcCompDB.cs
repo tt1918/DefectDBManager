@@ -84,11 +84,13 @@ namespace DefectDBManager
 
         public void ResetDataAll()
         {
+            // DB 데이터 초기화
             _DbResult.ClearAll();
 
             // 각 광학별 불량 갯수 초기화
             _CSVLoadInfo.Clear();
 
+            // 결점 데이터 초기화
             FaultData?.ResetAll();
         }
 
@@ -121,7 +123,7 @@ namespace DefectDBManager
             return nNewCnt;
         }
 
-        public bool SearchLot(string lotID)
+        public bool SearchTodayPTRY0PList(string lotID)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)   return false;

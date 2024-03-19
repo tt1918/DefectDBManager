@@ -9,15 +9,19 @@ using System.Windows.Forms;
 
 namespace DefectDBManager
 {
-    public delegate void DelegateEndSearchingTodayProduct();
-    public delegate void DelegateEndSearchingAvailableLot();
+    public delegate void DelegateEvent();
     public delegate void DelegatePopupError(string errString);
 
     public sealed class PreProcCompProcess : IDisposable
     {
         // 상위 이벤트 보고 
-        public event DelegateEndSearchingTodayProduct OnEndTodayProductSearching;
-        public event DelegateEndSearchingAvailableLot OnEndSearchingAvailableLot;
+        // 오늘자 생산 예정 PTRY0P 탐색
+        public event DelegateEvent OnEndTodayProductSearching;
+        // 현재 생산하고 있는 BCNO기준 INSPDAT 데이터 완료
+        public event DelegateEvent OnEndSearchingAvailableLot;
+        // 랏 변경 완료 이벤트 
+        public event DelegateEvent OnEndLotChange;
+        // 에러 팝업 이벤트
         public event DelegatePopupError OnPopupError;
 
         /// <summary>
@@ -136,12 +140,15 @@ namespace DefectDBManager
         {
             StopCheckAvaliableINSPDAT();
             PreProcCompDB procNow = _DBProc[(int)eDbIdWhen.Now];
-            PreProcCompDB procNext = _DBProc[(int)eDbIdWhen.Next];
+
             string lotID = procNow.SearchLotName;
-            if(procNow.SearchLot(lotID)==true)
+
+            // 오늘자 PTRY0P 탐색 -> INSPDAT 탐색
+            if(procNow.SearchTodayPTRY0PList(lotID)==true)
             {                
                 // 검사 완료 처리
                 OnEndTodayProductSearching();
+                
                 // 체크 스레드 시작
                 StartCheckAvaliableINSPDAT();
             }
@@ -206,7 +213,11 @@ namespace DefectDBManager
 
                     // 탐색 가능 여부를 False로 변경함
                     _enaDefectSearch = false;
-                    
+
+                    // 전공정 데이터 초기화 진행
+                    _DBProc[(int)eDbIdWhen.Now].ResetDataAll();
+
+                    // 오늘자 생산 정보가 탐색 인덱스보다 큰 경우 알람 처리
                     if (_DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count >= NextY0KLOTIdx)
                     {
                         OnProcessEvent((int)eEventReport.eEmptyDailyLotData);
@@ -214,10 +225,17 @@ namespace DefectDBManager
                         return;
                     }
 
+                    // 금일자 생산 데이터에서 랏 정보 얻어옴
                     strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
-                    success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
-                    if(success==true) success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
 
+                    // PTRYOP 탐색
+                    success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
+
+                    // SearchPTRYOP 문제가 없으면 INSPDAT 탐색함
+                    if (success==true) success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
+
+                    // 만얄 문제가 생겼다면, 다음 랏을 탐색.
+                    // 무작정 문제가 생긴다고 인덱스 올리면 괜찮을까? 
                     if (success == false)
                     {
                         NextY0KLOTIdx++;
@@ -226,6 +244,7 @@ namespace DefectDBManager
                     }
 
                     // 유효 모델 탐색
+                    // 현재 생산하고 있는 Lot의 BCNO와 원단장 거리를 이용하여 현재 생산하는 INSPDAT의 데이터를 비교 
                     if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(_crtBCNO, _crtRollPosY) == true)
                     {
                         // 현재 랏 인덱스 정보를 업데이트 함
@@ -259,13 +278,18 @@ namespace DefectDBManager
                         {
                             strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx + 1].Y0KLOT;
 
-                            // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 단계 작업을 진행하도록 함
+                            // 예약랏 랏 데이터 초기화 진행
+                            _DBProc[(int)eDbIdWhen.Next].ResetDataAll();
+
+                            // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 순번 랏의 다운로드 작업을 진행하도록 함
                             success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
                             if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchINSPDAT(strLotID);
                             if (success == true)
                             {
                                 // 아직 BCNO와 거리를 알지 못하므로 그냥 전체 INSPDAT 복사하여 FLTDAT 검색한다.
                                 _DBProc[(int)eDbIdWhen.Next].CopyInspDatToMatchedInspData();
+
+                                // 예약랏 FLTDAT 데이터 검색함.
                                 success = _DBProc[(int)eDbIdWhen.Next].SearchFLTDAT();
                             }
                         }
@@ -282,36 +306,7 @@ namespace DefectDBManager
             }
         }
 
-        /// <summary>
-        /// 실시간 검색 데이터 송부
-        /// </summary>
-        /// <param name="bcno">현재 생산하고 있는 제품의 BCNO</param>
-        /// <param name="start">시작 지점</param>
-        /// <param name="end">끝 지점</param>
-        /// <returns></returns>
-        public List<PointF> GetMarkDefectData(string bcno, float start, float end)
-        {
-            if (_enaDefectSearch == false) return null;
-
-            float stY, edY;
-            if(end<start)
-            {
-                stY = end;
-                edY = start;
-            }
-            else
-            {
-                stY = start;
-                edY = end;
-            }
-
-            // 현재 생산하고 있는 BCNO 데이터를 업데이트 함. 
-            _crtBCNO = bcno;
-            // 검사 진행 거리는 중간 지점으로 처리함
-            _crtRollPosY = (stY + edY) / 2.0;
-
-            return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
-        }
+        
 
         /// <summary>
         /// 검사 시작 시 해당 함수를 실행하여 실시간 BCNO 확인 가능하도록 처리
@@ -330,30 +325,86 @@ namespace DefectDBManager
         }
 
         /// <summary>
-        /// 랏 변경
+        /// 랏 체인지 시 랏 변경
         /// </summary>
         /// <returns> </returns>
         public bool ChnageLot()
         {
             bool isSuccess = true;
+            
+            // 예약 랏 -> 현재 랏 DB 데이터 이전
             _DBProc[0]._DbResult = _DBProc[1]._DbResult;
             _DBProc[1]._DbResult = new PreProcCompDBResult();
 
+            // 예약 랏 -> 현재 랏 FLTDAT 데이터 이전
             PrePocResultData oldMarkingData;
             oldMarkingData = _DBProc[0].FaultData;
             _DBProc[0].FaultData = _DBProc[1].FaultData;
+            
+            // 이전 현재랏으 데이터 초기화
             oldMarkingData.ResetAll();
 
+            // 예약랏 DB 옵션 복사.
+            // 출하처 사용하지 않아 실제 필요하지는 않지만 이전 프로그램과 동일하게
+            // 처리하기 위해 복사
             _DBProc[0].DbOption.Copy(_DBProc[1].DbOption);
 
+            // 예약 랏 결점 데이터 초기화 처리
             _DBProc[1].FaultData = new PrePocResultData();
             _DBProc[1].ResetDataAll();
 
-            OnEndSearchingAvailableLot();
+            // 상부에 랏 변경 보고
+            OnEndLotChange();
 
             Log.Write($"Changing lot is finished.");
 
             return isSuccess;
+        }
+
+        #endregion
+
+        #region 전공정 데이터 처리
+        /// <summary>
+        /// 실시간 검색 데이터 송부
+        /// </summary>
+        /// <param name="bcno">현재 생산하고 있는 제품의 BCNO</param>
+        /// <param name="start">시작 지점</param>
+        /// <param name="end">끝 지점</param>
+        /// <returns></returns>
+        public List<PointF> GetMarkDefectData(string bcno, float start, float end)
+        {
+            if (_enaDefectSearch == false) return null;
+
+            float stY, edY;
+            if (end < start)
+            {
+                stY = end;
+                edY = start;
+            }
+            else
+            {
+                stY = start;
+                edY = end;
+            }
+
+            // 현재 생산하고 있는 BCNO 데이터를 업데이트 함. 
+            _crtBCNO = bcno;
+            // 검사 진행 거리는 중간 지점으로 처리함
+            _crtRollPosY = (stY + edY) / 2.0;
+
+            return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
+        }
+
+        public List<string> GetLineCodeName(eFCD fcd)
+        {
+            List<string> code = new List<string>();
+
+            foreach(PreProcDefect data in _DBProc[(int)eDbIdWhen.Now].FaultData.FLTDAT[(int)fcd])
+            {
+                code.Add(data.LNCD.ToString());
+            }
+
+            return code;
         }
 
         #endregion
