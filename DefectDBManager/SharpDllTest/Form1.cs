@@ -51,10 +51,14 @@ namespace SharpDllTest
             defectProc.SearchDailyLot(lotID);
         }
 
-        public List<PointF> GetDefectData(string bcno, float start, float end)
+        public List<MarkingFaultDatum> GetDefectData(string bcno, float start, float end)
         {
             return defectProc.GetMarkDefectData(bcno, start, end);
         }
 
+        public void GetLNCD(DefectDBManager.eFCD fcd)
+        {
+            List<string> strCode = defectProc.GetLineCodeName(fcd);
+        }
     }
 }

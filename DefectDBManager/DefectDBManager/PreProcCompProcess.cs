@@ -371,7 +371,7 @@ namespace DefectDBManager
         /// <param name="start">시작 지점</param>
         /// <param name="end">끝 지점</param>
         /// <returns></returns>
-        public List<PointF> GetMarkDefectData(string bcno, float start, float end)
+        public List<MarkingFaultDatum> GetMarkDefectData(string bcno, float start, float end)
         {
             if (_enaDefectSearch == false) return null;
 

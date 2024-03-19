@@ -175,12 +175,6 @@ namespace DefectDBManager
     public class PrePocResultData
     {
         /// <summary>
-        /// 상위 보고용 데이터
-        /// </summary>
-        public List<PointF> DefectPt = null;
-        public Dictionary<int, List<PointF>> DicPt = null;
-
-        /// <summary>
         /// FAULTData 저장
         /// 데이터는 각 공정 및 LNCD 기준으로 처리하도록 한다. 
         /// </summary>
@@ -192,6 +186,10 @@ namespace DefectDBManager
         private List<PreProcDefect>[] _fltdat;
 
 
+        /// <summary>
+        /// 상위 보고용 데이터
+        /// </summary>
+        public Dictionary<int, List<MarkingFaultDatum>> DicPt = null;
         public List<MarkingFaultDatum> DispData
         {
             get { return _dispData; }
@@ -209,8 +207,7 @@ namespace DefectDBManager
 
         public PrePocResultData()
         {
-            DefectPt = new List<PointF>();
-            DicPt = new Dictionary<int, List<PointF>>();
+            DicPt = new Dictionary<int, List<MarkingFaultDatum>>();
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             _fltdat = new List<PreProcDefect>[count];
@@ -231,8 +228,8 @@ namespace DefectDBManager
             _bcno = "";
             
             // 실시간 불량 전송용 데이터 
-            DefectPt.Clear();
             DicPt.Clear();
+            _dispData.Clear();
 
 
             for (int i = 0; i < _fltdat.Length; i++)
@@ -245,7 +242,6 @@ namespace DefectDBManager
                 _fltdat[i].Clear();
             }
 
-            _dispData.Clear();
         }
 
         public void Add(MarkingFaultDatum data)
@@ -253,24 +249,20 @@ namespace DefectDBManager
             // 10M 단위로 데이터 자름
             int key = (int)(data.OFFSET / 10000.0);
             
-            PointF pt = new PointF();
-            pt.X = data.XPOS_M;
-            pt.Y = (float)data.OFFSET;
-
             if (DicPt.ContainsKey(key) == true)
-                DicPt[key].Add(pt);
+                DicPt[key].Add(data);
             else
-                DicPt[key] = new List<PointF> { pt };
+                DicPt[key] = new List<MarkingFaultDatum> { data };
 
             _dispData.Add(data);
         }
 
-        public List<PointF> GetDefectPts(string bcno, float startY, float endY)
+        public List<MarkingFaultDatum> GetDefectPts(string bcno, float startY, float endY)
         {
             // BCNO가 다르면 다시 탐색해야 함. 
             if (bcno != _bcno) return null;
 
-            List<PointF> pts = new List<PointF>();
+            List<MarkingFaultDatum> pts = new List<MarkingFaultDatum>();
             int key1 = (int)(startY / 10000.0);
             int key2 = (int)(endY / 10000.0);
 
@@ -278,9 +270,9 @@ namespace DefectDBManager
             {
                 if (DicPt.ContainsKey(i) == true)
                 {
-                    foreach (PointF pt in DicPt[i])
+                    foreach (MarkingFaultDatum pt in DicPt[i])
                     {
-                        if (pt.Y >= startY && pt.Y <= endY)
+                        if (pt.OFFSET >= startY && pt.OFFSET <= endY)
                             pts.Add(pt);
                     }
                 }
