@@ -13,7 +13,7 @@ namespace SharpDllTest
 {
     public partial class Form1 : Form
     {
-        DefectDBManager.FormDB formDB = null;
+        DefectDBManager.FormPreCompDB formDB = null;
         DefectDBManager.PreProcCompProcess defectProc = null;
         public Form1()
         {
@@ -21,7 +21,7 @@ namespace SharpDllTest
 
             defectProc = new DefectDBManager.PreProcCompProcess(this);
 
-            formDB = new DefectDBManager.FormDB(this);
+            formDB = new DefectDBManager.FormPreCompDB(this);
             formDB.Dock = DockStyle.Fill;
             formDB.Location = new System.Drawing.Point(10, 10);
             formDB.Margin = new System.Windows.Forms.Padding(3,4,3,4);
