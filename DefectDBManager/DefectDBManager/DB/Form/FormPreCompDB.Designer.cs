@@ -33,6 +33,7 @@
             this.tbLotName = new System.Windows.Forms.TextBox();
             this.gbBasicInfo = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnSearchPTRY0P_Today = new System.Windows.Forms.Button();
             this.btnUpdateMarkingData = new System.Windows.Forms.Button();
             this.btnSearchDB = new System.Windows.Forms.Button();
             this.btnShowSkipParam = new System.Windows.Forms.Button();
@@ -146,6 +147,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnSearchPTRY0P_Today);
             this.splitContainer1.Panel1.Controls.Add(this.btnUpdateMarkingData);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchDB);
             this.splitContainer1.Panel1.Controls.Add(this.btnShowSkipParam);
@@ -162,10 +164,22 @@
             this.splitContainer1.SplitterDistance = 780;
             this.splitContainer1.TabIndex = 13;
             // 
+            // btnSearchPTRY0P_Today
+            // 
+            this.btnSearchPTRY0P_Today.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(313, 6);
+            this.btnSearchPTRY0P_Today.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSearchPTRY0P_Today.Name = "btnSearchPTRY0P_Today";
+            this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(70, 54);
+            this.btnSearchPTRY0P_Today.TabIndex = 14;
+            this.btnSearchPTRY0P_Today.Text = "생산 LOT 검색";
+            this.btnSearchPTRY0P_Today.UseVisualStyleBackColor = true;
+            this.btnSearchPTRY0P_Today.Click += new System.EventHandler(this.btnSearchPTRY0P_Today_Click);
+            // 
             // btnUpdateMarkingData
             // 
             this.btnUpdateMarkingData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateMarkingData.Location = new System.Drawing.Point(468, 6);
+            this.btnUpdateMarkingData.Location = new System.Drawing.Point(538, 6);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
             this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 54);
             this.btnUpdateMarkingData.TabIndex = 13;
@@ -176,19 +190,19 @@
             // btnSearchDB
             // 
             this.btnSearchDB.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchDB.Location = new System.Drawing.Point(322, 6);
+            this.btnSearchDB.Location = new System.Drawing.Point(389, 7);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
             this.btnSearchDB.Size = new System.Drawing.Size(70, 54);
             this.btnSearchDB.TabIndex = 8;
-            this.btnSearchDB.Text = "검색";
+            this.btnSearchDB.Text = "불량 데이터 검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
             this.btnSearchDB.Click += new System.EventHandler(this.btnSearchDB_Click);
             // 
             // btnShowSkipParam
             // 
             this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowSkipParam.Location = new System.Drawing.Point(556, 6);
+            this.btnShowSkipParam.Location = new System.Drawing.Point(626, 6);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
             this.btnShowSkipParam.Size = new System.Drawing.Size(70, 55);
             this.btnShowSkipParam.TabIndex = 11;
@@ -249,7 +263,7 @@
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(395, 6);
+            this.btnReset.Location = new System.Drawing.Point(465, 6);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(70, 54);
@@ -714,5 +728,6 @@
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.Button btnUpdateMarkingData;
+        private System.Windows.Forms.Button btnSearchPTRY0P_Today;
     }
 }

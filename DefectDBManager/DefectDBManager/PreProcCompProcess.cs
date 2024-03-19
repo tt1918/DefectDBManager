@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -306,6 +307,29 @@ namespace DefectDBManager
             }
         }
 
+        public bool SearchLotData(eDbIdWhen when, string lotName)
+        {
+            bool success = true;
+
+            // PTRYOP 탐색
+            success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(lotName);
+
+            // SearchPTRYOP 문제가 없으면 INSPDAT 탐색함
+            if (success == true) success = _DBProc[(int)when].SearchINSPDAT(lotName);
+            if (success == true) success = _DBProc[(int)when].SearchFLTDAT();
+            if (success == true)
+            {
+                // 불량 탐색 완료 후 Flag 변경
+                _enaDefectSearch = success;
+                if (success == true) // 검색 완료 결과 보고
+                {
+                    OnProcessEvent((int)eEventReport.eFinishedSearchDailyLotData);
+                }
+                else // 실패 보고
+                    OnProcessEvent((int)eEventReport.eEmptyDailyLotFaultData);
+            }
+            return success;
+        }
         
 
         /// <summary>

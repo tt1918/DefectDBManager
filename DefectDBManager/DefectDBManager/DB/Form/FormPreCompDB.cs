@@ -71,17 +71,22 @@ namespace DefectDBManager
         private System.Windows.Forms.Timer dbSearchProgressTimer = null;
         private Stopwatch dbLoadingTime = null;
 
-        public PreProcCompDB TodayDataBase
+        public PreProcCompDB PreCompDB
         {
-            get { return todayDataBase; }
+            get { return _preCompDB; }
             set
             {
-                todayDataBase = value;
+                _preCompDB = value;
                 displayUI();
                 initPTRY0P_TODAYListView();
             }
         }
-        private PreProcCompDB todayDataBase = null;
+        private PreProcCompDB _preCompDB = null;
+
+        public PreProcCompProcess Process
+        {
+            get; set;
+        } = null;
 
         public OracleDbConnection DBConn
         {
@@ -207,7 +212,7 @@ namespace DefectDBManager
             if (this.Visible == true)
             {
                 DestConfig config = null;
-                config = this.todayDataBase.DbDestConfig;
+                config = this._preCompDB.DbDestConfig;
 
                 dbCommTimer.Start();
                 if (dbConn != null) dbConn.OnDbConnect += OnDbConnect;
@@ -237,8 +242,8 @@ namespace DefectDBManager
         {
             Option option = null;
             DestConfig config = null;
-            option = TodayDataBase?.DbOption;
-            config = TodayDataBase?.DbDestConfig;
+            option = PreCompDB?.DbOption;
+            config = PreCompDB?.DbDestConfig;
 
             if (option == null) return;
 
@@ -248,7 +253,7 @@ namespace DefectDBManager
         private void displaySearchTime()
         {
             Option dbOption = null;
-            dbOption = TodayDataBase?.DbOption;
+            dbOption = PreCompDB?.DbOption;
         }
 
         #region ListView
@@ -339,7 +344,7 @@ namespace DefectDBManager
         private void displayFaultPage()
         {
             List<MarkingFaultDatum> fltdat = null;
-            fltdat = TodayDataBase.FaultData?.DispData;
+            fltdat = PreCompDB.FaultData?.DispData;
 
             if (fltdat == null) return;
 
@@ -374,16 +379,16 @@ namespace DefectDBManager
         {
             try
             {
-                if (TodayDataBase.DbOption.isLoadCSV == false)
+                if (PreCompDB.DbOption.isLoadCSV == false)
                 {
                     int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                    List<List<INSPDATData>>[] data = TodayDataBase._DbResult.INSPDAT_Data;
+                    List<List<INSPDATData>>[] data = PreCompDB._DbResult.INSPDAT_Data;
 
                     // 리스트 초기화는 따로 불러서 처리
 
-                    bool useSplit = TodayDataBase.DbOption.searchOP.useSplit;
-                    string title = TodayDataBase.DbOption.searchOP.Title;
-                    eCSV_TYPE type = TodayDataBase.DbDestConfig.CSVType;
+                    bool useSplit = PreCompDB.DbOption.searchOP.useSplit;
+                    string title = PreCompDB.DbOption.searchOP.Title;
+                    eCSV_TYPE type = PreCompDB.DbDestConfig.CSVType;
 
                     int total = 0;
 
@@ -405,7 +410,7 @@ namespace DefectDBManager
                                 // No.1
                                 if (type == eCSV_TYPE.KORENO || type == eCSV_TYPE.KORENO_RK || type == eCSV_TYPE.KORENO_RK_IJP)
                                 {
-                                    if (i == (int)eFCD.TG) itemBuf.items[1] = this.TodayDataBase.DbOption.lotName;
+                                    if (i == (int)eFCD.TG) itemBuf.items[1] = this.PreCompDB.DbOption.lotName;
                                     else itemBuf.items[1] = tmpData.BCNO;
                                 }
                                 else
@@ -434,7 +439,7 @@ namespace DefectDBManager
                 {
                     BCNO_LV_Data.Data.Clear();
                     int index = 0;
-                    foreach (var item in TodayDataBase._CSVLoadInfo)
+                    foreach (var item in PreCompDB._CSVLoadInfo)
                     {
                         DBListViewBuf itemBuf = new DBListViewBuf(4);
                         itemBuf.items[0] = index.ToString();
@@ -559,7 +564,7 @@ namespace DefectDBManager
         {
             PTRYOP_LV_Data.Data.Clear();
             List<PTRY0PData>[] tmpData = null;
-            tmpData = TodayDataBase._DbResult.PTRY0P_Data;
+            tmpData = PreCompDB._DbResult.PTRY0P_Data;
 
             int cnt = tmpData.Length;
             for (int i = 0; i < cnt; i++)
@@ -627,7 +632,7 @@ namespace DefectDBManager
         private void makePTRY0P_TODAYListViewData()
         {
             PTRY0P_TODAY_LV_Data.Data.Clear();
-            foreach (PTRY0PData data in TodayDataBase.PTRY0P_Today_Data)
+            foreach (PTRY0PData data in PreCompDB.PTRY0P_Today_Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(5);
                 bufData.items[0] = data.Y0KLOT;
@@ -701,7 +706,7 @@ namespace DefectDBManager
             {
 
                 CSV_DEFECT_HEADER header = null;
-                header = todayDataBase._CsvDefectHeader;
+                header = _preCompDB._CsvDefectHeader;
 
                 if (header == null) return;
 
@@ -728,7 +733,7 @@ namespace DefectDBManager
         private void makeINSPDATListView()
         {
             List<List<INSPDATData>>[] inspData = null;
-            inspData = TodayDataBase._DbResult.INSPDAT_Data;
+            inspData = PreCompDB._DbResult.INSPDAT_Data;
 
             if (inspData == null) return;
 
@@ -820,13 +825,12 @@ namespace DefectDBManager
                 List<MarkingFaultDatum> tmpData = null;
                 Param tmpParam = null;
                 DestConfig config = null;
-                tmpData = todayDataBase.FaultData.DispData;
-                config = todayDataBase.DbDestConfig;
+                tmpData = _preCompDB.FaultData.DispData;
+                config = _preCompDB.DbDestConfig;
 
                 MarkingFaultDatum data = null;
 
                 int mclass = 0;
-                int dummyClass = 0;
                 eCSV_TYPE tmpType = config.CSVType;
 
                 DestConfigUnit destUnit = config.SelDestUnit;
@@ -902,7 +906,7 @@ namespace DefectDBManager
         {
             ResetListViewData();
             this.clearAllListView();
-            this.initFaultPage(TodayDataBase.FaultData.DispData.Count);
+            this.initFaultPage(PreCompDB.FaultData.DispData.Count);
             makeBCNOListData();
             makePTRYLPListViewData();
             makePTRYOPListViewData();
@@ -915,7 +919,7 @@ namespace DefectDBManager
             displayINSPDATListView();
             displayFAULTDATListView();
 
-            if (this.TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+            if (this.PreCompDB.DbOption.dbWhen == eDbIdWhen.Now)
             {
                 lblDownloadResult.Text = "Lot Change is finished.";
             }
@@ -971,7 +975,7 @@ namespace DefectDBManager
             }
 
             OracleDbConnection conn = null;
-            conn = TodayDataBase.Conn;
+            conn = PreCompDB.Conn;
 
             if (conn.IsConnected() == false)
             {
@@ -995,6 +999,7 @@ namespace DefectDBManager
             this.UpdateEndEvent = false;
 
             // 검색 데이터 처리
+            Process.SearchDailyLot(tbLotName.Text);
         }
 
         public bool IsSearchDefect()
@@ -1021,9 +1026,9 @@ namespace DefectDBManager
                     this.ResetListViewData();
                     tbLotName.Text = "";
 
-                    TodayDataBase.ResetDataAll();
+                    PreCompDB.ResetDataAll();
 
-                    if (TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                    if (PreCompDB.DbOption.dbWhen == eDbIdWhen.Now)
                     {
                         if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNow);
                     }
@@ -1032,7 +1037,7 @@ namespace DefectDBManager
                         if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNext);
                     }
 
-                    TodayDataBase.DbOption.isLoadCSV = false;
+                    PreCompDB.DbOption.isLoadCSV = false;
 
                     // Update dbconfig from FWPlace
                     displayMarkingOption();
@@ -1051,16 +1056,16 @@ namespace DefectDBManager
 
                 tbLotName.Text = "";
 
-                if (TodayDataBase != null)
+                if (PreCompDB != null)
                 {
-                    TodayDataBase.ResetDataAll();
+                    PreCompDB.ResetDataAll();
 
-                    if (TodayDataBase.DbOption.dbWhen == eDbIdWhen.Now)
+                    if (PreCompDB.DbOption.dbWhen == eDbIdWhen.Now)
                         if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNow);
                         else
                         if (OnEndJob != null) OnEndJob((int)eEventReport.eResetDataNext);
 
-                    TodayDataBase.DbOption.isLoadCSV = false;
+                    PreCompDB.DbOption.isLoadCSV = false;
                 }
 
                 // Update dbconfig from FWPlace
@@ -1073,8 +1078,8 @@ namespace DefectDBManager
         {
             Option option = null;
             DestConfig config = null;
-            option = TodayDataBase.DbOption;
-            config = TodayDataBase.DbDestConfig;
+            option = PreCompDB.DbOption;
+            config = PreCompDB.DbDestConfig;
 
             option.lotName = (string)tbLotName.Text.Clone();
             option.useSameDefect = config.SelDestUnit.UseSameDefect;
@@ -1084,7 +1089,7 @@ namespace DefectDBManager
         private void displayUIOptionFromDBOption()
         {
             Option option = null;
-            option = TodayDataBase.DbOption;
+            option = PreCompDB.DbOption;
 
             tbLotName.Text = option.lotName;
             isHoldFW = true;
@@ -1117,7 +1122,7 @@ namespace DefectDBManager
         {
             if (this.dbConn == null) return;
 
-            this.dbConn.LoginInfo = todayDataBase.Conn.LoginInfo;
+            this.dbConn.LoginInfo = _preCompDB.Conn.LoginInfo;
 
             if (formLogin == null) formLogin = new FormDbLoginData(this.dbConn);
 
@@ -1126,14 +1131,14 @@ namespace DefectDBManager
 
             if (this.dbConn.IsDBConnected == true)
             {
-                todayDataBase.Conn.LoginInfo = this.dbConn.LoginInfo;
+                _preCompDB.Conn.LoginInfo = this.dbConn.LoginInfo;
             }
         }
 
         private void btnShowSkipParam_Click(object sender, EventArgs e)
         {
             // 복사본 생성
-            var copyList = new List<DefectSizeTH>(TodayDataBase.DbDestConfig.DefectSizeTHs);
+            var copyList = new List<DefectSizeTH>(PreCompDB.DbDestConfig.DefectSizeTHs);
             // 바인딩 리스트로 변경
             var listBinding = new BindingList<DefectSizeTH>(copyList);
             // 화면 표시
@@ -1142,8 +1147,8 @@ namespace DefectDBManager
                 form.ShowDialog();
                 if (form.IsApply == true)
                 {
-                    TodayDataBase.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
-                    TodayDataBase.DbDestConfig.Write();
+                    PreCompDB.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
+                    PreCompDB.DbDestConfig.Write();
                 }
             }
         }
@@ -1159,7 +1164,7 @@ namespace DefectDBManager
             {
 
                 List<MarkingFaultDatum> data = null;
-                data = todayDataBase.FaultData.DispData;
+                data = _preCompDB.FaultData.DispData;
 
                 if (Int32.TryParse(tbFaultPage.Text, out int intput) == true)
                 {
@@ -1183,7 +1188,7 @@ namespace DefectDBManager
         private void btnUpdateMarkingData_Click(object sender, EventArgs e)
         {
             eDbIdWhen when = eDbIdWhen.Now;
-            when = TodayDataBase.DbOption.dbWhen;
+            when = PreCompDB.DbOption.dbWhen;
 
 
             if (OnEndJob == null) return;
@@ -1224,7 +1229,7 @@ namespace DefectDBManager
         private void tbLotName_TextChanged(object sender, EventArgs e)
         {
             Option dbOption = null;
-            dbOption = TodayDataBase.DbOption;
+            dbOption = PreCompDB.DbOption;
             dbOption.lotName = this.tbLotName.Text;
         }
         #endregion
@@ -1282,8 +1287,8 @@ namespace DefectDBManager
         private void timer_DbSearch(object sender, EventArgs e)
         {
             NittoDBProgress progress = null;
-            if (this.todayDataBase == null) return;
-            progress = todayDataBase.DB_Progress;
+            if (this._preCompDB == null) return;
+            progress = _preCompDB.DB_Progress;
 
             if (progress == null) return;
 
@@ -1543,5 +1548,34 @@ namespace DefectDBManager
         }
 
         #endregion
+
+        private void btnSearchPTRY0P_Today_Click(object sender, EventArgs e)
+        {
+            OracleDbConnection conn = null;
+            conn = PreCompDB.Conn;
+
+            if (conn.IsConnected() == false)
+            {
+                MessageBox.Show(Language.PleaseLoginToTheDB);
+                return;
+            }
+            if (tbLotName.Text.Length == 0)
+            {
+                MessageBox.Show(Language.PleaseInsertLotNumber);
+                return;
+            }
+            if (tbLotName.Text.Length < Global.LotNameLength)
+            {
+                MessageBox.Show(Language.PleaseInsertTenDigitsOfLotNumber);
+                return;
+            }
+
+            // 화면 데이터 적용
+            updateUIOptionToDBOption();
+            this.UpdateEndEvent = false;
+
+            // Thread 처리 필요
+            Process.SearchLotData(PreCompDB.DbOption.dbWhen, tbLotName.Text);
+        }
     }
 }
