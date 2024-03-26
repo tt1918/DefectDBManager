@@ -190,12 +190,12 @@ namespace DefectDBManager
         /// 상위 보고용 데이터
         /// </summary>
         public Dictionary<int, List<MarkingFaultDatum>> DicPt = null;
-        public List<MarkingFaultDatum> DispData
+        public List<MarkingFaultDatum> MarkData
         {
-            get { return _dispData; }
-            private set { _dispData = value; }
+            get { return _markData; }
+            private set { _markData = value; }
         }
-        private List<MarkingFaultDatum> _dispData;
+        private List<MarkingFaultDatum> _markData;
 
         // 현재 생산하고 있는 BCNO
         public string BCNO
@@ -214,7 +214,7 @@ namespace DefectDBManager
             for (int i = 0; i < count; i++)
                 _fltdat[i] = new List<PreProcDefect>();
 
-            _dispData = new List<MarkingFaultDatum>();
+            _markData = new List<MarkingFaultDatum>();
         }
 
         ~PrePocResultData()
@@ -229,7 +229,7 @@ namespace DefectDBManager
             
             // 실시간 불량 전송용 데이터 
             DicPt.Clear();
-            _dispData.Clear();
+            _markData.Clear();
 
 
             for (int i = 0; i < _fltdat.Length; i++)
@@ -254,7 +254,7 @@ namespace DefectDBManager
             else
                 DicPt[key] = new List<MarkingFaultDatum> { data };
 
-            _dispData.Add(data);
+            _markData.Add(data);
         }
 
         public List<MarkingFaultDatum> GetDefectPts(string bcno, float startY, float endY)

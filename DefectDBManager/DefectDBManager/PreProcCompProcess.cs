@@ -148,7 +148,7 @@ namespace DefectDBManager
             if(procNow.SearchTodayPTRY0PList(lotID)==true)
             {                
                 // 검사 완료 처리
-                OnEndTodayProductSearching();
+                if(OnEndTodayProductSearching!=null) OnEndTodayProductSearching();
                 
                 // 체크 스레드 시작
                 StartCheckAvaliableINSPDAT();
@@ -162,6 +162,8 @@ namespace DefectDBManager
             
             proc.SearchLotName = lotID;
             proc.SearchY0LNCD = _DestConfig.MainLNCD;
+
+            
 
             Task task = new Task(searchDailyLot, proc);
             task.Start();

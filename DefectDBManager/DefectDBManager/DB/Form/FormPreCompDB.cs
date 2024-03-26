@@ -147,7 +147,6 @@ namespace DefectDBManager
             this.makeBCNOListData();
             this.makePTRYLPListViewData();
             this.makePTRYOPListViewData();
-            this.makePTRY0P_TODAYListViewData();
             this.makeINSPDATListView();
         }
         #endregion
@@ -291,7 +290,7 @@ namespace DefectDBManager
                     displayBCNOListView();
                     displayPTRYLPListView();
                     displayPTRYOPListView();
-                    displayMRKCTLMSTListView();
+                    displayPTRY0P_TodayListView();
                     displayINSPDATListView();
                     displayFAULTDATListView();
                 }));
@@ -301,7 +300,7 @@ namespace DefectDBManager
                 displayBCNOListView();
                 displayPTRYLPListView();
                 displayPTRYOPListView();
-                displayMRKCTLMSTListView();
+                displayPTRY0P_TodayListView();
                 displayINSPDATListView();
                 displayFAULTDATListView();
             }
@@ -344,7 +343,7 @@ namespace DefectDBManager
         private void displayFaultPage()
         {
             List<MarkingFaultDatum> fltdat = null;
-            fltdat = PreCompDB.FaultData?.DispData;
+            fltdat = PreCompDB.FaultData?.MarkData;
 
             if (fltdat == null) return;
 
@@ -649,7 +648,7 @@ namespace DefectDBManager
         /// 데이터는 makeMRKCTLMSTListViewData()에서 생성하여 
         /// 현재 함수에서는 표시만 함
         /// </summary>
-        private void displayMRKCTLMSTListView()
+        private void displayPTRY0P_TodayListView()
         {
             if (PTRY0P_TODAY_LV_Data.Data == null) return;
             try
@@ -825,7 +824,7 @@ namespace DefectDBManager
                 List<MarkingFaultDatum> tmpData = null;
                 Param tmpParam = null;
                 DestConfig config = null;
-                tmpData = _preCompDB.FaultData.DispData;
+                tmpData = _preCompDB.FaultData.MarkData;
                 config = _preCompDB.DbDestConfig;
 
                 MarkingFaultDatum data = null;
@@ -906,7 +905,7 @@ namespace DefectDBManager
         {
             ResetListViewData();
             this.clearAllListView();
-            this.initFaultPage(PreCompDB.FaultData.DispData.Count);
+            this.initFaultPage(PreCompDB.FaultData.MarkData.Count);
             makeBCNOListData();
             makePTRYLPListViewData();
             makePTRYOPListViewData();
@@ -915,7 +914,7 @@ namespace DefectDBManager
             displayBCNOListView();
             displayPTRYLPListView();
             displayPTRYOPListView();
-            displayMRKCTLMSTListView();
+            displayPTRY0P_TodayListView();
             displayINSPDATListView();
             displayFAULTDATListView();
 
@@ -998,8 +997,8 @@ namespace DefectDBManager
             updateUIOptionToDBOption();
             this.UpdateEndEvent = false;
 
-            // 검색 데이터 처리
-            Process.SearchDailyLot(tbLotName.Text);
+            // Thread 처리 필요
+            Process.SearchLotData(PreCompDB.DbOption.dbWhen, tbLotName.Text);
         }
 
         public bool IsSearchDefect()
@@ -1082,8 +1081,6 @@ namespace DefectDBManager
             config = PreCompDB.DbDestConfig;
 
             option.lotName = (string)tbLotName.Text.Clone();
-            option.useSameDefect = config.SelDestUnit.UseSameDefect;
-
         }
 
         private void displayUIOptionFromDBOption()
@@ -1164,7 +1161,7 @@ namespace DefectDBManager
             {
 
                 List<MarkingFaultDatum> data = null;
-                data = _preCompDB.FaultData.DispData;
+                data = _preCompDB.FaultData.MarkData;
 
                 if (Int32.TryParse(tbFaultPage.Text, out int intput) == true)
                 {
@@ -1547,6 +1544,18 @@ namespace DefectDBManager
             this.displayAllListView();
         }
 
+        public void OnUpdateDailyLotInfo()
+        {
+            this.makePTRY0P_TODAYListViewData();
+            if (this.InvokeRequired == true)
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    displayPTRY0P_TodayListView();
+                }));
+            else
+                displayPTRY0P_TodayListView();
+
+        }
         #endregion
 
         private void btnSearchPTRY0P_Today_Click(object sender, EventArgs e)
@@ -1574,8 +1583,8 @@ namespace DefectDBManager
             updateUIOptionToDBOption();
             this.UpdateEndEvent = false;
 
-            // Thread 처리 필요
-            Process.SearchLotData(PreCompDB.DbOption.dbWhen, tbLotName.Text);
+            // 검색 데이터 처리
+            Process.SearchDailyLot(tbLotName.Text);
         }
     }
 }

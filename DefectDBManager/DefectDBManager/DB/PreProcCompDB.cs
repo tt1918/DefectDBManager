@@ -131,11 +131,16 @@ namespace DefectDBManager
 
             try
             {
+
+                int newLotCnt = GetNextLotCnt(lotID);
+                if (newLotCnt > 0) _LOG.Lot = $"{lotID}_{newLotCnt:D2}";
+                else _LOG.Lot = lotID;
+
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0P_Today_Data.Clear();
 
                 DB_Progress.ResetAll();
-                DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRYOP;
 
                 QueryMsg.PTRYOP_Today_Query ptryop = new QueryMsg.PTRYOP_Today_Query();
                 
@@ -143,7 +148,7 @@ namespace DefectDBManager
                 ptryop.Y0LNCD = destConfig.MainLNCD;
 
                 string query = ptryop.GetQuery();
-                _LOG.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
+                _LOG.WriteLoadData(query.ToString(), 0, "PTRY0P", 0);
                 
                 if (query == "")
                 {
@@ -166,11 +171,16 @@ namespace DefectDBManager
                                 PTRY0P_Today_Data.Add(data);
                             }
                         }
-                        DB_Progress.Set(eNittoDBProgress.PTRYLP);
+                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
                     }
                 }
 
                 // 처음 랏을 탐색하였다면 생산하지 않은 제일 처음 랏을 가지고 온다.
+                if (PTRY0P_Today_Data.Count == 0) return false;
+
+                // 데이터 초기화
+                ResetDataAll();
+
                 string firstLotID = PTRY0P_Today_Data[0].Y0KLOT;
 
                 success = SearchPTRYOP(firstLotID);
@@ -748,6 +758,58 @@ namespace DefectDBManager
                 else if (procStep == (int)eFCD.ETC) DB_Progress.SetError(eNittoDBProgress.INSPDAT_ETC);
                 Log.Write($"[Error] FAULTDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
                 return false;
+            }
+        }
+
+
+        /// <summary>
+        /// 현재 검사 중인 Lot의 INSPDAT 공정 별 갯수
+        /// </summary>
+        /// <returns></returns>
+        public int[] GetCurrentInspDatCnt()
+        {
+            int size = System.Enum.GetValues(typeof(eFCD)).Length;
+
+            int[] count = new int[size];
+
+            // FLTDAT에 정보 담겨 있어서 INSPDAT 대신에 FLTDAT 검색 결과로 대신 처리함.
+            for(int i=0; i<size; i++)
+                count[i] = FaultData.FLTDAT[i].Count;
+
+            return count;
+        }
+
+        /// <summary>
+        /// 각 해당 공정의 불량 데이터를 얻어온다. 
+        /// </summary>
+        /// <param name="fcd"> 공정 유형 0: 연신, 1: 점착, 2: 그외 </param>
+        /// <param name="index"> 검색하고자 하는 전공정 인덱스 </param>
+        /// <param name="LNCD"> 출력할 라인 코드 </param>
+        /// <param name="pts"> 결점 정보 </param>
+        public void GetSelectedPreprocDefects(eFCD fcd, int index, out string LNCD, out List<System.Drawing.PointF> pts)
+        {
+            LNCD = "";
+            pts = new List<System.Drawing.PointF>();
+
+            // 리스트 크기 얻어옴
+            int size = FaultData.FLTDAT[(int)fcd].Count;
+
+            // 입력 인덱스랑 크기 비교
+            if (index >= size) return;
+
+            // 해당 공정 코드 얻어옴.
+            LNCD = FaultData.FLTDAT[(int)fcd][index].LNCD;
+
+            // FltData 크기 얻어옴
+            int fltSize = FaultData.FLTDAT[(int)fcd][index].Data.Count;
+
+            // Data 검색해서 추가
+            foreach(FaultDatum item in FaultData.FLTDAT[(int)fcd][index].Data)
+            {
+                System.Drawing.PointF pt = new System.Drawing.PointF();
+                pt.X = item.XPOS_M;
+                pt.Y = (float)item.OFFSET;
+                pts.Add(pt);
             }
         }
     }

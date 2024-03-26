@@ -32,6 +32,10 @@ namespace SharpDllTest
             // 현재 랏인 경우
             formDB.Process = defectProc;
             formDB.PreCompDB = defectProc._DBProc[(int)(eDbIdWhen.Now)];
+            formDB.DBConn = defectProc._DbConn;
+
+            defectProc.OnEndTodayProductSearching += formDB.OnUpdateDailyLotInfo;
+
 
             // 예약 랏인 경우
             //formDB.TodayDataBase = defectProc._DBProc[(int)(eDbIdWhen.Next)];

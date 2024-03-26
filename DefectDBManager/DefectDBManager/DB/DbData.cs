@@ -712,6 +712,13 @@ namespace DefectDBManager
                     INSPDAT_Data[i][j].Clear();
                 INSPDAT_Data[i].Clear();
             }
+
+            for (int i = 0; i < Matched_INSPDAT_Data.Length; i++)
+            {
+                for (int j = 0; j < Matched_INSPDAT_Data[i].Count; j++)
+                    Matched_INSPDAT_Data[i].Clear();
+            }
+
         }
 
     }
