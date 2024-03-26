@@ -279,6 +279,26 @@
     <value>사이즈</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
+  <data name="listPTRY0P_0" xml:space="preserve">
+    <value>품종</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_1" xml:space="preserve">
+    <value>연신 Lot</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_2" xml:space="preserve">
+    <value>라인코드</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_3" xml:space="preserve">
+    <value>개시 시간</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_4" xml:space="preserve">
+    <value>종료 시간</value>
+    <comment>PTRY0P</comment>
+  </data>
   <data name="listPTRYLP_0" xml:space="preserve">
     <value>원단 Lot</value>
     <comment>PTRYLPHeader</comment>
@@ -291,39 +311,19 @@
     <value>품종</value>
     <comment>PTRYLPHeader</comment>
   </data>
-  <data name="listPTRYOP_0" xml:space="preserve">
-    <value>품종</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_1" xml:space="preserve">
-    <value>연신 Lot</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_2" xml:space="preserve">
-    <value>라인코드</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_3" xml:space="preserve">
-    <value>개시 시간</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_4" xml:space="preserve">
-    <value>종료 시간</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listTodayPTLYOP_0" xml:space="preserve">
+  <data name="listTodayPTLY0P_0" xml:space="preserve">
     <value>Lot 정보</value>
   </data>
-  <data name="listTodayPTLYOP_1" xml:space="preserve">
+  <data name="listTodayPTLY0P_1" xml:space="preserve">
     <value>공정</value>
   </data>
-  <data name="listTodayPTLYOP_2" xml:space="preserve">
+  <data name="listTodayPTLY0P_2" xml:space="preserve">
     <value>LNCD</value>
   </data>
-  <data name="listTodayPTLYOP_3" xml:space="preserve">
+  <data name="listTodayPTLY0P_3" xml:space="preserve">
     <value>개시 시간</value>
   </data>
-  <data name="listTodayPTLYOP_4" xml:space="preserve">
+  <data name="listTodayPTLY0P_4" xml:space="preserve">
     <value>종료 시간</value>
   </data>
   <data name="LotName" xml:space="preserve">

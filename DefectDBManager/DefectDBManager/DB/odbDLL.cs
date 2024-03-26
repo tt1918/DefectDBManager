@@ -340,7 +340,7 @@ namespace DefectDBManager
                 DB_Progress.SetSkip(eNittoDBProgress.XOFSMST);
                 DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
 
-                if (SearchPTRYOP_Model(lotID) == true)
+                if (SearchPTRY0P_Model(lotID) == true)
                 {
                     int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
                     for (int i = 0; i < fcdCnt; i++)
@@ -404,12 +404,12 @@ namespace DefectDBManager
                 DB_Progress.SetSkip(eNittoDBProgress.AREADEL);
 
                 System.Threading.Thread.Sleep(100);
-                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
-                DB_Progress.Set(eNittoDBProgress.PTRYOP);
+                DB_Progress.Reset(eNittoDBProgress.PTRY0P);
+                DB_Progress.Set(eNittoDBProgress.PTRY0P);
                 System.Threading.Thread.Sleep(500);
                 SearchModelList.Add("12345678");
                 SearchModelList.Add("87654321");
-                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                DB_Progress.Complete(eNittoDBProgress.PTRY0P);
                 if (count > 0)
                 {
 
@@ -492,7 +492,7 @@ namespace DefectDBManager
                     success = SearchAreaDel(lotID, ref _DbResult.AREADEL_Data);
                     if (success == false) return false;
                 }
-                success = SearchPTRYOP(lotID);
+                success = SearchPTRY0P(lotID);
                 if (success == false) return false;
                 success = SearchMRKCTLMST(lotID);
                 if (success == false) return false;
@@ -651,7 +651,7 @@ namespace DefectDBManager
             }
         }
 
-        public bool SearchPTRYOP(string lotID)
+        public bool SearchPTRY0P(string lotID)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -659,8 +659,8 @@ namespace DefectDBManager
 
             try
             {
-                DB_Progress._CurrentStep = eNittoDBProgress.PTRYOP;
-                QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRY0P;
+                QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
                 string query = msg.GetQuery(_DbResult.PTRLYP_Data);
@@ -668,21 +668,21 @@ namespace DefectDBManager
 
                 if (query == "")
                 {
-                    Log.Write($"[Error] DB Serach PTRYOP query is empty.");
-                    DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                    Log.Write($"[Error] DB Serach PTRY0P query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRY0P);
                     return false;
                 }
 
                 long dbCnt = 0;
                 string logData = "";
                 int logCnt = 0;
-                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+                DB_Progress.Reset(eNittoDBProgress.PTRY0P);
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (OracleDataReader reader = comm.ExecuteReader())
                     {
                         dbCnt = reader.RowSize;
-                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
+                        DB_Progress.Set(eNittoDBProgress.PTRY0P);
 
                         while (reader.Read())
                         {
@@ -731,18 +731,18 @@ namespace DefectDBManager
                         }
                     }
                 }
-                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                DB_Progress.Complete(eNittoDBProgress.PTRY0P);
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Write($"[Error] DB Serach PTRYOP error message : [{ex.Message}]");
-                DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                Log.Write($"[Error] DB Serach PTRY0P error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.PTRY0P);
                 return false;
             }
         }
 
-        public bool SearchPTRYOP_Model(string lotID)
+        public bool SearchPTRY0P_Model(string lotID)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -750,27 +750,27 @@ namespace DefectDBManager
 
             try
             {
-                QueryMsg.PTRYOP_Query msg = new QueryMsg.PTRYOP_Query(lotID);
+                QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
                 string query = msg.GetQuery(_DbResult.PTRLYP_Data, true);
                 long dbCnt = 0;
-                _LOG.WriteLoadData(query, 0, "PTRYOP_MODEL", 0.0);
+                _LOG.WriteLoadData(query, 0, "PTRY0P_MODEL", 0.0);
                 if (query == "")
                 {
-                    Log.Write($"[Error] DB Serach PTRYOP query is empty.");
-                    DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                    Log.Write($"[Error] DB Serach PTRY0P query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRY0P);
                     return false;
                 }
 
-                DB_Progress.Reset(eNittoDBProgress.PTRYOP);
+                DB_Progress.Reset(eNittoDBProgress.PTRY0P);
 
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (OracleDataReader reader = comm.ExecuteReader())
                     {
                         dbCnt = reader.RowSize;
-                        DB_Progress.Set(eNittoDBProgress.PTRYOP);
+                        DB_Progress.Set(eNittoDBProgress.PTRY0P);
 
                         while (reader.Read())
                         {
@@ -803,32 +803,32 @@ namespace DefectDBManager
                             {
                                 _DbResult.PTRY0P_Data[(int)eFCD.ES].Add(data);
                                 string logData = string.Format($"{(int)eFCD.ES}\t-\t{data.ToString()}");
-                                _LOG.WriteLoadData(logData, 0, "PTRYOP_MODEL_ES", 0.0);
+                                _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_ES", 0.0);
                             }
 
                             if (nY0PPCD == 400)
                             {
                                 _DbResult.PTRY0P_Data[(int)eFCD.TG].Add(data);
                                 string logData = string.Format($"{(int)eFCD.TG}\t-\t{data.ToString()}");
-                                _LOG.WriteLoadData(logData, 0, "PTRYOP_MODEL_TG", 0.0);
+                                _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_TG", 0.0);
                             }
 
                             if (nY0PPCD != 100 && nY0PPCD != 400)
                             {
                                 _DbResult.PTRY0P_Data[(int)eFCD.ETC].Add(data);
                                 string logData = string.Format($"{(int)eFCD.ETC}\t-\t{data.ToString()}");
-                                _LOG.WriteLoadData(logData, 0, "PTRYOP_MODEL_ETC", 0.0);
+                                _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_ETC", 0.0);
                             }
                         }
                     }
                 }
-                DB_Progress.Complete(eNittoDBProgress.PTRYOP);
+                DB_Progress.Complete(eNittoDBProgress.PTRY0P);
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Write($"[Error] DB Serach PTRYOP_MODEL error message : [{ex.Message}]");
-                DB_Progress.SetError(eNittoDBProgress.PTRYOP);
+                Log.Write($"[Error] DB Serach PTRY0P_MODEL error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.PTRY0P);
                 return false;
             }
         }

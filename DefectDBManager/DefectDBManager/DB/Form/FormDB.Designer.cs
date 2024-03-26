@@ -67,8 +67,8 @@
             this.listViewPTRYLP = new System.Windows.Forms.ListView();
             this.gbMRKCTLMST = new System.Windows.Forms.GroupBox();
             this.listViewMRKCTLMST = new System.Windows.Forms.ListView();
-            this.gbPTRYOP = new System.Windows.Forms.GroupBox();
-            this.listViewPTRYOP = new System.Windows.Forms.ListView();
+            this.gbPTRY0P = new System.Windows.Forms.GroupBox();
+            this.listViewPTRY0P = new System.Windows.Forms.ListView();
             this.gbINSPDAT = new System.Windows.Forms.GroupBox();
             this.listViewINSPDAT = new System.Windows.Forms.ListView();
             this.gbFAULTDAT = new System.Windows.Forms.GroupBox();
@@ -102,7 +102,7 @@
             this.gbMarkingGroup.SuspendLayout();
             this.gbPTRYLP.SuspendLayout();
             this.gbMRKCTLMST.SuspendLayout();
-            this.gbPTRYOP.SuspendLayout();
+            this.gbPTRY0P.SuspendLayout();
             this.gbINSPDAT.SuspendLayout();
             this.gbFAULTDAT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -624,35 +624,35 @@
             this.listViewMRKCTLMST.TabIndex = 7;
             this.listViewMRKCTLMST.UseCompatibleStateImageBehavior = false;
             // 
-            // gbPTRYOP
+            // gbPTRY0P
             // 
-            this.gbPTRYOP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.gbPTRY0P.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbPTRYOP.Controls.Add(this.listViewPTRYOP);
-            this.gbPTRYOP.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbPTRYOP.Location = new System.Drawing.Point(0, 0);
-            this.gbPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPTRYOP.Name = "gbPTRYOP";
-            this.gbPTRYOP.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPTRYOP.Size = new System.Drawing.Size(584, 125);
-            this.gbPTRYOP.TabIndex = 6;
-            this.gbPTRYOP.TabStop = false;
-            this.gbPTRYOP.Text = "PTRYOP";
+            this.gbPTRY0P.Controls.Add(this.listViewPTRY0P);
+            this.gbPTRY0P.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbPTRY0P.Location = new System.Drawing.Point(0, 0);
+            this.gbPTRY0P.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.gbPTRY0P.Name = "gbPTRY0P";
+            this.gbPTRY0P.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.gbPTRY0P.Size = new System.Drawing.Size(584, 125);
+            this.gbPTRY0P.TabIndex = 6;
+            this.gbPTRY0P.TabStop = false;
+            this.gbPTRY0P.Text = "PTRY0P";
             // 
-            // listViewPTRYOP
+            // listViewPTRY0P
             // 
-            this.listViewPTRYOP.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewPTRY0P.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewPTRYOP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listViewPTRYOP.HideSelection = false;
-            this.listViewPTRYOP.Location = new System.Drawing.Point(6, 18);
-            this.listViewPTRYOP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listViewPTRYOP.Name = "listViewPTRYOP";
-            this.listViewPTRYOP.Size = new System.Drawing.Size(572, 99);
-            this.listViewPTRYOP.TabIndex = 7;
-            this.listViewPTRYOP.UseCompatibleStateImageBehavior = false;
+            this.listViewPTRY0P.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewPTRY0P.HideSelection = false;
+            this.listViewPTRY0P.Location = new System.Drawing.Point(6, 18);
+            this.listViewPTRY0P.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.listViewPTRY0P.Name = "listViewPTRY0P";
+            this.listViewPTRY0P.Size = new System.Drawing.Size(572, 99);
+            this.listViewPTRY0P.TabIndex = 7;
+            this.listViewPTRY0P.UseCompatibleStateImageBehavior = false;
             // 
             // gbINSPDAT
             // 
@@ -896,7 +896,7 @@
             // 
             // splitContainer6.Panel2
             // 
-            this.splitContainer6.Panel2.Controls.Add(this.gbPTRYOP);
+            this.splitContainer6.Panel2.Controls.Add(this.gbPTRY0P);
             this.splitContainer6.Size = new System.Drawing.Size(1180, 125);
             this.splitContainer6.SplitterDistance = 589;
             this.splitContainer6.TabIndex = 0;
@@ -1014,7 +1014,7 @@
             this.gbMarkingGroup.PerformLayout();
             this.gbPTRYLP.ResumeLayout(false);
             this.gbMRKCTLMST.ResumeLayout(false);
-            this.gbPTRYOP.ResumeLayout(false);
+            this.gbPTRY0P.ResumeLayout(false);
             this.gbINSPDAT.ResumeLayout(false);
             this.gbFAULTDAT.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
@@ -1074,7 +1074,7 @@
         private System.Windows.Forms.Label lblDestination;
         private System.Windows.Forms.GroupBox gbPTRYLP;
         private System.Windows.Forms.GroupBox gbMRKCTLMST;
-        private System.Windows.Forms.GroupBox gbPTRYOP;
+        private System.Windows.Forms.GroupBox gbPTRY0P;
         private System.Windows.Forms.GroupBox gbINSPDAT;
         private System.Windows.Forms.GroupBox gbFAULTDAT;
         private System.Windows.Forms.Label lblGRANK;
@@ -1086,7 +1086,7 @@
         private System.Windows.Forms.Label lblDownloadResult;
         private System.Windows.Forms.ListView listViewPTRYLP;
         private System.Windows.Forms.ListView listViewMRKCTLMST;
-        private System.Windows.Forms.ListView listViewPTRYOP;
+        private System.Windows.Forms.ListView listViewPTRY0P;
         private System.Windows.Forms.ListView listViewINSPDAT;
         private System.Windows.Forms.ListView listViewFAULTDAT;
         private System.Windows.Forms.Button btnReset;

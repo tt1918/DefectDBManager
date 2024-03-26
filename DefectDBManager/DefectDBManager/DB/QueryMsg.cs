@@ -109,14 +109,14 @@ namespace DefectDBManager
             }
         }
 
-        public class PTRYOP_Query : QueryMsg
+        public class PTRY0P_Query : QueryMsg
         {
-            public PTRYOP_Query()
+            public PTRY0P_Query()
             {
 
             }
 
-            public PTRYOP_Query(string name)
+            public PTRY0P_Query(string name)
             {
                 Vender = name;
             }
@@ -146,27 +146,27 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Write($"[Error] PTRYOP_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] PTRY0P_Query Exception : {ex.Message}");
                     return "";
                 }
             }
         }
 
         /// <summary>
-        /// 이전 공정 결점 비교 시스템용 PTRYOP Query
+        /// 이전 공정 결점 비교 시스템용 PTRY0P Query
         /// </summary>
-        public class PTRYOP_Today_Query : QueryMsg
+        public class PTRY0P_Today_Query : QueryMsg
         {
             public string Y0LNCD;
             public DateTime DateToday = DateTime.Today;
             public DateTime DataTomorrow = DateTime.Today.AddDays(1);
 
-            public PTRYOP_Today_Query()
+            public PTRY0P_Today_Query()
             {
 
             }
 
-            public PTRYOP_Today_Query(string name)
+            public PTRY0P_Today_Query(string name)
             {
                 Vender = name;
             }
@@ -184,7 +184,7 @@ namespace DefectDBManager
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Write($"[Error] PTRYOP_Today_Query Exception : {ex.Message}");
+                    Log.Write($"[Error] PTRY0P_Today_Query Exception : {ex.Message}");
                     return "";
                 }
             }

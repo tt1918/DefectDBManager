@@ -32,8 +32,8 @@ namespace DefectDBManager
     }
     #endregion
 
-    #region PTRYOP List
-    public enum ePTRYOPList
+    #region PTRY0P List
+    public enum ePTRY0PList
     {
         Type,
         ESLot,
@@ -131,7 +131,8 @@ namespace DefectDBManager
         PTRYLP = 0,
         XOFSMST,
         AREADEL,
-        PTRYOP,
+        PTRY0P,
+        PTRY0P_TODAY,
         MRKCTLMST_ES,
         MRKCTLMST_TG,
         MRKCTLMST_ETC,

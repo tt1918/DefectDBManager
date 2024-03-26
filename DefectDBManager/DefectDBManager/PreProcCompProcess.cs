@@ -231,10 +231,10 @@ namespace DefectDBManager
                     // 금일자 생산 데이터에서 랏 정보 얻어옴
                     strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
 
-                    // PTRYOP 탐색
-                    success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(strLotID);
+                    // PTRY0P 탐색
+                    success = _DBProc[(int)eDbIdWhen.Now].SearchPTRY0P(strLotID);
 
-                    // SearchPTRYOP 문제가 없으면 INSPDAT 탐색함
+                    // SearchPTRY0P 문제가 없으면 INSPDAT 탐색함
                     if (success==true) success = _DBProc[(int)eDbIdWhen.Now].SearchINSPDAT(strLotID);
 
                     // 만얄 문제가 생겼다면, 다음 랏을 탐색.
@@ -285,7 +285,7 @@ namespace DefectDBManager
                             _DBProc[(int)eDbIdWhen.Next].ResetDataAll();
 
                             // 검색은 각 단계 별로 작업이 정상 완료되었을 때만 다음 순번 랏의 다운로드 작업을 진행하도록 함
-                            success = _DBProc[(int)eDbIdWhen.Next].SearchPTRYOP(strLotID);
+                            success = _DBProc[(int)eDbIdWhen.Next].SearchPTRY0P(strLotID);
                             if (success == true) success = _DBProc[(int)eDbIdWhen.Next].SearchINSPDAT(strLotID);
                             if (success == true)
                             {
@@ -313,10 +313,10 @@ namespace DefectDBManager
         {
             bool success = true;
 
-            // PTRYOP 탐색
-            success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYOP(lotName);
+            // PTRY0P 탐색
+            success = _DBProc[(int)eDbIdWhen.Now].SearchPTRY0P(lotName);
 
-            // SearchPTRYOP 문제가 없으면 INSPDAT 탐색함
+            // SearchPTRY0P 문제가 없으면 INSPDAT 탐색함
             if (success == true) success = _DBProc[(int)when].SearchINSPDAT(lotName);
             if (success == true) success = _DBProc[(int)when].SearchFLTDAT();
             if (success == true)

@@ -281,6 +281,26 @@
     <value>Size</value>
     <comment>MRKCTLMSTHeader</comment>
   </data>
+  <data name="listPTRY0P_0" xml:space="preserve">
+    <value>Type</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_1" xml:space="preserve">
+    <value>ES Lot</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_2" xml:space="preserve">
+    <value>Line Code</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_3" xml:space="preserve">
+    <value>ST Time</value>
+    <comment>PTRY0P</comment>
+  </data>
+  <data name="listPTRY0P_4" xml:space="preserve">
+    <value>ED Time</value>
+    <comment>PTRY0P</comment>
+  </data>
   <data name="listPTRYLP_0" xml:space="preserve">
     <value>LOT</value>
     <comment>PTRYLPHeader</comment>
@@ -293,39 +313,19 @@
     <value>Type</value>
     <comment>PTRYLPHeader</comment>
   </data>
-  <data name="listPTRYOP_0" xml:space="preserve">
-    <value>Type</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_1" xml:space="preserve">
-    <value>ES Lot</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_2" xml:space="preserve">
-    <value>Line Code</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_3" xml:space="preserve">
-    <value>ST Time</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listPTRYOP_4" xml:space="preserve">
-    <value>ED Time</value>
-    <comment>PTRYOP</comment>
-  </data>
-  <data name="listTodayPTLYOP_0" xml:space="preserve">
+  <data name="listTodayPTLY0P_0" xml:space="preserve">
     <value>LOT</value>
   </data>
-  <data name="listTodayPTLYOP_1" xml:space="preserve">
+  <data name="listTodayPTLY0P_1" xml:space="preserve">
     <value>공정</value>
   </data>
-  <data name="listTodayPTLYOP_2" xml:space="preserve">
+  <data name="listTodayPTLY0P_2" xml:space="preserve">
     <value>LNCD</value>
   </data>
-  <data name="listTodayPTLYOP_3" xml:space="preserve">
+  <data name="listTodayPTLY0P_3" xml:space="preserve">
     <value>Start Time</value>
   </data>
-  <data name="listTodayPTLYOP_4" xml:space="preserve">
+  <data name="listTodayPTLY0P_4" xml:space="preserve">
     <value>End Time</value>
   </data>
   <data name="LotName" xml:space="preserve">

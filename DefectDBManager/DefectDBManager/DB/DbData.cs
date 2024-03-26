@@ -671,7 +671,7 @@ namespace DefectDBManager
     public class PreProcCompDBResult
     {
         
-        // 현재 Lot 이름 기준 PTRYOP 데이터
+        // 현재 Lot 이름 기준 PTRY0P 데이터
         public List<PTRY0PData>[] PTRY0P_Data;
         // LOT 기준 INSPDATA 탐색 결과
         public List<List<INSPDATData>>[] INSPDAT_Data;

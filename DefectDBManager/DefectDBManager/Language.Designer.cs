@@ -511,6 +511,51 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 품종.
+        /// </summary>
+        internal static string listPTRY0P_0 {
+            get {
+                return ResourceManager.GetString("listPTRY0P_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 연신 Lot.
+        /// </summary>
+        internal static string listPTRY0P_1 {
+            get {
+                return ResourceManager.GetString("listPTRY0P_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 라인코드.
+        /// </summary>
+        internal static string listPTRY0P_2 {
+            get {
+                return ResourceManager.GetString("listPTRY0P_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 개시 시간.
+        /// </summary>
+        internal static string listPTRY0P_3 {
+            get {
+                return ResourceManager.GetString("listPTRY0P_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 종료 시간.
+        /// </summary>
+        internal static string listPTRY0P_4 {
+            get {
+                return ResourceManager.GetString("listPTRY0P_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 원단 Lot.
         /// </summary>
         internal static string listPTRYLP_0 {
@@ -538,92 +583,47 @@ namespace DefectDBManager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 품종.
-        /// </summary>
-        internal static string listPTRYOP_0 {
-            get {
-                return ResourceManager.GetString("listPTRYOP_0", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 연신 Lot.
-        /// </summary>
-        internal static string listPTRYOP_1 {
-            get {
-                return ResourceManager.GetString("listPTRYOP_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 라인코드.
-        /// </summary>
-        internal static string listPTRYOP_2 {
-            get {
-                return ResourceManager.GetString("listPTRYOP_2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 개시 시간.
-        /// </summary>
-        internal static string listPTRYOP_3 {
-            get {
-                return ResourceManager.GetString("listPTRYOP_3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 종료 시간.
-        /// </summary>
-        internal static string listPTRYOP_4 {
-            get {
-                return ResourceManager.GetString("listPTRYOP_4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Lot 정보.
         /// </summary>
-        internal static string listTodayPTLYOP_0 {
+        internal static string listTodayPTLY0P_0 {
             get {
-                return ResourceManager.GetString("listTodayPTLYOP_0", resourceCulture);
+                return ResourceManager.GetString("listTodayPTLY0P_0", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 공정.
         /// </summary>
-        internal static string listTodayPTLYOP_1 {
+        internal static string listTodayPTLY0P_1 {
             get {
-                return ResourceManager.GetString("listTodayPTLYOP_1", resourceCulture);
+                return ResourceManager.GetString("listTodayPTLY0P_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to LNCD.
         /// </summary>
-        internal static string listTodayPTLYOP_2 {
+        internal static string listTodayPTLY0P_2 {
             get {
-                return ResourceManager.GetString("listTodayPTLYOP_2", resourceCulture);
+                return ResourceManager.GetString("listTodayPTLY0P_2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 개시 시간.
         /// </summary>
-        internal static string listTodayPTLYOP_3 {
+        internal static string listTodayPTLY0P_3 {
             get {
-                return ResourceManager.GetString("listTodayPTLYOP_3", resourceCulture);
+                return ResourceManager.GetString("listTodayPTLY0P_3", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to 종료 시간.
         /// </summary>
-        internal static string listTodayPTLYOP_4 {
+        internal static string listTodayPTLY0P_4 {
             get {
-                return ResourceManager.GetString("listTodayPTLYOP_4", resourceCulture);
+                return ResourceManager.GetString("listTodayPTLY0P_4", resourceCulture);
             }
         }
         

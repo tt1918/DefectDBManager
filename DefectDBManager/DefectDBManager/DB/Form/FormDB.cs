@@ -43,8 +43,8 @@ namespace DefectDBManager
         readonly int[] listBCnoWidth = { 40, 100, 80, 80, 50, 80 };
         readonly string[] PTRYLPHeader = { "원단 Lot", "점착 Lot", "Insert M", "Complete M", "Width", "품종" };
         readonly int[] listPTRYLPWidth = { 100, 300, 100, 100, 100, 100 };
-        readonly string[] PTRYOPHeader = { "품종", "연신 Lot", "라인코드", "개시 시간", "종료 시간" };
-        readonly int[] listPTRYOPWidth = { 70, 70, 80, 140, 140 };
+        readonly string[] PTRY0PHeader = { "품종", "연신 Lot", "라인코드", "개시 시간", "종료 시간" };
+        readonly int[] listPTRY0PWidth = { 70, 70, 80, 140, 140 };
         readonly string[] MRKCTLMSTHeader = { "라인코드", "불량 ID", "품종", "사이즈" };
         readonly int[] listMRKCTLMSTWidth = { 80, 80, 180, 80 };
         readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH" };
@@ -116,7 +116,7 @@ namespace DefectDBManager
         public ListViewData BCNO_LV_Data;
         public ListViewData PTRYLP_LV_Data;
         public ListViewData MRKCTLMST_LV_Data;
-        public ListViewData PTRYOP_LV_Data;
+        public ListViewData PTRY0P_LV_Data;
         public ListViewData INSPDAT_LV_Data;
 
         public void CreateListViewData()
@@ -124,7 +124,7 @@ namespace DefectDBManager
             BCNO_LV_Data = new ListViewData();
             PTRYLP_LV_Data = new ListViewData();
             MRKCTLMST_LV_Data = new ListViewData();
-            PTRYOP_LV_Data = new ListViewData();
+            PTRY0P_LV_Data = new ListViewData();
             INSPDAT_LV_Data = new ListViewData();
         }
 
@@ -133,7 +133,7 @@ namespace DefectDBManager
             BCNO_LV_Data.Reset();
             PTRYLP_LV_Data.Reset();
             MRKCTLMST_LV_Data.Reset();
-            PTRYOP_LV_Data.Reset();
+            PTRY0P_LV_Data.Reset();
             INSPDAT_LV_Data.Reset();
         }
 
@@ -141,7 +141,7 @@ namespace DefectDBManager
         {
             this.makeBCNOListData();
             this.makePTRYLPListViewData();
-            this.makePTRYOPListViewData();
+            this.makePTRY0PListViewData();
             this.makeMRKCTLMSTListViewData();
             this.makeINSPDATListView();
         }
@@ -188,7 +188,7 @@ namespace DefectDBManager
 
             initBCNOListView();
             initPTRYLPListView();
-            initPTRYOPListView();
+            initPTRY0PListView();
             initMRKCTLMSTListView();
             initINSPDATListView();
             initFAULTDATListView();
@@ -322,7 +322,7 @@ namespace DefectDBManager
                 {
                     listViewBCNO.Items.Clear();
                     listViewPTRYLP.Items.Clear();
-                    listViewPTRYOP.Items.Clear();
+                    listViewPTRY0P.Items.Clear();
                     listViewMRKCTLMST.Items.Clear();
                     listViewINSPDAT.Items.Clear();
                     listViewFAULTDAT.Items.Clear();
@@ -332,7 +332,7 @@ namespace DefectDBManager
             {
                 listViewBCNO.Items.Clear();
                 listViewPTRYLP.Items.Clear();
-                listViewPTRYOP.Items.Clear();
+                listViewPTRY0P.Items.Clear();
                 listViewMRKCTLMST.Items.Clear();
                 listViewINSPDAT.Items.Clear();
                 listViewFAULTDAT.Items.Clear();
@@ -347,7 +347,7 @@ namespace DefectDBManager
                 {
                     displayBCNOListView();
                     displayPTRYLPListView();
-                    displayPTRYOPListView();
+                    displayPTRY0PListView();
                     displayMRKCTLMSTListView();
                     displayINSPDATListView();
                     displayFAULTDATListView();
@@ -357,7 +357,7 @@ namespace DefectDBManager
             {
                 displayBCNOListView();
                 displayPTRYLPListView();
-                displayPTRYOPListView();
+                displayPTRY0PListView();
                 displayMRKCTLMSTListView();
                 displayINSPDATListView();
                 displayFAULTDATListView();
@@ -601,18 +601,18 @@ namespace DefectDBManager
         }
         #endregion
 
-        #region PTRYOP List
-        private void initPTRYOPListView()
+        #region PTRY0P List
+        private void initPTRY0PListView()
         {
-            listViewPTRYOP.View = View.Details;
-            listViewPTRYOP.FullRowSelect = true;
-            for (int i = 0; i < PTRYOPHeader.Length; i++)
-                listViewPTRYOP.Columns.Add(PTRYOPHeader[i], listPTRYOPWidth[i]);
+            listViewPTRY0P.View = View.Details;
+            listViewPTRY0P.FullRowSelect = true;
+            for (int i = 0; i < PTRY0PHeader.Length; i++)
+                listViewPTRY0P.Columns.Add(PTRY0PHeader[i], listPTRY0PWidth[i]);
         }
 
-        private void makePTRYOPListViewData()
+        private void makePTRY0PListViewData()
         {
-            PTRYOP_LV_Data.Data.Clear();
+            PTRY0P_LV_Data.Data.Clear();
             List<PTRY0PData>[] tmpData = DataBase._DbResult.PTRY0P_Data;
             int cnt = tmpData.Length;
             for (int i = 0; i < cnt; i++)
@@ -625,44 +625,44 @@ namespace DefectDBManager
                     bufData.items[2] = data.Y0LNSN;
                     bufData.items[3] = data.Y0KKOL;
                     bufData.items[4] = data.Y0KSOL;
-                    PTRYOP_LV_Data.Data.Add(bufData);
+                    PTRY0P_LV_Data.Data.Add(bufData);
                 }
             }
         }
 
-        private void displayPTRYOPListView()
+        private void displayPTRY0PListView()
         {
-            if (PTRYOP_LV_Data.Data == null) return;
+            if (PTRY0P_LV_Data.Data == null) return;
             try
             {
-                listViewPTRYOP.BeginUpdate();
-                listViewPTRYOP.Items.Clear();
+                listViewPTRY0P.BeginUpdate();
+                listViewPTRY0P.Items.Clear();
 
-                foreach (DBListViewBuf data in PTRYOP_LV_Data.Data)
+                foreach (DBListViewBuf data in PTRY0P_LV_Data.Data)
                 {
                     ListViewItem item = new ListViewItem(data.items[0]);
                     item.SubItems.Add(data.items[1]);
                     item.SubItems.Add(data.items[2]);
                     item.SubItems.Add(data.items[3]);
                     item.SubItems.Add(data.items[4]);
-                    listViewPTRYOP.Items.Add(item);
+                    listViewPTRY0P.Items.Add(item);
                 }
             }
             finally
             {
-                listViewPTRYOP.EndUpdate();
+                listViewPTRY0P.EndUpdate();
             }
         }
 
-        private void updatePTRYOPListViewLanguage()
+        private void updatePTRY0PListViewLanguage()
         {
-            if (listViewPTRYOP.Columns.Count > 0)
+            if (listViewPTRY0P.Columns.Count > 0)
             {
-                listViewPTRYOP.Columns[0].Text = Language.listPTRYOP_0;
-                listViewPTRYOP.Columns[1].Text = Language.listPTRYOP_1;
-                listViewPTRYOP.Columns[2].Text = Language.listPTRYOP_2;
-                listViewPTRYOP.Columns[3].Text = Language.listPTRYOP_3;
-                listViewPTRYOP.Columns[4].Text = Language.listPTRYOP_4;
+                listViewPTRY0P.Columns[0].Text = Language.listPTRY0P_0;
+                listViewPTRY0P.Columns[1].Text = Language.listPTRY0P_1;
+                listViewPTRY0P.Columns[2].Text = Language.listPTRY0P_2;
+                listViewPTRY0P.Columns[3].Text = Language.listPTRY0P_3;
+                listViewPTRY0P.Columns[4].Text = Language.listPTRY0P_4;
             }
         }
         #endregion
@@ -1162,12 +1162,12 @@ namespace DefectDBManager
             this.initFaultPage(dataBase.ResultDefect.MarkFault.Data.Count);
             makeBCNOListData();
             makePTRYLPListViewData();
-            makePTRYOPListViewData();
+            makePTRY0PListViewData();
             makeMRKCTLMSTListViewData();
             makeINSPDATListView();
             displayBCNOListView();
             displayPTRYLPListView();
-            displayPTRYOPListView();
+            displayPTRY0PListView();
             displayMRKCTLMSTListView();
             displayINSPDATListView();
             displayFAULTDATListView();
@@ -1402,7 +1402,7 @@ namespace DefectDBManager
             formProgress = new FormDbProgress();
             formProgress._LotName = this.dataBase.DbOption.lotName;
             formProgress._DbProgress = DataBase.DB_Progress;
-            formProgress._LastProgress = eNittoDBProgress.PTRYOP;
+            formProgress._LastProgress = eNittoDBProgress.PTRY0P;
             formProgress._DispType = 1;
             formProgress._Unit = null;
             formProgress.Show();
@@ -1954,12 +1954,12 @@ namespace DefectDBManager
                         }
                         break;
 
-                    case eNittoDBProgress.PTRYOP:
+                    case eNittoDBProgress.PTRY0P:
                         if (this.dataBase.DB_Progress._Progress[i].IsComplete() == true)
-                            sb.Append("PTRYOP Complete => ");
+                            sb.Append("PTRY0P Complete => ");
                         else
                         {
-                            sb.Append($"PTRYOP is processing");
+                            sb.Append($"PTRY0P is processing");
                             lblDownloadResult.Text = sb.ToString();
                             return;
                         }
@@ -2250,7 +2250,7 @@ namespace DefectDBManager
 
             updateBCNOListViewLanguage();
             updatePTRYLPListViewLanguage();
-            updatePTRYOPListViewLanguage();
+            updatePTRY0PListViewLanguage();
             updateMRKCTLMSTListViewLanguage();
             updateINSPDATListViewLanguage();
             updateFAULTDATListViewLanguage();
