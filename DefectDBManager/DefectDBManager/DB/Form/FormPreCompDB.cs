@@ -680,11 +680,11 @@ namespace DefectDBManager
         {
             if (listViewPTRY0P_TODAY.Columns.Count > 0)
             {
-                listViewPTRY0P_TODAY.Columns[0].Text = Language.listTodayPTLYOP_0;
-                listViewPTRY0P_TODAY.Columns[1].Text = Language.listTodayPTLYOP_1;
-                listViewPTRY0P_TODAY.Columns[2].Text = Language.listTodayPTLYOP_2;
-                listViewPTRY0P_TODAY.Columns[3].Text = Language.listTodayPTLYOP_3;
-                listViewPTRY0P_TODAY.Columns[4].Text = Language.listTodayPTLYOP_4;
+                listViewPTRY0P_TODAY.Columns[0].Text = Language.listTodayPTLY0P_0;
+                listViewPTRY0P_TODAY.Columns[1].Text = Language.listTodayPTLY0P_1;
+                listViewPTRY0P_TODAY.Columns[2].Text = Language.listTodayPTLY0P_2;
+                listViewPTRY0P_TODAY.Columns[3].Text = Language.listTodayPTLY0P_3;
+                listViewPTRY0P_TODAY.Columns[4].Text = Language.listTodayPTLY0P_4;
             }
         }
         #endregion

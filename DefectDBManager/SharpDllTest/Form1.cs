@@ -36,10 +36,8 @@ namespace SharpDllTest
 
             defectProc.OnEndTodayProductSearching += formDB.OnUpdateDailyLotInfo;
 
-
             // 예약 랏인 경우
             //formDB.TodayDataBase = defectProc._DBProc[(int)(eDbIdWhen.Next)];
-
             ///////////////////////////////////////////////////////////////////////
 
             formDB.TopLevel = false;
