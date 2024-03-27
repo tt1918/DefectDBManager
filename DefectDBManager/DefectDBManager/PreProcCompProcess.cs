@@ -121,6 +121,7 @@ namespace DefectDBManager
             if (disposing)
             {
                 _DbConn.Dispose();
+                this.CheckAvailableLotthread?.Abort();
             }
             this.disposed = true;
         }
@@ -146,10 +147,11 @@ namespace DefectDBManager
 
             // 오늘자 PTRY0P 탐색 -> INSPDAT 탐색
             if(procNow.SearchTodayPTRY0PList(lotID)==true)
-            {                
+            {
                 // 검사 완료 처리
-                if(OnEndTodayProductSearching!=null) OnEndTodayProductSearching();
-                
+                if (OnEndTodayProductSearching != null) OnEndTodayProductSearching();
+                if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
+
                 // 체크 스레드 시작
                 StartCheckAvaliableINSPDAT();
             }
@@ -265,7 +267,7 @@ namespace DefectDBManager
                                 OnProcessEvent((int)eEventReport.eFinishedSearchDailyLotData);
 
                                 // 검색 결과 상위 업데이트 함
-                                OnEndSearchingAvailableLot();
+                                if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
                             }
                             else // 실패 보고
                                 OnProcessEvent((int)eEventReport.eEmptyDailyLotFaultData);

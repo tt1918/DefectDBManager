@@ -1552,9 +1552,9 @@ namespace DefectDBManager
                     strTmp = "";
                     for (i = 0; i < nINSPLengthCnt; i++)
                     {
-                        if (fStLength != _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart)
+                        if (fStLength != _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart)
                         {
-                            fStLength = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].TimeInspStart;
+                            fStLength = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart;
                             fTmp = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].Length;
                             fTmp = fTmp / 1000.0f;
                             fLength += fTmp;

@@ -49,6 +49,18 @@ namespace SharpDllTest
             formDB.Show();
         }
 
+        ~Form1()
+        {
+            
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            formDB.Close();
+            defectProc.Dispose();
+        }
+
+
         public void SearchTodayProductLot(string lotID)
         {
             defectProc.SearchDailyLot(lotID);
@@ -63,5 +75,6 @@ namespace SharpDllTest
         {
             List<string> strCode = defectProc.GetLineCodeName(fcd);
         }
+
     }
 }

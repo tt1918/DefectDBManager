@@ -159,6 +159,7 @@ namespace DefectDBManager
         {
             public string Y0LNCD;
             public DateTime DateToday = DateTime.Today;
+            //public DateTime DateToday = new DateTime(2023,04,19);
             public DateTime DataTomorrow = DateTime.Today.AddDays(1);
 
             public PTRY0P_Today_Query()
@@ -483,10 +484,10 @@ namespace DefectDBManager
 
             public string GetQuery()
             {
-                string message;
-                message = "SELECT* FROM FAULTDAT, FLTMST, INSPDAT WHERE FAULTDAT.FLTID=FLTMST.FLTID AND FAULTDAT.CTLNO=" +
-                          "INSPDAT.CTLNO AND FAULTDAT.CTLNO='" + CTLNO + "'";
-                return message;
+                StringBuilder sbMsg = new StringBuilder();
+                sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.YPOS_M,FAULTDAT.XPOS_M,FAULTDAT.AREA_M,FAULTDAT.RANK,FAULTDAT.KND,FAULTDAT.CAMNO," +
+                                "FAULTDAT.MNTTAN,FAULTDAT.JIGCD,FAULTDAT.MACNO,FAULTDAT.FLTID FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'");
+                return sbMsg.ToString();
             }
         }
 

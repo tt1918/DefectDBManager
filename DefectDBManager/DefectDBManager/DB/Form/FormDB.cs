@@ -47,8 +47,8 @@ namespace DefectDBManager
         readonly int[] listPTRY0PWidth = { 70, 70, 80, 140, 140 };
         readonly string[] MRKCTLMSTHeader = { "라인코드", "불량 ID", "품종", "사이즈" };
         readonly int[] listMRKCTLMSTWidth = { 80, 80, 180, 80 };
-        readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH" };
-        readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 70, 80, 80, 80, 90 };
+        readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH"};
+        readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 70, 80, 80, 80, 90};
         readonly string[] FAULTDATHeader = { "CNT", "관리 NO", "불량 CNT", "OFFSET", "XPOS_M", "YPOS_M", "종류", "불량번호",
                                              "SIZE", "CAM", "CLASS", "M CLASS", "X_OFFSET", "MNTTID"};
         readonly int[] listFAULTDATWidth = { 45, 130, 80, 90, 110, 110, 40, 75, 55, 50, 60, 90, 90, 70 };

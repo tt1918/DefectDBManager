@@ -265,12 +265,12 @@ namespace DefectDBManager
 
         // 실데이터
         public float OffsetX = 0.0f;
-        public float TimeInspStart = 0.0f;
-        public float TimeInspEnd = 0.0f;
-        public float Width = 0.0f;
-        public float Length = 0.0f;
         public float YPosStart = 0.0f;
         public float YPosEnd = 0.0f;
+        public float Width = 0.0f;
+        public float Length = 0.0f;
+        public float XPosStart = 0.0f;
+        public float XPosEnd = 0.0f;
 
         // 후처리 FaltData 연산 갯수
         // DB 데이터와는 상관 없음
@@ -289,11 +289,11 @@ namespace DefectDBManager
             LOTNO = reader[3].ToString();
             ROLLNO = reader[4].ToString();
             BCNO = reader[6].ToString();
-            TimeInspStart = float.Parse(reader[7].ToString());
-            TimeInspEnd = float.Parse(reader[8].ToString());
+            YPosStart = float.Parse(reader[7].ToString());
+            YPosEnd = float.Parse(reader[8].ToString());
             Width = float.Parse(reader[13].ToString());
-            YPosStart = float.Parse(reader[14].ToString());
-            YPosEnd = float.Parse(reader[15].ToString());
+            XPosStart = float.Parse(reader[14].ToString());
+            XPosEnd = float.Parse(reader[15].ToString());
             Length = float.Parse(reader[18].ToString());
             STRDT = reader[21].ToString();
             STRTM = reader[22].ToString();
@@ -307,7 +307,7 @@ namespace DefectDBManager
 
         public override string ToString()
         {
-            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{TimeInspStart:F2}\t\t{TimeInspEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
+            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{YPosStart:F2}\t\t{YPosEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
             return msg;
         }
     }
@@ -670,7 +670,8 @@ namespace DefectDBManager
     #region PreProcCompDB용 결과
     public class PreProcCompDBResult
     {
-        
+        public List<PTRYLPdata> PTRLYP_Data;
+
         // 현재 Lot 이름 기준 PTRY0P 데이터
         public List<PTRY0PData>[] PTRY0P_Data;
         // LOT 기준 INSPDATA 탐색 결과
@@ -686,7 +687,7 @@ namespace DefectDBManager
 
         public void Init()
         {
-            
+            PTRLYP_Data = new List<PTRYLPdata>();
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             PTRY0P_Data = new List<PTRY0PData>[count];
@@ -704,6 +705,7 @@ namespace DefectDBManager
 
         public void ClearAll()
         {
+            PTRLYP_Data.Clear();
             for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
 
             for (int i = 0; i < INSPDAT_Data.Length; i++)

@@ -162,12 +162,15 @@ namespace DefectDBManager
                         {
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
-                            
+
+                            // 우선 전체 데이터 넣는다.
+                            PTRY0P_Today_Data.Add(data);
+
                             // 비어있는 데이터만 탐색한다. 
-                            if(data.Y0KKOL.Substring(8)=="000000" && data.Y0KSOL.Substring(8) == "000000")
-                            {
-                                PTRY0P_Today_Data.Add(data);
-                            }
+                            //if (data.Y0KKOL.Substring(8)=="000000" && data.Y0KSOL.Substring(8) == "000000")
+                            //{
+                            //    PTRY0P_Today_Data.Add(data);
+                            //}
                         }
                         DB_Progress.Set(eNittoDBProgress.PTRY0P);
                     }
@@ -176,14 +179,39 @@ namespace DefectDBManager
                 // 처음 랏을 탐색하였다면 생산하지 않은 제일 처음 랏을 가지고 온다.
                 if (PTRY0P_Today_Data.Count == 0) return false;
 
+                int date1=0, date2=0;
+                int index1 = 0, index2 = 0;
+                bool bChanged = false;
+
+                PTRY0P_Today_Data = PTRY0P_Today_Data.OrderBy(p => p.Y0KLOT).ToList();
+
                 // 데이터 초기화
                 ResetDataAll();
+                PTRY0PData firstItem=null;
+                for (int i=-0; i< PTRY0P_Today_Data.Count; i++)
+                {
+                    if (PTRY0P_Today_Data[i].Y0KKOL.Substring(8) == "000000" && PTRY0P_Today_Data[i].Y0KSOL.Substring(8) == "000000")
+                    {
+                        firstItem = PTRY0P_Today_Data[i];
+                        break;
+                    }
+                }
 
-                string firstLotID = PTRY0P_Today_Data[0].Y0KLOT;
+                string tmpLotName = "LQP0412-02";
 
-                success = SearchPTRY0P(firstLotID);
+                if (firstItem == null) return false;
+
+                success = SearchPTRYLP(tmpLotName);
+                if(success==false) return false;
+                success = SearchPTRY0P(tmpLotName);
                 if (success == false) return false;
-                success = SearchINSPDAT(firstLotID);
+                success = SearchINSPDAT(tmpLotName);
+                if (success == false) return false;
+
+                // 첫 검사 랏은 복사하여둔다
+                CopyInspDatToMatchedInspData();
+
+                success = SearchFLTDAT();
                 if (success == false) return false;
             }
             catch ( Exception ex)
@@ -217,7 +245,7 @@ namespace DefectDBManager
 
                 foreach(INSPDATData data in _DbResult.Matched_INSPDAT_Data[i])
                 {
-                    if (data.BCNO != bcno || (data.YPosStart > dPosY || data.YPosEnd < dPosY))
+                    if (data.BCNO != bcno || (data.XPosStart > dPosY || data.XPosEnd < dPosY))
                         isAvaliable[i] = false;
                 }
             }
@@ -252,7 +280,7 @@ namespace DefectDBManager
                     foreach(INSPDATData datum in data)
                     {
                         // 매칭되면 데이터를 넣어준다. 
-                        if(datum.BCNO == bcno && (datum.YPosStart <= dPosY && datum.YPosEnd >= dPosY))
+                        if(datum.BCNO == bcno && (datum.XPosStart <= dPosY && datum.XPosEnd >= dPosY))
                             inspDat[i].Add(datum);
                     }
                 }
@@ -289,6 +317,66 @@ namespace DefectDBManager
             _DbResult.Matched_INSPDAT_Data = inspDat;
         }
 
+        public bool SearchPTRYLP(string lotID)
+        {
+            // 연결 확인
+            if (conn?.IsConnected() == false)
+                return false;
+
+            bool success = false;
+
+            try
+            {
+
+                this.SearchLotName = lotID;
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
+                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                int newLotCnt = GetNextLotCnt(lotID);
+                if (newLotCnt > 0) _LOG.Lot = $"{lotID}_{newLotCnt:D2}";
+                else _LOG.Lot = lotID;
+                DB_Progress.ResetAll();
+
+                QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
+                string query = ptrylp.GetQuery();
+                long dbCnt = 0;
+                _LOG.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
+                
+                if (query == "")
+                {
+                    Log.Write($"[Error] DB Serach PTRYLP query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                }
+
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
+                    {
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.PTRYLP);
+                        while (reader.Read())
+                        {
+                            PTRYLPdata data = new PTRYLPdata();
+                            data.Parse(reader);
+                            _DbResult.PTRLYP_Data.Add(data);
+                            string logData = string.Format($"{_DbResult.PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
+                        }
+
+                        DB_Progress.Complete(eNittoDBProgress.PTRYLP);
+                        success = true;
+                    }
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Log.Write($"[Error] DB Serach PTRY0P error message : [{ex.Message}]");
+                DB_Progress.SetError(eNittoDBProgress.PTRY0P);
+                return false;
+            }
+        }
+
         public bool SearchPTRY0P(string lotID)
         {
             // 연결 확인
@@ -301,7 +389,7 @@ namespace DefectDBManager
                 QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-                string query = msg.GetQuery(null);
+                string query = msg.GetQuery(_DbResult.PTRLYP_Data);
                 _LOG.WriteLoadData(query, 0, "PTRY0P", 0.0);
 
                 if (query == "")
@@ -475,20 +563,12 @@ namespace DefectDBManager
             if (conn?.IsConnected() == false)
                 return false;
 
-            DestConfigUnit destUnit = destConfig.SelDestUnit;
-            if (destUnit == null)
-            {
-                destConfig.SetSelDest(dbOption.FWPlace);
-                destConfig.SelDestUnit = destUnit;
-            }
-
-            bool useXOffset = destConfig.UseXOffset;
-            bool useAIFromDB = DbOption.useAIfromDB;
-
             float maxXPos = 0;
             float minXPos = float.MaxValue;
-         
-            eCSV_TYPE csvType = destConfig.GetCsvType();
+
+            bool useXOffset = false;
+            bool useAIFromDB = false;
+            eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
             float finalXPos;
@@ -505,6 +585,11 @@ namespace DefectDBManager
 
             int[] defectCnt = new int[fcdCnt]; 
             defectCnt.Initialize();
+
+            float inspStartY=0.0f;
+            float inspEndY = 0.0f;
+
+            FaultData = new PrePocResultData();
 
             try
             {
@@ -542,8 +627,11 @@ namespace DefectDBManager
 
                         // 데이터 삽입.
                         // 추후 현재 입력된 데이터와 다른 경우 확인해야 함. 
-                        FaultData.BCNO = inspdata.BCNO;
-                        
+                        if(inspdata.BCNO!=null) FaultData.BCNO = inspdata.BCNO;
+
+                        inspStartY = inspdata.YPosStart;
+                        inspEndY = inspdata.YPosEnd;
+
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
 
@@ -575,13 +663,15 @@ namespace DefectDBManager
 
                                 // 불량 스킵 데이터 갖고 오기
                                 DefectSizeTH skipData = DbDestConfig.DefectSizeTHs.Find(x=> x.LNCD.Equals(defectData.LNCD));
-                                float minSizeTh = skipData.MinSize;
-                                float maxSizeTh = skipData.MaxSize;
+
+                                float minSizeTh = 0.4f;
+                                if(skipData!=null)
+                                    minSizeTh = skipData.MinSize;
 
                                 while (reader.Read())
                                 {
                                     FLTDATAData data = new FLTDATAData();
-                                    data.Parse(reader);
+                                    data.Parse(reader); 
 
                                     tmpFaltID = data.FLTID.ToUpper();
 
@@ -597,8 +687,10 @@ namespace DefectDBManager
                                         
                                     if (finalXPos < 0.0f) continue;
 
+                                    if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
+
                                     // 사이즈 스킵 처리
-                                    if (data.AREA_M < minSizeTh || data.AREA_M > maxSizeTh) continue;
+                                    if (data.AREA_M < minSizeTh) continue;
 
                                     // Fault Data 처리
                                     FaultDatum tmpFltData = new FaultDatum();

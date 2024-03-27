@@ -44,8 +44,8 @@ namespace DefectDBManager
         readonly int[] listPTRY0PWidth = { 70, 70, 80, 140, 140 };
         readonly string[] MRKCTLMSTHeader = { "라인코드", "불량 ID", "품종", "사이즈" };
         readonly int[] listMRKCTLMSTWidth = { 80, 80, 180, 80 };
-        readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH" };
-        readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 70, 80, 80, 80, 90 };
+        readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "BCNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH", "ST_Y", "ED_Y" };
+        readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 60, 70, 80, 80, 80, 90, 50, 50 };
         readonly string[] FAULTDATHeader = { "CNT", "관리 NO", "불량 CNT", "OFFSET", "XPOS_M", "YPOS_M", "종류", "불량번호",
                                              "SIZE", "CAM", "CLASS", "M CLASS", "X_OFFSET", "MNTTID"};
         readonly int[] listFAULTDATWidth = { 45, 130, 80, 90, 110, 110, 40, 75, 55, 50, 60, 90, 90, 70 };
@@ -54,7 +54,7 @@ namespace DefectDBManager
 
         #region 이전 결점 비교 처리 => List View는 Marking Control Master를 사용.
         readonly string[] PTLYOP_TodayHeader = { "LOT", "LNCD", "품종", "개시 시간", "종료 시간" };
-        readonly int[] listPTLYOP_TodayWidth = { 80, 80, 70, 140, 140 };
+        readonly int[] listPTLYOP_TodayWidth = { 80, 70, 160, 120, 120 };
         #endregion
 
         #endregion
@@ -504,17 +504,17 @@ namespace DefectDBManager
         private void makePTRYLPListViewData()
         {
             PTRYLP_LV_Data.Data.Clear();
-            //foreach (PTRYLPdata data in TodayDataBase._DbResult.PTRLYP_Data)
-            //{
-            //    DBListViewBuf bufData = new DBListViewBuf(6);
-            //    bufData.items[0] = data.YLMLOT;
-            //    bufData.items[1] = data.YLMZKY;
-            //    bufData.items[2] = data.YLMTON.ToString();
-            //    bufData.items[3] = data.YLMKAS.ToString();
-            //    bufData.items[4] = data.YLMYKH;
-            //    bufData.items[5] = data.YLSZKN;
-            //    PTRYLP_LV_Data.Data.Add(bufData);
-            //}
+            foreach (PTRYLPdata data in PreCompDB._DbResult.PTRLYP_Data)
+            {
+                DBListViewBuf bufData = new DBListViewBuf(6);
+                bufData.items[0] = data.YLMLOT;
+                bufData.items[1] = data.YLMZKY;
+                bufData.items[2] = data.YLMTON.ToString();
+                bufData.items[3] = data.YLMKAS.ToString();
+                bufData.items[4] = data.YLMYKH;
+                bufData.items[5] = data.YLSZKN;
+                PTRYLP_LV_Data.Data.Add(bufData);
+            }
         }
 
         private void displayPTRYLPListView()
@@ -709,7 +709,7 @@ namespace DefectDBManager
 
                 if (header == null) return;
 
-                DBListViewBuf bufData = new DBListViewBuf(11);
+                DBListViewBuf bufData = new DBListViewBuf(INSPDATHeader.Length);
                 bufData.items[0] = "";
                 bufData.items[1] = "";
                 bufData.items[2] = header.lotNo;
@@ -746,17 +746,20 @@ namespace DefectDBManager
                     {
                         foreach (INSPDATData item in items)
                         {
-                            DBListViewBuf bufData = new DBListViewBuf(9);
+                            DBListViewBuf bufData = new DBListViewBuf(INSPDATHeader.Length);
 
                             bufData.items[0] = item.CTLNO;
                             bufData.items[1] = item.HINMEI;
                             bufData.items[2] = item.LOTNO;
-                            bufData.items[3] = item.STRDT;
-                            bufData.items[4] = item.STRTM;
-                            bufData.items[5] = item.ENDDT;
-                            bufData.items[6] = item.ENDTM;
-                            bufData.items[7] = $"{item.Width:F3}";
-                            bufData.items[8] = $"{item.Length:F3}";
+                            bufData.items[3] = item.BCNO;
+                            bufData.items[4] = item.STRDT;
+                            bufData.items[5] = item.STRTM;
+                            bufData.items[6] = item.ENDDT;
+                            bufData.items[7] = item.ENDTM;
+                            bufData.items[8] = $"{item.Width:F3}";
+                            bufData.items[9] = $"{item.Length:F3}";
+                            bufData.items[10] = $"{item.YPosStart:F3}";
+                            bufData.items[11] = $"{item.YPosEnd:F3}";
 
                             INSPDAT_LV_Data.Data.Add(bufData);
                         }
@@ -786,6 +789,9 @@ namespace DefectDBManager
                     listItem.SubItems.Add(data.items[6]);
                     listItem.SubItems.Add(data.items[7]);
                     listItem.SubItems.Add(data.items[8]);
+                    listItem.SubItems.Add(data.items[9]);
+                    listItem.SubItems.Add(data.items[10]);
+                    listItem.SubItems.Add(data.items[11]);
                     listViewINSPDAT.Items.Add(listItem);
                 }
             }
@@ -1540,6 +1546,8 @@ namespace DefectDBManager
         public void OnUpdateAvailableLot()
         {
             // List View 업데이트 데이터 생성
+
+            initFaultPage(PreCompDB.FaultData.MarkData.Count);
             this.makeAllListViewData();
             this.displayAllListView();
         }
