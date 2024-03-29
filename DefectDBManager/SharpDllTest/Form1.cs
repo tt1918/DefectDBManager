@@ -63,7 +63,7 @@ namespace SharpDllTest
 
         public void SearchTodayProductLot(string lotID)
         {
-            defectProc.SearchDailyLot(lotID);
+            defectProc.SearchDailyLot();
         }
 
         public List<MarkingFaultDatum> GetDefectData(string bcno, float start, float end)

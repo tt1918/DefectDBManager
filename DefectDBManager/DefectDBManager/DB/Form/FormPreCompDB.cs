@@ -39,13 +39,13 @@ namespace DefectDBManager
         readonly string[] BCnoHeader = { "No.", "LOTNO", "Bad Count", "M^2 불량수", "Use", "원단 BCNO" };
         readonly int[] listBCnoWidth = { 40, 100, 80, 80, 50, 80 };
         readonly string[] PTRYLPHeader = { "원단 Lot", "점착 Lot", "Insert M", "Complete M", "Width", "품종" };
-        readonly int[] listPTRYLPWidth = { 100, 300, 100, 100, 100, 100 };
-        readonly string[] PTRY0PHeader = { "품종", "연신 Lot", "라인코드", "개시 시간", "종료 시간" };
-        readonly int[] listPTRY0PWidth = { 70, 70, 80, 140, 140 };
+        readonly int[] listPTRYLPWidth = { 120, 300, 100, 100, 100, 300 };
+        readonly string[] PTRY0PHeader = { "품종", "연신 Lot", "라인코드", "라인식별", "개시 시간", "종료 시간" };
+        readonly int[] listPTRY0PWidth = { 70, 80, 60, 60, 130, 130 };
         readonly string[] MRKCTLMSTHeader = { "라인코드", "불량 ID", "품종", "사이즈" };
         readonly int[] listMRKCTLMSTWidth = { 80, 80, 180, 80 };
         readonly string[] INSPDATHeader = { "관리NO", "품종", "LOTNO", "BCNO", "STRDT", "STRTM", "ENDDT", "ENDTM", "WIDTH", "LENGTH", "ST_Y", "ED_Y" };
-        readonly int[] listINSPDATWidth = { 130, 160, 90, 60, 60, 70, 80, 80, 80, 90, 50, 50 };
+        readonly int[] listINSPDATWidth = { 130, 160, 90, 90, 65, 65, 65, 65, 80, 90, 80, 80 };
         readonly string[] FAULTDATHeader = { "CNT", "관리 NO", "불량 CNT", "OFFSET", "XPOS_M", "YPOS_M", "종류", "불량번호",
                                              "SIZE", "CAM", "CLASS", "M CLASS", "X_OFFSET", "MNTTID"};
         readonly int[] listFAULTDATWidth = { 45, 130, 80, 90, 110, 110, 40, 75, 55, 50, 60, 90, 90, 70 };
@@ -566,12 +566,13 @@ namespace DefectDBManager
             {
                 foreach (PTRY0PData data in tmpData[i])
                 {
-                    DBListViewBuf bufData = new DBListViewBuf(5);
+                    DBListViewBuf bufData = new DBListViewBuf(PTRY0PHeader.Length);
                     bufData.items[0] = data.Y0ZKNM;
                     bufData.items[1] = data.Y0KLOT;
-                    bufData.items[2] = data.Y0LNSN;
-                    bufData.items[3] = data.Y0KKOL;
-                    bufData.items[4] = data.Y0KSOL;
+                    bufData.items[2] = data.LNCD;
+                    bufData.items[3] = data.Y0LNSN;
+                    bufData.items[4] = data.Y0KKOL;
+                    bufData.items[5] = data.Y0KSOL;
                     PTRY0P_LV_Data.Data.Add(bufData);
                 }
             }
@@ -588,10 +589,8 @@ namespace DefectDBManager
                 foreach (DBListViewBuf data in PTRY0P_LV_Data.Data)
                 {
                     ListViewItem item = new ListViewItem(data.items[0]);
-                    item.SubItems.Add(data.items[1]);
-                    item.SubItems.Add(data.items[2]);
-                    item.SubItems.Add(data.items[3]);
-                    item.SubItems.Add(data.items[4]);
+                    for(int i=1; i< data.items.Length; i++)
+                        item.SubItems.Add(data.items[i]);
                     listViewPTRY0P.Items.Add(item);
                 }
             }
@@ -1525,7 +1524,13 @@ namespace DefectDBManager
         public void OnUpdateAvailableLot()
         {
             // 현재 선택된 Lot Name을 업데이트 한다. 
-            tbLotName.Text = PreCompDB.SearchLotName;
+            if (this.tbLotName.InvokeRequired == true)
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    tbLotName.Text = PreCompDB.SearchLotName;
+                }));
+            else
+                tbLotName.Text = PreCompDB.SearchLotName;
 
             // List View 업데이트 데이터 생성
             initFaultPage(PreCompDB.FaultData.MarkData.Count);
@@ -1555,16 +1560,6 @@ namespace DefectDBManager
             if (conn.IsConnected() == false)
             {
                 MessageBox.Show(Language.PleaseLoginToTheDB);
-                return;
-            }
-            if (tbLotName.Text.Length == 0)
-            {
-                MessageBox.Show(Language.PleaseInsertLotNumber);
-                return;
-            }
-            if (tbLotName.Text.Length < Global.LotNameLength)
-            {
-                MessageBox.Show(Language.PleaseInsertTenDigitsOfLotNumber);
                 return;
             }
 

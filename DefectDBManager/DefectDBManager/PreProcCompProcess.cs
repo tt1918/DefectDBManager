@@ -151,10 +151,11 @@ namespace DefectDBManager
             {
                 // 검사 완료 처리
                 if (OnEndTodayProductSearching != null) OnEndTodayProductSearching();
-                //if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
+                if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
 
                 // 체크 스레드 시작
                 NextY0KLOTIdx = (ushort)firstIdx ;
+                _enaCheckINSPDAT = true;
                 StartCheckAvaliableINSPDAT();
             }
         }

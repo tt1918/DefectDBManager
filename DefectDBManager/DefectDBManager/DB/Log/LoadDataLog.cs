@@ -62,5 +62,13 @@ namespace DefectDBManager
 
             }
         }
+
+        public void DeleteFolder(string strLot)
+        {
+            string path = Path.Combine(Define.BCRPath, strLot);
+            if (Directory.Exists(path) == true)
+                Directory.Delete(path);
+        }
+
     }
 }

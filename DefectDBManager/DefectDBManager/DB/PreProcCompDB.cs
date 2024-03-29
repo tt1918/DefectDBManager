@@ -171,6 +171,9 @@ namespace DefectDBManager
 
                             // 우선 전체 데이터 넣는다.
                             PTRY0P_Today_Data.Add(data);
+
+                            string logData = string.Format($"{PTRY0P_Today_Data.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, 0, "PTRY0P_Today", 0);
                         }
                         DB_Progress.Set(eNittoDBProgress.PTRY0P);
                     }
@@ -197,33 +200,36 @@ namespace DefectDBManager
                     }
                 }
 
-                // 원래 여기서 데이터 탐색만 해야 함. 
+                //원래 여기서 데이터 탐색만 해야 함. 
                 // Test Code 나중에 삭제 처리.
-                //string tmpLotName = "LQP0412-02";
+                string tmpLotName = "LQP0412-02";
 
-                //if (firstItem == null) return false;
+                if (firstItem == null) return false;
 
-                //success = SearchPTRYLP(tmpLotName);
-                //if(success==false) return false;
+                tmpLotName = firstItem.Y0KLOT;
 
-                //success = SearchXOFSMST(lotID);
-                //if (success == false) return false;
+                bool success;
+                success = SearchPTRYLP(tmpLotName);
+                if (success == false) return false;
 
-                //success = SearchPTRY0P(tmpLotName);
-                //if (success == false) return false;
+                success = SearchXOFSMST(tmpLotName);
+                if (success == false) return false;
 
-                // 마킹 컨트롤 마스터 데이터 검색
-                //success = SearchMRKCTLMST(lotID);
-                //if (success == false) return false;
+                success = SearchPTRY0P(tmpLotName);
+                if (success == false) return false;
 
-                //success = SearchINSPDAT(tmpLotName);
-                //if (success == false) return false;
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(tmpLotName);
+                if (success == false) return false;
+
+                success = SearchINSPDAT(tmpLotName);
+                if (success == false) return false;
 
                 // 첫 검사 랏은 복사하여둔다
-                //CopyInspDatToMatchedInspData();
+                CopyInspDatToMatchedInspData();
 
-                //success = SearchFLTDAT();
-                //if (success == false) return false;
+                success = SearchFLTDAT();
+                if (success == false) return false;
             }
             catch ( Exception ex)
             {
@@ -289,8 +295,8 @@ namespace DefectDBManager
 
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 int newLotCnt = GetNextLotCnt(lotID);
-                if (newLotCnt > 0) _LOG.Lot = $"{lotID}_{newLotCnt:D2}";
-                else _LOG.Lot = lotID;
+                _LOG.DeleteFolder(lotID);
+                _LOG.Lot = lotID;
                 DB_Progress.ResetAll();
 
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
@@ -329,13 +335,13 @@ namespace DefectDBManager
                     DB_Progress.SetError(eNittoDBProgress.PTRYLP);
                     return false;
                 }
-                success = SearchXOFSMST(lotID);
-                if (success == false) return false;
+                //success = SearchXOFSMST(lotID);
+                //if (success == false) return false;
 
                 success = SearchPTRY0P(lotID);
                 if (success == false) return false;
-                success = SearchMRKCTLMST(lotID);
-                if (success == false) return false;
+                //success = SearchMRKCTLMST(lotID);
+                //if (success == false) return false;
                 success = SearchINSPDAT(lotID);
                 if (success == false) return false;
                 success = SearchFLTDAT();
@@ -466,12 +472,10 @@ namespace DefectDBManager
                     {
                         _DbResult.ClearDicMRKCTLMST(i, j);
 
-                        if ((dbOption.checkES == true && (eFCD)i == eFCD.ES) ||
-                           (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
-                           (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && _DbResult.PTRY0P_Data[i][j].Y0KLOT.Length > 0)
+                        if (_DbResult.PTRY0P_Data[i][j].Y0KLOT.Length > 0)
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
-                            msg.MKCD = dbOption.searchOP.MKCD;
+                            msg.MKCD = destConfig.SelDestUnit.MKCD;
                             msg.Y0KLOT = _DbResult.PTRY0P_Data[i][j].Y0KLOT;
                             string query = msg.GetQuery((eFCD)i);
                             _LOG.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
@@ -800,6 +804,8 @@ namespace DefectDBManager
             float inspStartY=0.0f;
             float inspEndY = 0.0f;
 
+            bool bValid = false;
+
             FaultData = new PrePocResultData();
 
             try
@@ -815,9 +821,9 @@ namespace DefectDBManager
                     DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
 
-                    if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)         defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)    defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)  defectCnt[fcdIdx] = -1;// 확인 안 함
+                    if (fcdIdx == (int)eFCD.ES)         defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.TG)    defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.ETC)  defectCnt[fcdIdx] = -1;// 확인 안 함
 
                     int nItemCnt = 0;
 
@@ -874,7 +880,7 @@ namespace DefectDBManager
                                 // 불량 스킵 데이터 갖고 오기
                                 DefectSizeTH skipData = DbDestConfig.DefectSizeTHs.Find(x=> x.LNCD.Equals(defectData.LNCD));
 
-                                float minSizeTh = 0.4f;
+                                float minSizeTh = 0.1f;
                                 if(skipData!=null)
                                     minSizeTh = skipData.MinSize;
 
@@ -885,16 +891,22 @@ namespace DefectDBManager
 
                                     tmpFaltID = data.FLTID.ToUpper();
 
+
                                     finalXPos = data.XPOS_M;
                                     if (useXOffset == true)     finalXPos += inspdata.OffsetX;
-                                        
                                     if (useAIFromDB == false)
                                     {
                                         tmpKey = data.MNTTAN.TrimStart();
                                         if (string.IsNullOrEmpty(tmpKey))   tmpKey = data.FLTID;
                                     }
                                     else    tmpKey = data.FLTID;
-                                        
+
+
+                                    // 마킹 컨트롤 마스터에서 데이터 가져와서 다시 탐색함. 
+                                    //bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
+                                    //if (bValid == false) continue;
+
+
                                     if (finalXPos < 0.0f) continue;
 
                                     if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
