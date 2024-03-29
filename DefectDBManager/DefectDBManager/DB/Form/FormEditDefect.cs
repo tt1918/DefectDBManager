@@ -24,7 +24,9 @@ namespace DefectDBManager
         readonly int[] listDE_Width = { 30, 60, 60, 60, 60, 100};
         #endregion
 
-        public NittoDB _DataBase { get; set; }
+        public DbSearchResult _DB_Result { get; set; }
+        public LogDB _LOG { get; set; }
+        public OracleDbConnection _Conn { get; set; }
 
         private Dictionary<int, MRKCTLMSTData> _mrk_de;
 
@@ -137,12 +139,12 @@ namespace DefectDBManager
 
                 for (int i = 0; i < count; i++)
                 {
-                    for (int j = 0; j < _DataBase._DbResult._MRKCTLMST_DE[i].Count; j++)
+                    for (int j = 0; j < _DB_Result._MRKCTLMST_DE[i].Count; j++)
                     {
-                        if (_DataBase._DbResult._MRKCTLMST_DE[i][j].query == "")
+                        if (_DB_Result._MRKCTLMST_DE[i][j].query == "")
                             continue;
 
-                        using (var comm = new OracleCommand(_DataBase._DbResult._MRKCTLMST_DE[i][j].query, _DataBase.Conn.Connection))
+                        using (var comm = new OracleCommand(_DB_Result._MRKCTLMST_DE[i][j].query, this._Conn.Connection))
                         {
                             using (var reader = comm.ExecuteReader())
                             {
@@ -151,12 +153,12 @@ namespace DefectDBManager
                                     MRKCTLMSTData data = new MRKCTLMSTData();
                                     data.Parse(reader);
                                     addItem(data);
-                                    _DataBase._DbResult._MRKCTLMST_DE[i][j].data.Add(data);
+                                    _DB_Result._MRKCTLMST_DE[i][j].data.Add(data);
 
                                     _mrk_de.Add(resCnt, data);
 
                                     logData = string.Format($"{resCnt}\t-\t{data.ToString()}");
-                                    this._DataBase._LOG.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
+                                    this._LOG.WriteLoadData(logData, resCnt, "MRKCTLMST-EDIT", 0.0);
                                     resCnt++;
                                 }
                             }

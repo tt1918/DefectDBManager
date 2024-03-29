@@ -315,12 +315,9 @@ namespace DefectDBManager
     public class FLTDATAData
     {
         // Search Item = YLMLOT(점착LOT)
-        //	1		2		3		4           5		    6		7       8		9		10      11		12		13		14		15		16		17		18		    19		    20		
-        //	CTLNO	FLTNO	DT	    TM  	    OFFSET      YPOS_M	YPOS_P	XPOS_M	XPOS_P	AREA_M	AREA_P	LEN_M	LEN_P	WID_M	WID_P	RANK	KND 	S_SLIT	    E_SLIT	    CMT	
-        //	관리No	결점No	발생일   발생시각   원단장위치  흐르는 방향     폭방향          면적mm  면적pxl 길이mm  길이pxl 길이mm  길이pxl 랭크    종류수  개시슬리터  완료 슬리터 코멘트
-        //  21		22		23		    24		    25		    26	     27	    28	        29	        30	        31	        32	      33	    34	        35	    36	        
-        //  CAMNO	MAGNIF	PICFLG	    PICSIZE	    PICFNAME    MNTINF	 MNTDT	MNTTM	    MNTTAN	    JIGCD	    MACNO	    GRANK	  PICTYPE	PICFSIZE    FLTID  FLTORG		
-        //  카메라No Y배율  화상유무    화상크기    화상필름명  보수정보 보수일 보수시각    보수담당    사무실코드  검사장치No  외관 랭크 화상 타임 화상사이즈  결점ID 결점ID(검사장치)
+        //	1		2		3           4           5       6       7		8       9		 10         11	      12        13
+        //	CTLNO	FLTNO	OFFSET      YPOS_M	    XPOS_M	AREA_M  RANK	KND     CAMNO	 MNTTAN		JIGCD	  MACNO     FLTID
+        //	관리No	결점No	원단장위치   흐르는 방향   폭방향   면적mm  랭크    종류수    카메라No  보수담당    사무실코드 검사장치No  결점ID
 
         public string CTLNO;
         public string FLTNO;
@@ -336,29 +333,7 @@ namespace DefectDBManager
         public string MACNO;
         public string FLTID;
 
-        //public void Parse(OracleDataReader reader)
-        //{
-        //    float fVal;
-        //    CTLNO = reader[0].ToString();
-        //    FLTNO = reader[1].ToString();
-        //    if (float.TryParse(reader[4].ToString(), out fVal) == true)
-        //        OFFSET = fVal;
-        //    if (float.TryParse(reader[5].ToString(), out fVal) == true)
-        //        YPOS_M = fVal;
-        //    if (float.TryParse(reader[7].ToString(), out fVal) == true)
-        //        XPOS_M = fVal;
-        //    if (float.TryParse(reader[9].ToString(), out fVal) == true)
-        //        AREA_M = fVal;
-        //    RANK = reader[15].ToString();
-        //    KND = reader[16].ToString();
-        //    if (Int32.TryParse(reader[20].ToString(), out int iVal) == true)
-        //        CAMNO = iVal;
-        //    MNTTAN = reader[28].ToString();
-        //    JIGCD = reader[29].ToString();
-        //    MACNO = reader[30].ToString();
-        //    FLTID = reader[34].ToString();
-        //}
-
+        // 속도 개선 후 데이터 검색 처리
         public void Parse(OracleDataReader reader)
         {
             float fVal;
@@ -397,46 +372,70 @@ namespace DefectDBManager
         }
     }
 
-    // MRK_WRK_3 Query를 이용하여 탐색한 데이터 결과 처리
-    // 테스트 완료되지 않았음.
-    public class FAULT_WRK3_Data
+    public class FLTDATA_DailyData
     {
-        // FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,
-        // FLTMST.FLTNAM,FAULTDAT.FLTID, MRK_WRK_3.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M
-        string CTLNO;
-        string FLTNO;
-        string OFFSET;
-        string XPOS_M;
-        string KND;
-        string CAMNO;
-        string FLTMST_FLTNAM;
-        string FLTID;
-        string MRK_WRK_3_PPCD;
-        string YPOS_M;
-        string WID_M;
+        // Search Item = YLMLOT(점착LOT)
+        //	1	   2		3		4           5		    6		7       8		9		10      11      12		13		14		15		16		17		18		    19		    20		
+        //	CTLNO  FLTNO	DT	    TM  	    OFFSET      YPOS_M	YPOS_P	XPOS_M	XPOS_P	AREA_M	AREA_P  LEN_M	LEN_P	WID_M	WID_P	RANK	KND 	S_SLIT	    E_SLIT	    CMT	
+        //	관리NO  결점No	발생일   발생시각     원단장위치    흐르는 방향      폭방향           면적mm  면적pxl  길이mm  길이pxl  길이mm   길이pxl 랭크     종류수   개시슬리터   완료 슬리터   코멘트
+        //================================================================================================================================================================================
+        //  21		22		23		   24		  25		 26	     27	    28	      29	     30	        31	        32	      33	    34	        35	   36	        
+        //  CAMNO	MAGNIF	PICFLG	   PICSIZE	  PICFNAME   MNTINF	 MNTDT	MNTTM	  MNTTAN	 JIGCD	    MACNO	    GRANK	  PICTYPE	PICFSIZE    FLTID  FLTORG		
+        //  카메라No Y배율   화상유무     화상크기    화상필름명  보수정보 보수일  보수시각    보수담당    사무실코드  검사장치No   외관 랭크   화상 타입  화상사이즈   결점ID  결점ID(검사장치)
 
+        public string CTLNO;
+        public string FLTNO;
+        public float OFFSET;
+        public float YPOS_M;
+        public float XPOS_M;
+        public float AREA_M;
+        public string RANK;
+        public string KND;
+        public int CAMNO;
+        public string MNTTAN;
+        public string JIGCD;
+        public string MACNO;
+        public string FLTID;
+
+        //속도 올리기 전 버전 DATA 처리
         public void Parse(OracleDataReader reader)
         {
+            float fVal;
             CTLNO = reader[0].ToString();
             FLTNO = reader[1].ToString();
-            OFFSET = reader[2].ToString();
-            XPOS_M = reader[3].ToString();
-            KND = reader[4].ToString();
-            CAMNO = reader[5].ToString();
-            FLTMST_FLTNAM = reader[6].ToString();
-            FLTID = reader[7].ToString();
-            MRK_WRK_3_PPCD = reader[8].ToString();
-            YPOS_M = reader[9].ToString();
-            WID_M = reader[10].ToString();
+            if (float.TryParse(reader[4].ToString(), out fVal) == true)
+                OFFSET = fVal;
+            if (float.TryParse(reader[5].ToString(), out fVal) == true)
+                YPOS_M = fVal;
+            if (float.TryParse(reader[7].ToString(), out fVal) == true)
+                XPOS_M = fVal;
+            if (float.TryParse(reader[9].ToString(), out fVal) == true)
+                AREA_M = fVal;
+            RANK = reader[15].ToString();
+            KND = reader[16].ToString();
+            if (Int32.TryParse(reader[20].ToString(), out int iVal) == true)
+                CAMNO = iVal;
+            MNTTAN = reader[28].ToString();
+            JIGCD = reader[29].ToString();
+            MACNO = reader[30].ToString();
+            FLTID = reader[34].ToString();
         }
-        public string GetString(int index)
+
+        public string GetString(int index, int defectLine, string bcno, float xOffset)
         {
-            string msg = string.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET}, {XPOS_M}, {KND}, {CAMNO}, {FLTMST_FLTNAM}, " +
-                $"{FLTID}, {MRK_WRK_3_PPCD}, {YPOS_M}, {WID_M}");
+            string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
+                $"{FLTID}, {AREA_M:0.00}, {CAMNO}, {MNTTAN}, {defectLine}, {bcno}, {xOffset}");
             return msg;
         }
 
+        public string GetString(int index, string bcno)
+        {
+            string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +
+                $"{FLTID}, {AREA_M:0.00}, {CAMNO}, {MNTTAN}, {bcno}");
+            return msg;
+        }
     }
+
     #endregion DB Query
 
     #region DB Search Result
@@ -462,6 +461,10 @@ namespace DefectDBManager
 
         public List<DateTime> ProductEndTime;
         public List<string> ProductLotName;
+
+
+        // 현재 생산중인 Lot의 이전 공정 데이터
+        public List<INSPDATData>[] Matched_INSPDAT_Data;
 
         public DbSearchResult()
         {
@@ -503,6 +506,10 @@ namespace DefectDBManager
             ProductLotName = new List<string>();
 
             DicCSVDefectCnt = new Dictionary<string, int>();
+
+            Matched_INSPDAT_Data = new List<INSPDATData>[count];
+            for (int i = 0; i < count; i++)
+                Matched_INSPDAT_Data[i] = new List<INSPDATData>();
         }
 
         public void ClearAll ()
@@ -528,6 +535,13 @@ namespace DefectDBManager
             }
 
             DicCSVDefectCnt.Clear();
+
+
+            for (int i = 0; i < Matched_INSPDAT_Data.Length; i++)
+            {
+                for (int j = 0; j < Matched_INSPDAT_Data[i].Count; j++)
+                    Matched_INSPDAT_Data[i].Clear();
+            }
         }
 
         public void ClearProductInfo()
@@ -664,65 +678,6 @@ namespace DefectDBManager
             
             return bValid;
         }
-    }
-    #endregion
-
-    #region PreProcCompDB용 결과
-    public class PreProcCompDBResult
-    {
-        public List<PTRYLPdata> PTRLYP_Data;
-
-        // 현재 Lot 이름 기준 PTRY0P 데이터
-        public List<PTRY0PData>[] PTRY0P_Data;
-        // LOT 기준 INSPDATA 탐색 결과
-        public List<List<INSPDATData>>[] INSPDAT_Data;
-
-        // 현재 생산중인 Lot의 이전 공정 데이터
-        public List<INSPDATData>[] Matched_INSPDAT_Data;
-
-        public PreProcCompDBResult()
-        {
-            Init();
-        }
-
-        public void Init()
-        {
-            PTRLYP_Data = new List<PTRYLPdata>();
-
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            PTRY0P_Data = new List<PTRY0PData>[count];
-            for (int i = 0; i < count; i++)
-                PTRY0P_Data[i] = new List<PTRY0PData>();
-
-            INSPDAT_Data = new List<List<INSPDATData>>[count];
-            for (int i = 0; i < count; i++)
-                INSPDAT_Data[i] = new List<List<INSPDATData>>();
-
-            Matched_INSPDAT_Data = new List<INSPDATData>[count];
-            for (int i = 0; i < count; i++)
-                Matched_INSPDAT_Data[i] = new List<INSPDATData>();
-        }
-
-        public void ClearAll()
-        {
-            PTRLYP_Data.Clear();
-            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
-
-            for (int i = 0; i < INSPDAT_Data.Length; i++)
-            {
-                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
-                    INSPDAT_Data[i][j].Clear();
-                INSPDAT_Data[i].Clear();
-            }
-
-            for (int i = 0; i < Matched_INSPDAT_Data.Length; i++)
-            {
-                for (int j = 0; j < Matched_INSPDAT_Data[i].Count; j++)
-                    Matched_INSPDAT_Data[i].Clear();
-            }
-
-        }
-
     }
     #endregion
 }

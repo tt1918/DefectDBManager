@@ -52,18 +52,6 @@ namespace DefectDBManager
 
         private void button7_Click(object sender, EventArgs e)
         {
-            FLTDAT_WRK3_Query query = new FLTDAT_WRK3_Query();
-            query.InspRange = 10;
-            query.FromPos[0] = 0;
-            query.FromPos[1] = 1000;
-            query.ToPos[0] = 1000000;
-            query.ToPos[1] = 100000000;
-
-            string CTLNO = "11111111";
-
-            string strQuery = query.GetQuery(CTLNO);
-
-            MessageBox.Show(strQuery);
         }
 
         private void button9_Click(object sender, EventArgs e)

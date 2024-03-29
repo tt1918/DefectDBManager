@@ -2144,7 +2144,10 @@ namespace DefectDBManager
             {
                 using (FormEditDefect form = new FormEditDefect())
                 {
-                    form._DataBase = DataBase;
+                    form._DB_Result = DataBase._DbResult;
+                    form._LOG = DataBase._LOG;
+                    form._Conn = DataBase.Conn;
+
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",

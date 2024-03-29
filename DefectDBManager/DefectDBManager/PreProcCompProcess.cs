@@ -146,26 +146,26 @@ namespace DefectDBManager
             string lotID = procNow.SearchLotName;
 
             // 오늘자 PTRY0P 탐색 -> INSPDAT 탐색
-            if(procNow.SearchTodayPTRY0PList(lotID)==true)
+            int firstIdx = -1;
+            if(procNow.SearchTodayPTRY0PList(out firstIdx) ==true)
             {
                 // 검사 완료 처리
                 if (OnEndTodayProductSearching != null) OnEndTodayProductSearching();
-                if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
+                //if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
 
                 // 체크 스레드 시작
+                NextY0KLOTIdx = (ushort)firstIdx ;
                 StartCheckAvaliableINSPDAT();
             }
         }
 
-        public void SearchDailyLot(string lotID)
+        public void SearchDailyLot()
         {
             PreProcCompDB proc = null;
             proc = _DBProc[(int)eDbIdWhen.Now];
             
-            proc.SearchLotName = lotID;
+            proc.SearchLotName = "";
             proc.SearchY0LNCD = _DestConfig.MainLNCD;
-
-            
 
             Task task = new Task(searchDailyLot, proc);
             task.Start();
@@ -362,7 +362,7 @@ namespace DefectDBManager
             
             // 예약 랏 -> 현재 랏 DB 데이터 이전
             _DBProc[0]._DbResult = _DBProc[1]._DbResult;
-            _DBProc[1]._DbResult = new PreProcCompDBResult();
+            _DBProc[1]._DbResult = new DbSearchResult();
 
             // 예약 랏 -> 현재 랏 FLTDAT 데이터 이전
             PrePocResultData oldMarkingData;

@@ -414,15 +414,6 @@ namespace DefectDBManager
                 //message = "SELECT * FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'";
                 message = "SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.YPOS_M,FAULTDAT.XPOS_M,FAULTDAT.AREA_M,FAULTDAT.RANK,FAULTDAT.KND,FAULTDAT.CAMNO," +
                     "FAULTDAT.MNTTAN,FAULTDAT.JIGCD,FAULTDAT.MACNO,FAULTDAT.FLTID FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'";
-                //message = "FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID, " +
-                //          "MRK_WRK_4.PPCD, FAULTDAT.YPOS_M,FAULTDAT.WID_M, MRK_WRK_4.X_OFFSET, INSPDAT.WIDTH FROM FAULTDAT,FLTMST,MRK_WRK_4,INSPDAT " + 
-                //          "WHERE FAULTDAT.FLTID=MRK_WRK_4.FLTID AND FAULTDAT.FLTID=FLTMST.FLTID AND FAULTDAT.CTLNO = MRK_WRK_4.CTLNO AND " + 
-                //          "FAULTDAT.AREA_M >= MRK_WRK_4.MIN_SIZE AND FAULTDAT.CTLNO = INSPDAT.CTLNO AND MRK_WRK_4.PPCD = INSPDAT.KTCD AND " + 
-                //          "MRK_WRK_4.LNCD = INSPDAT.CUSTCD AND ( (INSPDAT.S_INSP<=INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.S_INSP-150000) " + 
-                //          "AND FAULTDAT.OFFSET<=(INSPDAT.E_INSP+150000))   "+
-                //          "OR (INSPDAT.S_INSP>INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.E_INSP-150000) AND FAULTDAT.OFFSET<=(INSPDAT.S_INSP+150000)) )AND " + 
-                //          "INSPDAT.BCNO = 'EE11006-09'  AND (INSPDAT.KTCD = '100' OR INSPDAT.KTCD = '400' OR (INSPDAT.KTCD <> '100' AND INSPDAT.KTCD <> '400')) ORDER BY FAULTDAT.OFFSET";
-
                 return message;
             }
         }
@@ -458,126 +449,19 @@ namespace DefectDBManager
                 }
                 if (isStart == true)
                     sbMsg.Append(")");
-                //if (dicSize.Count > 0)
-                //{
-                //    sbMsg.Append("AND (");
-
-                //    int size = dicSize.Count;
-                //    int count = 0;
-                //    foreach (KeyValuePair<string, float> pair in dicSize)
-                //    {
-                //        sbMsg.Append($"(FAULTDAT.FLTID = '{pair.Key}' AND FAULTDAT.AREA_M>={pair.Value:F5})");
-                //        if (count < size - 1)
-                //            sbMsg.Append(" OR ");
-                //        count++;
-                //    }
-                //    sbMsg.Append(")");
-                //}
-
                 return sbMsg.ToString();
             }
         }
 
         public class FLTDAT_Daily_Query : QueryMsg
         {
-            public string CTLNO = "";
-
-            public string GetQuery()
+            public string GetQuery(string CTLNO)
             {
                 StringBuilder sbMsg = new StringBuilder();
-                sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.YPOS_M,FAULTDAT.XPOS_M,FAULTDAT.AREA_M,FAULTDAT.RANK,FAULTDAT.KND,FAULTDAT.CAMNO," +
-                                "FAULTDAT.MNTTAN,FAULTDAT.JIGCD,FAULTDAT.MACNO,FAULTDAT.FLTID FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'");
+                sbMsg.Append("SELECT* FROM FAULTDAT, FLTMST, INSPDAT where FAULTDAT.FLTID = FLTMST.FLTID AND FAULTDAT.CTLNO = INSPDAT.CTLNO AND FAULTDAT.CTLNO ='"+CTLNO+"'");
                 return sbMsg.ToString();
             }
         }
 
-    }
-
-    public class FLTDAT_WRK3_Query : QueryMsg
-    {
-        public double[] FromPos { get; set; } = new double[2];
-        public double[] ToPos { get; set; } = new double[2];
-        public int InspRange { get; set; }
-        public int SlitType { get; set; }
-        public double SlitPos { get; set; }
-
-        public FLTDAT_WRK3_Query()
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                FromPos[i] = -99990000.0;
-                ToPos[i] = -99990000.0;
-            }
-
-            InspRange = 5;
-            SlitType = 0;
-            SlitPos = -99990000.0;
-        }
-
-        public string GetQuery(string CTLNO)
-        {
-            StringBuilder sbMsg = new StringBuilder();
-            bool isPosFind = false;
-
-            sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.XPOS_M,FAULTDAT.KND,FAULTDAT.CAMNO,FLTMST.FLTNAM,FAULTDAT.FLTID,FAULTDAT.YPOS_M,FAULTDAT.WID_M, MRK_WRK_3.PPCD ");
-            sbMsg.Append("FROM FAULTDAT,FLTMST,MRK_WRK_3,INSPDAT ");
-            sbMsg.Append("WHERE FAULTDAT.FLTID=MRK_WRK_3.FLTID ");
-            sbMsg.Append("AND FAULTDAT.FLTID=FLTMST.FLTID ");
-            sbMsg.Append("AND FAULTDAT.AREA_M >= MRK_WRK_3.MIN_SIZE ");
-            sbMsg.Append($"AND FAULTDAT.CTLNO = '{CTLNO}' ");
-            sbMsg.Append("AND MRK_WRK_3.PPCD = INSPDAT.KTCD ");
-            sbMsg.Append("AND MRK_WRK_3.LNCD = INSPDAT.CUSTCD ");
-            sbMsg.Append($"AND ( (INSPDAT.S_INSP<=INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.S_INSP-{InspRange}) AND FAULTDAT.OFFSET<=(INSPDAT.E_INSP+{InspRange}))");
-            sbMsg.Append($" OR (INSPDAT.S_INSP>INSPDAT.E_INSP AND FAULTDAT.OFFSET>=(INSPDAT.E_INSP-{InspRange}) AND FAULTDAT.OFFSET<=(INSPDAT.S_INSP+{InspRange})) )");
-
-            // 검색 거리 추가
-            if (FromPos[0] > -99990000.0 && ToPos[0] > -99990000.0 || FromPos[1] > -99990000.0 && ToPos[1] > -99990000.0)
-            {
-                sbMsg.Append(" AND ");
-                if (FromPos[0] > -99990000.0 && ToPos[0] > -99990000.0)
-                {
-                    isPosFind = true;
-                    sbMsg.Append($"( (FAULTDAT.XPOS_M>={FromPos[0]:F2} AND FAULTDAT.XPOS_M<={ToPos[0]:F2}) ");
-                }
-                if (FromPos[1] > -99990000.0 && ToPos[1] > -99990000.0)
-                {
-                    if (isPosFind == true)
-                        sbMsg.Append("OR ");
-                    sbMsg.Append($"(FAULTDAT.XPOS_M>={FromPos[1]:F2} AND FAULTDAT.XPOS_M<={ToPos[1]:F2}) ");
-                }
-
-                if (isPosFind == true)
-                    sbMsg.Append(") ");
-            }
-
-            // Slit Type 사용하나봄 
-            if (SlitType == 1 && SlitPos > -99990000.0)
-                sbMsg.Append($" AND FAULTDAT.XPOS_M<={SlitPos:F2} ");
-            else if (SlitType == 2 && SlitPos > -99990000.0)
-                sbMsg.Append($" AND FAULTDAT.XPOS_M>{SlitPos:F2} ");
-
-            // 제외 CTLNO 추가, 이 부분을 맞는걸로 한다면.... 
-            //for(int i=0; i< CTLNO.Count; i++)
-            //{
-            //    sbMsg.Append($" AND FAULTDAT.CTLNO<>'{CTLNO[i]}' ");
-            //}
-
-            //if (CTLNO.Count > 0)
-            //{
-            //    sbMsg.Append("AND (");
-            //    for (int i = 0; i < CTLNO.Count; i++)
-            //    {
-            //        sbMsg.Append($" FAULTDAT.CTLNO='{CTLNO[i]}' ");
-            //        if (i < CTLNO.Count - 1)
-            //            sbMsg.Append("OR");
-            //    }
-            //    sbMsg.Append(" )");
-            //}
-
-
-            sbMsg.Append(" ORDER BY FAULTDAT.OFFSET ");
-
-            return sbMsg.ToString();
-        }
     }
 }

@@ -230,11 +230,7 @@ namespace DefectDBManager
 
         private void displayUI()
         {
-            displayCbLotcode();
-        }
-
-        private void displayCbLotcode()
-        {
+            displayCbcbDestination();
         }
 
         private void displayMarkingOption()
@@ -1081,21 +1077,11 @@ namespace DefectDBManager
 
         private void updateUIOptionToDBOption()
         {
-            Option option = null;
-            DestConfig config = null;
-            option = PreCompDB.DbOption;
-            config = PreCompDB.DbDestConfig;
-
-            option.lotName = (string)tbLotName.Text.Clone();
-        }
-
-        private void displayUIOptionFromDBOption()
-        {
-            Option option = null;
-            option = PreCompDB.DbOption;
-
-            tbLotName.Text = option.lotName;
-            isHoldFW = true;
+            this.PreCompDB.DbOption.lotName = (string)tbLotName.Text.Clone();
+            this.PreCompDB.DbOption.vendor = cbDestination.SelectedIndex;
+            string dest = cbDestination.SelectedItem.ToString();
+            PreCompDB.DbOption.FWPlace = dest;
+            PreCompDB.DbDestConfig.SetSelDest(dest);
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -1140,20 +1126,13 @@ namespace DefectDBManager
 
         private void btnShowSkipParam_Click(object sender, EventArgs e)
         {
-            // 복사본 생성
-            var copyList = new List<DefectSizeTH>(PreCompDB.DbDestConfig.DefectSizeTHs);
-            // 바인딩 리스트로 변경
-            var listBinding = new BindingList<DefectSizeTH>(copyList);
-            // 화면 표시
-            using (FormDefectSkip form = new FormDefectSkip(listBinding))
+            if (IsSearchDefect() == true)
             {
-                form.ShowDialog();
-                if (form.IsApply == true)
-                {
-                    PreCompDB.DbDestConfig.DefectSizeTHs = form.DefectSizeTHs.ToList();
-                    PreCompDB.DbDestConfig.Write();
-                }
+                MessageBox.Show("Now program is searching DB");
+                return;
             }
+
+            RunDefectEdit();
         }
 
         /// <summary>
@@ -1545,8 +1524,10 @@ namespace DefectDBManager
         #region 검색 결과 업데이트
         public void OnUpdateAvailableLot()
         {
-            // List View 업데이트 데이터 생성
+            // 현재 선택된 Lot Name을 업데이트 한다. 
+            tbLotName.Text = PreCompDB.SearchLotName;
 
+            // List View 업데이트 데이터 생성
             initFaultPage(PreCompDB.FaultData.MarkData.Count);
             this.makeAllListViewData();
             this.displayAllListView();
@@ -1592,7 +1573,193 @@ namespace DefectDBManager
             this.UpdateEndEvent = false;
 
             // 검색 데이터 처리
-            Process.SearchDailyLot(tbLotName.Text);
+            Process.SearchDailyLot();
+        }
+        #region Defect Edit
+        public void RunDefectEdit()
+        {
+            int errorIdx = -1;
+            DestConfigUnit unit = new DestConfigUnit();
+            int vendorIdx = this.cbDestination.SelectedIndex;
+            PreCompDB.DbDestConfig.GetData(vendorIdx, ref unit);
+
+            PreCompDB._DbResult.ResetData_DE();
+
+            for (int i = 0; i < 10; i++)
+            {
+                PTRY0PData data = new PTRY0PData();
+                data.Y0KLOT = $"{i}";
+                PreCompDB._DbResult.PTRY0P_Data[0].Add(data);
+            }
+
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            int queryCount = 0;
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < PreCompDB._DbResult.PTRY0P_Data[i].Count; j++)
+                {
+                    QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
+                    msg.Y0KLOT = PreCompDB._DbResult.PTRY0P_Data[i][j].Y0KLOT;
+                    msg.MKCD = unit.MKCD;
+                    MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
+                    if (i == (int)eFCD.ES)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.ES);
+                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }
+                    else if (i == (int)eFCD.ETC)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.ETC);
+                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }
+                    else if (i == (int)eFCD.TG)
+                    {
+                        de_data.query = msg.GetQuery(eFCD.TG);
+                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+                        queryCount++;
+                    }
+                    else
+                    {
+                        de_data.query = "";
+                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+                    }
+                }
+            }
+
+            if (queryCount > 0)
+            {
+                using (FormEditDefect form = new FormEditDefect())
+                {
+                    form._DB_Result = PreCompDB._DbResult;
+                    form._LOG = PreCompDB._LOG;
+                    form._Conn = PreCompDB.Conn;
+
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
+                            MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+
+                            clearAllListView();
+                            ResetListViewData();
+
+
+                            if (this.thread != null)
+                            {
+                                this.thread.Join(100);
+                                this.thread = null;
+                            }
+
+                            this.thread = new Thread(this.threadFromDefectEdit);
+                            this.thread.Start();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(Language.ThereAreNoDefectInfs);
+            }
+        }
+
+
+        private void threadFromDefectEdit()
+        {
+            bool isSuccess = true;
+            try
+            {
+                this.dbLoadingTime.Reset();
+                this.dbLoadingTime.Start();
+                int errorOut = 0;
+
+                this.dbSearchProgressTimer.Start();
+
+                PreCompDB.ResetDataAll();
+                Option option = PreCompDB.DbOption;
+                SearchOption searchOP = new SearchOption();
+                searchOP.MKCD = option.searchOP.MKCD; // 혹시 몰라서 다시 추가함... 확인 필요
+                option.searchOP = searchOP;
+                searchOP.useMask = false;
+                searchOP.useDefectEdit = true;
+
+                if (formProgress != null) formProgress._Step = 0;
+
+
+                isSuccess &= PreCompDB.SearchLot(PreCompDB.DbOption.lotName, false, ref errorOut);
+                // 데이터 처리 필요
+                if (PreCompDB.CrtParam.isProductAvaliable == false)
+                {
+
+                }
+
+                if (PreCompDB.CrtParam.isXOffsetError == true)
+                {
+
+                }
+
+                // List View 업데이트 데이터 생성
+                this.makeAllListViewData();
+                this.displayAllListView();
+
+                // Fault Data 표시
+                this.initFaultPage(this.PreCompDB.FaultData.MarkData.Count);
+            }
+            finally
+            {
+                this.dbSearchProgressTimer.Stop();
+                this.dbLoadingTime.Stop();
+
+                if (isSuccess == false)
+                    this._SearchRes = eSearchProcessRes.DB_NoExistES;
+                else
+                    this._SearchRes = eSearchProcessRes.DB_SearchDone;
+
+                if (this.UpdateEndEvent == true)
+                {
+                    OnEndJob((int)eEventReport.eFinishedSearchLot);
+                    this.UpdateEndEvent = false;
+                }
+
+                // FLTID 비교 발생 시 에러 알람
+                if (PreCompDB.CrtParam.FLTIDCheckError == true)
+                    OnEndJob((int)eEventReport.eBCR_FLTID_CheckError);
+                // ROLL MAP 거리 비교 에러 시 알람 처리
+                if (PreCompDB.CrtParam.InspRollCheckError == true)
+                    OnEndJob((int)eEventReport.eBCR_INSPMETER_CheckError);
+
+                this.updateSearchResult(isSuccess, 0);
+            }
+        }
+        #endregion Defect Edit
+
+        private void displayCbcbDestination()
+        {
+            cbDestination.Items.Clear();
+
+            DestConfigUnit u = new DestConfigUnit();
+            for (int i = 0; i < PreCompDB.DbDestConfig.DicDest.Count; i++)
+            {
+                if (PreCompDB.DbDestConfig.GetData(i, ref u) == true)
+                {
+                    cbDestination.Items.Add(u.Title);
+                }
+            }
+
+            if (PreCompDB.DbOption.FWPlace != null)
+            {
+                if (PreCompDB.DbDestConfig.DicDest.ContainsKey(PreCompDB.DbOption.FWPlace) == true)
+                    cbDestination.SelectedText = PreCompDB.DbOption.FWPlace;
+            }
+            else
+            {
+                if (cbDestination.Items.Count > 0)
+                {
+                    cbDestination.SelectedIndex = 0;
+                    PreCompDB.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
+                }
+            }
         }
     }
 }

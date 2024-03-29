@@ -33,6 +33,8 @@
             this.tbLotName = new System.Windows.Forms.TextBox();
             this.gbBasicInfo = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.cbDestination = new System.Windows.Forms.ComboBox();
+            this.lblDestination = new System.Windows.Forms.Label();
             this.btnSearchPTRY0P_Today = new System.Windows.Forms.Button();
             this.btnUpdateMarkingData = new System.Windows.Forms.Button();
             this.btnSearchDB = new System.Windows.Forms.Button();
@@ -109,7 +111,7 @@
             this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLotName.Location = new System.Drawing.Point(141, 18);
             this.lblLotName.Name = "lblLotName";
-            this.lblLotName.Size = new System.Drawing.Size(166, 17);
+            this.lblLotName.Size = new System.Drawing.Size(66, 17);
             this.lblLotName.TabIndex = 0;
             this.lblLotName.Text = "점착 LOT";
             this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -118,10 +120,10 @@
             // 
             this.tbLotName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbLotName.Location = new System.Drawing.Point(141, 44);
+            this.tbLotName.Location = new System.Drawing.Point(213, 17);
             this.tbLotName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbLotName.Name = "tbLotName";
-            this.tbLotName.Size = new System.Drawing.Size(166, 16);
+            this.tbLotName.Size = new System.Drawing.Size(138, 16);
             this.tbLotName.TabIndex = 1;
             this.tbLotName.TextChanged += new System.EventHandler(this.tbLotName_TextChanged);
             // 
@@ -147,6 +149,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.cbDestination);
+            this.splitContainer1.Panel1.Controls.Add(this.lblDestination);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchPTRY0P_Today);
             this.splitContainer1.Panel1.Controls.Add(this.btnUpdateMarkingData);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchDB);
@@ -164,10 +168,35 @@
             this.splitContainer1.SplitterDistance = 780;
             this.splitContainer1.TabIndex = 13;
             // 
+            // cbDestination
+            // 
+            this.cbDestination.DropDownHeight = 100;
+            this.cbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDestination.FormattingEnabled = true;
+            this.cbDestination.IntegralHeight = false;
+            this.cbDestination.Location = new System.Drawing.Point(213, 38);
+            this.cbDestination.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cbDestination.Name = "cbDestination";
+            this.cbDestination.Size = new System.Drawing.Size(138, 23);
+            this.cbDestination.TabIndex = 17;
+            // 
+            // lblDestination
+            // 
+            this.lblDestination.BackColor = System.Drawing.SystemColors.Control;
+            this.lblDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDestination.Location = new System.Drawing.Point(141, 40);
+            this.lblDestination.Name = "lblDestination";
+            this.lblDestination.Size = new System.Drawing.Size(66, 17);
+            this.lblDestination.TabIndex = 16;
+            this.lblDestination.Text = "출하처";
+            this.lblDestination.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // btnSearchPTRY0P_Today
             // 
             this.btnSearchPTRY0P_Today.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(313, 6);
+            this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(373, 10);
             this.btnSearchPTRY0P_Today.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchPTRY0P_Today.Name = "btnSearchPTRY0P_Today";
             this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(70, 54);
@@ -179,7 +208,7 @@
             // btnUpdateMarkingData
             // 
             this.btnUpdateMarkingData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateMarkingData.Location = new System.Drawing.Point(538, 6);
+            this.btnUpdateMarkingData.Location = new System.Drawing.Point(598, 10);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
             this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 54);
             this.btnUpdateMarkingData.TabIndex = 13;
@@ -190,7 +219,7 @@
             // btnSearchDB
             // 
             this.btnSearchDB.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchDB.Location = new System.Drawing.Point(389, 7);
+            this.btnSearchDB.Location = new System.Drawing.Point(449, 11);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
             this.btnSearchDB.Size = new System.Drawing.Size(70, 54);
@@ -202,7 +231,7 @@
             // btnShowSkipParam
             // 
             this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowSkipParam.Location = new System.Drawing.Point(626, 6);
+            this.btnShowSkipParam.Location = new System.Drawing.Point(681, 10);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
             this.btnShowSkipParam.Size = new System.Drawing.Size(70, 55);
             this.btnShowSkipParam.TabIndex = 11;
@@ -263,7 +292,7 @@
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(465, 6);
+            this.btnReset.Location = new System.Drawing.Point(525, 10);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(70, 54);
@@ -318,7 +347,7 @@
             this.gbMRKCTLMST.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbMRKCTLMST.Location = new System.Drawing.Point(0, 0);
             this.gbMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbMRKCTLMST.Name = "gbPTRY0P_TODAY";
+            this.gbMRKCTLMST.Name = "gbMRKCTLMST";
             this.gbMRKCTLMST.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMRKCTLMST.Size = new System.Drawing.Size(589, 144);
             this.gbMRKCTLMST.TabIndex = 6;
@@ -729,5 +758,7 @@
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.Button btnUpdateMarkingData;
         private System.Windows.Forms.Button btnSearchPTRY0P_Today;
+        private System.Windows.Forms.Label lblDestination;
+        private System.Windows.Forms.ComboBox cbDestination;
     }
 }

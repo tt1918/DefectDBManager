@@ -1191,6 +1191,8 @@ namespace DefectDBManager
             string query;
             int procStep = 0;
 
+            bool bValid = false;
+
             int[] defectCnt = new int[fcdCnt];
             defectCnt.Initialize();
 
@@ -1299,7 +1301,11 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
- 
+                                        // 마킹 컨트롤 마스터에서 데이터 가져와서 다시 탐색함. 
+                                        bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
+
+                                        if (bValid == false) continue;
+
                                         if (finalXPos < 0.0f) continue;
                                         if (useMask == true && IsMaskedDefect(finalXPos, data.OFFSET) == true) continue;
                                         if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
