@@ -144,6 +144,7 @@ namespace DefectDBManager
                         if (_DB_Result._MRKCTLMST_DE[i][j].query == "")
                             continue;
 
+                        this._LOG.WriteLoadData(_DB_Result._MRKCTLMST_DE[i][j].query, resCnt, "MRKCTLMST-EDIT", 0.0);
                         using (var comm = new OracleCommand(_DB_Result._MRKCTLMST_DE[i][j].query, this._Conn.Connection))
                         {
                             using (var reader = comm.ExecuteReader())

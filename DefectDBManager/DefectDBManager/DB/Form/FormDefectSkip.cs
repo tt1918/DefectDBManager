@@ -83,6 +83,7 @@ namespace DefectDBManager
             }
 
             this.ResumeLayout();
+
         }
 
         #endregion

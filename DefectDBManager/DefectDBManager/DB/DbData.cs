@@ -229,7 +229,7 @@ namespace DefectDBManager
 
         public override string ToString()
         {
-            string msg = $"{LNCD}, {FLTID}, {ROLLNAME}, {MRKF1}, {MRKF2}";
+            string msg = $"{LNCD}, {FLTID}, {ROLLNAME}, {MRKF1}, {MRKF2}, {SIZE:F3}";
             return msg;
         }
     }

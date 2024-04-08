@@ -14,6 +14,8 @@ namespace DefectDBManager
 {
     public class PreProcCompDB
     {
+        public event DelegateEvent OnUpdateMKCDModel;
+
         public OracleDbConnection Conn { get { return conn; } }
         private OracleDbConnection conn = null;
 
@@ -68,6 +70,9 @@ namespace DefectDBManager
 
         public LogDB _LOG;
 
+        public List<MKCD_MODEL> MKCD_Model { get; set; }
+
+
         // 상위 객체
         private object owner;
 
@@ -81,6 +86,12 @@ namespace DefectDBManager
             _LOG = new LogDB();
 
             PTRY0P_Today_Data = new List<PTRY0PData>();
+
+            // Check MKCD Model Folder 
+            if (Directory.Exists(Define.MKCDModelPath) == false)
+                Directory.CreateDirectory(Define.MKCDModelPath);
+
+            MKCD_Model = new List<MKCD_MODEL>();
         }
 
         ~PreProcCompDB()
@@ -138,7 +149,7 @@ namespace DefectDBManager
 
             try
             {
-                _LOG.Lot = "PTRY0P_Today" + DateTime.Today.ToString("yyyyMMddHHmmdd");
+                _LOG.Lot = "PTRY0P_Today_" + DateTime.Today.ToString("yyyyMMdd");
 
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0P_Today_Data.Clear();
@@ -202,7 +213,7 @@ namespace DefectDBManager
 
                 //원래 여기서 데이터 탐색만 해야 함. 
                 // Test Code 나중에 삭제 처리.
-                string tmpLotName = "LQP0412-02";
+                string tmpLotName = "";
 
                 if (firstItem == null) return false;
 
@@ -448,12 +459,12 @@ namespace DefectDBManager
 
             try
             {
-                DestConfigUnit destUnit = destConfig.SelDestUnit;
-                if (destUnit == null)
-                {
-                    destConfig.SetSelDest(dbOption.FWPlace);
-                    destConfig.SelDestUnit = destUnit;
-                }
+                //DestConfigUnit destUnit = destConfig.SelDestUnit;
+                //if (destUnit == null)
+                //{
+                //    destConfig.SetSelDest(dbOption.FWPlace);
+                //    destConfig.SelDestUnit = destUnit;
+                //}
 
                 long dbCnt = 0;
                 int count = System.Enum.GetValues(typeof(eFCD)).Length;
@@ -475,9 +486,8 @@ namespace DefectDBManager
                         if (_DbResult.PTRY0P_Data[i][j].Y0KLOT.Length > 0)
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
-                            msg.MKCD = destConfig.SelDestUnit.MKCD;
                             msg.Y0KLOT = _DbResult.PTRY0P_Data[i][j].Y0KLOT;
-                            string query = msg.GetQuery((eFCD)i);
+                            string query = msg.GetQueryAll((eFCD)i);
                             _LOG.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
 
                             if (query == "")
@@ -502,15 +512,14 @@ namespace DefectDBManager
                                         logData = string.Format($"{_DbResult.MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
                                         _LOG.WriteLoadData(logData, _DbResult.MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
                                         // 조건문 추가해야 함
-                                        CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
                                         _DbResult.AddDicMRKCTLMST(i, j, data);
 
-                                        for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
-                                        {
-                                            if (destUnit.FLTIDCheck[checkCnt].Length > 0)
-                                                if (destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                                    CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
-                                        }
+                                        //for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
+                                        //{
+                                        //    if (destUnit.FLTIDCheck[checkCnt].Length > 0)
+                                        //        if (destUnit.FLTIDCheck[checkCnt] == data.FLTID)
+                                        //            CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
+                                        //}
                                     }
                                 }
                             }
@@ -545,10 +554,8 @@ namespace DefectDBManager
 
                 this.SearchLotName = lotID;
                 DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
-                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
-                int newLotCnt = GetNextLotCnt(lotID);
-                if (newLotCnt > 0) _LOG.Lot = $"{lotID}_{newLotCnt:D2}";
-                else _LOG.Lot = lotID;
+                _LOG.Lot = lotID;
+                _LOG.DeleteFolder(lotID);
                 DB_Progress.ResetAll();
 
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
@@ -1152,6 +1159,52 @@ namespace DefectDBManager
                 pt.Y = (float)item.OFFSET;
                 pts.Add(pt);
             }
+        }
+
+        /// <summary>
+        /// MKCD Model 적용
+        /// Model 적용 후 Data 취합 처리 Lot Data Download 처리 해야함.
+        /// </summary>
+        /// <param name="name"></param>
+        public void SetMKCDModel(string name)
+        {
+            CrtParam.MKCDModel = name;
+            if (OnUpdateMKCDModel != null) OnUpdateMKCDModel();
+        }
+
+        public bool SearchMKCD_Data(string lotName)
+        {
+            bool success = false;
+
+            try
+            {
+                // 데이터 초기화
+                ResetDataAll();
+                success = SearchPTRYLP(lotName);
+                if (success == false) return false;
+
+                success = SearchXOFSMST(lotName);
+                if (success == false) return false;
+
+                success = SearchPTRY0P(lotName);
+                if (success == false) return false;
+
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(lotName);
+                if (success == false) return false;
+            }
+            catch(Exception ex)
+            {
+                Log.Write(ex.Message);
+            }
+            finally
+            {
+
+            }
+
+
+            return success;
+
         }
     }
 }

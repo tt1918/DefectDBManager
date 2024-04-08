@@ -230,7 +230,7 @@ namespace DefectDBManager
 
         private void displayUI()
         {
-            displayCbcbDestination();
+            
         }
 
         private void displayMarkingOption()
@@ -1010,7 +1010,6 @@ namespace DefectDBManager
             return false;
         }
 
-
         public void ResetDBData()
         {
             if (InvokeRequired == true)
@@ -1077,10 +1076,6 @@ namespace DefectDBManager
         private void updateUIOptionToDBOption()
         {
             this.PreCompDB.DbOption.lotName = (string)tbLotName.Text.Clone();
-            this.PreCompDB.DbOption.vendor = cbDestination.SelectedIndex;
-            string dest = cbDestination.SelectedItem.ToString();
-            PreCompDB.DbOption.FWPlace = dest;
-            PreCompDB.DbDestConfig.SetSelDest(dest);
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -1573,90 +1568,89 @@ namespace DefectDBManager
         #region Defect Edit
         public void RunDefectEdit()
         {
-            int errorIdx = -1;
-            DestConfigUnit unit = new DestConfigUnit();
-            int vendorIdx = this.cbDestination.SelectedIndex;
-            PreCompDB.DbDestConfig.GetData(vendorIdx, ref unit);
+            //int errorIdx = -1;
+            //DestConfigUnit unit = new DestConfigUnit();
+            //PreCompDB.DbDestConfig.GetData(vendorIdx, ref unit);
 
-            PreCompDB._DbResult.ResetData_DE();
+            //PreCompDB._DbResult.ResetData_DE();
 
-            for (int i = 0; i < 10; i++)
-            {
-                PTRY0PData data = new PTRY0PData();
-                data.Y0KLOT = $"{i}";
-                PreCompDB._DbResult.PTRY0P_Data[0].Add(data);
-            }
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    PTRY0PData data = new PTRY0PData();
+            //    data.Y0KLOT = $"{i}";
+            //    PreCompDB._DbResult.PTRY0P_Data[0].Add(data);
+            //}
 
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            int queryCount = 0;
-            for (int i = 0; i < count; i++)
-            {
-                for (int j = 0; j < PreCompDB._DbResult.PTRY0P_Data[i].Count; j++)
-                {
-                    QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
-                    msg.Y0KLOT = PreCompDB._DbResult.PTRY0P_Data[i][j].Y0KLOT;
-                    msg.MKCD = unit.MKCD;
-                    MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
-                    if (i == (int)eFCD.ES)
-                    {
-                        de_data.query = msg.GetQuery(eFCD.ES);
-                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-                        queryCount++;
-                    }
-                    else if (i == (int)eFCD.ETC)
-                    {
-                        de_data.query = msg.GetQuery(eFCD.ETC);
-                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-                        queryCount++;
-                    }
-                    else if (i == (int)eFCD.TG)
-                    {
-                        de_data.query = msg.GetQuery(eFCD.TG);
-                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-                        queryCount++;
-                    }
-                    else
-                    {
-                        de_data.query = "";
-                        PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-                    }
-                }
-            }
+            //int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            //int queryCount = 0;
+            //for (int i = 0; i < count; i++)
+            //{
+            //    for (int j = 0; j < PreCompDB._DbResult.PTRY0P_Data[i].Count; j++)
+            //    {
+            //        QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
+            //        msg.Y0KLOT = PreCompDB._DbResult.PTRY0P_Data[i][j].Y0KLOT;
+            //        msg.MKCD = unit.MKCD;
+            //        MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
+            //        if (i == (int)eFCD.ES)
+            //        {
+            //            de_data.query = msg.GetQueryAll(eFCD.ES);
+            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+            //            queryCount++;
+            //        }
+            //        else if (i == (int)eFCD.ETC)
+            //        {
+            //            de_data.query = msg.GetQueryAll(eFCD.ETC);
+            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+            //            queryCount++;
+            //        }
+            //        else if (i == (int)eFCD.TG)
+            //        {
+            //            de_data.query = msg.GetQueryAll(eFCD.TG);
+            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+            //            queryCount++;
+            //        }
+            //        else
+            //        {
+            //            de_data.query = "";
+            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
+            //        }
+            //    }
+            //}
 
-            if (queryCount > 0)
-            {
-                using (FormEditDefect form = new FormEditDefect())
-                {
-                    form._DB_Result = PreCompDB._DbResult;
-                    form._LOG = PreCompDB._LOG;
-                    form._Conn = PreCompDB.Conn;
+            //if (queryCount > 0)
+            //{
+            //    using (FormEditDefect form = new FormEditDefect())
+            //    {
+            //        form._DB_Result = PreCompDB._DbResult;
+            //        form._LOG = PreCompDB._LOG;
+            //        form._Conn = PreCompDB.Conn;
 
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
-                            MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        {
+            //        if (form.ShowDialog() == DialogResult.OK)
+            //        {
+            //            if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
+            //                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //            {
 
-                            clearAllListView();
-                            ResetListViewData();
+            //                clearAllListView();
+            //                ResetListViewData();
 
 
-                            if (this.thread != null)
-                            {
-                                this.thread.Join(100);
-                                this.thread = null;
-                            }
+            //                if (this.thread != null)
+            //                {
+            //                    this.thread.Join(100);
+            //                    this.thread = null;
+            //                }
 
-                            this.thread = new Thread(this.threadFromDefectEdit);
-                            this.thread.Start();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show(Language.ThereAreNoDefectInfs);
-            }
+            //                this.thread = new Thread(this.threadFromDefectEdit);
+            //                this.thread.Start();
+            //            }
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show(Language.ThereAreNoDefectInfs);
+            //}
         }
 
 
@@ -1729,31 +1723,13 @@ namespace DefectDBManager
         }
         #endregion Defect Edit
 
-        private void displayCbcbDestination()
+
+        private void btnMKCDModel_Click(object sender, EventArgs e)
         {
-            cbDestination.Items.Clear();
-
-            DestConfigUnit u = new DestConfigUnit();
-            for (int i = 0; i < PreCompDB.DbDestConfig.DicDest.Count; i++)
+            using(FormMKCDModel form = new FormMKCDModel())
             {
-                if (PreCompDB.DbDestConfig.GetData(i, ref u) == true)
-                {
-                    cbDestination.Items.Add(u.Title);
-                }
-            }
-
-            if (PreCompDB.DbOption.FWPlace != null)
-            {
-                if (PreCompDB.DbDestConfig.DicDest.ContainsKey(PreCompDB.DbOption.FWPlace) == true)
-                    cbDestination.SelectedText = PreCompDB.DbOption.FWPlace;
-            }
-            else
-            {
-                if (cbDestination.Items.Count > 0)
-                {
-                    cbDestination.SelectedIndex = 0;
-                    PreCompDB.DbOption.FWPlace = cbDestination.SelectedItem.ToString();
-                }
+                form.DbConn = this.DBConn;
+                form.ShowDialog();
             }
         }
     }

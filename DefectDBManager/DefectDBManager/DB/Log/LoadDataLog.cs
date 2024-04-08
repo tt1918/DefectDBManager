@@ -65,9 +65,16 @@ namespace DefectDBManager
 
         public void DeleteFolder(string strLot)
         {
-            string path = Path.Combine(Define.BCRPath, strLot);
-            if (Directory.Exists(path) == true)
-                Directory.Delete(path);
+            try
+            {
+                string path = Path.Combine(Define.BCRPath, strLot);
+                if (Directory.Exists(path) == true)
+                    Directory.Delete(path, true);
+            }
+            catch(Exception ex)
+            {
+                Log.Write($"Deleting Folder is failed");
+            }
         }
 
     }

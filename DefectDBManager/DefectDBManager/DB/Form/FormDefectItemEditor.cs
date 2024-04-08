@@ -14,6 +14,13 @@ namespace DefectDBManager
     {
         public string EditData {get; set;}
 
+        public string Title
+        {
+            get { return lblTitle.Text; }
+            set { lblTitle.Text = value; }
+        }
+
+
         public FormDefectItemEditor()
         {
             InitializeComponent();

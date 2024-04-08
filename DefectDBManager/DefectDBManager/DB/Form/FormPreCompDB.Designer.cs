@@ -33,8 +33,6 @@
             this.tbLotName = new System.Windows.Forms.TextBox();
             this.gbBasicInfo = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.cbDestination = new System.Windows.Forms.ComboBox();
-            this.lblDestination = new System.Windows.Forms.Label();
             this.btnSearchPTRY0P_Today = new System.Windows.Forms.Button();
             this.btnUpdateMarkingData = new System.Windows.Forms.Button();
             this.btnSearchDB = new System.Windows.Forms.Button();
@@ -68,6 +66,9 @@
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnMKCDModel = new System.Windows.Forms.Button();
             this.gbBasicInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -109,7 +110,7 @@
             // 
             this.lblLotName.BackColor = System.Drawing.SystemColors.Control;
             this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLotName.Location = new System.Drawing.Point(141, 18);
+            this.lblLotName.Location = new System.Drawing.Point(124, 44);
             this.lblLotName.Name = "lblLotName";
             this.lblLotName.Size = new System.Drawing.Size(66, 17);
             this.lblLotName.TabIndex = 0;
@@ -120,7 +121,7 @@
             // 
             this.tbLotName.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbLotName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbLotName.Location = new System.Drawing.Point(213, 17);
+            this.tbLotName.Location = new System.Drawing.Point(208, 43);
             this.tbLotName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbLotName.Name = "tbLotName";
             this.tbLotName.Size = new System.Drawing.Size(138, 16);
@@ -143,17 +144,19 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(3, 16);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(1);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.cbDestination);
-            this.splitContainer1.Panel1.Controls.Add(this.lblDestination);
+            this.splitContainer1.Panel1.Controls.Add(this.textBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchPTRY0P_Today);
             this.splitContainer1.Panel1.Controls.Add(this.btnUpdateMarkingData);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchDB);
+            this.splitContainer1.Panel1.Controls.Add(this.btnMKCDModel);
             this.splitContainer1.Panel1.Controls.Add(this.btnShowSkipParam);
             this.splitContainer1.Panel1.Controls.Add(this.gbDBConnection);
             this.splitContainer1.Panel1.Controls.Add(this.btnReset);
@@ -168,49 +171,24 @@
             this.splitContainer1.SplitterDistance = 780;
             this.splitContainer1.TabIndex = 13;
             // 
-            // cbDestination
-            // 
-            this.cbDestination.DropDownHeight = 100;
-            this.cbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbDestination.FormattingEnabled = true;
-            this.cbDestination.IntegralHeight = false;
-            this.cbDestination.Location = new System.Drawing.Point(213, 38);
-            this.cbDestination.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.cbDestination.Name = "cbDestination";
-            this.cbDestination.Size = new System.Drawing.Size(138, 23);
-            this.cbDestination.TabIndex = 17;
-            // 
-            // lblDestination
-            // 
-            this.lblDestination.BackColor = System.Drawing.SystemColors.Control;
-            this.lblDestination.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDestination.Location = new System.Drawing.Point(141, 40);
-            this.lblDestination.Name = "lblDestination";
-            this.lblDestination.Size = new System.Drawing.Size(66, 17);
-            this.lblDestination.TabIndex = 16;
-            this.lblDestination.Text = "출하처";
-            this.lblDestination.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnSearchPTRY0P_Today
             // 
             this.btnSearchPTRY0P_Today.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(373, 10);
+            this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(353, 9);
             this.btnSearchPTRY0P_Today.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchPTRY0P_Today.Name = "btnSearchPTRY0P_Today";
-            this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(70, 54);
+            this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(73, 67);
             this.btnSearchPTRY0P_Today.TabIndex = 14;
-            this.btnSearchPTRY0P_Today.Text = "생산 LOT 검색";
+            this.btnSearchPTRY0P_Today.Text = "생산 데이터 검색";
             this.btnSearchPTRY0P_Today.UseVisualStyleBackColor = true;
             this.btnSearchPTRY0P_Today.Click += new System.EventHandler(this.btnSearchPTRY0P_Today_Click);
             // 
             // btnUpdateMarkingData
             // 
             this.btnUpdateMarkingData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateMarkingData.Location = new System.Drawing.Point(598, 10);
+            this.btnUpdateMarkingData.Location = new System.Drawing.Point(506, 42);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
-            this.btnUpdateMarkingData.Size = new System.Drawing.Size(70, 54);
+            this.btnUpdateMarkingData.Size = new System.Drawing.Size(89, 33);
             this.btnUpdateMarkingData.TabIndex = 13;
             this.btnUpdateMarkingData.Text = "UPDATE DATA";
             this.btnUpdateMarkingData.UseVisualStyleBackColor = true;
@@ -219,21 +197,21 @@
             // btnSearchDB
             // 
             this.btnSearchDB.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearchDB.Location = new System.Drawing.Point(449, 11);
+            this.btnSearchDB.Location = new System.Drawing.Point(430, 9);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
-            this.btnSearchDB.Size = new System.Drawing.Size(70, 54);
+            this.btnSearchDB.Size = new System.Drawing.Size(73, 66);
             this.btnSearchDB.TabIndex = 8;
-            this.btnSearchDB.Text = "불량 데이터 검색";
+            this.btnSearchDB.Text = "LOT 검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
             this.btnSearchDB.Click += new System.EventHandler(this.btnSearchDB_Click);
             // 
             // btnShowSkipParam
             // 
             this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnShowSkipParam.Location = new System.Drawing.Point(681, 10);
+            this.btnShowSkipParam.Location = new System.Drawing.Point(713, 9);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
-            this.btnShowSkipParam.Size = new System.Drawing.Size(70, 55);
+            this.btnShowSkipParam.Size = new System.Drawing.Size(64, 66);
             this.btnShowSkipParam.TabIndex = 11;
             this.btnShowSkipParam.Text = "SKIP PARAM";
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
@@ -249,7 +227,7 @@
             this.gbDBConnection.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbDBConnection.Name = "gbDBConnection";
             this.gbDBConnection.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbDBConnection.Size = new System.Drawing.Size(128, 63);
+            this.gbDBConnection.Size = new System.Drawing.Size(112, 63);
             this.gbDBConnection.TabIndex = 10;
             this.gbDBConnection.TabStop = false;
             this.gbDBConnection.Text = "DB";
@@ -268,7 +246,7 @@
             // btnDBConn
             // 
             this.btnDBConn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDBConn.Location = new System.Drawing.Point(14, 33);
+            this.btnDBConn.Location = new System.Drawing.Point(6, 32);
             this.btnDBConn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDBConn.Name = "btnDBConn";
             this.btnDBConn.Size = new System.Drawing.Size(101, 24);
@@ -292,10 +270,10 @@
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(525, 10);
+            this.btnReset.Location = new System.Drawing.Point(506, 9);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(70, 54);
+            this.btnReset.Size = new System.Drawing.Size(89, 33);
             this.btnReset.TabIndex = 8;
             this.btnReset.Text = "초기화";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -664,6 +642,38 @@
             this.splitContainer7.SplitterDistance = 131;
             this.splitContainer7.TabIndex = 0;
             // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(208, 15);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(138, 16);
+            this.textBox1.TabIndex = 16;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.Control;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(123, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 17);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "MKCD 모델";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnMKCDModel
+            // 
+            this.btnMKCDModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMKCDModel.Location = new System.Drawing.Point(644, 9);
+            this.btnMKCDModel.Name = "btnMKCDModel";
+            this.btnMKCDModel.Size = new System.Drawing.Size(64, 66);
+            this.btnMKCDModel.TabIndex = 11;
+            this.btnMKCDModel.Text = "MKCD MODEL";
+            this.btnMKCDModel.UseVisualStyleBackColor = true;
+            this.btnMKCDModel.Click += new System.EventHandler(this.btnMKCDModel_Click);
+            // 
             // FormPreCompDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -758,7 +768,8 @@
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.Button btnUpdateMarkingData;
         private System.Windows.Forms.Button btnSearchPTRY0P_Today;
-        private System.Windows.Forms.Label lblDestination;
-        private System.Windows.Forms.ComboBox cbDestination;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnMKCDModel;
     }
 }

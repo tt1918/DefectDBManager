@@ -85,6 +85,12 @@
     <Compile Include="DB\define\Define.cs" />
     <Compile Include="DB\define\ListViewData.cs" />
     <Compile Include="DB\DestData.cs" />
+    <Compile Include="DB\Form\FormMKCDModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DB\Form\FormMKCDModel.Designer.cs">
+      <DependentUpon>FormMKCDModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DB\Form\FormPreCompDB.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +209,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DB\Form\FormMKCDModel.resx">
+      <DependentUpon>FormMKCDModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DB\Form\FormPreCompDB.resx">
       <DependentUpon>FormPreCompDB.cs</DependentUpon>
     </EmbeddedResource>

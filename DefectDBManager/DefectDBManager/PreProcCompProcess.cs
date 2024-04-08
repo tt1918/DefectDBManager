@@ -437,5 +437,11 @@ namespace DefectDBManager
         }
 
         #endregion
+
+        public void SetMKCDModel(string name, eDbIdWhen when)
+        {
+            _DBProc[(int)when].SetMKCDModel(name);
+            
+        }
     }
 }
