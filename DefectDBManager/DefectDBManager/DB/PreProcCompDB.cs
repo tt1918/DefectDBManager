@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -40,13 +41,6 @@ namespace DefectDBManager
         }
         private Option dbOption;
 
-        public Param CrtParam
-        {
-            get { return currentParam; }
-            set { currentParam = value; }
-        }
-        private Param currentParam;
-
         // 당일 생산할 PTRY0P 데이터
         public List<PTRY0PData> PTRY0P_Today_Data { get; private set; }
 
@@ -70,13 +64,16 @@ namespace DefectDBManager
 
         public LogDB _LOG;
 
-        public List<MKCD_MODEL> MKCD_Model { get; set; }
+        public MKCD_MODEL MKCD_Model { get; set; }
+
+        public string MKCD_ModelName { get; set; }
 
 
         // 상위 객체
         private object owner;
+        private bool _doDiscon = true;
 
-        public PreProcCompDB(object parent, OracleDbConnection dbconn)
+        public PreProcCompDB(object parent, OracleDbConnection dbconn, bool disconnDB = true)
         {
             owner = parent;
             conn = dbconn;
@@ -91,12 +88,15 @@ namespace DefectDBManager
             if (Directory.Exists(Define.MKCDModelPath) == false)
                 Directory.CreateDirectory(Define.MKCDModelPath);
 
-            MKCD_Model = new List<MKCD_MODEL>();
+            MKCD_Model = new MKCD_MODEL();
+
+            _doDiscon = disconnDB;
         }
 
         ~PreProcCompDB()
         {
-            conn?.Dispose();
+            if(_doDiscon == true)
+                conn?.Dispose();
         }
 
         public void ResetDataAll()
@@ -229,10 +229,11 @@ namespace DefectDBManager
                 success = SearchPTRY0P(tmpLotName);
                 if (success == false) return false;
 
-                //마킹 컨트롤 마스터 데이터 검색
-                success = SearchMRKCTLMST(tmpLotName);
-                if (success == false) return false;
+                // MKCD Model 데이터를 읽어옴
+                success = applyMKCD_Model();
+                if(success == false) return false;
 
+                // inspData 불러옴.
                 success = SearchINSPDAT(tmpLotName);
                 if (success == false) return false;
 
@@ -284,8 +285,6 @@ namespace DefectDBManager
 
             return isResult;
         }
-
-
 
         public bool SearchLot(string lotID, bool bMsgOut, ref int errOut)
         {
@@ -351,20 +350,18 @@ namespace DefectDBManager
 
                 success = SearchPTRY0P(lotID);
                 if (success == false) return false;
-                //success = SearchMRKCTLMST(lotID);
-                //if (success == false) return false;
+
+                // MKCD 데이터를 모델에서 불러올 수 있도록 함
+                success = applyMKCD_Model();
+                if(success==false) return false;
+
                 success = SearchINSPDAT(lotID);
                 if (success == false) return false;
+
                 success = SearchFLTDAT();
                 if (success == false) return false;
-                if (DbDestConfig.CSVType == eCSV_TYPE.NITTO || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RK || DbDestConfig.CSVType == eCSV_TYPE.NITTO_RTS)
-                {
-                    if (dbOption.dbWhen == eDbIdWhen.Now && dbOption.prodAvaliableSpan > 0)
-                    {
-                        CrtParam.isProductAvaliable = _DbResult.IsProductAvaliable(dbOption, _LOG);
-                        CrtParam.isXOffsetError = CheckOffsetError();
-                    }
-                }
+                
+
                 return success;
             }
             catch (Exception ex)
@@ -873,6 +870,7 @@ namespace DefectDBManager
                             return false;
                         }
 
+                        MKCD_LNCD_Data mkcdLncdData = null;
                         using (var comm = new OracleCommand(query, conn.Connection))
                         {
                             using (var reader = comm.ExecuteReader())
@@ -883,13 +881,10 @@ namespace DefectDBManager
                                 PreProcDefect defectData = new PreProcDefect();
                                 // 
                                 defectData.LNCD = inspdata.LNCD;
-
-                                // 불량 스킵 데이터 갖고 오기
-                                DefectSizeTH skipData = DbDestConfig.DefectSizeTHs.Find(x=> x.LNCD.Equals(defectData.LNCD));
-
-                                float minSizeTh = 0.1f;
-                                if(skipData!=null)
-                                    minSizeTh = skipData.MinSize;
+                                if (MKCD_Model.Param.ContainsKey(inspdata.LNCD) == true)
+                                    mkcdLncdData = MKCD_Model.Param[inspdata.LNCD];
+                                else
+                                    mkcdLncdData = null;
 
                                 while (reader.Read())
                                 {
@@ -909,17 +904,22 @@ namespace DefectDBManager
                                     else    tmpKey = data.FLTID;
 
 
-                                    // 마킹 컨트롤 마스터에서 데이터 가져와서 다시 탐색함. 
-                                    //bValid = _DbResult.CheckValidSize(tmpKey, data.AREA_M);
-                                    //if (bValid == false) continue;
+                                    // MKCD Model에서 데이터 가져와서 다시 탐색함. 
+                                    bValid = false;
+                                    if (mkcdLncdData != null)
+                                    {
+                                        if (mkcdLncdData.Data.ContainsKey(tmpKey) == true &&
+                                            mkcdLncdData.Data[tmpKey].SIZE <= (data.AREA_M + 0.00001f) &&
+                                            mkcdLncdData.Data[tmpKey].MRKF1 == true)
+                                            bValid = true;
+                                        else
+                                            continue;
+                                    }
+                                    else continue;
 
-
+                                    if (bValid == false) continue;
                                     if (finalXPos < 0.0f) continue;
-
                                     if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
-
-                                    // 사이즈 스킵 처리
-                                    if (data.AREA_M < minSizeTh) continue;
 
                                     // Fault Data 처리
                                     FaultDatum tmpFltData = new FaultDatum();
@@ -975,13 +975,12 @@ namespace DefectDBManager
                                     }
                                     else
                                     {
-                                        if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
+                                        if (fcdIdx == (int)eFCD.TG && dbOption.useKT==true) // 점착
                                         {
                                             int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
                                             markData.DefectLine = FalutFunction.GetLineFromFLTID(fldID);
                                         }
-                                        else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
-                                            (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
+                                        else if ((fcdIdx == (int)eFCD.ES) || (fcdIdx == (int)eFCD.ETC))
                                         {
                                             markData.DefectLine = 0;
                                         }
@@ -1066,6 +1065,7 @@ namespace DefectDBManager
                 inspDat[i] = new List<INSPDATData>();
 
             // 각 공정별로 탐색
+            int added = 0;
             for (int i = 0; i < count; i++)
             {
                 foreach (List<INSPDATData> data in _DbResult.INSPDAT_Data[i])
@@ -1074,12 +1074,18 @@ namespace DefectDBManager
                     {
                         // 매칭되면 데이터를 넣어준다. 
                         if (datum.BCNO == bcno && (datum.XPosStart <= dPosY && datum.XPosEnd >= dPosY))
+                        {
                             inspDat[i].Add(datum);
+                            added++;
+                        }
                     }
                 }
             }
 
             _DbResult.Matched_INSPDAT_Data = inspDat;
+
+            if (added <= 0)
+                success = false;
 
             return success;
         }
@@ -1168,8 +1174,26 @@ namespace DefectDBManager
         /// <param name="name"></param>
         public void SetMKCDModel(string name)
         {
-            CrtParam.MKCDModel = name;
+            MKCD_ModelName = name;
             if (OnUpdateMKCDModel != null) OnUpdateMKCDModel();
+        }
+
+        private bool applyMKCD_Model()
+        {
+            bool success = true;
+            MKCD_MODEL model = new MKCD_MODEL();
+
+            model.Name = MKCD_ModelName;
+            model.Load();
+            if(model.Param.Count==0)   
+                success = false;
+
+            if(success == true)
+            {
+                MKCD_Model = model;
+            }
+
+            return success;
         }
 
         public bool SearchMKCD_Data(string lotName)
@@ -1201,7 +1225,6 @@ namespace DefectDBManager
             {
 
             }
-
 
             return success;
 

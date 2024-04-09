@@ -33,9 +33,12 @@
             this.tbLotName = new System.Windows.Forms.TextBox();
             this.gbBasicInfo = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tbMKCDModelName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnSearchPTRY0P_Today = new System.Windows.Forms.Button();
             this.btnUpdateMarkingData = new System.Windows.Forms.Button();
             this.btnSearchDB = new System.Windows.Forms.Button();
+            this.btnMKCDModel = new System.Windows.Forms.Button();
             this.btnShowSkipParam = new System.Windows.Forms.Button();
             this.gbDBConnection = new System.Windows.Forms.GroupBox();
             this.lblDbConnStateIcon = new System.Windows.Forms.Label();
@@ -66,9 +69,6 @@
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnMKCDModel = new System.Windows.Forms.Button();
             this.gbBasicInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -151,7 +151,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.textBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.tbMKCDModelName);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.btnSearchPTRY0P_Today);
             this.splitContainer1.Panel1.Controls.Add(this.btnUpdateMarkingData);
@@ -170,6 +170,27 @@
             this.splitContainer1.Size = new System.Drawing.Size(1174, 82);
             this.splitContainer1.SplitterDistance = 780;
             this.splitContainer1.TabIndex = 13;
+            // 
+            // tbMKCDModelName
+            // 
+            this.tbMKCDModelName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbMKCDModelName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbMKCDModelName.Location = new System.Drawing.Point(208, 15);
+            this.tbMKCDModelName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbMKCDModelName.Name = "tbMKCDModelName";
+            this.tbMKCDModelName.Size = new System.Drawing.Size(138, 16);
+            this.tbMKCDModelName.TabIndex = 16;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.Control;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(123, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(81, 17);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "MKCD 모델";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSearchPTRY0P_Today
             // 
@@ -205,6 +226,17 @@
             this.btnSearchDB.Text = "LOT 검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
             this.btnSearchDB.Click += new System.EventHandler(this.btnSearchDB_Click);
+            // 
+            // btnMKCDModel
+            // 
+            this.btnMKCDModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMKCDModel.Location = new System.Drawing.Point(644, 9);
+            this.btnMKCDModel.Name = "btnMKCDModel";
+            this.btnMKCDModel.Size = new System.Drawing.Size(64, 66);
+            this.btnMKCDModel.TabIndex = 11;
+            this.btnMKCDModel.Text = "MKCD MODEL";
+            this.btnMKCDModel.UseVisualStyleBackColor = true;
+            this.btnMKCDModel.Click += new System.EventHandler(this.btnMKCDModel_Click);
             // 
             // btnShowSkipParam
             // 
@@ -642,38 +674,6 @@
             this.splitContainer7.SplitterDistance = 131;
             this.splitContainer7.TabIndex = 0;
             // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(208, 15);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(138, 16);
-            this.textBox1.TabIndex = 16;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.SystemColors.Control;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(123, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 17);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "MKCD 모델";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnMKCDModel
-            // 
-            this.btnMKCDModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMKCDModel.Location = new System.Drawing.Point(644, 9);
-            this.btnMKCDModel.Name = "btnMKCDModel";
-            this.btnMKCDModel.Size = new System.Drawing.Size(64, 66);
-            this.btnMKCDModel.TabIndex = 11;
-            this.btnMKCDModel.Text = "MKCD MODEL";
-            this.btnMKCDModel.UseVisualStyleBackColor = true;
-            this.btnMKCDModel.Click += new System.EventHandler(this.btnMKCDModel_Click);
-            // 
             // FormPreCompDB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -768,7 +768,7 @@
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.Button btnUpdateMarkingData;
         private System.Windows.Forms.Button btnSearchPTRY0P_Today;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbMKCDModelName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnMKCDModel;
     }

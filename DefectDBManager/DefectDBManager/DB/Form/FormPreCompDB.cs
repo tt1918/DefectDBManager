@@ -1076,6 +1076,7 @@ namespace DefectDBManager
         private void updateUIOptionToDBOption()
         {
             this.PreCompDB.DbOption.lotName = (string)tbLotName.Text.Clone();
+            this.PreCompDB.MKCD_ModelName = (string)tbMKCDModelName.Text.Clone();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -1677,17 +1678,7 @@ namespace DefectDBManager
 
 
                 isSuccess &= PreCompDB.SearchLot(PreCompDB.DbOption.lotName, false, ref errorOut);
-                // 데이터 처리 필요
-                if (PreCompDB.CrtParam.isProductAvaliable == false)
-                {
-
-                }
-
-                if (PreCompDB.CrtParam.isXOffsetError == true)
-                {
-
-                }
-
+               
                 // List View 업데이트 데이터 생성
                 this.makeAllListViewData();
                 this.displayAllListView();
@@ -1711,13 +1702,6 @@ namespace DefectDBManager
                     this.UpdateEndEvent = false;
                 }
 
-                // FLTID 비교 발생 시 에러 알람
-                if (PreCompDB.CrtParam.FLTIDCheckError == true)
-                    OnEndJob((int)eEventReport.eBCR_FLTID_CheckError);
-                // ROLL MAP 거리 비교 에러 시 알람 처리
-                if (PreCompDB.CrtParam.InspRollCheckError == true)
-                    OnEndJob((int)eEventReport.eBCR_INSPMETER_CheckError);
-
                 this.updateSearchResult(isSuccess, 0);
             }
         }
@@ -1730,6 +1714,23 @@ namespace DefectDBManager
             {
                 form.DbConn = this.DBConn;
                 form.ShowDialog();
+            }
+        }
+
+
+        public void OnUpdateMKCD_ModelName()
+        {
+            string name = PreCompDB?.MKCD_ModelName;
+            if (this.InvokeRequired == true)
+            {
+                this.Invoke(new MethodInvoker(delegate ()
+                {
+                    tbMKCDModelName.Text = name;
+                }));
+            }
+            else
+            {
+                tbMKCDModelName.Text = name;
             }
         }
     }

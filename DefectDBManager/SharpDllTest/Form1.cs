@@ -46,8 +46,6 @@ namespace SharpDllTest
             // 정보 데이터 검색 완료 후 화면 표시
             defectProc.OnEndSearchingAvailableLot += formDB.OnUpdateAvailableLot;
 
-            _ctrParam = new Param();
-            defectProc._DBProc[(int)(eDbIdWhen.Now)].CrtParam = _ctrParam;
             this.MainPanel.Controls.Add(formDB);
             formDB.Show();
         }

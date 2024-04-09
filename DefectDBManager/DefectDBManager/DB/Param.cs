@@ -216,7 +216,10 @@ namespace DefectDBManager
                 Data.Add(input.FLTID, input);
             else
             {
-                if(input.MRKF1==true && input.SIZE<= Data[input.FLTID].SIZE)
+                if(input.MRKF1==true && 
+                    ((input.SIZE>0.0 && input.SIZE <= Data[input.FLTID].SIZE) || 
+                    (input.SIZE!=0.0 &&  Data[input.FLTID].SIZE==0.0))
+                )
                     Data[input.FLTID] = input;
             }
         }
@@ -281,7 +284,7 @@ namespace DefectDBManager
                 if (File.Exists(path) == false)
                     return;
 
-
+                Param.Clear();
 
                 string data;
                 string[] item;
