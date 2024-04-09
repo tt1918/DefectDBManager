@@ -205,15 +205,9 @@ namespace DefectDBManager
             if(db.SearchMKCD_Data(lot) ==true)
             {
                 MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                
                 foreach (MRKCTLMSTData data in db._DbResult.MRKCTLMST_Data)
-                {
-                    MKCD_Data item = new MKCD_Data();
-
-                    item.FLTID = data.FLTID;
-                    item.MRKF1 = int.Parse(data.MRKF1) == 1 ? true : false;
-                    item.SIZE = data.SIZE;
-                    mKCD_MODEL.Add(data.LNCD, item);
-                }
+                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
 
                 _selModelData = mKCD_MODEL;
 

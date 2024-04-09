@@ -15,7 +15,7 @@ namespace DefectDBManager
 {
     public class PreProcCompDB
     {
-        public event DelegateEvent OnUpdateMKCDModel;
+        public event DelegateEvent OnUpdateMKCDModel = null;
 
         public OracleDbConnection Conn { get { return conn; } }
         private OracleDbConnection conn = null;
@@ -44,11 +44,7 @@ namespace DefectDBManager
         // 당일 생산할 PTRY0P 데이터
         public List<PTRY0PData> PTRY0P_Today_Data { get; private set; }
 
-        public DbSearchResult _DbResult
-        {
-            get;
-            set;
-        }
+        public DbSearchResult _DbResult { get; set; }
 
         public PrePocResultData FaultData { get; set; }
 
@@ -66,8 +62,7 @@ namespace DefectDBManager
 
         public MKCD_MODEL MKCD_Model { get; set; }
 
-        public string MKCD_ModelName { get; set; }
-
+        public MkcdParam MKCD_Param { get; set; }
 
         // 상위 객체
         private object owner;
@@ -89,6 +84,7 @@ namespace DefectDBManager
                 Directory.CreateDirectory(Define.MKCDModelPath);
 
             MKCD_Model = new MKCD_MODEL();
+            MKCD_Param = new MkcdParam();
 
             _doDiscon = disconnDB;
         }
@@ -190,8 +186,8 @@ namespace DefectDBManager
                     }
                 }
 
-                
-                if (PTRY0P_Today_Data.Count == 0) return false;
+                if (PTRY0P_Today_Data.Count == 0)
+                    return false;
 
                 // 이름으로 랏 정렬을 한다.
                 PTRY0P_Today_Data = PTRY0P_Today_Data.OrderBy(p => p.Y0KLOT).ToList();
@@ -316,6 +312,7 @@ namespace DefectDBManager
 
                 if (query == "")
                 {
+                    errOut = 1;
                     Log.Write($"[Error] DB Serach PTRYLP query is empty.");
                     DB_Progress.SetError(eNittoDBProgress.PTRYLP);
                 }
@@ -343,24 +340,25 @@ namespace DefectDBManager
                 if (success == false)
                 {
                     DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                    errOut = 2;
                     return false;
                 }
-                //success = SearchXOFSMST(lotID);
-                //if (success == false) return false;
+                success = SearchXOFSMST(lotID);
+                if (success == false) { errOut = 3; return false; }
 
                 success = SearchPTRY0P(lotID);
-                if (success == false) return false;
+                if (success == false) { errOut = 4; return false; }
 
                 // MKCD 데이터를 모델에서 불러올 수 있도록 함
                 success = applyMKCD_Model();
-                if(success==false) return false;
+                if(success==false) { errOut = 5; return false; }
 
                 success = SearchINSPDAT(lotID);
-                if (success == false) return false;
+                if (success == false) { errOut = 6; return false; }
 
                 success = SearchFLTDAT();
-                if (success == false) return false;
-                
+                if (success == false) { errOut = -7; return false; }
+
 
                 return success;
             }
@@ -1174,8 +1172,8 @@ namespace DefectDBManager
         /// <param name="name"></param>
         public void SetMKCDModel(string name)
         {
-            MKCD_ModelName = name;
-            if (OnUpdateMKCDModel != null) OnUpdateMKCDModel();
+            MKCD_Param.Set(name);
+            OnUpdateMKCDModel?.Invoke();
         }
 
         private bool applyMKCD_Model()
@@ -1183,15 +1181,13 @@ namespace DefectDBManager
             bool success = true;
             MKCD_MODEL model = new MKCD_MODEL();
 
-            model.Name = MKCD_ModelName;
+            model.Name = MKCD_Param.Name;
             model.Load();
             if(model.Param.Count==0)   
                 success = false;
 
             if(success == true)
-            {
                 MKCD_Model = model;
-            }
 
             return success;
         }
@@ -1225,9 +1221,7 @@ namespace DefectDBManager
             {
 
             }
-
             return success;
-
         }
     }
 }

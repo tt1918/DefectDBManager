@@ -350,6 +350,11 @@ namespace DefectDBManager
         /// Daily Fault Data 탐색했지만 Lot 데이터 존재하지 않음
         /// </summary>
         eEmptyDailyLotFaultData,
+
+        /// <summary>
+        /// 해당 MKCD MOdel이 존재하지 않음
+        /// </summary>
+        eNoMKCD_Model,
     }
     #endregion
 

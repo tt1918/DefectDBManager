@@ -179,14 +179,14 @@ namespace DefectDBManager
             if (_DbConn.IsDBConnected == false)
             {
                 formDB[idx]._SearchRes = eSearchProcessRes.DB_Disconnected;
-                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchLot);
                 return;
             }
 
             if (formDB[idx].IsSearchDefect() == true)
             {
                 formDB[idx]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
-                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchLot);
                 return;
             }
 
@@ -212,14 +212,14 @@ namespace DefectDBManager
             if (_DbConn.IsDBConnected == false)
             {
                 formDB[idx]._SearchRes = eSearchProcessRes.DB_Disconnected;
-                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchLot);
                 return;
             }
 
             if (formDB[idx].IsSearchDefect() == true)
             {
                 formDB[idx]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
-                OnProcessEvent((int)eEventReport.eFinishedSearchLot);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchLot);
                 return;
             }
 
@@ -254,8 +254,8 @@ namespace DefectDBManager
 
             bool bRes = AreaDelCSV.Load(filePath, _DbProc[idx]);
 
-            if (bRes == true) OnProcessEvent((int)eEventReport.eFinishedReadCSVFile);
-            else              OnProcessEvent((int)eEventReport.eFailedReadCSVFile);
+            if (bRes == true) OnProcessEvent?.Invoke((int)eEventReport.eFinishedReadCSVFile);
+            else              OnProcessEvent?.Invoke((int)eEventReport.eFailedReadCSVFile);
         }
 
         public void ResetDBData(bool isNext)
@@ -416,14 +416,14 @@ namespace DefectDBManager
             if (_DbConn.IsDBConnected == false)
             {
                 formDB[0]._SearchRes = eSearchProcessRes.DB_Disconnected;
-                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchModel);
                 return;
             }
 
             if (formDB[0].IsSearchDefect() == true)
             {
                 formDB[0]._SearchRes = eSearchProcessRes.DB_SearchIsBusy;
-                OnProcessEvent((int)eEventReport.eFinishedSearchModel);
+                OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchModel);
                 return;
             }
             _Option[2].dbWhen = (eDbIdWhen)0;

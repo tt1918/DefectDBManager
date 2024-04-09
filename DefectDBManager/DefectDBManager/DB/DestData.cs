@@ -489,7 +489,6 @@ namespace DefectDBManager
                         for (int j = 0; j < unit.FLTIDCheck.Length; j++)
                             NativeFunc.WriteIni(Define.DestPath, key, $"FLTID_CHECK[{j}]", unit.FLTIDCheck[j]);
                     }
-
                 }
 
                 key = "DB_CONFIG";

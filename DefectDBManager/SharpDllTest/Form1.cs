@@ -36,12 +36,16 @@ namespace SharpDllTest
             formDB.DBConn = defectProc._DbConn;
 
             defectProc.OnEndTodayProductSearching += formDB.OnUpdateDailyLotInfo;
+            
 
             // 예약 랏인 경우
             //formDB.TodayDataBase = defectProc._DBProc[(int)(eDbIdWhen.Next)];
             ///////////////////////////////////////////////////////////////////////
 
             formDB.TopLevel = false;
+
+            // MKCD Model 데이터를 화면에 업데이트 한다. 
+            defectProc.OnUpdateMKCD_ModelName += formDB.OnUpdateMKCD_ModelName;
 
             // 정보 데이터 검색 완료 후 화면 표시
             defectProc.OnEndSearchingAvailableLot += formDB.OnUpdateAvailableLot;

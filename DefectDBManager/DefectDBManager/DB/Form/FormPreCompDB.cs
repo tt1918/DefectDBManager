@@ -1076,7 +1076,7 @@ namespace DefectDBManager
         private void updateUIOptionToDBOption()
         {
             this.PreCompDB.DbOption.lotName = (string)tbLotName.Text.Clone();
-            this.PreCompDB.MKCD_ModelName = (string)tbMKCDModelName.Text.Clone();
+            this.PreCompDB.MKCD_Param.Set(tbMKCDModelName.Text);
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -1127,7 +1127,6 @@ namespace DefectDBManager
                 return;
             }
 
-            RunDefectEdit();
         }
 
         /// <summary>
@@ -1566,148 +1565,7 @@ namespace DefectDBManager
             // 검색 데이터 처리
             Process.SearchDailyLot();
         }
-        #region Defect Edit
-        public void RunDefectEdit()
-        {
-            //int errorIdx = -1;
-            //DestConfigUnit unit = new DestConfigUnit();
-            //PreCompDB.DbDestConfig.GetData(vendorIdx, ref unit);
-
-            //PreCompDB._DbResult.ResetData_DE();
-
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    PTRY0PData data = new PTRY0PData();
-            //    data.Y0KLOT = $"{i}";
-            //    PreCompDB._DbResult.PTRY0P_Data[0].Add(data);
-            //}
-
-            //int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            //int queryCount = 0;
-            //for (int i = 0; i < count; i++)
-            //{
-            //    for (int j = 0; j < PreCompDB._DbResult.PTRY0P_Data[i].Count; j++)
-            //    {
-            //        QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
-            //        msg.Y0KLOT = PreCompDB._DbResult.PTRY0P_Data[i][j].Y0KLOT;
-            //        msg.MKCD = unit.MKCD;
-            //        MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
-            //        if (i == (int)eFCD.ES)
-            //        {
-            //            de_data.query = msg.GetQueryAll(eFCD.ES);
-            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-            //            queryCount++;
-            //        }
-            //        else if (i == (int)eFCD.ETC)
-            //        {
-            //            de_data.query = msg.GetQueryAll(eFCD.ETC);
-            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-            //            queryCount++;
-            //        }
-            //        else if (i == (int)eFCD.TG)
-            //        {
-            //            de_data.query = msg.GetQueryAll(eFCD.TG);
-            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-            //            queryCount++;
-            //        }
-            //        else
-            //        {
-            //            de_data.query = "";
-            //            PreCompDB._DbResult._MRKCTLMST_DE[i].Add(de_data);
-            //        }
-            //    }
-            //}
-
-            //if (queryCount > 0)
-            //{
-            //    using (FormEditDefect form = new FormEditDefect())
-            //    {
-            //        form._DB_Result = PreCompDB._DbResult;
-            //        form._LOG = PreCompDB._LOG;
-            //        form._Conn = PreCompDB.Conn;
-
-            //        if (form.ShowDialog() == DialogResult.OK)
-            //        {
-            //            if (MessageBox.Show(Language.ApplySelectedDefectInfos, "Defect Editor",
-            //                MessageBoxButtons.YesNo) == DialogResult.Yes)
-            //            {
-
-            //                clearAllListView();
-            //                ResetListViewData();
-
-
-            //                if (this.thread != null)
-            //                {
-            //                    this.thread.Join(100);
-            //                    this.thread = null;
-            //                }
-
-            //                this.thread = new Thread(this.threadFromDefectEdit);
-            //                this.thread.Start();
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show(Language.ThereAreNoDefectInfs);
-            //}
-        }
-
-
-        private void threadFromDefectEdit()
-        {
-            bool isSuccess = true;
-            try
-            {
-                this.dbLoadingTime.Reset();
-                this.dbLoadingTime.Start();
-                int errorOut = 0;
-
-                this.dbSearchProgressTimer.Start();
-
-                PreCompDB.ResetDataAll();
-                Option option = PreCompDB.DbOption;
-                SearchOption searchOP = new SearchOption();
-                searchOP.MKCD = option.searchOP.MKCD; // 혹시 몰라서 다시 추가함... 확인 필요
-                option.searchOP = searchOP;
-                searchOP.useMask = false;
-                searchOP.useDefectEdit = true;
-
-                if (formProgress != null) formProgress._Step = 0;
-
-
-                isSuccess &= PreCompDB.SearchLot(PreCompDB.DbOption.lotName, false, ref errorOut);
-               
-                // List View 업데이트 데이터 생성
-                this.makeAllListViewData();
-                this.displayAllListView();
-
-                // Fault Data 표시
-                this.initFaultPage(this.PreCompDB.FaultData.MarkData.Count);
-            }
-            finally
-            {
-                this.dbSearchProgressTimer.Stop();
-                this.dbLoadingTime.Stop();
-
-                if (isSuccess == false)
-                    this._SearchRes = eSearchProcessRes.DB_NoExistES;
-                else
-                    this._SearchRes = eSearchProcessRes.DB_SearchDone;
-
-                if (this.UpdateEndEvent == true)
-                {
-                    OnEndJob((int)eEventReport.eFinishedSearchLot);
-                    this.UpdateEndEvent = false;
-                }
-
-                this.updateSearchResult(isSuccess, 0);
-            }
-        }
-        #endregion Defect Edit
-
-
+       
         private void btnMKCDModel_Click(object sender, EventArgs e)
         {
             using(FormMKCDModel form = new FormMKCDModel())
@@ -1717,10 +1575,9 @@ namespace DefectDBManager
             }
         }
 
-
         public void OnUpdateMKCD_ModelName()
         {
-            string name = PreCompDB?.MKCD_ModelName;
+            string name = PreCompDB?.MKCD_Param.Name;
             if (this.InvokeRequired == true)
             {
                 this.Invoke(new MethodInvoker(delegate ()
