@@ -332,21 +332,20 @@
             this.gbPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRYLP.Name = "gbPTRYLP";
             this.gbPTRYLP.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPTRYLP.Size = new System.Drawing.Size(1180, 130);
+            this.gbPTRYLP.Size = new System.Drawing.Size(589, 144);
             this.gbPTRYLP.TabIndex = 6;
             this.gbPTRYLP.TabStop = false;
             this.gbPTRYLP.Text = "PTRYLP";
             // 
             // listViewPTRYLP
             // 
-            this.listViewPTRYLP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewPTRYLP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewPTRYLP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPTRYLP.HideSelection = false;
-            this.listViewPTRYLP.Location = new System.Drawing.Point(6, 17);
+            this.listViewPTRYLP.Location = new System.Drawing.Point(3, 20);
             this.listViewPTRYLP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewPTRYLP.Name = "listViewPTRYLP";
-            this.listViewPTRYLP.Size = new System.Drawing.Size(1168, 108);
+            this.listViewPTRYLP.Size = new System.Drawing.Size(583, 122);
             this.listViewPTRYLP.TabIndex = 7;
             this.listViewPTRYLP.UseCompatibleStateImageBehavior = false;
             // 
@@ -359,97 +358,85 @@
             this.gbMRKCTLMST.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbMRKCTLMST.Name = "gbMRKCTLMST";
             this.gbMRKCTLMST.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbMRKCTLMST.Size = new System.Drawing.Size(589, 144);
+            this.gbMRKCTLMST.Size = new System.Drawing.Size(1180, 130);
             this.gbMRKCTLMST.TabIndex = 6;
             this.gbMRKCTLMST.TabStop = false;
             this.gbMRKCTLMST.Text = "PTRY0P_TODAY";
             // 
             // listViewPTRY0P_TODAY
             // 
-            this.listViewPTRY0P_TODAY.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewPTRY0P_TODAY.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewPTRY0P_TODAY.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPTRY0P_TODAY.HideSelection = false;
-            this.listViewPTRY0P_TODAY.Location = new System.Drawing.Point(5, 18);
+            this.listViewPTRY0P_TODAY.Location = new System.Drawing.Point(3, 20);
             this.listViewPTRY0P_TODAY.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewPTRY0P_TODAY.Name = "listViewPTRY0P_TODAY";
-            this.listViewPTRY0P_TODAY.Size = new System.Drawing.Size(578, 118);
+            this.listViewPTRY0P_TODAY.Size = new System.Drawing.Size(1174, 108);
             this.listViewPTRY0P_TODAY.TabIndex = 7;
             this.listViewPTRY0P_TODAY.UseCompatibleStateImageBehavior = false;
             // 
             // gbPTRY0P
             // 
-            this.gbPTRY0P.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbPTRY0P.Controls.Add(this.listViewPTRY0P);
+            this.gbPTRY0P.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbPTRY0P.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbPTRY0P.Location = new System.Drawing.Point(0, 0);
             this.gbPTRY0P.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbPTRY0P.Name = "gbPTRY0P";
             this.gbPTRY0P.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbPTRY0P.Size = new System.Drawing.Size(584, 144);
+            this.gbPTRY0P.Size = new System.Drawing.Size(587, 144);
             this.gbPTRY0P.TabIndex = 6;
             this.gbPTRY0P.TabStop = false;
             this.gbPTRY0P.Text = "PTRY0P";
             // 
             // listViewPTRY0P
             // 
-            this.listViewPTRY0P.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewPTRY0P.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewPTRY0P.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPTRY0P.HideSelection = false;
-            this.listViewPTRY0P.Location = new System.Drawing.Point(6, 18);
+            this.listViewPTRY0P.Location = new System.Drawing.Point(3, 20);
             this.listViewPTRY0P.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewPTRY0P.Name = "listViewPTRY0P";
-            this.listViewPTRY0P.Size = new System.Drawing.Size(572, 118);
+            this.listViewPTRY0P.Size = new System.Drawing.Size(581, 122);
             this.listViewPTRY0P.TabIndex = 7;
             this.listViewPTRY0P.UseCompatibleStateImageBehavior = false;
             // 
             // gbINSPDAT
             // 
-            this.gbINSPDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbINSPDAT.Controls.Add(this.listViewINSPDAT);
+            this.gbINSPDAT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbINSPDAT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbINSPDAT.Location = new System.Drawing.Point(0, 0);
             this.gbINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbINSPDAT.Name = "gbINSPDAT";
             this.gbINSPDAT.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbINSPDAT.Size = new System.Drawing.Size(1177, 131);
+            this.gbINSPDAT.Size = new System.Drawing.Size(1180, 131);
             this.gbINSPDAT.TabIndex = 6;
             this.gbINSPDAT.TabStop = false;
             this.gbINSPDAT.Text = "INSPDAT";
             // 
             // listViewINSPDAT
             // 
-            this.listViewINSPDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewINSPDAT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewINSPDAT.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewINSPDAT.HideSelection = false;
-            this.listViewINSPDAT.Location = new System.Drawing.Point(6, 18);
+            this.listViewINSPDAT.Location = new System.Drawing.Point(3, 20);
             this.listViewINSPDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewINSPDAT.Name = "listViewINSPDAT";
-            this.listViewINSPDAT.Size = new System.Drawing.Size(1163, 107);
+            this.listViewINSPDAT.Size = new System.Drawing.Size(1174, 109);
             this.listViewINSPDAT.TabIndex = 7;
             this.listViewINSPDAT.UseCompatibleStateImageBehavior = false;
             // 
             // gbFAULTDAT
             // 
-            this.gbFAULTDAT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbFAULTDAT.Controls.Add(this.listViewFAULTDAT);
+            this.gbFAULTDAT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFAULTDAT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbFAULTDAT.Location = new System.Drawing.Point(0, 0);
             this.gbFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbFAULTDAT.Name = "gbFAULTDAT";
             this.gbFAULTDAT.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.gbFAULTDAT.Size = new System.Drawing.Size(1175, 257);
+            this.gbFAULTDAT.Size = new System.Drawing.Size(1180, 257);
             this.gbFAULTDAT.TabIndex = 6;
             this.gbFAULTDAT.TabStop = false;
             this.gbFAULTDAT.Text = "FAULTDAT";
@@ -464,7 +451,7 @@
             this.listViewFAULTDAT.Location = new System.Drawing.Point(6, 18);
             this.listViewFAULTDAT.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listViewFAULTDAT.Name = "listViewFAULTDAT";
-            this.listViewFAULTDAT.Size = new System.Drawing.Size(1162, 232);
+            this.listViewFAULTDAT.Size = new System.Drawing.Size(1167, 232);
             this.listViewFAULTDAT.TabIndex = 7;
             this.listViewFAULTDAT.UseCompatibleStateImageBehavior = false;
             // 
@@ -610,7 +597,7 @@
             // 
             // splitContainer4.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.gbPTRYLP);
+            this.splitContainer4.Panel1.Controls.Add(this.gbMRKCTLMST);
             // 
             // splitContainer4.Panel2
             // 
@@ -646,7 +633,7 @@
             // 
             // splitContainer6.Panel1
             // 
-            this.splitContainer6.Panel1.Controls.Add(this.gbMRKCTLMST);
+            this.splitContainer6.Panel1.Controls.Add(this.gbPTRYLP);
             // 
             // splitContainer6.Panel2
             // 

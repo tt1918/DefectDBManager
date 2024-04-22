@@ -999,7 +999,7 @@ namespace DefectDBManager
             this.UpdateEndEvent = false;
 
             // Thread 처리 필요
-            Process.SearchLotData(PreCompDB.DbOption.dbWhen, tbLotName.Text);
+            Process.SearchLotData(PreCompDB.DbOption.dbWhen, tbLotName.Text, tbMKCDModelName.Text);
         }
 
         public bool IsSearchDefect()

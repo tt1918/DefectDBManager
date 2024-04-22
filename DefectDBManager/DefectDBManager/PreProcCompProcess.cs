@@ -357,10 +357,15 @@ namespace DefectDBManager
             }
         }
 
-        public bool SearchLotData(eDbIdWhen when, string lotName)
+        public bool SearchLotData(eDbIdWhen when, string lotName, string mkcdName)
         {
             bool success = true;
             int errIdx = -1;
+
+            // MKCD Model 이름을 적용한다. 
+            _DBProc[(int)when].SetMKCDModel(mkcdName);
+
+            // 랏을 탐색한다. 
             success = _DBProc[(int)when].SearchLot(lotName, true, ref errIdx);
             if (success == true)
             {
@@ -401,10 +406,13 @@ namespace DefectDBManager
         {
             bool isSuccess = true;
 
+            //////////////////////////////////////////////////////////////////////////
             // 예약 랏 -> 현재 랏 DB 데이터 이전
             _DBProc[0]._DbResult = _DBProc[1]._DbResult;
             _DBProc[1]._DbResult = new DbSearchResult();
+            //////////////////////////////////////////////////////////////////////////
 
+            //////////////////////////////////////////////////////////////////////////
             // 예약 랏 -> 현재 랏 FLTDAT 데이터 이전
             PrePocResultData oldMarkingData;
             oldMarkingData = _DBProc[0].FaultData;
@@ -412,6 +420,7 @@ namespace DefectDBManager
 
             // 이전 현재랏으 데이터 초기화
             oldMarkingData.ResetAll();
+            //////////////////////////////////////////////////////////////////////////
 
             // 예약랏 DB 옵션 복사.
             // 출하처 사용하지 않아 실제 필요하지는 않지만 이전 프로그램과 동일하게
@@ -422,8 +431,19 @@ namespace DefectDBManager
             _DBProc[1].FaultData = new PrePocResultData();
             _DBProc[1].ResetDataAll();
 
+            //////////////////////////////////////////////////////////////////////////
+            // 현재 랏의 MKCD 모델 데이터를 업데이트한다.
+            _DBProc[0].MKCD_Param = _DBProc[1].MKCD_Param;
+            _DBProc[0].MKCD_Model = _DBProc[1].MKCD_Model;
+            OnUpdateMKCD_ModelName?.Invoke();
+
+            // 예약랏에는 모델 데이터를 신규로 생성한다.
+            _DBProc[1].MKCD_Param = new MkcdParam();
+            _DBProc[1].MKCD_Model = new MKCD_MODEL();
+            //////////////////////////////////////////////////////////////////////////
+
             // 상부에 랏 변경 보고
-            OnEndLotChange();
+            OnEndLotChange?.Invoke();
 
             Log.Write($"Changing lot is finished.");
 
@@ -463,11 +483,22 @@ namespace DefectDBManager
             return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
         }
 
+        /// <summary>
+        /// 각 연신/도공/ECT 별 검색한 LNCD CODE 갯수
+        /// </summary>
+        /// <returns> 각 공정  </returns>
         public int[] GetCurrentInspDatCnt()
         {
             return _DBProc[(int)eDbIdWhen.Now].GetCurrentInspDatCnt();
         }
 
+        /// <summary>
+        /// 선택한 공정에 대한 결점 포인트 정보를 전달
+        /// </summary>
+        /// <param name="fcd"></param>
+        /// <param name="index"></param>
+        /// <param name="LNCD"></param>
+        /// <param name="pts"></param>
         public void GetSelectedPreprocDefects(eFCD fcd, int index, out string LNCD, out List<System.Drawing.PointF> pts)
         {
             LNCD = "";
@@ -475,6 +506,12 @@ namespace DefectDBManager
         }
 
 
+        /// <summary>
+        /// 연신/도공/ECT에 대한 세보 공정 라인 코드명을 돌려준다. 
+        /// 각 공정에 속하는 이름을 리스트로 전달한다.
+        /// </summary>
+        /// <param name="fcd">공정 </param>
+        /// <returns></returns>
         public List<string> GetLineCodeName(eFCD fcd)
         {
             List<string> code = new List<string>();
@@ -488,6 +525,11 @@ namespace DefectDBManager
         }
         #endregion
 
+        /// <summary>
+        /// MKCD 모델을 적용한다. 
+        /// </summary>
+        /// <param name="name">모델 이름</param>
+        /// <param name="when">현재랏/예약랏 설정</param>
         public void SetMKCDModel(string name, eDbIdWhen when)
         {
             _DBProc[(int)when].SetMKCDModel(name);
