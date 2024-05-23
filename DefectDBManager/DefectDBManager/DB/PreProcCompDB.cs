@@ -1188,6 +1188,19 @@ namespace DefectDBManager
 
             if(success == true)
                 MKCD_Model = model;
+            else
+            {
+                model.Name = "Default";
+                model.Load();
+
+                if (model.Param.Count == 0)
+                    success = false;
+                else
+                    success = true;
+
+                if (success == true)
+                    MKCD_Model = model;
+            }
 
             return success;
         }

@@ -289,6 +289,8 @@ namespace DefectDBManager
                     displayPTRY0P_TodayListView();
                     displayINSPDATListView();
                     displayFAULTDATListView();
+
+                    tbMKCDModelName.Text = _preCompDB.MKCD_Model.Name;
                 }));
             }
             else
@@ -299,6 +301,8 @@ namespace DefectDBManager
                 displayPTRY0P_TodayListView();
                 displayINSPDATListView();
                 displayFAULTDATListView();
+
+                tbMKCDModelName.Text = _preCompDB.MKCD_Model.Name;
             }
         }
 

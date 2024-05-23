@@ -132,7 +132,7 @@
             // 
             this.gbBasicInfo.Controls.Add(this.splitContainer1);
             this.gbBasicInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbBasicInfo.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.gbBasicInfo.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.gbBasicInfo.Location = new System.Drawing.Point(0, 0);
             this.gbBasicInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gbBasicInfo.Name = "gbBasicInfo";
@@ -162,7 +162,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnReset);
             this.splitContainer1.Panel1.Controls.Add(this.tbLotName);
             this.splitContainer1.Panel1.Controls.Add(this.lblLotName);
-            this.splitContainer1.Panel1.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.splitContainer1.Panel1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             // 
             // splitContainer1.Panel2
             // 
@@ -198,7 +198,7 @@
             this.btnSearchPTRY0P_Today.Location = new System.Drawing.Point(353, 9);
             this.btnSearchPTRY0P_Today.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchPTRY0P_Today.Name = "btnSearchPTRY0P_Today";
-            this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(73, 67);
+            this.btnSearchPTRY0P_Today.Size = new System.Drawing.Size(73, 52);
             this.btnSearchPTRY0P_Today.TabIndex = 14;
             this.btnSearchPTRY0P_Today.Text = "생산 데이터 검색";
             this.btnSearchPTRY0P_Today.UseVisualStyleBackColor = true;
@@ -207,9 +207,9 @@
             // btnUpdateMarkingData
             // 
             this.btnUpdateMarkingData.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateMarkingData.Location = new System.Drawing.Point(506, 42);
+            this.btnUpdateMarkingData.Location = new System.Drawing.Point(575, 9);
             this.btnUpdateMarkingData.Name = "btnUpdateMarkingData";
-            this.btnUpdateMarkingData.Size = new System.Drawing.Size(89, 33);
+            this.btnUpdateMarkingData.Size = new System.Drawing.Size(61, 52);
             this.btnUpdateMarkingData.TabIndex = 13;
             this.btnUpdateMarkingData.Text = "UPDATE DATA";
             this.btnUpdateMarkingData.UseVisualStyleBackColor = true;
@@ -221,7 +221,7 @@
             this.btnSearchDB.Location = new System.Drawing.Point(430, 9);
             this.btnSearchDB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSearchDB.Name = "btnSearchDB";
-            this.btnSearchDB.Size = new System.Drawing.Size(73, 66);
+            this.btnSearchDB.Size = new System.Drawing.Size(73, 52);
             this.btnSearchDB.TabIndex = 8;
             this.btnSearchDB.Text = "LOT 검색";
             this.btnSearchDB.UseVisualStyleBackColor = true;
@@ -232,7 +232,7 @@
             this.btnMKCDModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMKCDModel.Location = new System.Drawing.Point(644, 9);
             this.btnMKCDModel.Name = "btnMKCDModel";
-            this.btnMKCDModel.Size = new System.Drawing.Size(64, 66);
+            this.btnMKCDModel.Size = new System.Drawing.Size(64, 52);
             this.btnMKCDModel.TabIndex = 11;
             this.btnMKCDModel.Text = "MKCD MODEL";
             this.btnMKCDModel.UseVisualStyleBackColor = true;
@@ -243,7 +243,7 @@
             this.btnShowSkipParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnShowSkipParam.Location = new System.Drawing.Point(713, 9);
             this.btnShowSkipParam.Name = "btnShowSkipParam";
-            this.btnShowSkipParam.Size = new System.Drawing.Size(64, 66);
+            this.btnShowSkipParam.Size = new System.Drawing.Size(64, 52);
             this.btnShowSkipParam.TabIndex = 11;
             this.btnShowSkipParam.Text = "SKIP PARAM";
             this.btnShowSkipParam.UseVisualStyleBackColor = true;
@@ -305,7 +305,7 @@
             this.btnReset.Location = new System.Drawing.Point(506, 9);
             this.btnReset.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(89, 33);
+            this.btnReset.Size = new System.Drawing.Size(63, 52);
             this.btnReset.TabIndex = 8;
             this.btnReset.Text = "초기화";
             this.btnReset.UseVisualStyleBackColor = true;
@@ -667,7 +667,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 819);
             this.Controls.Add(this.splitContainer2);
-            this.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MinimizeBox = false;
             this.Name = "FormPreCompDB";
