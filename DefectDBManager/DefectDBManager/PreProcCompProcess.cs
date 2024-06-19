@@ -378,6 +378,7 @@ namespace DefectDBManager
                 else // 실패 보고
                     OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotFaultData);
             }
+            OnEndSearchingAvailableLot?.Invoke();
             return success;
         }
 
