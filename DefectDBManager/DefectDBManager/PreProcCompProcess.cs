@@ -70,6 +70,8 @@ namespace DefectDBManager
 
         private MkcdParam[] _mkcdParam=null;
 
+        private bool _isRunSearchDailyLot = false;
+
         public PreProcCompProcess(object parent)
         {
             this.parent = parent;
@@ -148,6 +150,8 @@ namespace DefectDBManager
 
         private void searchDailyLot(object obj)
         {
+            _isRunSearchDailyLot = true;
+
             StopCheckAvaliableINSPDAT();
             PreProcCompDB procNow = _DBProc[(int)eDbIdWhen.Now];
 
@@ -166,6 +170,8 @@ namespace DefectDBManager
                 _enaCheckINSPDAT = true;
                 StartCheckAvaliableINSPDAT();
             }
+
+            _isRunSearchDailyLot = false;
         }
 
         public void SearchDailyLot()
@@ -176,8 +182,11 @@ namespace DefectDBManager
             proc.SearchLotName = "";
             proc.SearchY0LNCD = _DestConfig.MainLNCD;
 
+            if(_isRunSearchDailyLot==false)
+            {
             Task task = new Task(searchDailyLot, proc);
             task.Start();
+        }
         }
 
         #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
@@ -185,7 +194,7 @@ namespace DefectDBManager
         private double _crtRollPosY = 0.0;
         private bool _enaCheckINSPDAT = false;
         private Thread CheckAvailableLotthread = null;
-
+        private bool _runAvailableLotCheck = false; 
         public void StartCheckAvaliableINSPDAT()
         {
             StopCheckAvaliableINSPDAT();
@@ -198,8 +207,9 @@ namespace DefectDBManager
         {
             if (this.CheckAvailableLotthread != null)
             {
+                this._runAvailableLotCheck = false;
                 this.CheckAvailableLotthread.Abort();
-                this.CheckAvailableLotthread.Join(100);
+                this.CheckAvailableLotthread.Join(2000);
                 this.CheckAvailableLotthread = null;
             }
         }
@@ -208,14 +218,18 @@ namespace DefectDBManager
         // 인덱스 기준으로 현재/예약 랏 검색 방식 변경이 필요함. 
         private void threadCheckAvaliableINSPDAT()
         {
+            _runAvailableLotCheck = true;
 
             while (true)
             {
+                if (_runAvailableLotCheck == false)
+                    break;
+
                 // 검색 처리
                 // 검색 인덱스가 넘어가면 대기 처리함.
                 if (_enaCheckINSPDAT == false || NextY0KLOTIdx >= _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
                 {
-                    Thread.Sleep(500);
+                    Thread.Sleep(100);
                     continue;
                 }
 
@@ -353,8 +367,9 @@ namespace DefectDBManager
                     NextY0KLOTIdx++;
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(200);
             }
+            _runAvailableLotCheck = false;
         }
 
         public bool SearchLotData(eDbIdWhen when, string lotName, string mkcdName)
