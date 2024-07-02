@@ -844,10 +844,6 @@ namespace DefectDBManager
 
                         inspdata = _DbResult.Matched_INSPDAT_Data[fcdIdx][inspIdx];
 
-                        // 데이터 삽입.
-                        // 추후 현재 입력된 데이터와 다른 경우 확인해야 함. 
-                        if(inspdata.BCNO!=null) FaultData.BCNO = inspdata.BCNO;
-
                         inspStartY = inspdata.YPosStart;
                         inspEndY = inspdata.YPosEnd;
 

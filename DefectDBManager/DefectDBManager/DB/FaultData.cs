@@ -198,12 +198,12 @@ namespace DefectDBManager
         private List<MarkingFaultDatum> _markData;
 
         // 현재 생산하고 있는 BCNO
-        public string BCNO
-        {
-            get { return _bcno; }
-            set { _bcno = value; }
-        }
-        private string _bcno;
+        //public string BCNO
+        //{
+        //    get { return _bcno; }
+        //    set { _bcno = value; }
+        //}
+        //private string _bcno;
 
         public PrePocResultData()
         {
@@ -223,10 +223,7 @@ namespace DefectDBManager
         }
 
         public void ResetAll()
-        {
-            // 문자열 초기화
-            _bcno = "";
-            
+        {            
             // 실시간 불량 전송용 데이터 
             DicPt.Clear();
             _markData.Clear();
@@ -257,14 +254,18 @@ namespace DefectDBManager
             _markData.Add(data);
         }
 
+        /// <summary>
+        /// 현재 생산중인 랏 영역의 불량 데이터 탐색 처리
+        /// </summary>
+        /// <param name="bcno"></param>
+        /// <param name="startY"></param>
+        /// <param name="endY"></param>
+        /// <returns></returns>
         public List<MarkingFaultDatum> GetDefectPts(string bcno, float startY, float endY)
         {
-            // BCNO가 다르면 다시 탐색해야 함. 
-            if (bcno != _bcno) return null;
-
             List<MarkingFaultDatum> pts = new List<MarkingFaultDatum>();
-            int key1 = (int)(startY / 10000.0);
-            int key2 = (int)(endY / 10000.0);
+            int key1 = (int)(startY / 10000.0)-1;
+            int key2 = (int)(endY / 10000.0)+1; 
 
             for (int i = key1; i <= key2; i++)
             {
@@ -272,7 +273,7 @@ namespace DefectDBManager
                 {
                     foreach (MarkingFaultDatum pt in DicPt[i])
                     {
-                        if (pt.OFFSET >= startY && pt.OFFSET <= endY)
+                        if (pt.OFFSET >= startY && pt.OFFSET <= endY && pt.BCNO == bcno)
                             pts.Add(pt);
                     }
                 }

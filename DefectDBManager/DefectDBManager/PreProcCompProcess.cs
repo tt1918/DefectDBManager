@@ -35,18 +35,22 @@ namespace DefectDBManager
         /// DB Query 및 탐색
         /// </summary>
         public PreProcCompDB[] _DBProc;
+
         /// <summary>
         /// DB 접근
         /// </summary>
         public OracleDbConnection _DbConn;
+        
         /// <summary>
         /// Destination configuration
         /// </summary>
         public DestConfig _DestConfig;
+        
         /// <summary>
         /// Code configuration
         /// </summary>
         public CodeConfig[] _CodeConfig;
+        
         /// <summary>
         /// Data 탐색 옵션
         /// </summary>
@@ -184,17 +188,38 @@ namespace DefectDBManager
 
             if(_isRunSearchDailyLot==false)
             {
-            Task task = new Task(searchDailyLot, proc);
-            task.Start();
-        }
+                Task task = new Task(searchDailyLot, proc);
+                task.Start();
+            }
         }
 
         #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
+        /// <summary>
+        /// 현재 입력된 BCNO 정보
+        /// </summary>
         private string _crtBCNO = "";
+
+        /// <summary>
+        /// 현재 롤의 위치 정보
+        /// </summary>
         private double _crtRollPosY = 0.0;
+
+        /// <summary>
+        /// 랏 데이터 감시 
+        /// </summary>
         private bool _enaCheckINSPDAT = false;
+
+        /// <summary>
+        /// 랏 데이터 감시 스레드
+        /// </summary>
         private Thread CheckAvailableLotthread = null;
+
+        /// <summary>
+        /// 랏 데이터 감시 스레드 flag
+        /// </summary>
         private bool _runAvailableLotCheck = false; 
+
+
         public void StartCheckAvaliableINSPDAT()
         {
             StopCheckAvaliableINSPDAT();
@@ -330,34 +355,36 @@ namespace DefectDBManager
                         /// PTRY0P_Today_Data는 현재 랏이 관리함. 
                         /// BCNO 처리 어떻게 할지 확인 필요함. 
                         /// 확인되면 예약랏 불러오기와 랏 체인지 시에 Falut data 바꾸기 필요함. 
-                        if (CrtY0KLOTIdx + 1 < _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
-                        {
-                            ////////////////////////////////////////////////////////////////////////////////////////////
-                            /// 예약 랏의 MKCD 정보 요청
-                            _DBProc[(int)eDbIdWhen.Next].MKCD_Param.Reset();
-                            OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Next);
+                        /// 임시로 예약랏 탐색은 막아둠. 
+                        //if (CrtY0KLOTIdx + 1 < _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
+                        //{
+                        //    ////////////////////////////////////////////////////////////////////////////////////////////
+                        //    /// 예약 랏의 MKCD 정보 요청
+                        //    _DBProc[(int)eDbIdWhen.Next].MKCD_Param.Reset();
+                        //    OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Next);
 
-                            while (_DBProc[(int)eDbIdWhen.Next].MKCD_Param.IsReceived == false)
-                            {
-                                Thread.Sleep(50);
+                        //    while (_DBProc[(int)eDbIdWhen.Next].MKCD_Param.IsReceived == false)
+                        //    {
+                        //        Thread.Sleep(50);
 
-                                // MKCD 모델 이름을 받을 때 까지 대기한다. 
-                                if (sw.ElapsedMilliseconds > 1000)
-                                {
-                                    OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Now);
-                                    sw.Restart();
-                                }
-                            }
-                            ////////////////////////////////////////////////////////////////////////////////////////////
+                        //        // MKCD 모델 이름을 받을 때 까지 대기한다. 
+                        //        if (sw.ElapsedMilliseconds > 1000)
+                        //        {
+                        //            OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Now);
+                        //            sw.Restart();
+                        //        }
+                        //    }
+                        //    ////////////////////////////////////////////////////////////////////////////////////////////
 
-                            strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[CrtY0KLOTIdx + 1].Y0KLOT;
-                            // 예약랏 랏 데이터 초기화 진행
-                            _DBProc[(int)eDbIdWhen.Next].ResetDataAll();
+                        //    strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[CrtY0KLOTIdx + 1].Y0KLOT;
+                        //    // 예약랏 랏 데이터 초기화 진행
+                        //    _DBProc[(int)eDbIdWhen.Next].ResetDataAll();
 
-                            // 다음 랏은 예약으로 걸어둠. 
-                            success = _DBProc[(int)eDbIdWhen.Next].SearchLot(strLotID, true, ref errNum);
+                        //    // 다음 랏은 예약으로 걸어둠. 
+                           
+                        //    //success = _DBProc[(int)eDbIdWhen.Next].SearchLot(strLotID, true, ref errNum);
 
-                        }
+                        //}
                         ////////////////////////////////////////////////////////////////////////////////////////////
                     }
                     else // 실패 보고 
@@ -376,6 +403,9 @@ namespace DefectDBManager
         {
             bool success = true;
             int errIdx = -1;
+
+            // 전공정 데이터 초기화 진행
+            _DBProc[(int)when].ResetDataAll();
 
             // MKCD Model 이름을 적용한다. 
             _DBProc[(int)when].SetMKCDModel(mkcdName);
@@ -493,6 +523,7 @@ namespace DefectDBManager
 
             // 현재 생산하고 있는 BCNO 데이터를 업데이트 함. 
             _crtBCNO = bcno;
+
             // 검사 진행 거리는 중간 지점으로 처리함
             _crtRollPosY = (stY + edY) / 2.0;
 
