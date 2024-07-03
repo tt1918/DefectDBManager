@@ -522,12 +522,17 @@ namespace DefectDBManager
             }
 
             // 현재 생산하고 있는 BCNO 데이터를 업데이트 함. 
-            _crtBCNO = bcno;
+            string[] bcnoData = bcno.Split('_');
+            if(bcnoData.Length>1)
+                _crtBCNO = bcnoData[0];
+            else
+                _crtBCNO = bcno;
+            
 
             // 검사 진행 거리는 중간 지점으로 처리함
             _crtRollPosY = (stY + edY) / 2.0;
 
-            return _DBProc[(int)eDbIdWhen.Now].FaultData.GetDefectPts(bcno, stY, edY);
+            return _DBProc[(int)eDbIdWhen.Now].FaultData?.GetDefectPts(_crtBCNO, stY, edY);
         }
 
         /// <summary>
