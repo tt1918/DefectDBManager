@@ -217,6 +217,8 @@ namespace DefectDBManager
                 if (dbConn != null) dbConn.OnDbConnect += OnDbConnect;
                 if (this.IsDataBaseChanged == true)
                 {
+                    tbMKCDModelName.Text = PreCompDB?.MKCD_Param.Name;
+                    tbLotName.Text = PreCompDB?.SearchLotName;
                     makeAllListViewData();
                     updateLotChangeResult();
                 }
@@ -630,6 +632,10 @@ namespace DefectDBManager
         private void makePTRY0P_TODAYListViewData()
         {
             PTRY0P_TODAY_LV_Data.Data.Clear();
+
+            if (PreCompDB == null)
+                return;
+            
             foreach (PTRY0PData data in PreCompDB.PTRY0P_Today_Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(5);
@@ -1522,6 +1528,12 @@ namespace DefectDBManager
         #region 검색 결과 업데이트
         public void OnUpdateAvailableLot()
         {
+            if (PreCompDB == null)
+            {
+                // 화면이 생성되면 보이게 한다.
+                this.IsDataBaseChanged = true;
+                return;
+            }
             // 현재 선택된 Lot Name을 업데이트 한다. 
             if (this.tbLotName.InvokeRequired == true)
                 this.Invoke(new MethodInvoker(delegate ()

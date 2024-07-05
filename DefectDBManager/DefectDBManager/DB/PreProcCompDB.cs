@@ -226,8 +226,16 @@ namespace DefectDBManager
                 if (success == false) return false;
 
                 // MKCD Model 데이터를 읽어옴
-                success = applyMKCD_Model();
-                if(success == false) return false;
+                //success = applyMKCD_Model();
+                //if(success == false) return false;
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(tmpLotName);
+                if (success == false) return false;
+
+                MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+                MKCD_Model = mKCD_MODEL;
 
                 // inspData 불러옴.
                 success = SearchINSPDAT(tmpLotName);
@@ -265,19 +273,20 @@ namespace DefectDBManager
 
             for (int i=0; i<count; i++)
             {
-                isAvaliable[i] = true;
-                if (_DbResult.Matched_INSPDAT_Data[i].Count==0)
-
-                foreach(INSPDATData data in _DbResult.Matched_INSPDAT_Data[i])
+                isAvaliable[i] = false;
+                if (_DbResult.Matched_INSPDAT_Data[i].Count>0)
                 {
-                    if (data.BCNO != bcno || (data.XPosStart > dPosY || data.XPosEnd < dPosY))
-                        isAvaliable[i] = false;
+                    foreach (INSPDATData data in _DbResult.Matched_INSPDAT_Data[i])
+                    {
+                        if (data.BCNO == bcno && (data.XPosStart < dPosY && data.XPosEnd < dPosY))
+                            isAvaliable[i] = true;
+                    }
                 }
             }
 
-            bool isResult = true;
+            bool isResult = false;
             for (int i = 0; i < count; i++)
-                isResult &= isAvaliable[i];
+                isResult |= isAvaliable[i];
 
             return isResult;
         }
@@ -350,11 +359,22 @@ namespace DefectDBManager
                 if (success == false) { errOut = 4; return false; }
 
                 // MKCD 데이터를 모델에서 불러올 수 있도록 함
-                success = applyMKCD_Model();
-                if(success==false) { errOut = 5; return false; }
+                //success = applyMKCD_Model();
+                //if(success==false) { errOut = 5; return false; }
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(lotID);
+                if (success == false) { errOut = 5; return false; }
+
+                MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+                MKCD_Model = mKCD_MODEL;
 
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return false; }
+
+                // 첫 검사 랏은 복사하여둔다
+                CopyInspDatToMatchedInspData();
 
                 success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return false; }
@@ -509,12 +529,6 @@ namespace DefectDBManager
                                         // 조건문 추가해야 함
                                         _DbResult.AddDicMRKCTLMST(i, j, data);
 
-                                        //for (int checkCnt = 0; checkCnt < destUnit.FLTIDCheck.Length; checkCnt++)
-                                        //{
-                                        //    if (destUnit.FLTIDCheck[checkCnt].Length > 0)
-                                        //        if (destUnit.FLTIDCheck[checkCnt] == data.FLTID)
-                                        //            CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
-                                        //}
                                     }
                                 }
                             }
@@ -584,7 +598,7 @@ namespace DefectDBManager
                     }
                 }
 
-                return true;
+                return success;
             }
             catch(Exception ex)
             {
@@ -1050,7 +1064,7 @@ namespace DefectDBManager
         /// <param name="bcno">현재 생산중인 BCNO</param>
         /// <param name="dPosY">현재 생산중인 원단의 원단장 위치</param>
         /// <returns></returns>
-        public bool SearchMatchedBCNOLot(string bcno, double dPosY)
+        public bool SearchMatchedBCNOLot(string bcno, double dPosY, bool isUpdate=true)
         {
             bool success = true;
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
@@ -1076,7 +1090,8 @@ namespace DefectDBManager
                 }
             }
 
-            _DbResult.Matched_INSPDAT_Data = inspDat;
+            if(isUpdate==true)
+                _DbResult.Matched_INSPDAT_Data = inspDat;
 
             if (added <= 0)
                 success = false;

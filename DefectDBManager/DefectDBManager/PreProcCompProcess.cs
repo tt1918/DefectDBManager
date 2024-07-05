@@ -154,8 +154,8 @@ namespace DefectDBManager
 
         private void searchDailyLot(object obj)
         {
-            _isRunSearchDailyLot = true;
-
+            
+            StopCheckingBCNO();
             StopCheckAvaliableINSPDAT();
             PreProcCompDB procNow = _DBProc[(int)eDbIdWhen.Now];
 
@@ -163,15 +163,17 @@ namespace DefectDBManager
 
             // 오늘자 PTRY0P 탐색 -> INSPDAT 탐색
             int firstIdx = -1;
+            
             if (procNow.SearchTodayPTRY0PList(out firstIdx) == true)
             {
+                _isRunSearchDailyLot = true;
                 // 검사 완료 처리
-                if (OnEndTodayProductSearching != null) OnEndTodayProductSearching();
-                if (OnEndSearchingAvailableLot != null) OnEndSearchingAvailableLot();
-
+                OnEndTodayProductSearching?.Invoke();
+                OnEndSearchingAvailableLot?.Invoke();
+               
                 // 체크 스레드 시작
-                NextY0KLOTIdx = (ushort)firstIdx;
-                _enaCheckINSPDAT = true;
+                NextY0KLOTIdx = (ushort)(firstIdx+1);
+                RunCheckingBCNO();
                 StartCheckAvaliableINSPDAT();
             }
 
@@ -245,22 +247,45 @@ namespace DefectDBManager
         {
             _runAvailableLotCheck = true;
 
+            int checkAvailableLot = 0;
+            bool isFindMatchedBCNO=false;
+
             while (true)
             {
                 if (_runAvailableLotCheck == false)
                     break;
 
+
+                // 오늘자 생산 정보가 탐색 인덱스보다 큰 경우 알람 처리
+                if (_DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count <= NextY0KLOTIdx)
+                {
+                    _runAvailableLotCheck = false;
+                    OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotData);
+                    Log.Write("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
+                    break;
+                }
+
                 // 검색 처리
                 // 검색 인덱스가 넘어가면 대기 처리함.
-                if (_enaCheckINSPDAT == false || NextY0KLOTIdx >= _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
+                if (_enaCheckINSPDAT == false)
                 {
                     Thread.Sleep(100);
                     continue;
                 }
 
                 //현재 생산하고 있는 랏이 데이터에 없으면 다음 Lot을 탐색한다. 
-                if (_DBProc[(int)eDbIdWhen.Now].IsCrtDataAvaliable(_crtBCNO, _crtRollPosY) == false)
+                bool isAvaliable = _DBProc[(int)eDbIdWhen.Now].IsCrtDataAvaliable(_crtBCNO, _crtRollPosY);
+                if (isAvaliable == false )
                 {
+                    checkAvailableLot++;
+                    if (checkAvailableLot < 100)
+                    {
+                        Thread.Sleep(200);
+                        continue;
+                    }
+
+                    checkAvailableLot = 0;
+               
                     // 다음 랏을 기준으로 탐색한다.
                     string strLotID;
                     bool success = false;
@@ -271,17 +296,14 @@ namespace DefectDBManager
                     // 전공정 데이터 초기화 진행
                     _DBProc[(int)eDbIdWhen.Now].ResetDataAll();
 
-                    // 오늘자 생산 정보가 탐색 인덱스보다 큰 경우 알람 처리
-                    if (_DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count <= NextY0KLOTIdx)
-                    {
-                        OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotData);
-                        Log.Write("탐색 인덱스가 현재 존재하는 데이터 범위를 넘어섰습니다.");
-                        return;
-                    }
 
                     // 금일자 생산 데이터에서 랏 정보 얻어옴
                     strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
 
+                    if (success == true) success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYLP(strLotID);
+
+                    if (success == true) success = _DBProc[(int)eDbIdWhen.Now].SearchXOFSMST(strLotID);
+                    
                     // PTRY0P 탐색
                     success = _DBProc[(int)eDbIdWhen.Now].SearchPTRY0P(strLotID);
 
@@ -299,7 +321,7 @@ namespace DefectDBManager
 
                     // 유효 모델 탐색
                     // 현재 생산하고 있는 Lot의 BCNO와 원단장 거리를 이용하여 현재 생산하는 INSPDAT의 데이터를 비교 
-                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(_crtBCNO, _crtRollPosY) == true)
+                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(_crtBCNO, _crtRollPosY, false) == true )
                     {
                         // 현재 랏 인덱스 정보를 업데이트 함
                         CrtY0KLOTIdx = NextY0KLOTIdx;
@@ -308,28 +330,7 @@ namespace DefectDBManager
                         string lotName = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[CrtY0KLOTIdx].Y0KLOT;
 
                         ////////////////////////////////////////////////////////////////////////////////////////////
-                        /// 현재랏의 MKCD 정보 요청
-                        _DBProc[(int)eDbIdWhen.Now].MKCD_Param.Reset();
-                        OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Now);
-                        
-                        Stopwatch sw = Stopwatch.StartNew();
-                        
-                        while(_DBProc[(int)eDbIdWhen.Now].MKCD_Param.IsReceived==false)
-                        {
-                            Thread.Sleep(50);
-
-                            // MKCD 모델 이름을 받을 때 까지 대기한다. 
-                            if(sw.ElapsedMilliseconds>1000)
-                            {
-                                OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Now);
-                                sw.Restart();
-                            }
-                        }
-                        ////////////////////////////////////////////////////////////////////////////////////////////
-
-                        ////////////////////////////////////////////////////////////////////////////////////////////
                         /// 현재랏 데이터 검색
-                        /// 위에서 SearchINSPDAT 검색 까지 완료했으므로 Falut data만 검색하면 됨.
                         success = _DBProc[(int)eDbIdWhen.Now].SearchLot(lotName, true, ref errNum);
 
                         // 불량 탐색 완료 후 Flag 변경
@@ -349,49 +350,26 @@ namespace DefectDBManager
                                 OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotFaultData);
                         }
                         ////////////////////////////////////////////////////////////////////////////////////////////
-
-                        ////////////////////////////////////////////////////////////////////////////////////////////
-                        /// 예약랏 데이터 탐색함.
-                        /// PTRY0P_Today_Data는 현재 랏이 관리함. 
-                        /// BCNO 처리 어떻게 할지 확인 필요함. 
-                        /// 확인되면 예약랏 불러오기와 랏 체인지 시에 Falut data 바꾸기 필요함. 
-                        /// 임시로 예약랏 탐색은 막아둠. 
-                        //if (CrtY0KLOTIdx + 1 < _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count)
-                        //{
-                        //    ////////////////////////////////////////////////////////////////////////////////////////////
-                        //    /// 예약 랏의 MKCD 정보 요청
-                        //    _DBProc[(int)eDbIdWhen.Next].MKCD_Param.Reset();
-                        //    OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Next);
-
-                        //    while (_DBProc[(int)eDbIdWhen.Next].MKCD_Param.IsReceived == false)
-                        //    {
-                        //        Thread.Sleep(50);
-
-                        //        // MKCD 모델 이름을 받을 때 까지 대기한다. 
-                        //        if (sw.ElapsedMilliseconds > 1000)
-                        //        {
-                        //            OnRequestMKCD_ModelName?.Invoke(eDbIdWhen.Now);
-                        //            sw.Restart();
-                        //        }
-                        //    }
-                        //    ////////////////////////////////////////////////////////////////////////////////////////////
-
-                        //    strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[CrtY0KLOTIdx + 1].Y0KLOT;
-                        //    // 예약랏 랏 데이터 초기화 진행
-                        //    _DBProc[(int)eDbIdWhen.Next].ResetDataAll();
-
-                        //    // 다음 랏은 예약으로 걸어둠. 
-                           
-                        //    //success = _DBProc[(int)eDbIdWhen.Next].SearchLot(strLotID, true, ref errNum);
-
-                        //}
-                        ////////////////////////////////////////////////////////////////////////////////////////////
                     }
-                    else // 실패 보고 
+                    else if(NextY0KLOTIdx>= _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count-1) // 실패 보고 
                         OnProcessEvent?.Invoke((int)eEventReport.eFailedSearchDailyLotData);
 
                     // 검색 완료되면 실폐든 아니든 인덱스 업데이트함
                     NextY0KLOTIdx++;
+                }
+                else if(isAvaliable==true)
+                {
+                    if (isFindMatchedBCNO == true)
+                        continue;
+
+                    if (_DBProc[(int)eDbIdWhen.Now].SearchMatchedBCNOLot(_crtBCNO, _crtRollPosY) == true)
+                    {
+                        isFindMatchedBCNO = true;
+                    }
+                }
+                else
+                {
+                    checkAvailableLot++;
                 }
 
                 Thread.Sleep(200);
@@ -408,7 +386,7 @@ namespace DefectDBManager
             _DBProc[(int)when].ResetDataAll();
 
             // MKCD Model 이름을 적용한다. 
-            _DBProc[(int)when].SetMKCDModel(mkcdName);
+            //_DBProc[(int)when].SetMKCDModel(mkcdName);
 
             // 랏을 탐색한다. 
             success = _DBProc[(int)when].SearchLot(lotName, true, ref errIdx);
