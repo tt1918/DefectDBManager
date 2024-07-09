@@ -226,11 +226,11 @@ namespace DefectDBManager
                 if (success == false) return false;
 
                 // MKCD Model 데이터를 읽어옴
-                //success = applyMKCD_Model();
-                //if(success == false) return false;
-                //마킹 컨트롤 마스터 데이터 검색
-                success = SearchMRKCTLMST(tmpLotName);
+                success = applyMKCD_Model();
                 if (success == false) return false;
+                //마킹 컨트롤 마스터 데이터 검색
+                //success = SearchMRKCTLMST(tmpLotName);
+                //if (success == false) return false;
 
                 MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
                 foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
@@ -359,11 +359,11 @@ namespace DefectDBManager
                 if (success == false) { errOut = 4; return false; }
 
                 // MKCD 데이터를 모델에서 불러올 수 있도록 함
-                //success = applyMKCD_Model();
-                //if(success==false) { errOut = 5; return false; }
-                //마킹 컨트롤 마스터 데이터 검색
-                success = SearchMRKCTLMST(lotID);
+                success = applyMKCD_Model();
                 if (success == false) { errOut = 5; return false; }
+                //마킹 컨트롤 마스터 데이터 검색
+                //success = SearchMRKCTLMST(lotID);
+                //if (success == false) { errOut = 5; return false; }
 
                 MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
                 foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)

@@ -24,15 +24,18 @@ namespace DefectDBManager
     {
         #region const param
         readonly string[] Model_Header = { "NAME" };
-        readonly int[] listModel_Width = { 500};
+        readonly int[] listModel_Width = { 500 };
         #endregion
 
 
         public LogDB _LOG { get; set; }
 
+        private string _selModelName;
         private MKCD_MODEL _selModelData;
 
-        public OracleDbConnection   DbConn { get; set; }
+        private MKCD_MODEL _MKCD_DB_Data;
+
+        public OracleDbConnection DbConn { get; set; }
 
         public FormMKCDModel()
         {
@@ -45,6 +48,7 @@ namespace DefectDBManager
             initDataGridView();
 
             _selModelData = null;
+            _MKCD_DB_Data = null;
         }
 
         private void FormEditDefect_VisibleChanged(object sender, EventArgs e)
@@ -82,11 +86,25 @@ namespace DefectDBManager
             var cell = dgvModel.SelectedCells;
             string srcName = cell[0].Value as string;
 
-            if(_selModelData==null) return;
+            // 수정 데이터 업데이트 
+            applyGridToModel(dgvDefect, _selModelData);
 
-            _selModelData.Name = srcName;
-            _selModelData.Save();
+            if (_selModelData == null)
+            {
+                MessageBox.Show("모델 데이터가 비어있습니다. 모델 데이터를 불러와주십시요.");
+                return;
+            }
+            if (_selModelName == null || _selModelName == "")
+            {
+                MessageBox.Show("선택한 모델 이름이 없습니다. ");
+                return;
+            }
 
+            if (MessageBox.Show($"{_selModelName}에 데이터를 저장하시겠습니까?", "저장", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                _selModelData.Name = srcName;
+                _selModelData.Save();
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -120,7 +138,7 @@ namespace DefectDBManager
         public void UpdateLanguage()
         {
             this.SuspendLayout();
-           
+
             this.ResumeLayout();
         }
         #endregion Language Update
@@ -149,7 +167,6 @@ namespace DefectDBManager
             {
 
             }
-
             return;
 
             string path = Path.Combine(Define.MKCDModelPath, "Default.txt");
@@ -181,19 +198,19 @@ namespace DefectDBManager
 
                 sr.Close();
 
-                _selModelData = mKCD_MODEL;
+                _MKCD_DB_Data = mKCD_MODEL;
 
                 // 화면에 로딩 내용 업데이트
                 if (this.InvokeRequired == true)
                 {
                     this.Invoke(new MethodInvoker(delegate ()
                     {
-                        updateDgvDefect();
+                        updateDgvMKCDData();
                     }));
                 }
                 else
                 {
-                    updateDgvDefect();
+                    updateDgvMKCDData();
                 }
             }
         }
@@ -202,26 +219,26 @@ namespace DefectDBManager
         {
             PreProcCompDB db = new PreProcCompDB(this, DbConn, false);
             string lot = lotName as string;
-            if(db.SearchMKCD_Data(lot) ==true)
+            if (db.SearchMKCD_Data(lot) == true)
             {
                 MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-                
+
                 foreach (MRKCTLMSTData data in db._DbResult.MRKCTLMST_Data)
                     mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
 
-                _selModelData = mKCD_MODEL;
+                _MKCD_DB_Data = mKCD_MODEL;
 
                 // 화면에 로딩 내용 업데이트
                 if (this.InvokeRequired == true)
                 {
                     this.Invoke(new MethodInvoker(delegate ()
                     {
-                        updateDgvDefect();
+                        updateDgvMKCDData();
                     }));
                 }
                 else
                 {
-                    updateDgvDefect();
+                    updateDgvMKCDData();
                 }
             }
         }
@@ -234,15 +251,15 @@ namespace DefectDBManager
                 this.dgvModel.Rows.Clear();
 
                 DirectoryInfo di = new DirectoryInfo(Define.MKCDModelPath);
-                
-                foreach(FileInfo file in di.GetFiles())
+
+                foreach (FileInfo file in di.GetFiles())
                 {
                     string[] data = file.Name.Split('.');
-                    if(data[1] == "ini")
+                    if (data[1] == "ini")
                         this.dgvModel.Rows.Add(data[0]);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Write(ex.Message);
             }
@@ -250,7 +267,7 @@ namespace DefectDBManager
             {
                 this.dgvModel.ResumeLayout();
             }
-             
+
         }
 
         private void updateDgvDefect()
@@ -260,15 +277,15 @@ namespace DefectDBManager
                 this.dgvDefect.Rows.Clear();
                 this.dgvDefect.SuspendLayout();
 
-                foreach(MKCD_LNCD_Data data in _selModelData.Param.Values)
+                foreach (MKCD_LNCD_Data data in _selModelData.Param.Values)
                 {
-                    foreach(MKCD_Data item in data.Data.Values)
+                    foreach (MKCD_Data item in data.Data.Values)
                     {
-                        addItem(data.LNCD, item);
+                        addItem(this.dgvDefect, data.LNCD, item);
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Write(ex.Message);
             }
@@ -278,7 +295,32 @@ namespace DefectDBManager
             }
         }
 
-        private void addItem(string strLNCD, MKCD_Data data)
+        private void updateDgvMKCDData()
+        {
+            try
+            {
+                this.dgvMKCD.Rows.Clear();
+                this.dgvMKCD.SuspendLayout();
+
+                foreach (MKCD_LNCD_Data data in _MKCD_DB_Data.Param.Values)
+                {
+                    foreach (MKCD_Data item in data.Data.Values)
+                    {
+                        addItem(this.dgvMKCD, data.LNCD, item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message);
+            }
+            finally
+            {
+                this.dgvMKCD.ResumeLayout();
+            }
+        }
+
+        private void addItem(DataGridView dgv, string strLNCD, MKCD_Data data)
         {
             string[] strValue = new string[4];
             strValue[0] = data.MRKF1.ToString();
@@ -286,7 +328,7 @@ namespace DefectDBManager
             strValue[1] = $"{strLNCD}";
             strValue[2] = $"{data.FLTID}";
             strValue[3] = $"{data.SIZE}";
-            dgvDefect.Rows.Add(strValue);
+            dgv.Rows.Add(strValue);
         }
 
         private void btnNewModel_Click(object sender, EventArgs e)
@@ -311,7 +353,7 @@ namespace DefectDBManager
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Write(ex.Message);
             }
@@ -340,7 +382,7 @@ namespace DefectDBManager
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Write(ex.Message);
             }
@@ -365,7 +407,7 @@ namespace DefectDBManager
                     {
                         string srcPath = Path.Combine(Define.MKCDModelPath, srcName + ".ini");
                         string newPath = Path.Combine(Define.MKCDModelPath, form.EditData + ".ini");
-                        File.Copy(srcPath, newPath);   
+                        File.Copy(srcPath, newPath);
                     }
                 }
             }
@@ -386,7 +428,7 @@ namespace DefectDBManager
                 var cell = dgvModel.SelectedCells;
                 string srcName = cell[0].Value as string;
 
-                if (MessageBox.Show($"{srcName}을 삭제하시겠습니까?", "Delete Model", MessageBoxButtons.YesNo)==DialogResult.Yes)
+                if (MessageBox.Show($"{srcName}을 삭제하시겠습니까?", "Delete Model", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     string srcPath = Path.Combine(Define.MKCDModelPath, srcName + ".ini");
                     File.Delete(srcPath);
@@ -413,6 +455,7 @@ namespace DefectDBManager
                 model.Name = srcName;
                 model.Load();
 
+                _selModelName = srcName;
                 _selModelData = model;
 
                 updateDgvDefect();
@@ -422,6 +465,60 @@ namespace DefectDBManager
             {
                 Log.Write(ex.Message);
             }
+        }
+
+        private void btnApplyToModel_Click(object sender, EventArgs e)
+        {
+            if (_selModelName == null || _selModelName == "")
+            {
+                MessageBox.Show("선택한 모델이 없습니다.");
+                return;
+            }
+
+            if(MessageBox.Show("내용을 현재 모델에 적용하시겠습니까?", "적용", MessageBoxButtons.YesNo)==DialogResult.Yes)
+            {
+                applyDBDataToModel();
+                updateDgvDefect();
+            }
+        }
+
+        private void applyDBDataToModel()
+        {
+            applyGridToModel(dgvMKCD, _MKCD_DB_Data);
+
+            foreach (var param in _MKCD_DB_Data.Param)
+            {
+                string key = param.Key;
+
+                if (_selModelData.Param.ContainsKey(key)==false)
+                {
+                    foreach(var item in param.Value.Data)
+                    {
+                        _selModelData.Add(key, item.Value);
+                    }
+                }
+            }
+        }
+
+        private void applyGridToModel(DataGridView view, MKCD_MODEL model)
+        {
+            MKCD_MODEL tmpModel = new MKCD_MODEL();
+            string strLNCD;
+            foreach (DataGridViewRow data in view.Rows)
+            {
+                MKCD_Data item = new MKCD_Data();
+
+                if (data.Cells[0].Value.ToString().ToUpper() == "FALSE") item.MRKF1 = false;
+                else item.MRKF1 = true;
+
+                strLNCD = data.Cells[1].Value.ToString();
+                item.FLTID = data.Cells[2].Value.ToString();
+                item.SIZE = float.Parse(data.Cells[3].Value.ToString());
+
+                tmpModel.Add(strLNCD, item);
+            }
+
+            model = tmpModel;
         }
     }
 }

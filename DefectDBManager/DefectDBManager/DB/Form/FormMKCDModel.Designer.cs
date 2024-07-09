@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnApplyToModel = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnLoadDBMKCD = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.panelTitle = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -43,15 +45,21 @@
             this.btnRename = new System.Windows.Forms.Button();
             this.btnSaveAs = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvDefect = new System.Windows.Forms.DataGridView();
+            this.dgvMKCD = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridViewCheckBoxColumn1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColMRKF1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColLNCD = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColFALTID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColSIZE = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnLoad = new System.Windows.Forms.Button();
             this.tableLayoutPanel3.SuspendLayout();
             this.panelTitle.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -61,6 +69,8 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDefect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMKCD)).BeginInit();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel3
@@ -70,39 +80,39 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.btnSave, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.btnApplyToModel, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnClose, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnLoadDBMKCD, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 603);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(307, 606);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(482, 53);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(297, 50);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
-            // btnSave
+            // btnApplyToModel
             // 
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(285, 4);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(94, 45);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "SAVE";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnApplyToModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnApplyToModel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplyToModel.Location = new System.Drawing.Point(100, 4);
+            this.btnApplyToModel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnApplyToModel.Name = "btnApplyToModel";
+            this.btnApplyToModel.Size = new System.Drawing.Size(94, 42);
+            this.btnApplyToModel.TabIndex = 0;
+            this.btnApplyToModel.Text = "APPLY";
+            this.btnApplyToModel.UseVisualStyleBackColor = true;
+            this.btnApplyToModel.Click += new System.EventHandler(this.btnApplyToModel_Click);
             // 
             // btnClose
             // 
             this.btnClose.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnClose.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(385, 4);
+            this.btnClose.Location = new System.Drawing.Point(200, 4);
             this.btnClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(94, 45);
+            this.btnClose.Size = new System.Drawing.Size(94, 42);
             this.btnClose.TabIndex = 1;
             this.btnClose.Text = "CLOSE";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -113,11 +123,23 @@
             this.btnLoadDBMKCD.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnLoadDBMKCD.Location = new System.Drawing.Point(3, 3);
             this.btnLoadDBMKCD.Name = "btnLoadDBMKCD";
-            this.btnLoadDBMKCD.Size = new System.Drawing.Size(94, 47);
+            this.btnLoadDBMKCD.Size = new System.Drawing.Size(94, 44);
             this.btnLoadDBMKCD.TabIndex = 2;
             this.btnLoadDBMKCD.Text = "Load DB MKCD";
             this.btnLoadDBMKCD.UseVisualStyleBackColor = true;
             this.btnLoadDBMKCD.Click += new System.EventHandler(this.btnLoadDBMCKD_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Location = new System.Drawing.Point(201, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(94, 42);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "SAVE";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // panelTitle
             // 
@@ -153,8 +175,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(530, 666);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(411, 666);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // dgvModel
@@ -175,7 +197,7 @@
             this.dgvModel.RowHeadersVisible = false;
             this.dgvModel.RowTemplate.Height = 23;
             this.dgvModel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvModel.Size = new System.Drawing.Size(524, 598);
+            this.dgvModel.Size = new System.Drawing.Size(405, 596);
             this.dgvModel.TabIndex = 7;
             // 
             // ColNAME
@@ -202,11 +224,11 @@
             this.tableLayoutPanel2.Controls.Add(this.btnDelete, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnLoad, 5, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 609);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 607);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(524, 54);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(405, 56);
             this.tableLayoutPanel2.TabIndex = 6;
             // 
             // btnNewModel
@@ -214,7 +236,7 @@
             this.btnNewModel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnNewModel.Location = new System.Drawing.Point(3, 3);
             this.btnNewModel.Name = "btnNewModel";
-            this.btnNewModel.Size = new System.Drawing.Size(92, 48);
+            this.btnNewModel.Size = new System.Drawing.Size(68, 50);
             this.btnNewModel.TabIndex = 0;
             this.btnNewModel.Text = "NEW";
             this.btnNewModel.UseVisualStyleBackColor = true;
@@ -223,9 +245,9 @@
             // btnRename
             // 
             this.btnRename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnRename.Location = new System.Drawing.Point(101, 3);
+            this.btnRename.Location = new System.Drawing.Point(77, 3);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(92, 48);
+            this.btnRename.Size = new System.Drawing.Size(68, 50);
             this.btnRename.TabIndex = 0;
             this.btnRename.Text = "RENAME";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -234,9 +256,9 @@
             // btnSaveAs
             // 
             this.btnSaveAs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSaveAs.Location = new System.Drawing.Point(199, 3);
+            this.btnSaveAs.Location = new System.Drawing.Point(151, 3);
             this.btnSaveAs.Name = "btnSaveAs";
-            this.btnSaveAs.Size = new System.Drawing.Size(92, 48);
+            this.btnSaveAs.Size = new System.Drawing.Size(68, 50);
             this.btnSaveAs.TabIndex = 0;
             this.btnSaveAs.Text = "SAVE AS";
             this.btnSaveAs.UseVisualStyleBackColor = true;
@@ -245,13 +267,24 @@
             // btnDelete
             // 
             this.btnDelete.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDelete.Location = new System.Drawing.Point(297, 3);
+            this.btnDelete.Location = new System.Drawing.Point(225, 3);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(92, 48);
+            this.btnDelete.Size = new System.Drawing.Size(68, 50);
             this.btnDelete.TabIndex = 0;
             this.btnDelete.Text = "DELETE";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnLoad.Location = new System.Drawing.Point(331, 3);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(71, 50);
+            this.btnLoad.TabIndex = 0;
+            this.btnLoad.Text = "LOAD";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // tableLayoutPanel4
             // 
@@ -271,8 +304,8 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 2;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 51.75781F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 48.24219F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.13672F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 59.86328F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -285,18 +318,21 @@
             // 
             // tableLayoutPanel6
             // 
-            this.tableLayoutPanel6.ColumnCount = 1;
+            this.tableLayoutPanel6.ColumnCount = 2;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 303F));
             this.tableLayoutPanel6.Controls.Add(this.dgvDefect, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel3, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.dgvMKCD, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel3, 1, 1);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(533, 3);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(414, 3);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(488, 660);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(607, 660);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
             // dgvDefect
@@ -319,17 +355,92 @@
             this.dgvDefect.RowHeadersVisible = false;
             this.dgvDefect.RowTemplate.Height = 23;
             this.dgvDefect.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvDefect.Size = new System.Drawing.Size(482, 591);
+            this.dgvDefect.Size = new System.Drawing.Size(298, 594);
             this.dgvDefect.TabIndex = 7;
             // 
-            // ColMRKF1
+            // dgvMKCD
+            // 
+            this.dgvMKCD.AllowUserToAddRows = false;
+            this.dgvMKCD.AllowUserToDeleteRows = false;
+            this.dgvMKCD.AllowUserToResizeColumns = false;
+            this.dgvMKCD.AllowUserToResizeRows = false;
+            this.dgvMKCD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMKCD.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewCheckBoxColumn1,
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dgvMKCD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMKCD.Location = new System.Drawing.Point(307, 4);
+            this.dgvMKCD.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dgvMKCD.MultiSelect = false;
+            this.dgvMKCD.Name = "dgvMKCD";
+            this.dgvMKCD.RowHeadersVisible = false;
+            this.dgvMKCD.RowTemplate.Height = 23;
+            this.dgvMKCD.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvMKCD.Size = new System.Drawing.Size(297, 594);
+            this.dgvMKCD.TabIndex = 8;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 4;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel7.Controls.Add(this.btnSave, 3, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 606);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(298, 50);
+            this.tableLayoutPanel7.TabIndex = 5;
+            // 
+            // dataGridViewCheckBoxColumn1
             // 
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.NullValue = false;
-            this.ColMRKF1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewCheckBoxColumn1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewCheckBoxColumn1.HeaderText = "MARK";
+            this.dataGridViewCheckBoxColumn1.Name = "dataGridViewCheckBoxColumn1";
+            this.dataGridViewCheckBoxColumn1.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "LNCD";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn1.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "FALTID";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 75;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "SIZE";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.Width = 82;
+            // 
+            // ColMRKF1
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.NullValue = false;
+            this.ColMRKF1.DefaultCellStyle = dataGridViewCellStyle1;
             this.ColMRKF1.HeaderText = "MARK";
             this.ColMRKF1.Name = "ColMRKF1";
-            this.ColMRKF1.Width = 50;
+            this.ColMRKF1.Width = 60;
             // 
             // ColLNCD
             // 
@@ -338,7 +449,7 @@
             this.ColLNCD.ReadOnly = true;
             this.ColLNCD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColLNCD.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColLNCD.Width = 150;
+            this.ColLNCD.Width = 75;
             // 
             // ColFALTID
             // 
@@ -347,7 +458,7 @@
             this.ColFALTID.ReadOnly = true;
             this.ColFALTID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColFALTID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColFALTID.Width = 150;
+            this.ColFALTID.Width = 75;
             // 
             // ColSIZE
             // 
@@ -355,18 +466,7 @@
             this.ColSIZE.Name = "ColSIZE";
             this.ColSIZE.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.ColSIZE.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColSIZE.Width = 150;
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLoad.Location = new System.Drawing.Point(427, 3);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(94, 48);
-            this.btnLoad.TabIndex = 0;
-            this.btnLoad.Text = "LOAD";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.ColSIZE.Width = 82;
             // 
             // FormMKCDModel
             // 
@@ -390,6 +490,8 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDefect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMKCD)).EndInit();
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -414,10 +516,17 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.DataGridView dgvDefect;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.DataGridView dgvMKCD;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.Button btnApplyToModel;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColMRKF1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColLNCD;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColFALTID;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColSIZE;
-        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridViewCheckBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
     }
 }
