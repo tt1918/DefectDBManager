@@ -497,6 +497,17 @@ namespace DefectDBManager
                         _selModelData.Add(key, item.Value);
                     }
                 }
+                else
+                {
+
+                    foreach (var item in param.Value.Data)
+                    {
+                        if(_selModelData.Param[key].Data.ContainsKey(item.Key)==false)
+                        {
+                            _selModelData.Add(key, item.Value);
+                        }
+                    }
+                }
             }
         }
 
