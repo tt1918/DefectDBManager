@@ -169,50 +169,50 @@ namespace DefectDBManager
             }
             return;
 
-            string path = Path.Combine(Define.MKCDModelPath, "Default.txt");
+            //string path = Path.Combine(Define.MKCDModelPath, "Default.txt");
 
-            if (File.Exists(path) != true)
-            {
-                MessageBox.Show("Default.txt  파일이 존재하지 않습니다.");
-                return;
-            }
+            //if (File.Exists(path) != true)
+            //{
+            //    MessageBox.Show("Default.txt  파일이 존재하지 않습니다.");
+            //    return;
+            //}
 
-            string[] items;
-            string[] subItems;
+            //string[] items;
+            //string[] subItems;
 
-            MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-            using (StreamReader sr = new StreamReader(path))
-            {
-                while (sr.ReadLine() != null)
-                {
-                    items = sr.ReadLine().Split('\t');
-                    subItems = items[2].Split(',');
+            //MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+            //using (StreamReader sr = new StreamReader(path))
+            //{
+            //    while (sr.ReadLine() != null)
+            //    {
+            //        items = sr.ReadLine().Split('\t');
+            //        subItems = items[2].Split(',');
 
-                    MKCD_Data data = new MKCD_Data();
+            //        MKCD_Data data = new MKCD_Data();
 
-                    data.FLTID = subItems[1];
-                    data.MRKF1 = int.Parse(subItems[3]) == 1 ? true : false;
-                    data.SIZE = float.Parse(subItems[5]);
-                    mKCD_MODEL.Add(subItems[0], data);
-                }
+            //        data.FLTID = subItems[1];
+            //        data.MRKF1 = int.Parse(subItems[3]) == 1 ? true : false;
+            //        data.SIZE = float.Parse(subItems[5]);
+            //        mKCD_MODEL.Add(subItems[0], data);
+            //    }
 
-                sr.Close();
+            //    sr.Close();
 
-                _MKCD_DB_Data = mKCD_MODEL;
+            //    _MKCD_DB_Data = mKCD_MODEL;
 
-                // 화면에 로딩 내용 업데이트
-                if (this.InvokeRequired == true)
-                {
-                    this.Invoke(new MethodInvoker(delegate ()
-                    {
-                        updateDgvMKCDData();
-                    }));
-                }
-                else
-                {
-                    updateDgvMKCDData();
-                }
-            }
+            //    // 화면에 로딩 내용 업데이트
+            //    if (this.InvokeRequired == true)
+            //    {
+            //        this.Invoke(new MethodInvoker(delegate ()
+            //        {
+            //            updateDgvMKCDData();
+            //        }));
+            //    }
+            //    else
+            //    {
+            //        updateDgvMKCDData();
+            //    }
+            //}
         }
 
         private void loadMKCDFromDB(object lotName)

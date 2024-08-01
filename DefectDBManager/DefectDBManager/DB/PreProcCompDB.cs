@@ -232,10 +232,10 @@ namespace DefectDBManager
                 //success = SearchMRKCTLMST(tmpLotName);
                 //if (success == false) return false;
 
-                MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
-                MKCD_Model = mKCD_MODEL;
+                //MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                //foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                //    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+                //MKCD_Model = mKCD_MODEL;
 
                 // inspData 불러옴.
                 success = SearchINSPDAT(tmpLotName);
@@ -365,10 +365,10 @@ namespace DefectDBManager
                 //success = SearchMRKCTLMST(lotID);
                 //if (success == false) { errOut = 5; return false; }
 
-                MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
-                MKCD_Model = mKCD_MODEL;
+                //MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                //foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                //    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+                //MKCD_Model = mKCD_MODEL;
 
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return false; }
