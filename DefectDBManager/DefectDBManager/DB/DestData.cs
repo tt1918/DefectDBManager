@@ -278,6 +278,8 @@ namespace DefectDBManager
         public eProgramType ProgType;
         // 현재 장비 공정 코드
         public string MainLNCD;
+        // KTL-1 이전 공정 데이터 확인용 MKCD 
+        public string FixedMKCD;
 
         public int EverMarkDefectMeter
         {
@@ -410,7 +412,7 @@ namespace DefectDBManager
                 DbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "DB_END", 10);
 
                 ESDbTime.IsUse = NativeFunc.ReadIni(Define.DestPath, key, "ES_USE", true);
-                ESDbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "ES_START", 120);
+                ESDbTime.start = NativeFunc.ReadIni(Define.DestPath, key, "ES_START", 10);
                 ESDbTime.end = NativeFunc.ReadIni(Define.DestPath, key, "ES_END", 10);
 
                 key = "SYSTEM";
@@ -423,6 +425,7 @@ namespace DefectDBManager
                 this.ProgType = (eProgramType)NativeFunc.ReadIni(Define.DestPath, key, "PROGRAM_TYPE", 0);
 
                 this.MainLNCD = NativeFunc.ReadIni(Define.DestPath, key, "MACHINE_LNCD", "");
+                this.FixedMKCD = NativeFunc.ReadIni(Define.DestPath, key, "FIXED_MKCD", "FQ");
 
             }
             catch (Exception ex)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
+
     public class Define
     {
         public static string MainPath { get { return "C:\\COSS"; } }

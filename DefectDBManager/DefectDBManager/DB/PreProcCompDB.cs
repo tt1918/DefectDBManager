@@ -1,4 +1,6 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿#define USE_MKCD_FROM_SERVER
+
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -227,15 +229,24 @@ namespace DefectDBManager
 
                 // MKCD Model 데이터를 읽어옴
                 success = applyMKCD_Model();
-                if (success == false) return false;
-                //마킹 컨트롤 마스터 데이터 검색
-                //success = SearchMRKCTLMST(tmpLotName);
-                //if (success == false) return false;
 
-                //MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-                //foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                //    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
-                //MKCD_Model = mKCD_MODEL;
+                // 2-1. 모델 없음. 현재 랏 기준으로 모델 탐색 및 모델 업데이트 처리.
+                if (success == false)
+                {
+                    //마킹 컨트롤 마스터 데이터 검색
+                    success = SearchMRKCTLMST(tmpLotName);
+                    if (success == false) { return false; }
+
+                    MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                    mKCD_MODEL.Name = MKCD_Param.Name;
+                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                        mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+
+                    MKCD_Model = mKCD_MODEL;
+
+                    //2-2. 모델 저장하는 기능 추가되어야 함. 
+                    MKCD_Model.Save();
+                }
 
                 // inspData 불러옴.
                 success = SearchINSPDAT(tmpLotName);
@@ -243,6 +254,9 @@ namespace DefectDBManager
 
                 // 첫 검사 랏은 복사하여둔다
                 CopyInspDatToMatchedInspData();
+
+                // 3. INSPDAT 기준으로 데이터 확인하여 MKCD 데이터 유무 확인 후 없으면 추가
+                CheckLNCD_of_MKCD_INSPDAT(tmpLotName);
 
                 success = SearchFLTDAT();
                 if (success == false) return false;
@@ -358,23 +372,41 @@ namespace DefectDBManager
                 success = SearchPTRY0P(lotID);
                 if (success == false) { errOut = 4; return false; }
 
+#if (!USE_MKCD_FROM_SERVER)
                 // MKCD 데이터를 모델에서 불러올 수 있도록 함
                 success = applyMKCD_Model();
                 if (success == false) { errOut = 5; return false; }
-                //마킹 컨트롤 마스터 데이터 검색
-                //success = SearchMRKCTLMST(lotID);
-                //if (success == false) { errOut = 5; return false; }
+#else
+                
+                // 1. 마킹컨트롤 마스터 데이터 확인
+                success = applyMKCD_Model();
+                // 2-1. 모델 없음. 현재 랏 기준으로 모델 탐색 및 모델 업데이트 처리.
+                if (success == false)
+                {
+                    //마킹 컨트롤 마스터 데이터 검색
+                    success = SearchMRKCTLMST(lotID);
+                    if (success == false) { errOut = 5; return false; }
 
-                //MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
-                //foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                //    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
-                //MKCD_Model = mKCD_MODEL;
+                    MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                    mKCD_MODEL.Name = MKCD_Param.Name;
+                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                        mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
 
+                    MKCD_Model = mKCD_MODEL;
+
+                    //2-2. 모델 저장하는 기능 추가되어야 함. 
+                    MKCD_Model.Save();
+                }
+#endif
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return false; }
 
                 // 첫 검사 랏은 복사하여둔다
                 CopyInspDatToMatchedInspData();
+
+                // 3. INSPDAT 기준으로 데이터 확인하여 MKCD 데이터 유무 확인 후 없으면 추가
+                CheckLNCD_of_MKCD_INSPDAT(lotID);
+
 
                 success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return false; }
@@ -502,7 +534,10 @@ namespace DefectDBManager
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
                             msg.Y0KLOT = _DbResult.PTRY0P_Data[i][j].Y0KLOT;
-                            string query = msg.GetQueryAll((eFCD)i);
+                            msg.MKCD = DbDestConfig.FixedMKCD;
+                            //string query = msg.GetQueryAll((eFCD)i);
+                            // 코레노 요청으로 출하처 추가하여 사용하도록 수정함. 
+                            string query = msg.GetQuery((eFCD)i);
                             _LOG.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
 
                             if (query == "")
@@ -1199,19 +1234,19 @@ namespace DefectDBManager
 
             if(success == true)
                 MKCD_Model = model;
-            else
-            {
-                model.Name = "Default";
-                model.Load();
+            //else
+            //{
+            //    model.Name = "Default";
+            //    model.Load();
 
-                if (model.Param.Count == 0)
-                    success = false;
-                else
-                    success = true;
+            //    if (model.Param.Count == 0)
+            //        success = false;
+            //    else
+            //        success = true;
 
-                if (success == true)
-                    MKCD_Model = model;
-            }
+            //    if (success == true)
+            //        MKCD_Model = model;
+            //}
 
             return success;
         }
@@ -1246,6 +1281,53 @@ namespace DefectDBManager
 
             }
             return success;
+        }
+
+        /// <summary>
+        /// INSPDAT에 존재하는 LNCD와 MKCD의 데이터 정보 비교하여
+        /// MKCD INSPDAT에 해당하는 LNCD 데이터가 없는 경우 MKCD 데이터 추가하여 
+        /// 데이터 처리하도록 함
+        /// </summary>
+        /// <param name="lotID">데이터 존재하지 않을 경우 찾아야하는 랏 정보</param>
+        public void CheckLNCD_of_MKCD_INSPDAT(string lotID)
+        {
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            List<string> list = new List<string>();
+            
+            // 1. LNCD 데이터 확인
+            for (int idx = 0; idx < count; idx++)
+            {
+                int size1 = _DbResult.INSPDAT_Data[idx].Count;
+
+                for(int j=0; j< size1; j++)
+                {
+                    int size2 = _DbResult.INSPDAT_Data[idx][j].Count;
+                    for(int k=0; k< size2; k++)
+                    {
+                        string lncd = _DbResult.INSPDAT_Data[idx][j][k].LNCD;
+                        if (MKCD_Model.Param.ContainsKey(lncd) == false)
+                            list.Add(lncd);
+                    }
+                }
+            }
+
+            // 2. MKCD 데이터에 빠진 LNCD 데이터 추가
+            if(list.Count>0)
+            {
+                bool success = SearchMRKCTLMST(lotID);
+                
+                // 탐색이 안되면 그냥 리턴
+                if (success == false) return ;
+                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                {
+                    if(MKCD_Model.Param.ContainsKey(data.LNCD)==false)
+                    {
+                        MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
+                    }
+                }
+
+                MKCD_Model.Save();
+            }
         }
     }
 }
