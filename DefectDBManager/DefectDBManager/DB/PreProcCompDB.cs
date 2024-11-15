@@ -247,6 +247,31 @@ namespace DefectDBManager
                     //2-2. 모델 저장하는 기능 추가되어야 함. 
                     MKCD_Model.Save();
                 }
+                else
+                {
+                    //마킹 컨트롤 마스터 데이터 검색
+                    success = SearchMRKCTLMST(tmpLotName);
+                    if (success == true)
+                    {
+                        bool isUpdated = false;
+                        foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                        {
+                            if (MKCD_Model.Param.ContainsKey(data.LNCD) == false)
+                            {
+                                MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
+                                isUpdated = true;
+                            }
+                            else if (MKCD_Model.Param[data.LNCD].Data.ContainsKey(data.FLTID) == false)
+                            {
+                                MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
+                                isUpdated = true;
+                            }
+                        }
+
+                        if(isUpdated == true)
+                            MKCD_Model.Save();
+                    }
+                }
 
                 // inspData 불러옴.
                 success = SearchINSPDAT(tmpLotName);
@@ -254,9 +279,6 @@ namespace DefectDBManager
 
                 // 첫 검사 랏은 복사하여둔다
                 CopyInspDatToMatchedInspData();
-
-                // 3. INSPDAT 기준으로 데이터 확인하여 MKCD 데이터 유무 확인 후 없으면 추가
-                CheckLNCD_of_MKCD_INSPDAT(tmpLotName);
 
                 success = SearchFLTDAT();
                 if (success == false) return false;
@@ -397,16 +419,37 @@ namespace DefectDBManager
                     //2-2. 모델 저장하는 기능 추가되어야 함. 
                     MKCD_Model.Save();
                 }
+                else
+                {
+                    //마킹 컨트롤 마스터 데이터 검색
+                    success = SearchMRKCTLMST(lotID);
+                    if (success == true)
+                    {
+                        bool isUpdated = false;
+                        foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                        {
+                            if (MKCD_Model.Param.ContainsKey(data.LNCD) == false)
+                            {
+                                MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
+                                isUpdated = true;
+                            }
+                            else if (MKCD_Model.Param[data.LNCD].Data.ContainsKey(data.FLTID) == false)
+                            {
+                                MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
+                                isUpdated = true;
+                            }
+                        }
+
+                        if (isUpdated == true)
+                            MKCD_Model.Save();
+                    }
+                }
 #endif
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return false; }
 
                 // 첫 검사 랏은 복사하여둔다
                 CopyInspDatToMatchedInspData();
-
-                // 3. INSPDAT 기준으로 데이터 확인하여 MKCD 데이터 유무 확인 후 없으면 추가
-                CheckLNCD_of_MKCD_INSPDAT(lotID);
-
 
                 success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return false; }
@@ -1283,51 +1326,5 @@ namespace DefectDBManager
             return success;
         }
 
-        /// <summary>
-        /// INSPDAT에 존재하는 LNCD와 MKCD의 데이터 정보 비교하여
-        /// MKCD INSPDAT에 해당하는 LNCD 데이터가 없는 경우 MKCD 데이터 추가하여 
-        /// 데이터 처리하도록 함
-        /// </summary>
-        /// <param name="lotID">데이터 존재하지 않을 경우 찾아야하는 랏 정보</param>
-        public void CheckLNCD_of_MKCD_INSPDAT(string lotID)
-        {
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            List<string> list = new List<string>();
-            
-            // 1. LNCD 데이터 확인
-            for (int idx = 0; idx < count; idx++)
-            {
-                int size1 = _DbResult.INSPDAT_Data[idx].Count;
-
-                for(int j=0; j< size1; j++)
-                {
-                    int size2 = _DbResult.INSPDAT_Data[idx][j].Count;
-                    for(int k=0; k< size2; k++)
-                    {
-                        string lncd = _DbResult.INSPDAT_Data[idx][j][k].LNCD;
-                        if (MKCD_Model.Param.ContainsKey(lncd) == false)
-                            list.Add(lncd);
-                    }
-                }
-            }
-
-            // 2. MKCD 데이터에 빠진 LNCD 데이터 추가
-            if(list.Count>0)
-            {
-                bool success = SearchMRKCTLMST(lotID);
-                
-                // 탐색이 안되면 그냥 리턴
-                if (success == false) return ;
-                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                {
-                    if(MKCD_Model.Param.ContainsKey(data.LNCD)==false)
-                    {
-                        MKCD_Model.Add(data.LNCD, new MKCD_Data(data));
-                    }
-                }
-
-                MKCD_Model.Save();
-            }
-        }
     }
 }
