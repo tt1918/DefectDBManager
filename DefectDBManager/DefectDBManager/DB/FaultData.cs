@@ -39,6 +39,33 @@ namespace DefectDBManager
         //public float SIZE_FAULT;    // DB에서 받은 fault area <- 마킹 불량 데이터 쪽으로 가는게 맞아보임
         //public string FAULTNO_FAULT; <- 마킹 불량 데이터 쪽으로 가는게 맞아보임
         //public string MNTTID_FAULT; <- 마킹 불량 데이터 쪽으로 가는게 맞아보임
+
+        public FaultDatum Clone()
+        {
+            FaultDatum data = new FaultDatum();
+
+            data.LOTNO = LOTNO;
+            data.TLOTNO = TLOTNO;
+            data.TBCNO = TBCNO;
+
+            data.TCTLNO = TCTLNO;
+            data.FLTID = FLTNO;
+            data.OFFSET = OFFSET;
+            data.YPOS_M = YPOS_M;
+            data.XPOS_M = XPOS_M;
+            data.SIZE_X = SIZE_X;
+            data.SIZE_Y = SIZE_Y;
+            data.SIZE_AREA = SIZE_AREA;
+
+            data.FLTID = FLTID;
+            data.RANK = RANK;
+            data.KND = KND;
+            data.JIGCD = JIGCD;
+            data.MACNO = MACNO;
+            data.CAM_NO = CAM_NO;
+
+            return data;
+        }
     }
 
 
@@ -75,6 +102,33 @@ namespace DefectDBManager
         public float SIZE_Y;
         // 표시용 데이터
         //////////////////////////////////////////////////////////
+
+        public MarkingFaultDatum Clone()
+        {
+            MarkingFaultDatum data = new MarkingFaultDatum();
+
+            data.BCNO = BCNO;
+            data.FLTNO = FLTNO;
+            data.FAULTID = FAULTID;
+            data.OFFSET = OFFSET;
+            data.YPOS_M = YPOS_M;
+            data.XPOS_M = XPOS_M;
+            data.XOFFSET = XOFFSET;
+            data.UseCSVResult = UseCSVResult;
+            data.DefectLine = DefectLine;
+            data.CAM_NO = CAM_NO;
+
+            data.XOFFSET_ALARM = XOFFSET_ALARM;
+
+            data.CTLNO = CTLNO;
+            data.MACNO = MACNO;
+            data.MNTTID = MNTTID;
+            data.SIZE = SIZE;
+            data.SIZE_X = SIZE_X;
+            data.SIZE_Y = SIZE_Y;
+
+            return data;
+        }
     }
 
     public class MarkingFaultData
@@ -88,7 +142,6 @@ namespace DefectDBManager
         public float MaxXPos;
         public float MinSize;
 
-        
 
         public MarkingFaultData()
         {
@@ -126,7 +179,7 @@ namespace DefectDBManager
                 {
                     foreach (MarkingFaultDatum datum in Dic[i])
                     {
-                        if (datum.OFFSET >= start && datum.OFFSET <= end/* && datum.BCNO == bcno*/)
+                        if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
                         {
                             MarkingData item = new MarkingData();
                             item.DefectLine = datum.DefectLine;
@@ -147,7 +200,57 @@ namespace DefectDBManager
                 }
             }
         }
+
+        public void GetData(string bcno, double start, double end, ref List<MarkingFaultDatum> data)
+        {
+            int key1 = (int)(start / 10000.0);
+            int key2 = (int)(end / 10000.0);
+
+            for (int i = key1; i <= key2; i++)
+            {
+                if (Dic.ContainsKey(i) == true)
+                {
+                    foreach (MarkingFaultDatum datum in Dic[i])
+                    {
+                        if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
+                            data.Add(datum);
+                    }
+                }
+            }
+        }
+
     }
+
+    public class PreProcMarkingData
+    {
+        public string LNCD { get; set; } = "";
+        public List<MarkingFaultDatum> Data = null;
+
+        public PreProcMarkingData()
+        {
+            Data = new List<MarkingFaultDatum>();
+        }
+
+        public void Reset()
+        {
+            LNCD = "";
+            Data.Clear();
+        }
+
+        public PreProcMarkingData Clone()
+        {
+            PreProcMarkingData data = new PreProcMarkingData();
+
+            data.LNCD = LNCD;
+
+            foreach(var item in Data)
+                data.Data.Add(item);
+
+            return data;
+        }
+
+    }
+
 
     public class ResultData
     {
@@ -189,32 +292,42 @@ namespace DefectDBManager
         /// <summary>
         /// 상위 보고용 데이터
         /// </summary>
-        public Dictionary<int, List<MarkingFaultDatum>> DicPt = null;
-        public List<MarkingFaultDatum> MarkData
+        public MarkingFaultData MarkData
         {
             get { return _markData; }
             private set { _markData = value; }
         }
-        private List<MarkingFaultDatum> _markData;
+        private MarkingFaultData _markData;
+
+
+        public bool IsPreProc = false;
+
+        /// <summary>
+        /// 이전 공정 비교 결점 데이터 
+        /// </summary>
+        public List<PreProcMarkingData>[] PreMarkData
+        {
+            get { return _preMarkData; }
+            private set { _preMarkData = value; }
+        }
+        private List<PreProcMarkingData>[] _preMarkData;
 
         // 현재 생산하고 있는 BCNO
-        //public string BCNO
-        //{
-        //    get { return _bcno; }
-        //    set { _bcno = value; }
-        //}
-        //private string _bcno;
+        public string BCNO
+        {
+            get { return _bcno; }
+            set { _bcno = value; }
+        }
+        private string _bcno;
 
         public PrePocResultData()
         {
-            DicPt = new Dictionary<int, List<MarkingFaultDatum>>();
-
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             _fltdat = new List<PreProcDefect>[count];
             for (int i = 0; i < count; i++)
                 _fltdat[i] = new List<PreProcDefect>();
 
-            _markData = new List<MarkingFaultDatum>();
+            _markData = new MarkingFaultData();
         }
 
         ~PrePocResultData()
@@ -225,9 +338,7 @@ namespace DefectDBManager
         public void ResetAll()
         {            
             // 실시간 불량 전송용 데이터 
-            DicPt.Clear();
-            _markData.Clear();
-
+            _markData.Reset();
 
             for (int i = 0; i < _fltdat.Length; i++)
             {
@@ -239,18 +350,20 @@ namespace DefectDBManager
                 _fltdat[i].Clear();
             }
 
+            for (int i = 0; i < _preMarkData.Length; i++)
+            {
+                // 내부 데이터 삭제
+                for (int j = 0; j < _preMarkData[i].Count; j++)
+                    _preMarkData[i][j].Reset();
+
+                // 공정 별 데이터 리스트 삭제
+                _preMarkData[i].Clear();
+            }
         }
 
         public void Add(MarkingFaultDatum data)
         {
             // 10M 단위로 데이터 자름
-            int key = (int)(data.OFFSET / 10000.0);
-            
-            if (DicPt.ContainsKey(key) == true)
-                DicPt[key].Add(data);
-            else
-                DicPt[key] = new List<MarkingFaultDatum> { data };
-
             _markData.Add(data);
         }
 
@@ -264,29 +377,43 @@ namespace DefectDBManager
         public List<MarkingFaultDatum> GetDefectPts(string bcno, float startY, float endY)
         {
             List<MarkingFaultDatum> pts = new List<MarkingFaultDatum>();
-            int key1 = (int)(startY / 10000.0)-1;
-            int key2 = (int)(endY / 10000.0)+1; 
 
-            for (int i = key1; i <= key2; i++)
-            {
-                if (DicPt.ContainsKey(i) == true)
-                {
-                    foreach (MarkingFaultDatum pt in DicPt[i])
-                    {
-                        if (pt.OFFSET >= startY && pt.OFFSET <= endY && pt.BCNO == bcno)
-                            pts.Add(pt);
-                    }
-                }
-            }
+            _markData.GetData(bcno, startY, endY, ref pts);
+
             return pts;
+        }
+
+        public PrePocResultData Copy()
+        {
+            PrePocResultData data = new PrePocResultData();
+
+            // 전체 결점 데이터
+            int count = System.Enum.GetValues(typeof(eFCD)).Length;
+            for(int i=0; i<count; i++)
+            {
+                foreach(var flts in FLTDAT[i])
+                    data.FLTDAT[i].Add(flts.Clone());
+            }
+
+            // 마킹 대상 결점 데이터
+            foreach (var mrks in MarkData.Data)
+                data.Add(mrks.Clone());
+
+            for(int i=0; i<count; i++)
+            {
+                foreach (var marks in PreMarkData[i])
+                    data.PreMarkData[i].Add(marks.Clone());
+            }
+            
+            return data;
         }
     }
 
     public class PreProcDefect
     {
         // 이전 공정 라인 코드
-        public string LNCD;
-        public List<FaultDatum> Data;
+        public string LNCD { get; set; }
+        public List<FaultDatum> Data { get; set; }
 
         public PreProcDefect()
         {
@@ -301,6 +428,18 @@ namespace DefectDBManager
         public void ResetAll()
         {
             Data.Clear();
+        }
+
+        public PreProcDefect Clone()
+        {
+            PreProcDefect defect = new PreProcDefect();
+
+            defect.LNCD = LNCD;
+
+            foreach(var data in Data)
+                defect.Data.Add(data.Clone());
+
+            return defect;
         }
     }
 

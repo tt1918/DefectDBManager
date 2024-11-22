@@ -470,7 +470,7 @@ namespace DefectDBManager
             int count = 0;
             if (DbDestConfig.UseXOffset == true && DbDestConfig.UseXOffsetAlarm == true)
             {
-                foreach (MarkingFaultDatum item in FaultData.MarkData)
+                foreach (MarkingFaultDatum item in FaultData.MarkData.Data)
                 {
                     if (item.XOFFSET_ALARM != float.MaxValue && (Math.Abs(item.XOFFSET_ALARM + 1.0f) > +0.000001f) && Math.Abs(refXOffset - item.XOFFSET_ALARM) >= 0.1f)
                     {
@@ -485,8 +485,6 @@ namespace DefectDBManager
 
             return bXOfSErr;
         }
-
-
 
         public bool SearchXOFSMST(string lotID)
         {
@@ -965,8 +963,13 @@ namespace DefectDBManager
                                 nItemCnt++;
 
                                 PreProcDefect defectData = new PreProcDefect();
+
+                                PreProcMarkingData preMarkData = new PreProcMarkingData();
+
                                 // 
                                 defectData.LNCD = inspdata.LNCD;
+                                preMarkData.LNCD = inspdata.LNCD;
+
                                 if (MKCD_Model.Param.ContainsKey(inspdata.LNCD) == true)
                                     mkcdLncdData = MKCD_Model.Param[inspdata.LNCD];
                                 else
@@ -1003,10 +1006,10 @@ namespace DefectDBManager
                                     }
                                     else continue;
 
-                                    if (bValid == false) continue;
-                                    if (finalXPos < 0.0f) continue;
                                     if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
+                                    if (finalXPos < 0.0f) continue;
 
+                                    // 전체 데이터를 저장한다. 
                                     // Fault Data 처리
                                     FaultDatum tmpFltData = new FaultDatum();
 
@@ -1016,17 +1019,25 @@ namespace DefectDBManager
                                     tmpFltData.YPOS_M = data.YPOS_M;
                                     tmpFltData.XPOS_M = data.XPOS_M;
 
-                                    // 코드 불량 카운트 증가
-                                    if (inspdata.CTLNO == data.CTLNO)   inspdata.RollCtlCnt++;
-
                                     if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
                                     if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-                                  
+
                                     // fault data 추가
                                     tmpFltData.RANK = data.RANK;
                                     tmpFltData.KND = data.KND;
                                     tmpFltData.JIGCD = data.JIGCD;
                                     tmpFltData.MACNO = data.MACNO;
+
+                                    // 리스트에 데이터 삽입
+                                    defectData.Data.Add(tmpFltData);
+
+
+                                    // 마킹 데이터만 처리
+                                    if (bValid == false) continue;
+                                    
+                                    // 코드 불량 카운트 증가
+                                    if (inspdata.CTLNO == data.CTLNO)   inspdata.RollCtlCnt++;
+
 
                                     // Marking fault data 추가
                                     MarkingFaultDatum markData = new MarkingFaultDatum();
@@ -1079,11 +1090,12 @@ namespace DefectDBManager
                                     if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
                                         markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
 
-                                    // 리스트에 데이터 삽입
-                                    defectData.Data.Add(tmpFltData);
 
                                     // 실시간 데이터용 데이터 삽입
-                                    FaultData.Add(markData);
+                                    if (FaultData.IsPreProc == false)
+                                        FaultData.Add(markData);
+                                    else
+                                        preMarkData.Data.Add(markData);
 
                                     dataCnt++;
                                     logData = data.GetString(dataCnt, tmpFltData.TBCNO);
@@ -1093,9 +1105,12 @@ namespace DefectDBManager
 
                                 // 각 공정 별 불량 데이터를 입력한다. 
                                 FaultData.FLTDAT[fcdIdx].Add(defectData);
+
+                                // 이전 공정 결점 비교하는 경우에만 데이터를 추가한다.
+                                if(FaultData.IsPreProc==true)
+                                    FaultData.PreMarkData[fcdIdx].Add(preMarkData);
                             }
                         }
-                        
                     }
                     
                     DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));

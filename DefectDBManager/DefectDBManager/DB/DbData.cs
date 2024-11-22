@@ -30,8 +30,8 @@ namespace DefectDBManager
         public string YLMLOT;   //g1 점착lot
         public string YLMZKY;   //g8 품종
         public string YLMZKN;   //g9 이전 프로그램에서는 사용 안 함
-        public float YLMTON;    //g3 투입M
-        public float YLMKAS;    //g4 완성M
+        public float  YLMTON;    //g3 투입M
+        public float  YLMKAS;    //g4 완성M
         public string YLMYKH;   //g5 원단폭
         public string YLSLOT;   //g6 점착LOT <--연신Lot
         public string YLSZKY;   //g2 품명
@@ -61,6 +61,23 @@ namespace DefectDBManager
             string msg = $"{YLMLOT}, {YLSZKY}, {YLMTON:F3}, {YLMKAS:F3}, {YLMYKH}, {YLSLOT}, {YLSZKN}";
             return msg;
         }
+
+        public PTRYLPdata Clone()
+        {
+            PTRYLPdata data = new PTRYLPdata();
+
+            data.YLMLOT = this.YLMLOT;
+            data.YLMZKY = this.YLMZKY;
+            data.YLMZKN = this.YLMZKN;
+            data.YLMTON = this.YLMTON;
+            data.YLMKAS = this.YLMKAS;
+            data.YLMYKH = this.YLMYKH;
+            data.YLSLOT = this.YLSLOT;
+            data.YLSZKY = this.YLSZKY;
+            data.YLSZKN = this.YLSZKN;
+
+            return data;
+        }
     }
 
     public class XOFSMSTData
@@ -77,6 +94,7 @@ namespace DefectDBManager
         public string   YLSZKN;
         public float    X_OFFSET;
 
+
         public void Parse(OracleDataReader reader)
         {
             KYCD = reader[0].ToString();
@@ -92,6 +110,21 @@ namespace DefectDBManager
             string msg = $"{KYCD}, {PPCD}, {LNCD}, {YLMZKN2}, {YLSZKN}, {X_OFFSET:F3}";
             return msg;
         }
+
+        public XOFSMSTData Clone()
+        {
+            XOFSMSTData data = new XOFSMSTData();
+
+            data.KYCD = this.KYCD;
+            data.PPCD = this.PPCD;
+            data.LNCD = this.LNCD;
+            data.YLMZKN2 = this.YLMZKN2;
+            data.YLSZKN = this.YLSZKN;
+            data.X_OFFSET = this.X_OFFSET;
+
+            return data;
+        }
+
     }
 
     public class AREADELData
@@ -106,10 +139,10 @@ namespace DefectDBManager
         public string LNCD;
         public string LOTNO;
         public string ENTRY_NUM;
-        public float STR_WD;
-        public float END_WD;
-        public float STR_MD;
-        public float END_MD;
+        public float  STR_WD;
+        public float  END_WD;
+        public float  STR_MD;
+        public float  END_MD;
         public string BCNO;
 
         public void Parse(OracleDataReader reader)
@@ -140,6 +173,25 @@ namespace DefectDBManager
         {
             string msg = $"{KYCD}, {PPCD}, {LNCD}, {LOTNO}, {ENTRY_NUM}, {STR_WD:F3}, {END_WD:F3}, {STR_MD:F3}, {END_MD:F3}, {BCNO}";
             return msg;
+        }
+
+        public AREADELData Clone()
+        {
+            AREADELData data = new AREADELData();
+
+            data.KYCD = this.KYCD;
+            data.PPCD = this.PPCD;
+            data.LNCD = this.LNCD;
+            data.LOTNO = this.LOTNO;
+            data.ENTRY_NUM = this.ENTRY_NUM;
+            data.STR_WD = this.STR_WD;
+            data.END_WD = this.END_WD;
+            data.STR_MD = this.STR_MD;
+            data.END_MD = this.END_MD;
+            data.BCNO = this.BCNO;
+
+
+            return data;
         }
     }
 
@@ -193,6 +245,25 @@ namespace DefectDBManager
 
             return msg;
         }
+
+        public PTRY0PData Clone()
+        {
+            PTRY0PData data = new PTRY0PData();
+
+            data.LotData = this.LotData;
+            data.StartTime = this.StartTime;
+            data.EndTime = this.EndTime;
+            data.Y0KYCD = this.Y0KYCD;
+            data.Y0KLOT = this.Y0KLOT;
+            data.LNCD = this.LNCD;
+            data.Y0LNSN = this.Y0LNSN;
+            data.Y0ZKNM = this.Y0ZKNM;
+            data.Y0KKOL = this.Y0KKOL;
+            data.Y0KSOL = this.Y0KSOL;
+            data.Y0KASS = this.Y0KASS;
+
+            return data;
+        }
     }
 
     public class MRKCTLMSTData
@@ -211,7 +282,7 @@ namespace DefectDBManager
         public string MRKF1;
         public string MRKF2;
         public string PPCD;
-        public float SIZE;
+        public float  SIZE;
 
         // Dic 구현해야함
         // FLTID -> SIZE
@@ -231,6 +302,21 @@ namespace DefectDBManager
         {
             string msg = $"{LNCD}, {FLTID}, {ROLLNAME}, {MRKF1}, {MRKF2}, {SIZE:F3}";
             return msg;
+        }
+
+        public MRKCTLMSTData Clone()
+        {
+            MRKCTLMSTData data = new MRKCTLMSTData();
+
+            data.LNCD = this.LNCD;
+            data.FLTID = this.FLTID;
+            data.ROLLNAME = this.ROLLNAME;
+            data.MRKF1 = this.MRKF1;
+            data.MRKF2 = this.MRKF2;
+            data.PPCD = this.PPCD;
+            data.SIZE = this.SIZE;
+
+            return data;
         }
     }
 
@@ -309,6 +395,27 @@ namespace DefectDBManager
         {
             string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{YPosStart:F2}\t\t{YPosEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
             return msg;
+        }
+
+        public INSPDATData Clone()
+        {
+            INSPDATData data = new INSPDATData();
+
+            data.CTLNO = this.CTLNO;
+            data.HINMEI = this.HINMEI;
+            data.LOTNO = this.LOTNO;
+            data.ROLLNO = this.ROLLNO;
+            data.BCNO = this.BCNO;
+            data.STRDT = this.STRDT;
+            data.STRTM = this.STRTM;
+            data.ENDDT = this.ENDDT;
+            data.ENDTM = this.ENDTM;
+            data.USEFLG = this.USEFLG;
+            data.CUSTCD = this.CUSTCD;
+            data.KYCD = this.KYCD;
+            data.KTCD = this.KTCD;
+
+            return data;
         }
     }
 

@@ -345,7 +345,7 @@ namespace DefectDBManager
         private void displayFaultPage()
         {
             List<MarkingFaultDatum> fltdat = null;
-            fltdat = PreCompDB.FaultData?.MarkData;
+            fltdat = PreCompDB.FaultData?.MarkData.Data;
 
             if (fltdat == null) return;
 
@@ -835,7 +835,7 @@ namespace DefectDBManager
                 List<MarkingFaultDatum> tmpData = null;
                 Param tmpParam = null;
                 DestConfig config = null;
-                tmpData = _preCompDB.FaultData.MarkData;
+                tmpData = _preCompDB.FaultData.MarkData.Data;
                 config = _preCompDB.DbDestConfig;
 
                 MarkingFaultDatum data = null;
@@ -916,7 +916,7 @@ namespace DefectDBManager
         {
             ResetListViewData();
             this.clearAllListView();
-            this.initFaultPage(PreCompDB.FaultData.MarkData.Count);
+            this.initFaultPage(PreCompDB.FaultData.MarkData.Data.Count);
             makeBCNOListData();
             makePTRYLPListViewData();
             makePTRY0PListViewData();
@@ -1150,7 +1150,7 @@ namespace DefectDBManager
             {
 
                 List<MarkingFaultDatum> data = null;
-                data = _preCompDB.FaultData.MarkData;
+                data = _preCompDB.FaultData.MarkData.Data;
 
                 if (Int32.TryParse(tbFaultPage.Text, out int intput) == true)
                 {
@@ -1544,7 +1544,7 @@ namespace DefectDBManager
                 tbLotName.Text = PreCompDB.SearchLotName;
 
             // List View 업데이트 데이터 생성
-            initFaultPage(PreCompDB.FaultData.MarkData.Count);
+            initFaultPage(PreCompDB.FaultData.MarkData.Data.Count);
             this.makeAllListViewData();
             this.displayAllListView();
         }
