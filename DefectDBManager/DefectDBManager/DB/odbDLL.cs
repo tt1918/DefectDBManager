@@ -1204,18 +1204,9 @@ namespace DefectDBManager
                     DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
 
-                    if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)
-                    {
-                        defectCnt[fcdIdx] = -1;// 확인 안 함
-                    }
-                    else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)
-                    {
-                        defectCnt[fcdIdx] = -1;// 확인 안 함
-                    }
-                    else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)
-                    {
-                        defectCnt[fcdIdx] = -1;// 확인 안 함
-                    }
+                    if (dbOption.checkES == true && fcdIdx == (int)eFCD.ES)         defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (dbOption.checkTG == true && fcdIdx == (int)eFCD.TG)    defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (dbOption.checkETC == true && fcdIdx == (int)eFCD.ETC)  defectCnt[fcdIdx] = -1;// 확인 안 함
                     else
                     {
                         if (dbOption.checkES == false && fcdIdx == (int)eFCD.ES) DB_Progress.SetSkip(eNittoDBProgress.FAULTDAT_ES);
@@ -1249,9 +1240,7 @@ namespace DefectDBManager
 
                             inspdata = _DbResult.INSPDAT_Data[fcdIdx][opIdx][inspIdx];
 
-                            if (_DbResult.dicMRKF1Data.Count == 0 && _DbResult.dicSizeData.Count == 0)
-                                continue;
-
+                            if (_DbResult.dicMRKF1Data.Count == 0 && _DbResult.dicSizeData.Count == 0)  continue;
 #if (FAST_FLTID)
                             QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
                             fastMsg.CTLNO = inspdata.CTLNO;
@@ -1301,22 +1290,16 @@ namespace DefectDBManager
                                         else
                                             tmpKey = data.FLTID;
 
-
-                                        if (finalXPos < 0.0f) continue;
+                                        if (finalXPos < 0.0f)       continue;
                                         if (useMask == true && IsMaskedDefect(finalXPos, data.OFFSET) == true) continue;
                                         if (useSplit == true && isSplitSkipDefect(finalXPos, splitStartX, splitEndX) == true) continue;
 
                                         // Fault Data 처리
                                         FaultDatum tmpFltData = new FaultDatum();
-
-                                        tmpFltData.FLTNO = data.FLTNO;
-                                        tmpFltData.OFFSET = data.OFFSET;
-                                        tmpFltData.YPOS_M = data.YPOS_M;
-                                        tmpFltData.XPOS_M = data.XPOS_M;
+                                        tmpFltData.SetData(inspdata.BCNO, data);
 
                                         // 코드 불량 카운트 증가
-                                        if (inspdata.CTLNO == data.CTLNO)
-                                            inspdata.RollCtlCnt++;
+                                        if (inspdata.CTLNO == data.CTLNO)   inspdata.RollCtlCnt++;
 
                                         // FLTID비교기능
                                         if(destUnit.FLTIDCheck!=null)
@@ -1336,69 +1319,10 @@ namespace DefectDBManager
                                                 if (minSize > data.AREA_M) minSize = data.AREA_M;
                                         }
 
-                                        // fault data 추가
-                                        tmpFltData.RANK = data.RANK;
-                                        tmpFltData.KND = data.KND;
-                                        tmpFltData.JIGCD = data.JIGCD;
-                                        tmpFltData.MACNO = data.MACNO;
-
                                         // Marking fault data 추가
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
-
-                                        markData.BCNO = inspdata.BCNO;
-                                        markData.FLTNO = data.FLTNO;
-                                        markData.FAULTID = data.FLTID;
-                                        markData.OFFSET = tmpFltData.OFFSET;
-                                        markData.YPOS_M = tmpFltData.YPOS_M;
-                                        markData.XPOS_M = tmpFltData.XPOS_M;
-                                        markData.XOFFSET = inspdata.OffsetX;
-                                        markData.UseCSVResult = false;
-                                        markData.CAM_NO = data.CAMNO;
-                                        markData.CTLNO = data.CTLNO;
-                                        markData.SIZE = data.AREA_M;
-                                        markData.MNTTID = data.MNTTAN;
-                                        markData.MACNO = data.MACNO;
-
-                                        if (data.CAMNO != 9) markData.XOFFSET_ALARM = inspdata.OffsetX;
-                                        else markData.XOFFSET_ALARM = float.MaxValue;
-
-                                        if (csvType == eCSV_TYPE.NITTO)
-                                        {
-                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; // 점착
-                                            else markData.DefectLine = 8; // 그외
-                                        }
-                                        else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                        {
-                                            if (fcdIdx == (int)eFCD.TG) markData.DefectLine = 9; //점착 
-                                            else if (fcdIdx == (int)eFCD.ES) markData.DefectLine = 8; // 연신 - 기타
-                                            else markData.DefectLine = 7; // 그외
-                                        }
-                                        else
-                                        {
-                                            if (fcdIdx == (int)eFCD.TG && dbOption.useKT == true) // 점착
-                                            {
-                                                int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
-                                                markData.DefectLine = FalutFunction.GetLineFromFLTID(fldID);
-                                                if (markData.DefectLine != 13) CrtParam.DBFaultCount[fldID]++;
-                                            }
-                                            else if ((fcdIdx == (int)eFCD.ES && dbOption.checkES == true) ||
-                                                (fcdIdx == (int)eFCD.ETC && dbOption.checkETC == true))
-                                            {
-                                                markData.DefectLine = 0;
-                                                CrtParam.ESFalutCount++; // 연신 결점 데이터 카운트 처리
-                                            }
-                                        }
-
-                                        // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
-                                        defectLine = markData.DefectLine;
-
-                                        if (CrtParam._UserDefectClass.UpdateDefectLine(tmpFaltID, ref defectLine) == true)
-                                            markData.DefectLine = defectLine;
-
-                                        //RK는 CAMNO별로 Defect Class 를 구분
-                                        if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
-                                            markData.DefectLine += Global.MaxDefectLine * data.CAMNO;
-
+                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption, ref currentParam);
+                                       
                                         resultDefect.Data.Add(tmpFltData);
                                         resultDefect.MarkFault.Add(markData);
 
@@ -1426,8 +1350,7 @@ namespace DefectDBManager
                     
                 }
 
-                if (minSize == 999.0)
-                    minSize = 0;
+                if (minSize == 999.0)   minSize = 0;
 
                 //   Defect 사이즈 처리
                 resultDefect.MarkFault.MinXPos = minXPos;
@@ -1435,26 +1358,7 @@ namespace DefectDBManager
                 resultDefect.MarkFault.MinSize = minSize;
 
                 // 불량 체크
-                bool isSuccess = true;
-                if (DbDestConfig.CSVType == eCSV_TYPE.KORENO || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK || DbDestConfig.CSVType == eCSV_TYPE.KORENO_RK_IJP)
-                {
-                    // 하나라도 검색이 되었으면 OK
-                    isSuccess = false;
-                    for (int i = 0; i < fcdCnt; i++)
-                    {
-                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
-                            isSuccess = true;
-                    }
-                }
-                else
-                {
-                    // 전체가 다 불량이 있어야 OK
-                    for (int i = 0; i < fcdCnt; i++)
-                    {
-                        if (defectCnt[i] != -1 && defectCnt[i] == 0)// 갯수 확인 못했으면
-                            isSuccess &= false;
-                    }
-                }
+                bool isSuccess = FalutFunction.IsDefectExist(DbDestConfig.CSVType, defectCnt);
                 return true;
             }
             catch (Exception ex)

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace DefectDBManager
 {
     #region MKCD 데이터 요청 처리
-    public class MkcdParam
+    public class MRKCTLMSTParam
     {
         public bool IsReceived { get; private set; }
         public string Name { get; private set; }
 
-        public MkcdParam()
+        public MRKCTLMSTParam()
         {
             IsReceived = false;
             Name = "";
@@ -35,20 +35,20 @@ namespace DefectDBManager
     #endregion
 
     #region MKCD Model Data
-    public class MKCD_Data
+    public class MRKCTLMST_Data
     {
         public string FLTID { get; set; }
         public bool MRKF1 { get; set; }
         public float SIZE { get; set; }
 
-        public MKCD_Data()
+        public MRKCTLMST_Data()
         {
             FLTID = "";
             MRKF1 = false;
             SIZE  = 0.0f;
         }
 
-        public MKCD_Data(MRKCTLMSTData data)
+        public MRKCTLMST_Data(MRKCTLMSTData data)
         {
             try
             {
@@ -70,18 +70,18 @@ namespace DefectDBManager
         }
     }
 
-    public class MKCD_LNCD_Data
+    public class MRKCTLMST_LNCD_Data
     {
         public string LNCD { get; set; }
-        public Dictionary<string, MKCD_Data> Data { get; set; } = null;
+        public Dictionary<string, MRKCTLMST_Data> Data { get; set; } = null;
 
-        public MKCD_LNCD_Data(string name)
+        public MRKCTLMST_LNCD_Data(string name)
         {
             LNCD = name;
-            Data = new Dictionary<string, MKCD_Data>();
+            Data = new Dictionary<string, MRKCTLMST_Data>();
         }
 
-        public void Add(MKCD_Data input)
+        public void Add(MRKCTLMST_Data input)
         {
             if (Data.ContainsKey(input.FLTID) == false)
                 Data.Add(input.FLTID, input);
@@ -95,28 +95,28 @@ namespace DefectDBManager
             }
         }
 
-        public List<MKCD_Data> Get()
+        public List<MRKCTLMST_Data> Get()
         {
-            List<MKCD_Data> data = Data.Values.ToList();
+            List<MRKCTLMST_Data> data = Data.Values.ToList();
             return data;
         }
     }
 
-    public class MKCD_MODEL
+    public class MRKCTLMST_MODEL
     {
         public string Name { get; set; }
-        public Dictionary<string, MKCD_LNCD_Data> Param { get; set; }
+        public Dictionary<string, MRKCTLMST_LNCD_Data> Param { get; set; }
 
-        public MKCD_MODEL()
+        public MRKCTLMST_MODEL()
         {
-            Param = new Dictionary<string, MKCD_LNCD_Data>();
+            Param = new Dictionary<string, MRKCTLMST_LNCD_Data>();
         }
 
-        public void Add(string LNCD, MKCD_Data input)
+        public void Add(string LNCD, MRKCTLMST_Data input)
         {
             if (Param.ContainsKey(LNCD) == false)
             {
-                MKCD_LNCD_Data data = new MKCD_LNCD_Data(LNCD);
+                MRKCTLMST_LNCD_Data data = new MRKCTLMST_LNCD_Data(LNCD);
                 Param.Add(LNCD, data);
                 Param[LNCD].Add(input);
             }
@@ -135,9 +135,9 @@ namespace DefectDBManager
 
             using (StreamWriter sw = new StreamWriter(path))
             {
-                foreach (MKCD_LNCD_Data data in Param.Values)
+                foreach (MRKCTLMST_LNCD_Data data in Param.Values)
                 {
-                    foreach (MKCD_Data item in data.Data.Values)
+                    foreach (MRKCTLMST_Data item in data.Data.Values)
                     {
                         sw.WriteLine($"{data.LNCD},{item.ToString()}");
                     }
@@ -165,7 +165,7 @@ namespace DefectDBManager
                     {
                         item = data.Split(',');
 
-                        MKCD_Data mKCD_Data = new MKCD_Data();
+                        MRKCTLMST_Data mKCD_Data = new MRKCTLMST_Data();
                         mKCD_Data.FLTID = item[1];
                         mKCD_Data.MRKF1 = int.Parse(item[2]) == 1 ? true : false;
                         mKCD_Data.SIZE = float.Parse(item[3]);

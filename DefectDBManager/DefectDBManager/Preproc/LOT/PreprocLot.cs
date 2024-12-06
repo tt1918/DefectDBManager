@@ -10,7 +10,7 @@ namespace DefectDBManager
     /// 이전 결점 정보 취합 
     /// 서버에서 데이터 참조할 타겟
     /// </summary>
-    public class PreDefectInfo
+    public class PreprocLot
     {
         /// <summary>
         /// Lot 이름
@@ -29,7 +29,7 @@ namespace DefectDBManager
         /// <summary>
         /// 초기화
         /// </summary>
-        public PreDefectInfo()
+        public PreprocLot()
         {
             Init();
         }
@@ -40,7 +40,7 @@ namespace DefectDBManager
         /// <param name="lotName"></param>
         /// <param name="dbResult"></param>
         /// <param name="fault"></param>
-        public PreDefectInfo(string lotName, DbSearchResult dbResult, PrePocResultData fault)
+        public PreprocLot(string lotName, DbSearchResult dbResult, PrePocResultData fault)
         {
             Init();
 

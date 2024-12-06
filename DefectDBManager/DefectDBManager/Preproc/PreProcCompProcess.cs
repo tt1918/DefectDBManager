@@ -72,7 +72,7 @@ namespace DefectDBManager
         private bool _enaDefectSearch = false;
 
 
-        private MkcdParam[] _mkcdParam=null;
+        private MRKCTLMSTParam[] _mkcdParam=null;
 
         private bool _isRunSearchDailyLot = false;
 
@@ -462,8 +462,8 @@ namespace DefectDBManager
             OnUpdateMKCD_ModelName?.Invoke();
 
             // 예약랏에는 모델 데이터를 신규로 생성한다.
-            _DBProc[1].MKCD_Param = new MkcdParam();
-            _DBProc[1].MKCD_Model = new MKCD_MODEL();
+            _DBProc[1].MKCD_Param = new MRKCTLMSTParam();
+            _DBProc[1].MKCD_Model = new MRKCTLMST_MODEL();
             //////////////////////////////////////////////////////////////////////////
 
             // 상부에 랏 변경 보고

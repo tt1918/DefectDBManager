@@ -31,9 +31,9 @@ namespace DefectDBManager
         public LogDB _LOG { get; set; }
 
         private string _selModelName;
-        private MKCD_MODEL _selModelData;
+        private MRKCTLMST_MODEL _selModelData;
 
-        private MKCD_MODEL _MKCD_DB_Data;
+        private MRKCTLMST_MODEL _MKCD_DB_Data;
 
         public OracleDbConnection DbConn { get; set; }
 
@@ -221,10 +221,10 @@ namespace DefectDBManager
             string lot = lotName as string;
             if (db.SearchMKCD_Data(lot) == true)
             {
-                MKCD_MODEL mKCD_MODEL = new MKCD_MODEL();
+                MRKCTLMST_MODEL mKCD_MODEL = new MRKCTLMST_MODEL();
 
                 foreach (MRKCTLMSTData data in db._DbResult.MRKCTLMST_Data)
-                    mKCD_MODEL.Add(data.LNCD, new MKCD_Data(data));
+                    mKCD_MODEL.Add(data.LNCD, new MRKCTLMST_Data(data));
 
                 _MKCD_DB_Data = mKCD_MODEL;
 
@@ -277,9 +277,9 @@ namespace DefectDBManager
                 this.dgvDefect.Rows.Clear();
                 this.dgvDefect.SuspendLayout();
 
-                foreach (MKCD_LNCD_Data data in _selModelData.Param.Values)
+                foreach (MRKCTLMST_LNCD_Data data in _selModelData.Param.Values)
                 {
-                    foreach (MKCD_Data item in data.Data.Values)
+                    foreach (MRKCTLMST_Data item in data.Data.Values)
                     {
                         addItem(this.dgvDefect, data.LNCD, item);
                     }
@@ -302,9 +302,9 @@ namespace DefectDBManager
                 this.dgvMKCD.Rows.Clear();
                 this.dgvMKCD.SuspendLayout();
 
-                foreach (MKCD_LNCD_Data data in _MKCD_DB_Data.Param.Values)
+                foreach (MRKCTLMST_LNCD_Data data in _MKCD_DB_Data.Param.Values)
                 {
-                    foreach (MKCD_Data item in data.Data.Values)
+                    foreach (MRKCTLMST_Data item in data.Data.Values)
                     {
                         addItem(this.dgvMKCD, data.LNCD, item);
                     }
@@ -320,7 +320,7 @@ namespace DefectDBManager
             }
         }
 
-        private void addItem(DataGridView dgv, string strLNCD, MKCD_Data data)
+        private void addItem(DataGridView dgv, string strLNCD, MRKCTLMST_Data data)
         {
             string[] strValue = new string[4];
             strValue[0] = data.MRKF1.ToString();
@@ -451,7 +451,7 @@ namespace DefectDBManager
                 var cell = dgvModel.SelectedCells;
                 string srcName = cell[0].Value as string;
 
-                MKCD_MODEL model = new MKCD_MODEL();
+                MRKCTLMST_MODEL model = new MRKCTLMST_MODEL();
                 model.Name = srcName;
                 model.Load();
 
@@ -511,13 +511,13 @@ namespace DefectDBManager
             }
         }
 
-        private void applyGridToModel(DataGridView view, MKCD_MODEL model)
+        private void applyGridToModel(DataGridView view, MRKCTLMST_MODEL model)
         {
-            MKCD_MODEL tmpModel = new MKCD_MODEL();
+            MRKCTLMST_MODEL tmpModel = new MRKCTLMST_MODEL();
             string strLNCD;
             foreach (DataGridViewRow data in view.Rows)
             {
-                MKCD_Data item = new MKCD_Data();
+                MRKCTLMST_Data item = new MRKCTLMST_Data();
 
                 if (data.Cells[0].Value.ToString().ToUpper() == "FALSE") item.MRKF1 = false;
                 else item.MRKF1 = true;

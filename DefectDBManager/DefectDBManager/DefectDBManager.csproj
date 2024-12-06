@@ -170,7 +170,8 @@
     <Compile Include="DB\odbDLL.cs" />
     <Compile Include="DB\Option.cs" />
     <Compile Include="DB\Param.cs" />
-    <Compile Include="DB\PreProcCompDB.cs" />
+    <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
+    <Compile Include="Preproc\PreProcCompDB.cs" />
     <Compile Include="DB\Process.cs" />
     <Compile Include="DB\QueryMsg.cs" />
     <Compile Include="DB\UserDefectClass.cs" />
@@ -195,7 +196,8 @@
       <DependentUpon>Language.resx</DependentUpon>
     </Compile>
     <Compile Include="Preproc\mkcdModel.cs" />
-    <Compile Include="Preproc\PreDefectInfo.cs" />
+    <Compile Include="Preproc\LOT\PreprocLot.cs" />
+    <Compile Include="Preproc\ComparePreprocData.cs" />
     <Compile Include="Preproc\PreProcCompProcess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

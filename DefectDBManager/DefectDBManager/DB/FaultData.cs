@@ -66,6 +66,39 @@ namespace DefectDBManager
 
             return data;
         }
+
+        public void SetData(string bcno, FLTDATA_DailyData data)
+        {
+            this.TBCNO = bcno;
+            this.FLTNO = data.FLTNO;
+            this.OFFSET = data.OFFSET;
+            this.YPOS_M = data.YPOS_M;
+            this.XPOS_M = data.XPOS_M;
+
+            // fault data 추가
+            this.RANK = data.RANK;
+            this.KND = data.KND;
+            this.JIGCD = data.JIGCD;
+            this.MACNO = data.MACNO;
+        }
+
+        public void SetData(string bcno, FLTDATAData data)
+        {
+
+            this.TBCNO = bcno;
+            this.FLTNO = data.FLTNO;
+            this.OFFSET = data.OFFSET;
+            this.YPOS_M = data.YPOS_M;
+            this.XPOS_M = data.XPOS_M;
+
+            // fault data 추가
+            this.RANK = data.RANK;
+            this.KND = data.KND;
+            this.JIGCD = data.JIGCD;
+            this.MACNO = data.MACNO;
+
+        }
+
     }
 
 
@@ -128,6 +161,113 @@ namespace DefectDBManager
             data.SIZE_Y = SIZE_Y;
 
             return data;
+        }
+
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, FLTDATAData data, Option option, ref Param param)
+        {
+            this.BCNO = bcno;
+            this.FLTNO = data.FLTNO;
+            this.FAULTID = data.FLTID;
+            this.OFFSET = fltDat.OFFSET;
+            this.YPOS_M = fltDat.YPOS_M;
+            this.XPOS_M = fltDat.XPOS_M;
+            this.XOFFSET = offsetX;
+            this.UseCSVResult = false;
+            this.CAM_NO = data.CAMNO;
+            this.CTLNO = data.CTLNO;
+            this.SIZE = data.AREA_M;
+            this.MNTTID = data.MNTTAN;
+            this.MACNO = data.MACNO;
+
+            if (data.CAMNO != 9) this.XOFFSET_ALARM = offsetX;
+            else this.XOFFSET_ALARM = float.MaxValue;
+
+            if (csvType == eCSV_TYPE.NITTO)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; // 점착
+                else this.DefectLine = 8; // 그외
+            }
+            else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; //점착 
+                else if (fcd == eFCD.ES) this.DefectLine = 8; // 연신 - 기타
+                else this.DefectLine = 7; // 그외
+            }
+            else
+            {
+                if (fcd == eFCD.TG && option.useKT == true) // 점착
+                {
+                    int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                    this.DefectLine = FalutFunction.GetLineFromFLTID(fldID);
+                    if (this.DefectLine != 13) param.DBFaultCount[fldID]++;
+                }
+                else if ((fcd == eFCD.ES && option.checkES == true) ||
+                    (fcd == eFCD.ETC && option.checkETC == true))
+                {
+                    this.DefectLine = 0;
+                    param.ESFalutCount++; // 연신 결점 데이터 카운트 처리
+                }
+            }
+
+            // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+            int defectLine = this.DefectLine;
+
+            if (param._UserDefectClass.UpdateDefectLine(FAULTID.ToUpper(), ref defectLine) == true)
+                this.DefectLine = defectLine;
+
+            //RK는 CAMNO별로 Defect Class 를 구분
+            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                this.DefectLine += Global.MaxDefectLine * data.CAMNO;
+        }
+
+
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, FLTDATA_DailyData data, bool useKT)
+        {
+            this.BCNO = bcno;
+            this.FLTNO = data.FLTNO;
+            this.FAULTID = data.FLTID;
+            this.OFFSET = fltDat.OFFSET;
+            this.YPOS_M = fltDat.YPOS_M;
+            this.XPOS_M = fltDat.XPOS_M;
+            this.XOFFSET = offsetX;
+            this.UseCSVResult = false;
+            this.CAM_NO = data.CAMNO;
+            this.CTLNO = data.CTLNO;
+            this.SIZE = data.AREA_M;
+            this.MNTTID = data.MNTTAN;
+            this.MACNO = data.MACNO;
+
+            if (data.CAMNO != 9) this.XOFFSET_ALARM = offsetX;
+            else this.XOFFSET_ALARM = float.MaxValue;
+
+            if (csvType == eCSV_TYPE.NITTO)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; // 점착
+                else this.DefectLine = 8; // 그외
+            }
+            else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; //점착 
+                else if (fcd == eFCD.ES) this.DefectLine = 8; // 연신 - 기타
+                else this.DefectLine = 7; // 그외
+            }
+            else
+            {
+                if (fcd == eFCD.TG && useKT == true) // 점착
+                {
+                    int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                    this.DefectLine = FalutFunction.GetLineFromFLTID(fldID);
+                }
+                else if (fcd == eFCD.ES || fcd == eFCD.ETC)
+                    this.DefectLine = 0;
+            }
+
+            // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+            int defectLine = this.DefectLine;
+
+            //RK는 CAMNO별로 Defect Class 를 구분
+            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                this.DefectLine += Global.MaxDefectLine * data.CAMNO;
         }
     }
 
@@ -290,7 +430,7 @@ namespace DefectDBManager
 
 
         /// <summary>
-        /// 상위 보고용 데이터
+        /// 미자막 공정의 상위 보고용 데이터
         /// </summary>
         public MarkingFaultData MarkData
         {
@@ -303,7 +443,7 @@ namespace DefectDBManager
         public bool IsPreProc = false;
 
         /// <summary>
-        /// 이전 공정 비교 결점 데이터 
+        /// 이전 공정 비교용 결점 데이터 
         /// </summary>
         public List<PreProcMarkingData>[] PreMarkData
         {
@@ -409,11 +549,14 @@ namespace DefectDBManager
         }
     }
 
+    // DB에서 탐색한 공정의 결점 데이터를 저장한다.
     public class PreProcDefect
     {
         // 이전 공정 라인 코드
-        public string LNCD { get; set; }
-        public List<FaultDatum> Data { get; set; }
+        public string LNCD { get; set; } = "";
+
+        // 결점 데이터
+        public List<FaultDatum> Data { get; set; } = null;
 
         public PreProcDefect()
         {
@@ -474,5 +617,32 @@ namespace DefectDBManager
 
             return defectLine;
         }
+
+        public static bool IsDefectExist(eCSV_TYPE csvType, int[] defectCnt)
+        {
+            bool isSuccess = true;
+            if (csvType == eCSV_TYPE.KORENO || csvType == eCSV_TYPE.KORENO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+            {
+                // 하나라도 검색이 되었으면 OK
+                isSuccess = false;
+                for (int i = 0; i < defectCnt.Length; i++)
+                {
+                    // 갯수 확인 못했으면
+                    if (defectCnt[i] != -1 && defectCnt[i] == 0) isSuccess = false;
+                }
+            }
+            else
+            {
+                // 전체가 다 불량이 있어야 OK
+                for (int i = 0; i < defectCnt.Length; i++)
+                {
+                    // 갯수 확인 못했으면
+                    if (defectCnt[i] != -1 && defectCnt[i] == 0) isSuccess &= false;
+                }
+            }
+
+            return isSuccess;
+        }
     }
+
 }
