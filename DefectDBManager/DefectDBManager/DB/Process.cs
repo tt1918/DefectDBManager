@@ -274,12 +274,12 @@ namespace DefectDBManager
             else idx = 1;
 
             int size = formDB[idx].DataBase._DbResult.INSPDAT.Length;
-            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT)
+            foreach (List<INSPDATList> data in formDB[idx].DataBase._DbResult.INSPDAT)
             {
                 if (data == null) continue;
-                foreach (List<INSPDATData> items in data)
+                foreach (INSPDATList items in data)
                 {
-                    foreach (INSPDATData item in items)
+                    foreach (INSPDATData item in items.Data)
                     {
                         LotSearchResult result = new LotSearchResult();
                         result.LotNo = item.LOTNO;
@@ -304,12 +304,12 @@ namespace DefectDBManager
             else idx = 1;
 
             int size = formDB[idx].DataBase._DbResult.INSPDAT.Length;
-            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT)
+            foreach (List<INSPDATList> data in formDB[idx].DataBase._DbResult.INSPDAT)
             {
                 if (data == null) continue;
-                foreach (List<INSPDATData> items in data)
+                foreach (INSPDATList items in data)
                 {
-                    foreach (INSPDATData item in items)
+                    foreach (INSPDATData item in items.Data)
                     {
                         LotSearchResult result = new LotSearchResult();
                         result.LotNo = item.Y0KLOT;

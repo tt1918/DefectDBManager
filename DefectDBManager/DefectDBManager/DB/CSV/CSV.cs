@@ -132,7 +132,7 @@ namespace DefectDBManager
 
             wr.WriteLine("Header line");
             int idx = 0;
-            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data)
+            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data.Data)
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -352,7 +352,7 @@ namespace DefectDBManager
 
             wr.WriteLine("Header line");
             int idx = 0;
-            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data)
+            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data.Data)
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -766,7 +766,7 @@ namespace DefectDBManager
 
             wr.WriteLine("Header line");
             int idx = 0;
-            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data)
+            foreach (MarkingFaultDatum data in DB.ResultDefect.MarkFault.Data.Data)
             {
                 StringBuilder sb = new StringBuilder();
 

@@ -71,7 +71,7 @@ namespace DefectDBManager
                 if (Directory.Exists(path) == true)
                     Directory.Delete(path, true);
             }
-            catch(Exception ex)
+            catch
             {
                 Log.Write($"Deleting Folder is failed");
             }

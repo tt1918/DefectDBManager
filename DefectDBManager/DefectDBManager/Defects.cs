@@ -345,13 +345,13 @@ namespace DefectDBManager
 		{
 			markingData.Clear();
 
-            List<MarkingFaultDatum> oriData;
+            MkFltDatumList oriData;
             if (isNext == false)
                 oriData = DBManager._DbProc[0].ResultDefect.MarkFault.Data;
 			else
                 oriData = DBManager._DbProc[1].ResultDefect.MarkFault.Data;
 
-			foreach(MarkingFaultDatum datum in oriData)
+			foreach(MarkingFaultDatum datum in oriData.Data)
 			{
 				MarkingData item = new MarkingData();
 				item.DefectLine = datum.DefectLine;

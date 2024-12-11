@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
+    using DicStrFloat = Dictionary<string, float>;
+    using DicStrBool = Dictionary<string, bool>;
+    using DicStrInt = Dictionary<string, int>;
+
     #region DB Query 
-    public class QueryList<T>
+    public class ItemList<T>
     {
         public T this[int index]
         {
@@ -29,7 +33,7 @@ namespace DefectDBManager
             get { return _data.Count; }
         }
 
-        public QueryList()
+        public ItemList()
         {
             _data = new List<T>();
         }
@@ -118,7 +122,7 @@ namespace DefectDBManager
         }
     }
 
-    public class PTRYLPList : QueryList<PTRYLPdata>
+    public class PTRYLPList : ItemList<PTRYLPdata>
     {
         public PTRYLPList()
         {
@@ -188,7 +192,7 @@ namespace DefectDBManager
         }
     }
 
-    public class XOFSMSTList : QueryList<XOFSMSTData>
+    public class XOFSMSTList : ItemList<XOFSMSTData>
     {
         public XOFSMSTList()
         {
@@ -280,7 +284,7 @@ namespace DefectDBManager
         }
     }
 
-    public class AREADELList : QueryList<AREADELData>
+    public class AREADELList : ItemList<AREADELData>
     {
         public AREADELList()
         {
@@ -375,7 +379,7 @@ namespace DefectDBManager
         }
     }
 
-    public class PTRY0PList :QueryList<PTRY0PData>
+    public class PTRY0PList :ItemList<PTRY0PData>
     {
 
         public PTRY0PList()
@@ -453,7 +457,7 @@ namespace DefectDBManager
             return data;
         }
     }
-    public class MRKCTLMSTList : QueryList<MRKCTLMSTData>
+    public class MRKCTLMSTList : ItemList<MRKCTLMSTData>
     {
         public MRKCTLMSTList()
         {
@@ -574,7 +578,7 @@ namespace DefectDBManager
         }
     }
 
-    public class INSPDATList : QueryList<INSPDATData>
+    public class INSPDATList : ItemList<INSPDATData>
     {
         public INSPDATList()
         {
@@ -721,23 +725,24 @@ namespace DefectDBManager
     #endregion DB Query
 
     #region DB Search Result 
+    
     public class DbSearchResult
     {
         public PTRYLPList PTRLYP;
         public PTRY0PList[] PTRY0P;
         public MRKCTLMSTList MRKCTLMST;
-        public List<List<INSPDATData>>[] INSPDAT;
+        public List<INSPDATList>[] INSPDAT;
         public XOFSMSTList XOFSMST;
         public AREADELList AREADEL;
 
-        public List<Dictionary<string, float>>[] dicSizeMRKCTLMST;
-        public List<Dictionary<string, bool>>[] dicMRKF1MRKCTLMST;
+        public List<DicStrFloat>[] dicSizeMRKCTLMST;
+        public List<DicStrBool>[] dicMRKF1MRKCTLMST;
         public List<MRKCTLMST_DE_Data>[] _MRKCTLMST_DE;
 
-        public Dictionary<string, float> dicSizeData;
-        public Dictionary<string, bool> dicMRKF1Data;
+        public DicStrFloat dicSizeData;
+        public DicStrBool dicMRKF1Data;
 
-        public Dictionary<string, int> DicCSVDefectCnt;
+        public DicStrInt DicCSVDefectCnt;
 
         public List<string> LoadedBcNo;
 
@@ -746,7 +751,7 @@ namespace DefectDBManager
 
 
         // 현재 생산중인 Lot의 이전 공정 데이터
-        public List<INSPDATData>[] Matched_INSPDAT_Data;
+        public INSPDATList[] Matched_INSPDAT;
 
         public DbSearchResult()
         {
@@ -764,35 +769,35 @@ namespace DefectDBManager
             for (int i = 0; i < count; i++)
                 PTRY0P[i] = new PTRY0PList();
 
-            INSPDAT = new List<List<INSPDATData>>[count];
+            INSPDAT = new List<INSPDATList>[count];
             for (int i = 0; i < count; i++)
-                INSPDAT[i] = new List<List<INSPDATData>>();
+                INSPDAT[i] = new List<INSPDATList>();
 
             MRKCTLMST = new MRKCTLMSTList();
 
-            dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
-            dicMRKF1MRKCTLMST = new List<Dictionary<string, bool>>[count];
+            dicSizeMRKCTLMST = new List<DicStrFloat>[count];
+            dicMRKF1MRKCTLMST = new List<DicStrBool>[count];
             _MRKCTLMST_DE = new List<MRKCTLMST_DE_Data>[count];
             for (int i = 0; i < count; i++)
             {
-                dicSizeMRKCTLMST[i] = new List<Dictionary<string, float>>();
-                dicMRKF1MRKCTLMST[i] = new List<Dictionary<string, bool>>();
+                dicSizeMRKCTLMST[i] = new List<DicStrFloat>();
+                dicMRKF1MRKCTLMST[i] = new List<DicStrBool>();
                 _MRKCTLMST_DE[i] = new List<MRKCTLMST_DE_Data>();
             }
 
-            dicSizeData = new Dictionary<string, float>();
-            dicMRKF1Data = new Dictionary<string, bool>();
+            dicSizeData = new DicStrFloat();
+            dicMRKF1Data = new DicStrBool();
 
             LoadedBcNo = new List<string>();
 
             ProductEndTime = new List<DateTime>();
             ProductLotName = new List<string>();
 
-            DicCSVDefectCnt = new Dictionary<string, int>();
+            DicCSVDefectCnt = new DicStrInt();
 
-            Matched_INSPDAT_Data = new List<INSPDATData>[count];
+            Matched_INSPDAT = new INSPDATList[count];
             for (int i = 0; i < count; i++)
-                Matched_INSPDAT_Data[i] = new List<INSPDATData>();
+                Matched_INSPDAT[i] = new INSPDATList();
         }
 
         public void ClearAll ()
@@ -820,10 +825,10 @@ namespace DefectDBManager
             DicCSVDefectCnt.Clear();
 
 
-            for (int i = 0; i < Matched_INSPDAT_Data.Length; i++)
+            for (int i = 0; i < Matched_INSPDAT.Length; i++)
             {
-                for (int j = 0; j < Matched_INSPDAT_Data[i].Count; j++)
-                    Matched_INSPDAT_Data[i].Clear();
+                for (int j = 0; j < Matched_INSPDAT[i].Count; j++)
+                    Matched_INSPDAT[i].Clear();
             }
         }
 
@@ -911,11 +916,11 @@ namespace DefectDBManager
             // Dic 부족한 인덱스 만큼 초기화 처리
             if (targetCnt > dicSizeMRKCTLMST[fcdIdx].Count)
                 for (int dicIdx = dicSizeMRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
-                    dicSizeMRKCTLMST[fcdIdx].Add(new Dictionary<string, float>());
+                    dicSizeMRKCTLMST[fcdIdx].Add(new DicStrFloat());
 
             if (targetCnt > dicMRKF1MRKCTLMST[fcdIdx].Count)
                 for (int dicIdx = dicMRKF1MRKCTLMST[fcdIdx].Count; dicIdx < targetCnt; dicIdx++)
-                    dicMRKF1MRKCTLMST[fcdIdx].Add(new Dictionary<string, bool>());
+                    dicMRKF1MRKCTLMST[fcdIdx].Add(new DicStrBool());
         }
 
         public void AddDicMRKCTLMST(int fdIdx, int ptryoIdx, MRKCTLMSTData data)

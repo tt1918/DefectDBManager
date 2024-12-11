@@ -9,6 +9,7 @@ namespace DefectDBManager
 {
     // 이 부분 다시 정리해야함
 
+    #region FaultDatum
     /// <summary>
     ///  쿼리 탐색 후 결과 데이터 저장
     /// </summary>
@@ -98,9 +99,25 @@ namespace DefectDBManager
             this.MACNO = data.MACNO;
 
         }
-
     }
 
+    public class FltDatumList : ItemList<FaultDatum>
+    {
+        public void Copy(List<FaultDatum> input)
+        {
+            _data.Clear();
+            foreach (FaultDatum lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(FltDatumList input)
+        {
+            _data.Clear();
+            foreach (FaultDatum lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion FaultDatum
 
     public class MarkingFaultDatum
     {
@@ -271,13 +288,30 @@ namespace DefectDBManager
         }
     }
 
+    public class MkFltDatumList : ItemList<MarkingFaultDatum>
+    {
+        public void Copy(List<MarkingFaultDatum> input)
+        {
+            _data.Clear();
+            foreach (MarkingFaultDatum lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(MkFltDatumList input)
+        {
+            _data.Clear();
+            foreach (MarkingFaultDatum lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+
     public class MarkingFaultData
     {
         /// <summary>
         /// 10M 기준으로 구분하여 데이터 입력함
         /// </summary>
-        public List<MarkingFaultDatum> Data = null;
-        public Dictionary<int, List<MarkingFaultDatum>> Dic = null;
+        public MkFltDatumList Data = null;
+        public Dictionary<int, MkFltDatumList> Dic = null;
         public float MinXPos;
         public float MaxXPos;
         public float MinSize;
@@ -285,8 +319,8 @@ namespace DefectDBManager
 
         public MarkingFaultData()
         {
-            Data = new List<MarkingFaultDatum>();
-            Dic = new Dictionary<int, List<MarkingFaultDatum>>();
+            Data = new MkFltDatumList();
+            Dic = new Dictionary<int, MkFltDatumList>();
         }
 
         public void Reset()
@@ -305,7 +339,11 @@ namespace DefectDBManager
             if (Dic.ContainsKey(key) == true)
                 Dic[key].Add(val);
             else
-                Dic[key] = new List<MarkingFaultDatum> { val };
+            {
+                MkFltDatumList list = new MkFltDatumList();
+                list.Add(val);
+                Dic.Add(key, list);
+            }
         }
 
         public void GetData(string bcno, double start, double end, ref List<MarkingData> data)
@@ -317,7 +355,7 @@ namespace DefectDBManager
             {
                 if (Dic.ContainsKey(i) == true)
                 {
-                    foreach (MarkingFaultDatum datum in Dic[i])
+                    foreach (MarkingFaultDatum datum in Dic[i].Data)
                     {
                         if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
                         {
@@ -341,6 +379,24 @@ namespace DefectDBManager
             }
         }
 
+        public void GetData(string bcno, double start, double end, ref MkFltDatumList data)
+        {
+            int key1 = (int)(start / 10000.0);
+            int key2 = (int)(end / 10000.0);
+
+            for (int i = key1; i <= key2; i++)
+            {
+                if (Dic.ContainsKey(i) == true)
+                {
+                    foreach (MarkingFaultDatum datum in Dic[i].Data)
+                    {
+                        if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
+                            data.Add(datum);
+                    }
+                }
+            }
+        }
+
         public void GetData(string bcno, double start, double end, ref List<MarkingFaultDatum> data)
         {
             int key1 = (int)(start / 10000.0);
@@ -350,7 +406,7 @@ namespace DefectDBManager
             {
                 if (Dic.ContainsKey(i) == true)
                 {
-                    foreach (MarkingFaultDatum datum in Dic[i])
+                    foreach (MarkingFaultDatum datum in Dic[i].Data)
                     {
                         if (datum.OFFSET >= start && datum.OFFSET <= end && datum.BCNO == bcno)
                             data.Add(datum);
@@ -365,6 +421,11 @@ namespace DefectDBManager
     {
         public string LNCD { get; set; } = "";
         public List<MarkingFaultDatum> Data = null;
+
+        public MarkingFaultDatum this[int idx]
+        {
+            get { return Data[idx]; }
+        }
 
         public PreProcMarkingData()
         {
@@ -392,12 +453,12 @@ namespace DefectDBManager
 
     public class ResultData
     {
-        public List<FaultDatum> Data;
+        public FltDatumList Data;
         public MarkingFaultData MarkFault;
 
         public ResultData()
         {
-            Data = new List<FaultDatum>();
+            Data = new FltDatumList();
             MarkFault = new MarkingFaultData();
         }
 
@@ -419,12 +480,12 @@ namespace DefectDBManager
         /// FAULTData 저장
         /// 데이터는 각 공정 및 LNCD 기준으로 처리하도록 한다. 
         /// </summary>
-        public List<PreProcDefect>[] FLTDAT
+        public PreProcDftList[] FLTDAT
         {
             get { return _fltdat; }
             private set { _fltdat = value; }
         }
-        private List<PreProcDefect>[] _fltdat;
+        private PreProcDftList[] _fltdat;
 
         /// <summary>
         /// 미자막 공정의 상위 보고용 데이터
@@ -459,9 +520,9 @@ namespace DefectDBManager
         public PreProcResultData()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            _fltdat = new List<PreProcDefect>[count];
+            _fltdat = new PreProcDftList[count];
             for (int i = 0; i < count; i++)
-                _fltdat[i] = new List<PreProcDefect>();
+                _fltdat[i] = new PreProcDftList();
 
             _markData = new MarkingFaultData();
         }
@@ -529,13 +590,10 @@ namespace DefectDBManager
             // 전체 결점 데이터
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             for(int i=0; i<count; i++)
-            {
-                foreach(var flts in FLTDAT[i])
-                    data.FLTDAT[i].Add(flts.Clone());
-            }
+                data.FLTDAT[i].Copy(FLTDAT[i]);
 
             // 마킹 대상 결점 데이터
-            foreach (var mrks in MarkData.Data)
+            foreach (var mrks in MarkData.Data.Data)
                 data.Add(mrks.Clone());
 
             for(int i=0; i<count; i++)
@@ -548,6 +606,7 @@ namespace DefectDBManager
         }
     }
 
+    #region PreProcDefect
     // DB에서 탐색한 공정의 결점 데이터를 저장한다.
     public class PreProcDefect
     {
@@ -555,11 +614,11 @@ namespace DefectDBManager
         public string LNCD { get; set; } = "";
 
         // 결점 데이터
-        public List<FaultDatum> Data { get; set; } = null;
+        public FltDatumList Data { get; set; } = null;
 
         public PreProcDefect()
         {
-            Data = new List<FaultDatum>();
+            Data = new FltDatumList();
         }
 
         ~PreProcDefect()
@@ -578,13 +637,32 @@ namespace DefectDBManager
 
             defect.LNCD = LNCD;
 
-            foreach(var data in Data)
+            foreach(var data in Data.Data)
                 defect.Data.Add(data.Clone());
 
             return defect;
         }
     }
 
+    public class PreProcDftList : ItemList<PreProcDefect>
+    {
+        public void Copy(List<PreProcDefect> input)
+        {
+            _data.Clear();
+            foreach (PreProcDefect lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(PreProcDftList input)
+        {
+            _data.Clear();
+            foreach (PreProcDefect lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion PreProcDefect
+
+    #region FalutFunction
     public static class FalutFunction
     {
         public static int GetLineFromFLTID(int id)
@@ -643,5 +721,6 @@ namespace DefectDBManager
             return isSuccess;
         }
     }
+    #endregion FalutFunction
 
 }

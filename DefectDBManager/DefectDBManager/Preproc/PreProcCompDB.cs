@@ -380,9 +380,9 @@ namespace DefectDBManager
             for (int i=0; i<count; i++)
             {
                 isAvaliable[i] = false;
-                if (_DbResult.Matched_INSPDAT_Data[i].Count>0)
+                if (_DbResult.Matched_INSPDAT[i].Count>0)
                 {
-                    foreach (INSPDATData data in _DbResult.Matched_INSPDAT_Data[i])
+                    foreach (INSPDATData data in _DbResult.Matched_INSPDAT[i].Data)
                     {
                         if (data.BCNO == bcno && (data.XPosStart < dPosY && data.XPosEnd < dPosY))
                             isAvaliable[i] = true;
@@ -497,20 +497,19 @@ namespace DefectDBManager
                     int idxCnt = 0;
                     foreach( var inspData in _DbResult.INSPDAT)
                     {
-                        List<List<INSPDATData>> tmpInspData = new List<List<INSPDATData>>();
+                        List<INSPDATList> tmpInspData = new List<INSPDATList>();
 
                         foreach(var inspData1 in inspData)
                         {
-                            List<INSPDATData> tmpInspData1 = new List<INSPDATData>();
+                            INSPDATList tmpInspData1 = new INSPDATList();
 
-                            foreach (var inspData2 in inspData1)
+                            foreach (var inspData2 in inspData1.Data)
                                 tmpInspData1.Add(inspData2.Clone());
 
                             tmpInspData.Add(tmpInspData1);
                         }
 
-
-                        preprcLot.INSPDAT_Data[idxCnt] = tmpInspData;
+                        preprcLot.INSPDAT[idxCnt] = tmpInspData;
                         idxCnt++;
                     }
                 }
@@ -684,7 +683,7 @@ namespace DefectDBManager
             int count = 0;
             if (DbDestConfig.UseXOffset == true && DbDestConfig.UseXOffsetAlarm == true)
             {
-                foreach (MarkingFaultDatum item in FaultData.MarkData.Data)
+                foreach (MarkingFaultDatum item in FaultData.MarkData.Data.Data)
                 {
                     if (item.XOFFSET_ALARM != float.MaxValue && (Math.Abs(item.XOFFSET_ALARM + 1.0f) > +0.000001f) && Math.Abs(refXOffset - item.XOFFSET_ALARM) >= 0.1f)
                     {
@@ -1036,7 +1035,7 @@ namespace DefectDBManager
                             return false;
                         }
 
-                        List<INSPDATData> inspDataList = new List<INSPDATData>();
+                        INSPDATList inspDataList = new INSPDATList();
 
                         using (var comm = new OracleCommand(query, conn.Connection))
                         {
@@ -1134,20 +1133,20 @@ namespace DefectDBManager
 
                     int nItemCnt = 0;
 
-                    if (_DbResult.Matched_INSPDAT_Data[fcdIdx] == null) continue;
+                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
                     
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     
                     nItemCnt = 0;
 
-                    if (_DbResult.Matched_INSPDAT_Data[fcdIdx] == null) continue;
+                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
 
-                    int inspCnt = _DbResult.Matched_INSPDAT_Data[fcdIdx].Count;
+                    int inspCnt = _DbResult.Matched_INSPDAT[fcdIdx].Count;
                     for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                     {
-                        if (_DbResult.Matched_INSPDAT_Data[fcdIdx][inspIdx] == null) continue;
+                        if (_DbResult.Matched_INSPDAT[fcdIdx][inspIdx] == null) continue;
 
-                        inspdata = _DbResult.Matched_INSPDAT_Data[fcdIdx][inspIdx];
+                        inspdata = _DbResult.Matched_INSPDAT[fcdIdx][inspIdx];
 
                         inspStartY = inspdata.YPosStart;
                         inspEndY = inspdata.YPosEnd;
@@ -1290,17 +1289,17 @@ namespace DefectDBManager
         {
             bool success = true;
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            List<INSPDATData>[] inspDat = new List<INSPDATData>[count];
+            INSPDATList[] inspDat = new INSPDATList[count];
             for (int i = 0; i < count; i++)
-                inspDat[i] = new List<INSPDATData>();
+                inspDat[i] = new INSPDATList();
 
             // 각 공정별로 탐색
             int added = 0;
             for (int i = 0; i < count; i++)
             {
-                foreach (List<INSPDATData> data in _DbResult.INSPDAT[i])
+                foreach (INSPDATList data in _DbResult.INSPDAT[i])
                 {
-                    foreach (INSPDATData datum in data)
+                    foreach (INSPDATData datum in data.Data)
                     {
                         // 매칭되면 데이터를 넣어준다. 
                         if (datum.BCNO == bcno && (datum.XPosStart <= dPosY && datum.XPosEnd >= dPosY))
@@ -1313,7 +1312,7 @@ namespace DefectDBManager
             }
 
             if(isUpdate==true)
-                _DbResult.Matched_INSPDAT_Data = inspDat;
+                _DbResult.Matched_INSPDAT = inspDat;
 
             if (added <= 0)
                 success = false;
@@ -1328,23 +1327,18 @@ namespace DefectDBManager
         public void CopyInspDatToMatchedInspData()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            List<INSPDATData>[] inspDat = new List<INSPDATData>[count];
+            INSPDATList[] inspDat = new INSPDATList[count];
             for (int i = 0; i < count; i++)
-                inspDat[i] = new List<INSPDATData>();
+                inspDat[i] = new INSPDATList();
 
             // 각 공정별로 탐색
             for (int i = 0; i < count; i++)
             {
-                foreach (List<INSPDATData> data in _DbResult.INSPDAT[i])
-                {
-                    foreach (INSPDATData datum in data)
-                    {
-                        inspDat[i].Add(datum);
-                    }
-                }
+                foreach (INSPDATList data in _DbResult.INSPDAT[i])
+                    inspDat[i].Copy(data);
             }
 
-            _DbResult.Matched_INSPDAT_Data = inspDat;
+            _DbResult.Matched_INSPDAT = inspDat;
         }
 
         /// <summary>
@@ -1389,7 +1383,7 @@ namespace DefectDBManager
             int fltSize = FaultData.FLTDAT[(int)fcd][index].Data.Count;
 
             // Data 검색해서 추가
-            foreach(FaultDatum item in FaultData.FLTDAT[(int)fcd][index].Data)
+            foreach(FaultDatum item in FaultData.FLTDAT[(int)fcd][index].Data.Data)
             {
                 System.Drawing.PointF pt = new System.Drawing.PointF();
                 pt.X = item.XPOS_M;

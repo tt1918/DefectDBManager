@@ -98,7 +98,6 @@ namespace DefectDBManager
 
         #region Form
         FormDbLoginData formLogin = null;
-        FormDbProgress formProgress = null;
         #endregion
 
         #region Language
@@ -344,8 +343,7 @@ namespace DefectDBManager
 
         private void displayFaultPage()
         {
-            List<MarkingFaultDatum> fltdat = null;
-            fltdat = PreCompDB.FaultData?.MarkData.Data;
+            MkFltDatumList fltdat = PreCompDB.FaultData?.MarkData.Data;
 
             if (fltdat == null) return;
 
@@ -383,7 +381,7 @@ namespace DefectDBManager
                 if (PreCompDB.DbOption.isLoadCSV == false)
                 {
                     int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                    List<List<INSPDATData>>[] data = PreCompDB._DbResult.INSPDAT;
+                    List<INSPDATList>[] data = PreCompDB._DbResult.INSPDAT;
 
                     // 리스트 초기화는 따로 불러서 처리
 
@@ -736,20 +734,19 @@ namespace DefectDBManager
 
         private void makeINSPDATListView()
         {
-            List<List<INSPDATData>>[] inspData = null;
-            inspData = PreCompDB._DbResult.INSPDAT;
+            List<INSPDATList>[] inspData = PreCompDB._DbResult.INSPDAT; 
 
             if (inspData == null) return;
 
             try
             {
                 INSPDAT_LV_Data.Data.Clear();
-                foreach (List<List<INSPDATData>> data in inspData)
+                foreach (List<INSPDATList> data in inspData)
                 {
                     if (data == null) continue;
-                    foreach (List<INSPDATData> items in data)
+                    foreach (INSPDATList items in data)
                     {
-                        foreach (INSPDATData item in items)
+                        foreach (INSPDATData item in items.Data)
                         {
                             DBListViewBuf bufData = new DBListViewBuf(INSPDATHeader.Length);
 
@@ -832,11 +829,8 @@ namespace DefectDBManager
                 listViewFAULTDAT.BeginUpdate();
                 listViewFAULTDAT.Items.Clear();
 
-                List<MarkingFaultDatum> tmpData = null;
-                Param tmpParam = null;
-                DestConfig config = null;
-                tmpData = _preCompDB.FaultData.MarkData.Data;
-                config = _preCompDB.DbDestConfig;
+                MkFltDatumList tmpData = _preCompDB.FaultData.MarkData.Data;
+                DestConfig config = _preCompDB.DbDestConfig;
 
                 MarkingFaultDatum data = null;
 
@@ -1149,8 +1143,7 @@ namespace DefectDBManager
             if (e.KeyCode == Keys.Enter)
             {
 
-                List<MarkingFaultDatum> data = null;
-                data = _preCompDB.FaultData.MarkData.Data;
+                MkFltDatumList data = _preCompDB.FaultData.MarkData.Data;
 
                 if (Int32.TryParse(tbFaultPage.Text, out int intput) == true)
                 {

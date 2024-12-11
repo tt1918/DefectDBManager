@@ -20,7 +20,7 @@ namespace DefectDBManager
         public PTRYLPList PTRLYP_Data { get; private set; }
         public XOFSMSTList XOFSMST_Data { get; private set; }
         public PTRY0PList[] PTRY0P_Data { get; private set; }
-        public List<List<INSPDATData>>[] INSPDAT_Data { get; private set; }
+        public List<INSPDATList>[] INSPDAT { get; private set; }
 
         /// <summary>
         /// 결점 정보 데이터
@@ -61,9 +61,9 @@ namespace DefectDBManager
             for (int i = 0; i < count; i++)
                 PTRY0P_Data[i] = new PTRY0PList();
 
-            INSPDAT_Data = new List<List<INSPDATData>>[count];
+            INSPDAT = new List<INSPDATList>[count];
             for (int i = 0; i < count; i++)
-                INSPDAT_Data[i] = new List<List<INSPDATData>>();
+                INSPDAT[i] = new List<INSPDATList>();
         }
 
         /// <summary>
@@ -85,17 +85,15 @@ namespace DefectDBManager
             {
                 foreach(var data in result.INSPDAT)
                 {
-                    List<List<INSPDATData>> inspList = new List<List<INSPDATData>>(); 
+                    List<INSPDATList> inspList = new List<INSPDATList>(); 
                     foreach(var data1 in data)
                     {
-                        List<INSPDATData> inspList1 = new List<INSPDATData>();
-                        foreach(var data2 in data1)
-                        {
+                        INSPDATList inspList1 = new INSPDATList();
+                        foreach(var data2 in data1.Data)
                             inspList1.Add(data2.Clone());
-                        }
                         inspList.Add(inspList1);
                     }
-                    INSPDAT_Data[i] = inspList;
+                    INSPDAT[i] = inspList;
                 }
             }
 

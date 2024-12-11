@@ -546,10 +546,8 @@ namespace DefectDBManager
         {
             List<string> code = new List<string>();
 
-            foreach (PreProcDefect data in _DBProc[(int)eDbIdWhen.Now].FaultData.FLTDAT[(int)fcd])
-            {
+            foreach (PreProcDefect data in _DBProc[(int)eDbIdWhen.Now].FaultData.FLTDAT[(int)fcd].Data)
                 code.Add(data.LNCD.ToString());
-            }
 
             return code;
         }

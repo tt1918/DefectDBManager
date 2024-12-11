@@ -862,7 +862,7 @@ namespace DefectDBManager
                         _DbResult.ClearDicMRKCTLMST(fcdIdx, ptry0Idx);
 
                         // Defect Edit에 의해서 수정한 데이터를 실제 FLTID 검색 시 사용하도록 함.
-                        foreach (MRKCTLMSTData data in _DbResult._MRKCTLMST_DE[fcdIdx][ptry0Idx].data)
+                        foreach (MRKCTLMSTData data in _DbResult._MRKCTLMST_DE[fcdIdx][ptry0Idx].data.Data)
                         {
                             _DbResult.AddDicMRKCTLMST(fcdIdx, ptry0Idx, data);
                             dataCnt++;
@@ -1057,7 +1057,7 @@ namespace DefectDBManager
 
                         bool isBcnoFind = false;
 
-                        List<INSPDATData> inspDataList = new List<INSPDATData>();
+                        INSPDATList inspDataList = new INSPDATList();
 
                         using (var comm = new OracleCommand(query, conn.Connection))
                         {
@@ -1170,7 +1170,6 @@ namespace DefectDBManager
 
             eCSV_TYPE csvType = destConfig.GetCsvType();
 
-            int defectLine;
             string tmpKey;
             float finalXPos;
             string tmpFaltID;
@@ -1183,8 +1182,6 @@ namespace DefectDBManager
             string logData = "";
             string query;
             int procStep = 0;
-
-            bool bValid = false;
 
             int[] defectCnt = new int[fcdCnt];
             defectCnt.Initialize();
@@ -1371,7 +1368,7 @@ namespace DefectDBManager
             int count = 0;
             if (DbDestConfig.UseXOffset == true && DbDestConfig.UseXOffsetAlarm == true)
             {
-                foreach (MarkingFaultDatum item in resultDefect.MarkFault.Data)
+                foreach (MarkingFaultDatum item in resultDefect.MarkFault.Data.Data)
                 {
                     if (item.XOFFSET_ALARM != float.MaxValue && (Math.Abs(item.XOFFSET_ALARM + 1.0f) > +0.000001f) && Math.Abs(refXOffset - item.XOFFSET_ALARM) >= 0.1f)
                     {

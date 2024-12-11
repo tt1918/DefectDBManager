@@ -435,7 +435,7 @@ namespace DefectDBManager
                 if (DataBase.DbOption.isLoadCSV == false)
                 {
                     int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                    List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT;
+                    List<INSPDATList>[] data = DataBase._DbResult.INSPDAT;
 
                     // 리스트 초기화는 따로 불러서 처리
 
@@ -700,7 +700,7 @@ namespace DefectDBManager
                         continue;
                     for (int j = 0; j < DataBase._DbResult._MRKCTLMST_DE[i].Count; j++)
                     {
-                        foreach (MRKCTLMSTData data in DataBase._DbResult._MRKCTLMST_DE[i][j].data)
+                        foreach (MRKCTLMSTData data in DataBase._DbResult._MRKCTLMST_DE[i][j].data.Data)
                         {
                             DBListViewBuf bufData = new DBListViewBuf(4);
                             bufData.items[0] = data.LNCD;
@@ -795,12 +795,12 @@ namespace DefectDBManager
             try
             {
                 INSPDAT_LV_Data.Data.Clear();
-                foreach (List<List<INSPDATData>> data in DataBase._DbResult.INSPDAT)
+                foreach (List<INSPDATList> data in DataBase._DbResult.INSPDAT)
                 {
                     if (data == null) continue;
-                    foreach (List<INSPDATData> items in data)
+                    foreach (INSPDATList items in data)
                     {
-                        foreach (INSPDATData item in items)
+                        foreach (INSPDATData item in items.Data)
                         {
                             DBListViewBuf bufData = new DBListViewBuf(9);
 
@@ -877,7 +877,7 @@ namespace DefectDBManager
                 listViewFAULTDAT.BeginUpdate();
                 listViewFAULTDAT.Items.Clear();
 
-                List<MarkingFaultDatum> tmpData = dataBase.ResultDefect.MarkFault.Data;
+                MkFltDatumList tmpData = dataBase.ResultDefect.MarkFault.Data;
                 MarkingFaultDatum data = null;
 
                 Param tmpParam = DataBase.CrtParam;

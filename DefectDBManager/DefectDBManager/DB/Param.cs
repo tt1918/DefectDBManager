@@ -175,12 +175,12 @@ namespace DefectDBManager
     #region mrkctlmst 변수 (Defect Edit에서 사용)
     public class MRKCTLMST_DE_Data
     {
-        public List<MRKCTLMSTData> data;
+        public MRKCTLMSTList data;
         public string query { get; set; }
 
         public MRKCTLMST_DE_Data()
         {
-            data = new List<MRKCTLMSTData>();
+            data = new MRKCTLMSTList();
         }
     }
     #endregion
