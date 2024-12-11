@@ -388,9 +388,7 @@ namespace DefectDBManager
 
             return data;
         }
-
     }
-
 
     public class ResultData
     {
@@ -415,7 +413,7 @@ namespace DefectDBManager
         }
     }
 
-    public class PrePocResultData
+    public class PreProcResultData
     {
         /// <summary>
         /// FAULTData 저장
@@ -428,7 +426,6 @@ namespace DefectDBManager
         }
         private List<PreProcDefect>[] _fltdat;
 
-
         /// <summary>
         /// 미자막 공정의 상위 보고용 데이터
         /// </summary>
@@ -438,9 +435,6 @@ namespace DefectDBManager
             private set { _markData = value; }
         }
         private MarkingFaultData _markData;
-
-
-        public bool IsPreProc = false;
 
         /// <summary>
         /// 이전 공정 비교용 결점 데이터 
@@ -460,7 +454,9 @@ namespace DefectDBManager
         }
         private string _bcno;
 
-        public PrePocResultData()
+        public bool IsPreProc = false;
+
+        public PreProcResultData()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             _fltdat = new List<PreProcDefect>[count];
@@ -470,7 +466,7 @@ namespace DefectDBManager
             _markData = new MarkingFaultData();
         }
 
-        ~PrePocResultData()
+        ~PreProcResultData()
         {
             ResetAll();
         }
@@ -523,9 +519,12 @@ namespace DefectDBManager
             return pts;
         }
 
-        public PrePocResultData Copy()
+        public PreProcResultData Copy()
         {
-            PrePocResultData data = new PrePocResultData();
+            PreProcResultData data = new PreProcResultData();
+
+            data.BCNO = this.BCNO;
+            data.IsPreProc = this.IsPreProc;
 
             // 전체 결점 데이터
             int count = System.Enum.GetValues(typeof(eFCD)).Length;

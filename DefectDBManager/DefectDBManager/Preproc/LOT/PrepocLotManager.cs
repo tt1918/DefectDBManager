@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DefectDBManager
 {
     // 이전 공정 랏 데이터에 대한 
     public class PrepocLotManager
     {
+        #region Param
         #region LOT 정보
         /// <summary>
         /// 각 공정별 검사 결과 데이터 저장
@@ -20,28 +23,42 @@ namespace DefectDBManager
             get { return _lot; }
             private set { _lot = value; }
         }
-        private Dictionary<string, List<PreprocLot>> _lot;
-        #endregion
+        private Dictionary<string, List<PreprocLot>> _lot = null;
 
-        #region 각 공정에 대한 품종 별 MRKCTLMST_MODEL
-        /// <summary>
-        /// 각 공정별 MRKCTLMST 모델 데이터
-        /// </summary>
-        public Dictionary<string, List<MRKCTLMST_MODEL>> MRKCTLMST
+        public Dictionary<string, List<PTRY0PData>> ProdList
         {
-            get { return _mrkctlmst; }
-            set { _mrkctlmst = value; }
+            get { return _prodList; }
+            private set { _prodList = value; }
         }
-        Dictionary<string, List<MRKCTLMST_MODEL>> _mrkctlmst = null;
+
+        private Dictionary<string, List<PTRY0PData>> _prodList = null;
+        #endregion LOT 정보
+
+        #region 공정 정보 
+        public Preproc.PreprocLNCD ProcLNCD
+        {
+            get { return _procLNCD; }
+            private set { _procLNCD = value; }
+        }
+        public Preproc.PreprocLNCD _procLNCD = null;
+        #endregion 공정 정보
+
+        public bool UseMrkctlmstModel { get; set; }
+
         #endregion
 
         public PrepocLotManager()
         {
             _lot = new Dictionary<string, List<PreprocLot>>();
-            _mrkctlmst = new Dictionary<string, List<MRKCTLMST_MODEL>>();
+            _procLNCD = new Preproc.PreprocLNCD();
+
+            LoadProcLNCD();
         }
 
+        public DateTime StartTime { get; set; } = DateTime.Now;
+        public DateTime EndTime { get; set; } = DateTime.Now;
 
+        #region Lot 데이터 관리
         /// <summary>
         /// 랏관리 데이터에 신규 랏 정보를 추가
         /// </summary>
@@ -80,17 +97,45 @@ namespace DefectDBManager
             return isSuccess;
         }
 
-        /// <summary>
-        /// 전체 데이터 삭제
-        /// </summary>
         public void ClearLot()
         {
+            // 각 공정 별 랏 정보 삭제
+            foreach(var lot in LOT)
+                lot.Value.Clear();
+
+            // Dictionary 삭제
             LOT.Clear();
         }
+        #endregion
 
-        public void AddMRKCTLMST_ModelData(string lncd, MRKCTLMST_MODEL model)
+
+        #region 데이터 검색에서 사용할 라인코드와 검색 여부 처리
+        /// <summary>
+        /// 
+        /// </summary>
+        public void LoadProcLNCD()
         {
-
+            ProcLNCD = new Preproc.PreprocLNCD();
+            ProcLNCD.Load();
         }
+
+        public void SetUse(string name, bool use)
+        {
+            for(int i=0; i< ProcLNCD.Info.Count; i++)
+            {
+                if (ProcLNCD.Info[i].Name == name)
+                    ProcLNCD.Info[i].Use = use;
+            }
+        }
+
+        public void SetUse(bool[] use)
+        {
+            for (int i = 0; i < ProcLNCD.Info.Count; i++)
+            {
+                if(use.Length > i)
+                    ProcLNCD.Info[i].Use = use[i];
+            }
+        }
+        #endregion
     }
 }

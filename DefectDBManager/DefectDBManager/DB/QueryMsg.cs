@@ -121,7 +121,7 @@ namespace DefectDBManager
                 Vender = name;
             }
 
-            public string GetQuery(List<PTRYLPdata> data, bool isModelSearch = false)
+            public string GetQuery(PTRYLPList data, bool isModelSearch = false)
             {
                 try
                 {
@@ -131,7 +131,7 @@ namespace DefectDBManager
 
                     if (isModelSearch == false && data!=null)
                     {
-                        foreach (PTRYLPdata datum in data)
+                        foreach (PTRYLPdata datum in data.Data)
                         {
                             string subID;
                             int nPos = datum.YLSLOT.IndexOf(' ');
@@ -155,21 +155,32 @@ namespace DefectDBManager
         /// <summary>
         /// 이전 공정 결점 비교 시스템용 PTRY0P Query
         /// </summary>
-        public class PTRY0P_Today_Query : QueryMsg
+        public class PTRY0PList_Query : QueryMsg
         {
-            public string Y0LNCD;
-            public DateTime DateToday = DateTime.Today;
+            public string Y0LNCD { get; set; }
+            public DateTime DateCurrent = DateTime.Today;
             //public DateTime DateToday = new DateTime(2023,04,19);
-            public DateTime DataTomorrow = DateTime.Today.AddDays(1);
+            public DateTime DateNext = DateTime.Today.AddDays(1);
 
-            public PTRY0P_Today_Query()
+            public PTRY0PList_Query()
             {
 
             }
 
-            public PTRY0P_Today_Query(string name)
+            public PTRY0PList_Query(string name)
             {
                 Vender = name;
+            }
+
+            /// <summary>
+            /// 날짜 검색 영역 설정
+            /// </summary>
+            /// <param name="stTime">시작 날짜</param>
+            /// <param name="range">검색 구간</param>
+            public void SetDate(DateTime stTime, int range)
+            {
+                DateCurrent = stTime;
+                DateNext = DateCurrent.AddDays(range);
             }
 
             public string GetQuery()
@@ -179,7 +190,7 @@ namespace DefectDBManager
                     StringBuilder sbMsg = new StringBuilder();
                     sbMsg.Append("SELECT * FROM PTRY0P WHERE");
                     sbMsg.Append($" Y0LNCD='{Y0LNCD}'");
-                    sbMsg.Append($" AND (SUBSTR(Y0KKOL,1,8)='{DateToday.ToString("yyyyMMdd")}' OR SUBSTR(Y0KKOL,1,8)='{DataTomorrow.ToString("yyyyMMdd")}')");
+                    sbMsg.Append($" AND (SUBSTR(Y0KKOL,1,8)='{DateCurrent.ToString("yyyyMMdd")}' OR SUBSTR(Y0KKOL,1,8)='{DateNext.ToString("yyyyMMdd")}')");
 
                     return sbMsg.ToString();
                 }

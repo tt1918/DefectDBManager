@@ -58,11 +58,11 @@ namespace DefectDBManager
                 return;
             }
 
-            if (_DBData._DbResult.XOFSMST_Data == null) return;
+            if (_DBData._DbResult.XOFSMST == null) return;
 
             listViewXOFSMST.BeginUpdate();
             listViewXOFSMST.Items.Clear();
-            foreach (XOFSMSTData data in _DBData._DbResult.XOFSMST_Data)
+            foreach (XOFSMSTData data in _DBData._DbResult.XOFSMST.Data)
             {
                 ListViewItem item;
                 if (data.KYCD != null) item = new ListViewItem(data.KYCD);
@@ -93,12 +93,12 @@ namespace DefectDBManager
         private void updateAREADELList()
         {
             if (_DBData == null) return;
-            if (_DBData._DbResult.AREADEL_Data == null) return;
+            if (_DBData._DbResult.AREADEL == null) return;
 
             listViewAREADEL.BeginUpdate();
             listViewAREADEL.Items.Clear();
             int index = 0;
-            foreach (AREADELData data in _DBData._DbResult.AREADEL_Data)
+            foreach (AREADELData data in _DBData._DbResult.AREADEL.Data)
             {
                 ListViewItem item = new ListViewItem(index.ToString());
                 if (data.KYCD != null) item.SubItems.Add(data.KYCD);

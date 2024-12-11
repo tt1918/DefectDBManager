@@ -11,6 +11,44 @@ using System.Threading.Tasks;
 namespace DefectDBManager
 {
     #region DB Query 
+    public class QueryList<T>
+    {
+        public T this[int index]
+        {
+            get { return _data[index]; }
+        }
+        public List<T> Data
+        {
+            get { return _data; }
+            protected set { _data = value; }
+        }
+        protected List<T> _data = null;
+
+        public int Count
+        {
+            get { return _data.Count; }
+        }
+
+        public QueryList()
+        {
+            _data = new List<T>();
+        }
+
+        public List<T> Clone()
+        {
+            List<T> data = new List<T>();
+            foreach (var ypData in _data)
+                data.Add(ypData);
+
+            return data;
+        }
+
+        public void Add(T data) { _data.Add(data); }
+
+        public void Clear() { _data.Clear(); }
+    }
+
+    #region PTRYLPdata
     public class PTRYLPdata
     {
         //1단계 potylp 접속 //  품종 : VEGQ1723NTBCAG330-H1-AC(G)  , 연신 LOT : EC80302-02  return;
@@ -80,6 +118,30 @@ namespace DefectDBManager
         }
     }
 
+    public class PTRYLPList : QueryList<PTRYLPdata>
+    {
+        public PTRYLPList()
+        {
+            this.Data = new List<PTRYLPdata>();
+        }
+
+        public void Copy(List<PTRYLPdata> input)
+        {
+            _data.Clear();
+            foreach (PTRYLPdata lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(PTRYLPList input)
+        {
+            _data.Clear();
+            foreach (PTRYLPdata lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion PTRYLPdata
+
+    #region XOFSMSTData
     public class XOFSMSTData
     {
         //1			2		3		4			5			6			7		8		9			10
@@ -124,9 +186,32 @@ namespace DefectDBManager
 
             return data;
         }
-
     }
 
+    public class XOFSMSTList : QueryList<XOFSMSTData>
+    {
+        public XOFSMSTList()
+        {
+            Data = new List<XOFSMSTData>();
+        }
+
+        public void Copy(List<XOFSMSTData> input)
+        {
+            _data.Clear();
+            foreach (XOFSMSTData lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(XOFSMSTList input)
+        {
+            _data.Clear();
+            foreach (XOFSMSTData lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion XOFSMSTData
+
+    #region AREADELData
     public class AREADELData
     {
         //1			2		3		4		5			6			7			8				9				10			11          12          13
@@ -195,6 +280,30 @@ namespace DefectDBManager
         }
     }
 
+    public class AREADELList : QueryList<AREADELData>
+    {
+        public AREADELList()
+        {
+            _data = new List<AREADELData>();
+        }
+
+        public void Copy(List<AREADELData> input)
+        {
+            _data.Clear();
+            foreach (AREADELData lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(AREADELList input)
+        {
+            _data.Clear();
+            foreach (AREADELData lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion AREADELData
+
+    #region PTRY0PData
     public class PTRY0PData
     {
         //	1		2		3		4		    5		6		7		8		9		10		    11		    12		13		14		15        
@@ -266,6 +375,31 @@ namespace DefectDBManager
         }
     }
 
+    public class PTRY0PList :QueryList<PTRY0PData>
+    {
+
+        public PTRY0PList()
+        {
+            _data = new List<PTRY0PData>();
+        }
+
+        public void Copy(List<PTRY0PData> input)
+        {
+            _data.Clear();
+            foreach (PTRY0PData lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(PTRY0PList input)
+        {
+            _data.Clear();
+            foreach (PTRY0PData lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion PTRY0PData
+
+    #region MRKCTLMSTData
     public class MRKCTLMSTData
     {
         //3단계 MRKCTLMST //  라인코드 & fault ID 별 불량 마킹 여부   return;
@@ -319,7 +453,28 @@ namespace DefectDBManager
             return data;
         }
     }
+    public class MRKCTLMSTList : QueryList<MRKCTLMSTData>
+    {
+        public MRKCTLMSTList()
+        {
+            _data = new List<MRKCTLMSTData>();
+        }
 
+        public void Copy(List<MRKCTLMSTData> input)
+        {
+            foreach (MRKCTLMSTData lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(MRKCTLMSTList input)
+        {
+            foreach (MRKCTLMSTData lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion MRKCTLMSTData
+
+    #region INSPDATData
     public class INSPDATData
     {
         //5단계 inspdat //  ctlno   return;
@@ -418,6 +573,26 @@ namespace DefectDBManager
             return data;
         }
     }
+
+    public class INSPDATList : QueryList<INSPDATData>
+    {
+        public INSPDATList()
+        {
+            _data = new List<INSPDATData>();
+        }
+        public void Copy(List<INSPDATData> input)
+        {
+            foreach (INSPDATData lpData in input)
+                _data.Add(lpData.Clone());
+        }
+
+        public void Copy(INSPDATList input)
+        {
+            foreach (INSPDATData lpData in input.Data)
+                _data.Add(lpData.Clone());
+        }
+    }
+    #endregion INSPDATData
 
     public class FLTDATAData
     {
@@ -545,15 +720,15 @@ namespace DefectDBManager
 
     #endregion DB Query
 
-    #region DB Search Result
+    #region DB Search Result 
     public class DbSearchResult
     {
-        public List<PTRYLPdata> PTRLYP_Data;
-        public List<PTRY0PData>[] PTRY0P_Data;
-        public List<MRKCTLMSTData> MRKCTLMST_Data;
-        public List<List<INSPDATData>>[] INSPDAT_Data;
-        public List<XOFSMSTData> XOFSMST_Data;
-        public List<AREADELData> AREADEL_Data;
+        public PTRYLPList PTRLYP;
+        public PTRY0PList[] PTRY0P;
+        public MRKCTLMSTList MRKCTLMST;
+        public List<List<INSPDATData>>[] INSPDAT;
+        public XOFSMSTList XOFSMST;
+        public AREADELList AREADEL;
 
         public List<Dictionary<string, float>>[] dicSizeMRKCTLMST;
         public List<Dictionary<string, bool>>[] dicMRKF1MRKCTLMST;
@@ -580,20 +755,21 @@ namespace DefectDBManager
 
         public void Init()
         {
-            PTRLYP_Data = new List<PTRYLPdata>();
-            XOFSMST_Data = new List<XOFSMSTData>();
-            AREADEL_Data = new List<AREADELData>();
+            PTRLYP = new PTRYLPList();
+            XOFSMST = new XOFSMSTList();
+            AREADEL = new AREADELList();
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            PTRY0P_Data = new List<PTRY0PData>[count];
+            PTRY0P = new PTRY0PList[count];
             for (int i = 0; i < count; i++)
-                PTRY0P_Data[i] = new List<PTRY0PData>();
+                PTRY0P[i] = new PTRY0PList();
 
-            INSPDAT_Data = new List<List<INSPDATData>>[count];
+            INSPDAT = new List<List<INSPDATData>>[count];
             for (int i = 0; i < count; i++)
-                INSPDAT_Data[i] = new List<List<INSPDATData>>();
+                INSPDAT[i] = new List<List<INSPDATData>>();
 
-            MRKCTLMST_Data = new List<MRKCTLMSTData>();
+            MRKCTLMST = new MRKCTLMSTList();
+
             dicSizeMRKCTLMST = new List<Dictionary<string, float>>[count];
             dicMRKF1MRKCTLMST = new List<Dictionary<string, bool>>[count];
             _MRKCTLMST_DE = new List<MRKCTLMST_DE_Data>[count];
@@ -622,23 +798,23 @@ namespace DefectDBManager
         public void ClearAll ()
         {
             LoadedBcNo.Clear();
-            AREADEL_Data.Clear();
-            XOFSMST_Data.Clear();
-            PTRLYP_Data.Clear();
-            MRKCTLMST_Data.Clear();
+            AREADEL.Clear();
+            XOFSMST.Clear();
+            PTRLYP.Clear();
+            MRKCTLMST.Clear();
 
             LoadedBcNo.Clear();
 
             ProductEndTime.Clear();
             ProductLotName.Clear();
 
-            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
+            for (int i = 0; i < PTRY0P.Length; i++) PTRY0P[i].Clear();
 
-            for (int i = 0; i < INSPDAT_Data.Length; i++)
+            for (int i = 0; i < INSPDAT.Length; i++)
             {
-                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
-                    INSPDAT_Data[i][j].Clear();
-                INSPDAT_Data[i].Clear();
+                for (int j = 0; j < INSPDAT[i].Count; j++)
+                    INSPDAT[i][j].Clear();
+                INSPDAT[i].Clear();
             }
 
             DicCSVDefectCnt.Clear();
@@ -660,10 +836,10 @@ namespace DefectDBManager
 
         public void CheckAndUpdateProductInfo(int i, int j, DateTime edTime)
         {
-            if (PTRY0P_Data[i][j].Y0KLOT.Substring(0, 2).ToUpper() == "LL")
+            if (PTRY0P[i][j].Y0KLOT.Substring(0, 2).ToUpper() == "LL")
             {
                 ProductEndTime.Add(edTime);
-                ProductLotName.Add(PTRY0P_Data[i][j].Y0KLOT);
+                ProductLotName.Add(PTRY0P[i][j].Y0KLOT);
             }
         }
         public bool IsProductAvaliable(Option opt, LogDB log)
@@ -696,18 +872,18 @@ namespace DefectDBManager
 
         public void ClearSplit()
         {
-            PTRLYP_Data.Clear();
-            AREADEL_Data.Clear();
-            XOFSMST_Data.Clear();
-            MRKCTLMST_Data.Clear();
+            PTRLYP.Clear();
+            AREADEL.Clear();
+            XOFSMST.Clear();
+            MRKCTLMST.Clear();
 
-            for (int i = 0; i < PTRY0P_Data.Length; i++) PTRY0P_Data[i].Clear();
+            for (int i = 0; i < PTRY0P.Length; i++) PTRY0P[i].Clear();
 
-            for (int i = 0; i < INSPDAT_Data.Length; i++)
+            for (int i = 0; i < INSPDAT.Length; i++)
             {
-                for (int j = 0; j < INSPDAT_Data[i].Count; j++)
-                    INSPDAT_Data[i][j].Clear();
-                INSPDAT_Data[i].Clear();
+                for (int j = 0; j < INSPDAT[i].Count; j++)
+                    INSPDAT[i][j].Clear();
+                INSPDAT[i].Clear();
             }
         }
         public void ResetData_DE()

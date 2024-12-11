@@ -901,7 +901,7 @@ namespace DefectDBManager
                     else data.END_MD = 0.0f;
                     data.BCNO = items[8];
 
-                    db._DbResult.AREADEL_Data.Add(data);
+                    db._DbResult.AREADEL.Add(data);
                 }
             }
             return bRes;
@@ -915,7 +915,7 @@ namespace DefectDBManager
 
             wr.WriteLine("KYCD,PPCD,LNCD,LOTNO,STR_WD,END_WD,STR_MD,END_MD,BCNO");
             int idx = 0;
-            foreach (AREADELData data in db._DbResult.AREADEL_Data)
+            foreach (AREADELData data in db._DbResult.AREADEL.Data)
             {
                 StringBuilder sb = new StringBuilder();
 

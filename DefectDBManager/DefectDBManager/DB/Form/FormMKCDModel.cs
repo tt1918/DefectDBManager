@@ -223,7 +223,7 @@ namespace DefectDBManager
             {
                 MRKCTLMST_MODEL mKCD_MODEL = new MRKCTLMST_MODEL();
 
-                foreach (MRKCTLMSTData data in db._DbResult.MRKCTLMST_Data)
+                foreach (MRKCTLMSTData data in db._DbResult.MRKCTLMST.Data)
                     mKCD_MODEL.Add(data.LNCD, new MRKCTLMST_Data(data));
 
                 _MKCD_DB_Data = mKCD_MODEL;

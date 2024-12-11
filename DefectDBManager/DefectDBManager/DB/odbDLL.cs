@@ -345,16 +345,16 @@ namespace DefectDBManager
                     int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
                     for (int i = 0; i < fcdCnt; i++)
                     {
-                        for (int j = 0; j < _DbResult.PTRY0P_Data[i].Count; i++)
+                        for (int j = 0; j < _DbResult.PTRY0P[i].Count; i++)
                         {
-                            if (_DbResult.PTRY0P_Data[i][j].Y0ZKNM.Length > 0)
+                            if (_DbResult.PTRY0P[i][j].Y0ZKNM.Length > 0)
                             {
                                 count++;
-                                CrtParam.Model = _DbResult.PTRY0P_Data[i][j].Y0ZKNM;
-                                strData = string.Format($"{count}\t-\t{_DbResult.PTRY0P_Data[i][j].Y0ZKNM}");
+                                CrtParam.Model = _DbResult.PTRY0P[i][j].Y0ZKNM;
+                                strData = string.Format($"{count}\t-\t{_DbResult.PTRY0P[i][j].Y0ZKNM}");
                                 _LOG.WriteLoadData(strData, count, "MODEL", 0.0);
                                 isRes = true;
-                                SearchModelList.Add(_DbResult.PTRY0P_Data[i][j].Y0ZKNM);
+                                SearchModelList.Add(_DbResult.PTRY0P[i][j].Y0ZKNM);
                                 break;
                             }
                         }
@@ -469,8 +469,8 @@ namespace DefectDBManager
                         {
                             PTRYLPdata data = new PTRYLPdata();
                             data.Parse(reader);
-                            _DbResult.PTRLYP_Data.Add(data);
-                            string logData = string.Format($"{_DbResult.PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                            _DbResult.PTRLYP.Add(data);
+                            string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
                             _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
                         }
 
@@ -489,7 +489,7 @@ namespace DefectDBManager
 
                 if (DbDestConfig.UseAREADEL == true)
                 {
-                    success = SearchAreaDel(lotID, ref _DbResult.AREADEL_Data);
+                    success = SearchAreaDel(lotID, ref _DbResult.AREADEL);
                     if (success == false) return false;
                 }
                 success = SearchPTRY0P(lotID);
@@ -525,7 +525,7 @@ namespace DefectDBManager
             bool success = false;
             try
             {
-                List<AREADELData> listAreaDel = new List<AREADELData>();
+                AREADELList listAreaDel = new AREADELList();
                 lotID = lotID.ToUpper();
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 int newLotCnt = GetNextLotCnt(lotID);
@@ -533,14 +533,7 @@ namespace DefectDBManager
                 else _LOG.Lot = lotID;
 
                 success = SearchAreaDel(lotID, ref listAreaDel);
-                if (success == false) return false;
-
-                if (listAreaDel.Count > 0)
-                {
-                    for(int i=0;i<listAreaDel.Count;i++)
-                        _DbResult.AREADEL_Data.Add(listAreaDel[i]);
-                }
-
+                _DbResult.AREADEL = listAreaDel;
                 return success;
             }
             catch (Exception ex)
@@ -581,10 +574,10 @@ namespace DefectDBManager
                         {
                             XOFSMSTData data = new XOFSMSTData();
                             data.Parse(reader);
-                            _DbResult.XOFSMST_Data.Add(data);
+                            _DbResult.XOFSMST.Add(data);
 
-                            logData = string.Format($"{_DbResult.XOFSMST_Data.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, _DbResult.XOFSMST_Data.Count, "XOFSMST", 0.0);
+                            logData = string.Format($"{_DbResult.XOFSMST.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
                         }
                     }
                 }
@@ -600,7 +593,7 @@ namespace DefectDBManager
             }
         }
 
-        public bool SearchAreaDel(string lotID, ref List<AREADELData> listAreaDel)
+        public bool SearchAreaDel(string lotID, ref AREADELList listAreaDel)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -663,7 +656,7 @@ namespace DefectDBManager
                 QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-                string query = msg.GetQuery(_DbResult.PTRLYP_Data);
+                string query = msg.GetQuery(_DbResult.PTRLYP);
                 _LOG.WriteLoadData(query, 0, "PTRY0P", 0.0);
 
                 if (query == "")
@@ -710,20 +703,20 @@ namespace DefectDBManager
 
                             if (dbOption.checkES == true && nY0PPCD == 100)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ES].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.ES].Count;
+                                _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
                             }
 
                             if (dbOption.checkTG == true && nY0PPCD == 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.TG].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.TG].Count;
+                                _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
                             }
 
                             if (dbOption.checkETC == true && nY0PPCD != 100 && nY0PPCD != 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ETC].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.ETC].Count;
+                                _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
                             }
 
                             logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
@@ -753,7 +746,7 @@ namespace DefectDBManager
                 QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-                string query = msg.GetQuery(_DbResult.PTRLYP_Data, true);
+                string query = msg.GetQuery(_DbResult.PTRLYP, true);
                 long dbCnt = 0;
                 _LOG.WriteLoadData(query, 0, "PTRY0P_MODEL", 0.0);
                 if (query == "")
@@ -801,21 +794,21 @@ namespace DefectDBManager
 
                             if (nY0PPCD == 100)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ES].Add(data);
+                                _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
                                 string logData = string.Format($"{(int)eFCD.ES}\t-\t{data.ToString()}");
                                 _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_ES", 0.0);
                             }
 
                             if (nY0PPCD == 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.TG].Add(data);
+                                _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
                                 string logData = string.Format($"{(int)eFCD.TG}\t-\t{data.ToString()}");
                                 _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_TG", 0.0);
                             }
 
                             if (nY0PPCD != 100 && nY0PPCD != 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ETC].Add(data);
+                                _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
                                 string logData = string.Format($"{(int)eFCD.ETC}\t-\t{data.ToString()}");
                                 _LOG.WriteLoadData(logData, 0, "PTRY0P_MODEL_ETC", 0.0);
                             }
@@ -860,7 +853,7 @@ namespace DefectDBManager
                 for (int fcdIdx = 0; fcdIdx < fcdTotal; fcdIdx++)
                 {
                     procStep = fcdIdx;
-                    int PTRY0Pcnt = _DbResult.PTRY0P_Data[fcdIdx].Count;
+                    int PTRY0Pcnt = _DbResult.PTRY0P[fcdIdx].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
                     _DbResult.CheckDicMRKCTLMSTSize(PTRY0Pcnt, fcdIdx);
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + fcdIdx));
@@ -915,7 +908,7 @@ namespace DefectDBManager
                 {
                     DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                     procStep = i;
-                    int PTRY0Pcnt = _DbResult.PTRY0P_Data[i].Count;
+                    int PTRY0Pcnt = _DbResult.PTRY0P[i].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                     _DbResult.CheckDicMRKCTLMSTSize(PTRY0Pcnt, i);
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
@@ -926,11 +919,11 @@ namespace DefectDBManager
 
                         if ((dbOption.checkES == true && (eFCD)i == eFCD.ES) ||
                            (dbOption.checkTG == true && (eFCD)i == eFCD.TG) ||
-                           (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && _DbResult.PTRY0P_Data[i][j].Y0KLOT.Length > 0)
+                           (dbOption.checkETC == true && (eFCD)i == eFCD.ETC) && _DbResult.PTRY0P[i][j].Y0KLOT.Length > 0)
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
                             msg.MKCD = dbOption.searchOP.MKCD;
-                            msg.Y0KLOT = _DbResult.PTRY0P_Data[i][j].Y0KLOT;
+                            msg.Y0KLOT = _DbResult.PTRY0P[i][j].Y0KLOT;
                             string query = msg.GetQuery((eFCD)i);
                             _LOG.WriteLoadData(query, 0, "MRKCTLMST", 0.0);
 
@@ -951,10 +944,10 @@ namespace DefectDBManager
                                     {
                                         MRKCTLMSTData data = new MRKCTLMSTData();
                                         data.Parse(reader);
-                                        _DbResult.MRKCTLMST_Data.Add(data);
+                                        _DbResult.MRKCTLMST.Add(data);
 
-                                        logData = string.Format($"{_DbResult.MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
-                                        _LOG.WriteLoadData(logData, _DbResult.MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
+                                        logData = string.Format($"{_DbResult.MRKCTLMST.Count}\t-\t{data.ToString()}");
+                                        _LOG.WriteLoadData(logData, _DbResult.MRKCTLMST.Count, "MRKCTLMST", 0.0);
                                         // 조건문 추가해야 함
                                         CrtParam.MRKCTLMSTFLTID.Add(data.FLTID);
                                         _DbResult.AddDicMRKCTLMST(i, j, data);
@@ -1030,15 +1023,15 @@ namespace DefectDBManager
                     }
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
-                    int PTRY0Pcnt = _DbResult.PTRY0P_Data[idx].Count;
+                    int PTRY0Pcnt = _DbResult.PTRY0P[idx].Count;
 
                     for (int i = 0; i < PTRY0Pcnt; i++)
                     {
                         string query = "";
                         QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
-                        msg.LNCD = _DbResult.PTRY0P_Data[idx][i].LNCD;
-                        msg.SetTime(_DbResult.PTRY0P_Data[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
-                        msg.SetTime(_DbResult.PTRY0P_Data[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
+                        msg.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
+                        msg.SetTime(_DbResult.PTRY0P[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
+                        msg.SetTime(_DbResult.PTRY0P[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
 
                         _DbResult.CheckAndUpdateProductInfo(idx, i, msg.EndTime);
 
@@ -1076,24 +1069,24 @@ namespace DefectDBManager
                                 {
 
                                     INSPDATData data = new INSPDATData();
-                                    data.Y0KLOT = _DbResult.PTRY0P_Data[idx][i].Y0KLOT;
+                                    data.Y0KLOT = _DbResult.PTRY0P[idx][i].Y0KLOT;
                                     data.Parse(reader);
 
                                     if (useXOffset)
                                     {
-                                        int offsetDataCnt = _DbResult.XOFSMST_Data.Count;
+                                        int offsetDataCnt = _DbResult.XOFSMST.Count;
 
                                         for (int offsetIdx = 0; offsetIdx < offsetDataCnt; offsetIdx++)
                                         {
-                                            int ppcd = _DbResult.XOFSMST_Data[offsetIdx].PPCD;
-                                            if (data.KYCD == _DbResult.XOFSMST_Data[offsetIdx].KYCD &&
+                                            int ppcd = _DbResult.XOFSMST[offsetIdx].PPCD;
+                                            if (data.KYCD == _DbResult.XOFSMST[offsetIdx].KYCD &&
                                                 ((idx == (int)eFCD.ES && ppcd == 100) ||
                                                 (idx == (int)eFCD.TG && ppcd == 400) ||
                                                 (idx == (int)eFCD.ETC && ppcd != 100 && ppcd != 400)) &&
-                                                _DbResult.PTRY0P_Data[idx][i].Y0ZKNM == _DbResult.XOFSMST_Data[offsetIdx].YLSZKN &&
-                                                _DbResult.PTRY0P_Data[idx][i].LNCD == _DbResult.XOFSMST_Data[offsetIdx].LNCD)
+                                                _DbResult.PTRY0P[idx][i].Y0ZKNM == _DbResult.XOFSMST[offsetIdx].YLSZKN &&
+                                                _DbResult.PTRY0P[idx][i].LNCD == _DbResult.XOFSMST[offsetIdx].LNCD)
                                             {
-                                                data.OffsetX = _DbResult.XOFSMST_Data[offsetIdx].X_OFFSET;
+                                                data.OffsetX = _DbResult.XOFSMST[offsetIdx].X_OFFSET;
                                             }
                                         }
                                     }
@@ -1130,7 +1123,7 @@ namespace DefectDBManager
                             }
                         }
                         // 최종 데이터 입력
-                        _DbResult.INSPDAT_Data[idx].Add(inspDataList);
+                        _DbResult.INSPDAT[idx].Add(inspDataList);
                     }
 
                     DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
@@ -1217,28 +1210,28 @@ namespace DefectDBManager
                     }
 
                     int nItemCnt = 0;
-                    for (int iIdx = 0; iIdx < _DbResult.INSPDAT_Data[fcdIdx].Count; iIdx++)
+                    for (int iIdx = 0; iIdx < _DbResult.INSPDAT[fcdIdx].Count; iIdx++)
                     {
-                        if (_DbResult.INSPDAT_Data[fcdIdx][iIdx] == null) continue;
-                        nItemCnt += _DbResult.INSPDAT_Data[fcdIdx][iIdx].Count;
+                        if (_DbResult.INSPDAT[fcdIdx][iIdx] == null) continue;
+                        nItemCnt += _DbResult.INSPDAT[fcdIdx][iIdx].Count;
                     }
                         
 
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     nItemCnt = 0;
-                    for (int opIdx = 0; opIdx < _DbResult.PTRY0P_Data[fcdIdx].Count; opIdx++)
+                    for (int opIdx = 0; opIdx < _DbResult.PTRY0P[fcdIdx].Count; opIdx++)
                     {
-                        if (_DbResult.INSPDAT_Data[fcdIdx][opIdx] == null) continue;
+                        if (_DbResult.INSPDAT[fcdIdx][opIdx] == null) continue;
 
                         _DbResult.UpdateDicSizeData(fcdIdx, opIdx);
                         _DbResult.UpdateDicMRKF1Data(fcdIdx, opIdx);
 
-                        int inspCnt = _DbResult.INSPDAT_Data[fcdIdx][opIdx].Count;
+                        int inspCnt = _DbResult.INSPDAT[fcdIdx][opIdx].Count;
                         for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                         {
-                            if (_DbResult.INSPDAT_Data[fcdIdx][opIdx][inspIdx] == null) continue;
+                            if (_DbResult.INSPDAT[fcdIdx][opIdx][inspIdx] == null) continue;
 
-                            inspdata = _DbResult.INSPDAT_Data[fcdIdx][opIdx][inspIdx];
+                            inspdata = _DbResult.INSPDAT[fcdIdx][opIdx][inspIdx];
 
                             if (_DbResult.dicMRKF1Data.Count == 0 && _DbResult.dicSizeData.Count == 0)  continue;
 #if (FAST_FLTID)
@@ -1414,37 +1407,37 @@ namespace DefectDBManager
             if (nFindSepa1 >= 0)
             {
                 strLotMatch = DbOption.lotName.Substring(10);
-                for (i = 0; i < _DbResult.PTRLYP_Data.Count; i++)
+                for (i = 0; i < _DbResult.PTRLYP.Count; i++)
                 {
-                    nFindSepa2 = _DbResult.PTRLYP_Data[i].YLMLOT.IndexOf(strLotMatch);
+                    nFindSepa2 = _DbResult.PTRLYP[i].YLMLOT.IndexOf(strLotMatch);
                     if (nFindSepa2 >= 0)
                     {
-                        if (_DbResult.PTRLYP_Data[i].YLMKAS == 0.0f)
+                        if (_DbResult.PTRLYP[i].YLMKAS == 0.0f)
                             continue;
                         nIndex1.Add(i);
                         bFindSepa2 = true;
-                        Log.Write($"PTRYLP LOT Match : {_DbResult.PTRLYP_Data[i].YLMKAS}");
+                        Log.Write($"PTRYLP LOT Match : {_DbResult.PTRLYP[i].YLMKAS}");
                     }
                 }
 
                 int fcdSize = System.Enum.GetValues(typeof(eFCD)).Length;
                 for (i = 0; i < fcdSize; i++)
                 {
-                    for (j = 0; j < _DbResult.PTRLYP_Data.Count; j++)
+                    for (j = 0; j < _DbResult.PTRLYP.Count; j++)
                     {
-                        for (k = 0; k < _DbResult.INSPDAT_Data[i][j].Count; k++)
+                        for (k = 0; k < _DbResult.INSPDAT[i][j].Count; k++)
                         {
-                            nFindSepa3 = _DbResult.INSPDAT_Data[i][j][k].LOTNO.IndexOf(strLotMatch);
+                            nFindSepa3 = _DbResult.INSPDAT[i][j][k].LOTNO.IndexOf(strLotMatch);
                             if (nFindSepa3 >= 0)
                             {
-                                if (_DbResult.INSPDAT_Data[i][j][k].Length == 0.0f || nTmp == (int)_DbResult.INSPDAT_Data[i][j][k].Length)
+                                if (_DbResult.INSPDAT[i][j][k].Length == 0.0f || nTmp == (int)_DbResult.INSPDAT[i][j][k].Length)
                                     continue;
-                                nTmp = (int)_DbResult.INSPDAT_Data[i][j][k].Length;
+                                nTmp = (int)_DbResult.INSPDAT[i][j][k].Length;
                                 nIndex2[0].Add(i);
                                 nIndex2[1].Add(j);
                                 nIndex2[2].Add(k);
                                 bFindSepa3 = false;
-                                Log.Write($"INSP LOT Match : {_DbResult.INSPDAT_Data[i][j][k].Length}");
+                                Log.Write($"INSP LOT Match : {_DbResult.INSPDAT[i][j][k].Length}");
                             }
                         }
                     }
@@ -1458,20 +1451,20 @@ namespace DefectDBManager
                     strTmp = "";
                     for (i = 0; i < nINSPLengthCnt; i++)
                     {
-                        if (fStLength != _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart)
+                        if (fStLength != _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart)
                         {
-                            fStLength = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart;
-                            fTmp = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].Length;
+                            fStLength = _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].YPosStart;
+                            fTmp = _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].Length;
                             fTmp = fTmp / 1000.0f;
                             fLength += fTmp;
                         }
-                        if (strTmp != _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO)
+                        if (strTmp != _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO)
                         {
                             if (strTmp == "")
-                                strTmp = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                                strTmp = _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
                             else
                             {
-                                strTmp = _DbResult.INSPDAT_Data[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
+                                strTmp = _DbResult.INSPDAT[nIndex2[0][i]][nIndex2[1][i]][nIndex2[2][i]].LOTNO;
                                 fINSPLength.Add(fLength);
                                 fLength = 0.0f;
                             }
@@ -1483,7 +1476,7 @@ namespace DefectDBManager
                     {
                         for (j = 0; j < nCompleteMCnt; j++)
                         {
-                            nLength1 = (int)_DbResult.PTRLYP_Data[nIndex1[i]].YLMKAS;
+                            nLength1 = (int)_DbResult.PTRLYP[nIndex1[i]].YLMKAS;
                             nLength2 = (int)fINSPLength[i];
                             if (nLength1 - DbDestConfig.SelDestUnit.LengErrorRangeMinus <= nLength2 && nLength1 + DbDestConfig.SelDestUnit.LengErrorRangePlus >= nLength2)
                                 bMatch = true;

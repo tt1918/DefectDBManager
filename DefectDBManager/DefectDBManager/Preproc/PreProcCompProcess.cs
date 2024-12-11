@@ -257,7 +257,7 @@ namespace DefectDBManager
 
 
                 // 오늘자 생산 정보가 탐색 인덱스보다 큰 경우 알람 처리
-                if (_DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count <= NextY0KLOTIdx)
+                if (_DBProc[(int)eDbIdWhen.Now].PTRY0PList_Data.Count <= NextY0KLOTIdx)
                 {
                     _runAvailableLotCheck = false;
                     OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotData);
@@ -298,7 +298,7 @@ namespace DefectDBManager
 
 
                     // 금일자 생산 데이터에서 랏 정보 얻어옴
-                    strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[NextY0KLOTIdx].Y0KLOT;
+                    strLotID = _DBProc[(int)eDbIdWhen.Now].PTRY0PList_Data[NextY0KLOTIdx].Y0KLOT;
 
                     if (success == true) success = _DBProc[(int)eDbIdWhen.Now].SearchPTRYLP(strLotID);
 
@@ -327,7 +327,7 @@ namespace DefectDBManager
                         CrtY0KLOTIdx = NextY0KLOTIdx;
 
                         int errNum = -1;
-                        string lotName = _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data[CrtY0KLOTIdx].Y0KLOT;
+                        string lotName = _DBProc[(int)eDbIdWhen.Now].PTRY0PList_Data[CrtY0KLOTIdx].Y0KLOT;
 
                         ////////////////////////////////////////////////////////////////////////////////////////////
                         /// 현재랏 데이터 검색
@@ -351,7 +351,7 @@ namespace DefectDBManager
                         }
                         ////////////////////////////////////////////////////////////////////////////////////////////
                     }
-                    else if(NextY0KLOTIdx>= _DBProc[(int)eDbIdWhen.Now].PTRY0P_Today_Data.Count-1) // 실패 보고 
+                    else if(NextY0KLOTIdx>= _DBProc[(int)eDbIdWhen.Now].PTRY0PList_Data.Count-1) // 실패 보고 
                         OnProcessEvent?.Invoke((int)eEventReport.eFailedSearchDailyLotData);
 
                     // 검색 완료되면 실폐든 아니든 인덱스 업데이트함
@@ -438,7 +438,7 @@ namespace DefectDBManager
 
             //////////////////////////////////////////////////////////////////////////
             // 예약 랏 -> 현재 랏 FLTDAT 데이터 이전
-            PrePocResultData oldMarkingData;
+            PreProcResultData oldMarkingData;
             oldMarkingData = _DBProc[0].FaultData;
             _DBProc[0].FaultData = _DBProc[1].FaultData;
 
@@ -452,7 +452,7 @@ namespace DefectDBManager
             _DBProc[0].DbOption.Copy(_DBProc[1].DbOption);
 
             // 예약 랏 결점 데이터 초기화 처리
-            _DBProc[1].FaultData = new PrePocResultData();
+            _DBProc[1].FaultData = new PreProcResultData();
             _DBProc[1].ResetDataAll();
 
             //////////////////////////////////////////////////////////////////////////

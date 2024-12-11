@@ -408,7 +408,7 @@ namespace DefectDBManager
 			markingAreaDefects.Clear();
             if(dbManager._DestConfig.UseAREADEL==true)
 			{
-                List<AREADELData> delData = DBManager._DbProc[0]._DbResult.AREADEL_Data;
+                List<AREADELData> delData = DBManager._DbProc[0]._DbResult.AREADEL.Data;
 				int idx = 0;
                 foreach (AREADELData item in delData)
                 {

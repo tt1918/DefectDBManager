@@ -383,7 +383,7 @@ namespace DefectDBManager
                 if (PreCompDB.DbOption.isLoadCSV == false)
                 {
                     int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                    List<List<INSPDATData>>[] data = PreCompDB._DbResult.INSPDAT_Data;
+                    List<List<INSPDATData>>[] data = PreCompDB._DbResult.INSPDAT;
 
                     // 리스트 초기화는 따로 불러서 처리
 
@@ -506,7 +506,7 @@ namespace DefectDBManager
         private void makePTRYLPListViewData()
         {
             PTRYLP_LV_Data.Data.Clear();
-            foreach (PTRYLPdata data in PreCompDB._DbResult.PTRLYP_Data)
+            foreach (PTRYLPdata data in PreCompDB._DbResult.PTRLYP.Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(6);
                 bufData.items[0] = data.YLMLOT;
@@ -564,13 +564,13 @@ namespace DefectDBManager
         private void makePTRY0PListViewData()
         {
             PTRY0P_LV_Data.Data.Clear();
-            List<PTRY0PData>[] tmpData = null;
-            tmpData = PreCompDB._DbResult.PTRY0P_Data;
+            PTRY0PList[] tmpData = null;
+            tmpData = PreCompDB._DbResult.PTRY0P;
 
             int cnt = tmpData.Length;
             for (int i = 0; i < cnt; i++)
             {
-                foreach (PTRY0PData data in tmpData[i])
+                foreach (PTRY0PData data in tmpData[i].Data)
                 {
                     DBListViewBuf bufData = new DBListViewBuf(PTRY0PHeader.Length);
                     bufData.items[0] = data.Y0ZKNM;
@@ -636,7 +636,7 @@ namespace DefectDBManager
             if (PreCompDB == null)
                 return;
             
-            foreach (PTRY0PData data in PreCompDB.PTRY0P_Today_Data)
+            foreach (PTRY0PData data in PreCompDB.PTRY0PList_Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(5);
                 bufData.items[0] = data.Y0KLOT;
@@ -737,7 +737,7 @@ namespace DefectDBManager
         private void makeINSPDATListView()
         {
             List<List<INSPDATData>>[] inspData = null;
-            inspData = PreCompDB._DbResult.INSPDAT_Data;
+            inspData = PreCompDB._DbResult.INSPDAT;
 
             if (inspData == null) return;
 

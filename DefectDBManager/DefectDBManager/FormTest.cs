@@ -71,7 +71,7 @@ namespace DefectDBManager
             opd1.LNCD = "L013";
             opd1.Y0KASS = "1354";
 
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[0].Add(opd1);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[0].Add(opd1);
 
             PTRY0PData opd2 = new PTRY0PData();
             opd2.Y0KYCD = "070";
@@ -83,7 +83,7 @@ namespace DefectDBManager
             opd2.LNCD = "T008";
             opd2.Y0KASS = "1375";
 
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[1].Add(opd2);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[1].Add(opd2);
 
             PTRY0PData opd3 = new PTRY0PData();
             opd3.Y0KYCD = "070";
@@ -94,7 +94,7 @@ namespace DefectDBManager
             opd3.Y0ZKNM = "NSPZ10-DZQ5473P-UHC3<PS";
             opd3.LNCD = "T023";
             opd3.Y0KASS = "1377";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[1].Add(opd3);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[1].Add(opd3);
 
             PTRY0PData opd4 = new PTRY0PData();
             opd4.Y0KYCD = "070";
@@ -105,7 +105,7 @@ namespace DefectDBManager
             opd4.Y0ZKNM = "NSPZ10-DZQ1473P-XJ1UHC3-LW";
             opd4.LNCD = "ES02";
             opd4.Y0KASS = "1369";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[1].Add(opd4);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[1].Add(opd4);
 
             PTRY0PData opd5 = new PTRY0PData();
             opd5.Y0KYCD = "020";
@@ -116,7 +116,7 @@ namespace DefectDBManager
             opd5.Y0ZKNM = "PSR 50 W 0-96(1350X1(6FP1450";
             opd5.LNCD = "T131";
             opd5.Y0KASS = "6243";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[2].Add(opd5);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[2].Add(opd5);
 
             PTRY0PData opd6 = new PTRY0PData();
             opd6.Y0KYCD = "070";
@@ -127,7 +127,7 @@ namespace DefectDBManager
             opd6.Y0ZKNM = "PSZ 50 35-85(1260";
             opd6.LNCD = "S004";
             opd6.Y0KASS = "6605";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[2].Add(opd6);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[2].Add(opd6);
 
             PTRY0PData opd7 = new PTRY0PData();
             opd7.Y0KYCD = "070";
@@ -138,7 +138,7 @@ namespace DefectDBManager
             opd7.Y0ZKNM = "DNZZ5473P-UHC3-098B(SL(1270X1-1230-WET-T";
             opd7.LNCD = "S101";
             opd7.Y0KASS = "1404";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[2].Add(opd7);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[2].Add(opd7);
 
             PTRY0PData opd8 = new PTRY0PData();
             opd8.Y0KYCD = "070";
@@ -149,7 +149,7 @@ namespace DefectDBManager
             opd8.Y0ZKNM = "DNZZ5473P-UHC3-098B";
             opd8.LNCD = "E106";
             opd8.Y0KASS = "1415";
-            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P_Data[2].Add(opd8);
+            _TemDefects.DBManager._DbProc[0]._DbResult.PTRY0P[2].Add(opd8);
 
             _TemDefects.DBManager._DbProc[0].SearchMRKCTLMST("LHP0704-01");
         }

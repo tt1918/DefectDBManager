@@ -273,8 +273,8 @@ namespace DefectDBManager
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            int size = formDB[idx].DataBase._DbResult.INSPDAT_Data.Length;
-            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT_Data)
+            int size = formDB[idx].DataBase._DbResult.INSPDAT.Length;
+            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT)
             {
                 if (data == null) continue;
                 foreach (List<INSPDATData> items in data)
@@ -303,8 +303,8 @@ namespace DefectDBManager
             if (isNext == false) idx = 0;
             else idx = 1;
 
-            int size = formDB[idx].DataBase._DbResult.INSPDAT_Data.Length;
-            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT_Data)
+            int size = formDB[idx].DataBase._DbResult.INSPDAT.Length;
+            foreach (List<List<INSPDATData>> data in formDB[idx].DataBase._DbResult.INSPDAT)
             {
                 if (data == null) continue;
                 foreach (List<INSPDATData> items in data)
@@ -352,7 +352,7 @@ namespace DefectDBManager
 
             #region Area Del Data 표시 영역
             Dictionary<string, List<string>> dicAreaDel = new Dictionary<string, List<string>>();
-            foreach(AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL_Data)
+            foreach(AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL.Data)
             {
                 if(dicAreaDel.ContainsKey(aREADELData.LOTNO))
                 {
@@ -386,7 +386,7 @@ namespace DefectDBManager
                     for (int j = 0; j < data.Count; j++)
                     {
                         delCnt = 0;
-                        foreach (AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL_Data)
+                        foreach (AREADELData aREADELData in _DbProc[idx]._DbResult.AREADEL.Data)
                         {
                             if (keys[i] == aREADELData.LOTNO && data[j] == aREADELData.BCNO)
                                 delCnt++;

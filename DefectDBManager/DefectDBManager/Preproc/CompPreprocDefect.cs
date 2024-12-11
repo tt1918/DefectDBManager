@@ -13,8 +13,9 @@ namespace DefectDBManager
 {
     public delegate void DelegateAddPreprocLotData(string lncd, PreprocLot preprocLot);
 
-    public sealed class ComparePreprocData : IDisposable
+    public sealed class CompPreprocDefect : IDisposable
     {
+        #region Event
         // 상위 이벤트 보고 
         // 오늘자 생산 예정 PTRY0P 탐색
         public event DelegateEvent OnEndTodayProductSearching = null;
@@ -25,10 +26,12 @@ namespace DefectDBManager
         // 프로세스 상에 발생하는 이벤트 보고용
         public event DelegateProcessEvent OnProcessEvent = null;
         // MKCD 모델 요청용. 요청한 모델을 이용하여 데이터를 탐색한다. 
-        public event DelegateRequestMKCD_ModelName OnRequestMKCD_ModelName=null;
+        public event DelegateRequestMKCD_ModelName OnRequestMKCD_ModelName = null;
         // 랏 검색 결과를 상위 저장소로 전달하도록 함
         public event DelegateAddPreprocLotData OnAddPreprocLotData = null;
+        #endregion Event
 
+        #region Param
         /// <summary>
         /// DB Query 및 탐색
         /// </summary>
@@ -38,17 +41,17 @@ namespace DefectDBManager
         /// DB 접근
         /// </summary>
         public OracleDbConnection _DbConn;
-        
+
         /// <summary>
         /// Destination configuration
         /// </summary>
         public DestConfig _DestConfig;
-        
+
         /// <summary>
         /// Code configuration
         /// </summary>
         public CodeConfig _CodeConfig;
-        
+
         /// <summary>
         /// Data 탐색 옵션
         /// </summary>
@@ -64,9 +67,23 @@ namespace DefectDBManager
         /// </summary>
         private bool _enaDefectSearch = false;
 
-        private MRKCTLMSTParam _mkcdParam=null;
+        public MrkctlmstMaterial MRKCTLMST_Material
+        {
+            get { return _mrkctlmstMaterial; }
+            set { _mrkctlmstMaterial = value; }
+        }
+        private MrkctlmstMaterial _mrkctlmstMaterial = null;
 
-        public ComparePreprocData(object parent)
+        public PrepocLotManager LotManager
+        {
+            get { return _lotManager; }
+            set { _lotManager = value; }
+        }
+        private PrepocLotManager _lotManager = null;
+        #endregion Param
+
+
+        public CompPreprocDefect(object parent)
         {
             this.parent = parent;
 
@@ -99,7 +116,7 @@ namespace DefectDBManager
             this.parent = parent;
         }
 
-        ~ComparePreprocData()
+        ~CompPreprocDefect()
         {
             if (this.disposed)
                 return;
@@ -134,112 +151,51 @@ namespace DefectDBManager
             }
         }
 
-        private void searchLot(object obj)
+        #region 공정 별 생산 리스트 취합.
+        public void SearchLotList()
         {
-            string lotID = _DBProc.SearchLotName;
+            LotManager.ProdList.Clear();
 
-            // 오늘자 PTRY0P 탐색 -> INSPDAT 탐색
-            int firstIdx = -1;
-            
-            if (_DBProc.SearchTodayPTRY0PList(out firstIdx) == true)
+            DateTime stTime = LotManager.StartTime ;
+            DateTime edTime = LotManager.EndTime ;
+            foreach (var data in LotManager.ProcLNCD.Info)
             {
-                // 검사 완료 처리
-                OnEndTodayProductSearching?.Invoke();
+                if (data.Use == false) continue;
+
+                if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
+                {
+                    List<PTRY0PData> list = new List<PTRY0PData>();
+
+                    foreach(var ptry0p in _DBProc.PTRY0PList_Data)
+                        list.Add(ptry0p.Clone());
+
+                    // 리스트 데이터 추가
+                    LotManager.ProdList.Add(data.Name, list);
+                }
             }
-        }
-
-        public void SearchLot(string lncd, string lotName)
-        {
-            _DBProc.SearchLotName = lotName;
-            _DBProc.SearchY0LNCD = lncd;
-
-
-            //OnAddPreprocLotData?.Invoke(lncd, );
-        }
-
-        #region Daily Lot 탐색 후 생산 데이터 정보 확인하는 Thread
-    
-       
-        public bool SearchLotData(eDbIdWhen when, string lotName, string mkcdName)
-        {
-            bool success = true;
-            int errIdx = -1;
-
-            // 전공정 데이터 초기화 진행
-            _DBProc.ResetDataAll();
-
-            // MKCD Model 이름을 적용한다. 
-            //_DBProc[(int)when].SetMKCDModel(mkcdName);
-
-            // 랏을 탐색한다. 
-            success = _DBProc.SearchLot(lotName, true, ref errIdx);
-            if (success == true)
-            {
-                // 불량 탐색 완료 후 Flag 변경
-                _enaDefectSearch = success;
-                if (success == true) // 검색 완료 결과 보고
-                    OnProcessEvent?.Invoke((int)eEventReport.eFinishedSearchDailyLotData);
-                else // 실패 보고
-                    OnProcessEvent?.Invoke((int)eEventReport.eEmptyDailyLotFaultData);
-            }
-            
-            return success;
-        }
-
-        #endregion
-
-        #region 전공정 데이터 처리
-        /// <summary>
-        /// 각 연신/도공/ECT 별 검색한 LNCD CODE 갯수
-        /// </summary>
-        /// <returns> 각 공정  </returns>
-        public int[] GetCurrentInspDatCnt()
-        {
-            return _DBProc.GetCurrentInspDatCnt();
-        }
-
-        /// <summary>
-        /// 선택한 공정에 대한 결점 포인트 정보를 전달
-        /// </summary>
-        /// <param name="fcd"></param>
-        /// <param name="index"></param>
-        /// <param name="LNCD"></param>
-        /// <param name="pts"></param>
-        public void GetSelectedPreprocDefects(eFCD fcd, int index, out string LNCD, out List<System.Drawing.PointF> pts)
-        {
-            LNCD = "";
-            _DBProc.GetSelectedPreprocDefects(fcd, index, out LNCD, out pts);
-        }
-
-
-        /// <summary>
-        /// 연신/도공/ECT에 대한 세보 공정 라인 코드명을 돌려준다. 
-        /// 각 공정에 속하는 이름을 리스트로 전달한다.
-        /// </summary>
-        /// <param name="fcd">공정 </param>
-        /// <returns></returns>
-        public List<string> GetLineCodeName(eFCD fcd)
-        {
-            List<string> code = new List<string>();
-
-            foreach (PreProcDefect data in _DBProc.FaultData.FLTDAT[(int)fcd])
-            {
-                code.Add(data.LNCD.ToString());
-            }
-
-            return code;
         }
         #endregion
 
-        /// <summary>
-        /// MKCD 모델을 적용한다. 
-        /// </summary>
-        /// <param name="name">모델 이름</param>
-        /// <returns></returns>
-        public void SetMKCDModel(string name)
+
+        #region 결점 데이터 검색
+        public void SearchDefectData(string lncd, string lotName)
         {
-            _DBProc.SetMKCDModel(name);
-            OnUpdateMKCD_ModelName?.Invoke();
+            int error=-1;
+            bool usemkcdModel = LotManager.UseMrkctlmstModel;
+            try
+            {
+                PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
+
+                if (lot == null) return;
+
+                LotManager.AddLot(lncd, lot);
+            }
+            catch
+            {
+
+            }
         }
+
+        #endregion
     }
 }

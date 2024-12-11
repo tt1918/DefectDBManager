@@ -435,7 +435,7 @@ namespace DefectDBManager
                 if (DataBase.DbOption.isLoadCSV == false)
                 {
                     int count = System.Enum.GetValues(typeof(eFCD)).Length;
-                    List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT_Data;
+                    List<List<INSPDATData>>[] data = DataBase._DbResult.INSPDAT;
 
                     // 리스트 초기화는 따로 불러서 처리
 
@@ -555,7 +555,7 @@ namespace DefectDBManager
         private void makePTRYLPListViewData()
         {
             PTRYLP_LV_Data.Data.Clear();
-            foreach (PTRYLPdata data in DataBase._DbResult.PTRLYP_Data)
+            foreach (PTRYLPdata data in DataBase._DbResult.PTRLYP.Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(6);
                 bufData.items[0] = data.YLMLOT;
@@ -613,11 +613,11 @@ namespace DefectDBManager
         private void makePTRY0PListViewData()
         {
             PTRY0P_LV_Data.Data.Clear();
-            List<PTRY0PData>[] tmpData = DataBase._DbResult.PTRY0P_Data;
+            PTRY0PList[] tmpData = DataBase._DbResult.PTRY0P;
             int cnt = tmpData.Length;
             for (int i = 0; i < cnt; i++)
             {
-                foreach (PTRY0PData data in tmpData[i])
+                foreach (PTRY0PData data in tmpData[i].Data)
                 {
                     DBListViewBuf bufData = new DBListViewBuf(5);
                     bufData.items[0] = data.Y0ZKNM;
@@ -682,7 +682,7 @@ namespace DefectDBManager
             // 리스트 초기화는 따로
             if (DataBase.DbOption.searchOP.useDefectEdit == false)
             {
-                foreach (MRKCTLMSTData data in DataBase._DbResult.MRKCTLMST_Data)
+                foreach (MRKCTLMSTData data in DataBase._DbResult.MRKCTLMST.Data)
                 {
                     DBListViewBuf bufData = new DBListViewBuf(4);
                     bufData.items[0] = data.LNCD;
@@ -791,11 +791,11 @@ namespace DefectDBManager
 
         private void makeINSPDATListView()
         {
-            if (DataBase._DbResult.INSPDAT_Data == null) return;
+            if (DataBase._DbResult.INSPDAT == null) return;
             try
             {
                 INSPDAT_LV_Data.Data.Clear();
-                foreach (List<List<INSPDATData>> data in DataBase._DbResult.INSPDAT_Data)
+                foreach (List<List<INSPDATData>> data in DataBase._DbResult.INSPDAT)
                 {
                     if (data == null) continue;
                     foreach (List<INSPDATData> items in data)
@@ -2101,17 +2101,17 @@ namespace DefectDBManager
             {
                 PTRY0PData data = new PTRY0PData();
                 data.Y0KLOT = $"{i}";
-                DataBase._DbResult.PTRY0P_Data[0].Add(data);
+                DataBase._DbResult.PTRY0P[0].Add(data);
             }
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             int queryCount = 0;
             for (int i = 0; i < count; i++)
             {
-                for (int j = 0; j < DataBase._DbResult.PTRY0P_Data[i].Count; j++)
+                for (int j = 0; j < DataBase._DbResult.PTRY0P[i].Count; j++)
                 {
                     QueryMsg.MRKCTLMST_DE_Query msg = new QueryMsg.MRKCTLMST_DE_Query();
-                    msg.Y0KLOT = DataBase._DbResult.PTRY0P_Data[i][j].Y0KLOT;
+                    msg.Y0KLOT = DataBase._DbResult.PTRY0P[i][j].Y0KLOT;
                     msg.MKCD = unit.MKCD;
                     MRKCTLMST_DE_Data de_data = new MRKCTLMST_DE_Data();
                     if (cbUseES.Checked == true && i == (int)eFCD.ES)

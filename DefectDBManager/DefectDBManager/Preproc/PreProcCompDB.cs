@@ -44,11 +44,11 @@ namespace DefectDBManager
         private Option dbOption;
 
         // 당일 생산할 PTRY0P 데이터
-        public List<PTRY0PData> PTRY0P_Today_Data { get; private set; }
+        public List<PTRY0PData> PTRY0PList_Data { get; private set; }
 
         public DbSearchResult _DbResult { get; set; }
 
-        public PrePocResultData FaultData { get; set; }
+        public PreProcResultData FaultData { get; set; }
 
         public IRollDefectInfo _RollDefectInfo { get; set; }
         public CSV_DEFECT_HEADER _CsvDefectHeader = null;
@@ -81,7 +81,7 @@ namespace DefectDBManager
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();
 
-            PTRY0P_Today_Data = new List<PTRY0PData>();
+            PTRY0PList_Data = new List<PTRY0PData>();
 
             // Check MKCD Model Folder 
             if (Directory.Exists(Define.MKCDModelPath) == false)
@@ -141,6 +141,74 @@ namespace DefectDBManager
             return nNewCnt;
         }
 
+        public bool SearchPTRYOPList(string lncd, DateTime startTime, DateTime endTime)
+        {
+            // 연결 확인
+            if (conn?.IsConnected() == false) return false;
+
+            try
+            {
+                _LOG.Lot = $"[{lncd}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+
+                // Daily Lot DATA 내용을 초기화 한다 
+                PTRY0PList_Data.Clear();
+
+                DB_Progress.ResetAll();
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRY0P_TODAY;
+
+                QueryMsg.PTRY0PList_Query ptry0p = new QueryMsg.PTRY0PList_Query();
+
+                //////////////////////////////////////////////////////
+                // 해당 LNCD는 상위에서 입력받은 LNCD임
+                // 검색 시간은 찾고자 하는 검색 시간대를 입력함.
+                ptry0p.Y0LNCD = lncd;
+                ptry0p.DateCurrent = startTime;
+                ptry0p.DateNext = endTime;
+                ///////////////////////////////////////////////////////
+
+                string query = ptry0p.GetQuery();
+                _LOG.WriteLoadData(query.ToString(), 0, $"[{lncd}] PTRY0PList", 0);
+
+                if (query == "")
+                {
+                    Log.Write($"[Error] DB Serach [{lncd}] PTRY0PList query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                }
+
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            PTRY0PData data = new PTRY0PData();
+                            data.Parse(reader);
+
+                            // 우선 전체 데이터 넣는다.
+                            PTRY0PList_Data.Add(data);
+
+                            string logData = string.Format($"{PTRY0PList_Data.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, 0, "PTRY0P_Today", 0);
+                        }
+                        DB_Progress.Set(eNittoDBProgress.PTRY0P);
+                    }
+                }
+
+                if (PTRY0PList_Data.Count == 0)
+                    return false;
+
+                // 이름으로 랏 정렬을 한다.
+                PTRY0PList_Data = PTRY0PList_Data.OrderBy(p => p.Y0KLOT).ToList();
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach PTRY0P_TODAY Data error message : [{ex.Message}]");
+                return false;
+            }
+
+            return true;
+        }
+
         public bool SearchTodayPTRY0PList(out int firstIdx)
         {
             firstIdx = -1;
@@ -152,12 +220,12 @@ namespace DefectDBManager
                 _LOG.Lot = "PTRY0P_Today_" + DateTime.Today.ToString("yyyyMMdd");
 
                 // Daily Lot DATA 내용을 초기화 한다 
-                PTRY0P_Today_Data.Clear();
+                PTRY0PList_Data.Clear();
 
                 DB_Progress.ResetAll();
                 DB_Progress._CurrentStep = eNittoDBProgress.PTRY0P_TODAY;
 
-                QueryMsg.PTRY0P_Today_Query ptry0p = new QueryMsg.PTRY0P_Today_Query();
+                QueryMsg.PTRY0PList_Query ptry0p = new QueryMsg.PTRY0PList_Query();
                 
                 // 해당 LNCD는 현재 공정 LINE CODE임
                 ptry0p.Y0LNCD = destConfig.MainLNCD;
@@ -181,31 +249,31 @@ namespace DefectDBManager
                             data.Parse(reader);
 
                             // 우선 전체 데이터 넣는다.
-                            PTRY0P_Today_Data.Add(data);
+                            PTRY0PList_Data.Add(data);
 
-                            string logData = string.Format($"{PTRY0P_Today_Data.Count}\t-\t{data.ToString()}");
+                            string logData = string.Format($"{PTRY0PList_Data.Count}\t-\t{data.ToString()}");
                             _LOG.WriteLoadData(logData, 0, "PTRY0P_Today", 0);
                         }
                         DB_Progress.Set(eNittoDBProgress.PTRY0P);
                     }
                 }
 
-                if (PTRY0P_Today_Data.Count == 0)
+                if (PTRY0PList_Data.Count == 0)
                     return false;
 
                 // 이름으로 랏 정렬을 한다.
-                PTRY0P_Today_Data = PTRY0P_Today_Data.OrderBy(p => p.Y0KLOT).ToList();
+                PTRY0PList_Data = PTRY0PList_Data.OrderBy(p => p.Y0KLOT).ToList();
 
                 // 데이터 초기화
                 ResetDataAll();
 
                 // 생산하지 않은 맨 처음 랏을 가지고 온다. 
                 PTRY0PData firstItem=null;
-                for (int i=-0; i< PTRY0P_Today_Data.Count; i++)
+                for (int i=-0; i< PTRY0PList_Data.Count; i++)
                 {
-                    if (PTRY0P_Today_Data[i].Y0KKOL.Substring(8) == "000000" && PTRY0P_Today_Data[i].Y0KSOL.Substring(8) == "000000")
+                    if (PTRY0PList_Data[i].Y0KKOL.Substring(8) == "000000" && PTRY0PList_Data[i].Y0KSOL.Substring(8) == "000000")
                     {
-                        firstItem = PTRY0P_Today_Data[i];
+                        firstItem = PTRY0PList_Data[i];
                         firstIdx = i;
                         break;
                     }
@@ -241,7 +309,7 @@ namespace DefectDBManager
 
                     MRKCTLMST_MODEL mKCD_MODEL = new MRKCTLMST_MODEL();
                     mKCD_MODEL.Name = MKCD_Param.Name;
-                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST.Data)
                         mKCD_MODEL.Add(data.LNCD, new MRKCTLMST_Data(data));
 
                     MKCD_Model = mKCD_MODEL;
@@ -256,7 +324,7 @@ namespace DefectDBManager
                     if (success == true)
                     {
                         bool isUpdated = false;
-                        foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
+                        foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST.Data)
                         {
                             if (MKCD_Model.Param.ContainsKey(data.LNCD) == false)
                             {
@@ -329,6 +397,138 @@ namespace DefectDBManager
             return isResult;
         }
 
+        public PreprocLot SearchLot(string lotID, bool useMkcdModel, bool bMsgOut, ref int errOut)
+        {
+            PreprocLot preprcLot = new PreprocLot();
+            preprcLot.LotName = lotID;
+
+            // 연결 확인
+            if (conn?.IsConnected() == false) return preprcLot;
+
+            bool success = false;
+            try
+            {
+                lotID = lotID.ToUpper();
+
+                this.SearchLotName = lotID;
+                DB_Progress._CurrentStep = eNittoDBProgress.PTRYLP;
+                if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")     dbOption.useKT = true;
+                else                                                                    dbOption.useKT = false;
+
+                // 이전 랏데이터 확인해서 스플라이스 처리해야 함
+                int newLotCnt = GetNextLotCnt(lotID);
+                _LOG.DeleteFolder(lotID);
+                _LOG.Lot = lotID;
+                DB_Progress.ResetAll();
+
+                QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
+                string query = ptrylp.GetQuery();
+                long dbCnt = 0;
+                _LOG.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
+
+                if (query == "")
+                {
+                    errOut = 1;
+                    Log.Write($"[Error] DB Serach PTRYLP query is empty.");
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                    return preprcLot;
+                }
+
+                using (var comm = new OracleCommand(query, conn.Connection))
+                {
+                    using (var reader = comm.ExecuteReader())
+                    {
+                        dbCnt = reader.RowSize;
+                        DB_Progress.Set(eNittoDBProgress.PTRYLP);
+                        while (reader.Read())
+                        {
+                            PTRYLPdata data = new PTRYLPdata();
+                            data.Parse(reader);
+                            _DbResult.PTRLYP.Add(data);
+                            string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
+                        }
+
+                        DB_Progress.Complete(eNittoDBProgress.PTRYLP);
+                        success = true;
+                    }
+
+                    // preprcLot 로 복사
+                    preprcLot.PTRLYP_Data.Copy(_DbResult.PTRLYP);
+                }
+
+                if (success == false)
+                {
+                    DB_Progress.SetError(eNittoDBProgress.PTRYLP);
+                    errOut = 2;
+                    return preprcLot;
+                }
+                success = SearchXOFSMST(lotID);
+                if (success == false) { errOut = 3; return preprcLot; }
+                else                  preprcLot.XOFSMST_Data.Copy(_DbResult.XOFSMST);
+
+                success = SearchPTRY0P(lotID);
+                if (success == false) { errOut = 4; return preprcLot; }
+                else
+                {
+                    int idxCnt = 0;
+                    foreach (var opData in _DbResult.PTRY0P)
+                    {
+                        PTRY0PList tmpOpData = new PTRY0PList();
+
+                        foreach(var ipDatum in opData.Data)
+                            tmpOpData.Add(ipDatum.Clone());
+
+                        preprcLot.PTRY0P_Data[idxCnt] = tmpOpData;
+                        idxCnt++;
+                    }
+                }
+
+                if (updateDBMKCD(lotID, useMkcdModel))
+                {
+                    errOut = 5;
+                    return preprcLot;
+                }
+
+                success = SearchINSPDAT(lotID);
+                if (success == false) { errOut = 6; return preprcLot; }
+                else
+                {
+                    int idxCnt = 0;
+                    foreach( var inspData in _DbResult.INSPDAT)
+                    {
+                        List<List<INSPDATData>> tmpInspData = new List<List<INSPDATData>>();
+
+                        foreach(var inspData1 in inspData)
+                        {
+                            List<INSPDATData> tmpInspData1 = new List<INSPDATData>();
+
+                            foreach (var inspData2 in inspData1)
+                                tmpInspData1.Add(inspData2.Clone());
+
+                            tmpInspData.Add(tmpInspData1);
+                        }
+
+
+                        preprcLot.INSPDAT_Data[idxCnt] = tmpInspData;
+                        idxCnt++;
+                    }
+                }
+
+                success = SearchFLTDAT();
+                if (success == false) { errOut = -7; return preprcLot; }
+                else    preprcLot.SetFaultData(FaultData.Copy());
+
+
+                return preprcLot;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
+                return preprcLot;
+            }
+        }
+
         public bool SearchLot(string lotID, bool bMsgOut, ref int errOut)
         {
             // 연결 확인
@@ -374,8 +574,8 @@ namespace DefectDBManager
                         {
                             PTRYLPdata data = new PTRYLPdata();
                             data.Parse(reader);
-                            _DbResult.PTRLYP_Data.Add(data);
-                            string logData = string.Format($"{_DbResult.PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                            _DbResult.PTRLYP.Add(data);
+                            string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
                             _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
                         }
 
@@ -401,51 +601,7 @@ namespace DefectDBManager
                 success = applyMKCD_Model();
                 if (success == false) { errOut = 5; return false; }
 #else
-                
-                // 1. 마킹컨트롤 마스터 데이터 확인
-                success = applyMKCD_Model();
-                // 2-1. 모델 없음. 현재 랏 기준으로 모델 탐색 및 모델 업데이트 처리.
-                if (success == false)
-                {
-                    //마킹 컨트롤 마스터 데이터 검색
-                    success = SearchMRKCTLMST(lotID);
-                    if (success == false) { errOut = 5; return false; }
-
-                    MRKCTLMST_MODEL mKCD_MODEL = new MRKCTLMST_MODEL();
-                    mKCD_MODEL.Name = MKCD_Param.Name;
-                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                        mKCD_MODEL.Add(data.LNCD, new MRKCTLMST_Data(data));
-
-                    MKCD_Model = mKCD_MODEL;
-
-                    //2-2. 모델 저장하는 기능 추가되어야 함. 
-                    MKCD_Model.Save();
-                }
-                else
-                {
-                    //마킹 컨트롤 마스터 데이터 검색
-                    success = SearchMRKCTLMST(lotID);
-                    if (success == true)
-                    {
-                        bool isUpdated = false;
-                        foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST_Data)
-                        {
-                            if (MKCD_Model.Param.ContainsKey(data.LNCD) == false)
-                            {
-                                MKCD_Model.Add(data.LNCD, new MRKCTLMST_Data(data));
-                                isUpdated = true;
-                            }
-                            else if (MKCD_Model.Param[data.LNCD].Data.ContainsKey(data.FLTID) == false)
-                            {
-                                MKCD_Model.Add(data.LNCD, new MRKCTLMST_Data(data));
-                                isUpdated = true;
-                            }
-                        }
-
-                        if (isUpdated == true)
-                            MKCD_Model.Save();
-                    }
-                }
+                if(updateDBMKCD(lotID, true)) { errOut = 5; return false; }    
 #endif
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return false; }
@@ -464,6 +620,61 @@ namespace DefectDBManager
                 Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
                 return false;
             }
+        }
+
+        public bool updateDBMKCD(string lotID, bool useMkcdModel, bool isEventSave=false)
+        {
+            bool success=false;
+            // 1. 마킹컨트롤 마스터 데이터 확인
+            if (useMkcdModel == true)
+                success = applyMKCD_Model();
+
+            // 2-1. 모델 없음. 현재 랏 기준으로 모델 탐색 및 모델 업데이트 처리.
+            if (success == false)
+            {
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(lotID);
+                if (success == false)  return false; 
+
+                MRKCTLMST_MODEL mKCD_MODEL = new MRKCTLMST_MODEL();
+                mKCD_MODEL.Name = MKCD_Param.Name;
+                foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST.Data)
+                    mKCD_MODEL.Add(data.LNCD, new MRKCTLMST_Data(data));
+
+                MKCD_Model = mKCD_MODEL;
+
+                //2-2. 모델 저장하는 기능 추가되어야 함. 
+                if (isEventSave==false) MKCD_Model.Save();
+            }
+            else
+            {
+                //마킹 컨트롤 마스터 데이터 검색
+                success = SearchMRKCTLMST(lotID);
+                if (success == true)
+                {
+                    bool isUpdated = false;
+                    foreach (MRKCTLMSTData data in _DbResult.MRKCTLMST.Data)
+                    {
+                        if (MKCD_Model.Param.ContainsKey(data.LNCD) == false)
+                        {
+                            MKCD_Model.Add(data.LNCD, new MRKCTLMST_Data(data));
+                            isUpdated = true;
+                        }
+                        else if (MKCD_Model.Param[data.LNCD].Data.ContainsKey(data.FLTID) == false)
+                        {
+                            MKCD_Model.Add(data.LNCD, new MRKCTLMST_Data(data));
+                            isUpdated = true;
+                        }
+                    }
+
+                    if (isUpdated == true)
+                    {
+                        if (isEventSave == false) MKCD_Model.Save();
+                    }
+                }
+            }
+
+            return success;
         }
 
         public bool CheckOffsetError()
@@ -521,10 +732,10 @@ namespace DefectDBManager
                         {
                             XOFSMSTData data = new XOFSMSTData();
                             data.Parse(reader);
-                            _DbResult.XOFSMST_Data.Add(data);
+                            _DbResult.XOFSMST.Add(data);
 
-                            logData = string.Format($"{_DbResult.XOFSMST_Data.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, _DbResult.XOFSMST_Data.Count, "XOFSMST", 0.0);
+                            logData = string.Format($"{_DbResult.XOFSMST.Count}\t-\t{data.ToString()}");
+                            _LOG.WriteLoadData(logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
                         }
                     }
                 }
@@ -565,7 +776,7 @@ namespace DefectDBManager
                 {
                     DB_Progress._CurrentStep = ((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                     procStep = i;
-                    int PTRY0Pcnt = _DbResult.PTRY0P_Data[i].Count;
+                    int PTRY0Pcnt = _DbResult.PTRY0P[i].Count;
                     DB_Progress.Reset((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
                     _DbResult.CheckDicMRKCTLMSTSize(PTRY0Pcnt, i);
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.MRKCTLMST_ES + i));
@@ -574,10 +785,10 @@ namespace DefectDBManager
                     {
                         _DbResult.ClearDicMRKCTLMST(i, j);
 
-                        if (_DbResult.PTRY0P_Data[i][j].Y0KLOT.Length > 0)
+                        if (_DbResult.PTRY0P[i][j].Y0KLOT.Length > 0)
                         {
                             QueryMsg.MRKCTLMST_Query msg = new QueryMsg.MRKCTLMST_Query();
-                            msg.Y0KLOT = _DbResult.PTRY0P_Data[i][j].Y0KLOT;
+                            msg.Y0KLOT = _DbResult.PTRY0P[i][j].Y0KLOT;
                             msg.MKCD = DbDestConfig.FixedMKCD;
                             //string query = msg.GetQueryAll((eFCD)i);
                             // 코레노 요청으로 출하처 추가하여 사용하도록 수정함. 
@@ -601,10 +812,10 @@ namespace DefectDBManager
                                     {
                                         MRKCTLMSTData data = new MRKCTLMSTData();
                                         data.Parse(reader);
-                                        _DbResult.MRKCTLMST_Data.Add(data);
+                                        _DbResult.MRKCTLMST.Add(data);
 
-                                        logData = string.Format($"{_DbResult.MRKCTLMST_Data.Count}\t-\t{data.ToString()}");
-                                        _LOG.WriteLoadData(logData, _DbResult.MRKCTLMST_Data.Count, "MRKCTLMST", 0.0);
+                                        logData = string.Format($"{_DbResult.MRKCTLMST.Count}\t-\t{data.ToString()}");
+                                        _LOG.WriteLoadData(logData, _DbResult.MRKCTLMST.Count, "MRKCTLMST", 0.0);
                                         // 조건문 추가해야 함
                                         _DbResult.AddDicMRKCTLMST(i, j, data);
 
@@ -667,8 +878,8 @@ namespace DefectDBManager
                         {
                             PTRYLPdata data = new PTRYLPdata();
                             data.Parse(reader);
-                            _DbResult.PTRLYP_Data.Add(data);
-                            string logData = string.Format($"{_DbResult.PTRLYP_Data.Count}\t-\t{data.ToString()}");
+                            _DbResult.PTRLYP.Add(data);
+                            string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
                             _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
                         }
 
@@ -699,7 +910,7 @@ namespace DefectDBManager
                 QueryMsg.PTRY0P_Query msg = new QueryMsg.PTRY0P_Query(lotID);
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
-                string query = msg.GetQuery(_DbResult.PTRLYP_Data);
+                string query = msg.GetQuery(_DbResult.PTRLYP);
                 _LOG.WriteLoadData(query, 0, "PTRY0P", 0.0);
 
                 if (query == "")
@@ -743,22 +954,22 @@ namespace DefectDBManager
                             // 연신
                             if (nY0PPCD == 100)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ES].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.ES].Count;
+                                _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
                             }
 
                             // 도공
                             if (nY0PPCD == 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.TG].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.TG].Count;
+                                _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
                             }
 
                             // 그외
                             if (nY0PPCD != 100 && nY0PPCD != 400)
                             {
-                                _DbResult.PTRY0P_Data[(int)eFCD.ETC].Add(data);
-                                logCnt = _DbResult.PTRY0P_Data[(int)eFCD.ETC].Count;
+                                _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                                logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
                             }
 
                             logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
@@ -802,15 +1013,15 @@ namespace DefectDBManager
 
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
 
-                    int PTRY0Pcnt = _DbResult.PTRY0P_Data[idx].Count;
+                    int PTRY0Pcnt = _DbResult.PTRY0P[idx].Count;
 
                     for (int i = 0; i < PTRY0Pcnt; i++)
                     {
                         string query = "";
                         QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
-                        msg.LNCD = _DbResult.PTRY0P_Data[idx][i].LNCD;
-                        msg.SetTime(_DbResult.PTRY0P_Data[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
-                        msg.SetTime(_DbResult.PTRY0P_Data[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
+                        msg.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
+                        msg.SetTime(_DbResult.PTRY0P[idx][i].StartTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeStart);
+                        msg.SetTime(_DbResult.PTRY0P[idx][i].EndTime, QueryMsg.INSPDATA_Query.eTargetTime.TimeEnd);
 
                         query = msg.GetQuery(1, dbOption);
                         
@@ -837,8 +1048,8 @@ namespace DefectDBManager
                                 {
 
                                     INSPDATData data = new INSPDATData();
-                                    data.Y0KLOT = _DbResult.PTRY0P_Data[idx][i].Y0KLOT;
-                                    data.LNCD = _DbResult.PTRY0P_Data[idx][i].LNCD;
+                                    data.Y0KLOT = _DbResult.PTRY0P[idx][i].Y0KLOT;
+                                    data.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
                                     data.Parse(reader);
 
                                     // 리스트에 데이터 추가함
@@ -849,7 +1060,7 @@ namespace DefectDBManager
                             }
                         }
                         // 최종 데이터 입력
-                        _DbResult.INSPDAT_Data[idx].Add(inspDataList);
+                        _DbResult.INSPDAT[idx].Add(inspDataList);
                     }
 
                     DB_Progress.Complete((eNittoDBProgress)((int)eNittoDBProgress.INSPDAT_ES + idx));
@@ -901,7 +1112,7 @@ namespace DefectDBManager
 
             bool bValid = false;
 
-            FaultData = new PrePocResultData();
+            FaultData = new PreProcResultData();
             FaultData.IsPreProc = this.IsPreProcComp;
 
             try
@@ -1087,7 +1298,7 @@ namespace DefectDBManager
             int added = 0;
             for (int i = 0; i < count; i++)
             {
-                foreach (List<INSPDATData> data in _DbResult.INSPDAT_Data[i])
+                foreach (List<INSPDATData> data in _DbResult.INSPDAT[i])
                 {
                     foreach (INSPDATData datum in data)
                     {
@@ -1124,7 +1335,7 @@ namespace DefectDBManager
             // 각 공정별로 탐색
             for (int i = 0; i < count; i++)
             {
-                foreach (List<INSPDATData> data in _DbResult.INSPDAT_Data[i])
+                foreach (List<INSPDATData> data in _DbResult.INSPDAT[i])
                 {
                     foreach (INSPDATData datum in data)
                     {

@@ -17,14 +17,15 @@ namespace DefectDBManager
         /// </summary>
         public string LotName { get; set; }
 
-        public List<PTRYLPdata> PTRLYP_Data { get; private set; }
-        public List<PTRY0PData>[] PTRY0P_Data { get; private set; }
+        public PTRYLPList PTRLYP_Data { get; private set; }
+        public XOFSMSTList XOFSMST_Data { get; private set; }
+        public PTRY0PList[] PTRY0P_Data { get; private set; }
         public List<List<INSPDATData>>[] INSPDAT_Data { get; private set; }
 
         /// <summary>
         /// 결점 정보 데이터
         /// </summary>
-        public PrePocResultData FaultData { get; private set; }
+        public PreProcResultData FaultData { get; private set; }
 
         /// <summary>
         /// 초기화
@@ -40,7 +41,7 @@ namespace DefectDBManager
         /// <param name="lotName"></param>
         /// <param name="dbResult"></param>
         /// <param name="fault"></param>
-        public PreprocLot(string lotName, DbSearchResult dbResult, PrePocResultData fault)
+        public PreprocLot(string lotName, DbSearchResult dbResult, PreProcResultData fault)
         {
             Init();
 
@@ -51,12 +52,14 @@ namespace DefectDBManager
 
         public void Init()
         {
-            PTRLYP_Data = new List<PTRYLPdata>();
+            PTRLYP_Data = new PTRYLPList();
+
+            XOFSMST_Data = new XOFSMSTList();
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            PTRY0P_Data = new List<PTRY0PData>[count];
+            PTRY0P_Data = new PTRY0PList[count];
             for (int i = 0; i < count; i++)
-                PTRY0P_Data[i] = new List<PTRY0PData>();
+                PTRY0P_Data[i] = new PTRY0PList();
 
             INSPDAT_Data = new List<List<INSPDATData>>[count];
             for (int i = 0; i < count; i++)
@@ -69,19 +72,18 @@ namespace DefectDBManager
         /// <param name="result"></param>
         public void SetQueryResult(DbSearchResult result)
         {
-            foreach(PTRYLPdata lpData in result.PTRLYP_Data)
-                PTRLYP_Data.Add(lpData.Clone());
+            PTRLYP_Data.Copy(result.PTRLYP);
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             for (int i = 0; i < count; i++)
             {
-                foreach (var data in result.PTRY0P_Data[i])
+                foreach (var data in result.PTRY0P[i].Data)
                     PTRY0P_Data[i].Add(data.Clone());
             }
 
             for(int i=0; i<count; i++)
             {
-                foreach(var data in result.INSPDAT_Data)
+                foreach(var data in result.INSPDAT)
                 {
                     List<List<INSPDATData>> inspList = new List<List<INSPDATData>>(); 
                     foreach(var data1 in data)
@@ -99,9 +101,9 @@ namespace DefectDBManager
 
         }
 
-        public void SetFaultData(PrePocResultData data)
+        public void SetFaultData(PreProcResultData data)
         {
-
+            FaultData = data;
         }
     }
 }
