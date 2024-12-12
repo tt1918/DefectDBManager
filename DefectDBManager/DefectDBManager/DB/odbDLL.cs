@@ -16,6 +16,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using System.Data;
 using System.Threading;
+using DefectDBManager.DB;
 
 namespace DefectDBManager
 {
@@ -211,7 +212,7 @@ namespace DefectDBManager
         }
         private Param currentParam;
 
-        public DbSearchResult _DbResult
+        public DbLotInfo _DbResult
         {
             get;
             set;
@@ -240,7 +241,7 @@ namespace DefectDBManager
         {
             owner = parent;
             conn = dbconn;
-            _DbResult = new DbSearchResult();
+            _DbResult = new DbLotInfo();
             DB_Progress = new NittoDBProgress();
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();

@@ -16,6 +16,7 @@ using System.Windows.Forms.PropertyGridInternal;
 using System.Globalization;
 using static DefectDBManager.QueryMsg;
 using System.Security.Cryptography.X509Certificates;
+using DefectDBManager.DB;
 
 namespace DefectDBManager
 {
@@ -119,7 +120,7 @@ namespace DefectDBManager
         #region ListViewData
         public ListViewData BCNO_LV_Data;
         public ListViewData PTRYLP_LV_Data;
-        public ListViewData PTRY0P_TODAY_LV_Data;
+        public ListViewData PTRY0P_TODAY_LV;
         public ListViewData PTRY0P_LV_Data;
         public ListViewData INSPDAT_LV_Data;
 
@@ -127,7 +128,7 @@ namespace DefectDBManager
         {
             BCNO_LV_Data = new ListViewData();
             PTRYLP_LV_Data = new ListViewData();
-            PTRY0P_TODAY_LV_Data = new ListViewData();
+            PTRY0P_TODAY_LV = new ListViewData();
             PTRY0P_LV_Data = new ListViewData();
             INSPDAT_LV_Data = new ListViewData();
         }
@@ -136,7 +137,7 @@ namespace DefectDBManager
         {
             BCNO_LV_Data.Reset();
             PTRYLP_LV_Data.Reset();
-            PTRY0P_TODAY_LV_Data.Reset();
+            PTRY0P_TODAY_LV.Reset();
             PTRY0P_LV_Data.Reset();
             INSPDAT_LV_Data.Reset();
         }
@@ -629,12 +630,12 @@ namespace DefectDBManager
 
         private void makePTRY0P_TODAYListViewData()
         {
-            PTRY0P_TODAY_LV_Data.Data.Clear();
+            PTRY0P_TODAY_LV.Data.Clear();
 
             if (PreCompDB == null)
                 return;
             
-            foreach (PTRY0PData data in PreCompDB.PTRY0PList_Data)
+            foreach (PTRY0PData data in PreCompDB.PTRY0PList_Data.Data)
             {
                 DBListViewBuf bufData = new DBListViewBuf(5);
                 bufData.items[0] = data.Y0KLOT;
@@ -642,7 +643,7 @@ namespace DefectDBManager
                 bufData.items[2] = data.Y0ZKNM;
                 bufData.items[3] = data.Y0KKOL;
                 bufData.items[4] = data.Y0KSOL;
-                PTRY0P_TODAY_LV_Data.Data.Add(bufData);
+                PTRY0P_TODAY_LV.Data.Add(bufData);
             }
         }
 
@@ -653,7 +654,7 @@ namespace DefectDBManager
         /// </summary>
         private void displayPTRY0P_TodayListView()
         {
-            if (PTRY0P_TODAY_LV_Data.Data == null) return;
+            if (PTRY0P_TODAY_LV.Data == null) return;
             try
             {
                 listViewPTRY0P_TODAY.BeginUpdate();
@@ -664,7 +665,7 @@ namespace DefectDBManager
 
                 if (dataSize > 0)
                 {
-                    foreach (DBListViewBuf data in PTRY0P_TODAY_LV_Data.Data)
+                    foreach (DBListViewBuf data in PTRY0P_TODAY_LV.Data)
                     {
                         ListViewItem item = new ListViewItem(data.items[0]);
                         for (int i = 1; i < dataSize; i++)

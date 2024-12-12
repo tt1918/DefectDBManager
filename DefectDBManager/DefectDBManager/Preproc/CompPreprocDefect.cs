@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.DB;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -61,11 +62,6 @@ namespace DefectDBManager
         private object parent = null;
 
         private Thread threadDBConnect = null;
-
-        /// <summary>
-        /// 가동 중 불량 검색 가능 여부 확인 Flag
-        /// </summary>
-        private bool _enaDefectSearch = false;
 
         public MrkctlmstMaterial MRKCTLMST_Material
         {
@@ -151,8 +147,32 @@ namespace DefectDBManager
             }
         }
 
+        public void SearchLotMarkDiff()
+        {
+            // LotManager의 데이터는 업데이트되어있는 상황
+            Task task = new Task(search, null);
+            task.Start();
+        }
+
+        private void search(object obj)
+        {
+            // 해당 공정에 대한 결점 정보 확인
+            searchLotList();
+
+            foreach(var list in LotManager.ProdList)
+            {
+                string lncd = list.Key;
+                foreach (var item in list.Value.Data)
+                {
+                    string lotName = item.Y0KLOT;
+                    SearchDefectData(lncd, lotName);
+                }
+            }
+        }
+
+
         #region 공정 별 생산 리스트 취합.
-        public void SearchLotList()
+        private void searchLotList()
         {
             LotManager.ProdList.Clear();
 
@@ -164,9 +184,9 @@ namespace DefectDBManager
 
                 if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
                 {
-                    List<PTRY0PData> list = new List<PTRY0PData>();
+                    PTRY0PList list = new PTRY0PList();
 
-                    foreach(var ptry0p in _DBProc.PTRY0PList_Data)
+                    foreach(var ptry0p in _DBProc.PTRY0PList_Data.Data)
                         list.Add(ptry0p.Clone());
 
                     // 리스트 데이터 추가
@@ -192,7 +212,6 @@ namespace DefectDBManager
             }
             catch
             {
-
             }
         }
 

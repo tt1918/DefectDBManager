@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using DefectDBManager.DB;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -408,9 +409,9 @@ namespace DefectDBManager
 			markingAreaDefects.Clear();
             if(dbManager._DestConfig.UseAREADEL==true)
 			{
-                List<AREADELData> delData = DBManager._DbProc[0]._DbResult.AREADEL.Data;
+                AREADELList delData = DBManager._DbProc[0]._DbResult.AREADEL;
 				int idx = 0;
-                foreach (AREADELData item in delData)
+                foreach (AREADELData item in delData.Data)
                 {
                     if (bcno != item.BCNO) continue;
 
@@ -492,7 +493,7 @@ namespace DefectDBManager
 		public void LotChange()
 		{
             dbManager._DbProc[0]._DbResult = dbManager._DbProc[1]._DbResult;
-            dbManager._DbProc[1]._DbResult = new DbSearchResult();
+            dbManager._DbProc[1]._DbResult = new DbLotInfo();
 
             if(dbManager._DbProc[1].DbOption.isLoadCSV==true)
             {

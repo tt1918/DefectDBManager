@@ -255,7 +255,6 @@ namespace DefectDBManager
                 if (_runAvailableLotCheck == false)
                     break;
 
-
                 // 오늘자 생산 정보가 탐색 인덱스보다 큰 경우 알람 처리
                 if (_DBProc[(int)eDbIdWhen.Now].PTRY0PList_Data.Count <= NextY0KLOTIdx)
                 {
@@ -433,7 +432,7 @@ namespace DefectDBManager
             //////////////////////////////////////////////////////////////////////////
             // 예약 랏 -> 현재 랏 DB 데이터 이전
             _DBProc[0]._DbResult = _DBProc[1]._DbResult;
-            _DBProc[1]._DbResult = new DbSearchResult();
+            _DBProc[1]._DbResult = new DBLotInfo.LotData();
             //////////////////////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////////////////////

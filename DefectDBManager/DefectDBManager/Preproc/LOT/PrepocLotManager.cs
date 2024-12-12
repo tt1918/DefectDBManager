@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,13 +26,13 @@ namespace DefectDBManager
         }
         private Dictionary<string, List<PreprocLot>> _lot = null;
 
-        public Dictionary<string, List<PTRY0PData>> ProdList
+        public Dictionary<string, DB.PTRY0PList> ProdList
         {
             get { return _prodList; }
             private set { _prodList = value; }
         }
 
-        private Dictionary<string, List<PTRY0PData>> _prodList = null;
+        private Dictionary<string, DB.PTRY0PList> _prodList = null;
         #endregion LOT 정보
 
         #region 공정 정보 

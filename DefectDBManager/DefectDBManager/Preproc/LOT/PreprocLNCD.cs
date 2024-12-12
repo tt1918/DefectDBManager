@@ -84,5 +84,20 @@ namespace DefectDBManager.Preproc
             string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
             System.IO.File.WriteAllText(path, jsonString);
         }
+
+        public string GetLNCD(string line)
+        {
+            string code="";
+            foreach(var item in Info)
+            {
+                if (item.Name == line)
+                {
+                    code = item.LNCD;
+                    break;
+                }
+            }
+
+            return code;
+        }
     }
 }

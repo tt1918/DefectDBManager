@@ -1,5 +1,6 @@
 ﻿#define USE_MKCD_FROM_SERVER
 
+using DefectDBManager.DB;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -44,9 +45,9 @@ namespace DefectDBManager
         private Option dbOption;
 
         // 당일 생산할 PTRY0P 데이터
-        public List<PTRY0PData> PTRY0PList_Data { get; private set; }
+        public PTRY0PList PTRY0PList_Data { get; private set; }
 
-        public DbSearchResult _DbResult { get; set; }
+        public DbLotInfo _DbResult { get; set; }
 
         public PreProcResultData FaultData { get; set; }
 
@@ -76,12 +77,12 @@ namespace DefectDBManager
         {
             owner = parent;
             conn = dbconn;
-            _DbResult = new DbSearchResult();
+            _DbResult = new DbLotInfo();
             DB_Progress = new NittoDBProgress();
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();
 
-            PTRY0PList_Data = new List<PTRY0PData>();
+            PTRY0PList_Data = new PTRY0PList();
 
             // Check MKCD Model Folder 
             if (Directory.Exists(Define.MKCDModelPath) == false)
@@ -198,7 +199,7 @@ namespace DefectDBManager
                     return false;
 
                 // 이름으로 랏 정렬을 한다.
-                PTRY0PList_Data = PTRY0PList_Data.OrderBy(p => p.Y0KLOT).ToList();
+                PTRY0PList_Data.Copy(PTRY0PList_Data.Data.OrderBy(p => p.Y0KLOT).ToList());
             }
             catch (Exception ex)
             {
@@ -262,7 +263,7 @@ namespace DefectDBManager
                     return false;
 
                 // 이름으로 랏 정렬을 한다.
-                PTRY0PList_Data = PTRY0PList_Data.OrderBy(p => p.Y0KLOT).ToList();
+                PTRY0PList_Data.Copy(PTRY0PList_Data.Data.OrderBy(p => p.Y0KLOT).ToList());
 
                 // 데이터 초기화
                 ResetDataAll();
@@ -1177,7 +1178,7 @@ namespace DefectDBManager
                                 nItemCnt++;
 
                                 PreProcDefect defectData = new PreProcDefect();
-                                PreProcMarkingData preMarkData = new PreProcMarkingData();
+                                PreprocMrkDat preMarkData = new PreprocMrkDat();
 
                                 defectData.LNCD = inspdata.LNCD;
                                 preMarkData.LNCD = inspdata.LNCD;
@@ -1229,7 +1230,7 @@ namespace DefectDBManager
                                     if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
 
                                     // 리스트에 데이터 삽입
-                                    defectData.Data.Add(tmpFltData);
+                                    defectData.Add(tmpFltData);
 
                                     // 마킹 데이터만 처리
                                     if (bValid == false) continue;

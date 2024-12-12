@@ -28,6 +28,12 @@ namespace DefectDBManager
     {
         public List<DBListViewBuf> Data;
 
+        public DBListViewBuf this[int index]
+        {
+            get { return Data[index]; }
+            set { Data[index] = value; }
+        }
+
         public ListViewData()
         {
             Data = new List<DBListViewBuf>();

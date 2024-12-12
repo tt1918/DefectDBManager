@@ -1,4 +1,5 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using DefectDBManager.DB;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,11 +25,11 @@ namespace DefectDBManager
         readonly int[] listDE_Width = { 30, 60, 60, 60, 60, 100};
         #endregion
 
-        public DbSearchResult _DB_Result { get; set; }
+        public DBLotInfo.LotData _DB_Result { get; set; }
         public LogDB _LOG { get; set; }
         public OracleDbConnection _Conn { get; set; }
 
-        private Dictionary<int, MRKCTLMSTData> _mrk_de;
+        private Dictionary<int, DB.MRKCTLMSTData> _mrk_de;
 
         public FormEditDefect()
         {
@@ -38,7 +39,7 @@ namespace DefectDBManager
             panelTitle.MouseDown += lblTitle_MouseDown;
             panelTitle.MouseMove += lblTitle_MouseMove;
 
-            _mrk_de = new Dictionary<int, MRKCTLMSTData>();
+            _mrk_de = new Dictionary<int, DB.MRKCTLMSTData>();
 
             initDataGridView();
         }
@@ -111,7 +112,7 @@ namespace DefectDBManager
             dgvDefect.ClearSelection();
         }
 
-        private void addItem(MRKCTLMSTData data)
+        private void addItem(DB.MRKCTLMSTData data)
         {
             string[] strValue = new string[6];
             if (data.MRKF1 == "1") strValue[0] = "True";

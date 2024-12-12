@@ -83,7 +83,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DB\CSV\CSV.cs" />
-    <Compile Include="DB\DbData.cs" />
+    <Compile Include="DB\DBData\AREADEL.cs" />
+    <Compile Include="DB\DBData\DbData.cs" />
+    <Compile Include="DB\DBData\FLTDATA.cs" />
+    <Compile Include="DB\DBData\INSPDAT.cs" />
+    <Compile Include="DB\DBData\MRKCTLMST.cs" />
+    <Compile Include="DB\DBData\PTRY0P.cs" />
+    <Compile Include="DB\DBData\PTRYLP.cs" />
+    <Compile Include="DB\DBData\XOFSMST.cs" />
     <Compile Include="DB\define\CsvLoadInfo.cs" />
     <Compile Include="DB\define\DbProgress.cs" />
     <Compile Include="DB\define\DefectClass.cs" />

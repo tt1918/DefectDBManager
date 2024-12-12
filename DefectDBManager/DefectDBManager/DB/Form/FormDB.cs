@@ -16,6 +16,7 @@ using System.Windows.Forms.PropertyGridInternal;
 using System.Globalization;
 using static DefectDBManager.QueryMsg;
 using System.Security.Cryptography.X509Certificates;
+using DefectDBManager.DB;
 
 namespace DefectDBManager
 {

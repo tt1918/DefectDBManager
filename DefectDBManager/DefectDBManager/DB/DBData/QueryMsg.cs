@@ -121,7 +121,7 @@ namespace DefectDBManager
                 Vender = name;
             }
 
-            public string GetQuery(PTRYLPList data, bool isModelSearch = false)
+            public string GetQuery(DB.PTRYLPList data, bool isModelSearch = false)
             {
                 try
                 {
@@ -131,7 +131,7 @@ namespace DefectDBManager
 
                     if (isModelSearch == false && data!=null)
                     {
-                        foreach (PTRYLPdata datum in data.Data)
+                        foreach (var datum in data.Data)
                         {
                             string subID;
                             int nPos = datum.YLSLOT.IndexOf(' ');

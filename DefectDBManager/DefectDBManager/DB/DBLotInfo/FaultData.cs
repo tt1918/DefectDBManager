@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace DefectDBManager
             return data;
         }
 
-        public void SetData(string bcno, FLTDATA_DailyData data)
+        public void SetData(string bcno, DB.FLTDATA_DailyData data)
         {
             this.TBCNO = bcno;
             this.FLTNO = data.FLTNO;
@@ -83,7 +84,7 @@ namespace DefectDBManager
             this.MACNO = data.MACNO;
         }
 
-        public void SetData(string bcno, FLTDATAData data)
+        public void SetData(string bcno, DB.FLTDATAData data)
         {
 
             this.TBCNO = bcno;
@@ -180,7 +181,7 @@ namespace DefectDBManager
             return data;
         }
 
-        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, FLTDATAData data, Option option, ref Param param)
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATAData data, Option option, ref Param param)
         {
             this.BCNO = bcno;
             this.FLTNO = data.FLTNO;
@@ -238,7 +239,7 @@ namespace DefectDBManager
         }
 
 
-        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, FLTDATA_DailyData data, bool useKT)
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATA_DailyData data, bool useKT)
         {
             this.BCNO = bcno;
             this.FLTNO = data.FLTNO;
@@ -305,7 +306,8 @@ namespace DefectDBManager
         }
     }
 
-    public class MarkingFaultData
+    #region MrkFltDat
+    public class MrkFltDat
     {
         /// <summary>
         /// 10M 기준으로 구분하여 데이터 입력함
@@ -317,7 +319,7 @@ namespace DefectDBManager
         public float MinSize;
 
 
-        public MarkingFaultData()
+        public MrkFltDat()
         {
             Data = new MkFltDatumList();
             Dic = new Dictionary<int, MkFltDatumList>();
@@ -417,7 +419,9 @@ namespace DefectDBManager
 
     }
 
-    public class PreProcMarkingData
+    #endregion MrkFltDat
+
+    public class PreprocMrkDat
     {
         public string LNCD { get; set; } = "";
         public List<MarkingFaultDatum> Data = null;
@@ -427,7 +431,7 @@ namespace DefectDBManager
             get { return Data[idx]; }
         }
 
-        public PreProcMarkingData()
+        public PreprocMrkDat()
         {
             Data = new List<MarkingFaultDatum>();
         }
@@ -438,9 +442,9 @@ namespace DefectDBManager
             Data.Clear();
         }
 
-        public PreProcMarkingData Clone()
+        public PreprocMrkDat Clone()
         {
-            PreProcMarkingData data = new PreProcMarkingData();
+            PreprocMrkDat data = new PreprocMrkDat();
 
             data.LNCD = LNCD;
 
@@ -454,12 +458,12 @@ namespace DefectDBManager
     public class ResultData
     {
         public FltDatumList Data;
-        public MarkingFaultData MarkFault;
+        public MrkFltDat MarkFault;
 
         public ResultData()
         {
             Data = new FltDatumList();
-            MarkFault = new MarkingFaultData();
+            MarkFault = new MrkFltDat();
         }
 
         ~ResultData()
@@ -490,22 +494,22 @@ namespace DefectDBManager
         /// <summary>
         /// 미자막 공정의 상위 보고용 데이터
         /// </summary>
-        public MarkingFaultData MarkData
+        public MrkFltDat MarkData
         {
             get { return _markData; }
             private set { _markData = value; }
         }
-        private MarkingFaultData _markData;
+        private MrkFltDat _markData;
 
         /// <summary>
         /// 이전 공정 비교용 결점 데이터 
         /// </summary>
-        public List<PreProcMarkingData>[] PreMarkData
+        public List<PreprocMrkDat>[] PreMarkData
         {
             get { return _preMarkData; }
             private set { _preMarkData = value; }
         }
-        private List<PreProcMarkingData>[] _preMarkData;
+        private List<PreprocMrkDat>[] _preMarkData;
 
         // 현재 생산하고 있는 BCNO
         public string BCNO
@@ -524,7 +528,7 @@ namespace DefectDBManager
             for (int i = 0; i < count; i++)
                 _fltdat[i] = new PreProcDftList();
 
-            _markData = new MarkingFaultData();
+            _markData = new MrkFltDat();
         }
 
         ~PreProcResultData()
@@ -641,6 +645,11 @@ namespace DefectDBManager
                 defect.Data.Add(data.Clone());
 
             return defect;
+        }
+
+        public void Add(FaultDatum item)
+        {
+            Data.Add(item);
         }
     }
 

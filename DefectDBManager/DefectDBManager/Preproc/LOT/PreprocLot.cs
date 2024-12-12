@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace DefectDBManager
         /// <param name="lotName"></param>
         /// <param name="dbResult"></param>
         /// <param name="fault"></param>
-        public PreprocLot(string lotName, DbSearchResult dbResult, PreProcResultData fault)
+        public PreprocLot(string lotName, DbLotInfo dbResult, PreProcResultData fault)
         {
             Init();
 
@@ -70,7 +71,7 @@ namespace DefectDBManager
         /// 쿼리 데이터 카피
         /// </summary>
         /// <param name="result"></param>
-        public void SetQueryResult(DbSearchResult result)
+        public void SetQueryResult(DbLotInfo result)
         {
             PTRLYP_Data.Copy(result.PTRLYP);
 
