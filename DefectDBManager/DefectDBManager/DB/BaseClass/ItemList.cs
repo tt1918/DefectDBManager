@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DefectDBManager.DB
+namespace DefectDBManager
 {
 
     #region DB Query Item List

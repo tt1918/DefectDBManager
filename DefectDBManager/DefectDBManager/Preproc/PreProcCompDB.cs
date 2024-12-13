@@ -44,10 +44,10 @@ namespace DefectDBManager
         }
         private Option dbOption;
 
-        // 당일 생산할 PTRY0P 데이터
+        // 생산 정보 데이터
         public PTRY0PList PTRY0PList_Data { get; private set; }
 
-        public DbLotInfo _DbResult { get; set; }
+        public DBLotInfo.LotData _DbResult { get; set; }
 
         public PreProcResultData FaultData { get; set; }
 
@@ -77,7 +77,7 @@ namespace DefectDBManager
         {
             owner = parent;
             conn = dbconn;
-            _DbResult = new DbLotInfo();
+            _DbResult = new DBLotInfo.LotData();
             DB_Progress = new NittoDBProgress();
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();

@@ -42,7 +42,7 @@ namespace DefectDBManager
         /// <param name="lotName"></param>
         /// <param name="dbResult"></param>
         /// <param name="fault"></param>
-        public PreprocLot(string lotName, DbLotInfo dbResult, PreProcResultData fault)
+        public PreprocLot(string lotName, DBLotInfo.LotData dbResult, PreProcResultData fault)
         {
             Init();
 
@@ -71,7 +71,7 @@ namespace DefectDBManager
         /// 쿼리 데이터 카피
         /// </summary>
         /// <param name="result"></param>
-        public void SetQueryResult(DbLotInfo result)
+        public void SetQueryResult(DBLotInfo.LotData result)
         {
             PTRLYP_Data.Copy(result.PTRLYP);
 

@@ -212,7 +212,7 @@ namespace DefectDBManager
         }
         private Param currentParam;
 
-        public DbLotInfo _DbResult
+        public DBLotInfo.LotData _DbResult
         {
             get;
             set;
@@ -241,7 +241,7 @@ namespace DefectDBManager
         {
             owner = parent;
             conn = dbconn;
-            _DbResult = new DbLotInfo();
+            _DbResult = new DBLotInfo.LotData();
             DB_Progress = new NittoDBProgress();
             _CSVLoadInfo = new List<CSVLoadInfo>();
             _LOG = new LogDB();

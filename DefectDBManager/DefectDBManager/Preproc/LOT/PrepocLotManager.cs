@@ -26,13 +26,38 @@ namespace DefectDBManager
         }
         private Dictionary<string, List<PreprocLot>> _lot = null;
 
-        public Dictionary<string, DB.PTRY0PList> ProdList
+        public int TotalLot
         {
-            get { return _prodList; }
-            private set { _prodList = value; }
+            get
+            {
+                int val = 0;
+                foreach (var list in _lot)
+                    val += list.Value.Count;
+                return val;
+            }
         }
 
-        private Dictionary<string, DB.PTRY0PList> _prodList = null;
+        /// <summary>
+        /// 공정 생산 정보를 저장
+        /// </summary>
+        public Dictionary<string, DB.PTRY0PList> Product
+        {
+            get { return _product; }
+            private set { _product = value; }
+        }
+
+        private Dictionary<string, DB.PTRY0PList> _product = null;
+
+        public int TotalProduct
+        {
+            get
+            {
+                int val = 0;
+                foreach (var list in _product)
+                    val += list.Value.Count;
+                return val;
+            }
+        }
         #endregion LOT 정보
 
         #region 공정 정보 
@@ -106,6 +131,22 @@ namespace DefectDBManager
 
             // Dictionary 삭제
             LOT.Clear();
+        }
+
+        public int ProductSize(string key)
+        {
+            if (Product.ContainsKey(key) == true)
+                return Product[key].Count;
+            else
+                return 0;
+        }
+
+        public int LotSize(string key)
+        {
+            if (LOT.ContainsKey(key) == true)
+                return LOT[key].Count;
+            else
+                return 0;
         }
         #endregion
 

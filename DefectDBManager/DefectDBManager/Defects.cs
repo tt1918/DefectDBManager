@@ -493,7 +493,7 @@ namespace DefectDBManager
 		public void LotChange()
 		{
             dbManager._DbProc[0]._DbResult = dbManager._DbProc[1]._DbResult;
-            dbManager._DbProc[1]._DbResult = new DbLotInfo();
+            dbManager._DbProc[1]._DbResult = new DBLotInfo.LotData();
 
             if(dbManager._DbProc[1].DbOption.isLoadCSV==true)
             {

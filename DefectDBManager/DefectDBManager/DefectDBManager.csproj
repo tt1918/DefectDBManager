@@ -84,19 +84,20 @@
   <ItemGroup>
     <Compile Include="DB\CSV\CSV.cs" />
     <Compile Include="DB\DBData\AREADEL.cs" />
-    <Compile Include="DB\DBData\DbData.cs" />
+    <Compile Include="DB\BaseClass\ItemList.cs" />
     <Compile Include="DB\DBData\FLTDATA.cs" />
     <Compile Include="DB\DBData\INSPDAT.cs" />
     <Compile Include="DB\DBData\MRKCTLMST.cs" />
     <Compile Include="DB\DBData\PTRY0P.cs" />
     <Compile Include="DB\DBData\PTRYLP.cs" />
     <Compile Include="DB\DBData\XOFSMST.cs" />
+    <Compile Include="DB\DBLotInfo\Info.cs" />
     <Compile Include="DB\define\CsvLoadInfo.cs" />
     <Compile Include="DB\define\DbProgress.cs" />
     <Compile Include="DB\define\DefectClass.cs" />
     <Compile Include="DB\define\Define.cs" />
     <Compile Include="DB\define\ListViewData.cs" />
-    <Compile Include="DB\DestData.cs" />
+    <Compile Include="DB\Param\DestData.cs" />
     <Compile Include="DB\Form\FormMKCDModel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,17 +178,17 @@
       <DependentUpon>ucSkipParam.cs</DependentUpon>
     </Compile>
     <Compile Include="DB\Log\LoadDataLog.cs" />
-    <Compile Include="DB\LotCode.cs" />
+    <Compile Include="DB\Param\LotCode.cs" />
     <Compile Include="DB\odbDLL.cs" />
-    <Compile Include="DB\Option.cs" />
-    <Compile Include="DB\Param.cs" />
+    <Compile Include="DB\Param\Option.cs" />
+    <Compile Include="DB\Param\Param.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />
     <Compile Include="Preproc\MRKCTLMST\mrkctlmstManager.cs" />
     <Compile Include="Preproc\PreProcCompDB.cs" />
     <Compile Include="DB\Process.cs" />
-    <Compile Include="DB\QueryMsg.cs" />
-    <Compile Include="DB\UserDefectClass.cs" />
+    <Compile Include="DB\DBData\QueryMsg.cs" />
+    <Compile Include="DB\Param\UserDefectClass.cs" />
     <Compile Include="Defects.cs" />
     <Compile Include="DefectsDataView.cs">
       <SubType>Form</SubType>
@@ -195,7 +196,7 @@
     <Compile Include="DefectsDataView.Designer.cs">
       <DependentUpon>DefectsDataView.cs</DependentUpon>
     </Compile>
-    <Compile Include="DB\FaultData.cs" />
+    <Compile Include="DB\DBLotInfo\FaultData.cs" />
     <Compile Include="FormTest.cs">
       <SubType>Form</SubType>
     </Compile>

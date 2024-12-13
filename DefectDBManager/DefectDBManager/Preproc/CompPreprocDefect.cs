@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace DefectDBManager
 {
-    public delegate void DelegateAddPreprocLotData(string lncd, PreprocLot preprocLot);
+    public delegate void DelegateLotProgress(int percent);
 
     public sealed class CompPreprocDefect : IDisposable
     {
@@ -20,16 +20,10 @@ namespace DefectDBManager
         // 상위 이벤트 보고 
         // 오늘자 생산 예정 PTRY0P 탐색
         public event DelegateEvent OnEndTodayProductSearching = null;
-        // 랏 변경 완료 이벤트 
-        public event DelegateEvent OnEndLotChange = null;
-        // 현재 수신한 MKCD Model 이름을 Form에 업데이트한다.
-        public event DelegateEvent OnUpdateMKCD_ModelName = null;
         // 프로세스 상에 발생하는 이벤트 보고용
         public event DelegateProcessEvent OnProcessEvent = null;
-        // MKCD 모델 요청용. 요청한 모델을 이용하여 데이터를 탐색한다. 
-        public event DelegateRequestMKCD_ModelName OnRequestMKCD_ModelName = null;
-        // 랏 검색 결과를 상위 저장소로 전달하도록 함
-        public event DelegateAddPreprocLotData OnAddPreprocLotData = null;
+         // 랏 검색 진행 상황을 상위로 보고
+        public event DelegateLotProgress OnLotProgress = null;
         #endregion Event
 
         #region Param
@@ -159,22 +153,25 @@ namespace DefectDBManager
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
-            foreach(var list in LotManager.ProdList)
+            foreach(var list in LotManager.Product)
             {
                 string lncd = list.Key;
                 foreach (var item in list.Value.Data)
                 {
                     string lotName = item.Y0KLOT;
                     SearchDefectData(lncd, lotName);
+
+                    // 검색 진행 상황을 
+                    int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
+                    OnLotProgress?.Invoke(rate);
                 }
             }
         }
 
-
         #region 공정 별 생산 리스트 취합.
         private void searchLotList()
         {
-            LotManager.ProdList.Clear();
+            LotManager.Product.Clear();
 
             DateTime stTime = LotManager.StartTime ;
             DateTime edTime = LotManager.EndTime ;
@@ -190,7 +187,7 @@ namespace DefectDBManager
                         list.Add(ptry0p.Clone());
 
                     // 리스트 데이터 추가
-                    LotManager.ProdList.Add(data.Name, list);
+                    LotManager.Product.Add(data.Name, list);
                 }
             }
         }
@@ -205,13 +202,12 @@ namespace DefectDBManager
             try
             {
                 PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
-
                 if (lot == null) return;
-
                 LotManager.AddLot(lncd, lot);
             }
             catch
             {
+
             }
         }
 
