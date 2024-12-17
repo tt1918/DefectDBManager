@@ -10,7 +10,7 @@ using System.Xml.Linq;
 namespace DefectDBManager
 {
     // 이전 공정 랏 데이터에 대한 
-    public class PrepocLotManager
+    public class PreprocLotManager
     {
         #region Param
         #region LOT 정보
@@ -73,7 +73,7 @@ namespace DefectDBManager
 
         #endregion
 
-        public PrepocLotManager()
+        public PreprocLotManager()
         {
             _lot = new Dictionary<string, List<PreprocLot>>();
             _procLNCD = new Preproc.PreprocLNCD();

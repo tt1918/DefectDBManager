@@ -64,12 +64,12 @@ namespace DefectDBManager
         }
         private MrkctlmstMaterial _mrkctlmstMaterial = null;
 
-        public PrepocLotManager LotManager
+        public PreprocLotManager LotManager
         {
             get { return _lotManager; }
             set { _lotManager = value; }
         }
-        private PrepocLotManager _lotManager = null;
+        private PreprocLotManager _lotManager = null;
         #endregion Param
 
 

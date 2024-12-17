@@ -9,17 +9,22 @@ namespace DefectDBManager.Preproc
 {
     public class PreprocLNCDInfo : ICloneable
     {
-        [Category("Info")]
+        [Category("items")]
         [Description("Name")]
         public string Name { get; set; }
 
-        [Category("Info")]
+        [Category("items")]
         [Description("LNCD")]
         public string LNCD { get; set; }
 
-        [Category("Info")]
+        [Category("items")]
         [Description("Use")]
         public bool Use { get; set; }
+
+        [Category("items")]
+        [Description("Model")]
+        public string Model { get; set; }
+
 
         public PreprocLNCDInfo()
         {
@@ -31,6 +36,7 @@ namespace DefectDBManager.Preproc
             Name = "";
             LNCD = "";
             Use = false;
+            Model = "";
         }
 
         public void Set(PreprocLNCDInfo s)
@@ -38,6 +44,7 @@ namespace DefectDBManager.Preproc
             this.Name = s.Name;
             this.LNCD = s.LNCD;
             this.Use = s.Use;
+            this.Model = s.Model;
         }
         
         public object Clone()

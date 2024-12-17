@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.Preproc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +17,11 @@ namespace MarkrCompare
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            DefectDBManager.PreprocLotManager lotManager = new DefectDBManager.PreprocLotManager();
+            FormMain main = new FormMain(lotManager);
+
+            Application.Run(main);
         }
     }
 }

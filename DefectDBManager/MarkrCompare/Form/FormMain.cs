@@ -13,6 +13,7 @@ namespace MarkrCompare
 {
     public partial class FormMain : Form
     {
+        
         #region Form 종료 못하게 막기
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
@@ -28,14 +29,26 @@ namespace MarkrCompare
         public bool _FormCloseBtnType = false;
         #endregion
 
+        #region Param
+        DefectDBManager.PreprocLotManager _lotManager = null;
+        #endregion
+
         public FormMain()
         {
             InitializeComponent();
 
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
+        }
 
-            initRollMap();
+        public FormMain(DefectDBManager.PreprocLotManager lotManager)
+        {
+            InitializeComponent();
+
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+
+            _lotManager = lotManager;
         }
 
         ~FormMain()
@@ -46,7 +59,39 @@ namespace MarkrCompare
         private void FormMain_Load(object sender, EventArgs e)
         {
             initClockTimer();
+            initRollMapForm();
+            initMarkDiffForm();
         }
+
+        #region Roll Map Form
+        private FormRollMap _rollMapForm;
+
+        private void initRollMapForm()
+        {
+            _rollMapForm = new FormRollMap();
+            _rollMapForm.TopLevel = false;
+            _rollMapForm.InitRollMap();
+
+            tableLayoutPanel3.Controls.Add(_rollMapForm, 0, 0);
+            _rollMapForm.Dock= DockStyle.Fill;
+            _rollMapForm.Show();
+        }
+
+        #endregion Roll Map Form
+
+        #region Marking Comparision Form
+        private FormMarkDiff _markDiffForm;
+
+        private void initMarkDiffForm()
+        {
+            _markDiffForm = new FormMarkDiff(_lotManager);
+            _markDiffForm.TopLevel = false;
+
+            tableLayoutPanel3.Controls.Add(_markDiffForm, 1, 0);
+            _markDiffForm.Dock = DockStyle.Fill;
+            _markDiffForm.Show();
+        }
+        #endregion Marking Comparision Form
 
         #region 마우스로 폼 드래그
         private Point mouseDownLocation;

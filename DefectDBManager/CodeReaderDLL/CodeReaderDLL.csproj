@@ -110,8 +110,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)CodeReaderDLL.dll" "D:\Project\COSS\wpf csharp\Barcode\bcrdll\DefectDBManager\DllTest"
-copy "$(TargetDir)CodeReaderDLL.tlb" "D:\Project\COSS\wpf csharp\Barcode\bcrdll\DefectDBManager\DllTest"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

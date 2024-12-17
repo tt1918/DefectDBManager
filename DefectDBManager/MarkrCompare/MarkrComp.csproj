@@ -12,28 +12,30 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>main.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MetroFramework">
@@ -61,14 +63,59 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\RoundTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\RoundTextBox.designer.cs">
+      <DependentUpon>RoundTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ucClock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ucClock.Designer.cs">
+      <DependentUpon>ucClock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\RollMap\RollMapCtrl.cs">
+    <Compile Include="Form\FormMarkDiff.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormMarkDiff.Designer.cs">
+      <DependentUpon>FormMarkDiff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormCrtLot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormCrtLot.Designer.cs">
+      <DependentUpon>FormCrtLot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotList.Designer.cs">
+      <DependentUpon>FormLotList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMornitorSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMornitorSearch.Designer.cs">
+      <DependentUpon>FormMornitorSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMornitorLive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMornitorLive.Designer.cs">
+      <DependentUpon>FormMornitorLive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\RollMap\FormRollMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\RollMap\FormRollMap.Designer.cs">
+      <DependentUpon>FormRollMap.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,16 +125,32 @@
     <Compile Include="Control\RoundLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Control\RoundTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\RoundTextBox.designer.cs" />
-    <Compile Include="Control\ucClock.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\ucClock.Designer.cs" />
+    <EmbeddedResource Include="Control\RoundTextBox.resx">
+      <DependentUpon>RoundTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ucClock.resx">
+      <DependentUpon>ucClock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormMarkDiff.resx">
+      <DependentUpon>FormMarkDiff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormCrtLot.resx">
+      <DependentUpon>FormCrtLot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormLotList.resx">
+      <DependentUpon>FormLotList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormMornitorSearch.resx">
+      <DependentUpon>FormMornitorSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormMornitorLive.resx">
+      <DependentUpon>FormMornitorLive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\RollMap\FormRollMap.resx">
+      <DependentUpon>FormRollMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -97,9 +160,8 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Control\RoundTextBox.resx" />
-    <EmbeddedResource Include="Control\ucClock.resx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -119,7 +181,7 @@
       <Name>Coss.Controls</Name>
     </ProjectReference>
     <ProjectReference Include="..\DefectDBManager\DefectDBManager.csproj">
-      <Project>{C3D43DC7-C1D7-406A-A16A-A62587A424A7}</Project>
+      <Project>{c3d43dc7-c1d7-406a-a16a-a62587a424a7}</Project>
       <Name>DefectDBManager</Name>
     </ProjectReference>
   </ItemGroup>
