@@ -39,6 +39,7 @@
             this.dgvList.Location = new System.Drawing.Point(0, 0);
             this.dgvList.Margin = new System.Windows.Forms.Padding(1);
             this.dgvList.Name = "dgvList";
+            this.dgvList.RowHeadersVisible = false;
             this.dgvList.RowTemplate.Height = 23;
             this.dgvList.Size = new System.Drawing.Size(673, 496);
             this.dgvList.TabIndex = 0;
@@ -54,6 +55,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormLotList";
             this.Text = "FormLotList";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLotList_FormClosing);
+            this.Load += new System.EventHandler(this.FormLotList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvList)).EndInit();
             this.ResumeLayout(false);
 

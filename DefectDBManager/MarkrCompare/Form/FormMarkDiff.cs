@@ -31,11 +31,16 @@ namespace MarkrCompare
         private void FormMarkDiff_Load(object sender, EventArgs e)
         {
             initTabSearchSetting();
+            initLotListForms();
+            initCrtLotForm();
+            initRollMapForm();
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
         {
-            disposeTabSearchSetting();
+            CloseTabSearchSetting();
+            CloseLotListForms();
+            CloseCrtLotForm();
         }
         #endregion
 
@@ -64,11 +69,105 @@ namespace MarkrCompare
             _formMorSearch.Show();
         }
 
-        private void disposeTabSearchSetting()
+        private void CloseTabSearchSetting()
         {
-            _formMorLive?.Dispose();
-            _formMorSearch?.Dispose(); 
+            _formMorLive?.Close();
+            _formMorSearch?.Close(); 
         }
+        #endregion
+
+
+        #region Roll Map Form
+        private FormRollMap _rollMapForm;
+
+        private void initRollMapForm()
+        {
+            _rollMapForm = new FormRollMap();
+            _rollMapForm.TopLevel = false;
+            _rollMapForm.InitRollMap();
+
+            tableLayoutPanel3.Controls.Add(_rollMapForm.Controls[0], 1, 0);
+            _rollMapForm.Dock = DockStyle.Fill;
+            _rollMapForm.Show();
+        }
+
+        #endregion Roll Map Form
+
+
+        #region Lot List of Product Line
+        private List<FormLotList> _lotListForms = null;
+
+        private void initLotListForms()
+        {
+            try
+            {
+                if (_lotListForms != null)
+                    CloseLotListForms();
+
+                if (_lotListForms == null)
+                    _lotListForms = new List<FormLotList>();
+
+                tabLineList.TabPages.Clear();
+
+                foreach (var item in _lotManager.ProcLNCD.Info)
+                {
+                    // 사용하지 않으면 탭을 추가하지 않음.
+                    if (item.Use == false) continue;
+
+                    FormLotList form = new FormLotList(this, item.Name);
+                    form.TopLevel = false;
+                    _lotListForms.Add(form);
+                    TabPage page = new TabPage();
+
+                    page.Text = item.Name;
+                    page.Controls.Add(form.Controls[0]);
+                    tabLineList.TabPages.Add(page);
+                    form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+                    form.Show();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void CloseLotListForms()
+        {
+            for (int i = 0; i < _lotListForms.Count; i++)
+                _lotListForms[i]?.Close();
+
+            _lotListForms.Clear();
+        }
+        #endregion
+
+        #region Current Lot Info
+        private FormCrtLot _crtLotForm = null;
+
+        private void initCrtLotForm()
+        {
+            try
+            {
+                CloseCrtLotForm();
+                _crtLotForm = new FormCrtLot(this);
+                _crtLotForm.TopLevel = false;
+
+                tlpLineData.Controls.Add(_crtLotForm.Controls[0], 0, 1);
+                _crtLotForm.Dock = DockStyle.Fill;
+                _crtLotForm.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+                _crtLotForm.Show();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void CloseCrtLotForm()
+        {
+            _crtLotForm?.Close();
+        }
+
         #endregion
 
     }

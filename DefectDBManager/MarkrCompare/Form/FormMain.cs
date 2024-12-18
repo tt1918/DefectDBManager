@@ -59,25 +59,9 @@ namespace MarkrCompare
         private void FormMain_Load(object sender, EventArgs e)
         {
             initClockTimer();
-            initRollMapForm();
             initMarkDiffForm();
         }
 
-        #region Roll Map Form
-        private FormRollMap _rollMapForm;
-
-        private void initRollMapForm()
-        {
-            _rollMapForm = new FormRollMap();
-            _rollMapForm.TopLevel = false;
-            _rollMapForm.InitRollMap();
-
-            tableLayoutPanel3.Controls.Add(_rollMapForm, 0, 0);
-            _rollMapForm.Dock= DockStyle.Fill;
-            _rollMapForm.Show();
-        }
-
-        #endregion Roll Map Form
 
         #region Marking Comparision Form
         private FormMarkDiff _markDiffForm;
@@ -87,7 +71,7 @@ namespace MarkrCompare
             _markDiffForm = new FormMarkDiff(_lotManager);
             _markDiffForm.TopLevel = false;
 
-            tableLayoutPanel3.Controls.Add(_markDiffForm, 1, 0);
+            tableLayoutPanel1.Controls.Add(_markDiffForm, 0, 1);
             _markDiffForm.Dock = DockStyle.Fill;
             _markDiffForm.Show();
         }

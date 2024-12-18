@@ -66,8 +66,8 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.09665F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.90335F));
             this.tableLayoutPanel2.Controls.Add(this.tabSearchSet, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lvLog, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -85,11 +85,12 @@
             this.tabSearchSet.Controls.Add(this.tabPage3);
             this.tabSearchSet.Controls.Add(this.tabPage4);
             this.tabSearchSet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabSearchSet.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabSearchSet.Location = new System.Drawing.Point(1, 1);
             this.tabSearchSet.Margin = new System.Windows.Forms.Padding(1);
             this.tabSearchSet.Name = "tabSearchSet";
             this.tabSearchSet.SelectedIndex = 0;
-            this.tabSearchSet.Size = new System.Drawing.Size(505, 198);
+            this.tabSearchSet.Size = new System.Drawing.Size(435, 198);
             this.tabSearchSet.TabIndex = 0;
             // 
             // tabPage3
@@ -97,7 +98,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(497, 170);
+            this.tabPage3.Size = new System.Drawing.Size(427, 170);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -116,18 +117,18 @@
             // 
             this.lvLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvLog.HideSelection = false;
-            this.lvLog.Location = new System.Drawing.Point(508, 1);
+            this.lvLog.Location = new System.Drawing.Point(438, 1);
             this.lvLog.Margin = new System.Windows.Forms.Padding(1);
             this.lvLog.Name = "lvLog";
-            this.lvLog.Size = new System.Drawing.Size(505, 198);
+            this.lvLog.Size = new System.Drawing.Size(575, 198);
             this.lvLog.TabIndex = 1;
             this.lvLog.UseCompatibleStateImageBehavior = false;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.29388F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.70612F));
             this.tableLayoutPanel3.Controls.Add(this.tlpLineData, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 200);
@@ -151,7 +152,7 @@
             this.tlpLineData.RowCount = 2;
             this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLineData.Size = new System.Drawing.Size(507, 504);
+            this.tlpLineData.Size = new System.Drawing.Size(438, 504);
             this.tlpLineData.TabIndex = 0;
             // 
             // tabLineList
@@ -159,11 +160,12 @@
             this.tabLineList.Controls.Add(this.tabPage1);
             this.tabLineList.Controls.Add(this.tabPage2);
             this.tabLineList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabLineList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabLineList.Location = new System.Drawing.Point(1, 1);
             this.tabLineList.Margin = new System.Windows.Forms.Padding(1);
             this.tabLineList.Name = "tabLineList";
             this.tabLineList.SelectedIndex = 0;
-            this.tabLineList.Size = new System.Drawing.Size(505, 250);
+            this.tabLineList.Size = new System.Drawing.Size(436, 250);
             this.tabLineList.TabIndex = 0;
             // 
             // tabPage1
@@ -171,7 +173,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(497, 222);
+            this.tabPage1.Size = new System.Drawing.Size(428, 222);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -181,7 +183,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(497, 222);
+            this.tabPage2.Size = new System.Drawing.Size(429, 222);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;

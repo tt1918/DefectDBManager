@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvLotInfo = new System.Windows.Forms.DataGridView();
             this.lblLotName = new CustomControls.RoundLabel();
+            this.dgvLotInfo = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLotInfo)).BeginInit();
             this.SuspendLayout();
@@ -51,22 +51,12 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(493, 355);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // dgvLotInfo
-            // 
-            this.dgvLotInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLotInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvLotInfo.Location = new System.Drawing.Point(3, 33);
-            this.dgvLotInfo.Name = "dgvLotInfo";
-            this.dgvLotInfo.RowTemplate.Height = 23;
-            this.dgvLotInfo.Size = new System.Drawing.Size(487, 319);
-            this.dgvLotInfo.TabIndex = 0;
-            // 
             // lblLotName
             // 
             this.lblLotName.AutoSize = true;
             this.lblLotName.BkColor = System.Drawing.Color.MidnightBlue;
             this.lblLotName.BorderColor = System.Drawing.Color.LightSteelBlue;
-            this.lblLotName.CornerR = 15;
+            this.lblLotName.CornerR = 10;
             this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLotName.ForeColor = System.Drawing.Color.WhiteSmoke;
@@ -74,14 +64,28 @@
             this.lblLotName.IsFillLT = false;
             this.lblLotName.IsFillRB = false;
             this.lblLotName.IsFillRT = false;
-            this.lblLotName.Location = new System.Drawing.Point(2, 2);
-            this.lblLotName.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLotName.Location = new System.Drawing.Point(1, 1);
+            this.lblLotName.Margin = new System.Windows.Forms.Padding(1);
             this.lblLotName.Name = "lblLotName";
-            this.lblLotName.Size = new System.Drawing.Size(489, 26);
+            this.lblLotName.Size = new System.Drawing.Size(491, 28);
             this.lblLotName.TabIndex = 1;
             this.lblLotName.Text = "LOT : ";
             this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblLotName.Thickness = 1;
+            // 
+            // dgvLotInfo
+            // 
+            this.dgvLotInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLotInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLotInfo.Location = new System.Drawing.Point(1, 31);
+            this.dgvLotInfo.Margin = new System.Windows.Forms.Padding(1);
+            this.dgvLotInfo.Name = "dgvLotInfo";
+            this.dgvLotInfo.RowHeadersVisible = false;
+            this.dgvLotInfo.RowTemplate.Height = 23;
+            this.dgvLotInfo.Size = new System.Drawing.Size(491, 323);
+            this.dgvLotInfo.TabIndex = 0;
+            this.dgvLotInfo.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLotInfo_CellContentClick);
+            this.dgvLotInfo.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLotInfo_CellValueChanged);
             // 
             // FormCrtLot
             // 
@@ -94,6 +98,8 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormCrtLot";
             this.Text = "FormCrtLot";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormCrtLot_FormClosing);
+            this.Load += new System.EventHandler(this.FormCrtLot_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLotInfo)).EndInit();
