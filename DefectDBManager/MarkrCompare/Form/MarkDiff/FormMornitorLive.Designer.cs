@@ -110,8 +110,8 @@
             // 
             // btnStart
             // 
-            this.btnStart.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStart.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStart.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
             this.btnStart.BorderColor = System.Drawing.Color.PaleVioletRed;
             this.btnStart.BorderRadius = 5;
             this.btnStart.BorderSize = 0;
@@ -130,8 +130,8 @@
             // 
             // btnStop
             // 
-            this.btnStop.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStop.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStop.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
             this.btnStop.BorderColor = System.Drawing.Color.PaleVioletRed;
             this.btnStop.BorderRadius = 5;
             this.btnStop.BorderSize = 0;
@@ -196,7 +196,7 @@
             this.tlLncd.Name = "tlLncd";
             this.tlLncd.RowCount = 1;
             this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tlLncd.Size = new System.Drawing.Size(357, 30);
             this.tlLncd.TabIndex = 0;
             // 
@@ -218,8 +218,8 @@
             // 
             // btnMaterialFilter
             // 
-            this.btnMaterialFilter.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
+            this.btnMaterialFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
             this.btnMaterialFilter.BorderColor = System.Drawing.Color.PaleVioletRed;
             this.btnMaterialFilter.BorderRadius = 5;
             this.btnMaterialFilter.BorderSize = 0;
@@ -241,6 +241,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(579, 165);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -250,6 +251,7 @@
             this.Text = "FormMornitorSearch";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMornitorLive_FormClosing);
             this.Load += new System.EventHandler(this.FormMornitorLive_Load);
+            this.VisibleChanged += new System.EventHandler(this.FormMornitorLive_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

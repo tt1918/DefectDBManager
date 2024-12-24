@@ -138,5 +138,12 @@ namespace MarkrCompare
         }
         #endregion CONTROL
 
+        private void btnSitting_Click(object sender, EventArgs e)
+        {
+            FormSetting form = new FormSetting(this._lotManager.ProcSetting);
+            if(form.ShowDialog()==DialogResult.OK)
+                this._lotManager.UpdatePreprocSet(form.PreprocSet);
+
+        }
     }
 }

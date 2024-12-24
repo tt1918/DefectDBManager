@@ -75,6 +75,19 @@
     <Compile Include="Control\ucClock.Designer.cs">
       <DependentUpon>ucClock.cs</DependentUpon>
     </Compile>
+    <Compile Include="DelegateList.cs" />
+    <Compile Include="Form\CompSetting\FormAddDel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CompSetting\FormAddDel.Designer.cs">
+      <DependentUpon>FormAddDel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\CompSetting\FormSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\CompSetting\FormSetting.Designer.cs">
+      <DependentUpon>FormSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +143,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Control\ucClock.resx">
       <DependentUpon>ucClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\CompSetting\FormAddDel.resx">
+      <DependentUpon>FormAddDel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\CompSetting\FormSetting.resx">
+      <DependentUpon>FormSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

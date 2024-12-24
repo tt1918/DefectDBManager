@@ -19,6 +19,7 @@ namespace DefectDBManager
         public static string LogPath { get { return Path.Combine(MainPath, "SystemLog"); } }
         public static string MKCDModelPath { get { return Path.Combine(MainPath, "MKCD_Model"); } }
         public static string LNCD_InfoPath { get { return Path.Combine(MainPath, "LNCD.json"); } }
+        public static string PreprocSetPath { get { return Path.Combine(MainPath, "PreprocSet.json"); } }
     }
 
     public class Global

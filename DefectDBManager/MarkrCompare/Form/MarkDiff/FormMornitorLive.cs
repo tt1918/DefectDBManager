@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace MarkrCompare
 {
@@ -14,6 +15,16 @@ namespace MarkrCompare
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
+        public bool IsRun 
+        {
+            get { return _timerLotSearchProcess.Enabled; }
+        }
+
+
+        #endregion
+
+        #region Event
+        public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
         #endregion
 
         #region Create/Destroy
@@ -31,11 +42,20 @@ namespace MarkrCompare
         private void FormMornitorLive_Load(object sender, EventArgs e)
         {
             initLNCDCtrl();
+            initLotSearchTimer();
         }
 
         private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
         {
 
+        }
+
+        private void FormMornitorLive_VisibleChanged(object sender, EventArgs e)
+        {
+            if(this.Visible==true)
+            {
+                setLNCDCtrlData();
+            }
         }
         #endregion
 
@@ -118,6 +138,7 @@ namespace MarkrCompare
         /// </summary>
         private void setLNCDCtrlData()
         {
+            if (_lncdCheckBox == null) return;
             int ctrlCount = _lncdCheckBox.Count;
 
             try
@@ -147,20 +168,86 @@ namespace MarkrCompare
             
 
         }
+
+        public void UpdateLNCDCtrlData()
+        {
+            setLNCDCtrlData();
+        }
         #endregion
 
+        #region Control
         private void btnStart_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (IsRun == true) return;
+                getLNCDCtrlData();
+                OnUpdatePrepLncdInfo?.Invoke();
+                _timerLotSearchProcess.Start();
+            }
+            catch
+            {
+
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (IsRun == false) return;
+                _timerLotSearchProcess.Stop();
 
+                string message = $"모니터링 정지";
+                lblProcess.Text = message;
+            }
+            catch
+            {
+
+            }
         }
 
         private void btnMaterialFilter_Click(object sender, EventArgs e)
         {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+        #endregion
+
+        #region 검색 완료
+        public void EndLotSearch()
+        {
+            // 타이머 종료
+            _timerLotSearchProcess.Stop();
 
         }
+        #endregion
+
+        #region Lot 탐색 Timer 
+        private Timer _timerLotSearchProcess;
+
+        private void initLotSearchTimer()
+        {
+            _timerLotSearchProcess = new Timer();
+            _timerLotSearchProcess.Interval = 500;
+            _timerLotSearchProcess.Tick += new EventHandler(timer_LotSearch);
+        }
+
+        private void timer_LotSearch(object sender, EventArgs e)
+        {
+            int total = _lotManager.TotalLot;
+            int count = _lotManager.TotalProduct;
+
+            string message = $"실시간 모니터링 중... ({count} / {total})";
+            lblProcess.Text = message;
+        }
+        #endregion
+
     }
 }

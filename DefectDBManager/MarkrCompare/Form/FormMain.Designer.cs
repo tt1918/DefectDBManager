@@ -36,6 +36,7 @@
             this.lblTime = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.btnClose = new CustomControls.RoundButton();
+            this.btnSitting = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -135,19 +136,20 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnCount = 5;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 119F));
-            this.tableLayoutPanel5.Controls.Add(this.btnClose, 2, 0);
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.Controls.Add(this.btnClose, 4, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSitting, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 791);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(1385, 58);
             this.tableLayoutPanel5.TabIndex = 2;
             // 
@@ -165,16 +167,39 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1267, 1);
+            this.btnClose.Location = new System.Drawing.Point(1266, 1);
             this.btnClose.Margin = new System.Windows.Forms.Padding(1);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(117, 56);
+            this.btnClose.Size = new System.Drawing.Size(118, 56);
             this.btnClose.TabIndex = 0;
-            this.btnClose.Text = "CLOSE   ";
-            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClose.Text = "  CLOSE";
             this.btnClose.TextColor = System.Drawing.Color.White;
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSitting
+            // 
+            this.btnSitting.BackColor = System.Drawing.Color.DimGray;
+            this.btnSitting.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnSitting.BorderColor = System.Drawing.Color.Black;
+            this.btnSitting.BorderRadius = 5;
+            this.btnSitting.BorderSize = 1;
+            this.btnSitting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSitting.FlatAppearance.BorderSize = 0;
+            this.btnSitting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSitting.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSitting.ForeColor = System.Drawing.Color.White;
+            this.btnSitting.Image = ((System.Drawing.Image)(resources.GetObject("btnSitting.Image")));
+            this.btnSitting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSitting.Location = new System.Drawing.Point(11, 1);
+            this.btnSitting.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSitting.Name = "btnSitting";
+            this.btnSitting.Size = new System.Drawing.Size(118, 56);
+            this.btnSitting.TabIndex = 1;
+            this.btnSitting.Text = "   SET";
+            this.btnSitting.TextColor = System.Drawing.Color.White;
+            this.btnSitting.UseVisualStyleBackColor = false;
+            this.btnSitting.Click += new System.EventHandler(this.btnSitting_Click);
             // 
             // FormMain
             // 
@@ -211,6 +236,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private CustomControls.RoundButton btnClose;
         private System.Windows.Forms.Label lblTime;
+        private CustomControls.RoundButton btnSitting;
     }
 }
 

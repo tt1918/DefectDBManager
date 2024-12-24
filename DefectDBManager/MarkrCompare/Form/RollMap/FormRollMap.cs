@@ -1,4 +1,5 @@
 ﻿using Coss.Controls;
+using DefectDBManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,10 @@ namespace MarkrCompare
 {
     public partial class FormRollMap : Form
     {
+        #region Param
+        private PreprocLot _crtLot = null;
+        #endregion
+
         #region RollMap
         public RollmapMouseClickedHandler MouseClicked;
         public RollmapDefectClickedHandler DefectClicked;
@@ -86,5 +91,16 @@ namespace MarkrCompare
             else if (rbScale4.Checked)  this.Rollmap.MapViewOption(MapViewOptionArgs.tagMapViewRange.View1000M);
         }
         #endregion
+
+        #region Event
+        public void OnUpdateLotInfo(PreprocLot lot)
+        {
+            _crtLot = lot;
+
+            // Rollmap update
+
+        }
+        #endregion
+
     }
 }

@@ -30,6 +30,8 @@ namespace DefectDBManager
         {
             get
             {
+                if (_lot == null) return 0;
+
                 int val = 0;
                 foreach (var list in _lot)
                     val += list.Value.Count;
@@ -52,6 +54,7 @@ namespace DefectDBManager
         {
             get
             {
+                if(_product==null) return 0;
                 int val = 0;
                 foreach (var list in _product)
                     val += list.Value.Count;
@@ -71,6 +74,14 @@ namespace DefectDBManager
 
         public bool UseMrkctlmstModel { get; set; }
 
+
+        public Preproc.PreprocSet ProcSetting
+        {
+            get { return _precSetting; }
+            private set { _precSetting = value; }
+        }
+        private Preproc.PreprocSet _precSetting=new Preproc.PreprocSet();
+
         #endregion
 
         public PreprocLotManager()
@@ -79,6 +90,8 @@ namespace DefectDBManager
             _procLNCD = new Preproc.PreprocLNCD();
 
             LoadProcLNCD();
+
+            _precSetting.Load();
         }
 
         public DateTime StartTime { get; set; } = DateTime.Now;
@@ -177,6 +190,11 @@ namespace DefectDBManager
                 if(use.Length > i)
                     ProcLNCD.Info[i].Use = use[i];
             }
+        }
+
+        public void UpdatePreprocSet(Preproc.PreprocSet set)
+        {
+            ProcSetting = set;
         }
         #endregion
     }

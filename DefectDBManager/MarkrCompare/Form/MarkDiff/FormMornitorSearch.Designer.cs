@@ -30,16 +30,16 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnStart = new CustomControls.RoundButton();
-            this.btnStop = new CustomControls.RoundButton();
-            this.lblProcess = new CustomControls.RoundLabel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tlLncd = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnMaterialFilter = new CustomControls.RoundButton();
             this.label1 = new System.Windows.Forms.Label();
             this.timePickerStart = new System.Windows.Forms.DateTimePicker();
             this.timePickerEnd = new System.Windows.Forms.DateTimePicker();
+            this.btnStart = new CustomControls.RoundButton();
+            this.btnStop = new CustomControls.RoundButton();
+            this.lblProcess = new CustomControls.RoundLabel();
+            this.btnMaterialFilter = new CustomControls.RoundButton();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -70,9 +70,9 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 4;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 19F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel3.Controls.Add(this.btnStart, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnStop, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblProcess, 0, 0);
@@ -84,66 +84,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(545, 30);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // btnStart
-            // 
-            this.btnStart.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStart.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStart.BorderColor = System.Drawing.Color.PaleVioletRed;
-            this.btnStart.BorderRadius = 5;
-            this.btnStart.BorderSize = 0;
-            this.btnStart.FlatAppearance.BorderSize = 0;
-            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(426, 1);
-            this.btnStart.Margin = new System.Windows.Forms.Padding(1, 1, 2, 1);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(57, 28);
-            this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "START";
-            this.btnStart.TextColor = System.Drawing.Color.White;
-            this.btnStart.UseVisualStyleBackColor = false;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStop.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnStop.BorderColor = System.Drawing.Color.PaleVioletRed;
-            this.btnStop.BorderRadius = 5;
-            this.btnStop.BorderSize = 0;
-            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnStop.FlatAppearance.BorderSize = 0;
-            this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStop.ForeColor = System.Drawing.Color.White;
-            this.btnStop.Location = new System.Drawing.Point(487, 1);
-            this.btnStop.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(57, 28);
-            this.btnStop.TabIndex = 0;
-            this.btnStop.Text = "STOP";
-            this.btnStop.TextColor = System.Drawing.Color.White;
-            this.btnStop.UseVisualStyleBackColor = false;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // lblProcess
-            // 
-            this.lblProcess.AutoSize = true;
-            this.lblProcess.BkColor = System.Drawing.Color.LightGray;
-            this.lblProcess.BorderColor = System.Drawing.Color.DarkGray;
-            this.lblProcess.CornerR = 10;
-            this.lblProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblProcess.IsFillLB = false;
-            this.lblProcess.IsFillLT = false;
-            this.lblProcess.IsFillRB = false;
-            this.lblProcess.IsFillRT = false;
-            this.lblProcess.Location = new System.Drawing.Point(2, 2);
-            this.lblProcess.Margin = new System.Windows.Forms.Padding(2);
-            this.lblProcess.Name = "lblProcess";
-            this.lblProcess.Size = new System.Drawing.Size(317, 26);
-            this.lblProcess.TabIndex = 1;
-            this.lblProcess.Text = "Mornitoring......";
-            this.lblProcess.Thickness = 1;
             // 
             // tableLayoutPanel4
             // 
@@ -177,13 +117,14 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 5;
+            this.tableLayoutPanel5.ColumnCount = 6;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 3, 0);
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 4, 0);
             this.tableLayoutPanel5.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.timePickerStart, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.timePickerEnd, 2, 0);
@@ -196,32 +137,11 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(545, 30);
             this.tableLayoutPanel5.TabIndex = 2;
             // 
-            // btnMaterialFilter
-            // 
-            this.btnMaterialFilter.BackColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.MediumSlateBlue;
-            this.btnMaterialFilter.BorderColor = System.Drawing.Color.PaleVioletRed;
-            this.btnMaterialFilter.BorderRadius = 5;
-            this.btnMaterialFilter.BorderSize = 0;
-            this.btnMaterialFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
-            this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.Location = new System.Drawing.Point(427, 1);
-            this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
-            this.btnMaterialFilter.Name = "btnMaterialFilter";
-            this.btnMaterialFilter.Size = new System.Drawing.Size(92, 28);
-            this.btnMaterialFilter.TabIndex = 0;
-            this.btnMaterialFilter.Text = "FILTER";
-            this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.UseVisualStyleBackColor = false;
-            this.btnMaterialFilter.Click += new System.EventHandler(this.btnMaterialFilter_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(203, 0);
+            this.label1.Location = new System.Drawing.Point(173, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 30);
@@ -234,20 +154,104 @@
             this.timePickerStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.timePickerStart.Location = new System.Drawing.Point(3, 3);
             this.timePickerStart.Name = "timePickerStart";
-            this.timePickerStart.Size = new System.Drawing.Size(197, 23);
+            this.timePickerStart.Size = new System.Drawing.Size(167, 23);
             this.timePickerStart.TabIndex = 2;
             // 
             // timePickerEnd
             // 
-            this.timePickerEnd.Location = new System.Drawing.Point(226, 3);
+            this.timePickerEnd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.timePickerEnd.Location = new System.Drawing.Point(196, 3);
             this.timePickerEnd.Name = "timePickerEnd";
-            this.timePickerEnd.Size = new System.Drawing.Size(197, 23);
+            this.timePickerEnd.Size = new System.Drawing.Size(167, 23);
             this.timePickerEnd.TabIndex = 2;
+            // 
+            // btnStart
+            // 
+            this.btnStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStart.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStart.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.btnStart.BorderRadius = 5;
+            this.btnStart.BorderSize = 0;
+            this.btnStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStart.FlatAppearance.BorderSize = 0;
+            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStart.ForeColor = System.Drawing.Color.White;
+            this.btnStart.Location = new System.Drawing.Point(386, 1);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(1, 1, 2, 1);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(77, 28);
+            this.btnStart.TabIndex = 0;
+            this.btnStart.Text = "START";
+            this.btnStart.TextColor = System.Drawing.Color.White;
+            this.btnStart.UseVisualStyleBackColor = false;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStop
+            // 
+            this.btnStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStop.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnStop.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.btnStop.BorderRadius = 5;
+            this.btnStop.BorderSize = 0;
+            this.btnStop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnStop.FlatAppearance.BorderSize = 0;
+            this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStop.ForeColor = System.Drawing.Color.White;
+            this.btnStop.Location = new System.Drawing.Point(467, 1);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(77, 28);
+            this.btnStop.TabIndex = 0;
+            this.btnStop.Text = "STOP";
+            this.btnStop.TextColor = System.Drawing.Color.White;
+            this.btnStop.UseVisualStyleBackColor = false;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // lblProcess
+            // 
+            this.lblProcess.AutoSize = true;
+            this.lblProcess.BkColor = System.Drawing.Color.LightGray;
+            this.lblProcess.BorderColor = System.Drawing.Color.DarkGray;
+            this.lblProcess.CornerR = 10;
+            this.lblProcess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblProcess.IsFillLB = false;
+            this.lblProcess.IsFillLT = false;
+            this.lblProcess.IsFillRB = false;
+            this.lblProcess.IsFillRT = false;
+            this.lblProcess.Location = new System.Drawing.Point(2, 2);
+            this.lblProcess.Margin = new System.Windows.Forms.Padding(2);
+            this.lblProcess.Name = "lblProcess";
+            this.lblProcess.Size = new System.Drawing.Size(362, 26);
+            this.lblProcess.TabIndex = 1;
+            this.lblProcess.Text = "Mornitoring......";
+            this.lblProcess.Thickness = 1;
+            // 
+            // btnMaterialFilter
+            // 
+            this.btnMaterialFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnMaterialFilter.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.btnMaterialFilter.BorderRadius = 5;
+            this.btnMaterialFilter.BorderSize = 0;
+            this.btnMaterialFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
+            this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
+            this.btnMaterialFilter.Location = new System.Drawing.Point(387, 1);
+            this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
+            this.btnMaterialFilter.Name = "btnMaterialFilter";
+            this.btnMaterialFilter.Size = new System.Drawing.Size(128, 28);
+            this.btnMaterialFilter.TabIndex = 0;
+            this.btnMaterialFilter.Text = "FILTER";
+            this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
+            this.btnMaterialFilter.UseVisualStyleBackColor = false;
+            this.btnMaterialFilter.Click += new System.EventHandler(this.btnMaterialFilter_Click);
             // 
             // FormMornitorSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(545, 153);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -258,6 +262,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMornitorSearch_FormClosing);
             this.Load += new System.EventHandler(this.FormMornitorSearch_Load);
+            this.VisibleChanged += new System.EventHandler(this.FormMornitorSearch_VisibleChanged);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();

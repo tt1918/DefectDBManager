@@ -84,6 +84,8 @@ namespace MarkrCompare
                 }
 
                 dgvLotInfo.Columns[i].Width = _dgvListLength[i];
+                // 정렬 기능 끄기
+                dgvLotInfo.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
 
@@ -165,6 +167,10 @@ namespace MarkrCompare
         #endregion
 
         #region Data Update Event
+        /// <summary>
+        /// 선택 랏의 정보 업데이트
+        /// </summary>
+        /// <param name="lot"></param>
         public void OnUpdateLot(PreprocLot lot)
         {
             _crtLot = lot;
@@ -181,6 +187,12 @@ namespace MarkrCompare
             }
         }
 
+        /// <summary>
+        /// 각 공정 별 마킹 오차 판정 업데이트
+        /// </summary>
+        /// <param name="lncd">라인 코드</param>
+        /// <param name="judge">판정</param>
+        /// <param name="score">오차률</param>
         public void OnUpdateJudge(string lncd, bool judge, float score)
         {
             if (InvokeRequired == true) setJudge(lncd, judge, score);

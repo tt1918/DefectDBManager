@@ -182,6 +182,7 @@
     <Compile Include="DB\Param\Param.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />
+    <Compile Include="Preproc\LOT\PreprocSet.cs" />
     <Compile Include="Preproc\MRKCTLMST\mrkctlmstManager.cs" />
     <Compile Include="Preproc\PreProcCompDB.cs" />
     <Compile Include="DB\Process.cs" />

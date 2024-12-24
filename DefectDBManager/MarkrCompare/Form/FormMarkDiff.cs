@@ -10,10 +10,17 @@ using System.Windows.Forms;
 
 namespace MarkrCompare
 {
+    
+
     public partial class FormMarkDiff : Form
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
+        #endregion
+
+        #region Event
+        public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
+        public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
         #endregion
 
         public FormMarkDiff()
@@ -31,9 +38,10 @@ namespace MarkrCompare
         private void FormMarkDiff_Load(object sender, EventArgs e)
         {
             initTabSearchSetting();
-            initLotListForms();
             initCrtLotForm();
             initRollMapForm();
+            initLotListForms();
+            
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,20 +67,44 @@ namespace MarkrCompare
             // Live Tab
             tabSearchSet.TabPages[0].Text = "LIVE";
             tabSearchSet.TabPages[0].Controls.Add(_formMorLive.Controls[0]);
+            _formMorLive.Dock = DockStyle.Fill;
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            _formMorLive.OnUpdatePrepLncdInfo += initLotListForms;
+            OnUpdateLiveLNCDInfo += _formMorLive.UpdateLNCDCtrlData;
             _formMorLive.Show();
 
             // Search Tab
             tabSearchSet.TabPages[1].Text = "SEARCH";
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
+            _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            _formMorSearch.OnUpdatePrepLncdInfo += initLotListForms;
+            OnUpdateSearchLNCDInfo += _formMorSearch.UpdateLNCDCtrlData;
             _formMorSearch.Show();
         }
 
         private void CloseTabSearchSetting()
         {
+            _formMorLive.OnUpdatePrepLncdInfo -= initLotListForms;
+            _formMorSearch.OnUpdatePrepLncdInfo -= initLotListForms;
+            OnUpdateLiveLNCDInfo -= _formMorLive.UpdateLNCDCtrlData;
+            OnUpdateSearchLNCDInfo -= _formMorSearch.UpdateLNCDCtrlData;
             _formMorLive?.Close();
             _formMorSearch?.Close(); 
+        }
+
+        private void tabSearchSet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch((sender as TabControl).SelectedIndex)
+            {
+                case 0: // Live Form
+                    OnUpdateLiveLNCDInfo?.Invoke();
+                    break;
+
+                case 1: // Search Form
+                    OnUpdateSearchLNCDInfo?.Invoke();
+                    break;
+            }
         }
         #endregion
 
@@ -119,10 +151,14 @@ namespace MarkrCompare
                     _lotListForms.Add(form);
                     TabPage page = new TabPage();
 
+                    page.Font = new Font(tabLineList.Font, FontStyle.Regular);
                     page.Text = item.Name;
                     page.Controls.Add(form.Controls[0]);
                     tabLineList.TabPages.Add(page);
                     form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+                    form.Dock = DockStyle.Fill;
+                    form.OnUpdatePrepLot += _crtLotForm.OnUpdateLot;
+                    form.OnUpdatePrepLot += _rollMapForm.OnUpdateLotInfo;
                     form.Show();
                 }
             }
@@ -135,7 +171,14 @@ namespace MarkrCompare
         private void CloseLotListForms()
         {
             for (int i = 0; i < _lotListForms.Count; i++)
-                _lotListForms[i]?.Close();
+            {
+                if (_lotListForms[i] == null) continue;
+                
+                _lotListForms[i].Close();
+                _lotListForms[i].OnUpdatePrepLot -= _crtLotForm.OnUpdateLot;
+                _lotListForms[i].OnUpdatePrepLot -= _rollMapForm.OnUpdateLotInfo;
+            }
+            
 
             _lotListForms.Clear();
         }
