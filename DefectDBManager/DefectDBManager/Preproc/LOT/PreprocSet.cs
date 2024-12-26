@@ -67,7 +67,7 @@ namespace DefectDBManager.Preproc
         /// </summary>
         [Category("Process")]
         [Description("Fault All")]
-        public bool IsFltAll { get; private set; }
+        public bool IsFltAll { get; set; }
 
         public ProcessData()
         {

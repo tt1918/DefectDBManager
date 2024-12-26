@@ -30,20 +30,25 @@
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnStart = new CustomControls.RoundButton();
+            this.btnStop = new CustomControls.RoundButton();
+            this.lblProcess = new CustomControls.RoundLabel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tlLncd = new System.Windows.Forms.TableLayoutPanel();
+            this.cbJobList = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.timePickerStart = new System.Windows.Forms.DateTimePicker();
             this.timePickerEnd = new System.Windows.Forms.DateTimePicker();
-            this.btnStart = new CustomControls.RoundButton();
-            this.btnStop = new CustomControls.RoundButton();
-            this.lblProcess = new CustomControls.RoundLabel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSetting = new CustomControls.RoundLabel();
             this.btnMaterialFilter = new CustomControls.RoundButton();
+            this.lblTime = new CustomControls.RoundLabel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel2
@@ -51,19 +56,21 @@
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel5, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 4);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 6;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(545, 153);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(545, 139);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // tableLayoutPanel3
@@ -84,86 +91,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(545, 30);
             this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.tlLncd, 0, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 123);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(545, 30);
-            this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // tlLncd
-            // 
-            this.tlLncd.ColumnCount = 1;
-            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlLncd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlLncd.Location = new System.Drawing.Point(0, 0);
-            this.tlLncd.Margin = new System.Windows.Forms.Padding(0);
-            this.tlLncd.Name = "tlLncd";
-            this.tlLncd.RowCount = 1;
-            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlLncd.Size = new System.Drawing.Size(545, 30);
-            this.tlLncd.TabIndex = 0;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.ColumnCount = 6;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.label1, 1, 0);
-            this.tableLayoutPanel5.Controls.Add(this.timePickerStart, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.timePickerEnd, 2, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 45);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(545, 30);
-            this.tableLayoutPanel5.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(173, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(20, 30);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "~";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // timePickerStart
-            // 
-            this.timePickerStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.timePickerStart.Location = new System.Drawing.Point(3, 3);
-            this.timePickerStart.Name = "timePickerStart";
-            this.timePickerStart.Size = new System.Drawing.Size(167, 23);
-            this.timePickerStart.TabIndex = 2;
-            // 
-            // timePickerEnd
-            // 
-            this.timePickerEnd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.timePickerEnd.Location = new System.Drawing.Point(196, 3);
-            this.timePickerEnd.Name = "timePickerEnd";
-            this.timePickerEnd.Size = new System.Drawing.Size(167, 23);
-            this.timePickerEnd.TabIndex = 2;
             // 
             // btnStart
             // 
@@ -226,6 +153,137 @@
             this.lblProcess.Text = "Mornitoring......";
             this.lblProcess.Thickness = 1;
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 1;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.tlLncd, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 101);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(545, 38);
+            this.tableLayoutPanel4.TabIndex = 1;
+            // 
+            // tlLncd
+            // 
+            this.tlLncd.ColumnCount = 1;
+            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlLncd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlLncd.Location = new System.Drawing.Point(0, 0);
+            this.tlLncd.Margin = new System.Windows.Forms.Padding(0);
+            this.tlLncd.Name = "tlLncd";
+            this.tlLncd.RowCount = 1;
+            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlLncd.Size = new System.Drawing.Size(545, 38);
+            this.tlLncd.TabIndex = 0;
+            // 
+            // cbJobList
+            // 
+            this.cbJobList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbJobList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbJobList.FormattingEnabled = true;
+            this.cbJobList.Location = new System.Drawing.Point(62, 2);
+            this.cbJobList.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.cbJobList.Name = "cbJobList";
+            this.cbJobList.Size = new System.Drawing.Size(101, 25);
+            this.cbJobList.TabIndex = 3;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 6;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.tableLayoutPanel5.Controls.Add(this.lblTime, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label1, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.timePickerStart, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.timePickerEnd, 3, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 35);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(545, 30);
+            this.tableLayoutPanel5.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Location = new System.Drawing.Point(218, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(20, 30);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "~";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // timePickerStart
+            // 
+            this.timePickerStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.timePickerStart.Location = new System.Drawing.Point(63, 3);
+            this.timePickerStart.Name = "timePickerStart";
+            this.timePickerStart.Size = new System.Drawing.Size(152, 23);
+            this.timePickerStart.TabIndex = 2;
+            // 
+            // timePickerEnd
+            // 
+            this.timePickerEnd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.timePickerEnd.Location = new System.Drawing.Point(241, 3);
+            this.timePickerEnd.Name = "timePickerEnd";
+            this.timePickerEnd.Size = new System.Drawing.Size(152, 23);
+            this.timePickerEnd.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.cbJobList, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblSetting, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 73);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(545, 28);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // lblSetting
+            // 
+            this.lblSetting.AutoSize = true;
+            this.lblSetting.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            this.lblSetting.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(150)))));
+            this.lblSetting.CornerR = 10;
+            this.lblSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSetting.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSetting.ForeColor = System.Drawing.Color.White;
+            this.lblSetting.IsFillLB = false;
+            this.lblSetting.IsFillLT = false;
+            this.lblSetting.IsFillRB = false;
+            this.lblSetting.IsFillRT = false;
+            this.lblSetting.Location = new System.Drawing.Point(1, 1);
+            this.lblSetting.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSetting.Name = "lblSetting";
+            this.lblSetting.Size = new System.Drawing.Size(59, 26);
+            this.lblSetting.TabIndex = 3;
+            this.lblSetting.Text = "JOB";
+            this.lblSetting.Thickness = 1;
+            // 
             // btnMaterialFilter
             // 
             this.btnMaterialFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
@@ -237,22 +295,43 @@
             this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
             this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.Location = new System.Drawing.Point(387, 1);
+            this.btnMaterialFilter.Location = new System.Drawing.Point(422, 1);
             this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
             this.btnMaterialFilter.Name = "btnMaterialFilter";
-            this.btnMaterialFilter.Size = new System.Drawing.Size(128, 28);
-            this.btnMaterialFilter.TabIndex = 0;
+            this.btnMaterialFilter.Size = new System.Drawing.Size(122, 28);
+            this.btnMaterialFilter.TabIndex = 3;
             this.btnMaterialFilter.Text = "FILTER";
             this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
             this.btnMaterialFilter.UseVisualStyleBackColor = false;
-            this.btnMaterialFilter.Click += new System.EventHandler(this.btnMaterialFilter_Click);
+            this.btnMaterialFilter.Visible = false;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            this.lblTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(150)))));
+            this.lblTime.CornerR = 10;
+            this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.ForeColor = System.Drawing.Color.White;
+            this.lblTime.IsFillLB = false;
+            this.lblTime.IsFillLT = false;
+            this.lblTime.IsFillRB = false;
+            this.lblTime.IsFillRT = false;
+            this.lblTime.Location = new System.Drawing.Point(1, 1);
+            this.lblTime.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(58, 28);
+            this.lblTime.TabIndex = 4;
+            this.lblTime.Text = "TIME";
+            this.lblTime.Thickness = 1;
             // 
             // FormMornitorSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(545, 153);
+            this.ClientSize = new System.Drawing.Size(545, 139);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -269,6 +348,8 @@
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -283,9 +364,13 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tlLncd;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private CustomControls.RoundButton btnMaterialFilter;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker timePickerStart;
         private System.Windows.Forms.DateTimePicker timePickerEnd;
+        private System.Windows.Forms.ComboBox cbJobList;
+        private CustomControls.RoundButton btnMaterialFilter;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private CustomControls.RoundLabel lblSetting;
+        private CustomControls.RoundLabel lblTime;
     }
 }

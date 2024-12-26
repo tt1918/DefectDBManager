@@ -1,4 +1,5 @@
 ﻿using Coss.Controls;
+using DefectDBManager.DBLotInfo;
 using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,7 @@ namespace MarkrCompare
             if(this.Visible==true)
             {
                 displayDataList();
+                copyCompData();
                 displayAllDgvCtrl();
             }
         }
@@ -99,7 +101,6 @@ namespace MarkrCompare
             displayDgvCompRange();
             displayReferenceProcessCtrl();
             displayDgvCompProc();
-            displayCbCompProcess();
         }
 
         /// <summary>
@@ -107,11 +108,11 @@ namespace MarkrCompare
         /// </summary>
         private void updateAllDgvCtrl()
         {
-            updateDgvProcess();
-            updateDgvCompProc();
+            
             updateJudgeRange();
             updateDgvCompRange();
             updateReferenceProcessCtrl();
+            updateDgvProcess();
         }
         #endregion
 
@@ -167,12 +168,16 @@ namespace MarkrCompare
         private void lvSetList_DoubleClick(object sender, EventArgs e)
         {
             _selSetName = "";
-            if (lvSetList.SelectedItems.Count == 0)
-                return;
+            _selCompName = "";
+            
+            if (lvSetList.SelectedItems.Count == 0)    return;
 
             int index = lvSetList.SelectedItems[0].Index;
             _selSetName = lvSetList.Items[index].SubItems[1].Text;
             lblName.Text = _selSetName;
+
+            // Compare Process 데이터 복사
+            copyCompData();
 
             // 영상 표시
             displayAllDgvCtrl();
@@ -182,7 +187,7 @@ namespace MarkrCompare
         #region Setting Item 관련 Control
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            FormAddDel form = new FormAddDel("Add", "이름", "추가", "취소");
+            FormAddDel form = new FormAddDel("작업 추가", "이름", "추가", "취소");
             if (form.ShowDialog() != DialogResult.OK) return;
 
             if (form.DataName == "")
@@ -267,6 +272,22 @@ namespace MarkrCompare
         static int[] _dgvListLength = { 50, 210};
         enum eDgvPrcess { No, Process, Total};
 
+        List<ProcessData> _tmpCompProc = new List<ProcessData>();
+
+        private void copyCompData()
+        {
+            _tmpCompProc = new List<ProcessData>();
+
+            int selIdx = -1;
+            for (int i = 0; i < _preprocSet.Count; i++)
+                if (_preprocSet[i].Name == _selSetName) selIdx = i;
+            if (selIdx == -1) return;
+
+            foreach (var item in _preprocSet[selIdx].Compare)
+                _tmpCompProc.Add(item.Clone());
+
+        }
+
         private void initDgvProcess()
         {
             dgvProcess.AllowUserToAddRows = false;
@@ -281,22 +302,21 @@ namespace MarkrCompare
             }
 
             dgvProcess.Columns[(int)eDgvPrcess.No].ReadOnly = true;
+            
         }
 
         private void displayDgvProcess()
         {
-            int selIdx = -1;
-            for(int i=0; i< _preprocSet.Count; i++)
-            {
-                if (_preprocSet[i].Name == _selSetName) selIdx = i;
-            }
-            
-            if (selIdx == -1) return;
-
+            int selIdx = getValidTaskIdx(_selSetName);
             List<string> strings = new List<string>();
 
-            foreach (var item in _preprocSet[selIdx].Compare)
-                strings.Add(item.Name);
+            if (selIdx != -1)
+            {
+
+                foreach (var item in _tmpCompProc)
+                    strings.Add(item.Name);
+            }
+
 
             dgvProcess.Rows.Clear();
 
@@ -313,35 +333,24 @@ namespace MarkrCompare
 
         private void updateDgvProcess()
         {
+            // Data Grid View에 포함되어 있는 데이터를 먼저 업데이트 해야함.
+            updateDgvCompProc();
+
             int selIdx = -1;
             for (int i = 0; i < _preprocSet.Count; i++)
-            {
                 if (_preprocSet[i].Name == _selSetName) selIdx = i;
-            }
 
             List<string> strings = new List<string>();
             foreach(DataGridViewRow row in dgvProcess.Rows)
                 strings.Add(row.Cells[(int)eDgvPrcess.Process].Value as string);
 
-            bool isFind = false;
-            for(int i=0; i< strings.Count; i++)
-            {
-                isFind = false;
-                foreach (var item in _preprocSet[selIdx].Compare)
-                {
-                    if (strings[i] == item.Name)
-                        isFind = true;
-                }
+            _preprocSet[selIdx].Compare.Clear();
 
-                if(isFind==false)
-                {
-                    ProcessData data = new ProcessData(strings[i]);
-                    _preprocSet[selIdx].Compare.Add(data);
-                }
-            }
+            foreach(var item in _tmpCompProc)
+                _preprocSet[selIdx].Compare.Add(item.Clone());
         }
 
-        private void addDgvProcess()
+        private void addDgvProcess(string name)
         {
             dgvProcess.SuspendLayout();
             try
@@ -349,7 +358,7 @@ namespace MarkrCompare
                 int idx = dgvProcess.Rows.Count;
                 string[] data = new string[(int)eDgvPrcess.Total];
                 data[(int)eDgvPrcess.No] = Convert.ToString(idx);
-                data[(int)eDgvPrcess.Process] = "";
+                data[(int)eDgvPrcess.Process] = name;
                 dgvProcess.Rows.Add(data);
             }
             catch
@@ -359,7 +368,6 @@ namespace MarkrCompare
             finally
             {
                 dgvProcess.ResumeLayout();
-                displayCbCompProcess();
             }
         }
 
@@ -369,11 +377,17 @@ namespace MarkrCompare
             try
             {
                 int idx = dgvProcess.SelectedRows[0].Index;
-                dgvProcess.Rows.RemoveAt(idx);
+                string name = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.Process].Value as string;
 
-                for (int i = 0; i < dgvProcess.Rows.Count; i++)
-                    dgvProcess.Rows[i].Cells[(int)eDgvPrcess.No].Value = Convert.ToString(i);
+                for(int i=0; i< _tmpCompProc.Count; i++)
+                {
+                    if (_tmpCompProc[i].Name == name)
+                        _tmpCompProc.RemoveAt(i);
+                }
 
+                displayDgvProcess();
+                
+                clearDgvCompProc();
             }
             catch
             {
@@ -382,10 +396,17 @@ namespace MarkrCompare
             finally
             {
                 dgvProcess.ResumeLayout();
-                displayCbCompProcess();
             }
         }
 
+        private void dgvProcess_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_selSetName == "") return;
+
+            string selName = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.Process].Value as string;
+            _selCompName = selName;
+            displayDgvCompProc();
+        }
 
         private void btnAddProc_Click(object sender, EventArgs e)
         {
@@ -400,7 +421,16 @@ namespace MarkrCompare
                 MessageBox.Show("작업이 설정되지 않았습니다."); return;
             }
 
-            addDgvProcess();
+            FormAddDel form = new FormAddDel("프로세스 추가", "이름", "추가", "취소");
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            if (form.DataName == "")
+            {
+                MessageBox.Show($"이름이 비어있습니다.", "경고");
+                return;
+            }
+
+            addDgvProcess(form.DataName);
         }
 
         private void btnDelProc_Click(object sender, EventArgs e)
@@ -419,10 +449,6 @@ namespace MarkrCompare
             deleteDgvProcess();
         }
 
-        private void dgvProcess_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            displayCbCompProcess();
-        }
         #endregion
 
         #region Process DataGridView 헤더
@@ -433,41 +459,6 @@ namespace MarkrCompare
 
         #region Compare Process Data Grid Veiw 처리
         string _selCompName = "";
-
-        private void displayCbCompProcess()
-        {
-            try
-            {
-                cbCompProcess.BeginUpdate();
-                cbCompProcess.Items.Clear();
-                for (int i = 0; i < dgvProcess.Rows.Count; i++)
-                {
-                    string name = dgvProcess.Rows[i].Cells[(int)eDgvPrcess.Process].Value as string;
-                    if (name == "") continue;
-
-                    cbCompProcess.Items.Add(name);
-                }
-                
-                if (_selCompName == "") return;
-
-                // 선택 데이터가 있으면 Data Grid View에 추가
-                foreach(var item in cbCompProcess.Items)
-                {
-                    if(item.ToString() == _selCompName)
-                    {
-
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                cbCompProcess.EndUpdate();
-            }
-        }
 
         private void initDgvCompProc()
         {
@@ -490,20 +481,15 @@ namespace MarkrCompare
             try
             {
                 int selProcIdx = getValidTaskIdx(_selSetName);
-                if (selProcIdx == -1) return;
+                if (selProcIdx == -1 || _selSetName == "") return;
 
-                if (cbCompProcess.SelectedIndex < 0) return;
-
-                int selIdx = cbCompProcess.SelectedIndex;
-                string selStr = cbCompProcess.Items[selIdx].ToString();
-
-                lblCompProcDataName.Text = selStr;
+                lblCompProcDataName.Text = _selCompName;
 
                 ProcessData refer = null;
 
-                foreach(var item in _preprocSet[selProcIdx].Compare)
+                foreach(var item in _tmpCompProc)
                 {
-                    if (item.Name == selStr)    refer = item;
+                    if (item.Name == _selCompName)    refer = item;
                 }
 
                 // 데이터가 없으면 리턴
@@ -539,9 +525,9 @@ namespace MarkrCompare
                 string name = lblCompProcDataName.Text;
                 int selIdx = -1;
 
-                for (int i = 0; i < _preprocSet[selProcIdx].Compare.Count; i++)
+                for (int i = 0; i < _tmpCompProc.Count; i++)
                 {
-                    if (_preprocSet[selProcIdx].Compare[i].Name == name)
+                    if (_tmpCompProc[i].Name == name)
                         selIdx = i;
                 }
 
@@ -555,26 +541,8 @@ namespace MarkrCompare
                         fltInfo.Size = (float)Convert.ToDouble(item.Cells[(int)eDgvProcData.Size].Value);
                         listInfo.Add(fltInfo);
                     }
-                    _preprocSet[selProcIdx].Compare[selIdx].FltInfos = listInfo;
-                    _preprocSet[selProcIdx].Compare[selIdx].SetIsFltAll(cbCompFltAll.Checked);
-                }
-                else
-                {
-                    ProcessData procData = new ProcessData();
-                    procData.Name = name;
-                    procData.SetIsFltAll(cbCompFltAll.Checked);
-
-                    List<FltInfo> listInfo = new List<FltInfo>();
-                    foreach (DataGridViewRow item in dgvCompProc.Rows)
-                    {
-                        FltInfo fltInfo = new FltInfo();
-                        fltInfo.ID = item.Cells[(int)eDgvProcData.ID].Value as string;
-                        fltInfo.Size = (float)Convert.ToDouble(item.Cells[(int)eDgvProcData.Size].Value);
-                        listInfo.Add(fltInfo);
-                    }
-                    procData.FltInfos = listInfo;
-
-                    _preprocSet[selProcIdx].Compare.Add(procData);
+                    _tmpCompProc[selIdx].FltInfos = listInfo;
+                    _tmpCompProc[selIdx].SetIsFltAll(cbCompFltAll.Checked);
                 }
             }
             catch
@@ -583,24 +551,15 @@ namespace MarkrCompare
             }
         }
 
-        private void cbCompProcess_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            displayDgvCompProc();
-        }
-
         private void btnAddCompFlt_Click(object sender, EventArgs e)
         {
             if (getValidTaskIdx(_selSetName) == -1) return;
-            if (cbCompProcess.SelectedIndex < 0) return;
-
             addCompProcData();
         }
 
         private void btnDelCompFlt_Click(object sender, EventArgs e)
         {
             if (getValidTaskIdx(_selSetName) == -1) return;
-            if (cbCompProcess.SelectedIndex < 0) return;
-
             deleteCompProcData();
         }
 
@@ -650,6 +609,25 @@ namespace MarkrCompare
             }
         }
 
+        private void clearDgvCompProc()
+        {
+            dgvCompProc.SuspendLayout();
+            try
+            {
+                dgvCompProc.Rows.Clear();
+                _selCompName = "";
+                lblCompProcDataName.Text = "";
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                dgvCompProc.ResumeLayout();
+            }
+        }
+
         #endregion
 
         #region Reference Process
@@ -675,7 +653,7 @@ namespace MarkrCompare
             try
             {
                 int selProcIdx = getValidTaskIdx(_selSetName);
-                if (selProcIdx == -1) return;
+                if (selProcIdx == -1 || _selSetName == "") return;
 
                 ProcessData refer = _preprocSet[selProcIdx].Reference;
                 tbRefProcName.Texts = refer.Name;
@@ -821,6 +799,8 @@ namespace MarkrCompare
 
             dgvCompRange.Rows.Clear();
 
+            if (selProcIdx == -1 || _selSetName == "") return;
+
             List<CompRange> range = _preprocSet[selProcIdx].CompRange;
 
             string[] sR = new string[(int)eDgvCompRange.Total];
@@ -965,7 +945,7 @@ namespace MarkrCompare
         private void displayJudgeRange()
         {
             int selProcIdx = getValidTaskIdx(_selSetName);
-            if (selProcIdx == -1) return;
+            if (selProcIdx == -1 || _selSetName == "") return;
 
             try
             {

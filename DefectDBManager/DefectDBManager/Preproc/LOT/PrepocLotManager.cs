@@ -9,6 +9,24 @@ using System.Xml.Linq;
 
 namespace DefectDBManager
 {
+    public class TimeTable
+    {
+        public DateTime StartTime { get; set; } = DateTime.Now;
+        public DateTime EndTime { get; set; } = DateTime.Now;
+
+        public TimeTable()
+        {
+
+        }
+
+        public void SetTime(DateTime stTime, DateTime edTime)
+        {
+            StartTime = stTime;
+            EndTime = edTime;
+        }
+
+    }
+
     // 이전 공정 랏 데이터에 대한 
     public class PreprocLotManager
     {
@@ -82,7 +100,20 @@ namespace DefectDBManager
         }
         private Preproc.PreprocSet _precSetting=new Preproc.PreprocSet();
 
+
+        public Preproc.PreprocItem SelPreprocJob
+        {
+            get { return _selPreprocJob; }
+            private set { _selPreprocJob = value; }
+        }
+        private Preproc.PreprocItem _selPreprocJob = null;
         #endregion
+
+        #region 검색 시간 설정 
+        public TimeTable SearchTime { get; set; } = new TimeTable();
+        public TimeTable LiveTime { get; set; } = new TimeTable();  
+        #endregion
+
 
         public PreprocLotManager()
         {
@@ -94,8 +125,6 @@ namespace DefectDBManager
             _precSetting.Load();
         }
 
-        public DateTime StartTime { get; set; } = DateTime.Now;
-        public DateTime EndTime { get; set; } = DateTime.Now;
 
         #region Lot 데이터 관리
         /// <summary>
@@ -196,6 +225,20 @@ namespace DefectDBManager
         {
             ProcSetting = set;
         }
+
+        public void SetSelectedJob(string name)
+        {
+            _selPreprocJob = null;
+            foreach (var item in _precSetting.Data)
+            {
+                if (item.Name == name)
+                {
+                    _selPreprocJob = item;
+                    break;
+                }
+            }
+        }
         #endregion
+
     }
 }

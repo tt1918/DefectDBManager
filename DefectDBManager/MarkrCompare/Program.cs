@@ -1,4 +1,5 @@
-﻿using DefectDBManager.Preproc;
+﻿using DefectDBManager;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace MarkrCompare
             Application.SetCompatibleTextRenderingDefault(false);
 
             DefectDBManager.PreprocLotManager lotManager = new DefectDBManager.PreprocLotManager();
+            DefectDBManager.CompPreprocDefect markComp = new CompPreprocDefect(null);
+            markComp.LotManager = lotManager;
+
             FormMain main = new FormMain(lotManager);
 
             Application.Run(main);

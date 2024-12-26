@@ -1,4 +1,5 @@
 ﻿using Coss.Controls;
+using DefectDBManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,7 @@ namespace MarkrCompare
 
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
+        DefectDBManager.CompPreprocDefect _dbManager = null;
         #endregion
 
         public FormMain()
@@ -41,14 +43,15 @@ namespace MarkrCompare
             lblTitle.MouseMove += lblTitle_MouseMove;
         }
 
-        public FormMain(DefectDBManager.PreprocLotManager lotManager)
+        public FormMain(DefectDBManager.CompPreprocDefect manager)
         {
             InitializeComponent();
 
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            _lotManager = lotManager;
+            _dbManager = manager;
+            _lotManager = manager.LotManager;
         }
 
         ~FormMain()
@@ -60,6 +63,14 @@ namespace MarkrCompare
         {
             initClockTimer();
             initMarkDiffForm();
+
+            SystemLog.DisplaySystemLog = _markDiffForm.OnDisplaySystemLog;
+            SystemLog.DisplayFileServerLog = _markDiffForm.OnDisplayFileServerLog;
+            SystemLog.OnDisplayLogData = _markDiffForm.OnDisplayLog;
+            SystemLog.DisplayNetworkLog = _markDiffForm.OnDisplayNetworkLog;
+            SystemLog.DisplayAlarmLog = _markDiffForm.OnDisplayAlarmLog;
+
+            SystemLog.DisplaySystemLog("Program Start");
         }
 
 
@@ -74,6 +85,9 @@ namespace MarkrCompare
             tableLayoutPanel1.Controls.Add(_markDiffForm, 0, 1);
             _markDiffForm.Dock = DockStyle.Fill;
             _markDiffForm.Show();
+
+            _markDiffForm.FormMorSearch.OnStartLotSearch += StartSearchLotList;
+            _markDiffForm.FormMorSearch.OnStopLotSearch += StopSearchLotList;
         }
         #endregion Marking Comparision Form
 
@@ -145,5 +159,18 @@ namespace MarkrCompare
                 this._lotManager.UpdatePreprocSet(form.PreprocSet);
 
         }
+
+        #region 검색 시작
+        public void StartSearchLotList()
+        {
+            _dbManager.SearchLotMarkDiffFromSetting();
+        }
+
+        public void StopSearchLotList()
+        {
+            _dbManager.StopSearchingLotList = false;
+        }
+
+        #endregion
     }
 }

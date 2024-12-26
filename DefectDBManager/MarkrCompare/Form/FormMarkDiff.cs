@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,6 +27,7 @@ namespace MarkrCompare
         public FormMarkDiff()
         {
             InitializeComponent();
+
         }
 
         public FormMarkDiff(DefectDBManager.PreprocLotManager lotManager)
@@ -41,7 +43,9 @@ namespace MarkrCompare
             initCrtLotForm();
             initRollMapForm();
             initLotListForms();
-            
+
+            initLogTimer();
+
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
@@ -49,11 +53,128 @@ namespace MarkrCompare
             CloseTabSearchSetting();
             CloseLotListForms();
             CloseCrtLotForm();
+
+            closeInOutTimer();
+        }
+        #endregion
+
+        #region Log Control
+        ConcurrentQueue<string> _queueLog = new ConcurrentQueue<string>();
+        System.Windows.Forms.Timer _timerLog = new System.Windows.Forms.Timer();
+
+        private void initLogTimer()
+        {
+            _timerLog.Interval = 200;
+            _timerLog.Tick += timerLogProc;
+
+        }
+        private void closeInOutTimer()
+        {
+            _timerLog.Stop();
+            _timerLog.Tick -= timerLogProc;
+        }
+        private void timerLogProc(object sender, EventArgs e)
+        {
+            _timerLog.Stop();
+
+            try
+            {
+                int queueSize = _queueLog.Count;
+                if (queueSize == 0)
+                {
+                    _timerLog.Start();
+                    return;
+                }
+
+                lbLog.BeginUpdate();
+
+                // 100개 까지만 데이터 표시함
+                while (lbLog.Items.Count > 100)
+                {
+                    lbLog.Items.RemoveAt(0);
+                }
+
+                while (queueSize > 0)
+                {
+                    if (lbLog.Items.Count > 100)
+                        lbLog.Items.RemoveAt(0);
+
+                    string strData;
+                    if (_queueLog.TryDequeue(out strData) == true)
+                        lbLog.Items.Add(strData);
+                    queueSize--;
+                }
+                lbLog.SetSelected(lbLog.Items.Count - 1, true);
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                lbLog.EndUpdate();
+                _timerLog.Start();
+            }
+        }
+
+
+        public void AddLog(string comment, Log.Level level)
+        {
+            _queueLog.Enqueue(comment);
+        }
+        public void ClearLog()
+        {
+            string cmt;
+            try
+            {
+                while (!_queueLog.IsEmpty) { _queueLog.TryDequeue(out cmt); }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void OnDisplayFileServerLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
+        {
+            AddLog(text, level);
+            if (write) SystemLog.FileServer.Write(level, text);
+        }
+        public void OnDisplayNetworkLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
+        {
+            AddLog(text, level);
+            if (write) SystemLog.Network.Write(level, text);
+        }
+        public void OnDisplaySystemLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
+        {
+            AddLog(text, level);
+            if (write) SystemLog.System.Write(level, text);
+        }
+        public void OnDisplayAlarmLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
+        {
+            AddLog(text, level);
+            if (write) SystemLog.Alarm.Write(level, text);
+        }
+        public void OnDisplayLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
+        {
+            AddLog(text, level);
         }
         #endregion
 
         #region Tab Serach Setting
+        public FormMornitorLive FormMorLive
+        {
+            get { return _formMorLive; }
+            private set { _formMorLive = value; }
+        }
         private FormMornitorLive _formMorLive;
+
+        public FormMornitorSearch FormMorSearch
+        {
+            get { return _formMorSearch; }
+            private set { _formMorSearch = value; }
+        }
         private FormMornitorSearch _formMorSearch;
 
         private void initTabSearchSetting()
@@ -76,10 +197,10 @@ namespace MarkrCompare
             // Search Tab
             tabSearchSet.TabPages[1].Text = "SEARCH";
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
-            _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSearch.OnUpdatePrepLncdInfo += initLotListForms;
             OnUpdateSearchLNCDInfo += _formMorSearch.UpdateLNCDCtrlData;
+            _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.Show();
         }
 

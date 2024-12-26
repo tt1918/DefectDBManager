@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+
+#define USE_PRE_SETTING
 
 namespace MarkrCompare
 {
@@ -22,6 +26,8 @@ namespace MarkrCompare
 
         #region Event
         public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
+        public event MarkrCompare.Delegate.UpdateEvent OnStartLotSearch;
+        public event MarkrCompare.Delegate.UpdateEvent OnStopLotSearch;
         #endregion
 
         #region Create/Destroy
@@ -37,7 +43,8 @@ namespace MarkrCompare
         }
         private void FormMornitorSearch_Load(object sender, EventArgs e)
         {
-            initLNCDCtrl();
+            initCBSetting();
+            //initLNCDCtrl();
             initLotSearchTimer();
         }
 
@@ -56,6 +63,30 @@ namespace MarkrCompare
 
         #endregion
 
+        #region Setting Combo Box 처리
+        
+        private void initCBSetting()
+        {
+            if (_lotManager == null) return;
+
+            int size = _lotManager.ProcSetting.Count;
+
+            cbJobList.Items.Clear();
+            cbJobList.Sorted = false;
+            cbJobList.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (var item in _lotManager.ProcSetting.Data)
+                cbJobList.Items.Add(item.Name);
+            
+            if(size>0)  cbJobList.SelectedIndex = 0;
+        }
+
+        private void getSettingJob()
+        {
+            string name;
+            name = cbJobList.SelectedItem as string;
+            _lotManager.SetSelectedJob(name);
+        }
+        #endregion
 
         #region 체크 버튼 인식
         List<CheckBox> _lncdCheckBox = null;
@@ -181,8 +212,17 @@ namespace MarkrCompare
             try
             {
                 if (IsRun == true) return;
+                if (_lotManager == null) return;
+
+                _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
+
+#if USE_PRE_SETTING
+                getSettingJob();
+#else
                 getLNCDCtrlData();
                 OnUpdatePrepLncdInfo?.Invoke();
+#endif
+                OnStartLotSearch?.Invoke();
                 _timerLotSearchProcess.Start();
             }
             catch
@@ -196,7 +236,9 @@ namespace MarkrCompare
             try
             {
                 if (IsRun == false) return;
+                
                 _timerLotSearchProcess.Stop();
+                OnStopLotSearch?.Invoke();
 
                 string message = $"모니터링 정지";
                 lblProcess.Text = message;

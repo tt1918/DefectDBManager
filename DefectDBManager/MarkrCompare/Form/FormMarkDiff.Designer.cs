@@ -33,12 +33,12 @@
             this.tabSearchSet = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.lvLog = new System.Windows.Forms.ListView();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpLineData = new System.Windows.Forms.TableLayoutPanel();
             this.tabLineList = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lbLog = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabSearchSet.SuspendLayout();
@@ -69,7 +69,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.09665F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.90335F));
             this.tableLayoutPanel2.Controls.Add(this.tabSearchSet, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lvLog, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lbLog, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -115,17 +115,6 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // lvLog
-            // 
-            this.lvLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLog.HideSelection = false;
-            this.lvLog.Location = new System.Drawing.Point(438, 1);
-            this.lvLog.Margin = new System.Windows.Forms.Padding(1);
-            this.lvLog.Name = "lvLog";
-            this.lvLog.Size = new System.Drawing.Size(575, 198);
-            this.lvLog.TabIndex = 1;
-            this.lvLog.UseCompatibleStateImageBehavior = false;
             // 
             // tableLayoutPanel3
             // 
@@ -193,6 +182,17 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // lbLog
+            // 
+            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.ItemHeight = 15;
+            this.lbLog.Location = new System.Drawing.Point(438, 1);
+            this.lbLog.Margin = new System.Windows.Forms.Padding(1);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.Size = new System.Drawing.Size(575, 198);
+            this.lbLog.TabIndex = 1;
+            // 
             // FormMarkDiff
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -224,11 +224,11 @@
         private System.Windows.Forms.TabControl tabSearchSet;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.ListView lvLog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tlpLineData;
         private System.Windows.Forms.TabControl tabLineList;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ListBox lbLog;
     }
 }

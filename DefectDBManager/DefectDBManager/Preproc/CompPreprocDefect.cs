@@ -70,6 +70,17 @@ namespace DefectDBManager
             set { _lotManager = value; }
         }
         private PreprocLotManager _lotManager = null;
+
+
+        public bool IsRunSearchingLotList
+        {
+            get;    private set;
+        } = false;
+        public bool StopSearchingLotList
+        {
+            get; set;
+        } = false;
+
         #endregion Param
 
 
@@ -148,8 +159,18 @@ namespace DefectDBManager
             task.Start();
         }
 
+        public void SearchLotMarkDiffFromSetting()
+        {
+            // LotManager의 데이터는 업데이트되어있는 상황
+            Task task = new Task(searchFromSetting, null);
+            task.Start();
+        }
+
         private void search(object obj)
         {
+            if (IsRunSearchingLotList == true) return;
+            IsRunSearchingLotList = true;
+
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
@@ -158,6 +179,8 @@ namespace DefectDBManager
                 string lncd = list.Key;
                 foreach (var item in list.Value.Data)
                 {
+                    if (StopSearchingLotList == true) break;
+
                     string lotName = item.Y0KLOT;
                     SearchDefectData(lncd, lotName);
 
@@ -166,6 +189,37 @@ namespace DefectDBManager
                     OnLotProgress?.Invoke(rate);
                 }
             }
+
+            StopSearchingLotList = false;
+            IsRunSearchingLotList = false;
+        }
+
+        private void searchFromSetting(object obj)
+        {
+            if (IsRunSearchingLotList == true) return;
+            IsRunSearchingLotList = true;
+
+            // 해당 공정에 대한 결점 정보 확인
+            searchLotListFormSetting();
+
+            foreach (var list in LotManager.Product)
+            {
+                string lncd = list.Key;
+                foreach (var item in list.Value.Data)
+                {
+                    if (StopSearchingLotList == true) break;
+
+                    string lotName = item.Y0KLOT;
+                    SearchDefectData(lncd, lotName);
+
+                    // 검색 진행 상황을 
+                    int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
+                    OnLotProgress?.Invoke(rate);
+                }
+            }
+
+            StopSearchingLotList = false;
+            IsRunSearchingLotList = false;
         }
 
         #region 공정 별 생산 리스트 취합.
@@ -173,8 +227,8 @@ namespace DefectDBManager
         {
             LotManager.Product.Clear();
 
-            DateTime stTime = LotManager.StartTime ;
-            DateTime edTime = LotManager.EndTime ;
+            DateTime stTime = LotManager.SearchTime.StartTime ;
+            DateTime edTime = LotManager.SearchTime.EndTime ;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
                 if (data.Use == false) continue;
@@ -191,6 +245,28 @@ namespace DefectDBManager
                 }
             }
         }
+
+        private void searchLotListFormSetting()
+        {
+            LotManager.Product.Clear();
+
+            DateTime stTime = LotManager.SearchTime.StartTime;
+            DateTime edTime = LotManager.SearchTime.EndTime;
+
+            string codeLine = LotManager.SelPreprocJob.Name;
+
+            if (_DBProc.SearchPTRYOPList(codeLine, stTime, edTime) == true)
+            {
+                PTRY0PList list = new PTRY0PList();
+
+                foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    list.Add(ptry0p.Clone());
+
+                // 리스트 데이터 추가
+                LotManager.Product.Add(codeLine, list);
+            }
+        }
+
         #endregion
 
 

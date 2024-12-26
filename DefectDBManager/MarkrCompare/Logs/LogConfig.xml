@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<log4net>
+  <appender name="FileServerLog" type="log4net.Appender.RollingFileAppender">
+    <file value="C:\Coss\Log\"/>
+    <appendToFile value="true"/>
+    <datePattern value="yyyyMMdd'_FILESERVER_LOG.txt'"/>
+    <encoding value="utf-8" />
+    <staticLogFileName value="false"/>
+    <rollingStyle value="Date"/>
+    <!--<maxSizeRollBackups value ="100"/>
+    <maximumFileSize value ="10MB"/>-->
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%d [%t] %-5p - %m%n"/>
+    </layout>
+  </appender>
+  <logger name ="FileServer">
+    <level value="DEBUG"/>
+    <appender-ref ref="FileServerLog"/>
+  </logger>
+  <appender name="NetworkLog" type="log4net.Appender.RollingFileAppender">
+    <file value="C:\Coss\Log\"/>
+    <appendToFile value="true"/>
+    <datePattern value="yyyyMMdd'_NETWORK_LOG.txt'"/>
+    <encoding value="utf-8" />
+    <staticLogFileName value="false"/>
+    <rollingStyle value="Date"/>
+    <!--<maxSizeRollBackups value ="100"/>
+    <maximumFileSize value ="10MB"/>-->
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%d [%t] %-5p %c - %m%n"/>
+    </layout>
+  </appender>
+  <logger name ="Network">
+    <level value="DEBUG"/>
+    <appender-ref ref="NetworkLog"/>
+  </logger>
+  <appender name="SystemLog" type="log4net.Appender.RollingFileAppender">
+    <file value="C:\Coss\Log\"/>
+    <appendToFile value="true"/>
+    <encoding value="utf-8" />
+    <datePattern value="yyyyMMdd'_SYSTEM_LOG.txt'"/>
+    <staticLogFileName value="false"/>
+    <rollingStyle value="Date"/>
+    <!--<maxSizeRollBackups value ="100"/>
+    <maximumFileSize value ="10MB"/>-->
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%d [%t] %-5p %c - %m%n"/>
+    </layout>
+  </appender>
+  <logger name ="System">
+    <level value="DEBUG"/>
+    <appender-ref ref="SystemLog"/>
+  </logger>
+  <appender name="AlarmLog" type="log4net.Appender.RollingFileAppender">
+    <file value="C:\Coss\Log\"/>
+    <appendToFile value="true"/>
+    <encoding value="utf-8" />
+    <datePattern value="yyyyMMdd'_Alarm_LOG.txt'"/>
+    <staticLogFileName value="false"/>
+    <rollingStyle value="Date"/>
+    <!--<maxSizeRollBackups value ="100"/>
+    <maximumFileSize value ="10MB"/>-->
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%d [%t] %-5p %c - %m%n"/>
+    </layout>
+  </appender>
+  <logger name ="Alarm">
+    <level value="DEBUG"/>
+    <appender-ref ref="AlarmLog"/>
+  </logger>
+</log4net>
