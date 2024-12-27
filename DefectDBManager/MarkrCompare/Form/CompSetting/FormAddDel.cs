@@ -14,7 +14,7 @@ namespace MarkrCompare
     {
         public string Title { get; set; }
         public string ScriptName { get; set; }
-        public string DataName { get; private set; }
+        public string DataName { get; set; }
         public FormAddDel(string title, string scriptName, string btnOkName, string btnCancelName, string dataName = "")
         {
             InitializeComponent();
@@ -71,6 +71,16 @@ namespace MarkrCompare
             DataName = tbName.Texts;
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void FormAddDel_VisibleChanged(object sender, EventArgs e)
+        {
+            if(Visible==true)
+            {
+                lblTitle.Text = Title;
+                lblName.Text = ScriptName;
+                tbName.Texts = DataName;
+            }
         }
     }
 }

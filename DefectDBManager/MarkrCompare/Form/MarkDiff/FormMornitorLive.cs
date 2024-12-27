@@ -25,6 +25,8 @@ namespace MarkrCompare
 
         #region Event
         public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
+        public event MarkrCompare.Delegate.UpdateEvent OnStartLiveSearch;
+        public event MarkrCompare.Delegate.UpdateEvent OnStopLiveSearch;
         #endregion
 
         #region Create/Destroy
@@ -43,6 +45,8 @@ namespace MarkrCompare
         {
             initLNCDCtrl();
             initLotSearchTimer();
+
+
         }
 
         private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
@@ -184,6 +188,7 @@ namespace MarkrCompare
                 getLNCDCtrlData();
                 OnUpdatePrepLncdInfo?.Invoke();
                 _timerLotSearchProcess.Start();
+                OnStartLiveSearch?.Invoke();
             }
             catch
             {
@@ -197,6 +202,9 @@ namespace MarkrCompare
             {
                 if (IsRun == false) return;
                 _timerLotSearchProcess.Stop();
+
+                // 검사 정지
+                OnStopLiveSearch?.Invoke();
 
                 string message = $"모니터링 정지";
                 lblProcess.Text = message;

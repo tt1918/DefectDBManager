@@ -52,8 +52,15 @@ namespace DefectDBManager.Preproc
         /// 프로세스 이름
         /// </summary>
         [Category("Process")]
-        [Description("Name")]
-        public string Name { get; set; }
+        [Description("Line ID")]
+        public string LineID { get; set; }
+
+        /// <summary>
+        /// 라인코드
+        /// </summary>
+        [Category("Process")]
+        [Description("LNCD")]
+        public string LNCD { get; set; }
 
         /// <summary>
         /// 프로세스 항목
@@ -75,9 +82,10 @@ namespace DefectDBManager.Preproc
             FltInfos = new List<FltInfo>();
         }
 
-        public ProcessData(string name)
+        public ProcessData(string lineID="", string lncd="")
         {
-            Name = name;
+            LineID = lineID;
+            LNCD = lncd;
             IsFltAll = false;
             FltInfos = new List<FltInfo>();
         }
@@ -86,7 +94,8 @@ namespace DefectDBManager.Preproc
         {
             ProcessData item = new ProcessData();
             
-            item.Name = this.Name;
+            item.LineID = this.LineID;
+            item.LNCD = this.LNCD;
             
             foreach(var info in FltInfos)
                 item.FltInfos.Add(info.Clone());

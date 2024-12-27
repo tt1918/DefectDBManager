@@ -48,8 +48,10 @@
             this.btnAddRefFlt = new CustomControls.RoundButton();
             this.btnDelRefFlt = new CustomControls.RoundButton();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
-            this.tbRefProcName = new CustomControls.RoundTextBox();
-            this.roundLabel2 = new CustomControls.RoundLabel();
+            this.lblLNCD = new CustomControls.RoundLabel();
+            this.tbRefProcLineID = new CustomControls.RoundTextBox();
+            this.lblLineID = new CustomControls.RoundLabel();
+            this.tbRefLNCD = new CustomControls.RoundTextBox();
             this.groupProcess = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvProcess = new System.Windows.Forms.DataGridView();
@@ -64,8 +66,10 @@
             this.btnAddCompFlt = new CustomControls.RoundButton();
             this.btnDelCompFlt = new CustomControls.RoundButton();
             this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCompProcName = new CustomControls.RoundLabel();
-            this.lblCompProcDataName = new CustomControls.RoundLabel();
+            this.lblCompLineID = new CustomControls.RoundLabel();
+            this.lblCompProcLineIDData = new CustomControls.RoundLabel();
+            this.lblCompLNCD = new CustomControls.RoundLabel();
+            this.lblCompLNCDData = new CustomControls.RoundLabel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.groupCompRange = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
@@ -469,12 +473,15 @@
             // 
             // tableLayoutPanel17
             // 
-            this.tableLayoutPanel17.ColumnCount = 3;
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tableLayoutPanel17.Controls.Add(this.tbRefProcName, 0, 0);
-            this.tableLayoutPanel17.Controls.Add(this.roundLabel2, 0, 0);
+            this.tableLayoutPanel17.ColumnCount = 4;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel17.Controls.Add(this.lblLNCD, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.tbRefProcLineID, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.lblLineID, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.tbRefLNCD, 3, 0);
             this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel17.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
@@ -484,50 +491,95 @@
             this.tableLayoutPanel17.Size = new System.Drawing.Size(315, 35);
             this.tableLayoutPanel17.TabIndex = 6;
             // 
-            // tbRefProcName
+            // lblLNCD
             // 
-            this.tbRefProcName.BackColor = System.Drawing.SystemColors.Window;
-            this.tbRefProcName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.tbRefProcName.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.tbRefProcName.BorderRadius = 5;
-            this.tbRefProcName.BorderSize = 2;
-            this.tbRefProcName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbRefProcName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbRefProcName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbRefProcName.Location = new System.Drawing.Point(91, 1);
-            this.tbRefProcName.Margin = new System.Windows.Forms.Padding(1);
-            this.tbRefProcName.Multiline = false;
-            this.tbRefProcName.Name = "tbRefProcName";
-            this.tbRefProcName.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
-            this.tbRefProcName.PasswordChar = false;
-            this.tbRefProcName.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.tbRefProcName.PlaceholderText = "";
-            this.tbRefProcName.Size = new System.Drawing.Size(113, 32);
-            this.tbRefProcName.TabIndex = 8;
-            this.tbRefProcName.Texts = "";
-            this.tbRefProcName.UnderlinedStyle = false;
+            this.lblLNCD.AutoSize = true;
+            this.lblLNCD.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblLNCD.BorderColor = System.Drawing.Color.Silver;
+            this.lblLNCD.CornerR = 10;
+            this.lblLNCD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLNCD.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLNCD.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblLNCD.IsFillLB = false;
+            this.lblLNCD.IsFillLT = false;
+            this.lblLNCD.IsFillRB = false;
+            this.lblLNCD.IsFillRT = false;
+            this.lblLNCD.Location = new System.Drawing.Point(159, 2);
+            this.lblLNCD.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLNCD.Name = "lblLNCD";
+            this.lblLNCD.Size = new System.Drawing.Size(66, 31);
+            this.lblLNCD.TabIndex = 9;
+            this.lblLNCD.Text = "LNCD";
+            this.lblLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLNCD.Thickness = 1;
             // 
-            // roundLabel2
+            // tbRefProcLineID
             // 
-            this.roundLabel2.AutoSize = true;
-            this.roundLabel2.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
-            this.roundLabel2.BorderColor = System.Drawing.Color.Silver;
-            this.roundLabel2.CornerR = 10;
-            this.roundLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.roundLabel2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.roundLabel2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.roundLabel2.IsFillLB = false;
-            this.roundLabel2.IsFillLT = false;
-            this.roundLabel2.IsFillRB = false;
-            this.roundLabel2.IsFillRT = false;
-            this.roundLabel2.Location = new System.Drawing.Point(2, 2);
-            this.roundLabel2.Margin = new System.Windows.Forms.Padding(2);
-            this.roundLabel2.Name = "roundLabel2";
-            this.roundLabel2.Size = new System.Drawing.Size(86, 31);
-            this.roundLabel2.TabIndex = 6;
-            this.roundLabel2.Text = "NAME";
-            this.roundLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.roundLabel2.Thickness = 1;
+            this.tbRefProcLineID.BackColor = System.Drawing.SystemColors.Window;
+            this.tbRefProcLineID.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefProcLineID.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefProcLineID.BorderRadius = 5;
+            this.tbRefProcLineID.BorderSize = 2;
+            this.tbRefProcLineID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbRefProcLineID.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbRefProcLineID.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbRefProcLineID.Location = new System.Drawing.Point(71, 1);
+            this.tbRefProcLineID.Margin = new System.Windows.Forms.Padding(1);
+            this.tbRefProcLineID.Multiline = false;
+            this.tbRefProcLineID.Name = "tbRefProcLineID";
+            this.tbRefProcLineID.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.tbRefProcLineID.PasswordChar = false;
+            this.tbRefProcLineID.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.tbRefProcLineID.PlaceholderText = "";
+            this.tbRefProcLineID.Size = new System.Drawing.Size(85, 32);
+            this.tbRefProcLineID.TabIndex = 8;
+            this.tbRefProcLineID.Texts = "";
+            this.tbRefProcLineID.UnderlinedStyle = false;
+            // 
+            // lblLineID
+            // 
+            this.lblLineID.AutoSize = true;
+            this.lblLineID.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblLineID.BorderColor = System.Drawing.Color.Silver;
+            this.lblLineID.CornerR = 10;
+            this.lblLineID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLineID.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLineID.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblLineID.IsFillLB = false;
+            this.lblLineID.IsFillLT = false;
+            this.lblLineID.IsFillRB = false;
+            this.lblLineID.IsFillRT = false;
+            this.lblLineID.Location = new System.Drawing.Point(2, 2);
+            this.lblLineID.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLineID.Name = "lblLineID";
+            this.lblLineID.Size = new System.Drawing.Size(66, 31);
+            this.lblLineID.TabIndex = 6;
+            this.lblLineID.Text = "ID";
+            this.lblLineID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblLineID.Thickness = 1;
+            // 
+            // tbRefLNCD
+            // 
+            this.tbRefLNCD.BackColor = System.Drawing.SystemColors.Window;
+            this.tbRefLNCD.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefLNCD.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefLNCD.BorderRadius = 5;
+            this.tbRefLNCD.BorderSize = 2;
+            this.tbRefLNCD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbRefLNCD.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbRefLNCD.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbRefLNCD.Location = new System.Drawing.Point(228, 1);
+            this.tbRefLNCD.Margin = new System.Windows.Forms.Padding(1);
+            this.tbRefLNCD.Multiline = false;
+            this.tbRefLNCD.Name = "tbRefLNCD";
+            this.tbRefLNCD.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.tbRefLNCD.PasswordChar = false;
+            this.tbRefLNCD.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.tbRefLNCD.PlaceholderText = "";
+            this.tbRefLNCD.Size = new System.Drawing.Size(86, 32);
+            this.tbRefLNCD.TabIndex = 8;
+            this.tbRefLNCD.Texts = "";
+            this.tbRefLNCD.UnderlinedStyle = false;
             // 
             // groupProcess
             // 
@@ -574,6 +626,7 @@
             this.dgvProcess.Size = new System.Drawing.Size(297, 174);
             this.dgvProcess.TabIndex = 5;
             this.dgvProcess.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProcess_CellClick);
+            this.dgvProcess.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProcess_CellEndEdit);
             // 
             // tableLayoutPanel8
             // 
@@ -757,12 +810,15 @@
             // 
             // tableLayoutPanel18
             // 
-            this.tableLayoutPanel18.ColumnCount = 3;
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tableLayoutPanel18.Controls.Add(this.lblCompProcName, 0, 0);
-            this.tableLayoutPanel18.Controls.Add(this.lblCompProcDataName, 1, 0);
+            this.tableLayoutPanel18.ColumnCount = 4;
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel18.Controls.Add(this.lblCompLineID, 0, 0);
+            this.tableLayoutPanel18.Controls.Add(this.lblCompProcLineIDData, 1, 0);
+            this.tableLayoutPanel18.Controls.Add(this.lblCompLNCD, 2, 0);
+            this.tableLayoutPanel18.Controls.Add(this.lblCompLNCDData, 3, 0);
             this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel18.Location = new System.Drawing.Point(1, 1);
             this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(1);
@@ -772,48 +828,91 @@
             this.tableLayoutPanel18.Size = new System.Drawing.Size(313, 33);
             this.tableLayoutPanel18.TabIndex = 6;
             // 
-            // lblCompProcName
+            // lblCompLineID
             // 
-            this.lblCompProcName.AutoSize = true;
-            this.lblCompProcName.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
-            this.lblCompProcName.BorderColor = System.Drawing.Color.Silver;
-            this.lblCompProcName.CornerR = 10;
-            this.lblCompProcName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCompProcName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCompProcName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCompProcName.IsFillLB = false;
-            this.lblCompProcName.IsFillLT = false;
-            this.lblCompProcName.IsFillRB = false;
-            this.lblCompProcName.IsFillRT = false;
-            this.lblCompProcName.Location = new System.Drawing.Point(2, 2);
-            this.lblCompProcName.Margin = new System.Windows.Forms.Padding(2);
-            this.lblCompProcName.Name = "lblCompProcName";
-            this.lblCompProcName.Size = new System.Drawing.Size(90, 29);
-            this.lblCompProcName.TabIndex = 5;
-            this.lblCompProcName.Text = "NAME";
-            this.lblCompProcName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCompProcName.Thickness = 1;
+            this.lblCompLineID.AutoSize = true;
+            this.lblCompLineID.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblCompLineID.BorderColor = System.Drawing.Color.Silver;
+            this.lblCompLineID.CornerR = 10;
+            this.lblCompLineID.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompLineID.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompLineID.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblCompLineID.IsFillLB = false;
+            this.lblCompLineID.IsFillLT = false;
+            this.lblCompLineID.IsFillRB = false;
+            this.lblCompLineID.IsFillRT = false;
+            this.lblCompLineID.Location = new System.Drawing.Point(2, 2);
+            this.lblCompLineID.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCompLineID.Name = "lblCompLineID";
+            this.lblCompLineID.Size = new System.Drawing.Size(66, 29);
+            this.lblCompLineID.TabIndex = 5;
+            this.lblCompLineID.Text = "ID";
+            this.lblCompLineID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompLineID.Thickness = 1;
             // 
-            // lblCompProcDataName
+            // lblCompProcLineIDData
             // 
-            this.lblCompProcDataName.AutoSize = true;
-            this.lblCompProcDataName.BkColor = System.Drawing.Color.White;
-            this.lblCompProcDataName.BorderColor = System.Drawing.Color.Silver;
-            this.lblCompProcDataName.CornerR = 10;
-            this.lblCompProcDataName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCompProcDataName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCompProcDataName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(120)))));
-            this.lblCompProcDataName.IsFillLB = false;
-            this.lblCompProcDataName.IsFillLT = false;
-            this.lblCompProcDataName.IsFillRB = false;
-            this.lblCompProcDataName.IsFillRT = false;
-            this.lblCompProcDataName.Location = new System.Drawing.Point(96, 2);
-            this.lblCompProcDataName.Margin = new System.Windows.Forms.Padding(2);
-            this.lblCompProcDataName.Name = "lblCompProcDataName";
-            this.lblCompProcDataName.Size = new System.Drawing.Size(105, 29);
-            this.lblCompProcDataName.TabIndex = 5;
-            this.lblCompProcDataName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCompProcDataName.Thickness = 1;
+            this.lblCompProcLineIDData.AutoSize = true;
+            this.lblCompProcLineIDData.BkColor = System.Drawing.Color.White;
+            this.lblCompProcLineIDData.BorderColor = System.Drawing.Color.Silver;
+            this.lblCompProcLineIDData.CornerR = 10;
+            this.lblCompProcLineIDData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompProcLineIDData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompProcLineIDData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(120)))));
+            this.lblCompProcLineIDData.IsFillLB = false;
+            this.lblCompProcLineIDData.IsFillLT = false;
+            this.lblCompProcLineIDData.IsFillRB = false;
+            this.lblCompProcLineIDData.IsFillRT = false;
+            this.lblCompProcLineIDData.Location = new System.Drawing.Point(72, 2);
+            this.lblCompProcLineIDData.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCompProcLineIDData.Name = "lblCompProcLineIDData";
+            this.lblCompProcLineIDData.Size = new System.Drawing.Size(82, 29);
+            this.lblCompProcLineIDData.TabIndex = 5;
+            this.lblCompProcLineIDData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompProcLineIDData.Thickness = 1;
+            // 
+            // lblCompLNCD
+            // 
+            this.lblCompLNCD.AutoSize = true;
+            this.lblCompLNCD.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblCompLNCD.BorderColor = System.Drawing.Color.Silver;
+            this.lblCompLNCD.CornerR = 10;
+            this.lblCompLNCD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompLNCD.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompLNCD.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblCompLNCD.IsFillLB = false;
+            this.lblCompLNCD.IsFillLT = false;
+            this.lblCompLNCD.IsFillRB = false;
+            this.lblCompLNCD.IsFillRT = false;
+            this.lblCompLNCD.Location = new System.Drawing.Point(158, 2);
+            this.lblCompLNCD.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCompLNCD.Name = "lblCompLNCD";
+            this.lblCompLNCD.Size = new System.Drawing.Size(66, 29);
+            this.lblCompLNCD.TabIndex = 5;
+            this.lblCompLNCD.Text = "LNCD";
+            this.lblCompLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompLNCD.Thickness = 1;
+            // 
+            // lblCompLNCDData
+            // 
+            this.lblCompLNCDData.AutoSize = true;
+            this.lblCompLNCDData.BkColor = System.Drawing.Color.White;
+            this.lblCompLNCDData.BorderColor = System.Drawing.Color.Silver;
+            this.lblCompLNCDData.CornerR = 10;
+            this.lblCompLNCDData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompLNCDData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompLNCDData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(120)))));
+            this.lblCompLNCDData.IsFillLB = false;
+            this.lblCompLNCDData.IsFillLT = false;
+            this.lblCompLNCDData.IsFillRB = false;
+            this.lblCompLNCDData.IsFillRT = false;
+            this.lblCompLNCDData.Location = new System.Drawing.Point(228, 2);
+            this.lblCompLNCDData.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCompLNCDData.Name = "lblCompLNCDData";
+            this.lblCompLNCDData.Size = new System.Drawing.Size(83, 29);
+            this.lblCompLNCDData.TabIndex = 6;
+            this.lblCompLNCDData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompLNCDData.Thickness = 1;
             // 
             // tableLayoutPanel15
             // 
@@ -1279,12 +1378,16 @@
         private CustomControls.RoundTextBox tbJudgeRangeY;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel18;
-        private CustomControls.RoundTextBox tbRefProcName;
-        private CustomControls.RoundLabel roundLabel2;
-        private CustomControls.RoundLabel lblCompProcName;
+        private CustomControls.RoundTextBox tbRefProcLineID;
+        private CustomControls.RoundLabel lblLineID;
+        private CustomControls.RoundLabel lblCompLineID;
         private System.Windows.Forms.CheckBox cbCompFltAll;
         private System.Windows.Forms.CheckBox cbRefFltAll;
         private CustomControls.RoundButton btnApply;
-        private CustomControls.RoundLabel lblCompProcDataName;
+        private CustomControls.RoundLabel lblCompProcLineIDData;
+        private CustomControls.RoundLabel lblLNCD;
+        private CustomControls.RoundTextBox tbRefLNCD;
+        private CustomControls.RoundLabel lblCompLNCD;
+        private CustomControls.RoundLabel lblCompLNCDData;
     }
 }

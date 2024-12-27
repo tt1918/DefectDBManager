@@ -23,7 +23,7 @@ namespace MarkrCompare
             DefectDBManager.CompPreprocDefect markComp = new CompPreprocDefect(null);
             markComp.LotManager = lotManager;
 
-            FormMain main = new FormMain(lotManager);
+            FormMain main = new FormMain(markComp);
 
             Application.Run(main);
         }

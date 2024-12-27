@@ -31,12 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new CustomControls.RoundLabel();
-            this.btnMinimize = new CustomControls.RoundButton();
             this.lblTime = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTitle = new CustomControls.RoundLabel();
+            this.btnMinimize = new CustomControls.RoundButton();
             this.btnClose = new CustomControls.RoundButton();
-            this.btnSitting = new CustomControls.RoundButton();
+            this.btnParam = new CustomControls.RoundButton();
+            this.btnSetting = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -77,6 +78,42 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1387, 32);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(64)))));
+            this.lblTime.Location = new System.Drawing.Point(1217, 0);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(135, 32);
+            this.lblTime.TabIndex = 2;
+            this.lblTime.Text = "2024-12-13 14:14:01";
+            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.tableLayoutPanel5.ColumnCount = 7;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel5.Controls.Add(this.btnClose, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnParam, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSetting, 2, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 791);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1385, 58);
+            this.tableLayoutPanel5.TabIndex = 2;
             // 
             // lblTitle
             // 
@@ -120,39 +157,6 @@
             this.btnMinimize.UseVisualStyleBackColor = false;
             this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
             // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(64)))));
-            this.lblTime.Location = new System.Drawing.Point(1217, 0);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(135, 32);
-            this.lblTime.TabIndex = 2;
-            this.lblTime.Text = "2024-12-13 14:14:01";
-            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel5
-            // 
-            this.tableLayoutPanel5.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.tableLayoutPanel5.ColumnCount = 5;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel5.Controls.Add(this.btnClose, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnSitting, 1, 0);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 791);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1385, 58);
-            this.tableLayoutPanel5.TabIndex = 2;
-            // 
             // btnClose
             // 
             this.btnClose.BackColor = System.Drawing.Color.DimGray;
@@ -167,7 +171,7 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1266, 1);
+            this.btnClose.Location = new System.Drawing.Point(1256, 1);
             this.btnClose.Margin = new System.Windows.Forms.Padding(1);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(118, 56);
@@ -177,29 +181,50 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnSitting
+            // btnParam
             // 
-            this.btnSitting.BackColor = System.Drawing.Color.DimGray;
-            this.btnSitting.BackgroundColor = System.Drawing.Color.DimGray;
-            this.btnSitting.BorderColor = System.Drawing.Color.Black;
-            this.btnSitting.BorderRadius = 5;
-            this.btnSitting.BorderSize = 1;
-            this.btnSitting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSitting.FlatAppearance.BorderSize = 0;
-            this.btnSitting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSitting.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSitting.ForeColor = System.Drawing.Color.White;
-            this.btnSitting.Image = ((System.Drawing.Image)(resources.GetObject("btnSitting.Image")));
-            this.btnSitting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSitting.Location = new System.Drawing.Point(11, 1);
-            this.btnSitting.Margin = new System.Windows.Forms.Padding(1);
-            this.btnSitting.Name = "btnSitting";
-            this.btnSitting.Size = new System.Drawing.Size(118, 56);
-            this.btnSitting.TabIndex = 1;
-            this.btnSitting.Text = "   SET";
-            this.btnSitting.TextColor = System.Drawing.Color.White;
-            this.btnSitting.UseVisualStyleBackColor = false;
-            this.btnSitting.Click += new System.EventHandler(this.btnSitting_Click);
+            this.btnParam.BackColor = System.Drawing.Color.DimGray;
+            this.btnParam.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnParam.BorderColor = System.Drawing.Color.Black;
+            this.btnParam.BorderRadius = 5;
+            this.btnParam.BorderSize = 1;
+            this.btnParam.FlatAppearance.BorderSize = 0;
+            this.btnParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnParam.ForeColor = System.Drawing.Color.White;
+            this.btnParam.Image = ((System.Drawing.Image)(resources.GetObject("btnParam.Image")));
+            this.btnParam.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnParam.Location = new System.Drawing.Point(11, 1);
+            this.btnParam.Margin = new System.Windows.Forms.Padding(1);
+            this.btnParam.Name = "btnParam";
+            this.btnParam.Size = new System.Drawing.Size(118, 56);
+            this.btnParam.TabIndex = 1;
+            this.btnParam.Text = "    PARAM";
+            this.btnParam.TextColor = System.Drawing.Color.White;
+            this.btnParam.UseVisualStyleBackColor = false;
+            this.btnParam.Click += new System.EventHandler(this.btnSitting_Click);
+            // 
+            // btnSetting
+            // 
+            this.btnSetting.BackColor = System.Drawing.Color.DimGray;
+            this.btnSetting.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnSetting.BorderColor = System.Drawing.Color.Black;
+            this.btnSetting.BorderRadius = 5;
+            this.btnSetting.BorderSize = 1;
+            this.btnSetting.FlatAppearance.BorderSize = 0;
+            this.btnSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetting.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSetting.ForeColor = System.Drawing.Color.White;
+            this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
+            this.btnSetting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSetting.Location = new System.Drawing.Point(131, 1);
+            this.btnSetting.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSetting.Name = "btnSetting";
+            this.btnSetting.Size = new System.Drawing.Size(118, 56);
+            this.btnSetting.TabIndex = 1;
+            this.btnSetting.Text = "   SET";
+            this.btnSetting.TextColor = System.Drawing.Color.White;
+            this.btnSetting.UseVisualStyleBackColor = false;
             // 
             // FormMain
             // 
@@ -218,6 +243,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Marking Defect View";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
@@ -236,7 +262,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private CustomControls.RoundButton btnClose;
         private System.Windows.Forms.Label lblTime;
-        private CustomControls.RoundButton btnSitting;
+        private CustomControls.RoundButton btnParam;
+        private CustomControls.RoundButton btnSetting;
     }
 }
 

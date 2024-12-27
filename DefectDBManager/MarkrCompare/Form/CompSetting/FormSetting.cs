@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -132,15 +133,16 @@ namespace MarkrCompare
 
         #region Model Name List
         readonly string[] ListModelHeader = { "No.", "Name" };
-        readonly int[] ListModelWidth = { 40, 300 };
+        readonly int[] ListModelWidth = { 40, 170 };
 
         private string _selSetName = "";
         private void initDataList()
         {
+
             lvSetList.View = View.Details;
             lvSetList.FullRowSelect = true;
             for (int i = 0; i < ListModelHeader.Length; i++)
-                lvSetList.Columns.Add(ListModelHeader[i], ListModelWidth[i]);
+                lvSetList.Columns.Add(ListModelHeader[i], ListModelWidth[i], HorizontalAlignment.Center);
         }
 
         private void displayDataList()
@@ -169,6 +171,7 @@ namespace MarkrCompare
         {
             _selSetName = "";
             _selCompName = "";
+            _selCompLNCD = "";
             
             if (lvSetList.SelectedItems.Count == 0)    return;
 
@@ -268,9 +271,9 @@ namespace MarkrCompare
 
 
         #region Process 이름 추가
-        static string[] _strdgvListHeader = { "No", "Process" };
-        static int[] _dgvListLength = { 50, 210};
-        enum eDgvPrcess { No, Process, Total};
+        static string[] _strdgvListHeader = { "No", "Line ID", "LNCD" };
+        static int[] _dgvListLength = { 50, 100, 100};
+        enum eDgvPrcess { No, LineID, LNCD, Total};
 
         List<ProcessData> _tmpCompProc = new List<ProcessData>();
 
@@ -290,13 +293,15 @@ namespace MarkrCompare
 
         private void initDgvProcess()
         {
+            dgvProcess.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvProcess.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvProcess.AllowUserToAddRows = false;
             dgvProcess.RowHeadersVisible = false;
             dgvProcess.ColumnCount = (int)eDgvPrcess.Total;
             for (int i = 0; i < dgvProcess.ColumnCount; i++)
             {
                 dgvProcess.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-
+                dgvProcess.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvProcess.Columns[i].Name = _strdgvListHeader[i];
                 dgvProcess.Columns[i].Width = _dgvListLength[i];
             }
@@ -308,49 +313,63 @@ namespace MarkrCompare
         private void displayDgvProcess()
         {
             int selIdx = getValidTaskIdx(_selSetName);
-            List<string> strings = new List<string>();
+            try
+            {
+                dgvProcess.SuspendLayout();
+                dgvProcess.Rows.Clear();
+                if (selIdx != -1)
+                {
+                    int idx = 0;
+                    foreach (var item in _tmpCompProc)
+                    {
+                        string[] data = new string[(int)eDgvPrcess.Total];
+                        data[(int)eDgvPrcess.No] = Convert.ToString(idx);
+                        data[(int)eDgvPrcess.LineID] = item.LineID;
+                        data[(int)eDgvPrcess.LNCD] = item.LNCD;
 
-            if (selIdx != -1)
+                        dgvProcess.Rows.Add(data);
+                        idx++;
+                    }
+                }
+            }
+            catch
             {
 
-                foreach (var item in _tmpCompProc)
-                    strings.Add(item.Name);
             }
-
-
-            dgvProcess.Rows.Clear();
-
-            int idx = 0;
-            foreach(string s in strings)
+            finally
             {
-                string[] data = new string[(int)eDgvPrcess.Total];
-                data[(int)eDgvPrcess.No] = Convert.ToString(idx);
-                data[(int)eDgvPrcess.Process] = strings[idx];
-                dgvProcess.Rows.Add(data);
-                idx++;
+                dgvProcess.ResumeLayout();
             }
+            
         }
 
         private void updateDgvProcess()
         {
-            // Data Grid View에 포함되어 있는 데이터를 먼저 업데이트 해야함.
-            updateDgvCompProc();
+            try
+            {
+                // Data Grid View에 포함되어 있는 데이터를 먼저 업데이트 해야함.
+                updateDgvCompProc();
 
-            int selIdx = -1;
-            for (int i = 0; i < _preprocSet.Count; i++)
-                if (_preprocSet[i].Name == _selSetName) selIdx = i;
+                int selIdx = -1;
+                for (int i = 0; i < _preprocSet.Count; i++)
+                    if (_preprocSet[i].Name == _selSetName) selIdx = i;
 
-            List<string> strings = new List<string>();
-            foreach(DataGridViewRow row in dgvProcess.Rows)
-                strings.Add(row.Cells[(int)eDgvPrcess.Process].Value as string);
+                _preprocSet[selIdx].Compare.Clear();
 
-            _preprocSet[selIdx].Compare.Clear();
+                foreach (var item in _tmpCompProc)
+                    _preprocSet[selIdx].Compare.Add(item.Clone());
+            }
+            catch
+            {
+                
+            }
+            finally
+            {
 
-            foreach(var item in _tmpCompProc)
-                _preprocSet[selIdx].Compare.Add(item.Clone());
+            }
         }
 
-        private void addDgvProcess(string name)
+        private void addDgvProcess(string lineID, string lncd)
         {
             dgvProcess.SuspendLayout();
             try
@@ -358,8 +377,14 @@ namespace MarkrCompare
                 int idx = dgvProcess.Rows.Count;
                 string[] data = new string[(int)eDgvPrcess.Total];
                 data[(int)eDgvPrcess.No] = Convert.ToString(idx);
-                data[(int)eDgvPrcess.Process] = name;
+                data[(int)eDgvPrcess.LineID] = lineID;
+                data[(int)eDgvPrcess.LNCD] = lncd;
                 dgvProcess.Rows.Add(data);
+                
+                //추가 데이터 삽입
+                ProcessData process = new ProcessData(lineID, lncd);
+                _tmpCompProc.Add(process);
+
             }
             catch
             {
@@ -377,13 +402,7 @@ namespace MarkrCompare
             try
             {
                 int idx = dgvProcess.SelectedRows[0].Index;
-                string name = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.Process].Value as string;
-
-                for(int i=0; i< _tmpCompProc.Count; i++)
-                {
-                    if (_tmpCompProc[i].Name == name)
-                        _tmpCompProc.RemoveAt(i);
-                }
+                _tmpCompProc.RemoveAt(idx);
 
                 displayDgvProcess();
                 
@@ -401,11 +420,28 @@ namespace MarkrCompare
 
         private void dgvProcess_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (_selSetName == "") return;
+            try
+            {
+                if (_selSetName == "") return;
+                if (dgvProcess.SelectedRows.Count == 0) return;
 
-            string selName = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.Process].Value as string;
-            _selCompName = selName;
-            displayDgvCompProc();
+                _selCompName = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.LineID].Value as string;
+                _selCompLNCD = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.LNCD].Value as string;
+                displayDgvCompProc();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void dgvProcess_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int idx = e.RowIndex;
+
+            if (_tmpCompProc.Count <= idx) return;
+            _tmpCompProc[idx].LineID = dgvProcess.Rows[idx].Cells[(int)eDgvPrcess.LineID].Value as string;
+            _tmpCompProc[idx].LNCD = dgvProcess.Rows[idx].Cells[(int)eDgvPrcess.LNCD].Value as string;
         }
 
         private void btnAddProc_Click(object sender, EventArgs e)
@@ -421,16 +457,42 @@ namespace MarkrCompare
                 MessageBox.Show("작업이 설정되지 않았습니다."); return;
             }
 
-            FormAddDel form = new FormAddDel("프로세스 추가", "이름", "추가", "취소");
+            string lineID, lncd;
+            FormAddDel form = new FormAddDel("프로세스 추가", "LINE ID", "추가", "취소");
             if (form.ShowDialog() != DialogResult.OK) return;
-
             if (form.DataName == "")
             {
-                MessageBox.Show($"이름이 비어있습니다.", "경고");
+                MessageBox.Show($"Line ID가 비어있습니다.", "경고");
                 return;
             }
 
-            addDgvProcess(form.DataName);
+            lineID = form.DataName;
+
+            form.ScriptName = "LNCD";
+            form.DataName = "";
+            if (form.ShowDialog() != DialogResult.OK) return;
+            if (form.DataName == "")
+            {
+                MessageBox.Show($"LNCD가 비어있습니다.", "경고");
+                return;
+            }
+
+            lncd = form.DataName;
+
+            // 같은 이름이 있는지 확인
+            bool isExist = false;
+            foreach(var item in _tmpCompProc)
+            {
+                if(lineID == item.LineID) { isExist =true; break; }
+            }
+
+            if(isExist==true)
+            {
+                MessageBox.Show($"동일한 이름의 Line ID가 존재합니다.", "경고");
+                return;
+            }
+
+            addDgvProcess(lineID, lncd);
         }
 
         private void btnDelProc_Click(object sender, EventArgs e)
@@ -459,15 +521,19 @@ namespace MarkrCompare
 
         #region Compare Process Data Grid Veiw 처리
         string _selCompName = "";
+        string _selCompLNCD = "";
 
         private void initDgvCompProc()
         {
+            dgvCompProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCompProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompProc.AllowUserToAddRows = false;
             dgvCompProc.RowHeadersVisible = false;
             dgvCompProc.ColumnCount = (int)eDgvProcData.Total;
             for (int i = 0; i < dgvCompProc.ColumnCount; i++)
             {
                 dgvCompProc.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dgvCompProc.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgvCompProc.Columns[i].Name = _strDgvProcDataHeader[i];
                 dgvCompProc.Columns[i].Width = _DgvProcDataLength[i];
@@ -483,13 +549,14 @@ namespace MarkrCompare
                 int selProcIdx = getValidTaskIdx(_selSetName);
                 if (selProcIdx == -1 || _selSetName == "") return;
 
-                lblCompProcDataName.Text = _selCompName;
+                lblCompProcLineIDData.Text = _selCompName;
+                lblCompLNCDData.Text = _selCompLNCD;
 
                 ProcessData refer = null;
 
                 foreach(var item in _tmpCompProc)
                 {
-                    if (item.Name == _selCompName)    refer = item;
+                    if (item.LineID == _selCompName)    refer = item;
                 }
 
                 // 데이터가 없으면 리턴
@@ -522,12 +589,12 @@ namespace MarkrCompare
                 int selProcIdx = getValidTaskIdx(_selSetName);
                 if (selProcIdx == -1) return;
 
-                string name = lblCompProcDataName.Text;
+                string name = lblCompProcLineIDData.Text;
                 int selIdx = -1;
 
                 for (int i = 0; i < _tmpCompProc.Count; i++)
                 {
-                    if (_tmpCompProc[i].Name == name)
+                    if (_tmpCompProc[i].LineID == name)
                         selIdx = i;
                 }
 
@@ -616,7 +683,9 @@ namespace MarkrCompare
             {
                 dgvCompProc.Rows.Clear();
                 _selCompName = "";
-                lblCompProcDataName.Text = "";
+                _selCompLNCD = "";
+                lblCompProcLineIDData.Text = "";
+                lblCompLNCDData.Text = "";
             }
             catch
             {
@@ -634,12 +703,15 @@ namespace MarkrCompare
 
         private void initReferenceProcessCtrl()
         {
+            dgvRefProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvRefProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRefProc.AllowUserToAddRows = false;
             dgvRefProc.RowHeadersVisible = false;
             dgvRefProc.ColumnCount = (int)eDgvProcData.Total;
             for (int i = 0; i < dgvRefProc.ColumnCount; i++)
             {
                 dgvRefProc.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dgvRefProc.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgvRefProc.Columns[i].Name = _strDgvProcDataHeader[i];
                 dgvRefProc.Columns[i].Width = _DgvProcDataLength[i];
@@ -656,7 +728,8 @@ namespace MarkrCompare
                 if (selProcIdx == -1 || _selSetName == "") return;
 
                 ProcessData refer = _preprocSet[selProcIdx].Reference;
-                tbRefProcName.Texts = refer.Name;
+                tbRefProcLineID.Texts = refer.LineID;
+                tbRefLNCD.Texts = refer.LNCD;
 
                 dgvRefProc.Rows.Clear();
                 int idx = 0;
@@ -685,7 +758,8 @@ namespace MarkrCompare
             ProcessData refer = _preprocSet[selProcIdx].Reference;
             try
             {
-                refer.Name = tbRefProcName.Texts;
+                refer.LineID = tbRefProcLineID.Texts;
+                refer.LNCD = tbRefLNCD.Texts;
 
                 List<FltInfo> listInfo = new List<FltInfo>();
                 foreach (DataGridViewRow item in dgvRefProc.Rows)
@@ -779,12 +853,14 @@ namespace MarkrCompare
         private void initDgvCompRange()
         {
             dgvCompRange.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCompRange.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompRange.AllowUserToAddRows = false;
             dgvCompRange.RowHeadersVisible = false;
             dgvCompRange.ColumnCount = (int)eDgvCompRange.Total;
             for (int i = 0; i < dgvCompRange.ColumnCount; i++)
             {
                 dgvCompRange.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dgvCompRange.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgvCompRange.Columns[i].Name = _strDgvCompRangeHeader[i];
                 dgvCompRange.Columns[i].Width = _DgvCompRangeLength[i];

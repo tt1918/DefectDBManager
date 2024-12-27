@@ -13,13 +13,19 @@ using System.Windows.Forms;
 namespace DefectDBManager
 {
     public delegate void DelegateLotProgress(int percent);
-
+    
     public sealed class CompPreprocDefect : IDisposable
     {
         #region Event
         // 상위 이벤트 보고 
-        // 오늘자 생산 예정 PTRY0P 탐색
-        public event DelegateEvent OnEndTodayProductSearching = null;
+        // 기간 설정 생산 PTRY0P 탐색
+        public event DelegateEvent OnEndSearchingLotList = null;
+        
+        /// <summary>
+        /// 실시간 검색
+        /// </summary>
+        public event DelegateEvent OnEndLiveSearchLot = null;
+
         // 프로세스 상에 발생하는 이벤트 보고용
         public event DelegateProcessEvent OnProcessEvent = null;
          // 랏 검색 진행 상황을 상위로 보고
@@ -72,14 +78,28 @@ namespace DefectDBManager
         private PreprocLotManager _lotManager = null;
 
 
+        #region 기간 탐색 
         public bool IsRunSearchingLotList
         {
-            get;    private set;
+            get; private set;
         } = false;
         public bool StopSearchingLotList
         {
             get; set;
         } = false;
+        #endregion
+
+        #region 실시간 탐색
+        public bool IsRunLiveSearch
+        {
+            get; private set;
+        } = false;
+        public bool StopLiveSearch
+        {
+            get; set;
+        } = false;
+        #endregion
+
 
         #endregion Param
 
@@ -152,6 +172,12 @@ namespace DefectDBManager
             }
         }
 
+        public void SearchLiveMarkDiff()
+        {
+            Task task = new Task(searchLiveDefect, null);
+            task.Start();
+        }
+
         public void SearchLotMarkDiff()
         {
             // LotManager의 데이터는 업데이트되어있는 상황
@@ -164,6 +190,37 @@ namespace DefectDBManager
             // LotManager의 데이터는 업데이트되어있는 상황
             Task task = new Task(searchFromSetting, null);
             task.Start();
+        }
+
+        private void searchLiveDefect(object obj)
+        {
+            if (IsRunLiveSearch == true) return;
+            IsRunLiveSearch = true;
+
+            // 해당 공정에 대한 결점 정보 확인
+            searchLiveLotList();
+
+            foreach (var list in LotManager.LiveProduct)
+            {
+                string lncd = list.Key;
+                foreach (var item in list.Value.Data)
+                {
+                    if (StopLiveSearch == true) break;
+
+                    string lotName = item.Y0KLOT;
+                    SearchDefectData(lncd, lotName);
+
+                    // 검색 진행 상황을 
+                    int rate = (int)((float)LotManager.TotalLiveLot / (float)LotManager.TotalLiveProduct);
+                    OnLotProgress?.Invoke(rate);
+                }
+            }
+
+            StopLiveSearch = false;
+            IsRunLiveSearch = false;
+
+            // 완료 보고
+            OnEndLiveSearchLot?.Invoke();
         }
 
         private void search(object obj)
@@ -189,9 +246,12 @@ namespace DefectDBManager
                     OnLotProgress?.Invoke(rate);
                 }
             }
-
+            
             StopSearchingLotList = false;
             IsRunSearchingLotList = false;
+
+            // 완료 보고
+            OnEndSearchingLotList?.Invoke();
         }
 
         private void searchFromSetting(object obj)
@@ -220,15 +280,42 @@ namespace DefectDBManager
 
             StopSearchingLotList = false;
             IsRunSearchingLotList = false;
+
+            // 완료 보고
+            OnEndSearchingLotList?.Invoke();
         }
 
-        #region 공정 별 생산 리스트 취합.
+        #region 실시간 공정 별 생산 리스트 취합
+        private void searchLiveLotList()
+        {
+            LotManager.LiveProduct.Clear();
+            DateTime stTime = LotManager.LiveTime.StartTime;
+            DateTime edTime = LotManager.LiveTime.EndTime;
+            foreach (var data in LotManager.ProcLNCD.Info)
+            {
+                if (data.Use == false) continue;
+
+                if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
+                {
+                    PTRY0PList list = new PTRY0PList();
+
+                    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                        list.Add(ptry0p.Clone());
+
+                    // 리스트 데이터 추가
+                    LotManager.LiveProduct.Add(data.Name, list);
+                }
+            }
+        }
+        #endregion
+
+        #region 기간 공정 별 생산 리스트 취합.
         private void searchLotList()
         {
             LotManager.Product.Clear();
 
-            DateTime stTime = LotManager.SearchTime.StartTime ;
-            DateTime edTime = LotManager.SearchTime.EndTime ;
+            DateTime stTime = LotManager.SearchTime.StartTime;
+            DateTime edTime = LotManager.SearchTime.EndTime;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
                 if (data.Use == false) continue;
@@ -269,8 +356,23 @@ namespace DefectDBManager
 
         #endregion
 
-
         #region 결점 데이터 검색
+        public void SearchLiveDefectData(string lncd, string lotName)
+        {
+            int error = -1;
+            bool usemkcdModel = LotManager.UseMrkctlmstModel;
+            try
+            {
+                PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
+                if (lot == null) return;
+                LotManager.AddLiveLot(lncd, lot);
+            }
+            catch
+            {
+
+            }
+        }
+
         public void SearchDefectData(string lncd, string lotName)
         {
             int error=-1;

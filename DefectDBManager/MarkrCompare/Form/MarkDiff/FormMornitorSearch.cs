@@ -1,4 +1,6 @@
-﻿using CustomControls;
+﻿#define USE_PRE_SETTING
+
+using CustomControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-#define USE_PRE_SETTING
 
 namespace MarkrCompare
 {

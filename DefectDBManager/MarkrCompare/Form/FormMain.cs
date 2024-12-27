@@ -64,15 +64,28 @@ namespace MarkrCompare
             initClockTimer();
             initMarkDiffForm();
 
+            initLiveSearchTimer();
+
             SystemLog.DisplaySystemLog = _markDiffForm.OnDisplaySystemLog;
             SystemLog.DisplayFileServerLog = _markDiffForm.OnDisplayFileServerLog;
             SystemLog.OnDisplayLogData = _markDiffForm.OnDisplayLog;
             SystemLog.DisplayNetworkLog = _markDiffForm.OnDisplayNetworkLog;
             SystemLog.DisplayAlarmLog = _markDiffForm.OnDisplayAlarmLog;
 
+            _dbManager.OnEndSearchingLotList += EndSearchLotList;
+            _dbManager.OnEndLiveSearchLot += EndLiveSearch;
+
+
             SystemLog.DisplaySystemLog("Program Start");
         }
 
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _dbManager.OnEndSearchingLotList -= EndSearchLotList;
+            _dbManager.OnEndLiveSearchLot -= EndLiveSearch;
+
+            destroyMarkDiffForm();
+        }
 
         #region Marking Comparision Form
         private FormMarkDiff _markDiffForm;
@@ -88,6 +101,25 @@ namespace MarkrCompare
 
             _markDiffForm.FormMorSearch.OnStartLotSearch += StartSearchLotList;
             _markDiffForm.FormMorSearch.OnStopLotSearch += StopSearchLotList;
+
+            _markDiffForm.FormMorLive.OnStartLiveSearch += StartLiveSearch;
+            _markDiffForm.FormMorLive.OnStopLiveSearch += StopLiveSearch;
+
+            _dbManager.OnEndSearchingLotList += _markDiffForm.FormMorSearch.EndLotSearch;
+            _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
+
+        }
+
+        private void destroyMarkDiffForm()
+        {
+            _markDiffForm.FormMorSearch.OnStartLotSearch -= StartSearchLotList;
+            _markDiffForm.FormMorSearch.OnStopLotSearch -= StopSearchLotList;
+
+            _markDiffForm.FormMorLive.OnStartLiveSearch -= StartLiveSearch;
+            _markDiffForm.FormMorLive.OnStopLiveSearch -= StopLiveSearch;
+
+            _dbManager.OnEndSearchingLotList -= _markDiffForm.FormMorSearch.EndLotSearch;
+            _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;
         }
         #endregion Marking Comparision Form
 
@@ -160,7 +192,11 @@ namespace MarkrCompare
 
         }
 
-        #region 검색 시작
+        #region MyRegion
+
+        #endregion
+
+        #region 기간 검색 시작
         public void StartSearchLotList()
         {
             _dbManager.SearchLotMarkDiffFromSetting();
@@ -171,6 +207,50 @@ namespace MarkrCompare
             _dbManager.StopSearchingLotList = false;
         }
 
+        public void EndSearchLotList()
+        {
+            SystemLog.DisplaySystemLog("기간 검색 작업이 완료되었습니다.");
+        }
         #endregion
+
+        #region 실시간 검색 시작
+
+        Timer _timerLiveSearch = null;
+
+        private void initLiveSearchTimer()
+        {
+            _timerLiveSearch = new Timer();
+            _timerLiveSearch.Interval = 60*60*1000;
+            _timerLiveSearch.Tick += new EventHandler(timerLiveSearch);
+        }
+
+        private void timerLiveSearch(object sender, EventArgs e)
+        {
+            if (_dbManager.IsRunSearchingLotList == true || _dbManager.IsRunLiveSearch == true)
+                _timerLiveSearch.Interval = 5 * 60 * 1000;  // 5분 후에 다시 검색 한다. 
+            
+            _dbManager.SearchLotMarkDiff();
+
+            // 검사가 시작되었으면 검색 시간을 1시간으로 변경한다. 
+            _timerLiveSearch.Interval = 60 * 60 * 1000;
+        }
+
+        public void StartLiveSearch()
+        {
+            _timerLiveSearch.Start();
+        }
+
+        public void StopLiveSearch()
+        {
+            _dbManager.StopLiveSearch = true;
+            _timerLiveSearch.Stop();
+        }
+
+        public void EndLiveSearch()
+        {
+            SystemLog.DisplaySystemLog("실시간 검사가 완료되었습니다.");
+        }
+        #endregion
+
     }
 }

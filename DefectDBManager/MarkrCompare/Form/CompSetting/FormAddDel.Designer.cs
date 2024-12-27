@@ -216,6 +216,7 @@
             this.Name = "FormAddDel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormAddDel";
+            this.VisibleChanged += new System.EventHandler(this.FormAddDel_VisibleChanged);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);

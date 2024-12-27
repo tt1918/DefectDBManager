@@ -31,7 +31,7 @@ namespace DefectDBManager
     public class PreprocLotManager
     {
         #region Param
-        #region LOT 정보
+        #region Search LOT 정보
         /// <summary>
         /// 각 공정별 검사 결과 데이터 저장
         /// string : 각 공정 데이터
@@ -75,6 +75,56 @@ namespace DefectDBManager
                 if(_product==null) return 0;
                 int val = 0;
                 foreach (var list in _product)
+                    val += list.Value.Count;
+                return val;
+            }
+        }
+        #endregion LOT 정보
+
+        #region Live LOT 정보
+        /// <summary>
+        /// 각 공정별 검사 결과 데이터 저장
+        /// string : 각 공정 데이터
+        /// List<PreprocLog> : Lot 정보
+        /// </summary>
+        public Dictionary<string, List<PreprocLot>> LiveLot
+        {
+            get { return _Livelot; }
+            private set { _Livelot = value; }
+        }
+        private Dictionary<string, List<PreprocLot>> _Livelot = null;
+
+        public int TotalLiveLot
+        {
+            get
+            {
+                if (_Livelot == null) return 0;
+
+                int val = 0;
+                foreach (var list in _Livelot)
+                    val += list.Value.Count;
+                return val;
+            }
+        }
+
+        /// <summary>
+        /// 공정 생산 정보를 저장
+        /// </summary>
+        public Dictionary<string, DB.PTRY0PList> LiveProduct
+        {
+            get { return _liveProduct; }
+            private set { _liveProduct = value; }
+        }
+
+        private Dictionary<string, DB.PTRY0PList> _liveProduct = null;
+
+        public int TotalLiveProduct
+        {
+            get
+            {
+                if (_liveProduct == null) return 0;
+                int val = 0;
+                foreach (var list in _liveProduct)
                     val += list.Value.Count;
                 return val;
             }
@@ -187,6 +237,73 @@ namespace DefectDBManager
         {
             if (LOT.ContainsKey(key) == true)
                 return LOT[key].Count;
+            else
+                return 0;
+        }
+        #endregion
+
+
+        #region Live Lot 데이터 관리
+        /// <summary>
+        /// 랏관리 데이터에 신규 랏 정보를 추가
+        /// </summary>
+        /// <param name="lncd">라인 코드</param>
+        /// <param name="info">불량 랏 정보</param>
+        public void AddLiveLot(string lncd, PreprocLot info)
+        {
+            if (LiveLot.ContainsKey(lncd) == true)
+                LiveLot[lncd].Add(info);
+            else
+            {
+                List<PreprocLot> list = new List<PreprocLot>();
+                list.Add(info);
+                LiveLot.Add(lncd, list);
+            }
+        }
+
+        /// <summary>
+        /// 선택한 랏 이름을 삭제한다.
+        /// </summary>
+        /// <param name="lncd">라인 코드</param>
+        /// <param name="lotName">랏 이름</param>
+        /// <returns></returns>
+        public bool DeleteLiveLot(string lncd, string lotName)
+        {
+            bool isSuccess = true;
+            if (LiveLot.ContainsKey(lncd) == true)
+            {
+                foreach (PreprocLot info in LiveLot[lncd])
+                {
+                    // 데이터 삭제
+                    if (info.LotName == lotName) LiveLot[lncd].Remove(info);
+                }
+            }
+            else isSuccess = false;
+            return isSuccess;
+        }
+
+        public void ClearLiveLot()
+        {
+            // 각 공정 별 랏 정보 삭제
+            foreach (var lot in LiveLot)
+                lot.Value.Clear();
+
+            // Dictionary 삭제
+            LiveLot.Clear();
+        }
+
+        public int LiveProductSize(string key)
+        {
+            if (LiveProduct.ContainsKey(key) == true)
+                return LiveProduct[key].Count;
+            else
+                return 0;
+        }
+
+        public int LiveLotSize(string key)
+        {
+            if (LiveLot.ContainsKey(key) == true)
+                return LiveLot[key].Count;
             else
                 return 0;
         }
