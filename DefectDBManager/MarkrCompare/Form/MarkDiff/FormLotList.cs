@@ -52,17 +52,19 @@ namespace MarkrCompare
 
         #region Lot Data Grid View
         static string[] _strdgvListHeader = { "LOT NUM", "시작 시간 ~ 종료 시간", "생산 M", "판정" };
-        static int[] _dgvListLength = { 200, 350, 100, 100 };
+        static int[] _dgvListLength = { 150, 280, 100, 100 };
         enum eDgvLot{LotNum, Time, Meter, Judge, Total};
 
         private void initDgvLot()
         {
             dgvList.AllowUserToAddRows = false;
             dgvList.ColumnCount = (int)eDgvLot.Total;
-            for(int i=0; i< dgvList.ColumnCount; i++)
+            dgvList.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            for (int i=0; i< dgvList.ColumnCount; i++)
             {
                 dgvList.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-
+                dgvList.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvList.Columns[i].Name = _strdgvListHeader[i];
                 dgvList.Columns[i].Width = _dgvListLength[i];
             }

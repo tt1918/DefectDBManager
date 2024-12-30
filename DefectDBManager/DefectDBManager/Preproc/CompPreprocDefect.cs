@@ -365,6 +365,9 @@ namespace DefectDBManager
             {
                 PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
                 if (lot == null) return;
+
+                // 입력 받은 데이터 기준으로 좌표 비교
+                lot.ComparePosition(LotManager.SelPreprocJob);
                 LotManager.AddLiveLot(lncd, lot);
             }
             catch
@@ -381,6 +384,9 @@ namespace DefectDBManager
             {
                 PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
                 if (lot == null) return;
+
+                // 입력 받은 데이터 기준으로 좌표 비교
+                lot.ComparePosition(LotManager.SelPreprocJob);
                 LotManager.AddLot(lncd, lot);
             }
             catch

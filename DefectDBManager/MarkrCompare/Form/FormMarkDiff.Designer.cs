@@ -33,12 +33,13 @@
             this.tabSearchSet = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.lbLog = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpLineData = new System.Windows.Forms.TableLayoutPanel();
             this.tabLineList = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lbLog = new System.Windows.Forms.ListBox();
+            this.tlpInfoMap = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabSearchSet.SuspendLayout();
@@ -66,8 +67,8 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.09665F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.90335F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
             this.tableLayoutPanel2.Controls.Add(this.tabSearchSet, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lbLog, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -76,7 +77,6 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1014, 200);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
@@ -90,7 +90,7 @@
             this.tabSearchSet.Margin = new System.Windows.Forms.Padding(1);
             this.tabSearchSet.Name = "tabSearchSet";
             this.tabSearchSet.SelectedIndex = 0;
-            this.tabSearchSet.Size = new System.Drawing.Size(435, 198);
+            this.tabSearchSet.Size = new System.Drawing.Size(352, 198);
             this.tabSearchSet.TabIndex = 0;
             this.tabSearchSet.SelectedIndexChanged += new System.EventHandler(this.tabSearchSet_SelectedIndexChanged);
             // 
@@ -100,7 +100,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(427, 170);
+            this.tabPage3.Size = new System.Drawing.Size(344, 170);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -116,12 +116,24 @@
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // lbLog
+            // 
+            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.ItemHeight = 15;
+            this.lbLog.Location = new System.Drawing.Point(355, 1);
+            this.lbLog.Margin = new System.Windows.Forms.Padding(1);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.Size = new System.Drawing.Size(658, 198);
+            this.lbLog.TabIndex = 1;
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.29388F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.70612F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
             this.tableLayoutPanel3.Controls.Add(this.tlpLineData, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tlpInfoMap, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 200);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -144,7 +156,7 @@
             this.tlpLineData.RowCount = 2;
             this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLineData.Size = new System.Drawing.Size(438, 504);
+            this.tlpLineData.Size = new System.Drawing.Size(354, 504);
             this.tlpLineData.TabIndex = 0;
             // 
             // tabLineList
@@ -157,7 +169,7 @@
             this.tabLineList.Margin = new System.Windows.Forms.Padding(1);
             this.tabLineList.Name = "tabLineList";
             this.tabLineList.SelectedIndex = 0;
-            this.tabLineList.Size = new System.Drawing.Size(436, 250);
+            this.tabLineList.Size = new System.Drawing.Size(352, 250);
             this.tabLineList.TabIndex = 0;
             // 
             // tabPage1
@@ -166,7 +178,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(428, 222);
+            this.tabPage1.Size = new System.Drawing.Size(344, 222);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -182,16 +194,20 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // lbLog
+            // tlpInfoMap
             // 
-            this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbLog.FormattingEnabled = true;
-            this.lbLog.ItemHeight = 15;
-            this.lbLog.Location = new System.Drawing.Point(438, 1);
-            this.lbLog.Margin = new System.Windows.Forms.Padding(1);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(575, 198);
-            this.lbLog.TabIndex = 1;
+            this.tlpInfoMap.ColumnCount = 2;
+            this.tlpInfoMap.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpInfoMap.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpInfoMap.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpInfoMap.Location = new System.Drawing.Point(355, 1);
+            this.tlpInfoMap.Margin = new System.Windows.Forms.Padding(1);
+            this.tlpInfoMap.Name = "tlpInfoMap";
+            this.tlpInfoMap.RowCount = 1;
+            this.tlpInfoMap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpInfoMap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpInfoMap.Size = new System.Drawing.Size(658, 502);
+            this.tlpInfoMap.TabIndex = 1;
             // 
             // FormMarkDiff
             // 
@@ -230,5 +246,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox lbLog;
+        private System.Windows.Forms.TableLayoutPanel tlpInfoMap;
     }
 }

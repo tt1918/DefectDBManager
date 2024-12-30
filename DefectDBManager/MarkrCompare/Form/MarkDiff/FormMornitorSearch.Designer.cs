@@ -35,15 +35,15 @@
             this.lblProcess = new CustomControls.RoundLabel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tlLncd = new System.Windows.Forms.TableLayoutPanel();
-            this.cbJobList = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTime = new CustomControls.RoundLabel();
+            this.btnMaterialFilter = new CustomControls.RoundButton();
             this.label1 = new System.Windows.Forms.Label();
             this.timePickerStart = new System.Windows.Forms.DateTimePicker();
             this.timePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbJobList = new System.Windows.Forms.ComboBox();
             this.lblSetting = new CustomControls.RoundLabel();
-            this.btnMaterialFilter = new CustomControls.RoundButton();
-            this.lblTime = new CustomControls.RoundLabel();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -183,17 +183,6 @@
             this.tlLncd.Size = new System.Drawing.Size(545, 38);
             this.tlLncd.TabIndex = 0;
             // 
-            // cbJobList
-            // 
-            this.cbJobList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbJobList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbJobList.FormattingEnabled = true;
-            this.cbJobList.Location = new System.Drawing.Point(62, 2);
-            this.cbJobList.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
-            this.cbJobList.Name = "cbJobList";
-            this.cbJobList.Size = new System.Drawing.Size(101, 25);
-            this.cbJobList.TabIndex = 3;
-            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 6;
@@ -216,6 +205,48 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(545, 30);
             this.tableLayoutPanel5.TabIndex = 2;
+            // 
+            // lblTime
+            // 
+            this.lblTime.AutoSize = true;
+            this.lblTime.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            this.lblTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(150)))));
+            this.lblTime.CornerR = 10;
+            this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTime.ForeColor = System.Drawing.Color.White;
+            this.lblTime.IsFillLB = false;
+            this.lblTime.IsFillLT = false;
+            this.lblTime.IsFillRB = false;
+            this.lblTime.IsFillRT = false;
+            this.lblTime.Location = new System.Drawing.Point(1, 1);
+            this.lblTime.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTime.Name = "lblTime";
+            this.lblTime.Size = new System.Drawing.Size(58, 28);
+            this.lblTime.TabIndex = 4;
+            this.lblTime.Text = "TIME";
+            this.lblTime.Thickness = 1;
+            // 
+            // btnMaterialFilter
+            // 
+            this.btnMaterialFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnMaterialFilter.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.btnMaterialFilter.BorderRadius = 5;
+            this.btnMaterialFilter.BorderSize = 0;
+            this.btnMaterialFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
+            this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
+            this.btnMaterialFilter.Location = new System.Drawing.Point(422, 1);
+            this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
+            this.btnMaterialFilter.Name = "btnMaterialFilter";
+            this.btnMaterialFilter.Size = new System.Drawing.Size(122, 28);
+            this.btnMaterialFilter.TabIndex = 3;
+            this.btnMaterialFilter.Text = "FILTER";
+            this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
+            this.btnMaterialFilter.UseVisualStyleBackColor = false;
+            this.btnMaterialFilter.Visible = false;
             // 
             // label1
             // 
@@ -263,6 +294,17 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(545, 28);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
+            // cbJobList
+            // 
+            this.cbJobList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbJobList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbJobList.FormattingEnabled = true;
+            this.cbJobList.Location = new System.Drawing.Point(62, 2);
+            this.cbJobList.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.cbJobList.Name = "cbJobList";
+            this.cbJobList.Size = new System.Drawing.Size(101, 25);
+            this.cbJobList.TabIndex = 3;
+            // 
             // lblSetting
             // 
             this.lblSetting.AutoSize = true;
@@ -283,48 +325,6 @@
             this.lblSetting.TabIndex = 3;
             this.lblSetting.Text = "JOB";
             this.lblSetting.Thickness = 1;
-            // 
-            // btnMaterialFilter
-            // 
-            this.btnMaterialFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
-            this.btnMaterialFilter.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
-            this.btnMaterialFilter.BorderColor = System.Drawing.Color.PaleVioletRed;
-            this.btnMaterialFilter.BorderRadius = 5;
-            this.btnMaterialFilter.BorderSize = 0;
-            this.btnMaterialFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
-            this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.Location = new System.Drawing.Point(422, 1);
-            this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
-            this.btnMaterialFilter.Name = "btnMaterialFilter";
-            this.btnMaterialFilter.Size = new System.Drawing.Size(122, 28);
-            this.btnMaterialFilter.TabIndex = 3;
-            this.btnMaterialFilter.Text = "FILTER";
-            this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.UseVisualStyleBackColor = false;
-            this.btnMaterialFilter.Visible = false;
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.lblTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(150)))));
-            this.lblTime.CornerR = 10;
-            this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.ForeColor = System.Drawing.Color.White;
-            this.lblTime.IsFillLB = false;
-            this.lblTime.IsFillLT = false;
-            this.lblTime.IsFillRB = false;
-            this.lblTime.IsFillRT = false;
-            this.lblTime.Location = new System.Drawing.Point(1, 1);
-            this.lblTime.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(58, 28);
-            this.lblTime.TabIndex = 4;
-            this.lblTime.Text = "TIME";
-            this.lblTime.Thickness = 1;
             // 
             // FormMornitorSearch
             // 

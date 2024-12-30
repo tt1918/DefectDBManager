@@ -41,6 +41,7 @@ namespace MarkrCompare
         {
             initTabSearchSetting();
             initCrtLotForm();
+            initDgvLotSumInfo();
             initRollMapForm();
             initLotListForms();
 
@@ -229,6 +230,48 @@ namespace MarkrCompare
         }
         #endregion
 
+        #region Lot Summery Information
+        private DataGridView _dgvLotSumInfo = null;
+        static string[] _strDgvLotSumInfoHeader = { "No", "Info1", "Info2", "Info3" };
+        static int[] _dgvLotSumInfoLength = { 50, 80, 80, 80 };
+        enum eLotSumInfo { No, Info1, Info2, Info3, Total };
+
+
+        /// <summary>
+        /// 데이터 표시
+        /// 직접 생성할지 바인딩할지는 추후 변경 필요
+        /// </summary>
+        private void initDgvLotSumInfo()
+        {
+            _dgvLotSumInfo = new DataGridView();
+
+            _dgvLotSumInfo.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            _dgvLotSumInfo.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _dgvLotSumInfo.AllowUserToAddRows = false;
+            _dgvLotSumInfo.RowHeadersVisible = false;
+            _dgvLotSumInfo.ColumnCount = (int)eLotSumInfo.Total;
+            for (int i = 0; i < _dgvLotSumInfo.ColumnCount; i++)
+            {
+                _dgvLotSumInfo.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                _dgvLotSumInfo.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                _dgvLotSumInfo.Columns[i].Name = _strDgvLotSumInfoHeader[i];
+                _dgvLotSumInfo.Columns[i].Width = _dgvLotSumInfoLength[i];
+                _dgvLotSumInfo.Columns[i].ReadOnly = true;
+            }
+
+            tlpInfoMap.Controls.Add(_dgvLotSumInfo, 0, 0);
+            _dgvLotSumInfo.Dock = DockStyle.Fill;
+            _dgvLotSumInfo.Show();
+
+        }
+
+        private void displayDgvLotSumInfo()
+        {
+
+        }
+
+        #endregion
 
         #region Roll Map Form
         private FormRollMap _rollMapForm;
@@ -239,7 +282,7 @@ namespace MarkrCompare
             _rollMapForm.TopLevel = false;
             _rollMapForm.InitRollMap();
 
-            tableLayoutPanel3.Controls.Add(_rollMapForm.Controls[0], 1, 0);
+            tlpInfoMap.Controls.Add(_rollMapForm.Controls[0], 1, 0);
             _rollMapForm.Dock = DockStyle.Fill;
             _rollMapForm.Show();
         }
