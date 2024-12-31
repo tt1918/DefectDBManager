@@ -180,6 +180,8 @@
     <Compile Include="DB\odbDLL.cs" />
     <Compile Include="DB\Param\Option.cs" />
     <Compile Include="DB\Param\Param.cs" />
+    <Compile Include="Preproc\Data\ProcMaterial.cs" />
+    <Compile Include="Preproc\LOT\MarkCompData.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />
     <Compile Include="Preproc\LOT\PreprocSet.cs" />
@@ -294,6 +296,7 @@
   <ItemGroup>
     <None Include="Resources\icons8_close_window_16.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

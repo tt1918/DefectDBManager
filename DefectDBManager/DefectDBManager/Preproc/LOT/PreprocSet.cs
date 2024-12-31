@@ -309,7 +309,6 @@ namespace DefectDBManager.Preproc
             if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
             else return false;
 
-
             var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<PreprocSet>(jsonString);
 
             foreach(var item in obj.Data)

@@ -25,6 +25,10 @@ namespace DefectDBManager.Preproc
         [Description("Model")]
         public string Model { get; set; }
 
+        [Category("items")]
+        [Description("Material")]
+        public ProcMaterial Material { get; set; }
+
 
         public PreprocLNCDInfo()
         {
@@ -37,6 +41,7 @@ namespace DefectDBManager.Preproc
             LNCD = "";
             Use = false;
             Model = "";
+            Material = new ProcMaterial();
         }
 
         public void Set(PreprocLNCDInfo s)
@@ -45,6 +50,7 @@ namespace DefectDBManager.Preproc
             this.LNCD = s.LNCD;
             this.Use = s.Use;
             this.Model = s.Model;
+            this.Material = s.Material.Clone();
         }
         
         public object Clone()
@@ -58,6 +64,13 @@ namespace DefectDBManager.Preproc
     /// </summary>
     public class PreprocLNCD
     {
+
+        public PreprocLNCDInfo this[int index]
+        {
+            get { return Info[index]; }
+            set { Info[index] = value; }
+        }
+
         public List<PreprocLNCDInfo> Info 
         {
             get { return _lncd_Info; }
@@ -105,6 +118,18 @@ namespace DefectDBManager.Preproc
             }
 
             return code;
+        }
+
+        public void Remove(string name)
+        {
+            for(int i=0; i<Info.Count; i++)
+            {
+                if (Info[i].Name == name)
+                {
+                    Info.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }

@@ -168,6 +168,22 @@ namespace MarkrCompare
         #endregion
 
         #region CONTROL
+
+        private void btnParam_Click(object sender, EventArgs e)
+        {
+            FormSetting form = new FormSetting(this._lotManager.ProcSetting);
+            if (form.ShowDialog() == DialogResult.OK)
+                this._lotManager.UpdatePreprocSet(form.PreprocSet);
+
+        }
+
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            FormLNCD form = new FormLNCD();
+            if (form.ShowDialog() == DialogResult.OK)
+                this._lotManager.SetLNCDData(form.MaterialDate);
+        }
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             string msg = "프로그램을 종료하시겠습니까?";
@@ -184,13 +200,6 @@ namespace MarkrCompare
         }
         #endregion CONTROL
 
-        private void btnSitting_Click(object sender, EventArgs e)
-        {
-            FormSetting form = new FormSetting(this._lotManager.ProcSetting);
-            if(form.ShowDialog()==DialogResult.OK)
-                this._lotManager.UpdatePreprocSet(form.PreprocSet);
-
-        }
 
         #region MyRegion
 

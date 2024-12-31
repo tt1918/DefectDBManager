@@ -1,0 +1,334 @@
+﻿using DefectDBManager.Preproc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace MarkrCompare
+{
+    public partial class FormLNCD : Form
+    {
+
+        #region Param
+        public DefectDBManager.Preproc.PreprocLNCD MaterialDate
+        {
+            get { return _materialData; }
+            set { _materialData = value; }
+        }
+        DefectDBManager.Preproc.PreprocLNCD _materialData = null;
+
+        #endregion
+
+        #region Form Control
+        public FormLNCD()
+        {
+            InitializeComponent();
+            initDataList();
+            initMaterialCtrl();
+
+            _materialData = new PreprocLNCD();
+            _materialData.Load();
+        }
+
+        private void FormLNCD_Load(object sender, EventArgs e)
+        {
+            if(this.Visible==true)
+            {
+                displayDataList();
+                displayMaterialCtrl();
+            }
+        }
+
+        private void FormLNCD_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+        }
+        #endregion
+
+
+        #region 공통 사용 함수
+        private int getValidTaskIdx(string name)
+        {
+            int selIdx = -1;
+            for (int i = 0; i < _materialData.Info.Count; i++)
+            {
+                if (_materialData[i].Name == name) selIdx = i;
+            }
+
+            return selIdx;
+        }
+        #endregion
+
+        #region Model Name List
+        readonly string[] ListModelHeader = { "No.", "Name" };
+        readonly int[] ListModelWidth = { 40, 170 };
+
+        private string _selSetName = "";
+        private void initDataList()
+        {
+            try
+            {
+                lvLNCDList.View = View.Details;
+                lvLNCDList.FullRowSelect = true;
+                for (int i = 0; i < ListModelHeader.Length; i++)
+                    lvLNCDList.Columns.Add(ListModelHeader[i], ListModelWidth[i], HorizontalAlignment.Center);
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void displayDataList()
+        {
+            try
+            {
+                lvLNCDList.BeginUpdate();
+                lvLNCDList.Items.Clear();
+                lblSelLNCD.Text = _selSetName;
+                int count = 0;
+                if (_materialData == null) return;
+                foreach (var data in _materialData.Info)
+                {
+                    ListViewItem item = new ListViewItem($"{++count}");
+                    item.SubItems.Add(data.Name);
+                    lvLNCDList.Items.Add(item);
+                }
+            }
+            finally
+            {
+                lvLNCDList.EndUpdate();
+            }
+        }
+
+        private void lvLNCDList_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                _selSetName = "";
+
+                if (lvLNCDList.SelectedItems.Count == 0) return;
+
+                int index = lvLNCDList.SelectedItems[0].Index;
+                _selSetName = lvLNCDList.Items[index].SubItems[1].Text;
+                lblSelLNCD.Text = _selSetName;
+
+                // 영상 표시
+                displayMaterialCtrl();
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            FormAddDel form = new FormAddDel("작업 추가", "이름", "추가", "취소");
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            if (form.DataName == "")
+            {
+                MessageBox.Show($"이름이 비어있습니다.", "경고");
+                return;
+            }
+            PreprocLNCDInfo item = new PreprocLNCDInfo();
+            item.Name = form.DataName;
+            _materialData.Info.Add(item);
+
+            displayDataList();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            int index = lvLNCDList.SelectedItems[0].Index;
+            string name = lvLNCDList.SelectedItems[0].SubItems[1].Text;
+            if (MessageBox.Show($"{name} 데이터를 삭제하시겠습니까?", "데이터 삭제하기", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _materialData.Remove(name);
+
+            displayDataList();
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show($"데이터를 불러오겠습니까?", "데이터 불러오기", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _materialData.Load();
+
+            displayDataList();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show($"현재 내용을 저장하시겠습니까?", "모델 저장하기", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            _materialData.Save();
+        }
+        #endregion
+
+        #region Data Grid View Material Info
+        static string[] _strDgvMaterial = { "No", "Name"};
+        static int[] _DgvMaterialLength = { 50, 200 };
+        enum eDgvMaterial { No, Name, Total};
+
+        private void initMaterialCtrl()
+        {
+            try
+            {
+                dgvMaterial.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                dgvMaterial.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvMaterial.AllowUserToAddRows = false;
+                dgvMaterial.RowHeadersVisible = false;
+                dgvMaterial.ColumnCount = (int)eDgvMaterial.Total;
+                for (int i = 0; i < dgvMaterial.ColumnCount; i++)
+                {
+                    dgvMaterial.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                    dgvMaterial.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                    dgvMaterial.Columns[i].Name = _strDgvMaterial[i];
+                    dgvMaterial.Columns[i].Width = _DgvMaterialLength[i];
+                }
+
+                dgvMaterial.Columns[(int)eDgvMaterial.No].ReadOnly = true;
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void displayMaterialCtrl()
+        {
+            try
+            {
+                int selProcIdx = getValidTaskIdx(_selSetName);
+                if (selProcIdx == -1 || _selSetName == "") return;
+
+                PreprocLNCDInfo info = MaterialDate[selProcIdx];
+                tbLNCD.Texts = info.LNCD;
+
+                dgvMaterial.Rows.Clear();
+                int idx = 0;
+                foreach (var item in info.Material.Items)
+                {
+                    string[] s = new string[(int)eDgvMaterial.Total];
+                    s[(int)eDgvMaterial.No] = idx.ToString();
+                    s[(int)eDgvMaterial.Name] = item;
+                    dgvMaterial.Rows.Add(s);
+                    idx++;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void updateMaterialCtrl()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+
+            PreprocLNCDInfo material = _materialData[selProcIdx];
+
+            material.LNCD = tbLNCD.Texts;
+            material.Material.Name = material.LNCD;
+            try
+            {
+
+                List<string> listInfo = new List<string>();
+                foreach (DataGridViewRow item in dgvMaterial.Rows)
+                {
+                    listInfo.Add(item.Cells[(int)eDgvMaterial.Name].Value as string);
+                }
+
+                material.Material.Items = listInfo;
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        private void addMaterial()
+        {
+            dgvMaterial.SuspendLayout();
+            try
+            {
+                int idx = dgvMaterial.Rows.Count;
+                string[] data = new string[(int)eDgvMaterial.Total];
+                data[(int)eDgvMaterial.No] = Convert.ToString(idx);
+                data[(int)eDgvMaterial.Name] = "";
+                dgvMaterial.Rows.Add(data);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                dgvMaterial.ResumeLayout();
+            }
+        }
+
+        private void deleteMaterial()
+        {
+            dgvMaterial.SuspendLayout();
+            try
+            {
+                int idx = dgvMaterial.SelectedRows[0].Index;
+                if (idx != 0)
+                {
+                    dgvMaterial.Rows.RemoveAt(idx);
+
+                    for (int i = 1; i < dgvMaterial.Rows.Count; i++)
+                        dgvMaterial.Rows[i].Cells[(int)eDgvMaterial.No].Value = Convert.ToString(i);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                dgvMaterial.ResumeLayout();
+            }
+        }
+
+
+        private void btnAddMaterial_Click(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            addMaterial();
+        }
+
+        private void btnDelMaterial_Click(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            deleteMaterial();
+        }
+        #endregion
+
+        private void btnApply_Click(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            updateMaterialCtrl();
+        }
+
+    }
+}

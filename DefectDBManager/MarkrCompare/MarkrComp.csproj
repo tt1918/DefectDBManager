@@ -93,6 +93,12 @@
     <Compile Include="Form\CompSetting\FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\FormLNCD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormLNCD.Designer.cs">
+      <DependentUpon>FormLNCD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,6 +162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\CompSetting\FormSetting.resx">
       <DependentUpon>FormSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormLNCD.resx">
+      <DependentUpon>FormLNCD.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

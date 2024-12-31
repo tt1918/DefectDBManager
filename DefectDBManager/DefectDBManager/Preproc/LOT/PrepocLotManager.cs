@@ -1,4 +1,5 @@
 ﻿using DefectDBManager.DB;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,7 +170,7 @@ namespace DefectDBManager
         {
             _lot = new Dictionary<string, List<PreprocLot>>();
             _procLNCD = new Preproc.PreprocLNCD();
-
+            
             LoadProcLNCD();
 
             _precSetting.Load();
@@ -354,6 +355,11 @@ namespace DefectDBManager
                     break;
                 }
             }
+        }
+
+        public void SetLNCDData(PreprocLNCD data)
+        {
+            this.ProcLNCD = data;
         }
         #endregion
 

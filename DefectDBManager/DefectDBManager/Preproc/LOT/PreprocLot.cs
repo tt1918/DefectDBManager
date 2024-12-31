@@ -188,7 +188,7 @@ namespace DefectDBManager
             }
 
             MarkCompList = compList;
-
+            // 에러율 처리
             CheckComparision(procData);
         }
 
