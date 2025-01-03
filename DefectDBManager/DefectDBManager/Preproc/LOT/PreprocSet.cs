@@ -185,6 +185,8 @@ namespace DefectDBManager.Preproc
         }
     }
 
+    #region 공정 검사 정보
+
     public class PreprocItem
     {
         [Category("items")]
@@ -238,7 +240,7 @@ namespace DefectDBManager.Preproc
 
             data.Reference = this.Reference.Clone();
 
-            foreach(var item in this.Compare)
+            foreach (var item in this.Compare)
                 data.Compare.Add(item.Clone());
 
             foreach (var item in this.CompRange)
@@ -272,9 +274,9 @@ namespace DefectDBManager.Preproc
 
         public void Remove(string name)
         {
-            for(int i=0; i<_data.Count; i++)
+            for (int i = 0; i < _data.Count; i++)
             {
-                if (_data[i].Name==name)
+                if (_data[i].Name == name)
                 {
                     _data.RemoveAt(i);
                     break;
@@ -311,10 +313,28 @@ namespace DefectDBManager.Preproc
 
             var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<PreprocSet>(jsonString);
 
-            foreach(var item in obj.Data)
+            foreach (var item in obj.Data)
                 this.Add(item);
 
             return true;
         }
     }
+    #endregion
+
+    #region 검사 필터 데이터
+    public class ProcFilter
+    {
+        public string Line { get; set; }
+        public string Product { get; set; }
+        public string Model { get; set; }
+    }
+
+    public class ProcFilterList : ItemList<ProcFilter>
+    {
+        public ProcFilterList()
+        {
+
+        }
+    }
+    #endregion
 }

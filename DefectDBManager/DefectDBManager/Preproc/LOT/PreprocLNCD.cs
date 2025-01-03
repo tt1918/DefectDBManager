@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace DefectDBManager.Preproc
 
         [Category("items")]
         [Description("Use")]
-        public bool Use { get; set; }
+        [JsonIgnore]
+        public bool[] Use { get; private set; }
 
         [Category("items")]
         [Description("Model")]
@@ -39,9 +41,12 @@ namespace DefectDBManager.Preproc
         {
             Name = "";
             LNCD = "";
-            Use = false;
             Model = "";
             Material = new ProcMaterial();
+
+            Use = new bool[(int)Preproc.eProc.Total];
+            for (int i = 0; i < (int)Preproc.eProc.Total; i++)
+                Use[i] = true;
         }
 
         public void Set(PreprocLNCDInfo s)

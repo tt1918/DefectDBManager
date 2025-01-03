@@ -152,12 +152,12 @@ namespace DefectDBManager
         private Preproc.PreprocSet _precSetting=new Preproc.PreprocSet();
 
 
-        public Preproc.PreprocItem SelPreprocJob
+        public ProcFilterList[] CrtProcFilter
         {
-            get { return _selPreprocJob; }
-            private set { _selPreprocJob = value; }
+            get { return _crtProcFilter; }
+            private set { _crtProcFilter = value; }
         }
-        private Preproc.PreprocItem _selPreprocJob = null;
+        public ProcFilterList[] _crtProcFilter = null;
         #endregion
 
         #region 검색 시간 설정 
@@ -174,6 +174,11 @@ namespace DefectDBManager
             LoadProcLNCD();
 
             _precSetting.Load();
+
+            int size = (int)Preproc.eProc.Total;
+            _crtProcFilter = new ProcFilterList[size];
+            for (int i = 0; i < size; i++)
+                _crtProcFilter[i] = new ProcFilterList();
         }
 
 
@@ -321,40 +326,27 @@ namespace DefectDBManager
             ProcLNCD.Load();
         }
 
-        public void SetUse(string name, bool use)
+        public void SetUse(eProc proc, string name, bool use)
         {
             for(int i=0; i< ProcLNCD.Info.Count; i++)
             {
                 if (ProcLNCD.Info[i].Name == name)
-                    ProcLNCD.Info[i].Use = use;
+                    ProcLNCD.Info[i].Use[(int)proc] = use;
             }
         }
 
-        public void SetUse(bool[] use)
+        public void SetUse(eProc proc, bool[] use)
         {
             for (int i = 0; i < ProcLNCD.Info.Count; i++)
             {
                 if(use.Length > i)
-                    ProcLNCD.Info[i].Use = use[i];
+                    ProcLNCD.Info[i].Use[(int)proc] = use[i];
             }
         }
 
         public void UpdatePreprocSet(Preproc.PreprocSet set)
         {
             ProcSetting = set;
-        }
-
-        public void SetSelectedJob(string name)
-        {
-            _selPreprocJob = null;
-            foreach (var item in _precSetting.Data)
-            {
-                if (item.Name == name)
-                {
-                    _selPreprocJob = item;
-                    break;
-                }
-            }
         }
 
         public void SetLNCDData(PreprocLNCD data)

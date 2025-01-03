@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.Preproc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -93,7 +94,7 @@ namespace MarkrCompare
                 CheckBox checkBox = new CheckBox();
                 checkBox.Text = item.Name;
                 checkBox.UseVisualStyleBackColor = true;
-                checkBox.Checked = item.Use;
+                checkBox.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Live];
                 checkBox.AutoSize = true;
 
                 tlLncd.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -116,14 +117,7 @@ namespace MarkrCompare
                 tlLncd.SuspendLayout();
                 foreach (var item in _lncdCheckBox)
                 {
-                    for (int i = 0; i < _lotManager.ProcLNCD.Info.Count; i++)
-                    {
-                        if (_lotManager.ProcLNCD.Info[i].Name == item.Text)
-                        {
-                            _lotManager.ProcLNCD.Info[i].Use = item.Checked;
-                            break;
-                        }
-                    }
+                    _lotManager.SetUse(DefectDBManager.Preproc.eProc.Live, item.Text, item.Checked);
                 }
             }
             catch
@@ -155,7 +149,7 @@ namespace MarkrCompare
                         CheckBox chk = _lncdCheckBox[i];
                         if (chk.Text == item.Name)
                         {
-                            chk.Checked = item.Use;
+                            chk.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Live];
                             break;
                         }
                     }
@@ -186,7 +180,7 @@ namespace MarkrCompare
             {
                 if (IsRun == true) return;
                 getLNCDCtrlData();
-                OnUpdatePrepLncdInfo?.Invoke();
+                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Live);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();
             }
@@ -219,7 +213,13 @@ namespace MarkrCompare
         {
             try
             {
+                using (FormProductFilter form = new FormProductFilter(_lotManager, DefectDBManager.Preproc.eProc.Live))
+                {
+                    if(form.ShowDialog()==DialogResult.OK)
+                    {
 
+                    }
+                }
             }
             catch
             {

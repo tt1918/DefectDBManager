@@ -293,7 +293,7 @@ namespace DefectDBManager
             DateTime edTime = LotManager.LiveTime.EndTime;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
-                if (data.Use == false) continue;
+                if (data.Use[(int)Preproc.eProc.Live] == false) continue;
 
                 if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
                 {
@@ -318,7 +318,7 @@ namespace DefectDBManager
             DateTime edTime = LotManager.SearchTime.EndTime;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
-                if (data.Use == false) continue;
+                if (data.Use[(int)Preproc.eProc.Search] == false) continue;
 
                 if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
                 {
@@ -340,18 +340,18 @@ namespace DefectDBManager
             DateTime stTime = LotManager.SearchTime.StartTime;
             DateTime edTime = LotManager.SearchTime.EndTime;
 
-            string codeLine = LotManager.SelPreprocJob.Name;
+            //string codeLine = LotManager.SelPreprocJob.Name;
 
-            if (_DBProc.SearchPTRYOPList(codeLine, stTime, edTime) == true)
-            {
-                PTRY0PList list = new PTRY0PList();
+            //if (_DBProc.SearchPTRYOPList(codeLine, stTime, edTime) == true)
+            //{
+            //    PTRY0PList list = new PTRY0PList();
 
-                foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
-                    list.Add(ptry0p.Clone());
+            //    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+            //        list.Add(ptry0p.Clone());
 
-                // 리스트 데이터 추가
-                LotManager.Product.Add(codeLine, list);
-            }
+            //    // 리스트 데이터 추가
+            //    LotManager.Product.Add(codeLine, list);
+            //}
         }
 
         #endregion
@@ -359,40 +359,40 @@ namespace DefectDBManager
         #region 결점 데이터 검색
         public void SearchLiveDefectData(string lncd, string lotName)
         {
-            int error = -1;
-            bool usemkcdModel = LotManager.UseMrkctlmstModel;
-            try
-            {
-                PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
-                if (lot == null) return;
+            //int error = -1;
+            //bool usemkcdModel = LotManager.UseMrkctlmstModel;
+            //try
+            //{
+            //    PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
+            //    if (lot == null) return;
 
-                // 입력 받은 데이터 기준으로 좌표 비교
-                lot.ComparePosition(LotManager.SelPreprocJob);
-                LotManager.AddLiveLot(lncd, lot);
-            }
-            catch
-            {
+            //    // 입력 받은 데이터 기준으로 좌표 비교
+            //    lot.ComparePosition(LotManager.SelPreprocJob);
+            //    LotManager.AddLiveLot(lncd, lot);
+            //}
+            //catch
+            //{
 
-            }
+            //}
         }
 
         public void SearchDefectData(string lncd, string lotName)
         {
-            int error=-1;
-            bool usemkcdModel = LotManager.UseMrkctlmstModel;
-            try
-            {
-                PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
-                if (lot == null) return;
+            //int error=-1;
+            //bool usemkcdModel = LotManager.UseMrkctlmstModel;
+            //try
+            //{
+            //    PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
+            //    if (lot == null) return;
 
-                // 입력 받은 데이터 기준으로 좌표 비교
-                lot.ComparePosition(LotManager.SelPreprocJob);
-                LotManager.AddLot(lncd, lot);
-            }
-            catch
-            {
+            //    // 입력 받은 데이터 기준으로 좌표 비교
+            //    lot.ComparePosition(LotManager.SelPreprocJob);
+            //    LotManager.AddLot(lncd, lot);
+            //}
+            //catch
+            //{
 
-            }
+            //}
         }
 
         #endregion

@@ -31,6 +31,9 @@ namespace MarkrCompare
             initDataList();
             initMaterialCtrl();
 
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+
             _materialData = new PreprocLNCD();
             _materialData.Load();
         }
@@ -47,6 +50,27 @@ namespace MarkrCompare
         private void FormLNCD_FormClosing(object sender, FormClosingEventArgs e)
         {
 
+        }
+        #endregion
+
+        #region 마우스로 폼 드래그
+        private Point mouseDownLocation;
+        private void lblTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.mouseDownLocation = e.Location;
+            }
+        }
+        private void lblTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized) return;
+
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                this.Left = e.X + this.Left - this.mouseDownLocation.X;
+                this.Top = e.Y + this.Top - this.mouseDownLocation.Y;
+            }
         }
         #endregion
 
@@ -330,5 +354,16 @@ namespace MarkrCompare
             updateMaterialCtrl();
         }
 
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
     }
 }

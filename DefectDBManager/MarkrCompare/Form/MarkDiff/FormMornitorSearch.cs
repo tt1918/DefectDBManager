@@ -1,5 +1,4 @@
-﻿#define USE_PRE_SETTING
-
+﻿
 using CustomControls;
 using System;
 using System.Collections.Generic;
@@ -44,8 +43,7 @@ namespace MarkrCompare
         }
         private void FormMornitorSearch_Load(object sender, EventArgs e)
         {
-            initCBSetting();
-            //initLNCDCtrl();
+            initLNCDCtrl();
             initLotSearchTimer();
         }
 
@@ -66,27 +64,6 @@ namespace MarkrCompare
 
         #region Setting Combo Box 처리
         
-        private void initCBSetting()
-        {
-            if (_lotManager == null) return;
-
-            int size = _lotManager.ProcSetting.Count;
-
-            cbJobList.Items.Clear();
-            cbJobList.Sorted = false;
-            cbJobList.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (var item in _lotManager.ProcSetting.Data)
-                cbJobList.Items.Add(item.Name);
-            
-            if(size>0)  cbJobList.SelectedIndex = 0;
-        }
-
-        private void getSettingJob()
-        {
-            string name;
-            name = cbJobList.SelectedItem as string;
-            _lotManager.SetSelectedJob(name);
-        }
         #endregion
 
         #region 체크 버튼 인식
@@ -120,7 +97,7 @@ namespace MarkrCompare
                 CheckBox checkBox = new CheckBox();
                 checkBox.Text = item.Name;
                 checkBox.UseVisualStyleBackColor = true;
-                checkBox.Checked = item.Use;
+                checkBox.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Search];
                 checkBox.AutoSize = true;
 
                 tlLncd.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
@@ -143,14 +120,7 @@ namespace MarkrCompare
                 tlLncd.SuspendLayout();
                 foreach (var item in _lncdCheckBox)
                 {
-                    for (int i = 0; i < _lotManager.ProcLNCD.Info.Count; i++)
-                    {
-                        if (_lotManager.ProcLNCD.Info[i].Name == item.Text)
-                        {
-                            _lotManager.ProcLNCD.Info[i].Use = item.Checked;
-                            break;
-                        }
-                    }
+                    _lotManager.SetUse(DefectDBManager.Preproc.eProc.Search, item.Text, item.Checked);
                 }
             }
             catch
@@ -182,7 +152,7 @@ namespace MarkrCompare
                         CheckBox chk = _lncdCheckBox[i];
                         if (chk.Text == item.Name)
                         {
-                            chk.Checked = item.Use;
+                            chk.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Search];
                             break;
                         }
                     }
@@ -217,12 +187,10 @@ namespace MarkrCompare
 
                 _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
 
-#if USE_PRE_SETTING
-                getSettingJob();
-#else
+
                 getLNCDCtrlData();
-                OnUpdatePrepLncdInfo?.Invoke();
-#endif
+                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Search);
+
                 OnStartLotSearch?.Invoke();
                 _timerLotSearchProcess.Start();
             }

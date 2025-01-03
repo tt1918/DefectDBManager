@@ -101,6 +101,7 @@
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.TextColor = System.Drawing.Color.White;
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
@@ -121,6 +122,7 @@
             this.btnOK.Text = "OK";
             this.btnOK.TextColor = System.Drawing.Color.White;
             this.btnOK.UseVisualStyleBackColor = false;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnApply
             // 
@@ -179,6 +181,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(587, 26);
             this.lblTitle.TabIndex = 1;
+            this.lblTitle.Text = "LINE DATA SETTING";
             this.lblTitle.Thickness = 1;
             // 
             // tableLayoutPanel2
