@@ -152,12 +152,12 @@ namespace DefectDBManager
         private Preproc.PreprocSet _precSetting=new Preproc.PreprocSet();
 
 
-        public ProcFilterList[] CrtProcFilter
+        public ProcFilterSet CrtProcFilter
         {
             get { return _crtProcFilter; }
             private set { _crtProcFilter = value; }
         }
-        public ProcFilterList[] _crtProcFilter = null;
+        public ProcFilterSet _crtProcFilter = null;
         #endregion
 
         #region 검색 시간 설정 
@@ -175,12 +175,8 @@ namespace DefectDBManager
 
             _precSetting.Load();
 
-            int size = (int)Preproc.eProc.Total;
-            _crtProcFilter = new ProcFilterList[size];
-            for (int i = 0; i < size; i++)
-                _crtProcFilter[i] = new ProcFilterList();
-
-            LoadFilterSet();
+            _crtProcFilter = new ProcFilterSet();
+            _crtProcFilter.Load();
         }
 
 
@@ -356,28 +352,5 @@ namespace DefectDBManager
             this.ProcLNCD = data;
         }
         #endregion
-
-        #region Filter 설정
-        public void SaveFilterSet()
-        {
-            string path = Define.FilterSetPath;
-            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this._crtProcFilter, Newtonsoft.Json.Formatting.Indented);
-            System.IO.File.WriteAllText(path, jsonString);
-        }
-
-        public void LoadFilterSet()
-        {
-            string path = Define.FilterSetPath;
-            string jsonString = "";
-
-            
-            if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
-            else return ;
-
-            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<ProcFilterList[]>(jsonString);
-            this._crtProcFilter = obj;
-        }
-        #endregion
-
     }
 }

@@ -29,12 +29,11 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lvFilterList = new System.Windows.Forms.ListView();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnStart = new CustomControls.RoundButton();
             this.btnStop = new CustomControls.RoundButton();
             this.lblProcess = new CustomControls.RoundLabel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlLncd = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTime = new CustomControls.RoundLabel();
             this.btnMaterialFilter = new CustomControls.RoundButton();
@@ -43,7 +42,6 @@
             this.timePickerEnd = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,22 +49,33 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lvFilterList, 0, 3);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel5, 0, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 5;
+            this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(545, 139);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // lvFilterList
+            // 
+            this.lvFilterList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvFilterList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvFilterList.HideSelection = false;
+            this.lvFilterList.Location = new System.Drawing.Point(3, 68);
+            this.lvFilterList.Name = "lvFilterList";
+            this.lvFilterList.Size = new System.Drawing.Size(539, 68);
+            this.lvFilterList.TabIndex = 4;
+            this.lvFilterList.UseCompatibleStateImageBehavior = false;
+            this.lvFilterList.View = System.Windows.Forms.View.List;
             // 
             // tableLayoutPanel3
             // 
@@ -148,36 +157,6 @@
             this.lblProcess.Text = "Mornitoring......";
             this.lblProcess.Thickness = 1;
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.tlLncd, 0, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 101);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(545, 38);
-            this.tableLayoutPanel4.TabIndex = 1;
-            // 
-            // tlLncd
-            // 
-            this.tlLncd.ColumnCount = 1;
-            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlLncd.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlLncd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlLncd.Location = new System.Drawing.Point(0, 0);
-            this.tlLncd.Margin = new System.Windows.Forms.Padding(0);
-            this.tlLncd.Name = "tlLncd";
-            this.tlLncd.RowCount = 1;
-            this.tlLncd.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlLncd.Size = new System.Drawing.Size(545, 38);
-            this.tlLncd.TabIndex = 0;
-            // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 6;
@@ -241,6 +220,7 @@
             this.btnMaterialFilter.Text = "FILTER";
             this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
             this.btnMaterialFilter.UseVisualStyleBackColor = false;
+            this.btnMaterialFilter.Click += new System.EventHandler(this.btnMaterialFilter_Click);
             // 
             // label1
             // 
@@ -289,7 +269,6 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.ResumeLayout(false);
@@ -303,13 +282,12 @@
         private CustomControls.RoundButton btnStart;
         private CustomControls.RoundButton btnStop;
         private CustomControls.RoundLabel lblProcess;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TableLayoutPanel tlLncd;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker timePickerStart;
         private System.Windows.Forms.DateTimePicker timePickerEnd;
         private CustomControls.RoundButton btnMaterialFilter;
         private CustomControls.RoundLabel lblTime;
+        private System.Windows.Forms.ListView lvFilterList;
     }
 }

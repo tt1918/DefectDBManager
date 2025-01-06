@@ -200,7 +200,7 @@ namespace MarkrCompare
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSearch.OnUpdatePrepLncdInfo += initLotListForms;
-            OnUpdateSearchLNCDInfo += _formMorSearch.UpdateLNCDCtrlData;
+            OnUpdateSearchLNCDInfo += _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.Show();
         }
@@ -210,7 +210,7 @@ namespace MarkrCompare
             _formMorLive.OnUpdatePrepLncdInfo -= initLotListForms;
             _formMorSearch.OnUpdatePrepLncdInfo -= initLotListForms;
             OnUpdateLiveLNCDInfo -= _formMorLive.UpdateLNCDCtrlData;
-            OnUpdateSearchLNCDInfo -= _formMorSearch.UpdateLNCDCtrlData;
+            OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorLive?.Close();
             _formMorSearch?.Close(); 
         }

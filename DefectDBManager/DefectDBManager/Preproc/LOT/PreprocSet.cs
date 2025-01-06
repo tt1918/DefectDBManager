@@ -324,9 +324,10 @@ namespace DefectDBManager.Preproc
     #region 검사 필터 데이터
     public class ProcFilter
     {
-        public string Line { get; set; }
-        public string Product { get; set; }
-        public string Model { get; set; }
+        public string Line { get; set; } = string.Empty;
+        public string Product { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public int Duration { get; set; } = 0;
     }
 
     public class ProcFilterList : ItemList<ProcFilter>
@@ -336,5 +337,57 @@ namespace DefectDBManager.Preproc
 
         }
     }
+
+    public class ProcFilterSet
+    {
+        public bool UseLiveSync { get; set; } = false;
+        public int SyncDuration { get; set; } = 1;
+        
+        public ProcFilterList this[int idx]
+        {
+            get { return Filter[idx]; }
+            set { Filter[idx] = value; }
+        }
+        public ProcFilterList[] Filter { get; set; } = null;
+
+        public ProcFilterSet()
+        {
+            int size = (int)Preproc.eProc.Total;
+            Filter = new ProcFilterList[size];
+            for (int i = 0; i < size; i++)
+                Filter[i] = new ProcFilterList();
+        }
+
+        #region Filter 설정
+        public void Save()
+        {
+            string path = Define.FilterSetPath;
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+            System.IO.File.WriteAllText(path, jsonString);
+        }
+
+        public void Load()
+        {
+            try
+            {
+                string path = Define.FilterSetPath;
+                string jsonString = "";
+
+
+                if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
+                else return;
+
+                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<ProcFilterSet>(jsonString);
+                this.UseLiveSync = obj.UseLiveSync;
+                this.SyncDuration = obj.SyncDuration;
+                this.Filter = obj.Filter;
+            }
+            catch(Exception ex)
+            {
+            }
+        }
+        #endregion
+    }
+
     #endregion
 }

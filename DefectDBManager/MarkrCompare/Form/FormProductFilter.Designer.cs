@@ -36,11 +36,15 @@
             this.btnClear = new CustomControls.RoundButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvFilter = new System.Windows.Forms.DataGridView();
-            this.lblFilterType = new CustomControls.RoundLabel();
             this.lblTitle = new CustomControls.RoundLabel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbSyncDuration = new System.Windows.Forms.CheckBox();
+            this.lblSyncDuration = new CustomControls.RoundLabel();
+            this.comboSyncDuration = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFilter)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -176,9 +180,9 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.dgvFilter, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblFilterType, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
@@ -210,28 +214,6 @@
             this.dgvFilter.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFilter_CellValueChanged);
             this.dgvFilter.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgvFilter_CurrentCellDirtyStateChanged);
             // 
-            // lblFilterType
-            // 
-            this.lblFilterType.AutoSize = true;
-            this.lblFilterType.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
-            this.lblFilterType.BorderColor = System.Drawing.Color.Silver;
-            this.lblFilterType.CornerR = 10;
-            this.lblFilterType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblFilterType.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFilterType.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblFilterType.IsFillLB = false;
-            this.lblFilterType.IsFillLT = false;
-            this.lblFilterType.IsFillRB = false;
-            this.lblFilterType.IsFillRT = false;
-            this.lblFilterType.Location = new System.Drawing.Point(2, 32);
-            this.lblFilterType.Margin = new System.Windows.Forms.Padding(2);
-            this.lblFilterType.Name = "lblFilterType";
-            this.lblFilterType.Size = new System.Drawing.Size(587, 26);
-            this.lblFilterType.TabIndex = 8;
-            this.lblFilterType.Text = "LNCD";
-            this.lblFilterType.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblFilterType.Thickness = 1;
-            // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
@@ -253,6 +235,65 @@
             this.lblTitle.Text = "PRODUCT SETTING";
             this.lblTitle.Thickness = 1;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel2.Controls.Add(this.cbSyncDuration, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblSyncDuration, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.comboSyncDuration, 3, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 30);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(591, 30);
+            this.tableLayoutPanel2.TabIndex = 11;
+            // 
+            // cbSyncDuration
+            // 
+            this.cbSyncDuration.AutoSize = true;
+            this.cbSyncDuration.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbSyncDuration.Location = new System.Drawing.Point(454, 3);
+            this.cbSyncDuration.Name = "cbSyncDuration";
+            this.cbSyncDuration.Size = new System.Drawing.Size(14, 24);
+            this.cbSyncDuration.TabIndex = 0;
+            this.cbSyncDuration.UseVisualStyleBackColor = true;
+            // 
+            // lblSyncDuration
+            // 
+            this.lblSyncDuration.AutoSize = true;
+            this.lblSyncDuration.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblSyncDuration.BorderColor = System.Drawing.Color.Silver;
+            this.lblSyncDuration.CornerR = 10;
+            this.lblSyncDuration.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSyncDuration.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSyncDuration.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblSyncDuration.IsFillLB = false;
+            this.lblSyncDuration.IsFillLT = false;
+            this.lblSyncDuration.IsFillRB = false;
+            this.lblSyncDuration.IsFillRT = false;
+            this.lblSyncDuration.Location = new System.Drawing.Point(333, 2);
+            this.lblSyncDuration.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSyncDuration.Name = "lblSyncDuration";
+            this.lblSyncDuration.Size = new System.Drawing.Size(116, 26);
+            this.lblSyncDuration.TabIndex = 3;
+            this.lblSyncDuration.Text = "Sync Duration";
+            this.lblSyncDuration.Thickness = 1;
+            // 
+            // comboSyncDuration
+            // 
+            this.comboSyncDuration.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.comboSyncDuration.FormattingEnabled = true;
+            this.comboSyncDuration.Location = new System.Drawing.Point(474, 3);
+            this.comboSyncDuration.Name = "comboSyncDuration";
+            this.comboSyncDuration.Size = new System.Drawing.Size(114, 23);
+            this.comboSyncDuration.TabIndex = 4;
+            // 
             // FormProductFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -270,6 +311,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFilter)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -283,7 +326,10 @@
         private CustomControls.RoundButton btnAddMaterial;
         private CustomControls.RoundButton btnDelMaterial;
         private System.Windows.Forms.DataGridView dgvFilter;
-        private CustomControls.RoundLabel lblFilterType;
         private CustomControls.RoundButton btnClear;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.CheckBox cbSyncDuration;
+        private CustomControls.RoundLabel lblSyncDuration;
+        private System.Windows.Forms.ComboBox comboSyncDuration;
     }
 }

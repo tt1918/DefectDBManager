@@ -16,6 +16,7 @@ namespace MarkrCompare
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
+        DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Live;
         public bool IsRun 
         {
             get { return _timerLotSearchProcess.Enabled; }
@@ -46,8 +47,6 @@ namespace MarkrCompare
         {
             initLNCDCtrl();
             initLotSearchTimer();
-
-
         }
 
         private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,69 +64,10 @@ namespace MarkrCompare
         #endregion
 
         #region 체크 버튼 인식
-        List<CheckBox> _lncdCheckBox = null;
+        
         private void initLNCDCtrl()
         {
             if (_lotManager == null) return;
-
-            if (_lncdCheckBox != null)
-                _lncdCheckBox.Clear();
-            if (_lncdCheckBox == null)
-                _lncdCheckBox = new List<CheckBox>();
-
-            int size = _lotManager.ProcLNCD.Info.Count;
-
-            tlLncd.Controls.Clear();
-            tlLncd.ColumnStyles.Clear();
-            tlLncd.RowStyles.Clear();
-
-            tlLncd.Dock = DockStyle.Fill;
-
-            tlLncd.ColumnCount = size;
-            tlLncd.RowCount = 1;
-
-            int index = 0;
-            tlLncd.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-            foreach (var item in _lotManager.ProcLNCD.Info)
-            {
-                CheckBox checkBox = new CheckBox();
-                checkBox.Text = item.Name;
-                checkBox.UseVisualStyleBackColor = true;
-                checkBox.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Live];
-                checkBox.AutoSize = true;
-
-                tlLncd.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-                tlLncd.Controls.Add(checkBox, index, 0);
-
-                checkBox.Dock = DockStyle.Fill;
-
-                _lncdCheckBox.Add(checkBox);
-                index++;
-            }
-        }
-
-        /// <summary>
-        /// tlLncd -> _lotManager.ProcLNCD.Info
-        /// </summary>
-        private void getLNCDCtrlData()
-        {
-            try
-            {
-                tlLncd.SuspendLayout();
-                foreach (var item in _lncdCheckBox)
-                {
-                    _lotManager.SetUse(DefectDBManager.Preproc.eProc.Live, item.Text, item.Checked);
-                }
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                tlLncd.ResumeLayout();
-            }
 
         }
 
@@ -136,23 +76,18 @@ namespace MarkrCompare
         /// </summary>
         private void setLNCDCtrlData()
         {
-            if (_lncdCheckBox == null) return;
-            int ctrlCount = _lncdCheckBox.Count;
+
+            int ctrlCount = _lotManager.CrtProcFilter[(int)_procIdx].Count;
 
             try
             {
-                tlLncd.SuspendLayout();
-                foreach (var item in _lotManager.ProcLNCD.Info)
+                lvFilterList.BeginUpdate();
+                lvFilterList.Items.Clear();
+                foreach (var item in _lotManager.CrtProcFilter[(int)_procIdx].Data)
                 {
-                    for (int i = 0; i < ctrlCount; i++)
-                    {
-                        CheckBox chk = _lncdCheckBox[i];
-                        if (chk.Text == item.Name)
-                        {
-                            chk.Checked = item.Use[(int)DefectDBManager.Preproc.eProc.Live];
-                            break;
-                        }
-                    }
+                    string format = $"{item.Line} - Product:[{item.Product}], Model:[{item.Model}]";
+                    ListViewItem lvi = new ListViewItem(format);
+                    lvFilterList.Items.Add(lvi);
                 }
             }
             catch
@@ -161,10 +96,8 @@ namespace MarkrCompare
             }
             finally
             {
-                tlLncd.ResumeLayout();
+                lvFilterList.EndUpdate();
             }
-            
-
         }
 
         public void UpdateLNCDCtrlData()
@@ -179,8 +112,7 @@ namespace MarkrCompare
             try
             {
                 if (IsRun == true) return;
-                getLNCDCtrlData();
-                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Live);
+                OnUpdatePrepLncdInfo?.Invoke(_procIdx);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();
             }
@@ -213,11 +145,11 @@ namespace MarkrCompare
         {
             try
             {
-                using (FormProductFilter form = new FormProductFilter(_lotManager, DefectDBManager.Preproc.eProc.Live))
+                using (FormProductFilter form = new FormProductFilter(_lotManager, _procIdx))
                 {
                     if(form.ShowDialog()==DialogResult.OK)
                     {
-
+                        setLNCDCtrlData();
                     }
                 }
             }
