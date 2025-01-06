@@ -1,4 +1,5 @@
 ﻿using Microsoft.SqlServer.Server;
+using Newtonsoft.Json;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace DefectDBManager
         }
         protected List<T> _data = null;
 
+        [JsonIgnore]
         public int Count
         {
             get { return _data.Count; }

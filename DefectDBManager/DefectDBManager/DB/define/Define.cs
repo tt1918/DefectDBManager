@@ -21,6 +21,7 @@ namespace DefectDBManager
         public static string LNCD_InfoPath { get { return Path.Combine(MainPath, "LNCD.json"); } }
         public static string PreprocSetPath { get { return Path.Combine(MainPath, "PreprocSet.json"); } }
         public static string MaterialListPath { get { return Path.Combine(MainPath, "MaterialList.json"); } }
+        public static string FilterSetPath { get { return Path.Combine(MainPath, "FilterSet.json"); } }
     }
 
     public class Global

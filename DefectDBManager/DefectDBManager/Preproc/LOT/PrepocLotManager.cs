@@ -179,6 +179,8 @@ namespace DefectDBManager
             _crtProcFilter = new ProcFilterList[size];
             for (int i = 0; i < size; i++)
                 _crtProcFilter[i] = new ProcFilterList();
+
+            LoadFilterSet();
         }
 
 
@@ -352,6 +354,28 @@ namespace DefectDBManager
         public void SetLNCDData(PreprocLNCD data)
         {
             this.ProcLNCD = data;
+        }
+        #endregion
+
+        #region Filter 설정
+        public void SaveFilterSet()
+        {
+            string path = Define.FilterSetPath;
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this._crtProcFilter, Newtonsoft.Json.Formatting.Indented);
+            System.IO.File.WriteAllText(path, jsonString);
+        }
+
+        public void LoadFilterSet()
+        {
+            string path = Define.FilterSetPath;
+            string jsonString = "";
+
+            
+            if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
+            else return ;
+
+            var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<ProcFilterList[]>(jsonString);
+            this._crtProcFilter = obj;
         }
         #endregion
 

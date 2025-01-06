@@ -89,7 +89,7 @@ namespace MarkrCompare
         {
             try
             {
-                dgvFilter.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvFilter.SelectionMode = DataGridViewSelectionMode.CellSelect;
                 dgvFilter.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvFilter.AllowUserToAddRows = false;
                 dgvFilter.RowHeadersVisible = false;
@@ -156,10 +156,15 @@ namespace MarkrCompare
                     
                     object[] s = new object[(int)eDgvFilter.Total];
                     s[(int)eDgvFilter.No] = idx.ToString();
-                    s[(int)eDgvFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line);
-                    s[(int)eDgvFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product);
-                    s[(int)eDgvFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model);
+                    s[(int)eDgvFilter.Line] = new DataGridViewComboBoxCell();
+                    s[(int)eDgvFilter.Product] = new DataGridViewComboBoxCell();
+                    s[(int)eDgvFilter.Model] = new DataGridViewComboBoxCell();
                     dgvFilter.Rows.Add(s);
+
+                    dgvFilter.Rows[idx].Cells[(int)eDgvFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
+                    
                     idx++;
                 }
             }
@@ -235,8 +240,8 @@ namespace MarkrCompare
             dgvFilter.SuspendLayout();
             try
             {
-                int idx = dgvFilter.SelectedRows[0].Index;
-                if (idx != 0)
+                int idx = dgvFilter.SelectedCells[0].RowIndex;
+                if (idx >= 0)
                 {
                     dgvFilter.Rows.RemoveAt(idx);
 
@@ -364,15 +369,16 @@ namespace MarkrCompare
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            //_lotManager.LoadFilterSet();
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-
+            
             updateFilterCtrl();
-
+            _lotManager.SaveFilterSet();
             DialogResult = DialogResult.OK;
             Close();
         }
