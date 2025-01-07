@@ -293,8 +293,6 @@ namespace DefectDBManager
             DateTime edTime = LotManager.LiveTime.EndTime;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
-                if (data.Use[(int)Preproc.eProc.Live] == false) continue;
-
                 if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();
@@ -318,8 +316,6 @@ namespace DefectDBManager
             DateTime edTime = LotManager.SearchTime.EndTime;
             foreach (var data in LotManager.ProcLNCD.Info)
             {
-                if (data.Use[(int)Preproc.eProc.Search] == false) continue;
-
                 if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();

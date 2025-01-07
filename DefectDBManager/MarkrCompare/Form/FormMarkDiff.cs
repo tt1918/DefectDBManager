@@ -307,9 +307,6 @@ namespace MarkrCompare
 
                 foreach (var item in _lotManager.ProcLNCD.Info)
                 {
-                    // 사용하지 않으면 탭을 추가하지 않음.
-                    if (item.Use[(int)proc] == false) continue;
-
                     FormLotList form = new FormLotList(this, item.Name);
                     form.TopLevel = false;
                     _lotListForms.Add(form);

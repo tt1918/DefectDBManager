@@ -324,24 +324,6 @@ namespace DefectDBManager
             ProcLNCD.Load();
         }
 
-        public void SetUse(eProc proc, string name, bool use)
-        {
-            for(int i=0; i< ProcLNCD.Info.Count; i++)
-            {
-                if (ProcLNCD.Info[i].Name == name)
-                    ProcLNCD.Info[i].Use[(int)proc] = use;
-            }
-        }
-
-        public void SetUse(eProc proc, bool[] use)
-        {
-            for (int i = 0; i < ProcLNCD.Info.Count; i++)
-            {
-                if(use.Length > i)
-                    ProcLNCD.Info[i].Use[(int)proc] = use[i];
-            }
-        }
-
         public void UpdatePreprocSet(Preproc.PreprocSet set)
         {
             ProcSetting = set;

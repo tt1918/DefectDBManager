@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,16 @@ namespace DefectDBManager.Preproc
         public string LNCD { get; set; }
 
         [Category("items")]
-        [Description("Use")]
-        [JsonIgnore]
-        public bool[] Use { get; private set; }
-
-        [Category("items")]
         [Description("Model")]
         public string Model { get; set; }
+
+        [Category("items")]
+        [Description("Symbol")]
+        public string Symbol { get; set; }
+
+        [Category("items")]
+        [Description("Symbol Color")]
+        public System.Drawing.Color SymbolColor { get; set; }
 
         [Category("items")]
         [Description("Material")]
@@ -43,19 +47,18 @@ namespace DefectDBManager.Preproc
             LNCD = "";
             Model = "";
             Material = new ProcMaterial();
-
-            Use = new bool[(int)Preproc.eProc.Total];
-            for (int i = 0; i < (int)Preproc.eProc.Total; i++)
-                Use[i] = true;
+            Symbol = "";
+            SymbolColor = Color.White;
         }
 
         public void Set(PreprocLNCDInfo s)
         {
             this.Name = s.Name;
             this.LNCD = s.LNCD;
-            this.Use = s.Use;
             this.Model = s.Model;
             this.Material = s.Material.Clone();
+            this.Symbol = s.Symbol;
+            this.SymbolColor = s.SymbolColor;
         }
         
         public object Clone()

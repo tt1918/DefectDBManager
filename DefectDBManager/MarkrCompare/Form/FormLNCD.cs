@@ -36,6 +36,8 @@ namespace MarkrCompare
 
             _materialData = new PreprocLNCD();
             _materialData.Load();
+
+            tbSymbol._TextChanged += this.tbSymbolTextChanged;
         }
 
         private void FormLNCD_Load(object sender, EventArgs e)
@@ -44,12 +46,13 @@ namespace MarkrCompare
             {
                 displayDataList();
                 displayMaterialCtrl();
+                displaySymbolData();
             }
         }
 
         private void FormLNCD_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            tbSymbol._TextChanged -= this.tbSymbolTextChanged;
         }
         #endregion
 
@@ -144,6 +147,7 @@ namespace MarkrCompare
 
                 // 영상 표시
                 displayMaterialCtrl();
+                displaySymbolData();
             }
             catch
             {
@@ -346,12 +350,14 @@ namespace MarkrCompare
         }
         #endregion
 
+        #region Control
         private void btnApply_Click(object sender, EventArgs e)
         {
             int selProcIdx = getValidTaskIdx(_selSetName);
             if (selProcIdx == -1) return;
 
             updateMaterialCtrl();
+            updateSymbolData();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -365,5 +371,76 @@ namespace MarkrCompare
             DialogResult = DialogResult.OK;
             Close();
         }
+        #endregion
+
+        #region Symbol Control
+        private Color _symbolColor;
+        private void displaySymbolData()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+
+            PreprocLNCDInfo info = MaterialDate[selProcIdx];
+
+            tbSymbol.Texts = info.Symbol;
+
+            _symbolColor = info.SymbolColor;
+            Color txtColor = Color.FromArgb(255 - _symbolColor.R, 255 - _symbolColor.G, 255 - _symbolColor.B);
+            btnSelectColor.BackColor = _symbolColor;
+
+            string text = $"RGB[{_symbolColor.R},{_symbolColor.G},{_symbolColor.B}]";
+            btnSelectColor.Text = text;
+            btnSelectColor.TextColor = txtColor;
+        }
+        private void updateSymbolData()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+
+            MaterialDate[selProcIdx].Symbol = tbSymbol.Texts;
+            MaterialDate[selProcIdx].SymbolColor = _symbolColor;
+
+        }
+
+        private void btnSelectColor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (ColorDialog dlg = new ColorDialog())
+                {
+                    if (dlg.ShowDialog() == DialogResult.OK)
+                    {
+                        _symbolColor = dlg.Color;
+                        Color txtColor = Color.FromArgb(255 - _symbolColor.R, 255 - _symbolColor.G, 255 - _symbolColor.B);
+                        btnSelectColor.BackColor = _symbolColor;
+
+                        string text = $"RGB[{_symbolColor.R},{_symbolColor.G},{_symbolColor.B}]";
+                        btnSelectColor.Text = text;
+                        btnSelectColor.TextColor = txtColor;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void tbSymbolTextChanged(object s, EventArgs e)
+        {
+            try
+            {
+                string text = tbSymbol.Texts;
+                if (text.Length > 1)
+                {
+                    tbSymbol.Texts = text.Substring(0, 1);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        #endregion
     }
 }
