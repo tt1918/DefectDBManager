@@ -35,17 +35,9 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.lbLog = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tlpLineData = new System.Windows.Forms.TableLayoutPanel();
-            this.tabLineList = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tlpInfoMap = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabSearchSet.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tlpLineData.SuspendLayout();
-            this.tabLineList.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -111,7 +103,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(427, 170);
+            this.tabPage4.Size = new System.Drawing.Size(344, 170);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -132,8 +124,6 @@
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
-            this.tableLayoutPanel3.Controls.Add(this.tlpLineData, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.tlpInfoMap, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 200);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -142,72 +132,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(1014, 504);
             this.tableLayoutPanel3.TabIndex = 1;
-            // 
-            // tlpLineData
-            // 
-            this.tlpLineData.ColumnCount = 1;
-            this.tlpLineData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpLineData.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpLineData.Controls.Add(this.tabLineList, 0, 0);
-            this.tlpLineData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpLineData.Location = new System.Drawing.Point(0, 0);
-            this.tlpLineData.Margin = new System.Windows.Forms.Padding(0);
-            this.tlpLineData.Name = "tlpLineData";
-            this.tlpLineData.RowCount = 2;
-            this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLineData.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpLineData.Size = new System.Drawing.Size(354, 504);
-            this.tlpLineData.TabIndex = 0;
-            // 
-            // tabLineList
-            // 
-            this.tabLineList.Controls.Add(this.tabPage1);
-            this.tabLineList.Controls.Add(this.tabPage2);
-            this.tabLineList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabLineList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabLineList.Location = new System.Drawing.Point(1, 1);
-            this.tabLineList.Margin = new System.Windows.Forms.Padding(1);
-            this.tabLineList.Name = "tabLineList";
-            this.tabLineList.SelectedIndex = 0;
-            this.tabLineList.Size = new System.Drawing.Size(352, 250);
-            this.tabLineList.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(344, 222);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(428, 222);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tlpInfoMap
-            // 
-            this.tlpInfoMap.ColumnCount = 2;
-            this.tlpInfoMap.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpInfoMap.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpInfoMap.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpInfoMap.Location = new System.Drawing.Point(355, 1);
-            this.tlpInfoMap.Margin = new System.Windows.Forms.Padding(1);
-            this.tlpInfoMap.Name = "tlpInfoMap";
-            this.tlpInfoMap.RowCount = 1;
-            this.tlpInfoMap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpInfoMap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpInfoMap.Size = new System.Drawing.Size(658, 502);
-            this.tlpInfoMap.TabIndex = 1;
             // 
             // FormMarkDiff
             // 
@@ -226,9 +150,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tabSearchSet.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tlpLineData.ResumeLayout(false);
-            this.tabLineList.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -241,11 +162,6 @@
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.TableLayoutPanel tlpLineData;
-        private System.Windows.Forms.TabControl tabLineList;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ListBox lbLog;
-        private System.Windows.Forms.TableLayoutPanel tlpInfoMap;
     }
 }

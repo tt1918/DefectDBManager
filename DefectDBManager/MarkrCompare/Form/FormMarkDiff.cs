@@ -40,22 +40,20 @@ namespace MarkrCompare
         private void FormMarkDiff_Load(object sender, EventArgs e)
         {
             initTabSearchSetting();
-            initCrtLotForm();
-            initDgvLotSumInfo();
             initRollMapForm();
-            initLotListForms(DefectDBManager.Preproc.eProc.Live);
-
+            initLotListForms();
+            initLotSummary();
             initLogTimer();
 
+            switchTLP3_1_0(DefectDBManager.Preproc.eProc.Live);
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CloseTabSearchSetting();
-            CloseLotListForms();
-            CloseCrtLotForm();
-
+            closeTabSearchSetting();
+            closeLotListForms();
             closeInOutTimer();
+            closeLotSummary();
         }
         #endregion
 
@@ -191,25 +189,25 @@ namespace MarkrCompare
             tabSearchSet.TabPages[0].Controls.Add(_formMorLive.Controls[0]);
             _formMorLive.Dock = DockStyle.Fill;
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            _formMorLive.OnUpdatePrepLncdInfo += initLotListForms;
-            OnUpdateLiveLNCDInfo += _formMorLive.UpdateLNCDCtrlData;
+            _formMorLive.OnUpdatePrepLncdInfo += updateLiveMornitoringCtrl;
+            OnUpdateLiveLNCDInfo += _formMorLive.DisplayLNCDCtrlData;
             _formMorLive.Show();
 
             // Search Tab
             tabSearchSet.TabPages[1].Text = "SEARCH";
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            _formMorSearch.OnUpdatePrepLncdInfo += initLotListForms;
+            _formMorSearch.OnUpdatePrepLncdInfo += showLotListForm;
             OnUpdateSearchLNCDInfo += _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.Show();
         }
 
-        private void CloseTabSearchSetting()
+        private void closeTabSearchSetting()
         {
-            _formMorLive.OnUpdatePrepLncdInfo -= initLotListForms;
-            _formMorSearch.OnUpdatePrepLncdInfo -= initLotListForms;
-            OnUpdateLiveLNCDInfo -= _formMorLive.UpdateLNCDCtrlData;
+            _formMorLive.OnUpdatePrepLncdInfo -= showLotListForm;
+            _formMorSearch.OnUpdatePrepLncdInfo -= showLotListForm;
+            OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorLive?.Close();
             _formMorSearch?.Close(); 
@@ -221,56 +219,17 @@ namespace MarkrCompare
             {
                 case 0: // Live Form
                     OnUpdateLiveLNCDInfo?.Invoke();
+                    showLotListForm(DefectDBManager.Preproc.eProc.Live);
+                    switchTLP3_1_0(DefectDBManager.Preproc.eProc.Live);
                     break;
 
                 case 1: // Search Form
                     OnUpdateSearchLNCDInfo?.Invoke();
+                    showLotListForm(DefectDBManager.Preproc.eProc.Search);
+                    switchTLP3_1_0(DefectDBManager.Preproc.eProc.Search);
                     break;
             }
         }
-        #endregion
-
-        #region Lot Summery Information
-        private DataGridView _dgvLotSumInfo = null;
-        static string[] _strDgvLotSumInfoHeader = { "No", "Info1", "Info2", "Info3" };
-        static int[] _dgvLotSumInfoLength = { 50, 80, 80, 80 };
-        enum eLotSumInfo { No, Info1, Info2, Info3, Total };
-
-
-        /// <summary>
-        /// 데이터 표시
-        /// 직접 생성할지 바인딩할지는 추후 변경 필요
-        /// </summary>
-        private void initDgvLotSumInfo()
-        {
-            _dgvLotSumInfo = new DataGridView();
-
-            _dgvLotSumInfo.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            _dgvLotSumInfo.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            _dgvLotSumInfo.AllowUserToAddRows = false;
-            _dgvLotSumInfo.RowHeadersVisible = false;
-            _dgvLotSumInfo.ColumnCount = (int)eLotSumInfo.Total;
-            for (int i = 0; i < _dgvLotSumInfo.ColumnCount; i++)
-            {
-                _dgvLotSumInfo.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                _dgvLotSumInfo.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-                _dgvLotSumInfo.Columns[i].Name = _strDgvLotSumInfoHeader[i];
-                _dgvLotSumInfo.Columns[i].Width = _dgvLotSumInfoLength[i];
-                _dgvLotSumInfo.Columns[i].ReadOnly = true;
-            }
-
-            tlpInfoMap.Controls.Add(_dgvLotSumInfo, 0, 0);
-            _dgvLotSumInfo.Dock = DockStyle.Fill;
-            _dgvLotSumInfo.Show();
-
-        }
-
-        private void displayDgvLotSumInfo()
-        {
-
-        }
-
         #endregion
 
         #region Roll Map Form
@@ -281,47 +240,30 @@ namespace MarkrCompare
             _rollMapForm = new FormRollMap();
             _rollMapForm.TopLevel = false;
             _rollMapForm.InitRollMap();
-
-            tlpInfoMap.Controls.Add(_rollMapForm.Controls[0], 1, 0);
-            _rollMapForm.Dock = DockStyle.Fill;
             _rollMapForm.Show();
+
         }
 
         #endregion Roll Map Form
 
-
         #region Lot List of Product Line
-        private List<FormLotList> _lotListForms = null;
+        private FormLotList[] _lotListForms = null;
 
-        private void initLotListForms(DefectDBManager.Preproc.eProc proc)
+        private void initLotListForms()
         {
             try
             {
-                if (_lotListForms != null)
-                    CloseLotListForms();
-
-                if (_lotListForms == null)
-                    _lotListForms = new List<FormLotList>();
-
-                tabLineList.TabPages.Clear();
-
-                foreach (var item in _lotManager.ProcLNCD.Info)
+                closeLotListForms();
+                int size = (int)DefectDBManager.Preproc.eProc.Total;
+                _lotListForms = new FormLotList[size];
+                for (int i = 0; i < size; i++)
                 {
-                    FormLotList form = new FormLotList(this, item.Name);
-                    form.TopLevel = false;
-                    _lotListForms.Add(form);
-                    TabPage page = new TabPage();
-
-                    page.Font = new Font(tabLineList.Font, FontStyle.Regular);
-                    page.Text = item.Name;
-                    page.Controls.Add(form.Controls[0]);
-                    tabLineList.TabPages.Add(page);
-                    form.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-                    form.Dock = DockStyle.Fill;
-                    form.OnUpdatePrepLot += _crtLotForm.OnUpdateLot;
-                    form.OnUpdatePrepLot += _rollMapForm.OnUpdateLotInfo;
-                    form.Show();
+                    _lotListForms[i] = new FormLotList();
+                    _lotListForms[i].TopLevel = false;
+                    _lotListForms[i].Show();
                 }
+                showLotListForm(DefectDBManager.Preproc.eProc.Live);
+                updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Live);
             }
             catch
             {
@@ -329,49 +271,85 @@ namespace MarkrCompare
             }
         }
 
-        private void CloseLotListForms()
+        private void closeLotListForms()
         {
-            for (int i = 0; i < _lotListForms.Count; i++)
+           if(_lotListForms!=null)
             {
-                if (_lotListForms[i] == null) continue;
-                
-                _lotListForms[i].Close();
-                _lotListForms[i].OnUpdatePrepLot -= _crtLotForm.OnUpdateLot;
-                _lotListForms[i].OnUpdatePrepLot -= _rollMapForm.OnUpdateLotInfo;
-            }
-            
+                for(int i=0; i< (int)DefectDBManager.Preproc.eProc.Total; i++)
+                    _lotListForms[i].Dispose();
 
-            _lotListForms.Clear();
+                _lotListForms = null;
+            }
+        }
+
+        private void updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc proc)
+        {
+            int idx = (int)DefectDBManager.Preproc.eProc.Live;
+            _lotListForms[idx].OnClearSummaryData();
+            foreach (var item in _lotManager.CrtProcFilter[idx].Data)
+            {
+                _lotListForms[idx].AddErrorCheckMode(item.Line, "100.0.0.1", 5);
+            }
+        }
+
+        private void showLotListForm(DefectDBManager.Preproc.eProc proc)
+        {
+            switch(proc)
+            {
+                case DefectDBManager.Preproc.eProc.Live:
+                    tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search]);
+                    tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live], 0, 0);
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Live].Dock = DockStyle.Fill;
+                    break;
+
+                case DefectDBManager.Preproc.eProc.Search:
+                    tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live]);
+                    tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search], 0, 0);
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].Dock = DockStyle.Fill;
+                    break;
+            }
+        }
+
+        #endregion
+
+        #region Live Lot History
+        private FormLotSummery _formLotSummary=null;
+        private void initLotSummary()
+        {
+            _formLotSummary = new FormLotSummery();
+            _formLotSummary.TopLevel = false;
+            _formLotSummary.Show();
+
+        }
+
+        private void closeLotSummary()
+        {
+            if(_formLotSummary!=null)
+            {
+                _formLotSummary.Dispose();
+                _formLotSummary = null;
+            }
         }
         #endregion
 
-        #region Current Lot Info
-        private FormCrtLot _crtLotForm = null;
-
-        private void initCrtLotForm()
+        #region tableLayoutPanel3 RollMap/LotHistory 표시
+        private void switchTLP3_1_0(DefectDBManager.Preproc.eProc index)
         {
-            try
+            switch(index)
             {
-                CloseCrtLotForm();
-                _crtLotForm = new FormCrtLot(this);
-                _crtLotForm.TopLevel = false;
+                case DefectDBManager.Preproc.eProc.Live: // FormLotSummery
+                    tableLayoutPanel3.Controls.Remove(_rollMapForm);
+                    tableLayoutPanel3.Controls.Add(_formLotSummary, 1, 0);
+                    if (_formLotSummary.Dock != DockStyle.Fill) _formLotSummary.Dock = DockStyle.Fill;
+                    break;
 
-                tlpLineData.Controls.Add(_crtLotForm.Controls[0], 0, 1);
-                _crtLotForm.Dock = DockStyle.Fill;
-                _crtLotForm.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-                _crtLotForm.Show();
-            }
-            catch
-            {
-
+                case DefectDBManager.Preproc.eProc.Search: // Roll Map
+                    tableLayoutPanel3.Controls.Remove(_formLotSummary);
+                    tableLayoutPanel3.Controls.Add(_rollMapForm, 1, 0);
+                    if(_rollMapForm.Dock!=DockStyle.Fill) _rollMapForm.Dock = DockStyle.Fill;
+                    break;
             }
         }
-
-        private void CloseCrtLotForm()
-        {
-            _crtLotForm?.Close();
-        }
-
         #endregion
 
     }

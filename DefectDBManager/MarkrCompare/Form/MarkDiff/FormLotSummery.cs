@@ -1,0 +1,213 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace MarkrCompare
+{
+    public partial class FormLotSummery : Form
+    {
+        enum eShowGroup
+        {
+            Normal,
+            NG,
+            All,
+            Total
+        }
+
+        private eShowGroup _showGroup = eShowGroup.All;
+
+        #region Form
+        public FormLotSummery()
+        {
+            InitializeComponent();
+            initLotSummary();
+            // 전체 보기를 기본으로 처리함
+            rbShowAll.Checked = true;
+
+            
+        }
+
+        private void FormLotSummery_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            closeLotSummary();
+        }
+
+        #endregion
+
+
+        #region Lot Summary Flow Layout Panel
+        /// <summary>
+        /// 랏 정보에 대한 요약 데이터 처리
+        /// key : 라인 정보로 입력함
+        /// value : 각 랏의 정보를 입력함
+        /// </summary>
+        Dictionary<string, List<FormLotSummaryData>> _dicLotSummary = null;
+
+        private void initLotSummary()
+        {
+            closeLotSummary();
+            _dicLotSummary = new Dictionary<string, List<FormLotSummaryData>>();
+        }
+
+        private void closeLotSummary()
+        {
+            if(_dicLotSummary!=null)
+            {
+                foreach( var list in _dicLotSummary.Values )
+                {
+                    foreach(var form in list)
+                        form.Dispose();
+                    list.Clear();
+                }
+            }
+            _dicLotSummary.Clear();
+            _dicLotSummary = null;
+        }
+
+        public void SetLotSummary(bool[] lotSummary)
+        {
+            try
+            {
+                flpLotSummary.Controls.Clear();
+
+                foreach (var lot in lotSummary)
+                {
+                    FormLotSummaryData data = new FormLotSummaryData(lot);
+                    flpLotSummary.Controls.Add(data);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void clearAllData()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void clearNormalData()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void clearNGData()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void clearData()
+        {
+            switch(_showGroup)
+            {
+                case eShowGroup.Normal:
+                    clearNormalData();
+                    break;
+
+                case eShowGroup.NG:
+                    clearNGData();
+                    break;
+
+                case eShowGroup.All:    
+                    clearAllData(); 
+                    break;
+            }
+        }
+
+        private void showAllData()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void showNGData()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void showNormalData()
+        {
+            try 
+            { 
+
+            }
+            catch
+            {
+
+            }
+        }
+        public void ShowData()
+        {
+            if (rbShowNormal.Checked == true)
+            { 
+                _showGroup = eShowGroup.Normal; 
+                showNormalData(); 
+            } 
+            else if(rbShowNG.Checked == true)
+            { 
+                _showGroup = eShowGroup.NG; 
+                showNGData(); 
+            }  
+            else if(rbShowAll.Checked==true)
+            { 
+                _showGroup = eShowGroup.All; 
+                showAllData();
+            } 
+        }
+        #endregion
+
+        #region Control
+        private void btnClearHistory_Click(object sender, EventArgs e)
+        {
+            clearData();
+        }
+
+        private void rbShow_Click(object sender, EventArgs e)
+        {
+            ShowData();
+        }
+        #endregion
+
+    }
+}

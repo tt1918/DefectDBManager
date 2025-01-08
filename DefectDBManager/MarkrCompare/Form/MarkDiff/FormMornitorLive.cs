@@ -100,7 +100,7 @@ namespace MarkrCompare
             }
         }
 
-        public void UpdateLNCDCtrlData()
+        public void DisplayLNCDCtrlData()
         {
             setLNCDCtrlData();
         }
@@ -150,6 +150,7 @@ namespace MarkrCompare
                     if(form.ShowDialog()==DialogResult.OK)
                     {
                         setLNCDCtrlData();
+                        OnUpdatePrepLncdInfo?.Invoke(eProc.Live);
                     }
                 }
             }

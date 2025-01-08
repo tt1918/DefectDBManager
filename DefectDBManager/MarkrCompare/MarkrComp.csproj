@@ -117,17 +117,23 @@
     <Compile Include="Form\FormMarkDiff.Designer.cs">
       <DependentUpon>FormMarkDiff.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\MarkDiff\FormCrtLot.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form\MarkDiff\FormCrtLot.Designer.cs">
-      <DependentUpon>FormCrtLot.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form\MarkDiff\FormLotList.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\MarkDiff\FormLotList.Designer.cs">
       <DependentUpon>FormLotList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummaryData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummaryData.Designer.cs">
+      <DependentUpon>FormLotSummaryData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummery.Designer.cs">
+      <DependentUpon>FormLotSummery.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\MarkDiff\FormMornitorSearch.cs">
       <SubType>Form</SubType>
@@ -181,11 +187,14 @@
     <EmbeddedResource Include="Form\FormMarkDiff.resx">
       <DependentUpon>FormMarkDiff.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\MarkDiff\FormCrtLot.resx">
-      <DependentUpon>FormCrtLot.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form\MarkDiff\FormLotList.resx">
       <DependentUpon>FormLotList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormLotSummaryData.resx">
+      <DependentUpon>FormLotSummaryData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormLotSummery.resx">
+      <DependentUpon>FormLotSummery.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\MarkDiff\FormMornitorSearch.resx">
       <DependentUpon>FormMornitorSearch.cs</DependentUpon>

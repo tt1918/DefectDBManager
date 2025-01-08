@@ -1,4 +1,5 @@
-﻿using DefectDBManager;
+﻿using Coss.Controls;
+using DefectDBManager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,14 @@ namespace MarkrCompare
         #region Param
         object _owner = null;
         
-        private List<PreprocLot> _prepLotList = null;
-
+        /// <summary>
+        /// 요약 정보 할당
+        /// </summary>
+        public Dictionary<string, List<FormLotSummaryData>> DicFormSummary
+        {
+            get { return _dicFormSummary; }
+        }
+        private Dictionary<string, List<FormLotSummaryData>> _dicFormSummary = null;
         #endregion
 
         #region Event
@@ -29,6 +36,8 @@ namespace MarkrCompare
         public FormLotList()
         {
             InitializeComponent();
+
+            _dicFormSummary = new Dictionary<string, List<FormLotSummaryData>>();
         }
 
         public FormLotList(object owner, string name)
@@ -36,113 +45,119 @@ namespace MarkrCompare
             InitializeComponent();
             _owner = owner;
             Name = name;
-
-            _prepLotList = new List<PreprocLot>();
         }
+
         private void FormLotList_Load(object sender, EventArgs e)
         {
-            initDgvLot();
+            initFlpInfo();
         }
 
         private void FormLotList_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
+        private void FormLotList_VisibleChanged(object sender, EventArgs e)
+        {
+            if(this.Visible)
+            {
+                //for(int i=0; i<flowLayoutPanel1.Controls.Count; i++)
+                //{
+                //    flowLayoutPanel1.Controls[i].Show();
+                //}
+            }
+        }
         #endregion
 
-        #region Lot Data Grid View
-        static string[] _strdgvListHeader = { "LOT NUM", "시작 시간 ~ 종료 시간", "생산 M", "판정" };
-        static int[] _dgvListLength = { 150, 280, 100, 100 };
-        enum eDgvLot{LotNum, Time, Meter, Judge, Total};
-
-        private void initDgvLot()
+        #region Lot Summary Flow Layout Panel 처리
+        private void initFlpInfo()
         {
-            dgvList.AllowUserToAddRows = false;
-            dgvList.ColumnCount = (int)eDgvLot.Total;
-            dgvList.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            for (int i=0; i< dgvList.ColumnCount; i++)
-            {
-                dgvList.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                dgvList.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgvList.Columns[i].Name = _strdgvListHeader[i];
-                dgvList.Columns[i].Width = _dgvListLength[i];
-            }
+            clearFlpInfo();
         }
 
-        private void dgvList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void clearFlpInfo()
         {
-            try
-            {
-                int selRow = e.RowIndex;
-                string selLotName = dgvList.Rows[selRow].Cells[0].Value as string;
-
-                if (_prepLotList == null) return;
-
-                foreach (var prepLot in _prepLotList)
-                {
-                    if (prepLot.LotName == selLotName)
-                    {
-                        //OnUpdatePrepLot?.BeginInvoke(prepLot, null, this);
-                        OnUpdatePrepLot?.Invoke(prepLot);
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-
-            }
-        }
-
-        private void clearDgvLot()
-        {
-            dgvList.Rows.Clear();
-        }
-
-        private void addDateToDgvLot(PreprocLot lot)
-        {
-            string time = "", stTime="", edTime="";
-            string[] data = new string[4];
-
-            data[(int)eDgvLot.LotNum] = lot.LotName;
-
-            foreach (var items in lot.PTRY0P_Data)
-            {
-                foreach (var item in items.Data)
-                {
-                    if(item.Y0KLOT== lot.LotName)
-                    {
-                        time = item.Y0KKOL;
-                        stTime = $"{time.Substring(0, 4)}-{time.Substring(4, 2)}-{time.Substring(6, 2)} {time.Substring(8, 2)}:{time.Substring(10, 2)}:{time.Substring(12, 2)}";
-                        time = item.Y0KSOL;
-                        edTime = $"{time.Substring(0, 4)}-{time.Substring(4, 2)}-{time.Substring(6, 2)} {time.Substring(8, 2)}:{time.Substring(10, 2)}:{time.Substring(12, 2)}";
-                        data[(int)eDgvLot.Time] = $"{stTime}~{edTime}";
-                        data[(int)eDgvLot.Meter] = $"{item.Y0KASS}M";
-                        break;
-                    }
-                }
-            }
-            data[(int)eDgvLot.Judge] = "";
-
-            dgvList.Rows.Add(data);
+            flowLayoutPanel1.Controls.Clear();
         }
         #endregion
 
         #region Data Control
-        public void UpdateLotInfo(PreprocLot[] lots)
+        private void clearSummary()
         {
-            _prepLotList?.Clear();
-            if (_prepLotList == null) _prepLotList = new List<PreprocLot>();
-            
-            clearDgvLot();
-
-            foreach(PreprocLot lot in lots)
+            foreach(var list in _dicFormSummary)
             {
-                addDateToDgvLot(lot);
-                _prepLotList.Add(lot);
+                foreach(var form in list.Value)
+                    form.Dispose();
+            }
+            _dicFormSummary.Clear();
+        }
+
+        public void OnClearSummaryData()
+        {
+            clearSummary();
+            clearFlpInfo();
+        }
+
+        public void AddSummaryData(bool[] lots)
+        {
+
+        }
+
+        public void AddSummaryData(bool lots)
+        {
+            FormLotSummaryData form = new FormLotSummaryData();
+            form.TopLevel = false;
+            form.Parent = this.flowLayoutPanel1;
+            form.Show();
+            if (_dicFormSummary.ContainsKey("TEST"))
+            {
+                _dicFormSummary["TEST"].Add(form);
+            }
+            else
+            {
+                _dicFormSummary.Add("TEST", new List<FormLotSummaryData>());
+
+                _dicFormSummary["TEST"].Add(form);
+                flowLayoutPanel1.Controls.Add(form);
             }
         }
+
+        public void RemoveSummary(bool[] lots)
+        {
+
+        }
+
+        public void RemoveSummary(bool lot)
+        {
+
+        }
+
+        public void RemoveSummary(string line, string name)
+        {
+
+        }
+
+        public void AddErrorCheckMode(string line, string ip, int duration)
+        {
+            FormLotSummaryData form = new FormLotSummaryData();
+            form.TopLevel = false;
+            form.Parent = this.flowLayoutPanel1;
+            form.SetStatusCheck(line, ip, duration);
+            form.Show();
+            
+            if (_dicFormSummary.ContainsKey("ErrorCheck"))
+            {
+                _dicFormSummary["ErrorCheck"].Add(form);
+            }
+            else
+            {
+                _dicFormSummary.Add("ErrorCheck", new List<FormLotSummaryData>());
+
+                _dicFormSummary["ErrorCheck"].Add(form);
+                flowLayoutPanel1.Controls.Add(form);
+            }
+        }
+
         #endregion
+
     }
 }

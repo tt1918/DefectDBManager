@@ -331,7 +331,7 @@ namespace DefectDBManager
 
         private void searchLotListFormSetting()
         {
-            LotManager.Product.Clear();
+            LotManager.Product?.Clear();
 
             DateTime stTime = LotManager.SearchTime.StartTime;
             DateTime edTime = LotManager.SearchTime.EndTime;

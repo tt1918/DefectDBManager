@@ -423,10 +423,11 @@ namespace MarkrCompare
             try
             {
                 if (_selSetName == "") return;
-                if (dgvProcess.SelectedRows.Count == 0) return;
-
-                _selCompName = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.LineID].Value as string;
-                _selCompLNCD = dgvProcess.SelectedRows[0].Cells[(int)eDgvPrcess.LNCD].Value as string;
+                if (dgvProcess.SelectedCells.Count == 0) return;
+                int rowIdx = dgvProcess.SelectedCells[0].RowIndex;
+                
+                _selCompName = dgvProcess.Rows[rowIdx].Cells[(int)eDgvPrcess.LineID].Value as string;
+                _selCompLNCD = dgvProcess.Rows[rowIdx].Cells[(int)eDgvPrcess.LNCD].Value as string;
                 displayDgvCompProc();
             }
             catch

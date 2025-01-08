@@ -28,29 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dgvList = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
-            // dgvList
+            // flowLayoutPanel1
             // 
-            this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvList.Location = new System.Drawing.Point(0, 0);
-            this.dgvList.Margin = new System.Windows.Forms.Padding(1);
-            this.dgvList.Name = "dgvList";
-            this.dgvList.RowHeadersVisible = false;
-            this.dgvList.RowTemplate.Height = 23;
-            this.dgvList.Size = new System.Drawing.Size(673, 496);
-            this.dgvList.TabIndex = 0;
-            this.dgvList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellDoubleClick);
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.White;
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(403, 496);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // FormLotList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(673, 496);
-            this.Controls.Add(this.dgvList);
+            this.ClientSize = new System.Drawing.Size(403, 496);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -58,13 +55,13 @@
             this.Text = "FormLotList";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLotList_FormClosing);
             this.Load += new System.EventHandler(this.FormLotList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvList)).EndInit();
+            this.VisibleChanged += new System.EventHandler(this.FormLotList_VisibleChanged);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dgvList;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
