@@ -286,9 +286,16 @@ namespace MarkrCompare
         {
             int idx = (int)DefectDBManager.Preproc.eProc.Live;
             _lotListForms[idx].OnClearSummaryData();
+            string ip = "";
             foreach (var item in _lotManager.CrtProcFilter[idx].Data)
             {
-                _lotListForms[idx].AddErrorCheckMode(item.Line, "100.0.0.1", 5);
+                for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
+                {
+                    if (_lotManager.ProcLNCD.Info[i].Name == item.Line)
+                        ip = _lotManager.ProcLNCD.Info[i].IP;
+                }
+                
+                _lotListForms[idx].AddErrorCheckMode(item.Line, ip, 5);
             }
         }
 

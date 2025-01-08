@@ -47,6 +47,7 @@ namespace MarkrCompare
                 displayDataList();
                 displayMaterialCtrl();
                 displaySymbolData();
+                displayIpData();
             }
         }
 
@@ -148,6 +149,7 @@ namespace MarkrCompare
                 // 영상 표시
                 displayMaterialCtrl();
                 displaySymbolData();
+                displayIpData();
             }
             catch
             {
@@ -358,6 +360,7 @@ namespace MarkrCompare
 
             updateMaterialCtrl();
             updateSymbolData();
+            updateIpData();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -371,6 +374,44 @@ namespace MarkrCompare
             DialogResult = DialogResult.OK;
             Close();
         }
+        #endregion
+
+        #region IP Data
+        private void displayIpData()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+
+            PreprocLNCDInfo info = MaterialDate[selProcIdx];
+            tbIP.Texts = info.IP;
+        }
+
+        private void updateIpData()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+
+            string[] strings = tbIP.Texts.Split('.');
+            int[] ips = new int[4];
+            if(strings.Length!=4)
+            {
+                MessageBox.Show("IP 주소 입력이 잘못 되었습니다.");
+                return;
+            }
+
+            for(int i=0; i<4; i++)
+            {
+                ips[i] = Convert.ToInt32(strings[i]);
+                if(ips[i]<0 || ips[i] > 255)
+                {
+                    MessageBox.Show($"{i+1} 번째 주소가 0~255 사의 값이 아닙니다.");
+                    return;
+                }
+            }
+
+            MaterialDate[selProcIdx].IP = tbIP.Texts;
+        }
+
         #endregion
 
         #region Symbol Control

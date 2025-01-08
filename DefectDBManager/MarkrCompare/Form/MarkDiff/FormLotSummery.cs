@@ -29,8 +29,6 @@ namespace MarkrCompare
             initLotSummary();
             // 전체 보기를 기본으로 처리함
             rbShowAll.Checked = true;
-
-            
         }
 
         private void FormLotSummery_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,8 +63,9 @@ namespace MarkrCompare
                         form.Dispose();
                     list.Clear();
                 }
+                _dicLotSummary.Clear();
             }
-            _dicLotSummary.Clear();
+            
             _dicLotSummary = null;
         }
 
