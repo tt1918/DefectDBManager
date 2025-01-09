@@ -29,35 +29,38 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnCancel = new CustomControls.RoundButton();
-            this.btnOK = new CustomControls.RoundButton();
-            this.btnApply = new CustomControls.RoundButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new CustomControls.RoundLabel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvMaterial = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lvLNCDList = new System.Windows.Forms.ListView();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTitle = new CustomControls.RoundLabel();
             this.btnAddMaterial = new CustomControls.RoundButton();
             this.btnDelMaterial = new CustomControls.RoundButton();
-            this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.tbLNCD = new CustomControls.RoundTextBox();
             this.lblLNCD = new CustomControls.RoundLabel();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSelectColor = new CustomControls.RoundButton();
             this.tbSymbol = new CustomControls.RoundTextBox();
             this.lblSymbol = new CustomControls.RoundLabel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lvLNCDList = new System.Windows.Forms.ListView();
+            this.lblCheckIP = new CustomControls.RoundLabel();
+            this.lblCheckDurationData = new CustomControls.RoundLabel();
+            this.lblCheckIPData = new CustomControls.RoundLabel();
+            this.btnSetStatusCheck = new CustomControls.RoundButton();
+            this.lblDuration = new CustomControls.RoundLabel();
             this.lblSelLNCD = new CustomControls.RoundLabel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAdd = new CustomControls.RoundButton();
             this.btnDelete = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.tbIP = new CustomControls.RoundTextBox();
-            this.lblIP = new CustomControls.RoundLabel();
+            this.btnCancel = new CustomControls.RoundButton();
+            this.btnOK = new CustomControls.RoundButton();
+            this.btnApply = new CustomControls.RoundButton();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -66,9 +69,9 @@
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -91,69 +94,6 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(591, 51);
             this.tableLayoutPanel5.TabIndex = 3;
             // 
-            // btnCancel
-            // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnCancel.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnCancel.BorderColor = System.Drawing.Color.Lavender;
-            this.btnCancel.BorderRadius = 5;
-            this.btnCancel.BorderSize = 2;
-            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(392, 1);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(1);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(98, 49);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "CANCEL";
-            this.btnCancel.TextColor = System.Drawing.Color.White;
-            this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnOK
-            // 
-            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnOK.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnOK.BorderColor = System.Drawing.Color.Lavender;
-            this.btnOK.BorderRadius = 5;
-            this.btnOK.BorderSize = 2;
-            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.FlatAppearance.BorderSize = 0;
-            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Location = new System.Drawing.Point(492, 1);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(1);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(98, 49);
-            this.btnOK.TabIndex = 1;
-            this.btnOK.Text = "OK";
-            this.btnOK.TextColor = System.Drawing.Color.White;
-            this.btnOK.UseVisualStyleBackColor = false;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
-            // btnApply
-            // 
-            this.btnApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnApply.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnApply.BorderColor = System.Drawing.Color.Lavender;
-            this.btnApply.BorderRadius = 5;
-            this.btnApply.BorderSize = 2;
-            this.btnApply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnApply.FlatAppearance.BorderSize = 0;
-            this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnApply.ForeColor = System.Drawing.Color.White;
-            this.btnApply.Location = new System.Drawing.Point(272, 1);
-            this.btnApply.Margin = new System.Windows.Forms.Padding(1);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(98, 49);
-            this.btnApply.TabIndex = 1;
-            this.btnApply.Text = "APPLY";
-            this.btnApply.TextColor = System.Drawing.Color.White;
-            this.btnApply.UseVisualStyleBackColor = false;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
@@ -171,27 +111,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(591, 562);
             this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.BkColor = System.Drawing.Color.DarkSlateBlue;
-            this.lblTitle.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.lblTitle.CornerR = 10;
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblTitle.IsFillLB = false;
-            this.lblTitle.IsFillLT = false;
-            this.lblTitle.IsFillRB = false;
-            this.lblTitle.IsFillRT = false;
-            this.lblTitle.Location = new System.Drawing.Point(2, 2);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(2);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(587, 26);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "LINE DATA SETTING";
-            this.lblTitle.Thickness = 1;
             // 
             // tableLayoutPanel2
             // 
@@ -267,6 +186,139 @@
             this.tableLayoutPanel10.Size = new System.Drawing.Size(334, 35);
             this.tableLayoutPanel10.TabIndex = 0;
             // 
+            // tableLayoutPanel17
+            // 
+            this.tableLayoutPanel17.ColumnCount = 2;
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel17.Controls.Add(this.tbLNCD, 0, 0);
+            this.tableLayoutPanel17.Controls.Add(this.lblLNCD, 0, 0);
+            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel17.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
+            this.tableLayoutPanel17.RowCount = 1;
+            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(334, 35);
+            this.tableLayoutPanel17.TabIndex = 6;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 3;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel6.Controls.Add(this.btnSelectColor, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.tbSymbol, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.lblSymbol, 0, 0);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 35);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 1;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(334, 35);
+            this.tableLayoutPanel6.TabIndex = 7;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 6;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tableLayoutPanel7.Controls.Add(this.lblCheckIP, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.lblCheckDurationData, 3, 0);
+            this.tableLayoutPanel7.Controls.Add(this.lblCheckIPData, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.btnSetStatusCheck, 5, 0);
+            this.tableLayoutPanel7.Controls.Add(this.lblDuration, 2, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 70);
+            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(334, 35);
+            this.tableLayoutPanel7.TabIndex = 6;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.lvLNCDList, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.lblSelLNCD, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(257, 481);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // lvLNCDList
+            // 
+            this.lvLNCDList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvLNCDList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvLNCDList.HideSelection = false;
+            this.lvLNCDList.Location = new System.Drawing.Point(2, 33);
+            this.lvLNCDList.Margin = new System.Windows.Forms.Padding(2);
+            this.lvLNCDList.MultiSelect = false;
+            this.lvLNCDList.Name = "lvLNCDList";
+            this.lvLNCDList.Size = new System.Drawing.Size(253, 411);
+            this.lvLNCDList.TabIndex = 3;
+            this.lvLNCDList.UseCompatibleStateImageBehavior = false;
+            this.lvLNCDList.View = System.Windows.Forms.View.List;
+            this.lvLNCDList.DoubleClick += new System.EventHandler(this.lvLNCDList_DoubleClick);
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.Controls.Add(this.btnAdd, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnDelete, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnLoad, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnSave, 3, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 446);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(257, 35);
+            this.tableLayoutPanel4.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.BkColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblTitle.BorderColor = System.Drawing.Color.MidnightBlue;
+            this.lblTitle.CornerR = 10;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblTitle.IsFillLB = false;
+            this.lblTitle.IsFillLT = false;
+            this.lblTitle.IsFillRB = false;
+            this.lblTitle.IsFillRT = false;
+            this.lblTitle.Location = new System.Drawing.Point(2, 2);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(2);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(587, 26);
+            this.lblTitle.TabIndex = 1;
+            this.lblTitle.Text = "LINE DATA SETTING";
+            this.lblTitle.Thickness = 1;
+            // 
             // btnAddMaterial
             // 
             this.btnAddMaterial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -309,24 +361,6 @@
             this.btnDelMaterial.UseVisualStyleBackColor = false;
             this.btnDelMaterial.Click += new System.EventHandler(this.btnDelMaterial_Click);
             // 
-            // tableLayoutPanel17
-            // 
-            this.tableLayoutPanel17.ColumnCount = 2;
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel17.Controls.Add(this.tbLNCD, 0, 0);
-            this.tableLayoutPanel17.Controls.Add(this.lblLNCD, 0, 0);
-            this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel17.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel17.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel17.Name = "tableLayoutPanel17";
-            this.tableLayoutPanel17.RowCount = 1;
-            this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(334, 35);
-            this.tableLayoutPanel17.TabIndex = 6;
-            // 
             // tbLNCD
             // 
             this.tbLNCD.BackColor = System.Drawing.SystemColors.Window;
@@ -363,32 +397,14 @@
             this.lblLNCD.IsFillLT = false;
             this.lblLNCD.IsFillRB = false;
             this.lblLNCD.IsFillRT = false;
-            this.lblLNCD.Location = new System.Drawing.Point(2, 2);
-            this.lblLNCD.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLNCD.Location = new System.Drawing.Point(1, 1);
+            this.lblLNCD.Margin = new System.Windows.Forms.Padding(1);
             this.lblLNCD.Name = "lblLNCD";
-            this.lblLNCD.Size = new System.Drawing.Size(79, 31);
+            this.lblLNCD.Size = new System.Drawing.Size(81, 33);
             this.lblLNCD.TabIndex = 6;
             this.lblLNCD.Text = "LNCD";
             this.lblLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLNCD.Thickness = 1;
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 3;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tableLayoutPanel6.Controls.Add(this.btnSelectColor, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.tbSymbol, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.lblSymbol, 0, 0);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 35);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 1;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(334, 35);
-            this.tableLayoutPanel6.TabIndex = 7;
             // 
             // btnSelectColor
             // 
@@ -446,47 +462,124 @@
             this.lblSymbol.IsFillLT = false;
             this.lblSymbol.IsFillRB = false;
             this.lblSymbol.IsFillRT = false;
-            this.lblSymbol.Location = new System.Drawing.Point(2, 2);
-            this.lblSymbol.Margin = new System.Windows.Forms.Padding(2);
+            this.lblSymbol.Location = new System.Drawing.Point(1, 1);
+            this.lblSymbol.Margin = new System.Windows.Forms.Padding(1);
             this.lblSymbol.Name = "lblSymbol";
-            this.lblSymbol.Size = new System.Drawing.Size(79, 31);
+            this.lblSymbol.Size = new System.Drawing.Size(81, 33);
             this.lblSymbol.TabIndex = 7;
             this.lblSymbol.Text = "SYMBOL";
             this.lblSymbol.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSymbol.Thickness = 1;
             // 
-            // tableLayoutPanel3
+            // lblCheckIP
             // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.lvLNCDList, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.lblSelLNCD, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(257, 481);
-            this.tableLayoutPanel3.TabIndex = 0;
+            this.lblCheckIP.AutoSize = true;
+            this.lblCheckIP.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblCheckIP.BorderColor = System.Drawing.Color.Silver;
+            this.lblCheckIP.CornerR = 10;
+            this.lblCheckIP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCheckIP.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCheckIP.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblCheckIP.IsFillLB = false;
+            this.lblCheckIP.IsFillLT = false;
+            this.lblCheckIP.IsFillRB = false;
+            this.lblCheckIP.IsFillRT = false;
+            this.lblCheckIP.Location = new System.Drawing.Point(1, 1);
+            this.lblCheckIP.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCheckIP.Name = "lblCheckIP";
+            this.lblCheckIP.Size = new System.Drawing.Size(33, 33);
+            this.lblCheckIP.TabIndex = 6;
+            this.lblCheckIP.Text = "IP";
+            this.lblCheckIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCheckIP.Thickness = 1;
             // 
-            // lvLNCDList
+            // lblCheckDurationData
             // 
-            this.lvLNCDList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvLNCDList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.lvLNCDList.HideSelection = false;
-            this.lvLNCDList.Location = new System.Drawing.Point(2, 33);
-            this.lvLNCDList.Margin = new System.Windows.Forms.Padding(2);
-            this.lvLNCDList.MultiSelect = false;
-            this.lvLNCDList.Name = "lvLNCDList";
-            this.lvLNCDList.Size = new System.Drawing.Size(253, 411);
-            this.lvLNCDList.TabIndex = 3;
-            this.lvLNCDList.UseCompatibleStateImageBehavior = false;
-            this.lvLNCDList.View = System.Windows.Forms.View.List;
-            this.lvLNCDList.DoubleClick += new System.EventHandler(this.lvLNCDList_DoubleClick);
+            this.lblCheckDurationData.AutoSize = true;
+            this.lblCheckDurationData.BackColor = System.Drawing.SystemColors.Control;
+            this.lblCheckDurationData.BkColor = System.Drawing.Color.White;
+            this.lblCheckDurationData.BorderColor = System.Drawing.Color.Silver;
+            this.lblCheckDurationData.CornerR = 10;
+            this.lblCheckDurationData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCheckDurationData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCheckDurationData.ForeColor = System.Drawing.Color.DimGray;
+            this.lblCheckDurationData.IsFillLB = false;
+            this.lblCheckDurationData.IsFillLT = false;
+            this.lblCheckDurationData.IsFillRB = false;
+            this.lblCheckDurationData.IsFillRT = false;
+            this.lblCheckDurationData.Location = new System.Drawing.Point(216, 1);
+            this.lblCheckDurationData.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCheckDurationData.Name = "lblCheckDurationData";
+            this.lblCheckDurationData.Size = new System.Drawing.Size(33, 33);
+            this.lblCheckDurationData.TabIndex = 6;
+            this.lblCheckDurationData.Text = "5";
+            this.lblCheckDurationData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCheckDurationData.Thickness = 1;
+            // 
+            // lblCheckIPData
+            // 
+            this.lblCheckIPData.AutoSize = true;
+            this.lblCheckIPData.BkColor = System.Drawing.Color.White;
+            this.lblCheckIPData.BorderColor = System.Drawing.Color.Silver;
+            this.lblCheckIPData.CornerR = 10;
+            this.lblCheckIPData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCheckIPData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCheckIPData.ForeColor = System.Drawing.Color.DimGray;
+            this.lblCheckIPData.IsFillLB = false;
+            this.lblCheckIPData.IsFillLT = false;
+            this.lblCheckIPData.IsFillRB = false;
+            this.lblCheckIPData.IsFillRT = false;
+            this.lblCheckIPData.Location = new System.Drawing.Point(36, 1);
+            this.lblCheckIPData.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCheckIPData.Name = "lblCheckIPData";
+            this.lblCheckIPData.Size = new System.Drawing.Size(128, 33);
+            this.lblCheckIPData.TabIndex = 6;
+            this.lblCheckIPData.Text = "IP";
+            this.lblCheckIPData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCheckIPData.Thickness = 1;
+            // 
+            // btnSetStatusCheck
+            // 
+            this.btnSetStatusCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSetStatusCheck.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSetStatusCheck.BorderColor = System.Drawing.Color.Lavender;
+            this.btnSetStatusCheck.BorderRadius = 5;
+            this.btnSetStatusCheck.BorderSize = 2;
+            this.btnSetStatusCheck.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSetStatusCheck.FlatAppearance.BorderSize = 0;
+            this.btnSetStatusCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetStatusCheck.ForeColor = System.Drawing.Color.White;
+            this.btnSetStatusCheck.Location = new System.Drawing.Point(259, 1);
+            this.btnSetStatusCheck.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSetStatusCheck.Name = "btnSetStatusCheck";
+            this.btnSetStatusCheck.Size = new System.Drawing.Size(74, 33);
+            this.btnSetStatusCheck.TabIndex = 11;
+            this.btnSetStatusCheck.Text = "SET";
+            this.btnSetStatusCheck.TextColor = System.Drawing.Color.White;
+            this.btnSetStatusCheck.UseVisualStyleBackColor = false;
+            this.btnSetStatusCheck.Click += new System.EventHandler(this.btnSetStatusCheck_Click);
+            // 
+            // lblDuration
+            // 
+            this.lblDuration.AutoSize = true;
+            this.lblDuration.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblDuration.BorderColor = System.Drawing.Color.Silver;
+            this.lblDuration.CornerR = 10;
+            this.lblDuration.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDuration.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDuration.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblDuration.IsFillLB = false;
+            this.lblDuration.IsFillLT = false;
+            this.lblDuration.IsFillRB = false;
+            this.lblDuration.IsFillRT = false;
+            this.lblDuration.Location = new System.Drawing.Point(167, 1);
+            this.lblDuration.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
+            this.lblDuration.Name = "lblDuration";
+            this.lblDuration.Size = new System.Drawing.Size(47, 33);
+            this.lblDuration.TabIndex = 6;
+            this.lblDuration.Text = "주기";
+            this.lblDuration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDuration.Thickness = 1;
             // 
             // lblSelLNCD
             // 
@@ -508,26 +601,6 @@
             this.lblSelLNCD.TabIndex = 2;
             this.lblSelLNCD.Text = "AAA";
             this.lblSelLNCD.Thickness = 1;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 4;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel4.Controls.Add(this.btnAdd, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnDelete, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnLoad, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnSave, 3, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 446);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(257, 35);
-            this.tableLayoutPanel4.TabIndex = 0;
             // 
             // btnAdd
             // 
@@ -613,67 +686,68 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // tableLayoutPanel7
+            // btnCancel
             // 
-            this.tableLayoutPanel7.ColumnCount = 2;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Controls.Add(this.tbIP, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.lblIP, 0, 0);
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 70);
-            this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 1;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(334, 35);
-            this.tableLayoutPanel7.TabIndex = 6;
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCancel.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCancel.BorderColor = System.Drawing.Color.Lavender;
+            this.btnCancel.BorderRadius = 5;
+            this.btnCancel.BorderSize = 2;
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(392, 1);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(1);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(98, 49);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "CANCEL";
+            this.btnCancel.TextColor = System.Drawing.Color.White;
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // tbIP
+            // btnOK
             // 
-            this.tbIP.BackColor = System.Drawing.SystemColors.Window;
-            this.tbIP.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.tbIP.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.tbIP.BorderRadius = 5;
-            this.tbIP.BorderSize = 2;
-            this.tbIP.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbIP.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbIP.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbIP.Location = new System.Drawing.Point(84, 1);
-            this.tbIP.Margin = new System.Windows.Forms.Padding(1);
-            this.tbIP.Multiline = false;
-            this.tbIP.Name = "tbIP";
-            this.tbIP.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
-            this.tbIP.PasswordChar = false;
-            this.tbIP.PlaceholderColor = System.Drawing.Color.DarkGray;
-            this.tbIP.PlaceholderText = "";
-            this.tbIP.Size = new System.Drawing.Size(249, 32);
-            this.tbIP.TabIndex = 8;
-            this.tbIP.Texts = "";
-            this.tbIP.UnderlinedStyle = false;
+            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnOK.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnOK.BorderColor = System.Drawing.Color.Lavender;
+            this.btnOK.BorderRadius = 5;
+            this.btnOK.BorderSize = 2;
+            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOK.FlatAppearance.BorderSize = 0;
+            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOK.ForeColor = System.Drawing.Color.White;
+            this.btnOK.Location = new System.Drawing.Point(492, 1);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(1);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(98, 49);
+            this.btnOK.TabIndex = 1;
+            this.btnOK.Text = "OK";
+            this.btnOK.TextColor = System.Drawing.Color.White;
+            this.btnOK.UseVisualStyleBackColor = false;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // lblIP
+            // btnApply
             // 
-            this.lblIP.AutoSize = true;
-            this.lblIP.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
-            this.lblIP.BorderColor = System.Drawing.Color.Silver;
-            this.lblIP.CornerR = 10;
-            this.lblIP.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIP.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIP.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblIP.IsFillLB = false;
-            this.lblIP.IsFillLT = false;
-            this.lblIP.IsFillRB = false;
-            this.lblIP.IsFillRT = false;
-            this.lblIP.Location = new System.Drawing.Point(2, 2);
-            this.lblIP.Margin = new System.Windows.Forms.Padding(2);
-            this.lblIP.Name = "lblIP";
-            this.lblIP.Size = new System.Drawing.Size(79, 31);
-            this.lblIP.TabIndex = 6;
-            this.lblIP.Text = "IP";
-            this.lblIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblIP.Thickness = 1;
+            this.btnApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnApply.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnApply.BorderColor = System.Drawing.Color.Lavender;
+            this.btnApply.BorderRadius = 5;
+            this.btnApply.BorderSize = 2;
+            this.btnApply.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnApply.FlatAppearance.BorderSize = 0;
+            this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApply.ForeColor = System.Drawing.Color.White;
+            this.btnApply.Location = new System.Drawing.Point(272, 1);
+            this.btnApply.Margin = new System.Windows.Forms.Padding(1);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(98, 49);
+            this.btnApply.TabIndex = 1;
+            this.btnApply.Text = "APPLY";
+            this.btnApply.TextColor = System.Drawing.Color.White;
+            this.btnApply.UseVisualStyleBackColor = false;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // FormLNCD
             // 
@@ -685,6 +759,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormLNCD";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FormLNCD";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLNCD_FormClosing);
             this.Load += new System.EventHandler(this.FormLNCD_Load);
@@ -699,11 +774,11 @@
             this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -737,7 +812,10 @@
         private CustomControls.RoundTextBox tbSymbol;
         private CustomControls.RoundLabel lblSymbol;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private CustomControls.RoundTextBox tbIP;
-        private CustomControls.RoundLabel lblIP;
+        private CustomControls.RoundLabel lblCheckDurationData;
+        private CustomControls.RoundButton btnSetStatusCheck;
+        private CustomControls.RoundLabel lblCheckIP;
+        private CustomControls.RoundLabel lblCheckIPData;
+        private CustomControls.RoundLabel lblDuration;
     }
 }

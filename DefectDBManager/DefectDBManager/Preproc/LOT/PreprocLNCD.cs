@@ -32,8 +32,12 @@ namespace DefectDBManager.Preproc
         public System.Drawing.Color SymbolColor { get; set; }
 
         [Category("items")]
-        [Description("IP")]
-        public string IP { get; set; }
+        [Description("Servr IP")]
+        public string TargetIP { get; set; }
+
+        [Category("items")]
+        [Description("Duration(Min)")]
+        public int CheckDuration { get; set; }
 
         [Category("items")]
         [Description("Material")]
@@ -53,7 +57,8 @@ namespace DefectDBManager.Preproc
             Material = new ProcMaterial();
             Symbol = "";
             SymbolColor = Color.White;
-            IP = "100.0.0.1";
+            TargetIP = "100.0.0.1";
+            CheckDuration = 5;
         }
 
         public void Set(PreprocLNCDInfo s)
@@ -64,7 +69,8 @@ namespace DefectDBManager.Preproc
             this.Material = s.Material.Clone();
             this.Symbol = s.Symbol;
             this.SymbolColor = s.SymbolColor;
-            this.IP = s.IP;
+            this.TargetIP = s.TargetIP;
+            this.CheckDuration = s.CheckDuration;
         }
         
         public object Clone()

@@ -1,12 +1,7 @@
 ﻿using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MarkrCompare
@@ -360,7 +355,6 @@ namespace MarkrCompare
 
             updateMaterialCtrl();
             updateSymbolData();
-            updateIpData();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -381,37 +375,30 @@ namespace MarkrCompare
         {
             int selProcIdx = getValidTaskIdx(_selSetName);
             if (selProcIdx == -1 || _selSetName == "") return;
-
+            
             PreprocLNCDInfo info = MaterialDate[selProcIdx];
-            tbIP.Texts = info.IP;
+            lblCheckIPData.Text = info.TargetIP;
+            lblCheckDurationData.Text = info.CheckDuration.ToString();
         }
 
-        private void updateIpData()
+        private void btnSetStatusCheck_Click(object sender, EventArgs e)
         {
             int selProcIdx = getValidTaskIdx(_selSetName);
             if (selProcIdx == -1 || _selSetName == "") return;
+            PreprocLNCDInfo info = MaterialDate[selProcIdx];
+            string ip = info.TargetIP;
+            int duration = info.CheckDuration;
 
-            string[] strings = tbIP.Texts.Split('.');
-            int[] ips = new int[4];
-            if(strings.Length!=4)
+            using (FormStatusCheckSetting form = new FormStatusCheckSetting(ip, duration))
             {
-                MessageBox.Show("IP 주소 입력이 잘못 되었습니다.");
-                return;
-            }
-
-            for(int i=0; i<4; i++)
-            {
-                ips[i] = Convert.ToInt32(strings[i]);
-                if(ips[i]<0 || ips[i] > 255)
+                if(form.ShowDialog()==DialogResult.OK)
                 {
-                    MessageBox.Show($"{i+1} 번째 주소가 0~255 사의 값이 아닙니다.");
-                    return;
+                    MaterialDate[selProcIdx].TargetIP = form.IP;
+                    MaterialDate[selProcIdx].CheckDuration = form.Duration;
+                    displayIpData();
                 }
             }
-
-            MaterialDate[selProcIdx].IP = tbIP.Texts;
         }
-
         #endregion
 
         #region Symbol Control
@@ -440,7 +427,6 @@ namespace MarkrCompare
 
             MaterialDate[selProcIdx].Symbol = tbSymbol.Texts;
             MaterialDate[selProcIdx].SymbolColor = _symbolColor;
-
         }
 
         private void btnSelectColor_Click(object sender, EventArgs e)
@@ -483,5 +469,6 @@ namespace MarkrCompare
             }
         }
         #endregion
+
     }
 }

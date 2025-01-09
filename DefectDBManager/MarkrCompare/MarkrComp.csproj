@@ -117,6 +117,12 @@
     <Compile Include="Form\FormMarkDiff.Designer.cs">
       <DependentUpon>FormMarkDiff.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\FormStatusCheckSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormStatusCheckSetting.Designer.cs">
+      <DependentUpon>FormStatusCheckSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\MarkDiff\FormLotList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormMarkDiff.resx">
       <DependentUpon>FormMarkDiff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormStatusCheckSetting.resx">
+      <DependentUpon>FormStatusCheckSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\MarkDiff\FormLotList.resx">
       <DependentUpon>FormLotList.cs</DependentUpon>

@@ -45,7 +45,7 @@ namespace MarkrCompare
             initLotSummary();
             initLogTimer();
 
-            switchTLP3_1_0(DefectDBManager.Preproc.eProc.Live);
+            switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Live);
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
@@ -220,13 +220,13 @@ namespace MarkrCompare
                 case 0: // Live Form
                     OnUpdateLiveLNCDInfo?.Invoke();
                     showLotListForm(DefectDBManager.Preproc.eProc.Live);
-                    switchTLP3_1_0(DefectDBManager.Preproc.eProc.Live);
+                    switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Live);
                     break;
 
                 case 1: // Search Form
                     OnUpdateSearchLNCDInfo?.Invoke();
                     showLotListForm(DefectDBManager.Preproc.eProc.Search);
-                    switchTLP3_1_0(DefectDBManager.Preproc.eProc.Search);
+                    switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Search);
                     break;
             }
         }
@@ -287,15 +287,19 @@ namespace MarkrCompare
             int idx = (int)DefectDBManager.Preproc.eProc.Live;
             _lotListForms[idx].OnClearSummaryData();
             string ip = "";
+            int checkDuration = 5;
             foreach (var item in _lotManager.CrtProcFilter[idx].Data)
             {
                 for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
                 {
                     if (_lotManager.ProcLNCD.Info[i].Name == item.Line)
-                        ip = _lotManager.ProcLNCD.Info[i].IP;
+                    {
+                        ip = _lotManager.ProcLNCD.Info[i].TargetIP;
+                        checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
+                    }
                 }
                 
-                _lotListForms[idx].AddErrorCheckMode(item.Line, ip, 5);
+                _lotListForms[idx].AddErrorCheckMode(item.Line, ip, checkDuration);
             }
         }
 
@@ -340,7 +344,7 @@ namespace MarkrCompare
         #endregion
 
         #region tableLayoutPanel3 RollMap/LotHistory 표시
-        private void switchTLP3_1_0(DefectDBManager.Preproc.eProc index)
+        private void switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc index)
         {
             switch(index)
             {
