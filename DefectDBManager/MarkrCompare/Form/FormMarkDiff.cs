@@ -288,19 +288,20 @@ namespace MarkrCompare
             _lotListForms[idx].OnClearSummaryData();
             string ip = "";
             int checkDuration = 5;
-            foreach (var item in _lotManager.CrtProcFilter[idx].Data)
+            string line = string.Empty;
+            
+            for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
             {
-                for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
+                if (_lotManager.ProcLNCD.Info[i].CheckStatus == false)
                 {
-                    if (_lotManager.ProcLNCD.Info[i].Name == item.Line)
-                    {
-                        ip = _lotManager.ProcLNCD.Info[i].TargetIP;
-                        checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
-                    }
+                    line = _lotManager.ProcLNCD.Info[i].Name;
+                    ip = _lotManager.ProcLNCD.Info[i].TargetIP;
+                    checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
+
+                    _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
                 }
-                
-                _lotListForms[idx].AddErrorCheckMode(item.Line, ip, checkDuration);
             }
+             
         }
 
         private void showLotListForm(DefectDBManager.Preproc.eProc proc)

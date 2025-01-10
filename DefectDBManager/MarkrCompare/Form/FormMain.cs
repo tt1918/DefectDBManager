@@ -1,5 +1,6 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
+using MarkrCompare.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace MarkrCompare
 {
@@ -75,7 +77,9 @@ namespace MarkrCompare
             _dbManager.OnEndSearchingLotList += EndSearchLotList;
             _dbManager.OnEndLiveSearchLot += EndLiveSearch;
 
-
+            ledOn = Properties.Resources.icons8_green_square_16;
+            ledOff = Properties.Resources.icons8_black_medium_square_16;
+            initTimerDBConn();
             SystemLog.DisplaySystemLog("Program Start");
         }
 
@@ -84,7 +88,11 @@ namespace MarkrCompare
             _dbManager.OnEndSearchingLotList -= EndSearchLotList;
             _dbManager.OnEndLiveSearchLot -= EndLiveSearch;
 
+            ledOn.Dispose();
+            ledOff.Dispose();
+
             destroyMarkDiffForm();
+            closeTimerDBConn();
         }
 
         #region Marking Comparision Form
@@ -259,6 +267,70 @@ namespace MarkrCompare
         {
             SystemLog.DisplaySystemLog("실시간 검사가 완료되었습니다.");
         }
+        #endregion
+
+        #region DB Connection
+        Timer _timerDBConn = null;
+        private bool isDbConnOn = false;
+        private Image ledOn = null;
+        private Image ledOff = null;
+        private void btnDBConnect_Click(object sender, EventArgs e)
+        {
+            using(DefectDBManager.FormDbLoginData form = new FormDbLoginData(_dbManager._DbConn))
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void initTimerDBConn()
+        {
+            if (_timerDBConn != null)
+                closeTimerDBConn();
+
+            _timerDBConn = new System.Windows.Forms.Timer();
+            _timerDBConn.Interval = 1000;
+            _timerDBConn.Tick += timerCheckDBConn;
+            _timerDBConn.Start();
+        }
+
+        private void closeTimerDBConn()
+        {
+            if (_timerDBConn == null) return;
+
+            if (_timerDBConn.Enabled == true)
+                _timerDBConn.Enabled = false;
+
+            _timerDBConn.Dispose();
+            _timerDBConn = null;
+        }
+
+        private void timerCheckDBConn(object sender, EventArgs e)
+        {
+            if (_dbManager._DbConn == null)
+            {
+                if(isDbConnOn==true)
+                {
+                    isDbConnOn = false;
+                    btnDBConnect.Image = ledOff;
+                }
+                return;
+            }
+            else
+            {
+                if(isDbConnOn==false && _dbManager._DbConn.IsDBConnected==true)
+                {
+                    btnDBConnect.Image = ledOn;
+                    isDbConnOn = true;
+                }
+                else if(isDbConnOn == true && _dbManager._DbConn.IsDBConnected == false)
+                {
+                    btnDBConnect.Image = ledOff;
+                    isDbConnOn = false;
+                }
+            }
+        }
+
+
         #endregion
 
     }

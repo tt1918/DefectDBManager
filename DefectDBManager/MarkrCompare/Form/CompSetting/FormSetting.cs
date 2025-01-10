@@ -293,7 +293,7 @@ namespace MarkrCompare
 
         private void initDgvProcess()
         {
-            dgvProcess.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvProcess.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvProcess.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvProcess.AllowUserToAddRows = false;
             dgvProcess.RowHeadersVisible = false;
@@ -526,7 +526,7 @@ namespace MarkrCompare
 
         private void initDgvCompProc()
         {
-            dgvCompProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCompProc.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCompProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompProc.AllowUserToAddRows = false;
             dgvCompProc.RowHeadersVisible = false;
@@ -704,7 +704,7 @@ namespace MarkrCompare
 
         private void initReferenceProcessCtrl()
         {
-            dgvRefProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvRefProc.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRefProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRefProc.AllowUserToAddRows = false;
             dgvRefProc.RowHeadersVisible = false;
@@ -853,7 +853,7 @@ namespace MarkrCompare
 
         private void initDgvCompRange()
         {
-            dgvCompRange.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvCompRange.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCompRange.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompRange.AllowUserToAddRows = false;
             dgvCompRange.RowHeadersVisible = false;

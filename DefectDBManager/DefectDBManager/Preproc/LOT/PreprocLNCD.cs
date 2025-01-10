@@ -40,6 +40,10 @@ namespace DefectDBManager.Preproc
         public int CheckDuration { get; set; }
 
         [Category("items")]
+        [Description("Check Status")]
+        public bool CheckStatus { get; set; }
+
+        [Category("items")]
         [Description("Material")]
         public ProcMaterial Material { get; set; }
 
@@ -59,6 +63,7 @@ namespace DefectDBManager.Preproc
             SymbolColor = Color.White;
             TargetIP = "100.0.0.1";
             CheckDuration = 5;
+            CheckStatus = false;
         }
 
         public void Set(PreprocLNCDInfo s)
@@ -71,6 +76,7 @@ namespace DefectDBManager.Preproc
             this.SymbolColor = s.SymbolColor;
             this.TargetIP = s.TargetIP;
             this.CheckDuration = s.CheckDuration;
+            this.CheckStatus = s.CheckStatus;
         }
         
         public object Clone()

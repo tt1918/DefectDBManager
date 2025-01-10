@@ -248,11 +248,11 @@
       <Name>DefectDBManager</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="main.ico" />
+    <Content Include="Resources\icons8_black_medium_square_16.png" />
+    <Content Include="Resources\icons8_green_square_16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

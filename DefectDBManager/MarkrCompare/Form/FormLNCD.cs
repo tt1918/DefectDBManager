@@ -209,7 +209,7 @@ namespace MarkrCompare
         {
             try
             {
-                dgvMaterial.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                dgvMaterial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvMaterial.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvMaterial.AllowUserToAddRows = false;
                 dgvMaterial.RowHeadersVisible = false;
@@ -379,6 +379,7 @@ namespace MarkrCompare
             PreprocLNCDInfo info = MaterialDate[selProcIdx];
             lblCheckIPData.Text = info.TargetIP;
             lblCheckDurationData.Text = info.CheckDuration.ToString();
+            chbCheckState.Checked = info.CheckStatus;
         }
 
         private void btnSetStatusCheck_Click(object sender, EventArgs e)
@@ -399,6 +400,15 @@ namespace MarkrCompare
                 }
             }
         }
+
+        private void chbCheckState_CheckedChanged(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+            PreprocLNCDInfo info = MaterialDate[selProcIdx];
+            MaterialDate[selProcIdx].CheckStatus = chbCheckState.Checked;
+        }
+
         #endregion
 
         #region Symbol Control
