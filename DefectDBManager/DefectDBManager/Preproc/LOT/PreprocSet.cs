@@ -342,6 +342,11 @@ namespace DefectDBManager.Preproc
         public string Product { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public int Duration { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return $"{Line}_{Product}_{Model}";
+        }
     }
 
     public class ProcFilterList : ItemList<ProcFilter>

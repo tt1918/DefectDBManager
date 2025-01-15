@@ -162,7 +162,6 @@ namespace DefectDBManager
 
         #region 검색 시간 설정 
         public TimeTable SearchTime { get; set; } = new TimeTable();
-        public TimeTable LiveTime { get; set; } = new TimeTable();  
         #endregion
 
 

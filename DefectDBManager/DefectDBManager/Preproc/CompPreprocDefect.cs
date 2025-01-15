@@ -290,11 +290,25 @@ namespace DefectDBManager
         private void searchLiveLotList()
         {
             LotManager.LiveProduct.Clear();
-            DateTime stTime = LotManager.LiveTime.StartTime;
-            DateTime edTime = LotManager.LiveTime.EndTime;
-            foreach (var data in LotManager.ProcLNCD.Info)
+            // 금일 날자로 설정
+            DateTime stTime = DateTime.Today;
+            DateTime edTime = DateTime.Now;
+
+            ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
+            string lncd = string.Empty;
+            foreach (var data in filter.Data)
             {
-                if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
+                lncd = string.Empty;
+                for (int i=0; i< LotManager.ProcLNCD.Info.Count; i++)
+                {
+                    if (LotManager.ProcLNCD.Info[i].Name == data.Line)
+                    {
+                        lncd = LotManager.ProcLNCD.Info[i].LNCD;
+                        break;
+                    }    
+                }
+
+                if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();
 
@@ -302,7 +316,7 @@ namespace DefectDBManager
                         list.Add(ptry0p.Clone());
 
                     // 리스트 데이터 추가
-                    LotManager.LiveProduct.Add(data.Name, list);
+                    LotManager.LiveProduct.Add(data.ToString(), list);
                 }
             }
         }
@@ -315,9 +329,22 @@ namespace DefectDBManager
 
             DateTime stTime = LotManager.SearchTime.StartTime;
             DateTime edTime = LotManager.SearchTime.EndTime;
-            foreach (var data in LotManager.ProcLNCD.Info)
+
+            ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Search];
+            string lncd = string.Empty;
+
+            foreach (var data in filter.Data)
             {
-                if (_DBProc.SearchPTRYOPList(data.LNCD, stTime, edTime) == true)
+                lncd = string.Empty;
+                for (int i = 0; i < LotManager.ProcLNCD.Info.Count; i++)
+                {
+                    if (LotManager.ProcLNCD.Info[i].Name == data.Line)
+                    {
+                        lncd = LotManager.ProcLNCD.Info[i].LNCD;
+                        break;
+                    }
+                }
+                if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();
 
@@ -325,7 +352,7 @@ namespace DefectDBManager
                         list.Add(ptry0p.Clone());
 
                     // 리스트 데이터 추가
-                    LotManager.Product.Add(data.Name, list);
+                    LotManager.Product.Add(data.ToString(), list);
                 }
             }
         }
