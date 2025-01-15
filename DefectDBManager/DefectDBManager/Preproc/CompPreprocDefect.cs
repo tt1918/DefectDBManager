@@ -1,4 +1,5 @@
 ﻿using DefectDBManager.DB;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,7 +37,7 @@ namespace DefectDBManager
         /// <summary>
         /// DB Query 및 탐색
         /// </summary>
-        public PreProcCompDB _DBProc;
+        public MarkCompDB _DBProc;
 
         /// <summary>
         /// DB 접근
@@ -120,7 +121,7 @@ namespace DefectDBManager
             _Option = new Option(0);
             _CodeConfig = new CodeConfig();
 
-            _DBProc = new PreProcCompDB(this, _DbConn);
+            _DBProc = new MarkCompDB(this, _DbConn);
 
             _DBProc.DbDestConfig = _DestConfig;
             _DBProc.DBCodeConfig = _CodeConfig;

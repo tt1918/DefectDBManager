@@ -293,7 +293,7 @@ namespace MarkrCompare
 
         private void initDgvProcess()
         {
-            dgvProcess.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvProcess.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvProcess.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvProcess.AllowUserToAddRows = false;
             dgvProcess.RowHeadersVisible = false;
@@ -401,7 +401,7 @@ namespace MarkrCompare
             dgvProcess.SuspendLayout();
             try
             {
-                int idx = dgvProcess.SelectedRows[0].Index;
+                int idx = dgvProcess.SelectedCells[0].RowIndex;
                 _tmpCompProc.RemoveAt(idx);
 
                 displayDgvProcess();
@@ -526,7 +526,7 @@ namespace MarkrCompare
 
         private void initDgvCompProc()
         {
-            dgvCompProc.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCompProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvCompProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompProc.AllowUserToAddRows = false;
             dgvCompProc.RowHeadersVisible = false;
@@ -658,8 +658,8 @@ namespace MarkrCompare
             dgvCompProc.SuspendLayout();
             try
             {
-                int idx = dgvCompProc.SelectedRows[0].Index;
-                if (idx != 0)
+                int idx = dgvCompProc.SelectedCells[0].RowIndex;
+                if (idx >= 0)
                 {
                     dgvCompProc.Rows.RemoveAt(idx);
 
@@ -704,7 +704,7 @@ namespace MarkrCompare
 
         private void initReferenceProcessCtrl()
         {
-            dgvRefProc.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRefProc.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvRefProc.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRefProc.AllowUserToAddRows = false;
             dgvRefProc.RowHeadersVisible = false;
@@ -808,8 +808,8 @@ namespace MarkrCompare
             dgvRefProc.SuspendLayout();
             try
             {
-                int idx = dgvRefProc.SelectedRows[0].Index;
-                if (idx != 0)
+                int idx = dgvRefProc.SelectedCells[0].RowIndex;
+                if (idx>=0)
                 {
                     dgvRefProc.Rows.RemoveAt(idx);
 
@@ -853,7 +853,7 @@ namespace MarkrCompare
 
         private void initDgvCompRange()
         {
-            dgvCompRange.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCompRange.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgvCompRange.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvCompRange.AllowUserToAddRows = false;
             dgvCompRange.RowHeadersVisible = false;
@@ -959,7 +959,7 @@ namespace MarkrCompare
             dgvCompRange.SuspendLayout();
             try
             {
-                int idx = dgvCompRange.SelectedRows[0].Index;
+                int idx = dgvCompRange.SelectedCells[0].RowIndex;
                 if (idx != 0)
                 {
                     dgvCompRange.Rows.RemoveAt(idx);

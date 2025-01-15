@@ -168,12 +168,14 @@ namespace MarkrCompare
                 }
             }
 
+            string firstName="";
+            int cnt = 0;
             foreach (var data in _lotManager.ProcSetting.Data)
             {
-                if (data.Reference.LNCD == lncd)
-                    strings.Add(data.Name);
+                if (cnt == 0) firstName = data.Name;
+                strings.Add(data.Name);
             }
-            return makeComboBoxCell(strings.ToArray(), "");
+            return makeComboBoxCell(strings.ToArray(), firstName);
         }
 
         private object makeDurationCombobox()
@@ -286,8 +288,7 @@ namespace MarkrCompare
                     foreach (var data in _lotManager.ProcSetting.Data)
                     {
                         // 해당 라인 코드에 맞는 모델만 추가한다.
-                        if (data.Reference.LNCD == lncd)
-                            model.Add(data.Name);
+                        model.Add(data.Name);
                     }
 
                     object[] s = new object[(int)eDgvSearchFilter.Total];
@@ -430,8 +431,7 @@ namespace MarkrCompare
                     foreach (var data in _lotManager.ProcSetting.Data)
                     {
                         // 해당 라인 코드에 맞는 모델만 추가한다.
-                        if (data.Reference.LNCD == lncd)
-                            model.Add(data.Name);
+                        model.Add(data.Name);
                     }
 
                     object[] s = new object[(int)eDgvLiveFilter.Total];

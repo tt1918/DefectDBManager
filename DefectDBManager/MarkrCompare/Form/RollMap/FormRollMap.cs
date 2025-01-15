@@ -29,8 +29,22 @@ namespace MarkrCompare
             InitializeComponent();
         }
 
+        public void InitRollMapAndSummary()
+        {
+            initRollMapSummary();
+            initRollMap();
+        }
 
-        public void InitRollMap()
+        private void FormRollMap_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Rollmap.Dispose();
+        }
+        #endregion
+
+
+
+        #region RollMap Control
+        private void initRollMap()
         {
             Rollmap.OffsetX = 0;
             Rollmap.OffsetY = 0;
@@ -99,6 +113,34 @@ namespace MarkrCompare
 
             // Rollmap update
 
+            // 요약 정보 추가
+            displayRollMapSummary();
+        }
+        #endregion
+
+        #region RollMapSummary
+        private void initRollMapSummary()
+        {
+            lvMapSummary.Items.Clear();
+        }
+
+        private void displayRollMapSummary()
+        {
+            try
+            {
+                lvMapSummary.BeginUpdate();
+                lvMapSummary.Items.Clear();
+
+                // Data 입력
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                lvMapSummary.EndUpdate();
+            }
         }
         #endregion
 

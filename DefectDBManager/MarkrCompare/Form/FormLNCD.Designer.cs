@@ -48,11 +48,14 @@
             this.tbSymbol = new CustomControls.RoundTextBox();
             this.lblSymbol = new CustomControls.RoundLabel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblCheckIP = new CustomControls.RoundLabel();
-            this.lblCheckDurationData = new CustomControls.RoundLabel();
-            this.lblCheckIPData = new CustomControls.RoundLabel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSetStatusCheck = new CustomControls.RoundButton();
+            this.lblCheckIP = new CustomControls.RoundLabel();
+            this.lblCheckIPData = new CustomControls.RoundLabel();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblCheckDurationData = new CustomControls.RoundLabel();
             this.lblDuration = new CustomControls.RoundLabel();
+            this.chbCheckState = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lvLNCDList = new System.Windows.Forms.ListView();
             this.lblSelLNCD = new CustomControls.RoundLabel();
@@ -61,9 +64,6 @@
             this.btnDelete = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
-            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.chbCheckState = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -73,10 +73,10 @@
             this.tableLayoutPanel17.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel5
@@ -464,14 +464,9 @@
             // 
             // tableLayoutPanel7
             // 
-            this.tableLayoutPanel7.ColumnCount = 2;
+            this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 76F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Controls.Add(this.btnSetStatusCheck, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel8, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.tableLayoutPanel11, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -483,6 +478,45 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(334, 60);
             this.tableLayoutPanel7.TabIndex = 6;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tableLayoutPanel8.Controls.Add(this.btnSetStatusCheck, 2, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblCheckIP, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblCheckIPData, 1, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(334, 30);
+            this.tableLayoutPanel8.TabIndex = 12;
+            // 
+            // btnSetStatusCheck
+            // 
+            this.btnSetStatusCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSetStatusCheck.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSetStatusCheck.BorderColor = System.Drawing.Color.Lavender;
+            this.btnSetStatusCheck.BorderRadius = 5;
+            this.btnSetStatusCheck.BorderSize = 2;
+            this.btnSetStatusCheck.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSetStatusCheck.FlatAppearance.BorderSize = 0;
+            this.btnSetStatusCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetStatusCheck.ForeColor = System.Drawing.Color.White;
+            this.btnSetStatusCheck.Location = new System.Drawing.Point(238, 1);
+            this.btnSetStatusCheck.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSetStatusCheck.Name = "btnSetStatusCheck";
+            this.btnSetStatusCheck.Size = new System.Drawing.Size(95, 28);
+            this.btnSetStatusCheck.TabIndex = 11;
+            this.btnSetStatusCheck.Text = "SET";
+            this.btnSetStatusCheck.TextColor = System.Drawing.Color.White;
+            this.btnSetStatusCheck.UseVisualStyleBackColor = false;
+            this.btnSetStatusCheck.Click += new System.EventHandler(this.btnSetStatusCheck_Click);
             // 
             // lblCheckIP
             // 
@@ -506,6 +540,46 @@
             this.lblCheckIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCheckIP.Thickness = 1;
             // 
+            // lblCheckIPData
+            // 
+            this.lblCheckIPData.AutoSize = true;
+            this.lblCheckIPData.BkColor = System.Drawing.Color.White;
+            this.lblCheckIPData.BorderColor = System.Drawing.Color.Silver;
+            this.lblCheckIPData.CornerR = 10;
+            this.lblCheckIPData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCheckIPData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCheckIPData.ForeColor = System.Drawing.Color.DimGray;
+            this.lblCheckIPData.IsFillLB = false;
+            this.lblCheckIPData.IsFillLT = false;
+            this.lblCheckIPData.IsFillRB = false;
+            this.lblCheckIPData.IsFillRT = false;
+            this.lblCheckIPData.Location = new System.Drawing.Point(56, 1);
+            this.lblCheckIPData.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCheckIPData.Name = "lblCheckIPData";
+            this.lblCheckIPData.Size = new System.Drawing.Size(180, 28);
+            this.lblCheckIPData.TabIndex = 6;
+            this.lblCheckIPData.Text = "IP";
+            this.lblCheckIPData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCheckIPData.Thickness = 1;
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.ColumnCount = 3;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
+            this.tableLayoutPanel11.Controls.Add(this.lblCheckDurationData, 1, 0);
+            this.tableLayoutPanel11.Controls.Add(this.lblDuration, 0, 0);
+            this.tableLayoutPanel11.Controls.Add(this.chbCheckState, 2, 0);
+            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 30);
+            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 1;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(334, 30);
+            this.tableLayoutPanel11.TabIndex = 13;
+            // 
             // lblCheckDurationData
             // 
             this.lblCheckDurationData.AutoSize = true;
@@ -523,54 +597,11 @@
             this.lblCheckDurationData.Location = new System.Drawing.Point(56, 1);
             this.lblCheckDurationData.Margin = new System.Windows.Forms.Padding(1);
             this.lblCheckDurationData.Name = "lblCheckDurationData";
-            this.lblCheckDurationData.Size = new System.Drawing.Size(136, 28);
+            this.lblCheckDurationData.Size = new System.Drawing.Size(181, 28);
             this.lblCheckDurationData.TabIndex = 6;
             this.lblCheckDurationData.Text = "5";
             this.lblCheckDurationData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCheckDurationData.Thickness = 1;
-            // 
-            // lblCheckIPData
-            // 
-            this.lblCheckIPData.AutoSize = true;
-            this.lblCheckIPData.BkColor = System.Drawing.Color.White;
-            this.lblCheckIPData.BorderColor = System.Drawing.Color.Silver;
-            this.lblCheckIPData.CornerR = 10;
-            this.lblCheckIPData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCheckIPData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCheckIPData.ForeColor = System.Drawing.Color.DimGray;
-            this.lblCheckIPData.IsFillLB = false;
-            this.lblCheckIPData.IsFillLT = false;
-            this.lblCheckIPData.IsFillRB = false;
-            this.lblCheckIPData.IsFillRT = false;
-            this.lblCheckIPData.Location = new System.Drawing.Point(56, 1);
-            this.lblCheckIPData.Margin = new System.Windows.Forms.Padding(1);
-            this.lblCheckIPData.Name = "lblCheckIPData";
-            this.lblCheckIPData.Size = new System.Drawing.Size(201, 28);
-            this.lblCheckIPData.TabIndex = 6;
-            this.lblCheckIPData.Text = "IP";
-            this.lblCheckIPData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCheckIPData.Thickness = 1;
-            // 
-            // btnSetStatusCheck
-            // 
-            this.btnSetStatusCheck.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnSetStatusCheck.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnSetStatusCheck.BorderColor = System.Drawing.Color.Lavender;
-            this.btnSetStatusCheck.BorderRadius = 5;
-            this.btnSetStatusCheck.BorderSize = 2;
-            this.btnSetStatusCheck.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSetStatusCheck.FlatAppearance.BorderSize = 0;
-            this.btnSetStatusCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSetStatusCheck.ForeColor = System.Drawing.Color.White;
-            this.btnSetStatusCheck.Location = new System.Drawing.Point(259, 1);
-            this.btnSetStatusCheck.Margin = new System.Windows.Forms.Padding(1);
-            this.btnSetStatusCheck.Name = "btnSetStatusCheck";
-            this.btnSetStatusCheck.Size = new System.Drawing.Size(74, 28);
-            this.btnSetStatusCheck.TabIndex = 11;
-            this.btnSetStatusCheck.Text = "SET";
-            this.btnSetStatusCheck.TextColor = System.Drawing.Color.White;
-            this.btnSetStatusCheck.UseVisualStyleBackColor = false;
-            this.btnSetStatusCheck.Click += new System.EventHandler(this.btnSetStatusCheck_Click);
             // 
             // lblDuration
             // 
@@ -593,6 +624,19 @@
             this.lblDuration.Text = "주기";
             this.lblDuration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblDuration.Thickness = 1;
+            // 
+            // chbCheckState
+            // 
+            this.chbCheckState.AutoSize = true;
+            this.chbCheckState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chbCheckState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chbCheckState.Location = new System.Drawing.Point(241, 3);
+            this.chbCheckState.Name = "chbCheckState";
+            this.chbCheckState.Size = new System.Drawing.Size(90, 24);
+            this.chbCheckState.TabIndex = 7;
+            this.chbCheckState.Text = "실시간 확인";
+            this.chbCheckState.UseVisualStyleBackColor = true;
+            this.chbCheckState.CheckedChanged += new System.EventHandler(this.chbCheckState_CheckedChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -752,54 +796,6 @@
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Controls.Add(this.lblCheckIP, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.lblCheckIPData, 1, 0);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 1;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(258, 30);
-            this.tableLayoutPanel8.TabIndex = 12;
-            // 
-            // tableLayoutPanel11
-            // 
-            this.tableLayoutPanel11.ColumnCount = 3;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
-            this.tableLayoutPanel11.Controls.Add(this.lblCheckDurationData, 1, 0);
-            this.tableLayoutPanel11.Controls.Add(this.lblDuration, 0, 0);
-            this.tableLayoutPanel11.Controls.Add(this.chbCheckState, 2, 0);
-            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 30);
-            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 1;
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(258, 30);
-            this.tableLayoutPanel11.TabIndex = 13;
-            // 
-            // chbCheckState
-            // 
-            this.chbCheckState.AutoSize = true;
-            this.chbCheckState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.chbCheckState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chbCheckState.Location = new System.Drawing.Point(196, 3);
-            this.chbCheckState.Name = "chbCheckState";
-            this.chbCheckState.Size = new System.Drawing.Size(59, 24);
-            this.chbCheckState.TabIndex = 7;
-            this.chbCheckState.Text = "사용";
-            this.chbCheckState.UseVisualStyleBackColor = true;
-            this.chbCheckState.CheckedChanged += new System.EventHandler(this.chbCheckState_CheckedChanged);
-            // 
             // FormLNCD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -826,13 +822,13 @@
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel11.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

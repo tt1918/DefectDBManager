@@ -35,8 +35,14 @@
             this.rbScale2 = new System.Windows.Forms.RadioButton();
             this.rbScale3 = new System.Windows.Forms.RadioButton();
             this.rbScale4 = new System.Windows.Forms.RadioButton();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lvMapSummary = new System.Windows.Forms.ListView();
+            this.lblSummary = new CustomControls.RoundLabel();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel4
@@ -47,13 +53,13 @@
             this.tableLayoutPanel4.Controls.Add(this.Rollmap, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(337, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(493, 748);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(506, 748);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // Rollmap
@@ -86,7 +92,7 @@
             this.Rollmap.ShowPeriod = false;
             this.Rollmap.ShowPeriodDefect = null;
             this.Rollmap.ShowSameDefect = null;
-            this.Rollmap.Size = new System.Drawing.Size(487, 712);
+            this.Rollmap.Size = new System.Drawing.Size(500, 712);
             this.Rollmap.StdOptic = 0;
             this.Rollmap.TabIndex = 0;
             this.Rollmap.UseColor2 = false;
@@ -119,7 +125,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(493, 28);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(506, 28);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // rbScale1
@@ -176,23 +182,94 @@
             this.rbScale4.UseVisualStyleBackColor = true;
             this.rbScale4.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(843, 748);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.lblSummary, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lvMapSummary, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(337, 748);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // lvMapSummary
+            // 
+            this.lvMapSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvMapSummary.HideSelection = false;
+            this.lvMapSummary.Location = new System.Drawing.Point(1, 31);
+            this.lvMapSummary.Margin = new System.Windows.Forms.Padding(1);
+            this.lvMapSummary.Name = "lvMapSummary";
+            this.lvMapSummary.Size = new System.Drawing.Size(335, 716);
+            this.lvMapSummary.TabIndex = 0;
+            this.lvMapSummary.UseCompatibleStateImageBehavior = false;
+            this.lvMapSummary.View = System.Windows.Forms.View.List;
+            // 
+            // lblSummary
+            // 
+            this.lblSummary.AutoSize = true;
+            this.lblSummary.BkColor = System.Drawing.Color.DarkGray;
+            this.lblSummary.BorderColor = System.Drawing.Color.LightSteelBlue;
+            this.lblSummary.CornerR = 10;
+            this.lblSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSummary.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSummary.ForeColor = System.Drawing.Color.Black;
+            this.lblSummary.IsFillLB = false;
+            this.lblSummary.IsFillLT = false;
+            this.lblSummary.IsFillRB = false;
+            this.lblSummary.IsFillRT = false;
+            this.lblSummary.Location = new System.Drawing.Point(1, 1);
+            this.lblSummary.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSummary.Name = "lblSummary";
+            this.lblSummary.Size = new System.Drawing.Size(335, 28);
+            this.lblSummary.TabIndex = 3;
+            this.lblSummary.Text = "요약 정보";
+            this.lblSummary.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblSummary.Thickness = 1;
+            // 
             // FormRollMap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(493, 748);
-            this.Controls.Add(this.tableLayoutPanel4);
+            this.ClientSize = new System.Drawing.Size(843, 748);
+            this.Controls.Add(this.tableLayoutPanel2);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormRollMap";
             this.Text = "FormRollMap";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormRollMap_FormClosing);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -206,5 +283,9 @@
         private System.Windows.Forms.RadioButton rbScale2;
         private System.Windows.Forms.RadioButton rbScale3;
         private System.Windows.Forms.RadioButton rbScale4;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.ListView lvMapSummary;
+        private CustomControls.RoundLabel lblSummary;
     }
 }

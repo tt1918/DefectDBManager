@@ -12,4 +12,12 @@ namespace DefectDBManager.Preproc
         Search,
         Total
     }
+
+    public enum eProcDataType
+    {
+        None,
+        Reference,
+        Compare,
+        Total
+    }
 }

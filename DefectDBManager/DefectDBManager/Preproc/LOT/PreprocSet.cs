@@ -109,6 +109,20 @@ namespace DefectDBManager.Preproc
         {
             IsFltAll = isState;
         }
+
+        public bool IsValidFLTID(string key, float size)
+        {
+            foreach (FltInfo info in FltInfos)
+            {
+                if (info.ID == key)
+                {
+                    // 사이즈 만족하면 TRUE, 그렇지 않으면  FALSE
+                    if (info.Size <= size)  return true;
+                    else                    return false;   
+                }
+            }
+            return false;
+        }
     }
     #endregion
 

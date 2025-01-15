@@ -239,12 +239,12 @@ namespace MarkrCompare
         {
             _rollMapForm = new FormRollMap();
             _rollMapForm.TopLevel = false;
-            _rollMapForm.InitRollMap();
+            _rollMapForm.InitRollMapAndSummary();
             _rollMapForm.Show();
 
         }
-
         #endregion Roll Map Form
+
 
         #region Lot List of Product Line
         private FormLotList[] _lotListForms = null;
