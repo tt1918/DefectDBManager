@@ -9,6 +9,7 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace DefectDBManager
@@ -63,13 +64,6 @@ namespace DefectDBManager
         private object parent = null;
 
         private Thread threadDBConnect = null;
-
-        public MrkctlmstMaterial MRKCTLMST_Material
-        {
-            get { return _mrkctlmstMaterial; }
-            set { _mrkctlmstMaterial = value; }
-        }
-        private MrkctlmstMaterial _mrkctlmstMaterial = null;
 
         public PreprocLotManager LotManager
         {
@@ -136,6 +130,9 @@ namespace DefectDBManager
             this.threadDBConnect = new Thread(this.DbConnect);
             this.threadDBConnect.Start();
             this.parent = parent;
+
+            // 검색 타이머 초기화
+            initCheckLotTimer();
         }
 
         ~CompPreprocDefect()
@@ -158,6 +155,9 @@ namespace DefectDBManager
             {
                 _DbConn.Dispose();
             }
+            
+            closeCheckLotTimer();
+
             this.disposed = true;
         }
 
@@ -182,14 +182,7 @@ namespace DefectDBManager
         public void SearchLotMarkDiff()
         {
             // LotManager의 데이터는 업데이트되어있는 상황
-            Task task = new Task(search, null);
-            task.Start();
-        }
-
-        public void SearchLotMarkDiffFromSetting()
-        {
-            // LotManager의 데이터는 업데이트되어있는 상황
-            Task task = new Task(searchFromSetting, null);
+            Task task = new Task(searchDefect, null);
             task.Start();
         }
 
@@ -198,18 +191,29 @@ namespace DefectDBManager
             if (IsRunLiveSearch == true) return;
             IsRunLiveSearch = true;
 
+            // 동시에 Live와 Search가 구동되지 못 하도록 함.
+            while(IsRunSearchingLotList)
+            {
+                Thread.Sleep(1000);
+            }
+
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
 
             foreach (var list in LotManager.LiveProduct)
             {
-                string lncd = list.Key;
+                string[] keyData = list.Key.Split('_');
+                string lncd = keyData[0];
                 foreach (var item in list.Value.Data)
                 {
                     if (StopLiveSearch == true) break;
 
                     string lotName = item.Y0KLOT;
-                    SearchDefectData(lncd, lotName);
+                    PreprocItem preprocItem = null;
+                    for (int i = 0; i < LotManager.ProcSetting.Count; i++)
+                        if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
+
+                    SearchLiveDefectData(lncd, lotName, preprocItem);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.TotalLiveLot / (float)LotManager.TotalLiveProduct);
@@ -224,23 +228,35 @@ namespace DefectDBManager
             OnEndLiveSearchLot?.Invoke();
         }
 
-        private void search(object obj)
+        private void searchDefect(object obj)
         {
             if (IsRunSearchingLotList == true) return;
             IsRunSearchingLotList = true;
+
+            // 동시에 Live와 Search가 구동되지 못 하도록 함.
+            while (IsRunLiveSearch)
+            {
+                Thread.Sleep(1000);
+            }
 
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
             foreach(var list in LotManager.Product)
             {
-                string lncd = list.Key;
+                string[] keyData = list.Key.Split('_');
+                string lncd = keyData[0];
+
                 foreach (var item in list.Value.Data)
                 {
                     if (StopSearchingLotList == true) break;
 
                     string lotName = item.Y0KLOT;
-                    SearchDefectData(lncd, lotName);
+                    PreprocItem preprocItem = null;
+                    for (int i = 0; i < LotManager.ProcSetting.Count; i++)
+                        if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
+
+                    SearchDefectData(lncd, lotName, preprocItem);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
@@ -248,37 +264,6 @@ namespace DefectDBManager
                 }
             }
             
-            StopSearchingLotList = false;
-            IsRunSearchingLotList = false;
-
-            // 완료 보고
-            OnEndSearchingLotList?.Invoke();
-        }
-
-        private void searchFromSetting(object obj)
-        {
-            if (IsRunSearchingLotList == true) return;
-            IsRunSearchingLotList = true;
-
-            // 해당 공정에 대한 결점 정보 확인
-            searchLotListFormSetting();
-
-            foreach (var list in LotManager.Product)
-            {
-                string lncd = list.Key;
-                foreach (var item in list.Value.Data)
-                {
-                    if (StopSearchingLotList == true) break;
-
-                    string lotName = item.Y0KLOT;
-                    SearchDefectData(lncd, lotName);
-
-                    // 검색 진행 상황을 
-                    int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
-                    OnLotProgress?.Invoke(rate);
-                }
-            }
-
             StopSearchingLotList = false;
             IsRunSearchingLotList = false;
 
@@ -298,6 +283,9 @@ namespace DefectDBManager
             string lncd = string.Empty;
             foreach (var data in filter.Data)
             {
+                // 검색 대상이 아니면 처리하지 않음.
+                if (data.IsInTime() == false) continue;
+
                 lncd = string.Empty;
                 for (int i=0; i< LotManager.ProcLNCD.Info.Count; i++)
                 {
@@ -318,6 +306,8 @@ namespace DefectDBManager
                     // 리스트 데이터 추가
                     LotManager.LiveProduct.Add(data.ToString(), list);
                 }
+
+                data.ResetTime();
             }
         }
         #endregion
@@ -356,69 +346,125 @@ namespace DefectDBManager
                 }
             }
         }
-
-        private void searchLotListFormSetting()
-        {
-            LotManager.Product?.Clear();
-
-            DateTime stTime = LotManager.SearchTime.StartTime;
-            DateTime edTime = LotManager.SearchTime.EndTime;
-
-            //string codeLine = LotManager.SelPreprocJob.Name;
-
-            //if (_DBProc.SearchPTRYOPList(codeLine, stTime, edTime) == true)
-            //{
-            //    PTRY0PList list = new PTRY0PList();
-
-            //    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
-            //        list.Add(ptry0p.Clone());
-
-            //    // 리스트 데이터 추가
-            //    LotManager.Product.Add(codeLine, list);
-            //}
-        }
-
         #endregion
 
         #region 결점 데이터 검색
-        public void SearchLiveDefectData(string lncd, string lotName)
+        public void SearchLiveDefectData(string lncd, string lotName, PreprocItem preprocItem)
         {
-            //int error = -1;
-            //bool usemkcdModel = LotManager.UseMrkctlmstModel;
-            //try
-            //{
-            //    PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
-            //    if (lot == null) return;
+            int error = -1;
+            bool usemkcdModel = LotManager.UseMrkctlmstModel;
+            try
+            {
+                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+                if (lot == null) return;
 
-            //    // 입력 받은 데이터 기준으로 좌표 비교
-            //    lot.ComparePosition(LotManager.SelPreprocJob);
-            //    LotManager.AddLiveLot(lncd, lot);
-            //}
-            //catch
-            //{
+                // 입력 받은 데이터 기준으로 좌표 비교
+                lot.ComparePosition(preprocItem);
+                LotManager.AddLiveLot(lncd, lot);
+            }
+            catch
+            {
 
-            //}
+            }
         }
 
-        public void SearchDefectData(string lncd, string lotName)
+        public void SearchDefectData(string lncd, string lotName , PreprocItem preprocItem)
         {
-            //int error=-1;
-            //bool usemkcdModel = LotManager.UseMrkctlmstModel;
-            //try
-            //{
-            //    PreprocLot lot = _DBProc.SearchLot(lotName, usemkcdModel, false, ref error);
-            //    if (lot == null) return;
+            int error = -1;
+            try
+            {
+                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+                if (lot == null) return;
 
-            //    // 입력 받은 데이터 기준으로 좌표 비교
-            //    lot.ComparePosition(LotManager.SelPreprocJob);
-            //    LotManager.AddLot(lncd, lot);
-            //}
-            //catch
-            //{
+                // 입력 받은 데이터 기준으로 좌표 비교
+                lot.ComparePosition(preprocItem);
+                LotManager.AddLot(lncd, lot);
+            }
+            catch
+            {
 
-            //}
+            }
+        }
+        #endregion
+
+        #region Live/Search Timer 
+        System.Timers.Timer _timerCheckLiveLot = null;
+
+        private void initCheckLotTimer()
+        {
+            closeCheckLotTimer();
+
+            _timerCheckLiveLot = new System.Timers.Timer();
+            _timerCheckLiveLot.Interval = 10 * 1000;    // 10초에 1번씩 탐색하도록 함
+            _timerCheckLiveLot.Elapsed += new ElapsedEventHandler(checkLiveLot);
+
         }
 
+        private void closeCheckLotTimer()
+        {
+            try
+            {
+                if(_timerCheckLiveLot!=null)
+                {
+                    _timerCheckLiveLot.Stop();
+                    _timerCheckLiveLot.Elapsed -= checkLiveLot;
+                    _timerCheckLiveLot.Dispose();
+                    _timerCheckLiveLot = null;
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        public void StartLiveLot()      
+        {   
+            _timerCheckLiveLot.Start();
+            int size = LotManager.CrtProcFilter[(int)eProc.Live].Count;
+            bool isSync = LotManager.CrtProcFilter.UseLiveSync;
+            int syncDuration = LotManager.CrtProcFilter.SyncDuration;
+            
+            // 전체 싱크 모드를 사용하면
+            if(isSync==true)
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    LotManager.CrtProcFilter[(int)eProc.Live].Data[i].SetTime(syncDuration);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < size; i++)
+                {
+                    LotManager.CrtProcFilter[(int)eProc.Live].Data[i].SetTime();
+                }
+            }
+        }
+        public void StopLiveLot()       
+        {   
+            _timerCheckLiveLot.Stop();
+        }
+
+        private void checkLiveLot(object sender, ElapsedEventArgs e)
+        {
+            // 검색 중이면 스킵 처리
+            if (IsRunLiveSearch == true) return;
+
+            // 탐색 가능 확인
+            bool doStart = false;
+            int size = LotManager.CrtProcFilter[(int)eProc.Live].Count;
+            for (int i = 0; i < size; i++)
+            {
+                if (LotManager.CrtProcFilter[(int)eProc.Live].Data[i].IsInTime() == true)
+                    doStart = true;
+            }
+
+            // 탐색 시간이 안되었으면 스킵한다. 
+            if (doStart == false) return;
+
+            SearchLiveMarkDiff();
+        }
         #endregion
     }
 }

@@ -108,7 +108,7 @@ namespace DefectDBManager
 
         public void SetFaultData(PreProcResultData data)
         {
-            FaultData = data;
+            FaultData = data.Copy();
         }
 
         public void ComparePosition(PreprocItem procData)

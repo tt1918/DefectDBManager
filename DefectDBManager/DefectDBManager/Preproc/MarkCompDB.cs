@@ -222,124 +222,6 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public bool SearchTodayPTRY0PList(out int firstIdx)
-        {
-            firstIdx = -1;
-            // 연결 확인
-            if (conn?.IsConnected() == false) return false;
-
-            try
-            {
-                _LOG.Lot = "PTRY0P_Today_" + DateTime.Today.ToString("yyyyMMdd");
-
-                // Daily Lot DATA 내용을 초기화 한다 
-                PTRY0PList_Data.Clear();
-
-                QueryMsg.PTRY0PList_Query ptry0p = new QueryMsg.PTRY0PList_Query();
-
-                // 해당 LNCD는 현재 공정 LINE CODE임
-                ptry0p.Y0LNCD = _SearchY0LNCD;
-
-                string query = ptry0p.GetQuery();
-                _LOG.WriteLoadData(query.ToString(), 0, "PTRY0P_Today", 0);
-
-                if (query == "")    
-                    Log.Write($"[Error] DB Serach PTRY0P_Today query is empty.");
-
-                using (var comm = new OracleCommand(query, conn.Connection))
-                {
-                    using (var reader = comm.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            PTRY0PData data = new PTRY0PData();
-                            data.Parse(reader);
-
-
-                            string logData = String.Empty;
-                            // 여기서 품종 필터 처리를 한다.
-                            if (_isWildCard == true)
-                            {
-                                if(data.Y0ZKNM.Contains(_ProductName))
-                                {
-                                    PTRY0PList_Data.Add(data);
-                                    logData = string.Format($"{PTRY0PList_Data.Count}\t-\tWildCard\t{data.ToString()}");
-                                }
-                                else
-                                    logData = string.Format($"{PTRY0PList_Data.Count}\t-\tSkip\t{data.ToString()}");
-                            }
-                            // 우선 전체 데이터 넣는다.
-                            else if(data.Y0ZKNM == _ProductName)
-                            {
-                                PTRY0PList_Data.Add(data);
-                                logData = string.Format($"{PTRY0PList_Data.Count}\t-\tFull\t{data.ToString()}");
-                            }
-                            else
-                                logData = string.Format($"{PTRY0PList_Data.Count}\t-\tSkip\t{data.ToString()}");
-                            
-                            _LOG.WriteLoadData(logData, 0, "PTRY0P_Today", 0);
-                        }
-                    }
-                }
-
-                if (PTRY0PList_Data.Count == 0)
-                    return false;
-
-                // 이름으로 랏 정렬을 한다.
-                PTRY0PList_Data.Copy(PTRY0PList_Data.Data.OrderBy(p => p.Y0KLOT).ToList());
-
-                // 데이터 초기화
-                ResetDataAll();
-
-                // 생산하지 않은 맨 처음 랏을 가지고 온다. 
-                PTRY0PData firstItem = null;
-                for (int i = -0; i < PTRY0PList_Data.Count; i++)
-                {
-                    if (PTRY0PList_Data[i].Y0KKOL.Substring(8) == "000000" && PTRY0PList_Data[i].Y0KSOL.Substring(8) == "000000")
-                    {
-                        firstItem = PTRY0PList_Data[i];
-                        firstIdx = i;
-                        break;
-                    }
-                }
-
-                //원래 여기서 데이터 탐색만 해야 함. 
-                // Test Code 나중에 삭제 처리.
-                string tmpLotName = "";
-
-                if (firstItem == null) return false;
-
-                tmpLotName = firstItem.Y0KLOT;
-
-                bool success;
-                success = SearchPTRYLP(tmpLotName);
-                if (success == false) return false;
-
-                success = SearchXOFSMST(tmpLotName);
-                if (success == false) return false;
-
-                success = SearchPTRY0P(tmpLotName);
-                if (success == false) return false;
-
-                // inspData 불러옴.
-                success = SearchINSPDAT(tmpLotName);
-                if (success == false) return false;
-
-                // 첫 검사 랏은 복사하여둔다
-                CopyInspDatToMatchedInspData();
-
-                success = SearchFLTDAT();
-                if (success == false) return false;
-            }
-            catch (Exception ex)
-            {
-                Log.Write($"[Error] DB Serach PTRY0P_TODAY Data error message : [{ex.Message}]");
-                return false;
-            }
-
-            return true;
-        }
-
         /// <summary>
         /// 현재 생산하는 제품의 BCR과 위치를 확인하여 생산하고 있는 랏이 유효한지
         /// 확인하는 함수
@@ -375,14 +257,16 @@ namespace DefectDBManager.Preproc
             return isResult;
         }
 
-        public bool SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
+        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
-                return false;
+                return null;
             bool success = false;
             try
             {
+                ResetDataAll();
+
                 lotID = lotID.ToUpper();
 
                 this.SearchLotName = lotID;
@@ -397,7 +281,7 @@ namespace DefectDBManager.Preproc
                 {
                     // 재갱신 데이터가 아니면 업데이트 안하고 스킵함.
                     if (renewal == false)
-                        return true;
+                        return null;
 
                     _LOG.DeleteFolder(lotID);
                 }
@@ -436,30 +320,31 @@ namespace DefectDBManager.Preproc
                 if (success == false)
                 {
                     errOut = 2;
-                    return false;
+                    return null;
                 }
                 success = SearchXOFSMST(lotID);
-                if (success == false) { errOut = 3; return false; }
+                if (success == false) { errOut = 3; return null; }
 
                 success = SearchPTRY0P(lotID);
-                if (success == false) { errOut = 4; return false; }
+                if (success == false) { errOut = 4; return null; }
 
                 success = SearchINSPDAT(lotID);
-                if (success == false) { errOut = 6; return false; }
+                if (success == false) { errOut = 6; return null; }
 
                 // 첫 검사 랏은 복사하여둔다
                 CopyInspDatToMatchedInspData();
 
                 success = SearchFLTDAT();
-                if (success == false) { errOut = -7; return false; }
+                if (success == false) { errOut = -7; return null; }
 
+                // 처리 완료되면 데이터 정리
 
-                return success;
+                return new PreprocLot(lotID, _DbResult, FaultData);
             }
             catch (Exception ex)
             {
                 Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
-                return false;
+                return null;
             }
         }
 
