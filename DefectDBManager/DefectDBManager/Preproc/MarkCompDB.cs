@@ -222,41 +222,6 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        /// <summary>
-        /// 현재 생산하는 제품의 BCR과 위치를 확인하여 생산하고 있는 랏이 유효한지
-        /// 확인하는 함수
-        /// </summary>
-        /// <param name="bcno"> 현재 생산하는 제품의 BCNO </param>
-        /// <param name="dPosY"> 현재 생산하는 제품의 위치 </param>
-        /// <returns></returns>
-        public bool IsCrtDataAvaliable(string bcno, double dPosY)
-        {
-            bool[] isAvaliable = null;
-
-            // 각 공정 별 INSPDAT 데이터의 갯수를 확인한다.
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            isAvaliable = new bool[count];
-
-            for (int i = 0; i < count; i++)
-            {
-                isAvaliable[i] = false;
-                if (_DbResult.Matched_INSPDAT[i].Count > 0)
-                {
-                    foreach (INSPDATData data in _DbResult.Matched_INSPDAT[i].Data)
-                    {
-                        if (data.BCNO == bcno && (data.YPosStart < dPosY && data.YPosEnd < dPosY))
-                            isAvaliable[i] = true;
-                    }
-                }
-            }
-
-            bool isResult = false;
-            for (int i = 0; i < count; i++)
-                isResult |= isAvaliable[i];
-
-            return isResult;
-        }
-
         public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
         {
             // 연결 확인
@@ -658,12 +623,6 @@ namespace DefectDBManager.Preproc
                     else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = -1;// 확인 안 함
                     else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = -1;// 확인 안 함
 
-                    int nItemCnt = 0;
-
-                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
-
-                    nItemCnt = 0;
-
                     if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
 
                     int inspCnt = _DbResult.Matched_INSPDAT[fcdIdx].Count;
@@ -697,7 +656,6 @@ namespace DefectDBManager.Preproc
                             using (var reader = comm.ExecuteReader())
                             {
                                 dbCnt = reader.RowSize;
-                                nItemCnt++;
 
                                 PreprocMrkDat preMarkData = new PreprocMrkDat();
                                 preMarkData.LNCD = inspdata.LNCD;
@@ -796,7 +754,6 @@ namespace DefectDBManager.Preproc
 
                 // 불량 체크
                 bool isSuccess = FalutFunction.IsDefectExist(DbDestConfig.CSVType, defectCnt);
-
                 return true;
             }
             catch (Exception ex)
@@ -804,47 +761,6 @@ namespace DefectDBManager.Preproc
                 Log.Write($"[Error] FAULTDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
                 return false;
             }
-        }
-
-        /// <summary>
-        /// 이전공정  Lot명으로 각가의 INSPDAT를 조회
-        /// </summary>
-        /// <param name="bcno">현재 생산중인 BCNO</param>
-        /// <param name="dPosY">현재 생산중인 원단의 원단장 위치</param>
-        /// <returns></returns>
-        public bool SearchMatchedBCNOLot(string bcno, double dPosY, bool isUpdate = true)
-        {
-            bool success = true;
-            int count = System.Enum.GetValues(typeof(eFCD)).Length;
-            INSPDATList[] inspDat = new INSPDATList[count];
-            for (int i = 0; i < count; i++)
-                inspDat[i] = new INSPDATList();
-
-            // 각 공정별로 탐색
-            int added = 0;
-            for (int i = 0; i < count; i++)
-            {
-                foreach (INSPDATList data in _DbResult.INSPDAT[i])
-                {
-                    foreach (INSPDATData datum in data.Data)
-                    {
-                        // 매칭되면 데이터를 넣어준다. 
-                        if (datum.BCNO == bcno && (datum.XPosStart <= dPosY && datum.XPosEnd >= dPosY))
-                        {
-                            inspDat[i].Add(datum);
-                            added++;
-                        }
-                    }
-                }
-            }
-
-            if (isUpdate == true)
-                _DbResult.Matched_INSPDAT = inspDat;
-
-            if (added <= 0)
-                success = false;
-
-            return success;
         }
 
         /// <summary>

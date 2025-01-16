@@ -387,7 +387,7 @@ namespace DefectDBManager
         }
         #endregion
 
-        #region Live/Search Timer 
+        #region Live Search Timer 
         System.Timers.Timer _timerCheckLiveLot = null;
 
         private void initCheckLotTimer()
