@@ -381,9 +381,9 @@ namespace DefectDBManager
             for (int i=0; i<count; i++)
             {
                 isAvaliable[i] = false;
-                if (_DbResult.Matched_INSPDAT[i].Count>0)
+                if (_DbResult.INSPDATArray[i].Count>0)
                 {
-                    foreach (INSPDATData data in _DbResult.Matched_INSPDAT[i].Data)
+                    foreach (INSPDATData data in _DbResult.INSPDATArray[i].Data)
                     {
                         if (data.BCNO == bcno && (data.XPosStart < dPosY && data.XPosEnd < dPosY))
                             isAvaliable[i] = true;
@@ -1134,20 +1134,20 @@ namespace DefectDBManager
 
                     int nItemCnt = 0;
 
-                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
+                    if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
                     
                     DB_Progress.Set((eNittoDBProgress)((int)eNittoDBProgress.FAULTDAT_ES + fcdIdx));
                     
                     nItemCnt = 0;
 
-                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
+                    if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
 
-                    int inspCnt = _DbResult.Matched_INSPDAT[fcdIdx].Count;
+                    int inspCnt = _DbResult.INSPDATArray[fcdIdx].Count;
                     for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                     {
-                        if (_DbResult.Matched_INSPDAT[fcdIdx][inspIdx] == null) continue;
+                        if (_DbResult.INSPDATArray[fcdIdx][inspIdx] == null) continue;
 
-                        inspdata = _DbResult.Matched_INSPDAT[fcdIdx][inspIdx];
+                        inspdata = _DbResult.INSPDATArray[fcdIdx][inspIdx];
 
                         inspStartY = inspdata.YPosStart;
                         inspEndY = inspdata.YPosEnd;
@@ -1313,7 +1313,7 @@ namespace DefectDBManager
             }
 
             if(isUpdate==true)
-                _DbResult.Matched_INSPDAT = inspDat;
+                _DbResult.INSPDATArray = inspDat;
 
             if (added <= 0)
                 success = false;
@@ -1339,7 +1339,7 @@ namespace DefectDBManager
                     inspDat[i].Copy(data);
             }
 
-            _DbResult.Matched_INSPDAT = inspDat;
+            _DbResult.INSPDATArray = inspDat;
         }
 
         /// <summary>

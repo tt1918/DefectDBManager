@@ -297,7 +297,7 @@ namespace DefectDBManager.Preproc
                 if (success == false) { errOut = 6; return null; }
 
                 // 첫 검사 랏은 복사하여둔다
-                CopyInspDatToMatchedInspData();
+                InspDatToFCDArray();
 
                 success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return null; }
@@ -623,14 +623,14 @@ namespace DefectDBManager.Preproc
                     else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = -1;// 확인 안 함
                     else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = -1;// 확인 안 함
 
-                    if (_DbResult.Matched_INSPDAT[fcdIdx] == null) continue;
+                    if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
 
-                    int inspCnt = _DbResult.Matched_INSPDAT[fcdIdx].Count;
+                    int inspCnt = _DbResult.INSPDATArray[fcdIdx].Count;
                     for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                     {
-                        if (_DbResult.Matched_INSPDAT[fcdIdx][inspIdx] == null) continue;
+                        if (_DbResult.INSPDATArray[fcdIdx][inspIdx] == null) continue;
 
-                        inspdata = _DbResult.Matched_INSPDAT[fcdIdx][inspIdx];
+                        inspdata = _DbResult.INSPDATArray[fcdIdx][inspIdx];
 
                         inspStartY = inspdata.YPosStart;
                         inspEndY = inspdata.YPosEnd;
@@ -767,7 +767,7 @@ namespace DefectDBManager.Preproc
         ///  현재 랏 생산할 데이터가 확인이 되면 다음 예약랏 FAULTDAT 데이터 탐색 위해서 전체 복사한다.
         ///  
         /// </summary>
-        public void CopyInspDatToMatchedInspData()
+        public void InspDatToFCDArray()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             INSPDATList[] inspDat = new INSPDATList[count];
@@ -781,7 +781,7 @@ namespace DefectDBManager.Preproc
                     inspDat[i].Copy(data);
             }
 
-            _DbResult.Matched_INSPDAT = inspDat;
+            _DbResult.INSPDATArray = inspDat;
         }
 
         /// <summary>

@@ -36,8 +36,8 @@ namespace DefectDBManager.DBLotInfo
         public List<string> ProductLotName;
 
 
-        // 현재 생산중인 Lot의 이전 공정 데이터
-        public DB.INSPDATList[] Matched_INSPDAT;
+        // 현재 생산중인 Lot의 InspData
+        public DB.INSPDATList[] INSPDATArray;
 
         public LotData()
         {
@@ -81,9 +81,9 @@ namespace DefectDBManager.DBLotInfo
 
             DicCSVDefectCnt = new DicStrInt();
 
-            Matched_INSPDAT = new DB.INSPDATList[count];
+            INSPDATArray = new DB.INSPDATList[count];
             for (int i = 0; i < count; i++)
-                Matched_INSPDAT[i] = new DB.INSPDATList();
+                INSPDATArray[i] = new DB.INSPDATList();
         }
 
         public void ClearAll()
@@ -111,10 +111,10 @@ namespace DefectDBManager.DBLotInfo
             DicCSVDefectCnt.Clear();
 
 
-            for (int i = 0; i < Matched_INSPDAT.Length; i++)
+            for (int i = 0; i < INSPDATArray.Length; i++)
             {
-                for (int j = 0; j < Matched_INSPDAT[i].Count; j++)
-                    Matched_INSPDAT[i].Clear();
+                for (int j = 0; j < INSPDATArray[i].Count; j++)
+                    INSPDATArray[i].Clear();
             }
         }
 
