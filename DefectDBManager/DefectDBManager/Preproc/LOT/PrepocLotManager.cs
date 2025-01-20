@@ -167,6 +167,7 @@ namespace DefectDBManager
 
         public PreprocLotManager()
         {
+            _product = new Dictionary<string, PTRY0PList>();
             _lot = new Dictionary<string, List<PreprocLot>>();
             _procLNCD = new Preproc.PreprocLNCD();
             

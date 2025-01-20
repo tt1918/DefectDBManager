@@ -52,9 +52,16 @@ namespace DefectDBManager.DB
             Y0KASS = reader[13].ToString();
         }
 
+        //public override string ToString()
+        //{
+        //    string msg = $"{Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
+
+        //    return msg;
+        //}
+
         public override string ToString()
         {
-            string msg = $"{Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
+            string msg = $"{LotData}, {StartTime}, {EndTime}, {Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
 
             return msg;
         }

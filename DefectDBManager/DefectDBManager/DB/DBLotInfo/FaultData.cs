@@ -525,8 +525,12 @@ namespace DefectDBManager
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             _fltdat = new PreProcDftList[count];
+            _preMarkData = new List<PreprocMrkDat>[count];
             for (int i = 0; i < count; i++)
+            {
                 _fltdat[i] = new PreProcDftList();
+                _preMarkData[i] = new List<PreprocMrkDat>();
+            }    
 
             _markData = new MrkFltDat();
         }

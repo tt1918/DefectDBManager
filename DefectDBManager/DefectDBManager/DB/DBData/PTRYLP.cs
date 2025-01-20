@@ -53,9 +53,15 @@ namespace DefectDBManager.DB
             YLSZKN = reader[20].ToString();
         }
 
+        //public override string ToString()
+        //{
+        //    string msg = $"{YLMLOT}, {YLSZKY}, {YLMTON:F3}, {YLMKAS:F3}, {YLMYKH}, {YLSLOT}, {YLSZKN}";
+        //    return msg;
+        //}
+
         public override string ToString()
         {
-            string msg = $"{YLMLOT}, {YLSZKY}, {YLMTON:F3}, {YLMKAS:F3}, {YLMYKH}, {YLSLOT}, {YLSZKN}";
+            string msg = $"{YLMLOT}, {YLSZKY}, {YLMZKN}, {YLMTON:F3}, {YLMKAS:F3}, {YLMYKH}, {YLSLOT}, {YLSZKY}, {YLSZKN}";
             return msg;
         }
 

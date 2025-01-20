@@ -292,7 +292,7 @@ namespace MarkrCompare
             
             for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
             {
-                if (_lotManager.ProcLNCD.Info[i].CheckStatus == false)
+                if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
                 {
                     line = _lotManager.ProcLNCD.Info[i].Name;
                     ip = _lotManager.ProcLNCD.Info[i].TargetIP;

@@ -247,15 +247,17 @@ namespace DefectDBManager
                 string[] keyData = list.Key.Split('_');
                 string lncd = keyData[0];
 
+                PreprocItem preprocItem = null;
+                for (int i = 0; i < LotManager.ProcSetting.Count; i++)
+                    if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
+
+                _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
+
                 foreach (var item in list.Value.Data)
                 {
                     if (StopSearchingLotList == true) break;
 
                     string lotName = item.Y0KLOT;
-                    PreprocItem preprocItem = null;
-                    for (int i = 0; i < LotManager.ProcSetting.Count; i++)
-                        if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
-
                     SearchDefectData(lncd, lotName, preprocItem);
 
                     // 검색 진행 상황을 
@@ -334,12 +336,32 @@ namespace DefectDBManager
                         break;
                     }
                 }
+                string productName = data.Product;
+                bool isWildCard = false;
+                if (productName.ElementAt(0) == '*' && productName.ElementAt(productName.Length - 1) == '*')
+                {
+                    isWildCard = true;
+
+                    // * 은 지우고 필요한 내용만 남김
+                    productName = productName.Trim('*');
+                }
+                else
+                {
+                    isWildCard = false;
+                }
+
                 if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();
 
                     foreach(var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    {
+                        if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
+                        else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
+                        
                         list.Add(ptry0p.Clone());
+                    }
+                        
 
                     // 리스트 데이터 추가
                     LotManager.Product.Add(data.ToString(), list);

@@ -79,9 +79,16 @@ namespace DefectDBManager.DB
             KTCD = reader[47].ToString();
         }
 
+        //public override string ToString()
+        //{
+        //    string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{YPosStart:F2}\t\t{YPosEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
+        //    return msg;
+        //}
+
         public override string ToString()
         {
-            string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{YPosStart:F2}\t\t{YPosEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
+            string msg = String.Format($"{CTLNO}, {HINMEI}, {LOTNO}, {ROLLNO}, {BCNO}, {YPosStart}, {YPosEnd}, {Width}, {XPosStart}, {XPosEnd}, {Length}, {STRDT}, {STRTM}," +
+                $" {ENDDT}, {ENDTM}, {USEFLG}, {CUSTCD}, {KYCD}, {KTCD}");
             return msg;
         }
 
@@ -102,6 +109,9 @@ namespace DefectDBManager.DB
             data.CUSTCD = this.CUSTCD;
             data.KYCD = this.KYCD;
             data.KTCD = this.KTCD;
+            data.LNCD = this.LNCD;
+            data.YPosStart = this.YPosStart;
+            data.YPosEnd = this.YPosEnd;
 
             return data;
         }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager.Preproc
 {
@@ -197,6 +198,9 @@ namespace DefectDBManager.Preproc
                         {
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
+
+                            if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
+                                continue;
 
                             // 우선 전체 데이터 넣는다.
                             PTRY0PList_Data.Add(data);
