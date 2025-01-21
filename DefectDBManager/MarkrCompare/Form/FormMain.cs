@@ -114,6 +114,8 @@ namespace MarkrCompare
             _dbManager.OnEndSearchingLotList += _markDiffForm.FormMorSearch.EndLotSearch;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
 
+            //Lot Summery 에 검색 완료 신호 추가 @ATW 250121
+            _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
         }
 
         private void destroyMarkDiffForm()
@@ -126,6 +128,8 @@ namespace MarkrCompare
 
             _dbManager.OnEndSearchingLotList -= _markDiffForm.FormMorSearch.EndLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;
+
+            _dbManager.OnEndLiveSearchLot -= _markDiffForm.UpdateLotSummary;
         }
         #endregion Marking Comparision Form
 

@@ -69,16 +69,29 @@ namespace MarkrCompare
             _dicLotSummary = null;
         }
 
-        public void SetLotSummary(bool[] lotSummary)
+        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary)
         {
             try
             {
-                flpLotSummary.Controls.Clear();
+                //flpLotSummary.Controls.Clear();
 
                 foreach (var lot in lotSummary)
                 {
-                    FormLotSummaryData data = new FormLotSummaryData(lot);
-                    flpLotSummary.Controls.Add(data);
+                    FormLotSummaryData form = new FormLotSummaryData(lot);
+                    form.TopLevel = false;
+                    form.Show();
+
+                    if (_dicLotSummary.ContainsKey(lncd))
+                    {
+                        _dicLotSummary[lncd].Add(form);
+                    }
+                    else 
+                    {
+                        _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
+
+                        _dicLotSummary[lncd].Add(form);
+                        flpLotSummary.Controls.Add(form);
+                    }
                 }
             }
             catch
@@ -91,7 +104,8 @@ namespace MarkrCompare
         {
             try
             {
-
+                closeLotSummary();
+                //flpLotSummary.Controls.Clear();
             }
             catch
             {
@@ -207,6 +221,5 @@ namespace MarkrCompare
             ShowData();
         }
         #endregion
-
     }
 }

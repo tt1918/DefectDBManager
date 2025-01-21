@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace MarkrCompare
 {
-    
+
 
     public partial class FormMarkDiff : Form
     {
@@ -210,12 +210,12 @@ namespace MarkrCompare
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorLive?.Close();
-            _formMorSearch?.Close(); 
+            _formMorSearch?.Close();
         }
 
         private void tabSearchSet_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch((sender as TabControl).SelectedIndex)
+            switch ((sender as TabControl).SelectedIndex)
             {
                 case 0: // Live Form
                     OnUpdateLiveLNCDInfo?.Invoke();
@@ -273,9 +273,9 @@ namespace MarkrCompare
 
         private void closeLotListForms()
         {
-           if(_lotListForms!=null)
+            if (_lotListForms != null)
             {
-                for(int i=0; i< (int)DefectDBManager.Preproc.eProc.Total; i++)
+                for (int i = 0; i < (int)DefectDBManager.Preproc.eProc.Total; i++)
                     _lotListForms[i].Dispose();
 
                 _lotListForms = null;
@@ -289,8 +289,8 @@ namespace MarkrCompare
             string ip = "";
             int checkDuration = 5;
             string line = string.Empty;
-            
-            for(int i=0; i< _lotManager.ProcLNCD.Info.Count; i++)
+
+            for (int i = 0; i < _lotManager.ProcLNCD.Info.Count; i++)
             {
                 if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
                 {
@@ -301,12 +301,12 @@ namespace MarkrCompare
                     _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
                 }
             }
-             
+
         }
 
         private void showLotListForm(DefectDBManager.Preproc.eProc proc)
         {
-            switch(proc)
+            switch (proc)
             {
                 case DefectDBManager.Preproc.eProc.Live:
                     tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search]);
@@ -325,6 +325,11 @@ namespace MarkrCompare
         #endregion
 
         #region Live Lot History
+        public FormLotSummery FormLotSummery 
+        {
+            get { return _formLotSummary; }
+            private set { _formLotSummary = value; }
+        }
         private FormLotSummery _formLotSummary=null;
         private void initLotSummary()
         {
@@ -340,6 +345,17 @@ namespace MarkrCompare
             {
                 _formLotSummary.Dispose();
                 _formLotSummary = null;
+            }
+        }
+
+        public void UpdateLotSummary()
+        {
+            foreach (var item in _lotManager.LiveProduct)
+            {
+                string[] keyData = item.Key.Split('_');
+                string lncd = keyData[0];
+
+                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd]);
             }
         }
         #endregion

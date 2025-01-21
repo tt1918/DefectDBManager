@@ -14,7 +14,7 @@ namespace MarkrCompare
     public enum eSummaryMode { Mornitoring, LiveErrorCheck}
     public partial class FormLotSummaryData : Form
     {
-        public bool LotSummery
+        public DefectDBManager.PreprocLot LotSummery
         {
             get { return _lotSummery; }
             set 
@@ -26,7 +26,7 @@ namespace MarkrCompare
         /// <summary>
         /// 상위 검사 랏 서머리 정보 
         /// </summary>
-        private bool _lotSummery = false;
+        private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
         private eSummaryMode _mode = eSummaryMode.Mornitoring;
 
 
@@ -36,7 +36,7 @@ namespace MarkrCompare
             InitializeComponent();
         }
 
-        public FormLotSummaryData(bool lotSummery)
+        public FormLotSummaryData(DefectDBManager.PreprocLot lotSummery)
         {
             InitializeComponent();
 
@@ -68,7 +68,24 @@ namespace MarkrCompare
 
         private void displayCompareResult()
         {
-
+            string str = null;
+            int idx = 1;
+            int lineIdx = 0;
+            foreach (var item in _lotSummery.MarkCompList.Data)
+            {
+                if (idx == 1)
+                {
+                    str += $"{idx++} : {item.Base}%";
+                }
+                else
+                {
+                    foreach (var item2 in item.Comp)
+                    {
+                        //str += $"{idx++} : {item.Comp[lineIdx++, ]}";
+                    }
+                }
+            }
+            
         }
 
         private void displayLotName()

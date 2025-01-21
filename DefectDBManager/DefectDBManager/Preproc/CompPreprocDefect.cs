@@ -276,7 +276,8 @@ namespace DefectDBManager
         #region 실시간 공정 별 생산 리스트 취합
         private void searchLiveLotList()
         {
-            LotManager.LiveProduct.Clear();
+            if (LotManager.LiveProduct != null)
+                LotManager.LiveProduct.Clear();
             // 금일 날자로 설정
             DateTime stTime = DateTime.Today;
             DateTime edTime = DateTime.Now;

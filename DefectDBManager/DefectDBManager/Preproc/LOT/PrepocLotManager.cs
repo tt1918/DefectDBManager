@@ -261,7 +261,7 @@ namespace DefectDBManager
             {
                 List<PreprocLot> list = new List<PreprocLot>();
                 list.Add(info);
-                LiveLot.Add(lncd, list);
+                    LiveLot.Add(lncd, list);
             }
         }
 
