@@ -52,6 +52,23 @@ namespace DefectDBManager.DB
             Y0KASS = reader[13].ToString();
         }
 
+        public void Parse(string reader)
+        {
+            string[] dummy = reader.Split('\t');
+            string[] data = dummy[2].Split(',');
+            LotData = data[0];
+            StartTime = data[1].Trim(' ');
+            EndTime = data[2].Trim(' ');
+            Y0KYCD = data[3].Trim(' ');
+            Y0KLOT = data[4].Trim(' ');
+            Y0LNSN = data[5].Trim(' ');
+            Y0KKOL = data[6].Trim(' ');
+            Y0KSOL = data[7].Trim(' ');
+            Y0ZKNM = data[8].Trim(' ');
+            LNCD = data[9].Trim(' ');
+            Y0KASS = data[10].Trim(' ');
+        }
+
         //public override string ToString()
         //{
         //    string msg = $"{Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";

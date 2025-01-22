@@ -34,6 +34,19 @@ namespace DefectDBManager.DB
             X_OFFSET = float.Parse(reader[5].ToString());
         }
 
+        public void Parse(string reader)
+        {
+            string[] dummy = reader.Split('\t');
+            string[] data = dummy[2].Split(',');
+
+            KYCD = data[0].Trim(' ');
+            PPCD = Int32.Parse(data[1].Trim(' '));
+            LNCD = data[2].Trim(' ');
+            YLMZKN2 = data[3].Trim(' ');
+            YLSZKN = data[4].Trim(' ');
+            X_OFFSET = float.Parse(data[5].Trim(' '));
+        }
+
         public override string ToString()
         {
             string msg = $"{KYCD}, {PPCD}, {LNCD}, {YLMZKN2}, {YLSZKN}, {X_OFFSET:F3}";

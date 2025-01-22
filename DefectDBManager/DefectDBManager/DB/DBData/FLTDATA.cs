@@ -116,6 +116,38 @@ namespace DefectDBManager.DB
             FLTID = reader[34].ToString();
         }
 
+        public void Parse(string reader)
+        {
+            string[] dummy = reader.Split('\t');
+            string[] data = dummy[2].Split(',');
+
+            float fVal;
+            CTLNO = data[0].Trim(' ');
+            FLTNO = data[1].Trim(' ');
+            if (float.TryParse(data[2].Trim(' '), out fVal) == true)
+                OFFSET = fVal;
+            if (float.TryParse(data[3].Trim(' '), out fVal) == true)
+                YPOS_M = fVal;
+            if (float.TryParse(data[4].Trim(' '), out fVal) == true)
+                XPOS_M = fVal;
+
+            RANK = data[5].Trim(' ');
+            KND = data[6].Trim(' ');
+            JIGCD = data[7].Trim(' ');
+            MACNO = data[8].Trim(' ');
+            FLTID = data[9].Trim(' ');
+
+            if (float.TryParse(data[10].Trim(' '), out fVal) == true)
+                AREA_M = fVal;
+
+            if (Int32.TryParse(data[11].Trim(' '), out int iVal) == true)
+                CAMNO = iVal;
+
+            MNTTAN = data[12].Trim(' ');
+            
+        }
+
+
         public string GetString(int index, int defectLine, string bcno, float xOffset)
         {
             string msg = String.Format($"{index}\t-\t{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {RANK}, {KND}, {JIGCD}, {MACNO} , " +

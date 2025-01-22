@@ -79,6 +79,32 @@ namespace DefectDBManager.DB
             KTCD = reader[47].ToString();
         }
 
+        public void Parse(string reader)
+        {
+            string[] dummy = reader.Split('\t');
+            string[] data = dummy[0].Split(',');
+
+            CTLNO = data[0].Trim(' ');
+            HINMEI = data[1].Trim(' ');
+            LOTNO = data[2].Trim(' ');
+            ROLLNO = data[3].Trim(' ');
+            BCNO = data[4].Trim(' ');
+            YPosStart = float.Parse(data[5].Trim(' '));
+            YPosEnd = float.Parse(data[6].Trim(' '));
+            Width = float.Parse(data[7].Trim(' '));
+            XPosStart = float.Parse(data[8].Trim(' '));
+            XPosEnd = float.Parse(data[9].Trim(' '));
+            Length = float.Parse(data[10].Trim(' '));
+            STRDT = data[11].Trim(' ');
+            STRTM = data[12].Trim(' ');
+            ENDDT = data[13].Trim(' ');
+            ENDTM = data[14].Trim(' ');
+            USEFLG = data[15].Trim(' ');
+            CUSTCD = data[16].Trim(' ');
+            KYCD = data[17].Trim(' ');
+            KTCD = data[18].Trim(' ');
+        }
+
         //public override string ToString()
         //{
         //    string msg = String.Format($"{CTLNO}\t\t{HINMEI}\t\t{Y0KLOT}\t\t{LOTNO}\t\t{BCNO}\t\t{YPosStart:F2}\t\t{YPosEnd:F2}\t\t{Width:F2}\t\t{Length:F2}\t\t{STRDT}\t\t{STRTM}\t\t{ENDDT}\t\t{ENDTM}");
@@ -119,6 +145,7 @@ namespace DefectDBManager.DB
 
     public class INSPDATList : ItemList<INSPDATData>
     {
+
         public INSPDATList()
         {
             _data = new List<INSPDATData>();

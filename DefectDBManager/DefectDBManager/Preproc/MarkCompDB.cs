@@ -183,11 +183,12 @@ namespace DefectDBManager.Preproc
                 ///////////////////////////////////////////////////////
 
                 string query = ptry0p.GetQuery();
-                _LOG.WriteLoadData(query.ToString(), 0, $"[{lncd}] PTRY0PList", 0);
+                string listFileName = $"[{lncd}] PTRY0PList";
+                _LOG.WriteLoadData(query.ToString(), 0, listFileName, 0);
 
                 if (query == "")
                 {
-                    Log.Write($"[Error] DB Serach [{lncd}] PTRY0PList query is empty.");
+                    Log.Write($"[Error] DB Serach {listFileName} query is empty.");
                 }
 
                 using (var comm = new OracleCommand(query, conn.Connection))
@@ -206,7 +207,7 @@ namespace DefectDBManager.Preproc
                             PTRY0PList_Data.Add(data);
 
                             string logData = string.Format($"{PTRY0PList_Data.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, 0, "PTRY0P_Today", 0);
+                            _LOG.WriteLoadData(logData, 0, listFileName, 0);
                         }
                     }
                 }
@@ -225,6 +226,49 @@ namespace DefectDBManager.Preproc
 
             return true;
         }
+
+        public bool SearchPTRYOPList_TEST(string lncd, DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                string path = $"[{lncd}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+                path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
+
+                // Daily Lot DATA 내용을 초기화 한다 
+                PTRY0PList_Data.Clear();
+
+                using (var file = new StreamReader(path, Encoding.Default))
+                {
+                    string text;
+                    while ((text = file.ReadLine())!=null)
+                    {
+                        if (text.Contains("SELECT") == true) continue;
+
+                        PTRY0PData data = new PTRY0PData();
+                        data.Parse(text);
+
+                        if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
+                            continue;
+
+                        // 우선 전체 데이터 넣는다.
+                        PTRY0PList_Data.Add(data);
+                    }
+                }
+                if (PTRY0PList_Data.Count == 0)
+                    return false;
+
+                // 이름으로 랏 정렬을 한다.
+                PTRY0PList_Data.Copy(PTRY0PList_Data.Data.OrderBy(p => p.Y0KLOT).ToList());
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach PTRY0P_TODAY Data error message : [{ex.Message}]");
+                return false;
+            }
+
+            return true;
+        }
+
 
         public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
         {
@@ -317,6 +361,68 @@ namespace DefectDBManager.Preproc
             }
         }
 
+        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, ref int errOut)
+        {
+            bool success = false;
+            try
+            {
+                ResetDataAll();
+
+                lotID = lotID.ToUpper();
+
+                this.SearchLotName = lotID;
+                if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
+                    dbOption.useKT = true;
+                else
+                    dbOption.useKT = false;
+                _LOG.Lot = lotID;
+
+                string path = Path.Combine(Define.BCRPath, lotID, "PTRYLP_DBResult.txt");
+
+                using (var reader = new StreamReader(path, Encoding.UTF8))
+                {
+                    string text;
+                    while ((text = reader.ReadLine())!=null)
+                    {
+                        if (text.Contains("SELECT") == true) continue;
+                        PTRYLPdata data = new PTRYLPdata();
+                        data.Parse(text);
+                        _DbResult.PTRLYP.Add(data);
+                    }
+
+                    success = true;
+                }
+
+                if (success == false)
+                {
+                    errOut = 2;
+                    return null;
+                }
+                success = SearchXOFSMST_TEST(lotID);
+                if (success == false) { errOut = 3; return null; }
+
+                success = SearchPTRY0P_TEST(lotID);
+                if (success == false) { errOut = 4; return null; }
+
+                success = SearchINSPDAT_TEST(lotID);
+                if (success == false) { errOut = 6; return null; }
+
+                // 첫 검사 랏은 복사하여둔다
+                InspDatToFCDArray();
+
+                success = SearchFLTDAT_TEST(lotID);
+                if (success == false) { errOut = -7; return null; }
+
+                // 처리 완료되면 데이터 정리
+                return new PreprocLot(lotID, _DbResult, FaultData);
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach Lot error message : [{ex.Message}]");
+                return null;
+            }
+        }
+
         public bool SearchXOFSMST(string lotID)
         {
             // 연결 확인
@@ -361,6 +467,33 @@ namespace DefectDBManager.Preproc
                 return false;
             }
         }
+        public bool SearchXOFSMST_TEST(string lotID)
+        {
+            try
+            {
+                string path = Path.Combine(Define.BCRPath, lotID, "XOFSMST_DBResult.txt");
+                using (var reader = new StreamReader(path, Encoding.UTF8))
+                {
+                    string text;
+                    while ((text = reader.ReadLine())!=null)
+                    {
+                        if (text.Contains("SELECT") == true) continue;
+
+                        XOFSMSTData data = new XOFSMSTData();
+                        data.Parse(text);
+                        _DbResult.XOFSMST.Add(data);
+                    }
+                }
+                return true;
+                ;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach XOFSMST error message : [{ex.Message}]");
+                return false;
+            }
+        }
+
 
         public bool SearchPTRYLP(string lotID)
         {
@@ -496,6 +629,78 @@ namespace DefectDBManager.Preproc
             }
         }
 
+        public bool SearchPTRY0P_TEST(string lotID)
+        {
+
+            try
+            {
+                string path = Path.Combine(Define.BCRPath, lotID, "PTRY0P_DBResult.txt");
+                string inspPath = Path.Combine(Define.BCRPath, lotID, "INSPDAT_DBResult.txt");
+                using (var reader = new StreamReader(path, Encoding.UTF8))
+                {
+                    string text;
+                    while ((text=reader.ReadLine())!=null)
+                    {
+                        if (text.Contains("SELECT") == true) continue;
+
+                        PTRY0PData data = new PTRY0PData();
+                        data.Parse(text);
+
+                        string strYOKLOT = data.Y0KLOT;
+                        string strY0LNSN = data.Y0LNSN;
+
+                        // DATA 갖고 오지 않아서 INSPDATA에서 찾아야 함
+                        int nY0PPCD = 420;
+                        using (var inspRD = new StreamReader(inspPath, Encoding.UTF8))
+                        {
+                            string text1;
+                            while((text1 = inspRD.ReadLine())!=null)
+                            {
+                                if (text1.Contains("SELECT") == true) continue;
+
+                                INSPDATData inspData = new INSPDATData();
+                                inspData.Parse(text1);
+
+                                if(data.LNCD == inspData.USEFLG)
+                                {
+                                    nY0PPCD = Int32.Parse(inspData.KTCD.ToString());
+                                    break;
+                                }
+
+                            }
+                        }
+
+                        if (Char.IsLetter(strYOKLOT, 0) == true)
+                            strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
+                        else
+                        {
+                            int pos = strYOKLOT.IndexOf(' ');
+                            if (pos > 0)
+                                strYOKLOT = strYOKLOT.Substring(0, pos);
+                        }
+
+                        // 연신
+                        if (nY0PPCD == 100)
+                            _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+
+                        // 도공
+                        if (nY0PPCD == 400)
+                            _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
+
+                        // 그외
+                        if (nY0PPCD != 100 && nY0PPCD != 400)
+                            _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] DB Serach PTRY0P error message : [{ex.Message}]");
+                return false;
+            }
+        }
+
         public bool SearchINSPDAT(string lotID)
         {
             // 연결 확인
@@ -572,6 +777,74 @@ namespace DefectDBManager.Preproc
                 return false;
             }
         }
+
+        public bool SearchINSPDAT_TEST(string lotID)
+        {
+            int procStep = 0;
+            try
+            {
+                long dbCnt = 0;
+                int dataCnt = 0;
+                bool useXOffset = destConfig.UseXOffset;
+
+                eCSV_TYPE csvType = destConfig.GetCsvType();
+
+                Dictionary<string, INSPDATList> dicList = new Dictionary<string, INSPDATList>();
+
+                string path = Path.Combine(Define.BCRPath, lotID, "INSPDAT_DBResult.txt");
+                using (var reader = new StreamReader(path, Encoding.UTF8))
+                {
+                    string text;
+                    while ((text = reader.ReadLine()) != null)
+                    {
+                        if (text.Contains("SELECT") == true) continue;
+
+                        INSPDATData data = new INSPDATData();
+                        data.Parse(text);
+
+                        foreach(var opList in _DbResult.PTRY0P)
+                        {
+                            foreach(var op in opList.Data)
+                            {
+                                if(op.LNCD == data.USEFLG)
+                                {
+                                    data.Y0KLOT = op.Y0KLOT;
+                                    data.LNCD = op.LNCD;
+
+                                    if(dicList.ContainsKey(op.LNCD)==true)
+                                        dicList[op.LNCD].Add(data);
+                                    else
+                                    {
+                                        dicList.Add(op.LNCD, new INSPDATList());
+                                        dicList[op.LNCD].Add(data);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                foreach(var item in dicList)
+                {
+                    if(item.Value.Count>0)
+                    {
+                        if (item.Value[0].KTCD == "100")
+                            _DbResult.INSPDAT[0].Add(item.Value);
+                        else if(item.Value[0].KTCD == "400")
+                            _DbResult.INSPDAT[1].Add(item.Value);
+                        else
+                            _DbResult.INSPDAT[2].Add(item.Value);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] INSPDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
+            }
+        }
+
 
         public bool SearchFLTDAT()
         {
@@ -753,6 +1026,194 @@ namespace DefectDBManager.Preproc
                                     FaultData.PreMarkData[fcdIdx].Add(preMarkData);
                             }
                         }
+                    }
+                }
+
+                // 불량 체크
+                bool isSuccess = FalutFunction.IsDefectExist(DbDestConfig.CSVType, defectCnt);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] FAULTDAT_{((eFCD)procStep).ToString()} error message : [{ex.Message}]");
+                return false;
+            }
+        }
+
+        public bool SearchFLTDAT_TEST(string lotID)
+        {
+            float maxXPos = 0;
+            float minXPos = float.MaxValue;
+
+            bool useXOffset = false;
+            bool useAIFromDB = false;
+            eCSV_TYPE csvType = eCSV_TYPE.NITTO;
+
+            string tmpKey;
+            float finalXPos;
+            string tmpFaltID;
+
+            INSPDATData inspdata;
+
+            int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
+            int dataCnt = 0;
+            string query;
+            int procStep = 0;
+            long dbCnt;
+            string logData;
+
+            int[] defectCnt = new int[fcdCnt];
+            defectCnt.Initialize();
+
+            float inspStartY = 0.0f;
+            float inspEndY = 0.0f;
+
+            bool bValid = false;
+
+            FaultData = new PreProcResultData();
+
+            // 현재 데이터는 마킹 비교 결점 데이터라는 것을 표시함.
+            FaultData.IsPreProc = true;
+
+            try
+            {
+                for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
+                {
+                    // 데이터 초기화
+                    maxXPos = 0;
+                    minXPos = float.MaxValue;
+
+                    // 
+                    procStep = fcdIdx;
+
+                    if (fcdIdx == (int)eFCD.ES) defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = -1;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = -1;// 확인 안 함
+
+                    if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
+
+                    int inspCnt = _DbResult.INSPDATArray[fcdIdx].Count;
+                    for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
+                    {
+                        if (_DbResult.INSPDATArray[fcdIdx][inspIdx] == null) continue;
+
+                        inspdata = _DbResult.INSPDATArray[fcdIdx][inspIdx];
+
+                        inspStartY = inspdata.YPosStart;
+                        inspEndY = inspdata.YPosEnd;
+
+                        string ctlno = inspdata.CTLNO;
+                        
+                        ProcessData mkcdLncdData = null;
+                        eProcDataType dataTarget = eProcDataType.None;
+                        PreprocMrkDat preMarkData = new PreprocMrkDat();
+                        preMarkData.LNCD = inspdata.LNCD;
+                        // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
+                        if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
+                        {
+                            mkcdLncdData = _PreprocItem.Reference;
+                            dataTarget = eProcDataType.Reference;
+                        }
+                        else
+                        {
+                            bool isFindComp = false;
+                            foreach (var compItem in _PreprocItem.Compare)
+                            {
+                                if (inspdata.LNCD == compItem.LNCD)
+                                {
+                                    isFindComp = true;
+                                    mkcdLncdData = compItem;
+                                    dataTarget = eProcDataType.Compare;
+                                    break;
+                                }
+                            }
+                            if (isFindComp == false)
+                            {
+                                mkcdLncdData = null;
+                                continue; // 데이터 탐색 안함.
+                            }
+                        }
+
+                        // 매칭 불량 갯수 초기화
+                        inspdata.RollCtlCnt = 0;
+
+                        bool isTextEnd = false;
+                        string path = Path.Combine(Define.BCRPath, lotID, "FAULTDAT_DBResult.txt");
+                        using (var reader = new StreamReader(path, Encoding.UTF8))
+                        {
+                            string text;
+                            while((text=reader.ReadLine())!=null)
+                            {
+                                // 데이터 맞는지 확인
+                                if(text.Contains("SELECT")==true && text.Contains(inspdata.CTLNO)==true)
+                                {
+                                    while ((text = reader.ReadLine()) != null)
+                                    {
+                                        if (text.Contains("SELECT") == true)
+                                        {
+                                            isTextEnd = true;
+                                            break;
+                                        }
+                                        FLTDATA_DailyData data = new FLTDATA_DailyData();
+                                        data.Parse(text);
+                                        tmpFaltID = data.FLTID.ToUpper();
+
+
+                                        finalXPos = data.XPOS_M;
+                                        if (useXOffset == true) finalXPos += inspdata.OffsetX;
+                                        if (useAIFromDB == false)
+                                        {
+                                            tmpKey = data.MNTTAN.TrimStart();
+                                            if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;
+                                        }
+                                        else tmpKey = data.FLTID;
+
+                                        // MKCD Model에서 데이터 가져와서 다시 탐색함. 
+                                        bValid = false;
+                                        if (mkcdLncdData != null)
+                                        {
+                                            bValid = mkcdLncdData.IsValidFLTID(tmpKey, data.AREA_M + 0.00001f);
+                                            if (bValid == false) continue;
+                                        }
+                                        else continue;
+
+                                        if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
+                                        if (finalXPos < 0.0f) continue;
+
+                                        // 전체 데이터를 저장한다. 
+                                        // Fault Data 처리
+                                        FaultDatum tmpFltData = new FaultDatum();
+                                        tmpFltData.SetData(inspdata.BCNO, data);
+                                        if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
+                                        if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
+
+                                        // 마킹 데이터만 처리
+                                        if (bValid == false) continue;
+
+                                        // 코드 불량 카운트 증가
+                                        if (inspdata.CTLNO == data.CTLNO) inspdata.RollCtlCnt++;
+
+                                        // Marking fault data 추가
+                                        MarkingFaultDatum markData = new MarkingFaultDatum();
+                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption.useKT);
+
+                                        if (dataTarget == eProcDataType.Reference)
+                                            FaultData.MarkData.Add(markData);
+                                        else// 마킹 대상 결점
+                                            preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
+
+                                        defectCnt[fcdIdx]++;
+
+                                    }
+                                }
+
+                                if (isTextEnd) break;
+                            }
+                        }
+                        
+                        // 그렇지 않고 Compare Data이면 PreMarkData에 입력
+                        if (dataTarget == eProcDataType.Compare)
+                            FaultData.PreMarkData[fcdIdx].Add(preMarkData);
                     }
                 }
 

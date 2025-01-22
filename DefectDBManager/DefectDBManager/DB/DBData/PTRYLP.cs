@@ -53,6 +53,28 @@ namespace DefectDBManager.DB
             YLSZKN = reader[20].ToString();
         }
 
+        public void Parse(string reader)
+        {
+            string[] dummy = reader.Split('\t');
+            string[] data = dummy[2].Split(',');
+
+            YLMLOT = data[0].Trim(' ');
+
+            YLSZKY = data[1].Trim(' ');
+            YLMZKN = data[2].Trim(' ');
+
+            float valF = 0.0f;
+            if (float.TryParse(data[3].Trim(' '), out valF) == true)
+                YLMTON = valF;
+            if (float.TryParse(data[4].Trim(' '), out valF) == true)
+                YLMKAS = valF;
+
+            YLMYKH = data[5].Trim(' ');
+            YLSLOT = data[6].Trim(' ');
+            
+            YLSZKN = data[8].Trim(' ');
+        }
+
         //public override string ToString()
         //{
         //    string msg = $"{YLMLOT}, {YLSZKY}, {YLMTON:F3}, {YLMKAS:F3}, {YLMYKH}, {YLSLOT}, {YLSZKN}";

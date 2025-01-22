@@ -1,4 +1,6 @@
-﻿using DefectDBManager.DB;
+﻿#define TEST_MODE
+
+using DefectDBManager.DB;
 using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
@@ -351,7 +353,11 @@ namespace DefectDBManager
                     isWildCard = false;
                 }
 
+#if TEST_MODE
+                if(_DBProc.SearchPTRYOPList_TEST(lncd, stTime, edTime) == true)
+#else
                 if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
+#endif
                 {
                     PTRY0PList list = new PTRY0PList();
 
@@ -369,9 +375,9 @@ namespace DefectDBManager
                 }
             }
         }
-        #endregion
+#endregion
 
-        #region 결점 데이터 검색
+#region 결점 데이터 검색
         public void SearchLiveDefectData(string lncd, string lotName, PreprocItem preprocItem)
         {
             int error = -1;
@@ -396,7 +402,12 @@ namespace DefectDBManager
             int error = -1;
             try
             {
+#if TEST_MODE
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, ref error);
+#else
                 PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+#endif
+
                 if (lot == null) return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
@@ -408,9 +419,9 @@ namespace DefectDBManager
 
             }
         }
-        #endregion
+#endregion
 
-        #region Live Search Timer 
+#region Live Search Timer 
         System.Timers.Timer _timerCheckLiveLot = null;
 
         private void initCheckLotTimer()
@@ -488,6 +499,6 @@ namespace DefectDBManager
 
             SearchLiveMarkDiff();
         }
-        #endregion
+#endregion
     }
 }
