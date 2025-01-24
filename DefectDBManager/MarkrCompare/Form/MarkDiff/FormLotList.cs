@@ -29,7 +29,7 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot;
+        //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot;
         #endregion
 
         #region Create/Destroy
@@ -102,7 +102,7 @@ namespace MarkrCompare
 
         }
 
-        public void AddSummaryData(bool lots)
+        public void AddSummaryData()
         {
             FormLotSummaryData form = new FormLotSummaryData();
             form.TopLevel = false;
@@ -159,5 +159,16 @@ namespace MarkrCompare
 
         #endregion
 
+        public void DoubleClickSummaryData(FormLotSummaryData data)
+        {
+            foreach (var item in _dicFormSummary.Values)
+            {
+                if (item.Contains(data))
+                {
+
+                    break;
+                }
+            }
+        }
     }
 }

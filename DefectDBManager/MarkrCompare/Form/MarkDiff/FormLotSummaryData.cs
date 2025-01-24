@@ -56,6 +56,10 @@ namespace MarkrCompare
         {
             closeStatusTimer();
         }
+        private void FormLotSummaryData_DoubleClick(object sender, EventArgs e)
+        {
+            ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
+        }
         #endregion
 
         #region 데이터 표시
@@ -63,14 +67,25 @@ namespace MarkrCompare
         {
             displayCompareResult();
             displayLotName();
-            displayDetial();
+            displayDetail();
         }
 
         private void displayCompareResult()
         {
+            
+        }
+
+        private void displayLotName()
+        {
+            string str = _lotSummery.LotName;
+            lblLotName.Text = str;
+        }
+        
+        private void displayDetail()
+        {
             string str = null;
             int idx = 1;
-            int lineIdx = 0;
+            int resultIdx = 0;
             foreach (var item in _lotSummery.MarkCompList.Data)
             {
                 if (idx == 1)
@@ -81,21 +96,12 @@ namespace MarkrCompare
                 {
                     foreach (var item2 in item.Comp)
                     {
-                        //str += $"{idx++} : {item.Comp[lineIdx++, ]}";
+                        str += $"{idx++} : {item2[resultIdx++]}";
                     }
                 }
             }
-            
-        }
 
-        private void displayLotName()
-        {
-
-        }
-        
-        private void displayDetial()
-        {
-
+            lblProcess.Text = str;
         }
 
         /// <summary>
@@ -158,5 +164,6 @@ namespace MarkrCompare
         }
         #endregion
 
+        
     }
 }

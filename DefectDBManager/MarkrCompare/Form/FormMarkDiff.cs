@@ -22,6 +22,7 @@ namespace MarkrCompare
         #region Event
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
+        public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
         #endregion
 
         public FormMarkDiff()
@@ -284,7 +285,7 @@ namespace MarkrCompare
 
         private void updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc proc)
         {
-            int idx = (int)DefectDBManager.Preproc.eProc.Live;
+            int idx = (int)proc;
             _lotListForms[idx].OnClearSummaryData();
             string ip = "";
             int checkDuration = 5;
@@ -292,14 +293,27 @@ namespace MarkrCompare
 
             for (int i = 0; i < _lotManager.ProcLNCD.Info.Count; i++)
             {
-                if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
+                switch (proc)
                 {
-                    line = _lotManager.ProcLNCD.Info[i].Name;
-                    ip = _lotManager.ProcLNCD.Info[i].TargetIP;
-                    checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
+                    case DefectDBManager.Preproc.eProc.Live:
+                        if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
+                        {
+                            line = _lotManager.ProcLNCD.Info[i].Name;
+                            ip = _lotManager.ProcLNCD.Info[i].TargetIP;
+                            checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
 
-                    _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
+                            _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
+                        }
+                        break;
+                    case DefectDBManager.Preproc.eProc.Search:
+                        _lotListForms[idx].AddSummaryData();
+                        break;
+                    case DefectDBManager.Preproc.eProc.Total:
+                        break;
+                    default:
+                        break;
                 }
+                
             }
 
         }
@@ -380,5 +394,11 @@ namespace MarkrCompare
         }
         #endregion
 
+        #region Search 완료 신호
+        public void UpdateSearchLotList()
+        {
+            updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Search);
+        }
+        #endregion
     }
 }

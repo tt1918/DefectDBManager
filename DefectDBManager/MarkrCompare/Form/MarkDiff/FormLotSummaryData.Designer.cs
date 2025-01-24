@@ -173,6 +173,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLotSummaryData_FormClosing);
             this.Load += new System.EventHandler(this.FormLotSummaryData_Load);
             this.VisibleChanged += new System.EventHandler(this.FormLotSummaryData_VisibleChanged);
+            this.DoubleClick += new System.EventHandler(this.FormLotSummaryData_DoubleClick);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
