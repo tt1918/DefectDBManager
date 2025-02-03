@@ -1,5 +1,6 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -107,11 +108,22 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public void OnUpdateLotInfo(PreprocLot lot)
+        public void OnUpdateLotInfo(PreprocLot lot, PreprocLNCDInfo info)
         {
             _crtLot = lot;
 
             // Rollmap update
+            int defIdx = 0;
+            foreach (var item in lot.FaultData.FLTDAT)
+            {
+                foreach (var item2 in item.Data)
+                {
+                    foreach (var d in item2.Data.Data)
+                    {
+                        Rollmap.AddPrevDefect(new PrevCompareDefect(0, d.XPOS_M, d.YPOS_M, d.SIZE_AREA, 0, defIdx++, info.SymbolColor, info.Symbol));
+                    }
+                }
+            }
 
             // 요약 정보 추가
             displayRollMapSummary();

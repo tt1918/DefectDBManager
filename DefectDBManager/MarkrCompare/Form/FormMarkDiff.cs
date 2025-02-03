@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DefectDBManager;
+using DefectDBManager.Preproc;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -394,10 +396,27 @@ namespace MarkrCompare
         }
         #endregion
 
-        #region Search 완료 신호
+        #region Search 완료
         public void UpdateSearchLotList()
         {
             updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Search);
+        }
+
+        public void UpdateRollmap(PreprocLot lot)
+        {
+            PreprocLNCDInfo info = new PreprocLNCDInfo();
+            foreach (var item in lot.INSPDAT)
+            {
+                foreach (var item2 in item)
+                {
+                    foreach (var item3 in item2.Data)
+                    {
+                        info = _lotManager.ProcLNCD.Info.Find(x => x.Name == item3.LNCD);
+                        if (info != null) break;
+                    }
+                }
+            }
+            _rollMapForm.OnUpdateLotInfo(lot, info);
         }
         #endregion
     }
