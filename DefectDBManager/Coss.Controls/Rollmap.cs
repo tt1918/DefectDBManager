@@ -1993,18 +1993,18 @@ namespace Coss.Controls
 
         public void AddPrevDefect(PrevCompareDefect defect, bool draw = true)
         {
-            if (useQueue)
-            {
-                lock (inputBufferPrev)
-                {
-                    inputBufferPrev.Enqueue(defect);
-                }
-            }
-            else
-            {
-                //AddPrevDefectInner(new RollmapDefect(-1, (float)defect.posx, (float)defect.posy, 0, 0, 0, true, 1), draw);
-                AddPrevDefectInner(defect, draw);
-            }
+            //if (useQueue)
+            //{
+            //    lock (inputBufferPrev)
+            //    {
+            //        inputBufferPrev.Enqueue(defect);
+            //    }
+            //}
+            //else
+            //{
+            //    AddPrevDefectInner(defect, draw);
+            //}
+            AddPrevDefectInner(defect, draw);
         }
     }
 }

@@ -157,7 +157,7 @@ namespace Coss.Controls
         List<NelCompareDefect> compareDefect = new List<NelCompareDefect>();
         //이전공정 결점비교 데이터
         List<PointF> prevCompareRollmapDefect = new List<PointF>();
-        Queue<PrevCompareDefect> prevDrawPoint = new Queue<PrevCompareDefect>();
+        List<PrevCompareDefect> prevDrawPoint = new List<PrevCompareDefect>();
 
         //롤맵 X축 Offset 추가 @ATW 240409
         public int DefectOffsetX { get; set; } = 0;
@@ -405,21 +405,22 @@ namespace Coss.Controls
         }
 
         //이전공정 추가 @ATW 240320
-        public bool AddPrevPoint(PrevCompareDefect defect)
+        public void AddPrevPoint(PrevCompareDefect defect)
         {
-            if (useQueue)
-            {
-                lock (locker)
-                {
-                    prevDrawPoint.Enqueue(defect);
-                    if (kMaxRollmapQueueSize < prevDrawPoint.Count)
-                    {
-                        prevDrawPoint.Dequeue();
-                    }
-                }
-                return true;
-            }
-            return false;
+            prevDrawPoint.Add(defect);
+            //if (useQueue)
+            //{
+            //    lock (locker)
+            //    {
+            //        prevDrawPoint.Enqueue(defect);
+            //        if (kMaxRollmapQueueSize < prevDrawPoint.Count)
+            //        {
+            //            prevDrawPoint.Dequeue();
+            //        }
+            //    }
+            //    return true;
+            //}
+            //return false;
         }
 
         public SerieParameter GetParameter(int serieIndex)
@@ -836,26 +837,24 @@ namespace Coss.Controls
                                 }
                             }
 
-                            if (ComparePostion)
+                            
+                            brush.Opacity = 1f;
+                            var offsetX = -(8 / 3);
+                            var offsetY = -(8 + 1);
+                            for (int i = 0; i < prevDrawPoint.Count; i++)
                             {
-                                brush.Opacity = 1f;
-                                var offsetX = -(8 / 3);
-                                var offsetY = -(8 + 1);
-                                for (int i = 0; i < compareDefect.Count; i++)
-                                {
-                                    if (!CompareShowDefect[compareDefect[i].optic]) continue;
-                                    string symbol = "△";                                    
-                                    brush.Color = ColorConverter.ColorToRawColor(compareDefect[i].color);
-                                    x = (float)(((compareDefect[i].calcX - real.X) * ScaleRealX + view.Left) + offsetX);
-                                    y = (float)(((compareDefect[i].calcY - real.Y) * ScaleRealY + view.Top) + offsetY);
-                                    var txtLayout = GetTextLayout(writeFactory, txtFormat, symbol);
+                                //if (!CompareShowDefect[compareDefect[i].optic]) continue;
+                                string symbol = prevDrawPoint[i].symbol;
+                                brush.Color = ColorConverter.ColorToRawColor(prevDrawPoint[i].color);
+                                x = (float)(((prevDrawPoint[i].posx - real.X) * ScaleRealX + view.Left) + offsetX);
+                                y = (float)(((prevDrawPoint[i].posy - real.Y) * ScaleRealY + view.Top) + offsetY);
+                                var txtLayout = GetTextLayout(writeFactory, txtFormat, symbol);
 #if USE_SHARP_DX
-                                    renderTarget.DrawTextLayout(new RawVector2(x, y), txtLayout, brush);
+                                renderTarget.DrawTextLayout(new RawVector2(x, y), txtLayout, brush);
 #else
-                        renderTarget.DrawTextLayout(new D2D1Point2F(x, y), txtLayout, brush);
+                    renderTarget.DrawTextLayout(new D2D1Point2F(x, y), txtLayout, brush);
 #endif
-                                }
-                            }                            
+                            }
 
                             //클릭한결점은 다시 그려준다
                             if (oldClicked.Id >= 0 && oldClicked.Serie >= 0)

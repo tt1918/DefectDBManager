@@ -1,5 +1,6 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,23 +103,42 @@ namespace MarkrCompare
 
         }
 
-        public void AddSummaryData()
+        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem)
         {
-            FormLotSummaryData form = new FormLotSummaryData();
-            form.TopLevel = false;
-            form.Parent = this.flowLayoutPanel1;
-            form.Show();
-            if (_dicFormSummary.ContainsKey("TEST"))
+            BeginInvoke(new Action(delegate 
             {
-                _dicFormSummary["TEST"].Add(form);
-            }
-            else
-            {
-                _dicFormSummary.Add("TEST", new List<FormLotSummaryData>());
+                foreach (var summary in lotSummary)
+                {
+                    FormLotSummaryData form = new FormLotSummaryData();
+                    form.TopLevel = false;
+                    form.Parent = this.flowLayoutPanel1;
+                    //DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                    //foreach (var item in lotManager.LiveProduct)
+                    //{
+                    //    var keyData = item.Key.Split('_');
+                    //    for (int i = 0; i < lotManager.ProcSetting.Count; i++)
+                    //    {
+                    //        if (lotManager.ProcSetting[i].Name == keyData[2])
+                    //            procItem = lotManager.ProcSetting[i];
+                    //    }
+                    //}
+                    form.ProcItem = procItem;
+                    form.LotSummery = summary;
+                    form.Show();
+                    if (_dicFormSummary.ContainsKey("TEST"))
+                    {
+                        _dicFormSummary["TEST"].Add(form);
+                    }
+                    else
+                    {
+                        _dicFormSummary.Add("TEST", new List<FormLotSummaryData>());
 
-                _dicFormSummary["TEST"].Add(form);
-                flowLayoutPanel1.Controls.Add(form);
-            }
+                        _dicFormSummary["TEST"].Add(form);
+                        flowLayoutPanel1.Controls.Add(form);
+                    }
+                }
+                
+            }));
         }
 
         public void RemoveSummary(bool[] lots)

@@ -18,6 +18,7 @@ namespace MarkrCompare
     {
         #region Param
         private PreprocLot _crtLot = null;
+        private Font rollmapDefectFont = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
         #endregion
 
         #region RollMap
@@ -51,7 +52,7 @@ namespace MarkrCompare
             Rollmap.OffsetY = 0;
             Rollmap.WholeWidth = 1350;
             Rollmap.WholeHeight = 2000000;
-            Rollmap.Init(false, false, false, this.Text == "Load" ? false : true);
+            Rollmap.Init(false, false, false, false);
             Rollmap.UseVscroll = true;
 
             Rollmap.AutomapViewOffsetY = 0;
@@ -110,21 +111,23 @@ namespace MarkrCompare
         #region Event
         public void OnUpdateLotInfo(PreprocLot lot, PreprocLNCDInfo info)
         {
+            if (lot.FaultData == null) return;
             _crtLot = lot;
 
             // Rollmap update
             int defIdx = 0;
-            foreach (var item in lot.FaultData.FLTDAT)
+            foreach (var item in lot.MarkCompList.Data)
             {
-                foreach (var item2 in item.Data)
+                foreach (var item2 in item.Comp)
                 {
-                    foreach (var d in item2.Data.Data)
+                    foreach (var d in item2)
                     {
-                        Rollmap.AddPrevDefect(new PrevCompareDefect(0, d.XPOS_M, d.YPOS_M, d.SIZE_AREA, 0, defIdx++, info.SymbolColor, info.Symbol));
+                        Rollmap.AddPrevDefect(new PrevCompareDefect(0, d.XPOS_M, d.YPOS_M, d.SIZE, 0, defIdx++, info.SymbolColor, info.Symbol));
                     }
                 }
             }
 
+            Rollmap.RedrawAll();
             // 요약 정보 추가
             displayRollMapSummary();
         }
@@ -156,5 +159,9 @@ namespace MarkrCompare
         }
         #endregion
 
+        private void FormRollMap_Load(object sender, EventArgs e)
+        {
+            Rollmap.DefectFont = this.rollmapDefectFont;
+        }
     }
 }

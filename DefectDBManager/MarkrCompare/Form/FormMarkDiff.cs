@@ -308,7 +308,7 @@ namespace MarkrCompare
                         }
                         break;
                     case DefectDBManager.Preproc.eProc.Search:
-                        _lotListForms[idx].AddSummaryData();
+                        //_lotListForms[idx].AddSummaryData(_lotManager.LOT[]);
                         break;
                     case DefectDBManager.Preproc.eProc.Total:
                         break;
@@ -399,7 +399,20 @@ namespace MarkrCompare
         #region Search 완료
         public void UpdateSearchLotList()
         {
-            updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Search);
+            //updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Search);
+            foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
+            {
+                PreprocItem procItem = new PreprocItem();
+                foreach (var set in _lotManager.ProcSetting.Data)
+                {
+                    if (set.Name == item.Model)
+                    {
+                        procItem = set;
+                        break;
+                    }
+                }
+                _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem);
+            }
         }
 
         public void UpdateRollmap(PreprocLot lot)
@@ -411,7 +424,7 @@ namespace MarkrCompare
                 {
                     foreach (var item3 in item2.Data)
                     {
-                        info = _lotManager.ProcLNCD.Info.Find(x => x.Name == item3.LNCD);
+                        info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD);
                         if (info != null) break;
                     }
                 }

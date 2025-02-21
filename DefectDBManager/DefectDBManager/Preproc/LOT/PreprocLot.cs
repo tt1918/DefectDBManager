@@ -168,15 +168,21 @@ namespace DefectDBManager
                     limitMax = procData.CompRange[compIdx-1].MaxRange;
 
                     lineCnt = 0;
+                    //int cnt = 0;
                     foreach (var preItem in FaultData.PreMarkData)
                     {
                         if (preItem.Count <= 0) continue;
                         foreach (var preItem1 in preItem)
                         {
-                            subData = preItem1.Data.FindAll(x => Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
-                                                            && Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
+                            subData = preItem1.Data.FindAll(x => /*Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
+                                                            &&*/ Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
+                            //if (Math.Abs(preItem1.Data[cnt].OFFSET - posY) < limitMax && Math.Abs(preItem1.Data[cnt].OFFSET - posY) >= limitMin)
+                            //{
+
+                            //}
+                            //cnt++;
                             foreach (var preItem2 in subData)
                                 comp.AddCompData(lineCnt, compIdx, preItem2);
                         }

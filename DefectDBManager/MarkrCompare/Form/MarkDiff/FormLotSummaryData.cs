@@ -220,8 +220,12 @@ namespace MarkrCompare
         {
             lblStatus.Text = _lineName;
         }
+
         #endregion
 
-        
+        private void tableLayoutPanel2_DoubleClick(object sender, EventArgs e)
+        {
+            ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
+        }
     }
 }

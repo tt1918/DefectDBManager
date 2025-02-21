@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -367,8 +367,8 @@ namespace DefectDBManager
 
                     foreach(var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
-                        if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
-                        else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
+                        if (/*isWildCard == true && */ptry0p.Y0ZKNM.Contains(productName) == false) continue;
+                        //else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
                         
                         list.Add(ptry0p.Clone());
                     }

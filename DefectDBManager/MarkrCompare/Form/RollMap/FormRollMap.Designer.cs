@@ -37,8 +37,8 @@
             this.rbScale4 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lvMapSummary = new System.Windows.Forms.ListView();
             this.lblSummary = new CustomControls.RoundLabel();
+            this.lvMapSummary = new System.Windows.Forms.ListView();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -215,18 +215,6 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(337, 748);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
-            // lvMapSummary
-            // 
-            this.lvMapSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvMapSummary.HideSelection = false;
-            this.lvMapSummary.Location = new System.Drawing.Point(1, 31);
-            this.lvMapSummary.Margin = new System.Windows.Forms.Padding(1);
-            this.lvMapSummary.Name = "lvMapSummary";
-            this.lvMapSummary.Size = new System.Drawing.Size(335, 716);
-            this.lvMapSummary.TabIndex = 0;
-            this.lvMapSummary.UseCompatibleStateImageBehavior = false;
-            this.lvMapSummary.View = System.Windows.Forms.View.List;
-            // 
             // lblSummary
             // 
             this.lblSummary.AutoSize = true;
@@ -249,6 +237,18 @@
             this.lblSummary.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblSummary.Thickness = 1;
             // 
+            // lvMapSummary
+            // 
+            this.lvMapSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvMapSummary.HideSelection = false;
+            this.lvMapSummary.Location = new System.Drawing.Point(1, 31);
+            this.lvMapSummary.Margin = new System.Windows.Forms.Padding(1);
+            this.lvMapSummary.Name = "lvMapSummary";
+            this.lvMapSummary.Size = new System.Drawing.Size(335, 716);
+            this.lvMapSummary.TabIndex = 0;
+            this.lvMapSummary.UseCompatibleStateImageBehavior = false;
+            this.lvMapSummary.View = System.Windows.Forms.View.List;
+            // 
             // FormRollMap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -263,6 +263,7 @@
             this.Name = "FormRollMap";
             this.Text = "FormRollMap";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormRollMap_FormClosing);
+            this.Load += new System.EventHandler(this.FormRollMap_Load);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
