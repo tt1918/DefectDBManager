@@ -170,7 +170,9 @@ namespace DefectDBManager
             _product = new Dictionary<string, PTRY0PList>();
             _lot = new Dictionary<string, List<PreprocLot>>();
             _procLNCD = new Preproc.PreprocLNCD();
-            
+            _liveProduct = new Dictionary<string, PTRY0PList>();
+            _Livelot = new Dictionary<string, List<PreprocLot>>();
+
             LoadProcLNCD();
 
             _precSetting.Load();

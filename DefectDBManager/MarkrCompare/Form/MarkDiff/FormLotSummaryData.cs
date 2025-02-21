@@ -29,6 +29,18 @@ namespace MarkrCompare
         private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
         private eSummaryMode _mode = eSummaryMode.Mornitoring;
 
+        public DefectDBManager.Preproc.PreprocItem ProcItem
+        {
+            get { return procItem; }
+            set 
+            { 
+                procItem = value;
+            }
+        }
+        //private DefectDBManager.PreprocLotManager _lotManager = new DefectDBManager.PreprocLotManager();
+        private DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+
+        bool isError = false;
 
         #region Form
         public FormLotSummaryData()
@@ -65,42 +77,88 @@ namespace MarkrCompare
         #region 데이터 표시
         private void displayLotSummery()
         {
+            displayDetail();
             displayCompareResult();
             displayLotName();
-            displayDetail();
         }
 
         private void displayCompareResult()
         {
-            
+            if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
+            {
+                lblStatus.Text = "Error";
+                return;
+            }
+
+            if (isError)
+            {
+                lblStatus.BkColor = Color.Red;
+                lblStatus.Text = "오차 발생";
+            }
+            else
+            {
+                lblStatus.BkColor = Color.MidnightBlue;
+                lblStatus.Text = "정상";
+            }
         }
 
         private void displayLotName()
         {
             string str = _lotSummery.LotName;
             lblLotName.Text = str;
+
+            if (isError)
+                lblLotName.BkColor = Color.Red;
+            else
+                lblLotName.BkColor = Color.MidnightBlue;
         }
         
         private void displayDetail()
         {
-            string str = null;
-            int idx = 1;
-            int resultIdx = 0;
-            foreach (var item in _lotSummery.MarkCompList.Data)
-            {
-                if (idx == 1)
+            if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
-                    str += $"{idx++} : {item.Base}%";
+                lblProcess.Text = "비교 데이터 없음";
+                return;
                 }
-                else
+
+            string str = null;
+            int[] compCnt = new int[_lotSummery.MarkCompList.Data[0].Comp.Length];
+
+            foreach (var item in _lotSummery.MarkCompList.Data)
                 {
-                    foreach (var item2 in item.Comp)
+                //baseCnt = 0;
+                for (int i = 0; i < item.Comp.GetLength(0); i++)
                     {
-                        str += $"{idx++} : {item2[resultIdx++]}";
+                    if (item.Comp[i, 0].Count > 0)
+                        compCnt[0]++;
+
+                    for (int j = 1; j < item.Comp.GetLength(1); j++)
+                    {
+                        if (item.Comp[i, j].Count > 0)
+                            compCnt[j]++;
                     }
                 }
             }
 
+            double[] result = new double[compCnt.Length];
+            for (int i = 0; i < compCnt.Length; i++)
+            {
+                result[i] = (double)compCnt[i] / _lotSummery.MarkCompList.Data.Count * 100;
+                if (i == compCnt.Length - 1)
+                {
+                    str += $"Case {i + 1} : {result[i]:F2}%";
+                }
+                else
+                {
+                    str += $"Case {i + 1} : {result[i]:F2}%, ";
+                }
+
+                if (i > 0 && result[i - 1] - result[i] > procItem.CompRange[i - 1].Accuracy)
+                {
+                    isError = true;
+                }
+            }
+            
             lblProcess.Text = str;
         }
 

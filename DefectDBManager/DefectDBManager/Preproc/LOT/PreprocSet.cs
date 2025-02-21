@@ -112,6 +112,7 @@ namespace DefectDBManager.Preproc
 
         public bool IsValidFLTID(string key, float size)
         {
+            if (IsFltAll) return true;
             foreach (FltInfo info in FltInfos)
             {
                 if (info.ID == key)

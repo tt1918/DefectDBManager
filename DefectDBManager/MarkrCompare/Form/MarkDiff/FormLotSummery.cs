@@ -69,7 +69,7 @@ namespace MarkrCompare
             _dicLotSummary = null;
         }
 
-        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary)
+        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager)
         {
             try
             {
@@ -77,21 +77,36 @@ namespace MarkrCompare
 
                 foreach (var lot in lotSummary)
                 {
-                    FormLotSummaryData form = new FormLotSummaryData(lot);
-                    form.TopLevel = false;
-                    form.Show();
-
-                    if (_dicLotSummary.ContainsKey(lncd))
+                    BeginInvoke(new Action(delegate 
                     {
-                        _dicLotSummary[lncd].Add(form);
-                    }
-                    else 
-                    {
-                        _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
+                        FormLotSummaryData form = new FormLotSummaryData();
+                        DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                        foreach (var item in lotManager.LiveProduct)
+                        {
+                            var keyData = item.Key.Split('_');
+                            for (int i = 0; i < lotManager.ProcSetting.Count; i++)
+                            {
+                                if (lotManager.ProcSetting[i].Name == keyData[2])
+                                    procItem = lotManager.ProcSetting[i];
+                            }
+                        }
+                        form.ProcItem = procItem;
+                        form.LotSummery = lot;
+                        form.TopLevel = false;
+                        form.Show();
 
-                        _dicLotSummary[lncd].Add(form);
-                        flpLotSummary.Controls.Add(form);
-                    }
+                        if (_dicLotSummary.ContainsKey(lncd))
+                        {
+                            _dicLotSummary[lncd].Add(form);
+                        }
+                        else
+                        {
+                            _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
+
+                            _dicLotSummary[lncd].Add(form);
+                            flpLotSummary.Controls.Add(form);
+                        }
+                    }));
                 }
             }
             catch

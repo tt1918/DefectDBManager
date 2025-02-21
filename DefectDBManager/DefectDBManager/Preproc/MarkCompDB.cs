@@ -81,6 +81,7 @@ namespace DefectDBManager.Preproc
             _LOG = new LogDB();
 
             PTRY0PList_Data = new PTRY0PList();
+            _PreprocItem = new PreprocItem();
 
             _doDiscon = disconnDB;
         }

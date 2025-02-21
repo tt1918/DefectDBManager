@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -215,6 +215,8 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
+                    _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
+
                     SearchLiveDefectData(lncd, lotName, preprocItem);
 
                     // 검색 진행 상황을 
@@ -281,15 +283,17 @@ namespace DefectDBManager
             if (LotManager.LiveProduct != null)
                 LotManager.LiveProduct.Clear();
             // 금일 날자로 설정
-            DateTime stTime = DateTime.Today;
-            DateTime edTime = DateTime.Now;
+            //DateTime stTime = DateTime.Today;
+            //DateTime edTime = DateTime.Now;
+            DateTime stTime = new DateTime(2025, 02, 14);
+            DateTime edTime = new DateTime(2025, 02, 14, 23, 59, 59);
 
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
             string lncd = string.Empty;
             foreach (var data in filter.Data)
             {
                 // 검색 대상이 아니면 처리하지 않음.
-                if (data.IsInTime() == false) continue;
+                //if (data.IsInTime() == false) continue;
 
                 lncd = string.Empty;
                 for (int i=0; i< LotManager.ProcLNCD.Info.Count; i++)

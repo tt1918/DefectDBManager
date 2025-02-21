@@ -371,7 +371,7 @@ namespace MarkrCompare
                 string[] keyData = item.Key.Split('_');
                 string lncd = keyData[0];
 
-                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd]);
+                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd], _lotManager);
             }
         }
         #endregion

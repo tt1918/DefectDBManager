@@ -131,8 +131,8 @@ namespace DefectDBManager
                 comp.Base = item;
                 comp.SetCompRange(lineCompCount, compCount);
 
-                posX = item.OFFSET;
-                posY = item.XPOS_M;
+                posX = item.XPOS_M;
+                posY = item.OFFSET; 
 
                 #region 기준 검사 구역 
                 int compIdx = 0;
@@ -144,11 +144,12 @@ namespace DefectDBManager
                 int lineCnt = 0;
                 foreach (var preItem in FaultData.PreMarkData)
                 {
+                    if (preItem.Count <= 0) continue;
                     foreach( var preItem1 in preItem)
                     {
                         subData = preItem1.Data.FindAll(x => Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
                                                         && Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
-                                                        && x.FAULTID == item.FAULTID); // 결점 ID가 같고 영역 내에 들어오는 경우
+                                                        /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
 
                         foreach (var preItem2 in subData)
                             comp.AddCompData(lineCnt, compIdx, preItem2);
@@ -169,11 +170,12 @@ namespace DefectDBManager
                     lineCnt = 0;
                     foreach (var preItem in FaultData.PreMarkData)
                     {
+                        if (preItem.Count <= 0) continue;
                         foreach (var preItem1 in preItem)
                         {
                             subData = preItem1.Data.FindAll(x => Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
                                                             && Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
-                                                            && x.FAULTID == item.FAULTID); // 결점 정보가 같고
+                                                            /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
                             foreach (var preItem2 in subData)
                                 comp.AddCompData(lineCnt, compIdx, preItem2);
