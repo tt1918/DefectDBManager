@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace MarkrCompare
 {
-    public enum eSummaryMode { Mornitoring, LiveErrorCheck}
+    public enum eSummaryMode { Mornitoring, LiveErrorCheck }
     public partial class FormLotSummaryData : Form
     {
         public DefectDBManager.PreprocLot LotSummery
         {
             get { return _lotSummery; }
-            set 
-            { 
+            set
+            {
                 _lotSummery = value;
                 displayLotSummery();
             }
@@ -32,8 +32,8 @@ namespace MarkrCompare
         public DefectDBManager.Preproc.PreprocItem ProcItem
         {
             get { return procItem; }
-            set 
-            { 
+            set
+            {
                 procItem = value;
             }
         }
@@ -41,6 +41,11 @@ namespace MarkrCompare
         private DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
 
         bool isError = false;
+        public bool IsError 
+        {
+            get { return isError; }
+            set { isError = value; }
+        }
 
         #region Form
         public FormLotSummaryData()
@@ -112,23 +117,23 @@ namespace MarkrCompare
             else
                 lblLotName.BkColor = Color.MidnightBlue;
         }
-        
+
         private void displayDetail()
         {
             if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
-                {
+            {
                 lblProcess.Text = "비교 데이터 없음";
                 return;
-                }
+            }
 
             string str = null;
             int[] compCnt = new int[_lotSummery.MarkCompList.Data[0].Comp.Length];
 
             foreach (var item in _lotSummery.MarkCompList.Data)
-                {
+            {
                 //baseCnt = 0;
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
-                    {
+                {
                     if (item.Comp[i, 0].Count > 0)
                         compCnt[0]++;
 
@@ -158,24 +163,24 @@ namespace MarkrCompare
                     isError = true;
                 }
             }
-            
+
             lblProcess.Text = str;
         }
 
         /// <summary>
         /// 지정 경로 Status.txt 파일의 상태 표시 
         /// </summary>
-        public void  SetStatusAlarm()
+        public void SetStatusAlarm()
         {
 
         }
         #endregion
 
         #region Status.txt 상태 표시
-        Timer   _timerStatus = null;
-        string  _targetIP = string.Empty;
-        int     _duration = 60 * 1000;
-        string  _lineName = string.Empty;
+        Timer _timerStatus = null;
+        string _targetIP = string.Empty;
+        int _duration = 60 * 1000;
+        string _lineName = string.Empty;
 
         public void SetStatusCheck(string lineName, string ip, int min)
         {
@@ -200,7 +205,7 @@ namespace MarkrCompare
 
         private void closeStatusTimer()
         {
-            if(_timerStatus!=null)
+            if (_timerStatus != null)
             {
                 _timerStatus.Stop();
                 _timerStatus.Dispose();

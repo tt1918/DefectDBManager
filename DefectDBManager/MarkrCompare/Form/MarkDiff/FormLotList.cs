@@ -185,7 +185,7 @@ namespace MarkrCompare
             {
                 if (item.Contains(data))
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery);
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.ProcItem);
                     break;
                 }
             }

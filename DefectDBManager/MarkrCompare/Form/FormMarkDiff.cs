@@ -415,7 +415,7 @@ namespace MarkrCompare
             }
         }
 
-        public void UpdateRollmap(PreprocLot lot)
+        public void UpdateRollmap(PreprocLot lot, PreprocItem procItem)
         {
             PreprocLNCDInfo info = new PreprocLNCDInfo();
             foreach (var item in lot.INSPDAT)
@@ -429,7 +429,7 @@ namespace MarkrCompare
                     }
                 }
             }
-            _rollMapForm.OnUpdateLotInfo(lot, info);
+            _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
         }
         #endregion
     }

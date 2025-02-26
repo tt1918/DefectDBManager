@@ -158,6 +158,7 @@ namespace Coss.Controls
         //이전공정 결점비교 데이터
         List<PointF> prevCompareRollmapDefect = new List<PointF>();
         List<PrevCompareDefect> prevDrawPoint = new List<PrevCompareDefect>();
+        List<PrevErrorAreaPosition> prevErrorArea = new List<PrevErrorAreaPosition>();
 
         //롤맵 X축 Offset 추가 @ATW 240409
         public int DefectOffsetX { get; set; } = 0;
@@ -334,7 +335,6 @@ namespace Coss.Controls
                     _markedIdQueue.Clear();
                     _aiClassIdQueue.Clear();
                     _aiClassIdToClassQueue.Clear();
-                    prevDrawPoint.Clear();
                 }
                 else
                 {
@@ -342,6 +342,8 @@ namespace Coss.Controls
                     {
                         serie.Value.Defects.Clear();
                     }
+                    prevDrawPoint.Clear();
+                    prevErrorArea.Clear();
                 }
             }
             oldClicked.Id = -1;
@@ -408,19 +410,12 @@ namespace Coss.Controls
         public void AddPrevPoint(PrevCompareDefect defect)
         {
             prevDrawPoint.Add(defect);
-            //if (useQueue)
-            //{
-            //    lock (locker)
-            //    {
-            //        prevDrawPoint.Enqueue(defect);
-            //        if (kMaxRollmapQueueSize < prevDrawPoint.Count)
-            //        {
-            //            prevDrawPoint.Dequeue();
-            //        }
-            //    }
-            //    return true;
-            //}
-            //return false;
+        }
+
+        public void AddPrevErrorPoint(PrevErrorAreaPosition point)
+        {
+            if (prevErrorArea.Contains(point)) return;
+            prevErrorArea.Add(point);
         }
 
         public SerieParameter GetParameter(int serieIndex)
@@ -854,6 +849,16 @@ namespace Coss.Controls
 #else
                     renderTarget.DrawTextLayout(new D2D1Point2F(x, y), txtLayout, brush);
 #endif
+                            }
+
+                            for (int i = 0; i < prevErrorArea.Count; i++) 
+                            {
+                                brush.Color = new RawColor4(1.0f, 0.0f, 0.0f, 0.5f);
+                                float x1 = (float)((prevErrorArea[i].startX - real.X) * ScaleRealX + view.Left);
+                                float y1 = (float)((prevErrorArea[i].startY - real.Y) * ScaleRealY + view.Top);
+                                float x2 = (float)((prevErrorArea[i].endX - real.X) * ScaleRealX + view.Left);
+                                float y2 = (float)((prevErrorArea[i].endY - real.Y) * ScaleRealY + view.Top);
+                                renderTarget.FillRectangle(new RawRectangleF(x1, y1, x2, y2), brush);
                             }
 
                             //클릭한결점은 다시 그려준다
@@ -3252,5 +3257,20 @@ namespace Coss.Controls
         public int id { get; set; }
         public Color color { get; set; }
         public string symbol { get; set; }
+    }
+
+    public struct PrevErrorAreaPosition
+    {
+        public double startX { get; set; }
+        public double startY { get; set; }
+        public double endX { get; set; }
+        public double endY { get; set; }
+        public PrevErrorAreaPosition(double startX, double startY, double endX, double endY)
+        {
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.endY = endY;
+        }
     }
 }

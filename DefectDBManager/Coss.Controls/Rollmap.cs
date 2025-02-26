@@ -1732,7 +1732,7 @@ namespace Coss.Controls
                     ViewAreaChanged(this, mapViewOption, ViewRealRect);
                 }
 
-                RollmapUpDownChanged(up);
+                //RollmapUpDownChanged(up);
             }
         }
 
@@ -1740,7 +1740,7 @@ namespace Coss.Controls
         private void Rollmap_MouseScroll(object sender, MouseEventArgs e)
         {
             //롤맵 양쪽 바코드 및 특이사항, 결점다발구간 표시 추가 @ATW 231220
-            if (this.Name != "rollmap") return;
+            if (this.Name.ToLower() != "rollmap") return;
             if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
             {
                 //확대 축소
@@ -1974,37 +1974,16 @@ namespace Coss.Controls
         private void AddPrevDefectInner(PrevCompareDefect defect, bool draw = true)
         {
             defects.AddPrevPoint(defect);
-
-            //if (draw)
-            //{
-            //    //var param = defects.GetParameter(defect.Serie);
-            //    //if (defect != null && defects.GetViewType(defect.Serie))
-            //    {
-            //        _hwndRenderTarget.BeginDraw();
-            //        var symbol = "%";
-
-            //        var txtLayout = defects.GetTextLayout(_dWriteFactory, _textFormat, symbol);
-            //        defect.Draw(_hwndRenderTarget, txtLayout, _colorBrush, this.ViewRealRect, this.viewRect,
-            //            symbol, this.Font, Color.AliceBlue);
-            //        _hwndRenderTarget.EndDraw();
-            //    }
-            //}
         }
 
         public void AddPrevDefect(PrevCompareDefect defect, bool draw = true)
         {
-            //if (useQueue)
-            //{
-            //    lock (inputBufferPrev)
-            //    {
-            //        inputBufferPrev.Enqueue(defect);
-            //    }
-            //}
-            //else
-            //{
-            //    AddPrevDefectInner(defect, draw);
-            //}
             AddPrevDefectInner(defect, draw);
+        }
+
+        public void AddPrevErrorArea(PrevErrorAreaPosition point)
+        {
+            defects.AddPrevErrorPoint(point);
         }
     }
 }

@@ -33,7 +33,6 @@ namespace MarkrCompare
 
         public void InitRollMapAndSummary()
         {
-            initRollMapSummary();
             initRollMap();
         }
 
@@ -109,53 +108,40 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public void OnUpdateLotInfo(PreprocLot lot, PreprocLNCDInfo info)
+        public void OnUpdateLotInfo(PreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
         {
             if (lot.FaultData == null) return;
+            Rollmap.RemoveAll();
             _crtLot = lot;
-
+            
             // Rollmap update
             int defIdx = 0;
             foreach (var item in lot.MarkCompList.Data)
             {
+                int compCnt = 0;
                 foreach (var item2 in item.Comp)
                 {
                     foreach (var d in item2)
                     {
                         Rollmap.AddPrevDefect(new PrevCompareDefect(0, d.XPOS_M, d.YPOS_M, d.SIZE, 0, defIdx++, info.SymbolColor, info.Symbol));
                     }
+
+                    if (item2.Count > 0) 
+                        compCnt++;
+                }
+
+                if (compCnt > 0)
+                {
+                    int areaX = (int)(item.Base.XPOS_M / procItem.Judge.X);
+                    int areaY = (int)(item.Base.YPOS_M / (procItem.Judge.Y * 1000));
+
+                    double x = areaX * procItem.Judge.X;
+                    double y = areaY * procItem.Judge.Y * 1000;
+                    Rollmap.AddPrevErrorArea(new PrevErrorAreaPosition(x, y, x + procItem.Judge.X, y + (procItem.Judge.Y * 1000)));
                 }
             }
 
             Rollmap.RedrawAll();
-            // 요약 정보 추가
-            displayRollMapSummary();
-        }
-        #endregion
-
-        #region RollMapSummary
-        private void initRollMapSummary()
-        {
-            lvMapSummary.Items.Clear();
-        }
-
-        private void displayRollMapSummary()
-        {
-            try
-            {
-                lvMapSummary.BeginUpdate();
-                lvMapSummary.Items.Clear();
-
-                // Data 입력
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                lvMapSummary.EndUpdate();
-            }
         }
         #endregion
 
