@@ -178,11 +178,6 @@ namespace DefectDBManager
                                                             &&*/ Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
-                            //if (Math.Abs(preItem1.Data[cnt].OFFSET - posY) < limitMax && Math.Abs(preItem1.Data[cnt].OFFSET - posY) >= limitMin)
-                            //{
-
-                            //}
-                            //cnt++;
                             foreach (var preItem2 in subData)
                                 comp.AddCompData(lineCnt, compIdx, preItem2);
                         }

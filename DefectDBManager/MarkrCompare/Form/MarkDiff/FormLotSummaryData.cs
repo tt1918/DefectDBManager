@@ -146,19 +146,19 @@ namespace MarkrCompare
             }
 
             double[] result = new double[compCnt.Length];
-            for (int i = 0; i < compCnt.Length; i++)
+            for (int i = 1; i < compCnt.Length; i++)
             {
                 result[i] = (double)compCnt[i] / _lotSummery.MarkCompList.Data.Count * 100;
                 if (i == compCnt.Length - 1)
                 {
-                    str += $"Case {i + 1} : {result[i]:F2}%";
+                    str += $"Case {i} : {result[i]:F2}%";
                 }
                 else
                 {
-                    str += $"Case {i + 1} : {result[i]:F2}%, ";
+                    str += $"Case {i} : {result[i]:F2}%, ";
                 }
 
-                if (i > 0 && result[i - 1] - result[i] > procItem.CompRange[i - 1].Accuracy)
+                if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
                 {
                     isError = true;
                 }
@@ -228,7 +228,7 @@ namespace MarkrCompare
 
         #endregion
 
-        private void tableLayoutPanel2_DoubleClick(object sender, EventArgs e)
+        private void lblLotName_DoubleClick(object sender, EventArgs e)
         {
             ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
         }

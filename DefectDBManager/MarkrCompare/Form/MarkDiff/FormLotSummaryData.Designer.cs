@@ -75,7 +75,6 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(655, 35);
             this.tableLayoutPanel2.TabIndex = 0;
-            this.tableLayoutPanel2.DoubleClick += new System.EventHandler(this.tableLayoutPanel2_DoubleClick);
             // 
             // lblStatus
             // 
@@ -120,6 +119,7 @@
             this.lblLotName.Text = "LOT";
             this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblLotName.Thickness = 1;
+            this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
             // 
             // tableLayoutPanel3
             // 

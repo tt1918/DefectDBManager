@@ -116,6 +116,7 @@
             this.lbLog.Location = new System.Drawing.Point(355, 1);
             this.lbLog.Margin = new System.Windows.Forms.Padding(1);
             this.lbLog.Name = "lbLog";
+            this.lbLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.lbLog.Size = new System.Drawing.Size(658, 198);
             this.lbLog.TabIndex = 1;
             // 

@@ -60,6 +60,7 @@ namespace DefectDBManager
             Conn.LoginInfo.PW = tbPassword.Text;
             Conn.LoginInfo.IP = tbHostIP.Text;
             Conn.LoginInfo.Port = tbPort.Text;
+            
             if(Conn.Connect()==true)
             {
                 Conn.LoginInfo.Write();

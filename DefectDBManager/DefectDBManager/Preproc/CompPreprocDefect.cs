@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -409,7 +409,7 @@ namespace DefectDBManager
 #if TEST_MODE
                 PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, ref error);
 #endif
 
                 if (lot == null) return;

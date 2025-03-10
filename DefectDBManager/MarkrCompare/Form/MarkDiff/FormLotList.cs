@@ -86,7 +86,7 @@ namespace MarkrCompare
         {
             foreach(var list in _dicFormSummary)
             {
-                foreach(var form in list.Value)
+                foreach (var form in list.Value)
                     form.Dispose();
             }
             _dicFormSummary.Clear();
@@ -185,7 +185,7 @@ namespace MarkrCompare
             {
                 if (item.Contains(data))
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.ProcItem);
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery/*, data.ProcItem*/);
                     break;
                 }
             }

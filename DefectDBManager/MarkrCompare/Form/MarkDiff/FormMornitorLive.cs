@@ -111,7 +111,12 @@ namespace MarkrCompare
         {
             try
             {
-                if (IsRun == true) return;
+                if (IsRun == true)
+                {
+                    SystemLog.DisplayFileServerLog("이미 실행중입니다.");
+                    return;
+                }
+                SystemLog.DisplayFileServerLog("실시간 검사 시작");
                 OnUpdatePrepLncdInfo?.Invoke(_procIdx);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();
@@ -126,7 +131,12 @@ namespace MarkrCompare
         {
             try
             {
-                if (IsRun == false) return;
+                if (IsRun == false)
+                {
+                    SystemLog.DisplayFileServerLog("실시간 검사가 이미 중지되었습니다.");
+                    return;
+                }
+                SystemLog.DisplayFileServerLog("실시간 검사 중지");
                 _timerLotSearchProcess.Stop();
 
                 // 검사 정지

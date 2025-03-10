@@ -756,9 +756,9 @@ namespace MarkrCompare
         {
             int selProcIdx = getValidTaskIdx(_selSetName);
 
-            ProcessData refer = _preprocSet[selProcIdx].Reference;
             try
             {
+                ProcessData refer = _preprocSet[selProcIdx].Reference;
                 refer.LineID = tbRefProcLineID.Texts;
                 refer.LNCD = tbRefLNCD.Texts;
 
