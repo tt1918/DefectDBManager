@@ -453,5 +453,20 @@ namespace MarkrCompare
             }
         }
         #endregion
+
+        List<string> csvList = new List<string>();
+        public void OpenFormCsv()
+        {
+            FormCsv form = new FormCsv();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                csvList = form.Csv;
+            }
+        }
+
+        public void CompareCsv()
+        {
+
+        }
     }
 }

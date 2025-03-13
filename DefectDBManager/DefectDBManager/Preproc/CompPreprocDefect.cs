@@ -246,6 +246,7 @@ namespace DefectDBManager
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
+            LotManager.ClearLot();
             foreach(var list in LotManager.Product)
             {
                 string[] keyData = list.Key.Split('_');

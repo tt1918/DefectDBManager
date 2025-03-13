@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnDBConnect = new CustomControls.RoundButton();
             this.lblTitle = new CustomControls.RoundLabel();
             this.btnMinimize = new CustomControls.RoundButton();
             this.lblTime = new System.Windows.Forms.Label();
@@ -38,7 +39,6 @@
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
             this.btnSetting = new CustomControls.RoundButton();
-            this.btnDBConnect = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -83,6 +83,31 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1387, 31);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // btnDBConnect
+            // 
+            this.btnDBConnect.BackColor = System.Drawing.Color.SlateGray;
+            this.btnDBConnect.BackgroundColor = System.Drawing.Color.SlateGray;
+            this.btnDBConnect.BorderColor = System.Drawing.Color.Black;
+            this.btnDBConnect.BorderRadius = 7;
+            this.btnDBConnect.BorderSize = 1;
+            this.btnDBConnect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDBConnect.FlatAppearance.BorderSize = 0;
+            this.btnDBConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDBConnect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDBConnect.ForeColor = System.Drawing.Color.White;
+            this.btnDBConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnDBConnect.Image")));
+            this.btnDBConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDBConnect.Location = new System.Drawing.Point(1162, 1);
+            this.btnDBConnect.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.btnDBConnect.Name = "btnDBConnect";
+            this.btnDBConnect.Size = new System.Drawing.Size(49, 29);
+            this.btnDBConnect.TabIndex = 3;
+            this.btnDBConnect.Text = "DB";
+            this.btnDBConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnDBConnect.TextColor = System.Drawing.Color.White;
+            this.btnDBConnect.UseVisualStyleBackColor = false;
+            this.btnDBConnect.Click += new System.EventHandler(this.btnDBConnect_Click);
             // 
             // lblTitle
             // 
@@ -150,6 +175,7 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.Controls.Add(this.btnClose, 5, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnParam, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSetting, 2, 0);
@@ -231,31 +257,6 @@
             this.btnSetting.TextColor = System.Drawing.Color.White;
             this.btnSetting.UseVisualStyleBackColor = false;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
-            // 
-            // btnDBConnect
-            // 
-            this.btnDBConnect.BackColor = System.Drawing.Color.SlateGray;
-            this.btnDBConnect.BackgroundColor = System.Drawing.Color.SlateGray;
-            this.btnDBConnect.BorderColor = System.Drawing.Color.Black;
-            this.btnDBConnect.BorderRadius = 7;
-            this.btnDBConnect.BorderSize = 1;
-            this.btnDBConnect.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDBConnect.FlatAppearance.BorderSize = 0;
-            this.btnDBConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDBConnect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDBConnect.ForeColor = System.Drawing.Color.White;
-            this.btnDBConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnDBConnect.Image")));
-            this.btnDBConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDBConnect.Location = new System.Drawing.Point(1162, 1);
-            this.btnDBConnect.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.btnDBConnect.Name = "btnDBConnect";
-            this.btnDBConnect.Size = new System.Drawing.Size(49, 29);
-            this.btnDBConnect.TabIndex = 3;
-            this.btnDBConnect.Text = "DB";
-            this.btnDBConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnDBConnect.TextColor = System.Drawing.Color.White;
-            this.btnDBConnect.UseVisualStyleBackColor = false;
-            this.btnDBConnect.Click += new System.EventHandler(this.btnDBConnect_Click);
             // 
             // FormMain
             // 

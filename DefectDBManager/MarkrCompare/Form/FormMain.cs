@@ -204,6 +204,7 @@ namespace MarkrCompare
             if (MessageBox.Show(msg, "CLOSE", MessageBoxButtons.OKCancel) != DialogResult.OK)
                 return;
 
+            SystemLog.DisplaySystemLog("Program Close");
             this.Close();
         }
 
@@ -286,6 +287,7 @@ namespace MarkrCompare
                     isDbConnOn = false;
                     btnDBConnect.Image = ledOff;
                 }
+                SystemLog.DisplaySystemLog("DB Connect Error", Log.Level.Error);
                 return;
             }
             else
@@ -294,17 +296,16 @@ namespace MarkrCompare
                 {
                     btnDBConnect.Image = ledOn;
                     isDbConnOn = true;
+                    SystemLog.DisplayFileServerLog("DB 연결 성공");
                 }
                 else if(isDbConnOn == true && _dbManager._DbConn.IsDBConnected == false)
                 {
                     btnDBConnect.Image = ledOff;
                     isDbConnOn = false;
+                    SystemLog.DisplayFileServerLog("DB 연결 실패");
                 }
             }
         }
-
-
         #endregion
-
     }
 }

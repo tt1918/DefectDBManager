@@ -35,6 +35,7 @@
             this.btnStop = new CustomControls.RoundButton();
             this.lblProcess = new CustomControls.RoundLabel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCsv = new CustomControls.RoundButton();
             this.lblTime = new CustomControls.RoundLabel();
             this.btnMaterialFilter = new CustomControls.RoundButton();
             this.label1 = new System.Windows.Forms.Label();
@@ -164,8 +165,9 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 124F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel5.Controls.Add(this.btnCsv, 4, 0);
             this.tableLayoutPanel5.Controls.Add(this.lblTime, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 5, 0);
             this.tableLayoutPanel5.Controls.Add(this.label1, 2, 0);
@@ -179,6 +181,27 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(545, 30);
             this.tableLayoutPanel5.TabIndex = 2;
+            // 
+            // btnCsv
+            // 
+            this.btnCsv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnCsv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(80)))));
+            this.btnCsv.BorderColor = System.Drawing.Color.PaleVioletRed;
+            this.btnCsv.BorderRadius = 5;
+            this.btnCsv.BorderSize = 0;
+            this.btnCsv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCsv.FlatAppearance.BorderSize = 0;
+            this.btnCsv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCsv.ForeColor = System.Drawing.Color.White;
+            this.btnCsv.Location = new System.Drawing.Point(385, 1);
+            this.btnCsv.Margin = new System.Windows.Forms.Padding(1);
+            this.btnCsv.Name = "btnCsv";
+            this.btnCsv.Size = new System.Drawing.Size(78, 28);
+            this.btnCsv.TabIndex = 5;
+            this.btnCsv.Text = "CSV";
+            this.btnCsv.TextColor = System.Drawing.Color.White;
+            this.btnCsv.UseVisualStyleBackColor = false;
+            this.btnCsv.Click += new System.EventHandler(this.btnCsv_Click);
             // 
             // lblTime
             // 
@@ -212,10 +235,10 @@
             this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
             this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.Location = new System.Drawing.Point(422, 1);
+            this.btnMaterialFilter.Location = new System.Drawing.Point(465, 1);
             this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
             this.btnMaterialFilter.Name = "btnMaterialFilter";
-            this.btnMaterialFilter.Size = new System.Drawing.Size(122, 28);
+            this.btnMaterialFilter.Size = new System.Drawing.Size(79, 28);
             this.btnMaterialFilter.TabIndex = 3;
             this.btnMaterialFilter.Text = "FILTER";
             this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
@@ -226,7 +249,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(218, 0);
+            this.label1.Location = new System.Drawing.Point(212, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 30);
@@ -239,15 +262,15 @@
             this.timePickerStart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.timePickerStart.Location = new System.Drawing.Point(63, 3);
             this.timePickerStart.Name = "timePickerStart";
-            this.timePickerStart.Size = new System.Drawing.Size(152, 23);
+            this.timePickerStart.Size = new System.Drawing.Size(146, 23);
             this.timePickerStart.TabIndex = 2;
             // 
             // timePickerEnd
             // 
             this.timePickerEnd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.timePickerEnd.Location = new System.Drawing.Point(241, 3);
+            this.timePickerEnd.Location = new System.Drawing.Point(235, 3);
             this.timePickerEnd.Name = "timePickerEnd";
-            this.timePickerEnd.Size = new System.Drawing.Size(152, 23);
+            this.timePickerEnd.Size = new System.Drawing.Size(146, 23);
             this.timePickerEnd.TabIndex = 2;
             // 
             // FormMornitorSearch
@@ -289,5 +312,6 @@
         private CustomControls.RoundButton btnMaterialFilter;
         private CustomControls.RoundLabel lblTime;
         private System.Windows.Forms.ListView lvFilterList;
+        private CustomControls.RoundButton btnCsv;
     }
 }

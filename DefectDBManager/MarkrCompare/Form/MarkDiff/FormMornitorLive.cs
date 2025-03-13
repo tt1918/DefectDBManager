@@ -116,10 +116,10 @@ namespace MarkrCompare
                     SystemLog.DisplayFileServerLog("이미 실행중입니다.");
                     return;
                 }
-                SystemLog.DisplayFileServerLog("실시간 검사 시작");
                 OnUpdatePrepLncdInfo?.Invoke(_procIdx);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();
+                SystemLog.DisplayFileServerLog("실시간 검사 시작");
             }
             catch
             {

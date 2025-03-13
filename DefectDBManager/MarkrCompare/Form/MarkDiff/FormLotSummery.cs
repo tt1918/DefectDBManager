@@ -132,11 +132,21 @@ namespace MarkrCompare
         {
             try
             {
-
+                if (_dicLotSummary != null) 
+                {
+                    foreach (var item in _dicLotSummary.Values)
+                    {
+                        foreach (var form in item)
+                        {
+                            if (!form.IsError)
+                                form.Dispose();
+                        }
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
-
+                SystemLog.DisplaySystemLog($"[ClearNormalData] - {e.Message}");
             }
         }
 
@@ -144,11 +154,21 @@ namespace MarkrCompare
         {
             try
             {
-
+                if (_dicLotSummary != null)
+                {
+                    foreach (var item in _dicLotSummary.Values)
+                    {
+                        foreach (var form in item)
+                        {
+                            if (form.IsError)
+                                form.Dispose();
+                        }
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
-
+                SystemLog.DisplaySystemLog($"[ClearNGData] - {e.Message}");
             }
         }
 
@@ -174,11 +194,17 @@ namespace MarkrCompare
         {
             try
             {
-
+                foreach (var item in _dicLotSummary.Values)
+                {
+                    foreach (var form in item)
+                    {
+                        form.Visible = true;
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
-
+                SystemLog.DisplaySystemLog($"[ShowAllData] - {e.Message}");
             }
         }
 
@@ -186,23 +212,41 @@ namespace MarkrCompare
         {
             try
             {
-
+                foreach (var item in _dicLotSummary.Values)
+                {
+                    foreach (var form in item)
+                    {
+                        if (form.IsError)
+                            form.Visible = true;
+                        else
+                            form.Visible = false;
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
-
+                SystemLog.DisplaySystemLog($"[ShowNGData] - {e.Message}");
             }
         }
 
         private void showNormalData()
         {
             try 
-            { 
-
-            }
-            catch
             {
-
+                foreach (var item in _dicLotSummary.Values)
+                {
+                    foreach (var form in item)
+                    {
+                        if (!form.IsError)
+                            form.Visible = true;
+                        else
+                            form.Visible = false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SystemLog.DisplaySystemLog($"[ShowNormalData] - {e.Message}");
             }
         }
         public void ShowData()

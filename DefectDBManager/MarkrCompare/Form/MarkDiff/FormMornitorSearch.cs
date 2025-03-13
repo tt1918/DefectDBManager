@@ -198,5 +198,9 @@ namespace MarkrCompare
         }
         #endregion
 
+        private void btnCsv_Click(object sender, EventArgs e)
+        {
+            ((FormMarkDiff)this.ParentForm).OpenFormCsv();
+        }
     }
 }

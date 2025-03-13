@@ -197,6 +197,7 @@ namespace MarkrCompare
                 return;
 
             _materialData.Save();
+            SystemLog.DisplayFileServerLog("SET 저장 완료");
         }
         #endregion
 
@@ -266,22 +267,14 @@ namespace MarkrCompare
 
             material.LNCD = tbLNCD.Texts;
             material.Material.Name = material.LNCD;
-            try
+
+            List<string> listInfo = new List<string>();
+            foreach (DataGridViewRow item in dgvMaterial.Rows)
             {
-
-                List<string> listInfo = new List<string>();
-                foreach (DataGridViewRow item in dgvMaterial.Rows)
-                {
-                    listInfo.Add(item.Cells[(int)eDgvMaterial.Name].Value as string);
-                }
-
-                material.Material.Items = listInfo;
-            }
-            catch
-            {
-
+                listInfo.Add(item.Cells[(int)eDgvMaterial.Name].Value as string);
             }
 
+            material.Material.Items = listInfo;
         }
 
         private void addMaterial()
@@ -350,11 +343,21 @@ namespace MarkrCompare
         #region Control
         private void btnApply_Click(object sender, EventArgs e)
         {
-            int selProcIdx = getValidTaskIdx(_selSetName);
-            if (selProcIdx == -1) return;
+            try
+            {
+                int selProcIdx = getValidTaskIdx(_selSetName);
+                if (selProcIdx == -1) return;
 
-            updateMaterialCtrl();
-            updateSymbolData();
+                updateMaterialCtrl();
+                updateSymbolData();
+
+                MessageBox.Show("적용되었습니다.");
+                SystemLog.DisplayFileServerLog("SET 적용");
+            }
+            catch (Exception ex)
+            {
+                SystemLog.System.Write(Log.Level.Error, ex.Message);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
