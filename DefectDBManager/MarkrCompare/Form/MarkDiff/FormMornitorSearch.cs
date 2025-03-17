@@ -116,8 +116,11 @@ namespace MarkrCompare
         {
             try
             {
-                if (IsRun == true) return;
-                if (_lotManager == null) return;
+                if (IsRun == true || _lotManager == null)
+                {
+                    SystemLog.DisplayFileServerLog("검사 진행중 입니다.");
+                    return;
+                }
 
                 _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
 

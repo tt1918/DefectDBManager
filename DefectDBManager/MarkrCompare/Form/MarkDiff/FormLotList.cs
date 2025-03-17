@@ -103,7 +103,7 @@ namespace MarkrCompare
 
         }
 
-        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem)
+        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem, string filter)
         {
             BeginInvoke(new Action(delegate 
             {
@@ -123,6 +123,7 @@ namespace MarkrCompare
                     //    }
                     //}
                     form.ProcItem = procItem;
+                    form.Filter = filter;
                     form.LotSummery = summary;
                     form.Show();
                     if (_dicFormSummary.ContainsKey("TEST"))

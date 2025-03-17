@@ -47,6 +47,13 @@ namespace MarkrCompare
             set { isError = value; }
         }
 
+        string filter = null;
+        public string Filter 
+        {
+            get { return filter; }
+            set { filter = value; }
+        }
+
         #region Form
         public FormLotSummaryData()
         {
@@ -110,7 +117,7 @@ namespace MarkrCompare
         private void displayLotName()
         {
             string str = _lotSummery.LotName;
-            lblLotName.Text = str;
+            lblLotName.Text = str + $" - {filter}";
 
             if (isError)
                 lblLotName.BkColor = Color.Red;
@@ -148,7 +155,7 @@ namespace MarkrCompare
             double[] result = new double[compCnt.Length];
             for (int i = 1; i < compCnt.Length; i++)
             {
-                result[i] = (double)compCnt[i] / _lotSummery.MarkCompList.Data.Count * 100;
+                result[i] = (double)compCnt[i] / compCnt[i - 1] * 100;
                 if (i == compCnt.Length - 1)
                 {
                     str += $"Case {i} : {result[i]:F2}%";

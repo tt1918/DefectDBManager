@@ -371,7 +371,7 @@ namespace MarkrCompare
                 string[] keyData = item.Key.Split('_');
                 string lncd = keyData[0];
 
-                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd], _lotManager);
+                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd], _lotManager, item.Key);
             }
         }
         #endregion
@@ -415,7 +415,11 @@ namespace MarkrCompare
                         break;
                     }
                 }
-                _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem);
+
+                if (_lotManager.LOT.ContainsKey(item.Line))
+                {
+                    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem, item.ToString());
+                }
             }
         }
 
@@ -424,14 +428,18 @@ namespace MarkrCompare
             PreprocItem procItem = new PreprocItem();
             foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
             {
-                foreach (var set in _lotManager.ProcSetting.Data)
+                if (_lotManager.ProcSetting.Data.Find(x => x.Name == item.Model) != null)
                 {
-                    if (set.Name == item.Model)
-                    {
-                        procItem = set;
-                        break;
-                    }
+                    procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == item.Model);
+                    break;
                 }
+                //foreach (var set in _lotManager.ProcSetting.Data)
+                //{
+                //    if (set.Name == item.Model)
+                //    {
+                        
+                //    }
+                //}
             }
 
             PreprocLNCDInfo info = new PreprocLNCDInfo();

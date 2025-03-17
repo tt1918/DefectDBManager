@@ -284,10 +284,10 @@ namespace DefectDBManager
             if (LotManager.LiveProduct != null)
                 LotManager.LiveProduct.Clear();
             // 금일 날자로 설정
-            //DateTime stTime = DateTime.Today;
-            //DateTime edTime = DateTime.Now;
-            DateTime stTime = new DateTime(2025, 02, 14);
-            DateTime edTime = new DateTime(2025, 02, 14, 23, 59, 59);
+            DateTime stTime = DateTime.Today;
+            DateTime edTime = DateTime.Now;
+            //DateTime stTime = new DateTime(2025, 01, 19);
+            //DateTime edTime = new DateTime(2025, 01, 19, 23, 59, 59);
 
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
             string lncd = string.Empty;

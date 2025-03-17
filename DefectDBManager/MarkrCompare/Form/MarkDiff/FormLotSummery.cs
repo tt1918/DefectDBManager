@@ -69,7 +69,7 @@ namespace MarkrCompare
             _dicLotSummary = null;
         }
 
-        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager)
+        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager, string filter)
         {
             try
             {
@@ -91,6 +91,7 @@ namespace MarkrCompare
                             }
                         }
                         form.ProcItem = procItem;
+                        form.Filter = filter;
                         form.LotSummery = lot;
                         form.TopLevel = false;
                         form.Show();
