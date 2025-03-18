@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace MarkrCompare
         #region Event
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
-        public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
+        //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
         #endregion
 
         public FormMarkDiff()
@@ -202,6 +203,7 @@ namespace MarkrCompare
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSearch.OnUpdatePrepLncdInfo += showLotListForm;
             OnUpdateSearchLNCDInfo += _formMorSearch.DisplayLNCDCtrlData;
+            _formMorSearch.OnOpenCsvForm += OpenFormCsv;
             _formMorSearch.Dock = DockStyle.Fill;
             _formMorSearch.Show();
         }
@@ -212,6 +214,7 @@ namespace MarkrCompare
             _formMorSearch.OnUpdatePrepLncdInfo -= showLotListForm;
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
+            _formMorSearch.OnOpenCsvForm -= OpenFormCsv;
             _formMorLive?.Close();
             _formMorSearch?.Close();
         }
@@ -469,12 +472,42 @@ namespace MarkrCompare
             if (form.ShowDialog() == DialogResult.OK)
             {
                 csvList = form.Csv;
+                CompareCsv();
             }
         }
 
         public void CompareCsv()
         {
+            try
+            {
+                SystemLog.DisplayFileServerLog("Csv 비교 시작");
+                Dictionary<int, List<PointF>> defPos = new Dictionary<int, List<PointF>>();
+                int cnt = 0;
+                int headerCnt = 0;
+                foreach (var item in csvList)
+                {
+                    if (!string.IsNullOrWhiteSpace(item) && File.Exists(item))
+                    {
+                        string[] txt = File.ReadAllLines(item);
+                        defPos.Add(cnt, new List<PointF>());
 
+                        foreach (string str in txt)
+                        {
+                            if (headerCnt++ < 4) continue;
+                            string[] data = str.Replace("\"", "").Split(',');
+                            double posX = Convert.ToDouble(data[7]);
+                            double posY = Convert.ToDouble(data[14]);
+                            defPos[cnt].Add(new PointF((float)posX, (float)posY));
+                        }
+                        cnt++;
+                    }
+                }
+                SystemLog.DisplayFileServerLog("Csv 비교 완료");
+            }
+            catch (Exception e)
+            {
+                SystemLog.DisplaySystemLog($"CompareCsv Error, {e.Message}", Log.Level.Error);
+            }
         }
     }
 }

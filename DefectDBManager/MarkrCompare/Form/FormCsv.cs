@@ -45,12 +45,13 @@ namespace MarkrCompare
                 return;
             }
 
-            if (!Directory.Exists(CsvListPath))
-                Directory.CreateDirectory(CsvListPath);
+            //if (!Directory.Exists(CsvListPath))
+            //    Directory.CreateDirectory(CsvListPath);
 
+            Csv.Clear();
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                Csv.Add(row.Cells[1].Value.ToString());
+                Csv.Add(row.Cells[0].Value.ToString());
             }
             DialogResult = DialogResult.OK;
             this.Close();
@@ -63,7 +64,14 @@ namespace MarkrCompare
                 MessageBox.Show("Csv 개수가 100 개를 초과할 수 없습니다.");
                 return;
             }
-            dataGridView1.Rows.Add();
+
+            OpenFileDialog open = new OpenFileDialog();
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                dataGridView1.Rows.Add();
+                dataGridView1[0, dataGridView1.RowCount - 1].Value = open.FileName;
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+            }
         }
 
         private void btnDel_Click(object sender, EventArgs e)
@@ -97,6 +105,53 @@ namespace MarkrCompare
 
             // 인덱스 그리기
             e.Graphics.DrawString(rowIndex, rowFont, System.Drawing.Brushes.Black, location);
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            FormAddDel form = new FormAddDel("저장", "파일명", "확인", "취소");
+            if(form.ShowDialog() == DialogResult.Cancel) return;
+
+            if (string.IsNullOrWhiteSpace(form.DataName))
+            {
+                MessageBox.Show("파일명을 입력해주세요.");
+                return;
+            }
+
+            if (!Directory.Exists(CsvListPath))
+                Directory.CreateDirectory(CsvListPath);
+
+            string path = Path.Combine(CsvListPath, form.DataName + ".txt");
+
+            using (StreamWriter sw = new StreamWriter(path)) 
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (string.IsNullOrWhiteSpace(row.Cells[0].Value.ToString())) continue;
+                    sw.WriteLine(row.Cells[0].Value.ToString());
+                }
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.InitialDirectory = CsvListPath;
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                dataGridView1.Rows.Clear();
+                string[] csv = File.ReadAllLines(open.FileName);
+                foreach (string line in csv) 
+                {
+                    dataGridView1.Rows.Add();
+                    dataGridView1[0, dataGridView1.RowCount - 1].Value = line;
+                }
+            }
         }
     }
 }

@@ -29,6 +29,7 @@ namespace MarkrCompare
         public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
         public event MarkrCompare.Delegate.UpdateEvent OnStartLotSearch;
         public event MarkrCompare.Delegate.UpdateEvent OnStopLotSearch;
+        public event Delegate.UpdateEvent OnOpenCsvForm;
         #endregion
 
         #region Create/Destroy
@@ -129,9 +130,9 @@ namespace MarkrCompare
                 OnStartLotSearch?.Invoke();
                 _timerLotSearchProcess.Start();
             }
-            catch
+            catch (Exception ex)
             {
-
+                SystemLog.DisplaySystemLog(ex.Message, Log.Level.Error);
             }
         }
 
@@ -147,9 +148,9 @@ namespace MarkrCompare
                 string message = $"모니터링 정지";
                 lblProcess.Text = message;
             }
-            catch
+            catch (Exception ex)
             {
-
+                SystemLog.DisplaySystemLog(ex.Message, Log.Level.Error);
             }
         }
 
@@ -203,7 +204,7 @@ namespace MarkrCompare
 
         private void btnCsv_Click(object sender, EventArgs e)
         {
-            ((FormMarkDiff)this.ParentForm).OpenFormCsv();
+            OnOpenCsvForm?.Invoke();
         }
     }
 }
