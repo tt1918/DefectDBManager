@@ -232,14 +232,18 @@ namespace MarkrCompare
 
         public void EndSearchLotList()
         {
-            SystemLog.DisplaySystemLog("기간 검색 작업이 완료되었습니다.");
+            SystemLog.DisplayFileServerLog("기간 검색 작업이 완료되었습니다.");
+            Invoke(new Action(() => 
+            {
+                MessageBox.Show(this, "기간 검색 작업이 완료되었습니다.");
+            }));
         }
         #endregion
 
         #region 실시간 검색 시작
         public void EndLiveSearch()
         {
-            SystemLog.DisplaySystemLog("실시간 검사가 완료되었습니다.");
+            SystemLog.DisplayFileServerLog("실시간 검사가 완료되었습니다.");
         }
         #endregion
 

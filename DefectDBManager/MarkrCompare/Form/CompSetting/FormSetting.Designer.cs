@@ -428,6 +428,7 @@
             this.cbRefFltAll.TabIndex = 10;
             this.cbRefFltAll.Text = "ALL";
             this.cbRefFltAll.UseVisualStyleBackColor = true;
+            this.cbRefFltAll.CheckStateChanged += new System.EventHandler(this.cbRefFltAll_CheckStateChanged);
             // 
             // btnAddRefFlt
             // 
@@ -765,6 +766,7 @@
             this.cbCompFltAll.TabIndex = 9;
             this.cbCompFltAll.Text = "ALL";
             this.cbCompFltAll.UseVisualStyleBackColor = true;
+            this.cbCompFltAll.CheckedChanged += new System.EventHandler(this.cbCompFltAll_CheckedChanged);
             // 
             // btnAddCompFlt
             // 

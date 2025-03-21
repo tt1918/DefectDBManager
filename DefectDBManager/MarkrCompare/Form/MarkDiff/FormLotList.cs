@@ -105,7 +105,7 @@ namespace MarkrCompare
 
         public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem, string filter)
         {
-            BeginInvoke(new Action(delegate 
+            BeginInvoke(new Action(delegate
             {
                 foreach (var summary in lotSummary)
                 {
@@ -125,20 +125,21 @@ namespace MarkrCompare
                     form.ProcItem = procItem;
                     form.Filter = filter;
                     form.LotSummery = summary;
+                    form.ShowCheckbox = true;
                     form.Show();
-                    if (_dicFormSummary.ContainsKey("TEST"))
+                    if (_dicFormSummary.ContainsKey("Search"))
                     {
-                        _dicFormSummary["TEST"].Add(form);
+                        _dicFormSummary["Search"].Add(form);
                     }
                     else
                     {
-                        _dicFormSummary.Add("TEST", new List<FormLotSummaryData>());
+                        _dicFormSummary.Add("Search", new List<FormLotSummaryData>());
 
-                        _dicFormSummary["TEST"].Add(form);
+                        _dicFormSummary["Search"].Add(form);
                         flowLayoutPanel1.Controls.Add(form);
                     }
                 }
-                
+
             }));
         }
 
@@ -190,6 +191,35 @@ namespace MarkrCompare
                     break;
                 }
             }
+
+            MessageBox.Show("선택한 결점을 불러왔습니다.");
+        }
+
+        public void AddCsvData()
+        {
+            BeginInvoke(new Action(() => 
+            {
+
+            }));
+        }
+
+        public void ShowPanel(bool visible)
+        {
+            this.panel1.Visible = visible;
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            ((FormMarkDiff)this.ParentForm).RemoveAll();
+            foreach (var form in _dicFormSummary["Search"])
+            {
+                if (form.StateCheckbox)
+                {
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(form.LotSummery);
+                }
+            }
+
+            MessageBox.Show("선택한 LOT을 불러왔습니다.");
         }
     }
 }

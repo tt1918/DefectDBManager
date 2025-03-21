@@ -263,7 +263,9 @@ namespace DefectDBManager
                     if (StopSearchingLotList == true) break;
 
                     string lotName = item.Y0KLOT;
-                    SearchDefectData(lncd, lotName, preprocItem);
+                    //filter 로 구분하도록 수정 @ATW 250321
+                    //SearchDefectData(lncd, lotName, preprocItem);
+                    SearchDefectData(list.Key, lotName, preprocItem);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);

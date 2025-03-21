@@ -186,17 +186,17 @@ namespace DefectDBManager
         /// <summary>
         /// 랏관리 데이터에 신규 랏 정보를 추가
         /// </summary>
-        /// <param name="lncd">라인 코드</param>
+        /// <param name="filter">필터 이름</param>
         /// <param name="info">불량 랏 정보</param>
-        public void AddLot(string lncd, PreprocLot info)
+        public void AddLot(string filter, PreprocLot info)
         {
-            if (LOT.ContainsKey(lncd) == true)
-                LOT[lncd].Add(info);
+            if (LOT.ContainsKey(filter) == true)
+                LOT[filter].Add(info);
             else
             {
                 List<PreprocLot> list = new List<PreprocLot>();
                 list.Add(info);
-                LOT.Add(lncd, list);
+                LOT.Add(filter, list);
             }
         }
 

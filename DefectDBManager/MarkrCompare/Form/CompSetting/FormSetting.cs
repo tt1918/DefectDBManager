@@ -286,7 +286,7 @@ namespace MarkrCompare
 
 
         #region Process 이름 추가
-        static string[] _strdgvListHeader = { "No", "Line ID", "LNCD" };
+        static string[] _strdgvListHeader = { "No", "Name", "LNCD" };
         static int[] _dgvListLength = { 50, 100, 100 };
         enum eDgvPrcess { No, LineID, LNCD, Total };
 
@@ -1018,7 +1018,32 @@ namespace MarkrCompare
         }
         #endregion
 
+        private void cbRefFltAll_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (cbRefFltAll.Checked)
+            {
+                btnAddRefFlt.Enabled = false;
+                btnDelRefFlt.Enabled = false;
+            }
+            else
+            {
+                btnAddRefFlt.Enabled = true;
+                btnDelRefFlt.Enabled = true;
+            }
+        }
+
+        private void cbCompFltAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbCompFltAll.Checked) 
+            {
+                btnAddCompFlt.Enabled = false;
+                btnDelCompFlt.Enabled = false;
+            }
+            else
+            {
+                btnAddCompFlt.Enabled = true;
+                btnDelCompFlt.Enabled = true;
+            }
+        }
     }
-
-
 }

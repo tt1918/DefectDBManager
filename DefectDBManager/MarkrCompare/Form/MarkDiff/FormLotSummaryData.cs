@@ -54,6 +54,18 @@ namespace MarkrCompare
             set { filter = value; }
         }
 
+        public bool ShowCheckbox
+        {
+            get { return this.checkBox1.Visible; }
+            set { this.checkBox1.Visible = value; }
+        }
+
+        public bool StateCheckbox
+        {
+            get { return this.checkBox1.Checked; }
+            set { this.checkBox1.Checked = value; }
+        }
+
         #region Form
         public FormLotSummaryData()
         {
@@ -79,10 +91,6 @@ namespace MarkrCompare
         private void FormLotSummaryData_FormClosing(object sender, FormClosingEventArgs e)
         {
             closeStatusTimer();
-        }
-        private void FormLotSummaryData_DoubleClick(object sender, EventArgs e)
-        {
-            ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
         }
         #endregion
 
@@ -134,7 +142,7 @@ namespace MarkrCompare
             }
 
             string str = null;
-            int[] compCnt = new int[_lotSummery.MarkCompList.Data[0].Comp.Length];
+            int[] compCnt = new int[procItem.CompRange.Count + 1];
 
             foreach (var item in _lotSummery.MarkCompList.Data)
             {

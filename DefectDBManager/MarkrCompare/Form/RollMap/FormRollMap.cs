@@ -203,5 +203,10 @@ namespace MarkrCompare
         {
             Rollmap.RemoveAll();
         }
+
+        public void PaintCsvData()
+        {
+
+        }
     }
 }

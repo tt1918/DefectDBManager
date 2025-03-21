@@ -331,12 +331,14 @@ namespace MarkrCompare
                     tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search]);
                     tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live], 0, 0);
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Live].Dock = DockStyle.Fill;
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Live].ShowPanel(false);
                     break;
 
                 case DefectDBManager.Preproc.eProc.Search:
                     tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live]);
                     tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search], 0, 0);
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].Dock = DockStyle.Fill;
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].ShowPanel(true);
                     break;
             }
         }
@@ -419,9 +421,14 @@ namespace MarkrCompare
                     }
                 }
 
-                if (_lotManager.LOT.ContainsKey(item.Line))
+                //filter 로 구분하도록 수정 @ATW 250321
+                //if (_lotManager.LOT.ContainsKey(item.Line))
+                //{
+                //    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem, item.ToString());
+                //}
+                if (_lotManager.LOT.ContainsKey(item.ToString()))
                 {
-                    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem, item.ToString());
+                    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
                 }
             }
         }
@@ -446,7 +453,7 @@ namespace MarkrCompare
             }
 
             PreprocLNCDInfo info = new PreprocLNCDInfo();
-            _rollMapForm.ClearMap();
+            //_rollMapForm.ClearMap();
             foreach (var item in lot.INSPDAT)
             {
                 foreach (var item2 in item)
@@ -502,12 +509,23 @@ namespace MarkrCompare
                         cnt++;
                     }
                 }
+
+                BeginInvoke(new Action(delegate
+                {
+                    _lotListForms[(int)eProc.Search].OnClearSummaryData();
+                }));
+
                 SystemLog.DisplayFileServerLog("Csv 비교 완료");
             }
             catch (Exception e)
             {
                 SystemLog.DisplaySystemLog($"CompareCsv Error, {e.Message}", Log.Level.Error);
             }
+        }
+
+        public void RemoveAll()
+        {
+            _rollMapForm.ClearMap();
         }
     }
 }
