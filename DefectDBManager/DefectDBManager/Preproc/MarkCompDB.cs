@@ -720,18 +720,13 @@ namespace DefectDBManager.Preproc
 
                 int count = System.Enum.GetValues(typeof(eFCD)).Length;
 
-
                 for (int idx = 0; idx < count; idx++)
                 {
                     procStep = idx;
                     int PTRY0Pcnt = _DbResult.PTRY0P[idx].Count;
 
-                    string lncd = Regex.Replace(_DbResult.PTRY0P[count - 1][PTRY0Pcnt - 1].LNCD, "[^a-zA-Z]", "");
-
                     for (int i = 0; i < PTRY0Pcnt; i++)
                     {
-                        //마지막 공정과 같은 공정은 제외 @ATW 250321
-                        if (_DbResult.PTRY0P[idx][i].LNCD.Contains(lncd)) continue;
                         string query = "";
                         QueryMsg.INSPDATA_Query msg = new QueryMsg.INSPDATA_Query(lotID);
                         msg.LNCD = _DbResult.PTRY0P[idx][i].LNCD;

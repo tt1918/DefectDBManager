@@ -147,7 +147,9 @@ namespace DefectDBManager
                     if (preItem.Count <= 0) continue;
                     foreach( var preItem1 in preItem)
                     {
-                        subData = preItem1.Data.FindAll(x => Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
+                        //CTLNO 같으면 예외처리 @ATW 250325
+                        subData = preItem1.Data.FindAll(x => item.CTLNO != x.CTLNO && 
+                                                        Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
                                                         && Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
 
@@ -174,7 +176,8 @@ namespace DefectDBManager
                         if (preItem.Count <= 0) continue;
                         foreach (var preItem1 in preItem)
                         {
-                            subData = preItem1.Data.FindAll(x => /*Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
+                            //CTLNO 같으면 예외처리 @ATW 250325
+                            subData = preItem1.Data.FindAll(x => item.CTLNO != x.CTLNO && /*Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
                                                             &&*/ Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
