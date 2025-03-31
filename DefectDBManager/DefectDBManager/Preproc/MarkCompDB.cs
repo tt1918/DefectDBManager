@@ -898,9 +898,9 @@ namespace DefectDBManager.Preproc
                     // 
                     procStep = fcdIdx;
 
-                    if (fcdIdx == (int)eFCD.ES) defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = -1;// 확인 안 함
+                    if (fcdIdx == (int)eFCD.ES) defectCnt[fcdIdx] = 0;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = 0;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = 0;// 확인 안 함
 
                     if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
 
@@ -1010,7 +1010,7 @@ namespace DefectDBManager.Preproc
 
                                     // Marking fault data 추가
                                     MarkingFaultDatum markData = new MarkingFaultDatum();
-                                    markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption.useKT);
+                                    markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
 
                                     if (dataTarget == eProcDataType.Reference)
                                         FaultData.MarkData.Add(markData);
@@ -1088,9 +1088,9 @@ namespace DefectDBManager.Preproc
                     // 
                     procStep = fcdIdx;
 
-                    if (fcdIdx == (int)eFCD.ES) defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = -1;// 확인 안 함
-                    else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = -1;// 확인 안 함
+                    if (fcdIdx == (int)eFCD.ES) defectCnt[fcdIdx] = 0;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.TG) defectCnt[fcdIdx] = 0;// 확인 안 함
+                    else if (fcdIdx == (int)eFCD.ETC) defectCnt[fcdIdx] = 0;// 확인 안 함
 
                     if (_DbResult.INSPDATArray[fcdIdx] == null) continue;
 
@@ -1197,7 +1197,7 @@ namespace DefectDBManager.Preproc
 
                                         // Marking fault data 추가
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
-                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption.useKT);
+                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
 
                                         if (dataTarget == eProcDataType.Reference)
                                             FaultData.MarkData.Add(markData);

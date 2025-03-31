@@ -113,7 +113,7 @@ namespace DefectDBManager
 
         public void ComparePosition(PreprocItem procData)
         {
-            double limitMin, limitMax;
+            double minX, maxX, minY, maxY;
             double posX, posY;
 
             // 결점 데이터는 최종 데이터 기준으로 이전 데이터를 추가하는 방식을 취함
@@ -136,8 +136,10 @@ namespace DefectDBManager
 
                 #region 기준 검사 구역 
                 int compIdx = 0;
-                limitMin = procData.BasicRange.MinRange;
-                limitMax = procData.BasicRange.MaxRange;
+                minX = procData.BasicRange.MinXRange;
+                maxX = procData.BasicRange.MaxXRange;
+                minY = procData.BasicRange.MinYRange;
+                maxY = procData.BasicRange.MaxYRange;
 
                 // Base는 인덱스 0번 사용
                 List<MarkingFaultDatum> subData = null;
@@ -148,9 +150,9 @@ namespace DefectDBManager
                     foreach( var preItem1 in preItem)
                     {
                         //CTLNO 같으면 예외처리 @ATW 250325
-                        subData = preItem1.Data.FindAll(x => item.CTLNO != x.CTLNO && 
-                                                        Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
-                                                        && Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
+                        subData = preItem1.Data.FindAll(x => item.LNCD != x.LNCD && 
+                                                        Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
+                                                        Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
 
                         foreach (var preItem2 in subData)
@@ -166,8 +168,10 @@ namespace DefectDBManager
                 {
                     compIdx++;
 
-                    limitMin = procData.CompRange[compIdx-1].MinRange;
-                    limitMax = procData.CompRange[compIdx-1].MaxRange;
+                    minX = procData.CompRange[compIdx-1].MinXRange;
+                    maxX = procData.CompRange[compIdx-1].MaxXRange;
+                    minY = procData.CompRange[compIdx - 1].MinYRange;
+                    maxY = procData.CompRange[compIdx - 1].MaxYRange;
 
                     lineCnt = 0;
                     //int cnt = 0;
@@ -177,8 +181,9 @@ namespace DefectDBManager
                         foreach (var preItem1 in preItem)
                         {
                             //CTLNO 같으면 예외처리 @ATW 250325
-                            subData = preItem1.Data.FindAll(x => item.CTLNO != x.CTLNO && /*Math.Abs(x.XPOS_M - posX) < limitMax && Math.Abs(x.XPOS_M - posX) >= limitMin
-                                                            &&*/ Math.Abs(x.OFFSET - posY) < limitMax && Math.Abs(x.OFFSET - posY) >= limitMin
+                            subData = preItem1.Data.FindAll(x => item.LNCD != x.LNCD &&
+                                                            Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
+                                                            Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
                             foreach (var preItem2 in subData)

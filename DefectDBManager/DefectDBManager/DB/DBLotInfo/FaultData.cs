@@ -146,6 +146,7 @@ namespace DefectDBManager
         //////////////////////////////////////////////////////////
         // 표시용 데이터
         public string CTLNO;
+        public string LNCD;
         public string MACNO;
         public string MNTTID;
         public float SIZE;
@@ -159,6 +160,7 @@ namespace DefectDBManager
             MarkingFaultDatum data = new MarkingFaultDatum();
 
             data.BCNO = BCNO;
+            data.LNCD = LNCD;
             data.FLTNO = FLTNO;
             data.FAULTID = FAULTID;
             data.OFFSET = OFFSET;
@@ -172,6 +174,7 @@ namespace DefectDBManager
             data.XOFFSET_ALARM = XOFFSET_ALARM;
 
             data.CTLNO = CTLNO;
+            data.LNCD = LNCD;
             data.MACNO = MACNO;
             data.MNTTID = MNTTID;
             data.SIZE = SIZE;
@@ -181,9 +184,10 @@ namespace DefectDBManager
             return data;
         }
 
-        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATAData data, Option option, ref Param param)
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string lncd, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATAData data, Option option, ref Param param)
         {
             this.BCNO = bcno;
+            this.LNCD = lncd;
             this.FLTNO = data.FLTNO;
             this.FAULTID = data.FLTID;
             this.OFFSET = fltDat.OFFSET;
@@ -239,9 +243,10 @@ namespace DefectDBManager
         }
 
 
-        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATA_DailyData data, bool useKT)
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string lncd, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATA_DailyData data, bool useKT)
         {
             this.BCNO = bcno;
+            this.LNCD = lncd;
             this.FLTNO = data.FLTNO;
             this.FAULTID = data.FLTID;
             this.OFFSET = fltDat.OFFSET;

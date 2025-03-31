@@ -1241,7 +1241,7 @@ namespace DefectDBManager
 
                                     // Marking fault data 추가
                                     MarkingFaultDatum markData = new MarkingFaultDatum();
-                                    markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption.useKT);
+                                    markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
 
                                     // 마킹 대상 결점
                                     if (FaultData.IsPreProc == false)   FaultData.Add(markData); // 최종 공정 데이터 

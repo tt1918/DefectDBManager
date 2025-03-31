@@ -163,20 +163,14 @@ namespace MarkrCompare
             double[] result = new double[compCnt.Length];
             for (int i = 1; i < compCnt.Length; i++)
             {
-                result[i] = (double)compCnt[i] / compCnt[i - 1] * 100;
+                result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100;
                 if (i == compCnt.Length - 1)
-                {
                     str += $"Case {i} : {result[i]:F2}%";
-                }
                 else
-                {
                     str += $"Case {i} : {result[i]:F2}%, ";
-                }
 
                 if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
-                {
                     isError = true;
-                }
             }
 
             lblProcess.Text = str;

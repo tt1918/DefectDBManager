@@ -1312,7 +1312,7 @@ namespace DefectDBManager
 
                                         // Marking fault data 추가
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
-                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.BCNO, (float)tmpFltData.OFFSET, false, tmpFltData, data, dbOption, ref currentParam);
+                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption, ref currentParam);
                                        
                                         resultDefect.Data.Add(tmpFltData);
                                         resultDefect.MarkFault.Add(markData);

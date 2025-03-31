@@ -836,9 +836,9 @@ namespace MarkrCompare
         #endregion
 
         #region Compare Range
-        static string[] _strDgvCompRangeHeader = { "No", "Min", "Max", "Rate" };
-        static int[] _DgvCompRangeLength = { 50, 70, 70, 70 };
-        enum eDgvCompRange { No, Min, Max, Rate, Total };
+        static string[] _strDgvCompRangeHeader = { "No", "MinX", "MaxX", "MinY", "MaxY", "Rate" };
+        static int[] _DgvCompRangeLength = { 30, 50, 50, 50, 50, 60 };
+        enum eDgvCompRange { No, MinX, MaxX, MinY, MaxY, Rate, Total };
 
         private void initDgvCompRange()
         {
@@ -872,8 +872,10 @@ namespace MarkrCompare
             string[] sR = new string[(int)eDgvCompRange.Total];
             sR[(int)eDgvCompRange.No] = "R";
 
-            sR[(int)eDgvCompRange.Min] = _preprocSet[selProcIdx].BasicRange.MinRange.ToString();
-            sR[(int)eDgvCompRange.Max] = _preprocSet[selProcIdx].BasicRange.MaxRange.ToString();
+            sR[(int)eDgvCompRange.MinX] = _preprocSet[selProcIdx].BasicRange.MinXRange.ToString();
+            sR[(int)eDgvCompRange.MaxX] = _preprocSet[selProcIdx].BasicRange.MaxXRange.ToString();
+            sR[(int)eDgvCompRange.MinY] = _preprocSet[selProcIdx].BasicRange.MinYRange.ToString();
+            sR[(int)eDgvCompRange.MaxY] = _preprocSet[selProcIdx].BasicRange.MaxYRange.ToString();
             sR[(int)eDgvCompRange.Rate] = _preprocSet[selProcIdx].BasicRange.Accuracy.ToString();
             dgvCompRange.Rows.Add(sR);
 
@@ -883,8 +885,10 @@ namespace MarkrCompare
                 string[] s = new string[(int)eDgvCompRange.Total];
                 s[(int)eDgvCompRange.No] = idx.ToString();
 
-                s[(int)eDgvCompRange.Min] = compRange.MinRange.ToString();
-                s[(int)eDgvCompRange.Max] = compRange.MaxRange.ToString();
+                s[(int)eDgvCompRange.MinX] = compRange.MinXRange.ToString();
+                s[(int)eDgvCompRange.MaxX] = compRange.MaxXRange.ToString();
+                s[(int)eDgvCompRange.MinY] = compRange.MinYRange.ToString();
+                s[(int)eDgvCompRange.MaxY] = compRange.MaxYRange.ToString();
                 s[(int)eDgvCompRange.Rate] = compRange.Accuracy.ToString();
                 dgvCompRange.Rows.Add(s);
 
@@ -903,15 +907,19 @@ namespace MarkrCompare
                 if (i == 0)
                 {
                     CompRange rangeData = _preprocSet[selProcIdx].BasicRange;
-                    rangeData.MinRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Min].Value);
-                    rangeData.MaxRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Max].Value);
+                    rangeData.MinXRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MinX].Value);
+                    rangeData.MaxXRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MaxX].Value);
+                    rangeData.MinYRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MinY].Value);
+                    rangeData.MaxYRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MaxY].Value);
                     rangeData.Accuracy = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Rate].Value);
                 }
                 else
                 {
                     CompRange rangeData = new CompRange();
-                    rangeData.MinRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Min].Value);
-                    rangeData.MaxRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Max].Value);
+                    rangeData.MinXRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MinX].Value);
+                    rangeData.MaxXRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MaxX].Value);
+                    rangeData.MinYRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MinY].Value);
+                    rangeData.MaxYRange = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.MaxY].Value);
                     rangeData.Accuracy = (float)Convert.ToDouble(dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.Rate].Value);
                     rangeList.Add(rangeData);
                 }
@@ -928,8 +936,10 @@ namespace MarkrCompare
                 int idx = dgvCompRange.Rows.Count;
                 string[] data = new string[(int)eDgvCompRange.Total];
                 data[(int)eDgvCompRange.No] = Convert.ToString(idx);
-                data[(int)eDgvCompRange.Min] = "0.0";
-                data[(int)eDgvCompRange.Max] = "0.0";
+                data[(int)eDgvCompRange.MinX] = "0.0";
+                data[(int)eDgvCompRange.MaxX] = "0.0";
+                data[(int)eDgvCompRange.MinY] = "0.0";
+                data[(int)eDgvCompRange.MaxY] = "0.0";
                 data[(int)eDgvCompRange.Rate] = "0.0";
                 dgvCompRange.Rows.Add(data);
             }

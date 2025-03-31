@@ -131,12 +131,20 @@ namespace DefectDBManager.Preproc
     public class CompRange
     {
         [Category("Range")]
-        [Description("Min")]
-        public float MinRange { get; set; }
+        [Description("MinX")]
+        public float MinXRange { get; set; }
 
         [Category("Range")]
-        [Description("Max")]
-        public float MaxRange { get; set; }
+        [Description("MaxX")]
+        public float MaxXRange { get; set; }
+        
+        [Category("Range")]
+        [Description("MinY")]
+        public float MinYRange { get; set; }
+
+        [Category("Range")]
+        [Description("MaxY")]
+        public float MaxYRange { get; set; }
 
         [Category("Range")]
         [Description("Max")]
@@ -144,8 +152,10 @@ namespace DefectDBManager.Preproc
 
         public CompRange()
         {
-            MinRange = 0.0f;
-            MaxRange = 20.0f;
+            MinXRange = 0.0f;
+            MaxXRange = 20.0f;
+            MinYRange = 0.0f;
+            MaxYRange = 20.0f;
             Accuracy = 0.0f;
         }
 
@@ -153,8 +163,10 @@ namespace DefectDBManager.Preproc
         {
             CompRange item = new CompRange();
 
-            item.MinRange = this.MinRange;
-            item.MaxRange = this.MaxRange;
+            item.MinXRange = this.MinXRange;
+            item.MaxXRange = this.MaxXRange;
+            item.MinYRange = this.MinYRange;
+            item.MaxYRange = this.MaxYRange;
             item.Accuracy = this.Accuracy;
 
             return item;
