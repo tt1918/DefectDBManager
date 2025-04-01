@@ -1,4 +1,4 @@
-﻿// #define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -202,6 +203,7 @@ namespace DefectDBManager
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
 
+            int productIdx = 0;
             foreach (var list in LotManager.LiveProduct)
             {
                 string[] keyData = list.Key.Split('_');
@@ -215,14 +217,18 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
+                    ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Search][productIdx];
+
                     _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
 
-                    SearchLiveDefectData(lncd, lotName, preprocItem);
+                    SearchLiveDefectData(lncd, lotName, preprocItem, filter);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.TotalLiveLot / (float)LotManager.TotalLiveProduct);
                     OnLotProgress?.Invoke(rate);
                 }
+
+                productIdx++;
             }
 
             StopLiveSearch = false;
@@ -247,10 +253,13 @@ namespace DefectDBManager
             searchLotList();
 
             LotManager.ClearLot();
+            int productIdx = 0;
             foreach(var list in LotManager.Product)
             {
                 string[] keyData = list.Key.Split('_');
                 string lncd = keyData[0];
+
+                ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Search][productIdx];
 
                 PreprocItem preprocItem = null;
                 for (int i = 0; i < LotManager.ProcSetting.Count; i++)
@@ -265,12 +274,14 @@ namespace DefectDBManager
                     string lotName = item.Y0KLOT;
                     //filter 로 구분하도록 수정 @ATW 250321
                     //SearchDefectData(lncd, lotName, preprocItem);
-                    SearchDefectData(list.Key, lotName, preprocItem);
+                    SearchDefectData(list.Key, lotName, preprocItem, filter);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
                     OnLotProgress?.Invoke(rate);
                 }
+
+                productIdx++;
             }
             
             StopSearchingLotList = false;
@@ -360,14 +371,13 @@ namespace DefectDBManager
                     isWildCard = false;
                 }
 
+                PTRY0PList list = new PTRY0PList();
 #if TEST_MODE
-                if(_DBProc.SearchPTRYOPList_TEST(lncd, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, stTime, edTime) == true)
 #else
                 if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
 #endif
                 {
-                    PTRY0PList list = new PTRY0PList();
-
                     foreach(var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
                         if (/*isWildCard == true && */ptry0p.Y0ZKNM.Contains(productName) == false) continue;
@@ -375,17 +385,16 @@ namespace DefectDBManager
                         
                         list.Add(ptry0p.Clone());
                     }
-                        
-
-                    // 리스트 데이터 추가
-                    LotManager.Product.Add(data.ToString(), list);
                 }
+
+                // 리스트 데이터 추가
+                LotManager.Product.Add(data.ToString(), list);
             }
         }
 #endregion
 
 #region 결점 데이터 검색
-        public void SearchLiveDefectData(string lncd, string lotName, PreprocItem preprocItem)
+        public void SearchLiveDefectData(string lncd, string lotName, PreprocItem preprocItem, ProcFilter filter)
         {
             int error = -1;
             bool usemkcdModel = LotManager.UseMrkctlmstModel;
@@ -396,6 +405,72 @@ namespace DefectDBManager
 
                 // 입력 받은 데이터 기준으로 좌표 비교
                 lot.ComparePosition(preprocItem);
+
+                string logName = $"CompData_{filter.Line}_{filter.Product}_{filter.Model}";
+
+                LogDB log = _DBProc._LOG;
+                int idx1 = 0, idx2 = 0;
+
+                int maxStep = 0;
+                if (lot.MarkCompList.Data.Count > 0)
+                    maxStep = lot.MarkCompList.Data[0].Comp.GetLength(1);
+
+                log.WriteLoadData("COMPARE BASIC", idx1, logName, 0.0, true);
+
+                foreach (var item in lot.MarkCompList.Data)
+                {
+                    idx2 = 0;
+                    string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                        $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
+                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                    idx2++;
+                    for (int i = 0; i < item.Comp.GetLength(0); i++)
+                    {
+                        if (item.Comp[i, 0].Count > 0)
+                        {
+                            for (int j = 0; j < item.Comp[i, 0].Count; j++)
+                            {
+                                MarkingFaultDatum datum = item.Comp[i, 0][j];
+                                msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                                        $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
+                                log.WriteLoadData(msg, idx1, logName, 0.0);
+                                idx2++;
+                            }
+                        }
+                    }
+                    idx1++;
+                }
+
+                for (int idx = 1; idx < maxStep; idx++)
+                {
+                    idx1 = 0;
+                    log.WriteLoadData($"COMPARE Range {idx}", idx1, logName, 0.0);
+
+                    foreach (var item in lot.MarkCompList.Data)
+                    {
+                        idx2 = 0;
+                        string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
+                        log.WriteLoadData(msg, idx1, logName, 0.0);
+                        idx2++;
+                        for (int i = 0; i < item.Comp.GetLength(0); i++)
+                        {
+                            if (item.Comp[i, idx].Count > 0)
+                            {
+                                for (int j = 0; j < item.Comp[i, idx].Count; j++)
+                                {
+                                    MarkingFaultDatum datum = item.Comp[i, idx][j];
+                                    msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                                            $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
+                                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                                    idx2++;
+                                }
+                            }
+                        }
+                        idx1++;
+                    }
+                }
+
                 LotManager.AddLiveLot(lncd, lot);
             }
             catch
@@ -404,7 +479,7 @@ namespace DefectDBManager
             }
         }
 
-        public void SearchDefectData(string lncd, string lotName , PreprocItem preprocItem)
+        public void SearchDefectData(string lncd, string lotName , PreprocItem preprocItem, ProcFilter filter)
         {
             int error = -1;
             try
@@ -417,8 +492,74 @@ namespace DefectDBManager
 
                 if (lot == null) return;
 
+                string logName = $"CompData_{filter.Line}_{filter.Product}_{filter.Model}";
+
                 // 입력 받은 데이터 기준으로 좌표 비교
                 lot.ComparePosition(preprocItem);
+
+                LogDB log = _DBProc._LOG;
+                int idx1 = 0, idx2 = 0;
+
+                int maxStep = 0;
+                if(lot.MarkCompList.Data.Count>0)
+                    maxStep = lot.MarkCompList.Data[0].Comp.GetLength(1);
+
+                log.WriteLoadData("COMPARE BASIC", idx1, logName, 0.0, true);
+
+                foreach (var item in lot.MarkCompList.Data)
+                {
+                    idx2 = 0;
+                    string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                        $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
+                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                    idx2++;
+                    for (int i = 0; i < item.Comp.GetLength(0); i++)
+                    {
+                        if (item.Comp[i, 0].Count > 0)
+                        {
+                            for(int j=0; j< item.Comp[i, 0].Count; j++)
+                            {
+                                MarkingFaultDatum datum = item.Comp[i, 0][j];
+                                msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                                        $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
+                                log.WriteLoadData(msg, idx1, logName, 0.0);
+                                idx2++;
+                            }
+                        }
+                    }
+                    idx1++;
+                }
+
+                for(int idx = 1; idx< maxStep; idx++)
+                {
+                    idx1 = 0;
+                    log.WriteLoadData($"COMPARE Range {idx}", idx1, logName, 0.0);
+
+                    foreach (var item in lot.MarkCompList.Data)
+                    {
+                        idx2 = 0;
+                        string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
+                        log.WriteLoadData(msg, idx1, logName, 0.0);
+                        idx2++;
+                        for (int i = 0; i < item.Comp.GetLength(0); i++)
+                        {
+                            if (item.Comp[i, idx].Count > 0)
+                            {
+                                for (int j = 0; j < item.Comp[i, idx].Count; j++)
+                                {
+                                    MarkingFaultDatum datum = item.Comp[i, idx][j];
+                                    msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                                            $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
+                                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                                    idx2++;
+                                }
+                            }
+                        }
+                        idx1++;
+                    }
+                }
+
                 LotManager.AddLot(lncd, lot);
             }
             catch

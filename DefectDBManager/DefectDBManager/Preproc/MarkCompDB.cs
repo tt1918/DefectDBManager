@@ -983,6 +983,12 @@ namespace DefectDBManager.Preproc
                                     }
                                     else tmpKey = data.FLTID;
 
+
+                                    // Log는 무조건 데이터 다 남기도록 수정
+                                    dataCnt++;
+                                    logData = data.GetString(dataCnt, inspdata.BCNO);
+                                    _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+
                                     // MKCD Model에서 데이터 가져와서 다시 탐색함. 
                                     bValid = false;
                                     if (mkcdLncdData != null)
@@ -1017,9 +1023,9 @@ namespace DefectDBManager.Preproc
                                     else// 마킹 대상 결점
                                         preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
 
-                                    dataCnt++;
-                                    logData = data.GetString(dataCnt, tmpFltData.TBCNO);
-                                    _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                    //dataCnt++;
+                                    //logData = data.GetString(dataCnt, tmpFltData.TBCNO);
+                                    //_LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
                                     defectCnt[fcdIdx]++;
                                 }
 

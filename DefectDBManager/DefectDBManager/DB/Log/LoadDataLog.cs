@@ -37,13 +37,18 @@ namespace DefectDBManager
     public class LogDB
         {
         public string Lot { get; set; }
-        public void WriteLoadData(string str, int nc, string name, double time)
+        public void WriteLoadData(string str, int nc, string name, double time, bool clear=false)
         {
             string path = Path.Combine(Define.BCRPath, Lot);
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, $"{name}_{Define.DBResultName}");
             
+            if(clear==true)
+            {
+                File.Delete(path);
+            }
+
             try
             {
                 using (StreamWriter sw = File.AppendText(path))
