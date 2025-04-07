@@ -81,6 +81,7 @@
       <DependentUpon>ucClock.cs</DependentUpon>
     </Compile>
     <Compile Include="DelegateList.cs" />
+    <Compile Include="enum\enumProc.cs" />
     <Compile Include="Form\CompSetting\FormAddDel.cs">
       <SubType>Form</SubType>
     </Compile>

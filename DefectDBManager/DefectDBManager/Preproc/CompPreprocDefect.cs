@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -319,7 +319,7 @@ namespace DefectDBManager
                     }    
                 }
 
-                if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime) == true)
                 {
                     PTRY0PList list = new PTRY0PList();
 
@@ -373,12 +373,12 @@ namespace DefectDBManager
 
                 PTRY0PList list = new PTRY0PList();
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime) == true)
 #endif
                 {
-                    foreach(var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
                         if (/*isWildCard == true && */ptry0p.Y0ZKNM.Contains(productName) == false) continue;
                         //else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;

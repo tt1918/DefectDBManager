@@ -162,14 +162,14 @@ namespace DefectDBManager.Preproc
             return nNewCnt;
         }
 
-        public bool SearchPTRYOPList(string lncd, DateTime startTime, DateTime endTime)
+        public bool SearchPTRYOPList(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime)
         {
             // 연결 확인
             if (conn?.IsConnected() == false) return false;
 
             try
             {
-                _LOG.Lot = $"[{lncd}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+                _LOG.Lot = $"[{filter.Line}_{filter.Product}_{filter.Model}] PTRY0PList" + startTime.ToString("yyyyMMdd");
 
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
@@ -229,11 +229,11 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public bool SearchPTRYOPList_TEST(string lncd, DateTime startTime, DateTime endTime)
+        public bool SearchPTRYOPList_TEST(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime)
         {
             try
             {
-                string path = $"[{lncd}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+                string path = $"[{filter.Line}_{filter.Product}_{filter.Model}] PTRY0PList" + startTime.ToString("yyyyMMdd");
                 path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
 
                 // Daily Lot DATA 내용을 초기화 한다 

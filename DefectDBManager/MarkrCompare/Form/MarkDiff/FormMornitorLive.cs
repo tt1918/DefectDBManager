@@ -142,8 +142,7 @@ namespace MarkrCompare
                 // 검사 정지
                 OnStopLiveSearch?.Invoke();
 
-                string message = $"모니터링 정지";
-                lblProcess.Text = message;
+                updateLotSearchRes(CompProc.Stop);
             }
             catch
             {
@@ -176,7 +175,8 @@ namespace MarkrCompare
         {
             // 타이머 종료
             _timerLotSearchProcess.Stop();
-
+            // 마지막 데이터 업데이트
+            updateLotSearchRes(CompProc.End);
         }
         #endregion
 
@@ -192,12 +192,34 @@ namespace MarkrCompare
 
         private void timer_LotSearch(object sender, EventArgs e)
         {
+            updateLotSearchRes();
+        }
+
+        private void updateLotSearchRes(CompProc eProc = CompProc.Proc)
+        {
             int total = _lotManager.TotalLot;
             int count = _lotManager.TotalProduct;
 
-            string message = $"실시간 모니터링 중... ({count} / {total})";
-            lblProcess.Text = message;
+            string message = "";
+            switch (eProc)
+            {
+                case CompProc.Proc: message = $"데이터 처리 중... [{count} / {total}]"; break;
+                case CompProc.Stop: message = $"검사 중지 [{count} / {total}]"; break;
+                case CompProc.End: message = $"데이터 처리 완료 [{count} / {total}]"; break;
+                case CompProc.None: message = $"대기"; break;
+            }
+
+            if (lblProcess.InvokeRequired)
+            {
+                lblProcess.BeginInvoke(new Action(() =>
+                {
+                    lblProcess.Text = message;
+                }));
+            }
+            else
+                lblProcess.Text = message;
         }
+
         #endregion
 
     }
