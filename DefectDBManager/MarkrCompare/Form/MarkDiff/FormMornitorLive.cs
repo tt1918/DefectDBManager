@@ -22,6 +22,7 @@ namespace MarkrCompare
             get { return _timerLotSearchProcess.Enabled; }
         }
 
+        private bool _isError = false;
 
         #endregion
 
@@ -78,16 +79,63 @@ namespace MarkrCompare
         {
 
             int ctrlCount = _lotManager.CrtProcFilter[(int)_procIdx].Count;
-
+            bool isError = false;
+            List<string> strError=new List<string>();
             try
             {
                 lvFilterList.BeginUpdate();
                 lvFilterList.Items.Clear();
                 foreach (var item in _lotManager.CrtProcFilter[(int)_procIdx].Data)
                 {
+                    bool isExistProd=false;
+                    bool isExistModel = false;
+                    foreach (var procInfo in _lotManager.ProcLNCD.Info)
+                    {
+                        if(procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
+                        {
+                            isExistProd = true;
+                            break;
+                        }    
+                    }
+
+                    foreach(var prodModel in _lotManager.ProcSetting.Data)
+                    {
+                        if(prodModel.Name == item.Model)
+                        {
+                            isExistModel = true;
+                            break;
+                        }
+                    }
+
+                    if(isExistProd==false)
+                    {
+                        strError.Add($"라인 : {item.Line}, 품종 : {item.Product} 정보가 존재하지 않습니다.");
+                        isError = true;
+                    }
+                    if(isExistModel==false)
+                    {
+                        strError.Add($"모델 : {item.Model} 정보가 존재하지 않습니다.");
+                        isError = true;
+                    }
+
+                    if(isError==true)
+                        continue;
+
                     string format = $"{item.Line} - Product:[{item.Product}], Model:[{item.Model}]";
                     ListViewItem lvi = new ListViewItem(format);
                     lvFilterList.Items.Add(lvi);
+                }
+
+                _isError = isError;
+
+                if (isError ==true)
+                {
+                    if (strError.Count > 0)
+                    {
+                        strError.Insert(0, "실시간 감시");
+                        var errorMessage = string.Join("\n", strError.Select((error, index) => $"{index + 1}. {error}"));
+                        MessageBox.Show(errorMessage, "Error List", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             catch
@@ -111,6 +159,12 @@ namespace MarkrCompare
         {
             try
             {
+                if(_isError==true)
+                {
+                    SystemLog.DisplayFileServerLog("검사 모델 데이터가 존재하지 않습니다.");
+                    return;
+                }
+
                 if (IsRun == true)
                 {
                     SystemLog.DisplayFileServerLog("이미 실행중입니다.");

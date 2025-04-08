@@ -68,6 +68,37 @@ namespace DefectDBManager
             }
         }
 
+        public void WriteLoadData(string subPath, string str, int nc, string name, double time, bool clear = false)
+        {
+            string path = Path.Combine(Define.BCRPath, subPath, Lot);
+            if (Directory.Exists(path) == false)
+                Directory.CreateDirectory(path);
+            path = Path.Combine(path, $"{name}_{Define.DBResultName}");
+
+            if (clear == true)
+            {
+                File.Delete(path);
+            }
+
+            try
+            {
+                using (StreamWriter sw = File.AppendText(path))
+                {
+                    if (time == 0)
+                        sw.WriteLine(str);
+                    else
+                    {
+                        sw.Write($"[{time}] ");
+                        sw.WriteLine(str);
+                    }
+                }
+            }
+            finally
+            {
+
+            }
+        }
+
         public void DeleteFolder(string strLot)
         {
             try

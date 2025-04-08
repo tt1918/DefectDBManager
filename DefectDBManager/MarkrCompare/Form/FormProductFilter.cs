@@ -253,6 +253,7 @@ namespace MarkrCompare
         {
             try
             {
+                List<string> errString = new List<string>();
                 int size;
                 string lncd = string.Empty;
                 List<string> lineName = new List<string>();
@@ -291,6 +292,26 @@ namespace MarkrCompare
                         model.Add(data.Name);
                     }
 
+                    // 에러 체크 추가
+                    bool bError = false;
+                    if(lineName.Contains(item.Line)==false)
+                    {
+                        errString.Add($"Line 정보: {item.Line}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+                    if(material.Contains(item.Product) == false)
+                    {
+                        errString.Add($"품종 정보: {item.Product}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+                    if(model.Contains(item.Model) == false)
+                    {
+                        errString.Add($"모델 정보: {item.Product}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+
+                    if (bError) continue;
+
                     object[] s = new object[(int)eDgvSearchFilter.Total];
                     dgvFilter.Rows.Add(s);
 
@@ -300,6 +321,12 @@ namespace MarkrCompare
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
 
                     idx++;
+                }
+
+                if(errString.Count>0)
+                {
+                    var errorMessage = string.Join("\n", errString.Select((error, index) => $"{index + 1}. {error}"));
+                    MessageBox.Show(errorMessage, "Error List", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch
@@ -396,6 +423,7 @@ namespace MarkrCompare
         {
             try
             {
+                List<string> errString = new List<string>();
                 int size;
                 string lncd = string.Empty;
                 List<string> lineName = new List<string>();
@@ -434,6 +462,27 @@ namespace MarkrCompare
                         model.Add(data.Name);
                     }
 
+
+                    // 에러 체크 추가
+                    bool bError = false;
+                    if (lineName.Contains(item.Line) == false)
+                    {
+                        errString.Add($"Line 정보: {item.Line}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+                    if (material.Contains(item.Product) == false)
+                    {
+                        errString.Add($"품종 정보: {item.Product}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+                    if (model.Contains(item.Model) == false)
+                    {
+                        errString.Add($"모델 정보: {item.Product}가 존재하지 않습니다.");
+                        bError = true;
+                    }
+
+                    if (bError) continue;
+
                     object[] s = new object[(int)eDgvLiveFilter.Total];
                     dgvFilter.Rows.Add(s);
 
@@ -444,6 +493,12 @@ namespace MarkrCompare
                     dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.Duration] = makeDurationCombobox() as DataGridViewComboBoxCell;
 
                     idx++;
+                }
+
+                if (errString.Count > 0)
+                {
+                    var errorMessage = string.Join("\n", errString.Select((error, index) => $"{index + 1}. {error}"));
+                    MessageBox.Show(errorMessage, "Error List", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch

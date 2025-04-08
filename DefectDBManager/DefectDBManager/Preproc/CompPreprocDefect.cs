@@ -407,6 +407,7 @@ namespace DefectDBManager
                 lot.ComparePosition(preprocItem);
 
                 string logName = $"CompData_{filter.Line}_{filter.Product}_{filter.Model}";
+                string subPath = _DBProc._SubPath;
 
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
@@ -415,14 +416,14 @@ namespace DefectDBManager
                 if (lot.MarkCompList.Data.Count > 0)
                     maxStep = lot.MarkCompList.Data[0].Comp.GetLength(1);
 
-                log.WriteLoadData("COMPARE BASIC", idx1, logName, 0.0, true);
+                log.WriteLoadData(subPath, "COMPARE BASIC", idx1, logName, 0.0, true);
 
                 foreach (var item in lot.MarkCompList.Data)
                 {
                     idx2 = 0;
                     string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
                                                         $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
-                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                     idx2++;
                     for (int i = 0; i < item.Comp.GetLength(0); i++)
                     {
@@ -433,7 +434,7 @@ namespace DefectDBManager
                                 MarkingFaultDatum datum = item.Comp[i, 0][j];
                                 msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
                                                         $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
-                                log.WriteLoadData(msg, idx1, logName, 0.0);
+                                log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                 idx2++;
                             }
                         }
@@ -444,14 +445,14 @@ namespace DefectDBManager
                 for (int idx = 1; idx < maxStep; idx++)
                 {
                     idx1 = 0;
-                    log.WriteLoadData($"COMPARE Range {idx}", idx1, logName, 0.0);
+                    log.WriteLoadData(subPath, $"COMPARE Range {idx}", idx1, logName, 0.0);
 
                     foreach (var item in lot.MarkCompList.Data)
                     {
                         idx2 = 0;
                         string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
                                                             $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
-                        log.WriteLoadData(msg, idx1, logName, 0.0);
+                        log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                         idx2++;
                         for (int i = 0; i < item.Comp.GetLength(0); i++)
                         {
@@ -462,7 +463,7 @@ namespace DefectDBManager
                                     MarkingFaultDatum datum = item.Comp[i, idx][j];
                                     msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
                                                             $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
-                                    log.WriteLoadData(msg, idx1, logName, 0.0);
+                                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                     idx2++;
                                 }
                             }
@@ -598,6 +599,11 @@ namespace DefectDBManager
             {
 
             }
+        }
+
+        public void CheckFilterExist()
+        {
+
         }
 
         public void StartLiveLot()      

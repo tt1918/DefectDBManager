@@ -64,6 +64,11 @@ namespace DefectDBManager.Preproc
         /// 모델 정보
         /// </summary>
         public PreprocItem _PreprocItem { get; private set; } = null;
+
+        /// <summary>
+        /// 랏 탐색 서브 위치 추가
+        /// </summary>
+        public string _SubPath;
         #endregion
 
 
@@ -98,6 +103,9 @@ namespace DefectDBManager.Preproc
             _SearchY0LNCD = lncd;
             _ProductName = productName;
             _PreprocItem = item;
+
+            _SubPath = $"{lncd}_{productName}_{item.Name}";
+            _SubPath.Replace("*", "@");
 
             // 품종 wild card 확인
             if (_ProductName.Length < 2)
@@ -146,8 +154,8 @@ namespace DefectDBManager.Preproc
             {
                 for (j = 30 - 1; j >= 0; j--)
                 {
-                    if (j == 0) strLowPath = Path.Combine(Define.BCRPath, lotID);
-                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:D2}");
+                    if (j == 0) strLowPath = Path.Combine(Define.BCRPath, _SubPath, lotID);
+                    else strLowPath = Path.Combine(Define.BCRPath, _SubPath, $"{lotID}_{j:D2}");
 
                     if (Directory.Exists(strLowPath)) nLotCnt = j;
 
@@ -169,7 +177,10 @@ namespace DefectDBManager.Preproc
 
             try
             {
-                _LOG.Lot = $"[{filter.Line}_{filter.Product}_{filter.Model}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+                string strLine = $"[{filter.Line}_{filter.Product}_{filter.Model}]";
+                strLine = strLine.Replace("*", "@");
+
+                _LOG.Lot = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
 
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
@@ -233,7 +244,9 @@ namespace DefectDBManager.Preproc
         {
             try
             {
-                string path = $"[{filter.Line}_{filter.Product}_{filter.Model}] PTRY0PList" + startTime.ToString("yyyyMMdd");
+                string strLine = $"[{filter.Line}_{filter.Product}_{filter.Model}]";
+                strLine = strLine.Replace("*", "@");
+                string path = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
                 path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
 
                 // Daily Lot DATA 내용을 초기화 한다 
@@ -306,7 +319,7 @@ namespace DefectDBManager.Preproc
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
                 string query = ptrylp.GetQuery();
                 long dbCnt = 0;
-                _LOG.WriteLoadData(query.ToString(), 0, "PTRYLP", 0);
+                _LOG.WriteLoadData(_SubPath, query.ToString(), 0, "PTRYLP", 0);
 
                 if (query == "")
                 {
@@ -325,7 +338,7 @@ namespace DefectDBManager.Preproc
                             data.Parse(reader);
                             _DbResult.PTRLYP.Add(data);
                             string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
+                            _LOG.WriteLoadData(_SubPath, logData, 0, "PTRYLP", 0);
                         }
 
                         success = true;
@@ -379,7 +392,7 @@ namespace DefectDBManager.Preproc
                     dbOption.useKT = false;
                 _LOG.Lot = lotID;
 
-                string path = Path.Combine(Define.BCRPath, lotID, "PTRYLP_DBResult.txt");
+                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRYLP_DBResult.txt");
 
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
@@ -435,7 +448,7 @@ namespace DefectDBManager.Preproc
             {
                 QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
                 string query = msg.GetQuery();
-                _LOG.WriteLoadData(query, 0, "XOFSMST", 0.0);
+                _LOG.WriteLoadData(_SubPath, query, 0, "XOFSMST", 0.0);
                 if (query == "")
                 {
                     Log.Write($"[Error] DB Serach XOFSMST query is empty.");
@@ -456,7 +469,7 @@ namespace DefectDBManager.Preproc
                             _DbResult.XOFSMST.Add(data);
 
                             logData = string.Format($"{_DbResult.XOFSMST.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
+                            _LOG.WriteLoadData(_SubPath, logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
                         }
                     }
                 }
@@ -473,7 +486,7 @@ namespace DefectDBManager.Preproc
         {
             try
             {
-                string path = Path.Combine(Define.BCRPath, lotID, "XOFSMST_DBResult.txt");
+                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "XOFSMST_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -559,7 +572,7 @@ namespace DefectDBManager.Preproc
 
                 // PTRLYP에서 획득한 Lot Data  만큼 쿼리 탐색 구문 추가
                 string query = msg.GetQuery(_DbResult.PTRLYP);
-                _LOG.WriteLoadData(query, 0, "PTRY0P", 0.0);
+                _LOG.WriteLoadData(_SubPath, query, 0, "PTRY0P", 0.0);
 
                 if (query == "")
                 {
@@ -618,7 +631,7 @@ namespace DefectDBManager.Preproc
                             }
 
                             logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, logCnt, "PTRY0P", 0.0);
+                            _LOG.WriteLoadData(_SubPath, logData, logCnt, "PTRY0P", 0.0);
                         }
                     }
                 }
@@ -636,8 +649,8 @@ namespace DefectDBManager.Preproc
 
             try
             {
-                string path = Path.Combine(Define.BCRPath, lotID, "PTRY0P_DBResult.txt");
-                string inspPath = Path.Combine(Define.BCRPath, lotID, "INSPDAT_DBResult.txt");
+                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRY0P_DBResult.txt");
+                string inspPath = Path.Combine(Define.BCRPath, _SubPath, lotID, "INSPDAT_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -735,7 +748,7 @@ namespace DefectDBManager.Preproc
 
                         query = msg.GetQuery(1, dbOption);
 
-                        _LOG.WriteLoadData(query, 0, "INSPDAT", 0.0);
+                        _LOG.WriteLoadData(_SubPath, query, 0, "INSPDAT", 0.0);
 
                         if (query == "")
                         {
@@ -762,7 +775,7 @@ namespace DefectDBManager.Preproc
                                     // 리스트에 데이터 추가함
                                     inspDataList.Add(data);
                                     dataCnt++;
-                                    _LOG.WriteLoadData(data.ToString(), dataCnt, "INSPDAT", 0.0);
+                                    _LOG.WriteLoadData(_SubPath, data.ToString(), dataCnt, "INSPDAT", 0.0);
                                 }
                             }
                         }
@@ -793,7 +806,7 @@ namespace DefectDBManager.Preproc
 
                 Dictionary<string, INSPDATList> dicList = new Dictionary<string, INSPDATList>();
 
-                string path = Path.Combine(Define.BCRPath, lotID, "INSPDAT_DBResult.txt");
+                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "INSPDAT_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -920,7 +933,7 @@ namespace DefectDBManager.Preproc
                         QueryMsg.FLTDAT_Daily_Query msg = new QueryMsg.FLTDAT_Daily_Query();
                         query = msg.GetQuery(inspdata.CTLNO);
 
-                        _LOG.WriteLoadData(query, 0, "FAULTDAT", 0.0);
+                        _LOG.WriteLoadData(_SubPath, query, 0, "FAULTDAT", 0.0);
 
                         if (query == "")
                         {
@@ -987,7 +1000,7 @@ namespace DefectDBManager.Preproc
                                     // Log는 무조건 데이터 다 남기도록 수정
                                     dataCnt++;
                                     logData = data.GetString(dataCnt, inspdata.BCNO);
-                                    _LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                    _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
 
                                     // MKCD Model에서 데이터 가져와서 다시 탐색함. 
                                     bValid = false;
@@ -1146,7 +1159,7 @@ namespace DefectDBManager.Preproc
                         inspdata.RollCtlCnt = 0;
 
                         bool isTextEnd = false;
-                        string path = Path.Combine(Define.BCRPath, lotID, "FAULTDAT_DBResult.txt");
+                        string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "FAULTDAT_DBResult.txt");
                         using (var reader = new StreamReader(path, Encoding.UTF8))
                         {
                             string text;
