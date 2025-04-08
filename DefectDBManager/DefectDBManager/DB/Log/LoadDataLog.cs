@@ -103,7 +103,21 @@ namespace DefectDBManager
         {
             try
             {
-                string path = Path.Combine(Define.BCRPath, strLot);
+                string path = Path.Combine(Define.BCRPath,strLot);
+                if (Directory.Exists(path) == true)
+                    Directory.Delete(path, true);
+            }
+            catch
+            {
+                Log.Write($"Deleting Folder is failed");
+            }
+        }
+
+        public void DeleteFolder(string subPath, string strLot)
+        {
+            try
+            {
+                string path = Path.Combine(Define.BCRPath, subPath, strLot);
                 if (Directory.Exists(path) == true)
                     Directory.Delete(path, true);
             }

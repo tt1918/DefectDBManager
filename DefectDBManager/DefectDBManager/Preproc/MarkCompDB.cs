@@ -105,7 +105,7 @@ namespace DefectDBManager.Preproc
             _PreprocItem = item;
 
             _SubPath = $"{lncd}_{productName}_{item.Name}";
-            _SubPath.Replace("*", "@");
+            _SubPath = _SubPath.Replace("*", "@");
 
             // 품종 wild card 확인
             if (_ProductName.Length < 2)
@@ -307,11 +307,12 @@ namespace DefectDBManager.Preproc
                 int newLotCnt = GetLotSpliceCnt(lotID);
                 if (newLotCnt > 0)
                 {
+                    Log.Write($"스플라이스가 존재함");
                     // 재갱신 데이터가 아니면 업데이트 안하고 스킵함.
                     if (renewal == false)
                         return null;
 
-                    _LOG.DeleteFolder(lotID);
+                    _LOG.DeleteFolder(_SubPath, lotID);
                 }
 
                 _LOG.Lot = lotID;
@@ -327,6 +328,7 @@ namespace DefectDBManager.Preproc
                     Log.Write($"[Error] DB Serach PTRYLP query is empty.");
                 }
 
+                Log.Write($"Step - 1");
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
                     using (var reader = comm.ExecuteReader())
@@ -345,26 +347,36 @@ namespace DefectDBManager.Preproc
                     }
                 }
 
+                Log.Write($"Step - 2");
+
                 if (success == false)
                 {
                     errOut = 2;
                     return null;
                 }
+                Log.Write($"Step - 3");
                 success = SearchXOFSMST(lotID);
                 if (success == false) { errOut = 3; return null; }
+
+                Log.Write($"Step - 4");
 
                 success = SearchPTRY0P(lotID);
                 if (success == false) { errOut = 4; return null; }
 
+                Log.Write($"Step - 5");
+
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return null; }
 
+                Log.Write($"Step - 6");
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
+                Log.Write($"Step - 7");
                 success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return null; }
 
+                Log.Write($"Step - 8");
                 // 처리 완료되면 데이터 정리
 
                 return new PreprocLot(lotID, _DbResult, FaultData);

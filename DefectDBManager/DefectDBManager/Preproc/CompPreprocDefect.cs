@@ -563,9 +563,9 @@ namespace DefectDBManager
 
                 LotManager.AddLot(lncd, lot);
             }
-            catch
+            catch(Exception e)
             {
-
+                Log.Write($"[Error] SearchDefectData : {e.Message}");
             }
         }
 #endregion
