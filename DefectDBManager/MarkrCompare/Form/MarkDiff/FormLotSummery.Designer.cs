@@ -30,13 +30,15 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnClearHistory = new CustomControls.RoundButton();
             this.rbShowNormal = new System.Windows.Forms.RadioButton();
             this.rbShowNG = new System.Windows.Forms.RadioButton();
             this.rbShowAll = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.flpLotSummary = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnClearHistory = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -44,7 +46,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flpLotSummary, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
@@ -75,6 +77,27 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(534, 33);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // btnClearHistory
+            // 
+            this.btnClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.BorderColor = System.Drawing.Color.Lavender;
+            this.btnClearHistory.BorderRadius = 5;
+            this.btnClearHistory.BorderSize = 2;
+            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnClearHistory.FlatAppearance.BorderSize = 0;
+            this.btnClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearHistory.ForeColor = System.Drawing.Color.White;
+            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
+            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
+            this.btnClearHistory.Name = "btnClearHistory";
+            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
+            this.btnClearHistory.TabIndex = 11;
+            this.btnClearHistory.Text = "이력 삭제";
+            this.btnClearHistory.TextColor = System.Drawing.Color.White;
+            this.btnClearHistory.UseVisualStyleBackColor = false;
+            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
             // 
             // rbShowNormal
             // 
@@ -115,36 +138,26 @@
             this.rbShowAll.UseVisualStyleBackColor = true;
             this.rbShowAll.Click += new System.EventHandler(this.rbShow_Click);
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.AutoSize = true;
+            this.panel1.Controls.Add(this.flpLotSummary);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 38);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(530, 521);
+            this.panel1.TabIndex = 1;
+            // 
             // flpLotSummary
             // 
             this.flpLotSummary.BackColor = System.Drawing.Color.White;
             this.flpLotSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpLotSummary.Location = new System.Drawing.Point(1, 36);
+            this.flpLotSummary.Location = new System.Drawing.Point(0, 0);
             this.flpLotSummary.Margin = new System.Windows.Forms.Padding(1);
             this.flpLotSummary.Name = "flpLotSummary";
-            this.flpLotSummary.Size = new System.Drawing.Size(534, 525);
-            this.flpLotSummary.TabIndex = 1;
-            // 
-            // btnClearHistory
-            // 
-            this.btnClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BorderColor = System.Drawing.Color.Lavender;
-            this.btnClearHistory.BorderRadius = 5;
-            this.btnClearHistory.BorderSize = 2;
-            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClearHistory.FlatAppearance.BorderSize = 0;
-            this.btnClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearHistory.ForeColor = System.Drawing.Color.White;
-            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
-            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
-            this.btnClearHistory.Name = "btnClearHistory";
-            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
-            this.btnClearHistory.TabIndex = 11;
-            this.btnClearHistory.Text = "이력 삭제";
-            this.btnClearHistory.TextColor = System.Drawing.Color.White;
-            this.btnClearHistory.UseVisualStyleBackColor = false;
-            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
+            this.flpLotSummary.Size = new System.Drawing.Size(530, 521);
+            this.flpLotSummary.TabIndex = 2;
             // 
             // FormLotSummery
             // 
@@ -159,8 +172,10 @@
             this.Text = "FormLotSummery";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLotSummery_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -173,6 +188,7 @@
         private System.Windows.Forms.RadioButton rbShowNG;
         private System.Windows.Forms.RadioButton rbShowAll;
         private CustomControls.RoundButton btnClearHistory;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flpLotSummary;
     }
 }

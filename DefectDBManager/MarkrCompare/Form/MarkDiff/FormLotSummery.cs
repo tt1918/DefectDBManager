@@ -99,6 +99,7 @@ namespace MarkrCompare
                         if (_dicLotSummary.ContainsKey(lncd))
                         {
                             _dicLotSummary[lncd].Add(form);
+                            flpLotSummary.Controls.Add(form);
                         }
                         else
                         {

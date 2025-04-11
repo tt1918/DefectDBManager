@@ -20,6 +20,7 @@ namespace DefectDBManager.DB
         public string StartTime;
         public string EndTime;
         public string Y0KYCD;
+        public string Y0PPCD;
         public string Y0KLOT;
         public string LNCD;
         public string Y0LNSN;
@@ -43,6 +44,7 @@ namespace DefectDBManager.DB
                 EndTime = EndTime.Substring(0, pos);
 
             Y0KYCD = reader[0].ToString();
+            Y0PPCD = reader[2].ToString();
             Y0KLOT = reader[7].ToString();
             LNCD = reader[8].ToString();
             Y0LNSN = reader[9].ToString();
@@ -78,7 +80,7 @@ namespace DefectDBManager.DB
 
         public override string ToString()
         {
-            string msg = $"{LotData}, {StartTime}, {EndTime}, {Y0KYCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
+            string msg = $"{LotData}, {StartTime}, {EndTime}, {Y0KYCD}, {Y0PPCD}, {Y0KLOT}, {Y0LNSN}, {Y0KKOL} , {Y0KSOL}, {Y0ZKNM}, {LNCD}, {Y0KASS}";
 
             return msg;
         }

@@ -251,8 +251,8 @@ namespace MarkrCompare
 
         private void updateLotSearchRes(CompProc eProc = CompProc.Proc)
         {
-            int total = _lotManager.TotalLot;
-            int count = _lotManager.TotalProduct;
+            int total = _lotManager.TotalLiveProduct;
+            int count = _lotManager.TotalLiveLot;
 
             string message = "";
             switch (eProc)

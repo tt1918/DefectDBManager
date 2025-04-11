@@ -140,7 +140,7 @@ namespace MarkrCompare
                 lblProcess.Text = "비교 데이터 없음";
                 return;
             }
-
+            
             string str = null;
             int[] compCnt = new int[procItem.CompRange.Count + 1];
 
@@ -160,10 +160,26 @@ namespace MarkrCompare
                 }
             }
 
+            bool isEmpty = true;
+            foreach (var cnt in compCnt)
+            {
+                if (cnt > 0) isEmpty = false;
+            }
+            if (isEmpty)
+            {
+                lblProcess.Text = "동일 비교 결점 없음";
+                return;
+            }
+
+
             double[] result = new double[compCnt.Length];
             for (int i = 1; i < compCnt.Length; i++)
             {
-                result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100;
+                if(compCnt[i - 1]>0)
+                    result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100;
+                else
+                    result[i] = 0.0;
+
                 if (i == compCnt.Length - 1)
                     str += $"Case {i} : {result[i]:F2}%";
                 else
