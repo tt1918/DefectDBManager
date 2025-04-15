@@ -384,6 +384,7 @@ namespace DefectDBManager.Preproc
 
         public void ResetTime()
         {
+            _isFirst = false;
             _setTime = DateTime.Now;
         }
 
@@ -394,10 +395,7 @@ namespace DefectDBManager.Preproc
 
             // 제일 처음이면 바로 검사 시작
             if(_isFirst==true)
-            {
-                _isFirst = false;
                 return true;
-            }
 
             // 설정 시간 보다 넘어가면 true를 반환
             if (ts.Hours >= _spanHour) return true;

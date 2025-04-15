@@ -104,7 +104,6 @@ namespace MarkrCompare
                         else
                         {
                             _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
-
                             _dicLotSummary[lncd].Add(form);
                             flpLotSummary.Controls.Add(form);
                         }
@@ -162,8 +161,7 @@ namespace MarkrCompare
                     {
                         foreach (var form in item)
                         {
-                            if (form.IsError)
-                                form.Dispose();
+                            if (form.IsError)   form.Dispose();
                         }
                     }
                 }
@@ -199,9 +197,7 @@ namespace MarkrCompare
                 foreach (var item in _dicLotSummary.Values)
                 {
                     foreach (var form in item)
-                    {
                         form.Visible = true;
-                    }
                 }
             }
             catch (Exception e)
@@ -218,10 +214,8 @@ namespace MarkrCompare
                 {
                     foreach (var form in item)
                     {
-                        if (form.IsError)
-                            form.Visible = true;
-                        else
-                            form.Visible = false;
+                        if (form.IsError)   form.Visible = true;
+                        else                form.Visible = false;
                     }
                 }
             }

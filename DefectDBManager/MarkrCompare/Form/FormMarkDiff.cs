@@ -210,7 +210,7 @@ namespace MarkrCompare
 
         private void closeTabSearchSetting()
         {
-            _formMorLive.OnUpdatePrepLncdInfo -= showLotListForm;
+            _formMorLive.OnUpdatePrepLncdInfo -= updateLiveMornitoringCtrl;
             _formMorSearch.OnUpdatePrepLncdInfo -= showLotListForm;
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
@@ -264,7 +264,7 @@ namespace MarkrCompare
                 _lotListForms = new FormLotList[size];
                 for (int i = 0; i < size; i++)
                 {
-                    _lotListForms[i] = new FormLotList();
+                    _lotListForms[i] = new FormLotList((eProc)i);
                     _lotListForms[i].TopLevel = false;
                     _lotListForms[i].Show();
                 }
@@ -318,7 +318,6 @@ namespace MarkrCompare
                     default:
                         break;
                 }
-                
             }
 
         }
@@ -376,7 +375,7 @@ namespace MarkrCompare
                 string[] keyData = item.Key.Split('_');
                 string lncd = keyData[0];
 
-                _formLotSummary.SetLotSummary(lncd, _lotManager.LiveLot[lncd], _lotManager, item.Key);
+                _formLotSummary.SetLotSummary(item.Key, _lotManager.LiveLot[item.Key], _lotManager, item.Key);
             }
         }
         #endregion
@@ -404,10 +403,10 @@ namespace MarkrCompare
         #region Search 완료
         public void UpdateSearchLotList()
         {
-            //updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Search);
             BeginInvoke(new Action(delegate 
             {
                 _lotListForms[(int)eProc.Search].OnClearSummaryData();
+                _lotListForms[(int)eProc.Search].SetTapControl(_lotManager.CrtProcFilter[(int)eProc.Search]);
             }));
             foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
             {
@@ -421,11 +420,6 @@ namespace MarkrCompare
                     }
                 }
 
-                //filter 로 구분하도록 수정 @ATW 250321
-                //if (_lotManager.LOT.ContainsKey(item.Line))
-                //{
-                //    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.Line], procItem, item.ToString());
-                //}
                 if (_lotManager.LOT.ContainsKey(item.ToString()))
                 {
                     _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
@@ -433,7 +427,7 @@ namespace MarkrCompare
             }
         }
 
-        public void UpdateRollmap(PreprocLot lot/*, PreprocItem procItem*/)
+        public void UpdateRollmap(PreprocLot lot)
         {
             PreprocItem procItem = new PreprocItem();
             foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
@@ -443,17 +437,10 @@ namespace MarkrCompare
                     procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == item.Model);
                     break;
                 }
-                //foreach (var set in _lotManager.ProcSetting.Data)
-                //{
-                //    if (set.Name == item.Model)
-                //    {
-                        
-                //    }
-                //}
             }
 
             PreprocLNCDInfo info = new PreprocLNCDInfo();
-            //_rollMapForm.ClearMap();
+            _rollMapForm.ClearMap();
             foreach (var item in lot.INSPDAT)
             {
                 foreach (var item2 in item)
@@ -461,11 +448,7 @@ namespace MarkrCompare
                     foreach (var item3 in item2.Data)
                     {
                         info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD);
-                        if (info != null)
-                        {
-                            _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
-                            //break;
-                        }
+                        if (info != null)   _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
                     }
                 }
             }

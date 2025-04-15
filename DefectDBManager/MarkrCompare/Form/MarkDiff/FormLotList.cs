@@ -27,6 +27,8 @@ namespace MarkrCompare
             get { return _dicFormSummary; }
         }
         private Dictionary<string, List<FormLotSummaryData>> _dicFormSummary = null;
+        private Dictionary<string ,FlowLayoutPanel> _flpSummeryDic = new Dictionary<string, FlowLayoutPanel>();
+        eProc _procType = eProc.Live;
         #endregion
 
         #region Event
@@ -34,11 +36,12 @@ namespace MarkrCompare
         #endregion
 
         #region Create/Destroy
-        public FormLotList()
+        public FormLotList(eProc proc)
         {
             InitializeComponent();
 
             _dicFormSummary = new Dictionary<string, List<FormLotSummaryData>>();
+            proc = _procType;
         }
 
         public FormLotList(object owner, string name)
@@ -51,6 +54,11 @@ namespace MarkrCompare
         private void FormLotList_Load(object sender, EventArgs e)
         {
             initFlpInfo();
+
+            if (_procType == eProc.Live) 
+            {
+                setLiveTapControl();
+            }
         }
 
         private void FormLotList_FormClosing(object sender, FormClosingEventArgs e)
@@ -70,6 +78,58 @@ namespace MarkrCompare
         #endregion
 
         #region Lot Summary Flow Layout Panel 처리
+        
+        private void setLiveTapControl()
+        {
+            FlowLayoutPanel flowPanel = new FlowLayoutPanel();
+            flowPanel.FlowDirection = FlowDirection.LeftToRight;
+            flowPanel.Dock = DockStyle.Fill;
+            flowPanel.AutoScroll = true;
+            flowPanel.BackColor = Color.White;
+            tpLotSummery.Controls.Add(flowPanel);
+            tcLotSummary.TabPages[0].Text = "LINE MORNITOR";
+            if (_flpSummeryDic.ContainsKey("ErrorCheck") == false)
+                _flpSummeryDic.Add("ErrorCheck", flowPanel);
+
+
+        }
+        
+        public void SetTapControl(ProcFilterList filters)
+        {
+            int count = filters.Count;
+
+            tcLotSummary.Controls.Clear();
+            foreach(var panel in _flpSummeryDic)
+            {
+                FlowLayoutPanel flowPanel = panel.Value;
+
+                foreach (var item in flowPanel.Controls)
+                {
+                    FormLotSummaryData form = item as FormLotSummaryData;
+                    form.Dispose();
+                }
+
+                flowPanel.Dispose();
+            }
+            _flpSummeryDic.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                string key = filters.Data[i].ToString();
+                TabPage tabPage = new TabPage(key);
+                FlowLayoutPanel flowPanel = new FlowLayoutPanel();
+                flowPanel.FlowDirection = FlowDirection.LeftToRight;
+                flowPanel.Dock = DockStyle.Fill;
+                flowPanel.AutoScroll = true;
+                flowPanel.BackColor = Color.White;
+                tabPage.Controls.Add(flowPanel);
+
+                if (_flpSummeryDic.ContainsKey(key) == false)
+                    _flpSummeryDic.Add(key, flowPanel);
+                tcLotSummary.TabPages.Add(tabPage);
+            }
+        }
+
         private void initFlpInfo()
         {
             clearFlpInfo();
@@ -77,7 +137,7 @@ namespace MarkrCompare
 
         private void clearFlpInfo()
         {
-            flowLayoutPanel1.Controls.Clear();
+            
         }
         #endregion
 
@@ -111,21 +171,14 @@ namespace MarkrCompare
                 {
                     FormLotSummaryData form = new FormLotSummaryData();
                     form.TopLevel = false;
-                    form.Parent = this.flowLayoutPanel1;
-                    //DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-                    //foreach (var item in lotManager.LiveProduct)
-                    //{
-                    //    var keyData = item.Key.Split('_');
-                    //    for (int i = 0; i < lotManager.ProcSetting.Count; i++)
-                    //    {
-                    //        if (lotManager.ProcSetting[i].Name == keyData[2])
-                    //            procItem = lotManager.ProcSetting[i];
-                    //    }
-                    //}
+                    
+                    if(_flpSummeryDic.ContainsKey(filter))
+                        form.Parent = this._flpSummeryDic[filter];
                     form.ProcItem = procItem;
                     form.Filter = filter;
                     form.LotSummery = summary;
                     form.ShowCheckbox = true;
+                    form.TopLevel = false;
                     form.Show();
                     if (_dicFormSummary.ContainsKey("Search"))
                     {
@@ -136,10 +189,11 @@ namespace MarkrCompare
                         _dicFormSummary.Add("Search", new List<FormLotSummaryData>());
 
                         _dicFormSummary["Search"].Add(form);
-                        flowLayoutPanel1.Controls.Add(form);
+                        if (_flpSummeryDic.ContainsKey(filter))
+                            this._flpSummeryDic[filter].Controls.Add(form);
                     }
                 }
-
+                this._flpSummeryDic[filter].Show();
             }));
         }
 
@@ -162,7 +216,8 @@ namespace MarkrCompare
         {
             FormLotSummaryData form = new FormLotSummaryData();
             form.TopLevel = false;
-            form.Parent = this.flowLayoutPanel1;
+            if (_flpSummeryDic.ContainsKey("ErrorCheck"))
+                form.Parent = this._flpSummeryDic["ErrorCheck"];
             form.SetStatusCheck(line, ip, duration);
             form.Show();
             
@@ -175,7 +230,8 @@ namespace MarkrCompare
                 _dicFormSummary.Add("ErrorCheck", new List<FormLotSummaryData>());
 
                 _dicFormSummary["ErrorCheck"].Add(form);
-                flowLayoutPanel1.Controls.Add(form);
+                if (_flpSummeryDic.ContainsKey("ErrorCheck"))
+                    _flpSummeryDic["ErrorCheck"].Controls.Add(form);
             }
         }
 
@@ -187,7 +243,7 @@ namespace MarkrCompare
             {
                 if (item.Contains(data))
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery/*, data.ProcItem*/);
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery);
                     break;
                 }
             }
@@ -221,5 +277,7 @@ namespace MarkrCompare
 
             MessageBox.Show("선택한 LOT을 불러왔습니다.");
         }
+
+        
     }
 }

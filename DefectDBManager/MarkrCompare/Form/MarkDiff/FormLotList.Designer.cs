@@ -28,23 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnLoad = new CustomControls.RoundButton();
+            this.tcLotSummary = new System.Windows.Forms.TabControl();
+            this.tpLotSummery = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
+            this.tcLotSummary.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.White;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 39);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(403, 457);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.WrapContents = false;
             // 
             // panel1
             // 
@@ -77,12 +67,32 @@
             this.btnLoad.UseVisualStyleBackColor = false;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // tcLotSummary
+            // 
+            this.tcLotSummary.Controls.Add(this.tpLotSummery);
+            this.tcLotSummary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcLotSummary.Location = new System.Drawing.Point(0, 39);
+            this.tcLotSummary.Name = "tcLotSummary";
+            this.tcLotSummary.SelectedIndex = 0;
+            this.tcLotSummary.Size = new System.Drawing.Size(403, 457);
+            this.tcLotSummary.TabIndex = 2;
+            // 
+            // tpLotSummery
+            // 
+            this.tpLotSummery.Location = new System.Drawing.Point(4, 24);
+            this.tpLotSummery.Name = "tpLotSummery";
+            this.tpLotSummery.Padding = new System.Windows.Forms.Padding(3);
+            this.tpLotSummery.Size = new System.Drawing.Size(395, 429);
+            this.tpLotSummery.TabIndex = 0;
+            this.tpLotSummery.Text = "INFO";
+            this.tpLotSummery.UseVisualStyleBackColor = true;
+            // 
             // FormLotList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(403, 496);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.tcLotSummary);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -93,14 +103,15 @@
             this.Load += new System.EventHandler(this.FormLotList_Load);
             this.VisibleChanged += new System.EventHandler(this.FormLotList_VisibleChanged);
             this.panel1.ResumeLayout(false);
+            this.tcLotSummary.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private CustomControls.RoundButton btnLoad;
+        private System.Windows.Forms.TabControl tcLotSummary;
+        private System.Windows.Forms.TabPage tpLotSummery;
     }
 }

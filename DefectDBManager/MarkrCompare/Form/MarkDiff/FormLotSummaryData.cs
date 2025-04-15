@@ -146,17 +146,12 @@ namespace MarkrCompare
 
             foreach (var item in _lotSummery.MarkCompList.Data)
             {
-                //baseCnt = 0;
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
                 {
-                    if (item.Comp[i, 0].Count > 0)
-                        compCnt[0]++;
+                    if (item.Comp[i, 0].Count > 0)  compCnt[0]++;
 
                     for (int j = 1; j < item.Comp.GetLength(1); j++)
-                    {
-                        if (item.Comp[i, j].Count > 0)
-                            compCnt[j]++;
-                    }
+                        if (item.Comp[i, j].Count > 0)  compCnt[j]++;
                 }
             }
 
@@ -173,23 +168,29 @@ namespace MarkrCompare
 
 
             double[] result = new double[compCnt.Length];
+            result[0] = 100.0;
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"REF :{result[0]:F1}%({compCnt[0]}), "); 
+
+
             for (int i = 1; i < compCnt.Length; i++)
             {
                 if(compCnt[i - 1]>0)
-                    result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100;
+                    result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100.0;
                 else
-                    result[i] = 0.0;
+                    result[i] = (double)compCnt[i]*100.0;
 
                 if (i == compCnt.Length - 1)
-                    str += $"Case {i} : {result[i]:F2}%";
+                    sb.Append($"Case {i} :{result[i]:F1}%({compCnt[i]})");
                 else
-                    str += $"Case {i} : {result[i]:F2}%, ";
+                    sb.Append($"Case {i} : {result[i]:F1}%({compCnt[i]}), ");
 
                 if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
                     isError = true;
             }
 
-            lblProcess.Text = str;
+            lblProcess.Text = sb.ToString();
         }
 
         /// <summary>
