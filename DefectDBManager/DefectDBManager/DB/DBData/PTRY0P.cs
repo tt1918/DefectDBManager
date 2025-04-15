@@ -62,13 +62,14 @@ namespace DefectDBManager.DB
             StartTime = data[1].Trim(' ');
             EndTime = data[2].Trim(' ');
             Y0KYCD = data[3].Trim(' ');
-            Y0KLOT = data[4].Trim(' ');
-            Y0LNSN = data[5].Trim(' ');
-            Y0KKOL = data[6].Trim(' ');
-            Y0KSOL = data[7].Trim(' ');
-            Y0ZKNM = data[8].Trim(' ');
-            LNCD = data[9].Trim(' ');
-            Y0KASS = data[10].Trim(' ');
+            Y0PPCD = data[4].Trim(' ');
+            Y0KLOT = data[5].Trim(' ');
+            Y0LNSN = data[6].Trim(' ');
+            Y0KKOL = data[7].Trim(' ');
+            Y0KSOL = data[8].Trim(' ');
+            Y0ZKNM = data[9].Trim(' ');
+            LNCD = data[10].Trim(' ');
+            Y0KASS = data[11].Trim(' ');
         }
 
         //public override string ToString()

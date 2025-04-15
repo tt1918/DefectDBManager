@@ -662,7 +662,6 @@ namespace DefectDBManager.Preproc
             try
             {
                 string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRY0P_DBResult.txt");
-                string inspPath = Path.Combine(Define.BCRPath, _SubPath, lotID, "INSPDAT_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -677,26 +676,8 @@ namespace DefectDBManager.Preproc
                         string strY0LNSN = data.Y0LNSN;
 
                         // DATA 갖고 오지 않아서 INSPDATA에서 찾아야 함
-                        int nY0PPCD = 420;
-                        using (var inspRD = new StreamReader(inspPath, Encoding.UTF8))
-                        {
-                            string text1;
-                            while((text1 = inspRD.ReadLine())!=null)
-                            {
-                                if (text1.Contains("SELECT") == true) continue;
-
-                                INSPDATData inspData = new INSPDATData();
-                                inspData.Parse(text1);
-
-                                if(data.LNCD == inspData.USEFLG)
-                                {
-                                    nY0PPCD = Int32.Parse(inspData.KTCD.ToString());
-                                    break;
-                                }
-
-                            }
-                        }
-
+                        int nY0PPCD = System.Convert.ToInt32(data.Y0PPCD);
+                      
                         if (Char.IsLetter(strYOKLOT, 0) == true)
                             strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
                         else
@@ -706,17 +687,13 @@ namespace DefectDBManager.Preproc
                                 strYOKLOT = strYOKLOT.Substring(0, pos);
                         }
 
-                        // 연신
-                        if (nY0PPCD == 100)
-                            _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+                        switch(nY0PPCD)
+                        {
+                            case 100: _DbResult.PTRY0P[(int)eFCD.ES].Add(data); break; // 연신
+                            case 400: _DbResult.PTRY0P[(int)eFCD.TG].Add(data); break; // 도공
+                            default: _DbResult.PTRY0P[(int)eFCD.ETC].Add(data); break; // 그외
 
-                        // 도공
-                        if (nY0PPCD == 400)
-                            _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
-
-                        // 그외
-                        if (nY0PPCD != 100 && nY0PPCD != 400)
-                            _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                        }    
                     }
                 }
                 return true;

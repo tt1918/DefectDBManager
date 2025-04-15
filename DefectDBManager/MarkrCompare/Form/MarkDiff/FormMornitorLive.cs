@@ -227,8 +227,7 @@ namespace MarkrCompare
         #region 검색 완료
         public void EndLotSearch()
         {
-            // 타이머 종료
-            _timerLotSearchProcess.Stop();
+            // 여기서 timer_LotSearch 종료하면 안됨.
             // 마지막 데이터 업데이트
             updateLotSearchRes(CompProc.End);
         }

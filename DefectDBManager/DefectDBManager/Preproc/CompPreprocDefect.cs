@@ -299,15 +299,13 @@ namespace DefectDBManager
             // 금일 날자로 설정
             DateTime stTime = DateTime.Today;
             DateTime edTime = DateTime.Now;
-            //DateTime stTime = new DateTime(2025, 01, 19);
-            //DateTime edTime = new DateTime(2025, 01, 19, 23, 59, 59);
 
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
             string lncd = string.Empty;
             foreach (var data in filter.Data)
             {
                 // 검색 대상이 아니면 처리하지 않음.
-                //if (data.IsInTime() == false) continue;
+                if (data.IsInTime() == false) continue;
 
                 lncd = string.Empty;
                 for (int i=0; i< LotManager.ProcLNCD.Info.Count; i++)
@@ -318,8 +316,11 @@ namespace DefectDBManager
                         break;
                     }    
                 }
-
+#if TEST_MODE
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
+#else
                 if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime) == true)
+#endif
                 {
                     PTRY0PList list = new PTRY0PList();
 
@@ -333,7 +334,7 @@ namespace DefectDBManager
                 data.ResetTime();
             }
         }
-        #endregion
+#endregion
 
         #region 기간 공정 별 생산 리스트 취합.
         private void searchLotList()
@@ -400,7 +401,11 @@ namespace DefectDBManager
             bool usemkcdModel = LotManager.UseMrkctlmstModel;
             try
             {
+#if TEST_MODE
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, ref error);
+#else
                 PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+#endif
                 if (lot == null) return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
@@ -416,62 +421,42 @@ namespace DefectDBManager
                 if (lot.MarkCompList.Data.Count > 0)
                     maxStep = lot.MarkCompList.Data[0].Comp.GetLength(1);
 
-                log.WriteLoadData(subPath, "COMPARE BASIC", idx1, logName, 0.0, true);
-
-                foreach (var item in lot.MarkCompList.Data)
+                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
+                for (int i = 0; i < maxStep; i++)
                 {
-                    idx2 = 0;
-                    string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
-                                                        $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
-                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
-                    idx2++;
-                    for (int i = 0; i < item.Comp.GetLength(0); i++)
+                    logName = $"CompData_{preprocItem.Compare[i].LineID}";
+                    int nStep = lot.MarkCompList.Data[0].Comp.GetLength(0); // 비교 거리 데이터 확인용
+                    for(int j=0; j<nStep; j++)
                     {
-                        if (item.Comp[i, 0].Count > 0)
+                        if (j == 0)
                         {
-                            for (int j = 0; j < item.Comp[i, 0].Count; j++)
-                            {
-                                MarkingFaultDatum datum = item.Comp[i, 0][j];
-                                msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
-                                                        $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
-                                log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
-                                idx2++;
-                            }
+                            CompRange range = preprocItem.BasicRange;
+                            log.WriteLoadData(subPath, $"[COMPARE BASIC]-[{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0, true);
                         }
-                    }
-                    idx1++;
-                }
-
-                for (int idx = 1; idx < maxStep; idx++)
-                {
-                    idx1 = 0;
-                    log.WriteLoadData(subPath, $"COMPARE Range {idx}", idx1, logName, 0.0);
-
-                    foreach (var item in lot.MarkCompList.Data)
-                    {
-                        idx2 = 0;
-                        string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
-                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
-                        log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
-                        idx2++;
-                        for (int i = 0; i < item.Comp.GetLength(0); i++)
+                        else
                         {
-                            if (item.Comp[i, idx].Count > 0)
+                            CompRange range = preprocItem.CompRange[j-1];
+                            log.WriteLoadData(subPath, $"[COMPARE Range {j}] - [{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0);
+                        }
+                        idx1 = 0;
+                        foreach (var item in lot.MarkCompList.Data)
+                        {
+                            if (item.Comp[i, j].Count>0)
                             {
-                                for (int j = 0; j < item.Comp[i, idx].Count; j++)
+                                idx2 = 0;
+                                for (int k = 0; k < item.Comp[i, j].Count; k++)
                                 {
-                                    MarkingFaultDatum datum = item.Comp[i, idx][j];
-                                    msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                    MarkingFaultDatum datum = item.Comp[i, j][k];
+                                    string msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
                                                             $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
                                     log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                     idx2++;
                                 }
                             }
                         }
-                        idx1++;
                     }
                 }
-
+                
                 LotManager.AddLiveLot(lncd, lot);
             }
             catch

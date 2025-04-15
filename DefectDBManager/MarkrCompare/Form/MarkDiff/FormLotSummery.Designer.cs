@@ -151,6 +151,7 @@
             // 
             // flpLotSummary
             // 
+            this.flpLotSummary.AutoScroll = true;
             this.flpLotSummary.BackColor = System.Drawing.Color.White;
             this.flpLotSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpLotSummary.Location = new System.Drawing.Point(0, 0);
