@@ -142,16 +142,17 @@ namespace MarkrCompare
             }
             
             string str = null;
-            int[] compCnt = new int[procItem.CompRange.Count + 1];
+            int[,] compCnt = new int[procItem.Compare.Count, procItem.CompRange.Count + 1];
+
 
             foreach (var item in _lotSummery.MarkCompList.Data)
             {
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
                 {
-                    if (item.Comp[i, 0].Count > 0)  compCnt[0]++;
+                    if (item.Comp[i, 0].Count > 0)  compCnt[i, 0]++;
 
                     for (int j = 1; j < item.Comp.GetLength(1); j++)
-                        if (item.Comp[i, j].Count > 0)  compCnt[j]++;
+                        if (item.Comp[i, j].Count > 0)  compCnt[i, j]++;
                 }
             }
 
@@ -166,28 +167,51 @@ namespace MarkrCompare
                 return;
             }
 
-
-            double[] result = new double[compCnt.Length];
-            result[0] = 100.0;
-
+            double[] result = new double[procItem.CompRange.Count+1];
+            
             StringBuilder sb = new StringBuilder();
-            sb.Append($"REF :{result[0]:F1}%({compCnt[0]}), "); 
-
-
-            for (int i = 1; i < compCnt.Length; i++)
+            for(int idx=0; idx < procItem.Compare.Count; idx++)
             {
-                if(compCnt[i - 1]>0)
-                    result[i] = (double)(compCnt[i] / compCnt[i - 1]) * 100.0;
-                else
-                    result[i] = (double)compCnt[i]*100.0;
+                if (idx > 0) sb.Append("\n");
+                isEmpty = true;
+                for (int i = 0; i < compCnt.GetLength(1); i++)
+                    if (compCnt[idx, i] > 0) isEmpty = false;
+                if(isEmpty)
+                {
+                    sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] 동일 비교 결점 없음 ");
+                    continue;
+                }
 
-                if (i == compCnt.Length - 1)
-                    sb.Append($"Case {i} :{result[i]:F1}%({compCnt[i]})");
-                else
-                    sb.Append($"Case {i} : {result[i]:F1}%({compCnt[i]}), ");
+                result[0] = 100.0;
+                if(compCnt[idx, 0]==0)  sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :0%({compCnt[idx, 0]}), ");
+                else                    sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :{result[0]:F1}%({compCnt[idx, 0]}), ");
 
-                if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
+                for (int i = 1; i < procItem.CompRange.Count+1; i++)
+                {
+                    if (compCnt[idx, i - 1] > 0)
+                    {
+                        result[i] = (double)(compCnt[idx, i] / compCnt[idx, i - 1]) * 100.0;
+                        sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                    }
+                    else
+                    {
+                        if(compCnt[idx, i]>0)
+                        {
+                            result[i] = (double)compCnt[idx, i] * 100.0;
+                            sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                        }
+                        else
+                        {
+                            sb.Append($"Case {i} : 0%({compCnt[idx, i]})");
+                        }
+                    }
+
+                    if (i < procItem.CompRange.Count)  sb.Append(", ");
+
+
+                    if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
                     isError = true;
+                }
             }
 
             lblProcess.Text = sb.ToString();

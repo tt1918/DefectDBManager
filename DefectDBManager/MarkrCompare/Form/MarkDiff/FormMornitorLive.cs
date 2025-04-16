@@ -17,6 +17,9 @@ namespace MarkrCompare
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
         DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Live;
+
+        public DefectDBManager.CompPreprocDefect Process = null;
+
         public bool IsRun 
         {
             get { return _timerLotSearchProcess.Enabled; }
@@ -170,6 +173,17 @@ namespace MarkrCompare
                     SystemLog.DisplayFileServerLog("이미 실행중입니다.");
                     return;
                 }
+
+                if(Process.IsRunSearchingLotList)
+                {
+                    SystemLog.DisplayFileServerLog("조건 LOT 검색이 실행중입니다.");
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, "조건 LOT 검색이 실행중입니다.");
+                    }));
+                    return;
+                }
+
                 OnUpdatePrepLncdInfo?.Invoke(_procIdx);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();

@@ -143,12 +143,19 @@ namespace DefectDBManager
 
                 // Base는 인덱스 0번 사용
                 List<MarkingFaultDatum> subData = null;
-                int lineCnt = 0;
                 foreach (var preItem in FaultData.PreMarkData)
                 {
                     if (preItem.Count <= 0) continue;
                     foreach( var preItem1 in preItem)
                     {
+                        int lncdIdx = 0;
+                        foreach (var ccComp in procData.Compare)
+                        {
+                            if (preItem1.LNCD == ccComp.LNCD)
+                                break;
+                            lncdIdx++;
+                        }
+
                         //CTLNO 같으면 예외처리 @ATW 250325
                         subData = preItem1.Data.FindAll(x => item.LNCD != x.LNCD && 
                                                         Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
@@ -156,9 +163,8 @@ namespace DefectDBManager
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
 
                         foreach (var preItem2 in subData)
-                            comp.AddCompData(lineCnt, compIdx, preItem2);
+                            comp.AddCompData(lncdIdx, compIdx, preItem2);
                     }
-                    lineCnt++;
                 }
                 #endregion
 
@@ -173,13 +179,19 @@ namespace DefectDBManager
                     minY = procData.CompRange[compIdx - 1].MinYRange;
                     maxY = procData.CompRange[compIdx - 1].MaxYRange;
 
-                    lineCnt = 0;
-                    //int cnt = 0;
                     foreach (var preItem in FaultData.PreMarkData)
                     {
                         if (preItem.Count <= 0) continue;
                         foreach (var preItem1 in preItem)
                         {
+                            int lncdIdx = 0;
+                            foreach(var ccComp in procData.Compare)
+                            {
+                                if (preItem1.LNCD == ccComp.LNCD)
+                                    break;
+                                lncdIdx++;
+                            }
+
                             //CTLNO 같으면 예외처리 @ATW 250325
                             subData = preItem1.Data.FindAll(x => item.LNCD != x.LNCD &&
                                                             Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
@@ -187,9 +199,8 @@ namespace DefectDBManager
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
                             foreach (var preItem2 in subData)
-                                comp.AddCompData(lineCnt, compIdx, preItem2);
+                                comp.AddCompData(lncdIdx, compIdx, preItem2);
                         }
-                        lineCnt++;
                     }
                 }
                 #endregion

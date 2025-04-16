@@ -20,6 +20,7 @@ namespace MarkrCompare
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
+        DefectDBManager.CompPreprocDefect _dbProcess = null;
         #endregion
 
         #region Event
@@ -34,10 +35,11 @@ namespace MarkrCompare
 
         }
 
-        public FormMarkDiff(DefectDBManager.PreprocLotManager lotManager)
+        public FormMarkDiff(DefectDBManager.PreprocLotManager lotManager, DefectDBManager.CompPreprocDefect proc)
         {
             InitializeComponent();
             _lotManager = lotManager;
+            _dbProcess = proc;
         }
 
         #region Create/Destroy
@@ -183,9 +185,11 @@ namespace MarkrCompare
         private void initTabSearchSetting()
         {
             _formMorLive = new FormMornitorLive(_lotManager);
+            _formMorLive.Process = _dbProcess;
             _formMorLive.TopLevel = false;
 
             _formMorSearch = new FormMornitorSearch(_lotManager);
+            _formMorSearch.Process = _dbProcess;
             _formMorSearch.TopLevel = false;
 
             // Live Tab

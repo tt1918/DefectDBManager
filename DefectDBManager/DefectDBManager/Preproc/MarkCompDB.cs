@@ -252,6 +252,9 @@ namespace DefectDBManager.Preproc
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
 
+                if(File.Exists(path)==false)
+                    return false;
+
                 using (var file = new StreamReader(path, Encoding.Default))
                 {
                     string text;

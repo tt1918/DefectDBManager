@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -605,6 +605,11 @@ namespace DefectDBManager
         public void StopLiveLot()       
         {   
             _timerCheckLiveLot.Stop();
+        }
+
+        public bool IsRunLiveCheck()
+        {
+            return _timerCheckLiveLot.Enabled || IsRunSearchingLotList;
         }
 
         private void checkLiveLot(object sender, ElapsedEventArgs e)

@@ -98,7 +98,7 @@ namespace MarkrCompare
 
         private void initMarkDiffForm()
         {
-            _markDiffForm = new FormMarkDiff(_lotManager);
+            _markDiffForm = new FormMarkDiff(_lotManager, _dbManager);
             _markDiffForm.TopLevel = false;
 
             tableLayoutPanel1.Controls.Add(_markDiffForm, 0, 1);
@@ -115,7 +115,6 @@ namespace MarkrCompare
             _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
 
             _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
-
             _dbManager.OnEndSearchingLotList += _markDiffForm.UpdateSearchLotList;
         }
 
