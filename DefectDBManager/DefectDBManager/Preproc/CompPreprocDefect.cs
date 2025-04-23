@@ -344,6 +344,8 @@ namespace DefectDBManager
             DateTime stTime = LotManager.SearchTime.StartTime;
             DateTime edTime = LotManager.SearchTime.EndTime;
 
+            stTime = new DateTime(stTime.Year, stTime.Month, stTime.Day);
+
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Search];
             string lncd = string.Empty;
 
@@ -424,7 +426,7 @@ namespace DefectDBManager
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
                 {
-                    logName = $"CompData_{preprocItem.Compare[i].LineID}_{preprocItem.Compare[i].LNCD}";
+                    logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
                     int nStep = lot.MarkCompList.Data[0].Comp.GetLength(1); // 비교 거리 데이터 확인용
                     for(int j=0; j<nStep; j++)
                     {
@@ -495,7 +497,7 @@ namespace DefectDBManager
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
                 {
-                    logName = $"CompData_{preprocItem.Compare[i].LineID}_{preprocItem.Compare[i].LNCD}";
+                    logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
                     int nStep = lot.MarkCompList.Data[0].Comp.GetLength(1); // 비교 거리 데이터 확인용
                     for (int j = 0; j < nStep; j++)
                     {

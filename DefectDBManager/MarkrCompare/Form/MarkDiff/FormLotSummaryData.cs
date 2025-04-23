@@ -190,7 +190,7 @@ namespace MarkrCompare
                 {
                     if (compCnt[idx, i - 1] > 0)
                     {
-                        result[i] = (double)(compCnt[idx, i] / compCnt[idx, i - 1]) * 100.0;
+                        result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, i - 1]) * 100.0;
                         sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
                     }
                     else
@@ -209,8 +209,8 @@ namespace MarkrCompare
                     if (i < procItem.CompRange.Count)  sb.Append(", ");
 
 
-                    if (Math.Abs(result[i - 1] - result[i]) > procItem.CompRange[i - 1].Accuracy)
-                    isError = true;
+                    if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy)
+                        isError = true;
                 }
             }
 

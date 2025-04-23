@@ -185,44 +185,50 @@ namespace DefectDBManager.Preproc
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
 
-                QueryMsg.PTRY0PList_Query ptry0p = new QueryMsg.PTRY0PList_Query();
-
-                //////////////////////////////////////////////////////
-                // 해당 LNCD는 상위에서 입력받은 LNCD임
-                // 검색 시간은 찾고자 하는 검색 시간대를 입력함.
-                ptry0p.Y0LNCD = lncd;
-                ptry0p.DateCurrent = startTime;
-                ptry0p.DateNext = endTime;
-                ///////////////////////////////////////////////////////
-
-                string query = ptry0p.GetQuery();
-                string listFileName = $"[{lncd}] PTRY0PList";
-                _LOG.WriteLoadData(query.ToString(), 0, listFileName, 0);
-
-                if (query == "")
+                // 검색은 하루 단위로 해야함
+                DateTime currentTime = startTime;
+                while(currentTime<=endTime)
                 {
-                    Log.Write($"[Error] DB Serach {listFileName} query is empty.");
-                }
+                    QueryMsg.PTRY0PList_Query ptry0p = new QueryMsg.PTRY0PList_Query();
 
-                using (var comm = new OracleCommand(query, conn.Connection))
-                {
-                    using (var reader = comm.ExecuteReader())
+                    //////////////////////////////////////////////////////
+                    // 해당 LNCD는 상위에서 입력받은 LNCD임
+                    // 검색 시간은 찾고자 하는 검색 시간대를 입력함.
+                    ptry0p.Y0LNCD = lncd;
+                    ptry0p.DateCurrent = currentTime;
+                    ptry0p.DateNext = currentTime;
+                    ///////////////////////////////////////////////////////
+
+                    string query = ptry0p.GetQuery();
+                    string listFileName = $"[{lncd}] PTRY0PList";
+                    _LOG.WriteLoadData(query.ToString(), 0, listFileName, 0);
+
+                    if (query == "")
                     {
-                        while (reader.Read())
+                        Log.Write($"[Error] DB Serach {listFileName} query is empty.");
+                    }
+
+                    using (var comm = new OracleCommand(query, conn.Connection))
+                    {
+                        using (var reader = comm.ExecuteReader())
                         {
-                            PTRY0PData data = new PTRY0PData();
-                            data.Parse(reader);
+                            while (reader.Read())
+                            {
+                                PTRY0PData data = new PTRY0PData();
+                                data.Parse(reader);
 
-                            if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
-                                continue;
+                                if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
+                                    continue;
 
-                            // 우선 전체 데이터 넣는다.
-                            PTRY0PList_Data.Add(data);
+                                // 우선 전체 데이터 넣는다.
+                                PTRY0PList_Data.Add(data);
 
-                            string logData = string.Format($"{PTRY0PList_Data.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, 0, listFileName, 0);
+                                string logData = string.Format($"{PTRY0PList_Data.Count}\t-\t{data.ToString()}");
+                                _LOG.WriteLoadData(logData, 0, listFileName, 0);
+                            }
                         }
                     }
+                    currentTime = currentTime.AddDays(1);
                 }
 
                 if (PTRY0PList_Data.Count == 0)
