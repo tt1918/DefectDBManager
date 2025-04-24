@@ -213,11 +213,6 @@ namespace MarkrCompare
         }
         #endregion CONTROL
 
-
-        #region MyRegion
-
-        #endregion
-
         #region 기간 검색 시작
         public void StartSearchLotList()
         {
@@ -242,7 +237,32 @@ namespace MarkrCompare
         #region 실시간 검색 시작
         public void EndLiveSearch()
         {
+            bool isError = false;
+            StringBuilder sb = new StringBuilder();
+            if (_lotManager != null)
+            {   
+                foreach (var item in _lotManager.LiveProduct)
+                {
+                    string[] keyData = item.Key.Split('_');
+                    string lncd = keyData[0];
+
+                    foreach(var lot in _lotManager.LiveLot[item.Key])
+                    {
+                        if(lot.CompResult==eCompResult.ProcNg)
+                        {
+                            sb.Append($"[{item.Key}-{lot.LotName}] : 오차 발생 \n");
+                            isError = true;
+                        }
+                    }
+                }
+            }
+
             SystemLog.DisplayFileServerLog("실시간 검사가 완료되었습니다.");
+            Invoke(new Action(() =>
+            {
+                if(isError==false)  MessageBox.Show(this, "실시간 검사가 완료되었습니다.");
+                else                MessageBox.Show(this,sb.ToString());
+            }));
         }
         #endregion
 

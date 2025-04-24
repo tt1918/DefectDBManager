@@ -50,6 +50,7 @@ namespace MarkrCompare
             initLotListForms();
             initLotSummary();
             initLogTimer();
+            initStateViewTimer();
 
             switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Live);
         }
@@ -60,6 +61,32 @@ namespace MarkrCompare
             closeLotListForms();
             closeInOutTimer();
             closeLotSummary();
+            closeStateViewTimer();
+        }
+        #endregion
+
+        #region 검사 상태 표시
+        System.Windows.Forms.Timer _timerStateView = new System.Windows.Forms.Timer();
+        private void initStateViewTimer()
+        {
+            _timerStateView.Interval = 1000;
+            _timerStateView.Tick += timerStateView;
+            _timerStateView.Start();
+
+        }
+        private void closeStateViewTimer()
+        {
+            _timerStateView.Stop();
+            _timerStateView.Tick -= timerStateView;
+        }
+        private void timerStateView(object sender, EventArgs e)
+        {
+            if(_dbProcess.IsRunLiveTimer)
+                lblRunState.Text = "실시간 검사 중";
+            else if(_dbProcess.IsRunSearchingLotList)
+                lblRunState.Text = "기간 설정 검사 중";
+            else
+                lblRunState.Text = "정지";
         }
         #endregion
 
@@ -110,7 +137,6 @@ namespace MarkrCompare
                     queueSize--;
                 }
                 lbLog.SetSelected(lbLog.Items.Count - 1, true);
-
             }
             catch
             {
@@ -323,7 +349,6 @@ namespace MarkrCompare
                         break;
                 }
             }
-
         }
 
         private void showLotListForm(DefectDBManager.Preproc.eProc proc)
@@ -345,7 +370,6 @@ namespace MarkrCompare
                     break;
             }
         }
-
         #endregion
 
         #region Live Lot History

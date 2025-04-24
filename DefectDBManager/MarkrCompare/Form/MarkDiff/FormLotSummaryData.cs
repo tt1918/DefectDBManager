@@ -142,25 +142,12 @@ namespace MarkrCompare
             }
             
             string str = null;
-            int[,] compCnt = new int[procItem.Compare.Count, procItem.CompRange.Count + 1];
-
-
-            foreach (var item in _lotSummery.MarkCompList.Data)
-            {
-                for (int i = 0; i < item.Comp.GetLength(0); i++)
-                {
-                    if (item.Comp[i, 0].Count > 0)  compCnt[i, 0]++;
-
-                    for (int j = 1; j < item.Comp.GetLength(1); j++)
-                        if (item.Comp[i, j].Count > 0)  compCnt[i, j]++;
-                }
-            }
+            int[,] compCnt = _lotSummery.CompCnt;
 
             bool isEmpty = true;
             foreach (var cnt in compCnt)
-            {
                 if (cnt > 0) isEmpty = false;
-            }
+            
             if (isEmpty)
             {
                 lblProcess.Text = "동일 비교 결점 없음";
@@ -170,6 +157,7 @@ namespace MarkrCompare
             double[] result = new double[procItem.CompRange.Count+1];
             
             StringBuilder sb = new StringBuilder();
+
             for(int idx=0; idx < procItem.Compare.Count; idx++)
             {
                 if (idx > 0) sb.Append("\n");
@@ -201,13 +189,10 @@ namespace MarkrCompare
                             sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
                         }
                         else
-                        {
                             sb.Append($"Case {i} : 0%({compCnt[idx, i]})");
-                        }
                     }
 
                     if (i < procItem.CompRange.Count)  sb.Append(", ");
-
 
                     if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy)
                         isError = true;

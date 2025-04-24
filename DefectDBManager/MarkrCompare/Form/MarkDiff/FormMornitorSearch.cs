@@ -182,7 +182,7 @@ namespace MarkrCompare
                     return;
                 }
 
-                if (Process.IsRunLiveSearch)
+                if (Process.IsRunLiveTimer)
                 {
                     SystemLog.DisplayFileServerLog("실시간 검색이 실행중입니다.");
                     Invoke(new Action(() =>

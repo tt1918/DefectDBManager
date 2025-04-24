@@ -34,6 +34,9 @@ namespace DefectDBManager
         /// </summary>
         public MarkCompData MarkCompList { get; set; } = null;
 
+        public eCompResult CompResult { get; private set; }
+        public int[,] CompCnt { get; private set; }
+
         /// <summary>
         /// 초기화
         /// </summary>
@@ -71,6 +74,9 @@ namespace DefectDBManager
             INSPDAT = new List<INSPDATList>[count];
             for (int i = 0; i < count; i++)
                 INSPDAT[i] = new List<INSPDATList>();
+
+            CompResult = eCompResult.None;
+            CompCnt = null;
         }
 
         /// <summary>
@@ -223,6 +229,65 @@ namespace DefectDBManager
             CompRange basicRange = procData.BasicRange;
             List<CompRange> compRange = procData.CompRange;
 
+            if(MarkCompList.Data.Count<=0)
+            {
+                CompResult = eCompResult.NoDbData;
+                return;
+            }
+
+            CompCnt = new int[procData.Compare.Count, procData.CompRange.Count + 1];
+
+            foreach (var item in MarkCompList.Data)
+            {
+                for (int i = 0; i < item.Comp.GetLength(0); i++)
+                {
+                    if (item.Comp[i, 0].Count > 0) CompCnt[i, 0]++;
+
+                    for (int j = 1; j < item.Comp.GetLength(1); j++)
+                        if (item.Comp[i, j].Count > 0) CompCnt[i, j]++;
+                }
+            }
+
+            bool isEmpty = true;
+            foreach (var cnt in CompCnt)
+            {
+                if (cnt > 0) isEmpty = false;
+            }
+            if (isEmpty)
+            {
+                // 데이터 처리 과정 필요함
+
+                CompResult = eCompResult.NoCommPosData;
+                return;
+            }
+
+            bool isError = false;
+            double[] result = new double[procData.CompRange.Count + 1];
+            for (int idx = 0; idx < procData.Compare.Count; idx++)
+            {
+                isEmpty = true;
+                for (int i = 0; i < CompCnt.GetLength(1); i++)
+                    if (CompCnt[idx, i] > 0) isEmpty = false;
+                if (isEmpty)    continue;
+
+                result[0] = 100.0;
+                for (int i = 1; i < procData.CompRange.Count + 1; i++)
+                {
+                    if (CompCnt[idx, i - 1] > 0)
+                        result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, i - 1]) * 100.0;
+                    else
+                    {
+                        if (CompCnt[idx, i] > 0)
+                            result[i] = (double)CompCnt[idx, i] * 100.0;
+                    }
+
+                    if (Math.Abs(result[i] - result[i - 1]) > procData.CompRange[i - 1].Accuracy)
+                        isError = true;
+                }
+            }
+
+            if (isError == false) CompResult = eCompResult.ProcOk;
+            else CompResult = eCompResult.ProcNg;
         }
 
     }

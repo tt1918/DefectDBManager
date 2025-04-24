@@ -378,4 +378,15 @@ namespace DefectDBManager
         Error,
     }
     #endregion
+
+    #region 동일 결점 처리 결과 
+    public enum eCompResult
+    {
+        None = 0,
+        ProcOk,
+        ProcNg,
+        NoDbData,
+        NoCommPosData
+    }
+    #endregion
 }

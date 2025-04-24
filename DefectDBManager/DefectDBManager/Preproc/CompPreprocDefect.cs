@@ -88,6 +88,10 @@ namespace DefectDBManager
         #endregion
 
         #region 실시간 탐색
+        public bool IsRunLiveTimer
+        {
+            get { return _timerCheckLiveLot.Enabled; }
+        }
         public bool IsRunLiveSearch
         {
             get; private set;
@@ -520,7 +524,7 @@ namespace DefectDBManager
                             {
                                 idx2 = 0;
                                 string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
-                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.FAULTID}, {item.Base.BCNO}");
+                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
                                 log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                 idx2++;
 
@@ -528,7 +532,7 @@ namespace DefectDBManager
                                 {
                                     MarkingFaultDatum datum = item.Comp[i, j][k];
                                     msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
-                                                            $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.FAULTID}, {datum.BCNO}");
+                                                            $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.MNTTID}, {datum.BCNO}");
                                     log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                     idx2++;
                                 }

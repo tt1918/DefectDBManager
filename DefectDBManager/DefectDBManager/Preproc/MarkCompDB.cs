@@ -824,7 +824,14 @@ namespace DefectDBManager.Preproc
                                     data.LNCD = op.LNCD;
 
                                     if(dicList.ContainsKey(op.LNCD)==true)
-                                        dicList[op.LNCD].Add(data);
+                                    {
+                                        bool isExist = false;
+                                        foreach(var dicItem in dicList[op.LNCD].Data)
+                                            if (data.CTLNO == dicItem.CTLNO)    isExist = true;
+                                        
+                                        if(isExist==false)  dicList[op.LNCD].Add(data);
+                                    }
+                                        
                                     else
                                     {
                                         dicList.Add(op.LNCD, new INSPDATList());
@@ -987,7 +994,7 @@ namespace DefectDBManager.Preproc
 
                                     finalXPos = data.XPOS_M;
                                     if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                    if (useAIFromDB == true)
+                                    if (useAIFromDB == false)
                                     {
                                         tmpKey = data.MNTTAN.TrimStart();
                                         if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;
@@ -1180,7 +1187,7 @@ namespace DefectDBManager.Preproc
 
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                        if (useAIFromDB == true)
+                                        if (useAIFromDB == false)
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;

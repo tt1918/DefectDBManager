@@ -14,13 +14,15 @@ namespace DefectDBManager
             int nDay;
 
             DateTime time = DateTime.Now;
-            string data, fileName;
+            string data, fileName, folderName;
 
             nDay = time.Day;
-            
-            fileName = $"{Define.LogPath}\\Day_{nDay}.txt";
+            folderName = $"{Define.LogPath}\\{time.Month:D2}";
+            fileName = $"{folderName}\\Day_{nDay}.txt";
             try
             {
+                if(!Directory.Exists(folderName)) Directory.CreateDirectory(folderName);
+
                 using (StreamWriter sw = File.AppendText(fileName))
                 {
                     data = $"{time.Hour}:{time.Minute}:{time.Second} {str}";
