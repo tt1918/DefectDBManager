@@ -102,6 +102,7 @@ namespace MarkrCompare
             displayDgvCompRange();
             displayReferenceProcessCtrl();
             displayDgvCompProc();
+            displayOtherParam();
         }
 
         /// <summary>
@@ -109,11 +110,11 @@ namespace MarkrCompare
         /// </summary>
         private void updateAllDgvCtrl()
         {
-
             updateJudgeRange();
             updateDgvCompRange();
             updateReferenceProcessCtrl();
             updateDgvProcess();
+            updateOtherParam();
         }
         #endregion
 
@@ -129,7 +130,6 @@ namespace MarkrCompare
             return selIdx;
         }
         #endregion
-
 
         #region Model Name List
         readonly string[] ListModelHeader = { "No.", "Name" };
@@ -283,7 +283,6 @@ namespace MarkrCompare
             this.Close();
         }
         #endregion
-
 
         #region Process 이름 추가
         static string[] _strdgvListHeader = { "No", "Name", "LNCD" };
@@ -1027,6 +1026,25 @@ namespace MarkrCompare
             }
         }
         #endregion
+
+        #region Other Param
+        private void updateOtherParam()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            _preprocSet[selProcIdx].UseAiResult = cbUseMNTTAN.Checked;
+        }
+
+        private void displayOtherParam()
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1 || _selSetName == "") return;
+
+            cbUseMNTTAN.Checked = _preprocSet[selProcIdx].UseAiResult;
+        }
+        #endregion
+
 
         private void cbRefFltAll_CheckStateChanged(object sender, EventArgs e)
         {

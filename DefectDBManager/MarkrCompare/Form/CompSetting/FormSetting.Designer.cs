@@ -60,6 +60,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbUseMNTTAN = new System.Windows.Forms.CheckBox();
             this.lblTitle = new CustomControls.RoundLabel();
             this.lblName = new CustomControls.RoundLabel();
             this.btnAdd = new CustomControls.RoundButton();
@@ -116,6 +118,7 @@
             this.gpJudgeRange.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -492,16 +495,17 @@
             // 
             this.tableLayoutPanel15.ColumnCount = 1;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel15.Controls.Add(this.groupCompRange, 0, 0);
             this.tableLayoutPanel15.Controls.Add(this.gpJudgeRange, 0, 1);
+            this.tableLayoutPanel15.Controls.Add(this.tableLayoutPanel19, 0, 2);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel15.Location = new System.Drawing.Point(4, 237);
             this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
-            this.tableLayoutPanel15.RowCount = 2;
-            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80.93645F));
-            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.06355F));
+            this.tableLayoutPanel15.RowCount = 3;
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.10448F));
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.89552F));
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel15.Size = new System.Drawing.Size(301, 301);
             this.tableLayoutPanel15.TabIndex = 4;
             // 
@@ -513,7 +517,7 @@
             this.groupCompRange.Margin = new System.Windows.Forms.Padding(2);
             this.groupCompRange.Name = "groupCompRange";
             this.groupCompRange.Padding = new System.Windows.Forms.Padding(1);
-            this.groupCompRange.Size = new System.Drawing.Size(297, 239);
+            this.groupCompRange.Size = new System.Drawing.Size(297, 211);
             this.groupCompRange.TabIndex = 3;
             this.groupCompRange.TabStop = false;
             this.groupCompRange.Text = "COMPARE RANGE";
@@ -531,7 +535,7 @@
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(295, 221);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(295, 193);
             this.tableLayoutPanel11.TabIndex = 1;
             // 
             // dgvCompRange
@@ -547,7 +551,7 @@
             this.dgvCompRange.Name = "dgvCompRange";
             this.dgvCompRange.RowTemplate.Height = 23;
             this.dgvCompRange.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCompRange.Size = new System.Drawing.Size(293, 184);
+            this.dgvCompRange.Size = new System.Drawing.Size(293, 156);
             this.dgvCompRange.TabIndex = 5;
             // 
             // tableLayoutPanel12
@@ -559,7 +563,7 @@
             this.tableLayoutPanel12.Controls.Add(this.btnAddCompRange, 1, 0);
             this.tableLayoutPanel12.Controls.Add(this.btnDelCompRange, 2, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 186);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 158);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
@@ -571,11 +575,11 @@
             // 
             this.gpJudgeRange.Controls.Add(this.tableLayoutPanel16);
             this.gpJudgeRange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpJudgeRange.Location = new System.Drawing.Point(2, 245);
+            this.gpJudgeRange.Location = new System.Drawing.Point(2, 217);
             this.gpJudgeRange.Margin = new System.Windows.Forms.Padding(2);
             this.gpJudgeRange.Name = "gpJudgeRange";
             this.gpJudgeRange.Padding = new System.Windows.Forms.Padding(1);
-            this.gpJudgeRange.Size = new System.Drawing.Size(297, 54);
+            this.gpJudgeRange.Size = new System.Drawing.Size(297, 52);
             this.gpJudgeRange.TabIndex = 4;
             this.gpJudgeRange.TabStop = false;
             this.gpJudgeRange.Text = "JUDGE RANGE";
@@ -601,7 +605,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(295, 36);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(295, 34);
             this.tableLayoutPanel16.TabIndex = 0;
             // 
             // label1
@@ -609,7 +613,7 @@
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.label1.Location = new System.Drawing.Point(114, 21);
+            this.label1.Location = new System.Drawing.Point(114, 19);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 15);
@@ -621,7 +625,7 @@
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(261, 21);
+            this.label2.Location = new System.Drawing.Point(261, 19);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 15);
@@ -647,6 +651,33 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(863, 51);
             this.tableLayoutPanel5.TabIndex = 3;
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 2;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 181F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel19.Controls.Add(this.cbUseMNTTAN, 0, 0);
+            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(0, 271);
+            this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 1;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(301, 30);
+            this.tableLayoutPanel19.TabIndex = 5;
+            // 
+            // cbUseMNTTAN
+            // 
+            this.cbUseMNTTAN.AutoSize = true;
+            this.cbUseMNTTAN.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbUseMNTTAN.Location = new System.Drawing.Point(3, 3);
+            this.cbUseMNTTAN.Name = "cbUseMNTTAN";
+            this.cbUseMNTTAN.Size = new System.Drawing.Size(116, 24);
+            this.cbUseMNTTAN.TabIndex = 10;
+            this.cbUseMNTTAN.Text = "USE AI RESULT";
+            this.cbUseMNTTAN.UseVisualStyleBackColor = true;
             // 
             // lblTitle
             // 
@@ -1157,7 +1188,7 @@
             this.lblRangeX.Location = new System.Drawing.Point(2, 2);
             this.lblRangeX.Margin = new System.Windows.Forms.Padding(2);
             this.lblRangeX.Name = "lblRangeX";
-            this.lblRangeX.Size = new System.Drawing.Size(31, 32);
+            this.lblRangeX.Size = new System.Drawing.Size(31, 30);
             this.lblRangeX.TabIndex = 3;
             this.lblRangeX.Text = "X";
             this.lblRangeX.Thickness = 1;
@@ -1178,7 +1209,7 @@
             this.lblRangeY.Location = new System.Drawing.Point(149, 2);
             this.lblRangeY.Margin = new System.Windows.Forms.Padding(2);
             this.lblRangeY.Name = "lblRangeY";
-            this.lblRangeY.Size = new System.Drawing.Size(31, 32);
+            this.lblRangeY.Size = new System.Drawing.Size(31, 30);
             this.lblRangeY.TabIndex = 3;
             this.lblRangeY.Text = "Y";
             this.lblRangeY.Thickness = 1;
@@ -1319,6 +1350,8 @@
             this.tableLayoutPanel16.ResumeLayout(false);
             this.tableLayoutPanel16.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.tableLayoutPanel19.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1391,5 +1424,7 @@
         private CustomControls.RoundTextBox tbRefLNCD;
         private CustomControls.RoundLabel lblCompLNCD;
         private CustomControls.RoundLabel lblCompLNCDData;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel19;
+        private System.Windows.Forms.CheckBox cbUseMNTTAN;
     }
 }

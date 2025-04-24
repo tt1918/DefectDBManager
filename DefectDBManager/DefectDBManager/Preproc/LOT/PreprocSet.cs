@@ -246,6 +246,10 @@ namespace DefectDBManager.Preproc
         [Description("Judge Range")]
         public JudgeRange Judge { get; set; } = new JudgeRange();
 
+        [Category("items")]
+        [Description("Defect ID Type")]
+        public bool UseAiResult { get; set; } = false;
+
         public PreprocItem()
         {
         }
@@ -274,6 +278,8 @@ namespace DefectDBManager.Preproc
                 data.CompRange.Add(item.Clone());
 
             data.Judge = this.Judge.Clone();
+
+            data.UseAiResult = this.UseAiResult;
             return data;
         }
     }

@@ -541,6 +541,5 @@ namespace DefectDBManager
                 return sbMsg.ToString();
             }
         }
-
     }
 }

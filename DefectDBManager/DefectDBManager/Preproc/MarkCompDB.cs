@@ -2,6 +2,7 @@
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -210,7 +211,7 @@ namespace DefectDBManager.Preproc
 
                     using (var comm = new OracleCommand(query, conn.Connection))
                     {
-                        using (var reader = comm.ExecuteReader())
+                        using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                         {
                             while (reader.Read())
                             {
@@ -292,8 +293,7 @@ namespace DefectDBManager.Preproc
 
             return true;
         }
-
-
+        
         public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
         {
             // 연결 확인
@@ -340,7 +340,7 @@ namespace DefectDBManager.Preproc
                 Log.Write($"Step - 1");
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
-                    using (var reader = comm.ExecuteReader())
+                    using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                     {
                         dbCnt = reader.RowSize;
                         while (reader.Read())
@@ -480,7 +480,7 @@ namespace DefectDBManager.Preproc
                 string logData;
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
-                    using (var reader = comm.ExecuteReader())
+                    using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                     {
                         dbCnt = reader.RowSize;
                         while (reader.Read())
@@ -530,7 +530,6 @@ namespace DefectDBManager.Preproc
             }
         }
 
-
         public bool SearchPTRYLP(string lotID)
         {
             // 연결 확인
@@ -557,7 +556,7 @@ namespace DefectDBManager.Preproc
 
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
-                    using (var reader = comm.ExecuteReader())
+                    using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                     {
                         dbCnt = reader.RowSize;
                         while (reader.Read())
@@ -606,7 +605,7 @@ namespace DefectDBManager.Preproc
                 int logCnt = 0;
                 using (var comm = new OracleCommand(query, conn.Connection))
                 {
-                    using (OracleDataReader reader = comm.ExecuteReader())
+                    using (OracleDataReader reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                     {
                         dbCnt = reader.RowSize;
 
@@ -758,7 +757,7 @@ namespace DefectDBManager.Preproc
 
                         using (var comm = new OracleCommand(query, conn.Connection))
                         {
-                            using (var reader = comm.ExecuteReader())
+                            using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                             {
                                 dbCnt = reader.RowSize;
 
@@ -869,7 +868,7 @@ namespace DefectDBManager.Preproc
             float minXPos = float.MaxValue;
 
             bool useXOffset = false;
-            bool useAIFromDB = false;
+            bool useAIFromDB = _PreprocItem.UseAiResult;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -941,9 +940,10 @@ namespace DefectDBManager.Preproc
                         
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
+
                         using (var comm = new OracleCommand(query, conn.Connection))
                         {
-                            using (var reader = comm.ExecuteReader())
+                            using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                             {
                                 dbCnt = reader.RowSize;
 
@@ -987,7 +987,7 @@ namespace DefectDBManager.Preproc
 
                                     finalXPos = data.XPOS_M;
                                     if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                    if (useAIFromDB == false)
+                                    if (useAIFromDB == true)
                                     {
                                         tmpKey = data.MNTTAN.TrimStart();
                                         if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;
@@ -1065,7 +1065,7 @@ namespace DefectDBManager.Preproc
             float minXPos = float.MaxValue;
 
             bool useXOffset = false;
-            bool useAIFromDB = false;
+            bool useAIFromDB = _PreprocItem.UseAiResult;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -1180,7 +1180,7 @@ namespace DefectDBManager.Preproc
 
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                        if (useAIFromDB == false)
+                                        if (useAIFromDB == true)
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;

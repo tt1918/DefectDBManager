@@ -461,6 +461,8 @@ namespace DefectDBManager
                 }
                 
                 LotManager.AddLiveLot(lncd, lot);
+
+                Thread.Sleep(200);
             }
             catch
             {
@@ -537,6 +539,8 @@ namespace DefectDBManager
                 }
 
                 LotManager.AddLot(lncd, lot);
+
+                Thread.Sleep(200);
             }
             catch(Exception e)
             {
