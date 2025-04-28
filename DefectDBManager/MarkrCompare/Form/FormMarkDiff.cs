@@ -347,11 +347,19 @@ namespace MarkrCompare
                     case DefectDBManager.Preproc.eProc.Live:
                         if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
                         {
-                            line = _lotManager.ProcLNCD.Info[i].Name;
+                            line = $"{_lotManager.ProcLNCD.Info[i].Name}_{_lotManager.ProcLNCD.Info[i].LNCD}";
                             ip = _lotManager.ProcLNCD.Info[i].TargetIP;
                             checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
 
-                            _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
+                            bool isFormExist = false;
+                            if(_lotListForms[idx].DicFormSummary.ContainsKey("ErrorCheck"))
+                            {
+                                foreach(var form in _lotListForms[idx].DicFormSummary["ErrorCheck"])
+                                    if (form.TargetIP == ip)    isFormExist = true;
+                            }
+
+                            if (isFormExist == false)
+                                _lotListForms[idx].AddErrorCheckMode(line, ip, checkDuration);
                         }
                         break;
                     case DefectDBManager.Preproc.eProc.Search:

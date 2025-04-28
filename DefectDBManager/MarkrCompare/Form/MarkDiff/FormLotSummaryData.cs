@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MarkrCompare
 {
@@ -213,6 +214,11 @@ namespace MarkrCompare
 
         #region Status.txt 상태 표시
         Timer _timerStatus = null;
+        public string TargetIP
+        {
+            get { return _targetIP; }
+            private set { _targetIP = value; }
+        }
         string _targetIP = string.Empty;
         int _duration = 60 * 1000;
         string _lineName = string.Empty;
@@ -223,8 +229,8 @@ namespace MarkrCompare
             _targetIP = ip;
             _duration = 60 * min * 1000;
             _lineName = lineName;
-            initStatusTimer();
             displayLineName();
+            initStatusTimer();
         }
 
         private void initStatusTimer()
@@ -234,8 +240,13 @@ namespace MarkrCompare
             _timerStatus = new System.Windows.Forms.Timer();
             _timerStatus.Interval = _duration;
             _timerStatus.Tick += new EventHandler(timerDisplayStatus);
-
+            
             _timerStatus.Start();
+
+            BeginInvoke(new Action(delegate
+            {
+                timerDisplayStatus(null, EventArgs.Empty);
+            }));
         }
 
         private void closeStatusTimer()
@@ -250,21 +261,57 @@ namespace MarkrCompare
 
         private void timerDisplayStatus(object sender, EventArgs e)
         {
-            string path = Path.Combine($"\\\\{_targetIP}", "COSS\\status.txt");
-            if (File.Exists(path) == false)
+            List<string> Paths = new List<string>();
+            Paths.Add(Path.Combine($"\\\\{_targetIP}", "COSS\\Status"));
+            Paths.Add(Path.Combine($"\\\\{_targetIP}", "nexteye\\Status"));
+
+            bool isFind = false;
+            // 세부 사항 업데이트
+            foreach(var path in Paths)
             {
-                // 세부 사항 업데이트
+                if (Directory.Exists(path))
+                {
+                    string[] files = Directory.GetFiles(path);
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var file in files)
+                    {
+                        if (file.Contains("Status.txt"))
+                        {
+                            using (StreamReader sr = new StreamReader(file, Encoding.Default))
+                            {
+                                string text;
+                                while ((text = sr.ReadLine()) != null)
+                                {
+                                    if (sb.Length > 0) sb.Append("\n");
+                                    sb.Append(text);
+                                    isFind = true;
+                                }
+                                sr.Close();
+                            }
+                        }
+                    }
+                    if (sb.Length > 0)
+                        lblProcess.Text = sb.ToString();
+                }
             }
+
+            if(isFind==false)
+                lblProcess.Text = "status.txt 파일을 확인할 수 없습니다.";
+
         }
         private void displayLineName()
         {
             lblStatus.Text = _lineName;
+            lblLotName.Text = _targetIP;
+            lblProcess.Text = "";
         }
 
         #endregion
 
         private void lblLotName_DoubleClick(object sender, EventArgs e)
         {
+            if (_mode == eSummaryMode.LiveErrorCheck) return;
+
             ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
         }
 
