@@ -51,6 +51,7 @@ namespace MarkrCompare
         {
             initLNCDCtrl();
             initLotSearchTimer();
+            UpdateLanguage();
         }
 
         private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
@@ -286,8 +287,13 @@ namespace MarkrCompare
             else
                 lblProcess.Text = message;
         }
-
         #endregion
 
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

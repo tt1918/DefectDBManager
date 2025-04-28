@@ -40,6 +40,7 @@ namespace MarkrCompare
                 case eProc.Search: initSearchFilterCtrl(); break;
             }
             initSyncDurationCtrl();
+            UpdateLanguage();
         }
 
         private void FormProductFilter_Load(object sender, EventArgs e)
@@ -632,5 +633,11 @@ namespace MarkrCompare
         }
         #endregion
 
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

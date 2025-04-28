@@ -19,6 +19,7 @@ namespace MarkrCompare
         {
             InitializeComponent();
             InitGridView();
+            UpdateLanguage();
         }
 
         void InitGridView()
@@ -153,5 +154,11 @@ namespace MarkrCompare
                 }
             }
         }
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        { 
+        }
+        #endregion
     }
 }

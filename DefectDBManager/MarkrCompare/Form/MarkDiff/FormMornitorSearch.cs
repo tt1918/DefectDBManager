@@ -51,6 +51,7 @@ namespace MarkrCompare
         {
             initLNCDCtrl();
             initLotSearchTimer();
+            UpdateLanguage();
         }
 
         private void FormMornitorSearch_FormClosing(object sender, FormClosingEventArgs e)
@@ -296,5 +297,12 @@ namespace MarkrCompare
         {
             OnOpenCsvForm?.Invoke();
         }
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

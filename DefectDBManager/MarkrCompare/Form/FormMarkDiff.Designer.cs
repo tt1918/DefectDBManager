@@ -33,9 +33,9 @@
             this.tabSearchSet = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lbLog = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lblRunState = new CustomControls.RoundLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -111,6 +111,22 @@
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 445F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Controls.Add(this.lbLog, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblRunState, 0, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(355, 1);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(658, 198);
+            this.tableLayoutPanel4.TabIndex = 1;
+            // 
             // lbLog
             // 
             this.lbLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -137,31 +153,15 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(1014, 504);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 445F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.lbLog, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblRunState, 0, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(355, 1);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(658, 198);
-            this.tableLayoutPanel4.TabIndex = 1;
-            // 
             // lblRunState
             // 
             this.lblRunState.AutoSize = true;
-            this.lblRunState.BkColor = System.Drawing.Color.DimGray;
+            this.lblRunState.BkColor = System.Drawing.Color.Snow;
             this.lblRunState.BorderColor = System.Drawing.Color.DarkGray;
-            this.lblRunState.CornerR = 15;
+            this.lblRunState.CornerR = 10;
             this.lblRunState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRunState.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRunState.ForeColor = System.Drawing.Color.White;
+            this.lblRunState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.lblRunState.IsFillLB = false;
             this.lblRunState.IsFillLT = false;
             this.lblRunState.IsFillRB = false;
@@ -172,7 +172,7 @@
             this.lblRunState.Size = new System.Drawing.Size(441, 194);
             this.lblRunState.TabIndex = 2;
             this.lblRunState.Text = "STOP";
-            this.lblRunState.Thickness = 1;
+            this.lblRunState.Thickness = 2;
             // 
             // FormMarkDiff
             // 

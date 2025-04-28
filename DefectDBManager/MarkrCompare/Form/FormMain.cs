@@ -1,11 +1,13 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
+using MarkrCompare.Delegate;
 using MarkrCompare.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +37,10 @@ namespace MarkrCompare
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
         DefectDBManager.CompPreprocDefect _dbManager = null;
+        #endregion
+
+        #region Event
+        public event UpdateEvent OnUpdateLanguage;
         #endregion
 
         public FormMain()
@@ -78,6 +84,10 @@ namespace MarkrCompare
             ledOn = Properties.Resources.icons8_green_square_16;
             ledOff = Properties.Resources.icons8_black_medium_square_16;
             initTimerDBConn();
+
+            // 하부 폼이 먼저 만들어져야 해서 마지막에 처리
+            initLanguageFunc();
+
             SystemLog.DisplaySystemLog("Program Start");
         }
 
@@ -85,6 +95,9 @@ namespace MarkrCompare
         {
             _dbManager.OnEndSearchingLotList -= EndSearchLotList;
             _dbManager.OnEndLiveSearchLot -= EndLiveSearch;
+
+            // 폼 삭제 전에 이벤트 연결 삭제
+            closeLanguageFunc();
 
             ledOn.Dispose();
             ledOff.Dispose();
@@ -328,6 +341,24 @@ namespace MarkrCompare
                     SystemLog.DisplayFileServerLog("DB 연결 실패");
                 }
             }
+        }
+        #endregion
+
+        #region 언어 변경
+        private void initLanguageFunc()
+        {
+            OnUpdateLanguage += _markDiffForm.UpdateLanguage;
+        }
+
+        private void closeLanguageFunc()
+        {
+            OnUpdateLanguage -= _markDiffForm.UpdateLanguage;
+        }
+
+        public void ChangeLanguage(string cultureCode)
+        {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+            OnUpdateLanguage?.Invoke();
         }
         #endregion
     }

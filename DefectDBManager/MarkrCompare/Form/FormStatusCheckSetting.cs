@@ -25,6 +25,8 @@ namespace MarkrCompare
 
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
+
+            UpdateLanguage();
         }
 
         public FormStatusCheckSetting(string ip, int duration)
@@ -116,6 +118,12 @@ namespace MarkrCompare
             Duration = duration;
 
             return true;
+        }
+        #endregion
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        { 
         }
         #endregion
     }

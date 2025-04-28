@@ -44,6 +44,7 @@ namespace MarkrCompare
                 count++;
             }
 
+            UpdateLanguage();
         }
 
         #region 마우스로 폼 드래그
@@ -1073,5 +1074,12 @@ namespace MarkrCompare
                 btnDelCompFlt.Enabled = true;
             }
         }
+
+        #region MyRegion
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

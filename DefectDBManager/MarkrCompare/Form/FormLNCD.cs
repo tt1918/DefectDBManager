@@ -33,6 +33,8 @@ namespace MarkrCompare
             _materialData.Load();
 
             tbSymbol._TextChanged += this.tbSymbolTextChanged;
+
+            UpdateLanguage();
         }
 
         private void FormLNCD_Load(object sender, EventArgs e)
@@ -480,6 +482,13 @@ namespace MarkrCompare
             {
 
             }
+        }
+        #endregion
+
+        #region 언어
+        public void UpdateLanguage()
+        {
+
         }
         #endregion
 

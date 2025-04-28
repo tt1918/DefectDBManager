@@ -81,7 +81,7 @@ namespace MarkrCompare
 
         private void FormLotSummaryData_Load(object sender, EventArgs e)
         {
-
+            UpdateLanguage();
         }
 
         private void FormLotSummaryData_VisibleChanged(object sender, EventArgs e)
@@ -267,5 +267,12 @@ namespace MarkrCompare
         {
             ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
         }
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

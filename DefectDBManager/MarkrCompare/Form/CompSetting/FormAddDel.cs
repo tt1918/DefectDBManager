@@ -31,6 +31,8 @@ namespace MarkrCompare
 
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
+
+            UpdateLanguage();
         }
 
         private void FormAdd_Load(object sender, EventArgs e)
@@ -82,5 +84,12 @@ namespace MarkrCompare
                 tbName.Texts = DataName;
             }
         }
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }

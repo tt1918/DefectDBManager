@@ -1,5 +1,6 @@
 ﻿using DefectDBManager;
 using DefectDBManager.Preproc;
+using MarkrCompare.Delegate;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,8 +15,6 @@ using System.Windows.Forms;
 
 namespace MarkrCompare
 {
-
-
     public partial class FormMarkDiff : Form
     {
         #region Param
@@ -27,6 +26,7 @@ namespace MarkrCompare
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
         //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
+        public event UpdateEvent OnUpdateLanguage = null;
         #endregion
 
         public FormMarkDiff()
@@ -225,7 +225,6 @@ namespace MarkrCompare
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorLive.OnUpdatePrepLncdInfo += updateLiveMornitoringCtrl;
             OnUpdateLiveLNCDInfo += _formMorLive.DisplayLNCDCtrlData;
-            _formMorLive.Show();
 
             // Search Tab
             tabSearchSet.TabPages[1].Text = "SEARCH";
@@ -235,7 +234,12 @@ namespace MarkrCompare
             OnUpdateSearchLNCDInfo += _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.OnOpenCsvForm += OpenFormCsv;
             _formMorSearch.Dock = DockStyle.Fill;
+            
+            OnUpdateLanguage += _formMorLive.UpdateLanguage;
+            OnUpdateLanguage += _formMorSearch.UpdateLanguage;
+
             _formMorSearch.Show();
+            _formMorLive.Show();
         }
 
         private void closeTabSearchSetting()
@@ -245,6 +249,10 @@ namespace MarkrCompare
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.OnOpenCsvForm -= OpenFormCsv;
+
+            OnUpdateLanguage -= _formMorLive.UpdateLanguage;
+            OnUpdateLanguage -= _formMorSearch.UpdateLanguage;
+
             _formMorLive?.Close();
             _formMorSearch?.Close();
         }
@@ -297,6 +305,9 @@ namespace MarkrCompare
                     _lotListForms[i] = new FormLotList((eProc)i);
                     _lotListForms[i].TopLevel = false;
                     _lotListForms[i].Show();
+
+                    OnUpdateLanguage += _lotListForms[i].UpdateLanguage;
+
                 }
                 showLotListForm(DefectDBManager.Preproc.eProc.Live);
                 updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Live);
@@ -312,7 +323,10 @@ namespace MarkrCompare
             if (_lotListForms != null)
             {
                 for (int i = 0; i < (int)DefectDBManager.Preproc.eProc.Total; i++)
+                {
+                    OnUpdateLanguage -= _lotListForms[i].UpdateLanguage;
                     _lotListForms[i].Dispose();
+                }
 
                 _lotListForms = null;
             }
@@ -385,6 +399,8 @@ namespace MarkrCompare
             _formLotSummary.TopLevel = false;
             _formLotSummary.Show();
 
+            OnUpdateLanguage += _formLotSummary.UpdateLanguage;
+
         }
 
         private void closeLotSummary()
@@ -393,6 +409,8 @@ namespace MarkrCompare
             {
                 _formLotSummary.Dispose();
                 _formLotSummary = null;
+
+                OnUpdateLanguage -= _formLotSummary.UpdateLanguage;
             }
         }
 
@@ -538,5 +556,16 @@ namespace MarkrCompare
         {
             _rollMapForm.ClearMap();
         }
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+            OnUpdateLanguage?.Invoke();
+
+            // 변경할 언어 표시 추가
+
+        }
+        #endregion
+
     }
 }

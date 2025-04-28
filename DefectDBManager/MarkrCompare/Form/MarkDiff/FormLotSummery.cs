@@ -27,6 +27,7 @@ namespace MarkrCompare
         {
             InitializeComponent();
             initLotSummary();
+            UpdateLanguage();
             // 전체 보기를 기본으로 처리함
             rbShowAll.Checked = true;
         }
@@ -274,6 +275,13 @@ namespace MarkrCompare
         private void rbShow_Click(object sender, EventArgs e)
         {
             ShowData();
+        }
+        #endregion
+
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
         }
         #endregion
     }

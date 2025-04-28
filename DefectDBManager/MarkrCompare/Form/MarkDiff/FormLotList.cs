@@ -54,11 +54,8 @@ namespace MarkrCompare
         private void FormLotList_Load(object sender, EventArgs e)
         {
             initFlpInfo();
-
-            if (_procType == eProc.Live) 
-            {
-                setLiveTapControl();
-            }
+            if (_procType == eProc.Live)    setLiveTapControl();
+            UpdateLanguage();
         }
 
         private void FormLotList_FormClosing(object sender, FormClosingEventArgs e)
@@ -278,6 +275,11 @@ namespace MarkrCompare
             MessageBox.Show("선택한 LOT을 불러왔습니다.");
         }
 
-        
+        #region 언어 변경
+        public void UpdateLanguage()
+        {
+
+        }
+        #endregion
     }
 }
