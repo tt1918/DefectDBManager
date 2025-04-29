@@ -35,6 +35,7 @@
             this.lblTitle = new CustomControls.RoundLabel();
             this.btnMinimize = new CustomControls.RoundButton();
             this.lblTime = new System.Windows.Forms.Label();
+            this.btnMaximize = new CustomControls.RoundButton();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
@@ -66,15 +67,17 @@
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.Azure;
             this.tableLayoutPanel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanel2.BackgroundImage")));
             this.tableLayoutPanel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnCount = 5;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 141F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 57F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 169F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.Controls.Add(this.btnDBConnect, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblTitle, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnMinimize, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnMinimize, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblTime, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnMaximize, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -98,10 +101,10 @@
             this.btnDBConnect.ForeColor = System.Drawing.Color.White;
             this.btnDBConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnDBConnect.Image")));
             this.btnDBConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDBConnect.Location = new System.Drawing.Point(1162, 1);
+            this.btnDBConnect.Location = new System.Drawing.Point(1100, 1);
             this.btnDBConnect.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnDBConnect.Name = "btnDBConnect";
-            this.btnDBConnect.Size = new System.Drawing.Size(49, 29);
+            this.btnDBConnect.Size = new System.Drawing.Size(51, 29);
             this.btnDBConnect.TabIndex = 3;
             this.btnDBConnect.Text = "DB";
             this.btnDBConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -125,7 +128,7 @@
             this.lblTitle.Location = new System.Drawing.Point(2, 2);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(2);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(1155, 27);
+            this.lblTitle.Size = new System.Drawing.Size(1093, 27);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "MARKING COMPARISION";
             this.lblTitle.Thickness = 1;
@@ -157,12 +160,33 @@
             this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTime.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(64)))));
-            this.lblTime.Location = new System.Drawing.Point(1217, 0);
+            this.lblTime.Location = new System.Drawing.Point(1157, 0);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(135, 31);
+            this.lblTime.Size = new System.Drawing.Size(163, 31);
             this.lblTime.TabIndex = 2;
             this.lblTime.Text = "2024-12-13 14:14:01";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnMaximize
+            // 
+            this.btnMaximize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(254)))));
+            this.btnMaximize.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(254)))));
+            this.btnMaximize.BorderColor = System.Drawing.Color.Black;
+            this.btnMaximize.BorderRadius = 0;
+            this.btnMaximize.BorderSize = 0;
+            this.btnMaximize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnMaximize.FlatAppearance.BorderSize = 0;
+            this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnMaximize.ForeColor = System.Drawing.Color.White;
+            this.btnMaximize.Image = global::MarkrCompare.Properties.Resources.min_24;
+            this.btnMaximize.Location = new System.Drawing.Point(1324, 1);
+            this.btnMaximize.Margin = new System.Windows.Forms.Padding(1);
+            this.btnMaximize.Name = "btnMaximize";
+            this.btnMaximize.Size = new System.Drawing.Size(30, 29);
+            this.btnMaximize.TabIndex = 4;
+            this.btnMaximize.TextColor = System.Drawing.Color.White;
+            this.btnMaximize.UseVisualStyleBackColor = false;
+            this.btnMaximize.Click += new System.EventHandler(this.btnMaximize_Click);
             // 
             // tableLayoutPanel5
             // 
@@ -297,6 +321,7 @@
         private CustomControls.RoundButton btnParam;
         private CustomControls.RoundButton btnSetting;
         private CustomControls.RoundButton btnDBConnect;
+        private CustomControls.RoundButton btnMaximize;
     }
 }
 

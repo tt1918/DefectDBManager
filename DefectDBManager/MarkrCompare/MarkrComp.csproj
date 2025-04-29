@@ -176,10 +176,25 @@
     <Compile Include="Control\RoundLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="String.zh-CN.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>String.zh-CN.resx</DependentUpon>
+    </Compile>
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Strings.en-US.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Strings.ja-JP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.ja-JP.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Control\RoundTextBox.resx">
       <DependentUpon>RoundTextBox.cs</DependentUpon>
@@ -239,9 +254,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="String.zh-CN.resx" />
-    <EmbeddedResource Include="Strings.en-US.resx" />
-    <EmbeddedResource Include="Strings.ja-JP.resx" />
+    <EmbeddedResource Include="String.zh-CN.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>String.zh-CN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.ja-JP.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.ja-JP.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
@@ -275,6 +299,8 @@
     <Content Include="main.ico" />
     <Content Include="Resources\icons8_black_medium_square_16.png" />
     <Content Include="Resources\icons8_green_square_16.png" />
+    <None Include="Resources\min_24.png" />
+    <None Include="Resources\max_24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

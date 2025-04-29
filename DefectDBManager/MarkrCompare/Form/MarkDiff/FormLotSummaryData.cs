@@ -243,10 +243,7 @@ namespace MarkrCompare
             
             _timerStatus.Start();
 
-            BeginInvoke(new Action(delegate
-            {
-                timerDisplayStatus(null, EventArgs.Empty);
-            }));
+            Task.Factory.StartNew(state => timerDisplayStatus(state, EventArgs.Empty), null);
         }
 
         private void closeStatusTimer()
@@ -265,14 +262,14 @@ namespace MarkrCompare
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "COSS\\Status"));
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "nexteye\\Status"));
 
-            bool isFind = false;
+            StringBuilder sb = new StringBuilder();
             // 세부 사항 업데이트
-            foreach(var path in Paths)
+            foreach (var path in Paths)
             {
                 if (Directory.Exists(path))
                 {
                     string[] files = Directory.GetFiles(path);
-                    StringBuilder sb = new StringBuilder();
+                    
                     foreach (var file in files)
                     {
                         if (file.Contains("Status.txt"))
@@ -284,28 +281,34 @@ namespace MarkrCompare
                                 {
                                     if (sb.Length > 0) sb.Append("\n");
                                     sb.Append(text);
-                                    isFind = true;
                                 }
                                 sr.Close();
                             }
                         }
-                    }
-                    if (sb.Length > 0)
-                        lblProcess.Text = sb.ToString();
+                    }   
                 }
             }
 
-            if(isFind==false)
-                lblProcess.Text = "status.txt 파일을 확인할 수 없습니다.";
+            if (sb.Length > 0) lblProcess.Text = sb.ToString();
+            else sb.Append("status.txt 파일을 확인할 수 없습니다.");
 
+            if (lblProcess.InvokeRequired)
+            {
+                lblProcess.BeginInvoke(new Action(() =>
+                {
+                    lblProcess.Text = sb.ToString();
+                }));
+            }
+            else 
+                lblProcess.Text = sb.ToString();
         }
+
         private void displayLineName()
         {
             lblStatus.Text = _lineName;
             lblLotName.Text = _targetIP;
             lblProcess.Text = "";
         }
-
         #endregion
 
         private void lblLotName_DoubleClick(object sender, EventArgs e)

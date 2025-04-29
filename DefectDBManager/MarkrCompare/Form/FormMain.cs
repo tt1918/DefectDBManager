@@ -220,11 +220,41 @@ namespace MarkrCompare
             this.Close();
         }
 
+
+
+        #endregion CONTROL
+
+        #region 최대/최소화
+        FormWindowState _oldState = FormWindowState.Normal;
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }
-        #endregion CONTROL
+
+        private void btnMaximize_Click(object sender, EventArgs e)
+        {
+            switch (this.WindowState)
+            {
+                case FormWindowState.Minimized:
+                    this.WindowState = FormWindowState.Maximized;
+                    btnMaximize.Image?.Dispose();
+                    btnMaximize.Image = Properties.Resources.min_24;
+                    break;
+
+                case FormWindowState.Maximized:
+                    this.WindowState = FormWindowState.Normal;
+                    btnMaximize.Image?.Dispose();
+                    btnMaximize.Image = Properties.Resources.max_24;
+                    break;
+
+                case FormWindowState.Normal:
+                    this.WindowState = FormWindowState.Maximized;
+                    btnMaximize.Image?.Dispose();
+                    btnMaximize.Image = Properties.Resources.min_24;
+                    break;
+            }
+        }
+        #endregion
 
         #region 기간 검색 시작
         public void StartSearchLotList()
@@ -361,5 +391,7 @@ namespace MarkrCompare
             OnUpdateLanguage?.Invoke();
         }
         #endregion
+
+       
     }
 }
