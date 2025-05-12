@@ -446,7 +446,8 @@ namespace DefectDBManager.Preproc
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
-                success = SearchFLTDAT_TEST(lotID);
+                //success = SearchFLTDAT_TEST(lotID);
+                success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return null; }
 
                 // 처리 완료되면 데이터 정리

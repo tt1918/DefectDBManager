@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -41,7 +42,7 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public event UpdateEvent OnUpdateLanguage;
+        public event DeleUpdateLanguage OnUpdateLanguage;
         #endregion
 
         public FormMain()
@@ -210,6 +211,7 @@ namespace MarkrCompare
         private void btnSetting_Click(object sender, EventArgs e)
         {
             FormLNCD form = new FormLNCD();
+            form.CultureCode = _cultureCode;
             if (form.ShowDialog() == DialogResult.OK)
                 this._lotManager.SetLNCDData(form.MaterialDate);
         }
@@ -217,8 +219,10 @@ namespace MarkrCompare
         private void btnSystem_Click(object sender, EventArgs e)
         {
             FormSystem form = new FormSystem(_systemParam);
-            if(form.ShowDialog() == DialogResult.OK)
+            form.CultureCode = _cultureCode;
+            if (form.ShowDialog() == DialogResult.OK)
             {
+                _systemParam = form.SysParam;
                 ChangeLanguage();
             }
         }
@@ -233,8 +237,6 @@ namespace MarkrCompare
             SystemLog.DisplaySystemLog("Program Close");
             this.Close();
         }
-
-
 
         #endregion CONTROL
 
@@ -389,6 +391,7 @@ namespace MarkrCompare
         #endregion
 
         #region 언어 변경
+        string _cultureCode ="";
         private void initLanguageFunc()
         {
             OnUpdateLanguage += _markDiffForm.UpdateLanguage;
@@ -403,39 +406,53 @@ namespace MarkrCompare
 
         public void ChangeLanguage()
         {
-            string curtureCode = "";
+            string cultureCode = "";
             switch (_systemParam.Language)
             {
                 case eLanguage.Korean:
-                    curtureCode = "Ko-Kr";
+                    cultureCode = "Ko-Kr";
                     break;
 
                 case eLanguage.English:
-                    curtureCode = "en-US";
+                    cultureCode = "en-US";
                     break;
 
                 case eLanguage.Japanese:
-                    curtureCode = "ja-JP";
+                    cultureCode = "ja-JP";
                     break;
 
                 case eLanguage.Chinese:
-                    curtureCode = "zh-CN";
+                    cultureCode = "zh-CN";
                     break;
 
                 case eLanguage.TaiwaneseHokkien:
-                    curtureCode = "zh-TW";
+                    cultureCode = "zh-TW";
                     break;
             }
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(curtureCode);
-            OnUpdateLanguage?.Invoke();
+            _cultureCode = cultureCode;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+            OnUpdateLanguage?.Invoke(cultureCode);
         }
 
-        public void UpdateLanguage()
+        public void UpdateLanguage(string culture)
         {
-            btnParam.Text = Language.btnParam;
-            btnSetting.Text = Language.btnSetting;
-            btnSystem.Text = Language.btnSystem;
-            btnClose.Text = Language.btnClose;
+            string fontName = Functions.GetCultureFontName(culture);
+
+            Font newFont = new Font(fontName, 12, FontStyle.Bold);
+            btnParam.Font = newFont;
+            btnSetting.Font = newFont;
+            btnSystem.Font = newFont;
+            btnClose.Font = newFont;
+
+            newFont = new Font(fontName, 10, FontStyle.Bold);
+            lblTitle.Font = newFont;
+
+            btnParam.Text = Lang.btnParam;
+            btnSetting.Text = Lang.btnSetting;
+            btnSystem.Text = Lang.btnSystem;
+            btnClose.Text = Lang.btnClose;
+
+            lblTitle.Text = Lang.mainFormTitle;
         }
         #endregion
 

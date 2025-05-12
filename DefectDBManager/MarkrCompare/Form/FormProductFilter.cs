@@ -18,6 +18,7 @@ namespace MarkrCompare
     {
 
         #region Param
+        public string CultureCode = "";
         DefectDBManager.PreprocLotManager _lotManager = null;
         int _procIdx = -1;
         #endregion
@@ -40,7 +41,7 @@ namespace MarkrCompare
                 case eProc.Search: initSearchFilterCtrl(); break;
             }
             initSyncDurationCtrl();
-            UpdateLanguage();
+            UpdateLanguage(CultureCode);
         }
 
         private void FormProductFilter_Load(object sender, EventArgs e)
@@ -84,7 +85,7 @@ namespace MarkrCompare
 
         #region Data Grid View Reference
         static string[] _strDgvMaterial = { "No", "LINE", "PRODUCT NAME", "MODEL", "DURATION" };
-        static int[] _DgvMaterialLength = { 60, 100, 250, 100, 50 };
+        static int[] _DgvMaterialLength = { 60, 100, 250, 100, 75 };
         enum eDgvLiveFilter { No, Line, Product, Model, Duration, Total };
         enum eDgvSearchFilter { No, Line, Product, Model, Total };
 
@@ -634,9 +635,35 @@ namespace MarkrCompare
         #endregion
 
         #region 언어 변경
-        public void UpdateLanguage()
+        public void UpdateLanguage(string culture)
         {
+            string fontName = Functions.GetCultureFontName(culture);
 
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            lblTitle.Font = newFont;
+            lblSyncDuration.Font = newFont;
+            btnAddMaterial.Font = newFont;
+            btnDelMaterial.Font = newFont;
+            btnClear.Font = newFont;
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
+
+            newFont = new Font(fontName, 9);
+            dgvFilter.Font = newFont;
+
+            lblTitle.Text = Lang.formProdFilterTitle;
+            lblSyncDuration.Text = Lang.formProdFilterSyncDuration;
+            btnAddMaterial.Text = Lang.btnAdd;
+            btnDelMaterial.Text = Lang.btnDel;
+            btnClear.Text = Lang.btnClear;
+            btnCancel.Text = Lang.btnCancel;
+            btnOK.Text = Lang.btnOK;
+
+            dgvFilter.Columns[0].Name = Lang.filterDgvNo;
+            dgvFilter.Columns[1].Name = Lang.filterDgvLine;
+            dgvFilter.Columns[2].Name = Lang.filterDgvProdName;
+            dgvFilter.Columns[3].Name = Lang.filterDgvModel;
+            dgvFilter.Columns[4].Name = Lang.filterDgvDuration;
         }
         #endregion
     }

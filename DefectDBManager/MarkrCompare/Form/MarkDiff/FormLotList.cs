@@ -55,7 +55,6 @@ namespace MarkrCompare
         {
             initFlpInfo();
             if (_procType == eProc.Live)    setLiveTapControl();
-            UpdateLanguage();
         }
 
         private void FormLotList_FormClosing(object sender, FormClosingEventArgs e)
@@ -276,7 +275,7 @@ namespace MarkrCompare
         }
 
         #region 언어 변경
-        public void UpdateLanguage()
+        public void UpdateLanguage(string culture)
         {
 
         }

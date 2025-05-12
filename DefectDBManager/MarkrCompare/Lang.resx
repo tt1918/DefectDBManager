@@ -117,25 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnAdd" xml:space="preserve">
+    <value> 추가</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="btnClear" xml:space="preserve">
+    <value>전체 삭제</value>
+  </data>
   <data name="btnClose" xml:space="preserve">
-    <value>  CLOSE</value>
+    <value>종료</value>
+  </data>
+  <data name="btnDel" xml:space="preserve">
+    <value>선택 삭제</value>
+  </data>
+  <data name="btnOK" xml:space="preserve">
+    <value>적용</value>
   </data>
   <data name="btnParam" xml:space="preserve">
-    <value>  PARAM</value>
+    <value> 파라미터</value>
   </data>
   <data name="btnSetting" xml:space="preserve">
-    <value>  Process</value>
+    <value>공정</value>
   </data>
   <data name="btnSystem" xml:space="preserve">
-    <value> SYSTEM</value>
+    <value> 시스템</value>
+  </data>
+  <data name="filterDgvModel" xml:space="preserve">
+    <value>모델</value>
+  </data>
+  <data name="filterDgvDuration" xml:space="preserve">
+    <value>주기</value>
+  </data>
+  <data name="filterDgvLine" xml:space="preserve">
+    <value>라인</value>
+  </data>
+  <data name="filterDgvNo" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="filterDgvProdName" xml:space="preserve">
+    <value>품종</value>
+  </data>
+  <data name="formProdFilterSyncDuration" xml:space="preserve">
+    <value>동기화 주기</value>
+  </data>
+  <data name="formProdFilterTitle" xml:space="preserve">
+    <value>제품 필터 설정</value>
+  </data>
+  <data name="LiveSearch" xml:space="preserve">
+    <value>실시간 감시</value>
+  </data>
+  <data name="mainFormTitle" xml:space="preserve">
+    <value>마킹 오차 비교</value>
+  </data>
+  <data name="PeridoSearch" xml:space="preserve">
+    <value>기간 검색</value>
   </data>
   <data name="ProcLiveSearch" xml:space="preserve">
-    <value>Real-time monitoring</value>
+    <value>실시간 감시 중</value>
   </data>
   <data name="ProcSearch" xml:space="preserve">
-    <value>Monitor Selected Period</value>
+    <value>기간 설정 검색</value>
   </data>
   <data name="ProcStop" xml:space="preserve">
-    <value>STOP</value>
+    <value>정지</value>
+  </data>
+  <data name="tabLive" xml:space="preserve">
+    <value>실시간 감시</value>
+  </data>
+  <data name="tabSearch" xml:space="preserve">
+    <value>기간 검색</value>
+  </data>
+  <data name="formSystemTitle" xml:space="preserve">
+    <value>시스템</value>
+  </data>
+  <data name="formLNCDTitle" xml:space="preserve">
+    <value>라인 정보 설정</value>
+  </data>
+  <data name="formLNCDSymbol" xml:space="preserve">
+    <value>심볼</value>
+  </data>
+  <data name="formLNCDSetIP" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="formLNCDCycle" xml:space="preserve">
+    <value>주기</value>
+  </data>
+  <data name="formLNCDLineCheck" xml:space="preserve">
+    <value>라인 상태 확인</value>
+  </data>
+  <data name="btnOK1" xml:space="preserve">
+    <value>확인</value>
+  </data>
+  <data name="btnApply" xml:space="preserve">
+    <value>적용</value>
+  </data>
+  <data name="btnLoad" xml:space="preserve">
+    <value>불러오기</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>저장하기</value>
+  </data>
+  <data name="btnDel1" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="dgvMeterialNo" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="dgvMeterialModel" xml:space="preserve">
+    <value>모델</value>
+  </data>
+  <data name="formAddDelName" xml:space="preserve">
+    <value>이름</value>
+  </data>
+  <data name="formAddDelTitle" xml:space="preserve">
+    <value>작업 추가</value>
+  </data>
+  <data name="formAddDelOK" xml:space="preserve">
+    <value>추가</value>
+  </data>
+  <data name="formAddDelCancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="btnLoad1" xml:space="preserve">
+    <value>읽기</value>
+  </data>
+  <data name="btnSave1" xml:space="preserve">
+    <value>저장</value>
+  </data>
+  <data name="formStatCheckSetTitle" xml:space="preserve">
+    <value>라인 상태 감시 설정</value>
+  </data>
+  <data name="formStatCheckSetDuration" xml:space="preserve">
+    <value>검색 주기(분)</value>
+  </data>
+  <data name="btnCancel1" xml:space="preserve">
+    <value>취소</value>
   </data>
 </root>

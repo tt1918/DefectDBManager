@@ -18,6 +18,7 @@ namespace MarkrCompare
     {
 
         #region Param
+        public string CultureCode = "";
         public SystemParam SysParam
         {
             get { return _systemParam; }
@@ -34,9 +35,9 @@ namespace MarkrCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            _systemParam = param;
+            _systemParam = param.Clone();
 
-            UpdateLanguage();
+            UpdateLanguage(CultureCode);
         }
 
         private void FormSystem_Load(object sender, EventArgs e)
@@ -88,9 +89,17 @@ namespace MarkrCompare
         #endregion
 
         #region 언어 변경
-        public void UpdateLanguage()
+        public void UpdateLanguage(string culture)
         {
+            string fontName = Functions.GetCultureFontName(culture);
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
+            lblTitle.Font = newFont;
 
+            btnCancel.Text = Lang.btnCancel;
+            btnOK.Text = Lang.btnOK;
+            lblTitle.Text = Lang.formSystemTitle;
         }
         #endregion
     }

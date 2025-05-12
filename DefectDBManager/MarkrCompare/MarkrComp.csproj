@@ -173,10 +173,31 @@
       <DependentUpon>FormRollMap.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\EnumToStringConverter.cs" />
-    <Compile Include="Language.Designer.cs">
+    <Compile Include="Helper\Functions.cs" />
+    <Compile Include="Lang.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Language.resx</DependentUpon>
+      <DependentUpon>Lang.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Lang.zh-TW.Designer.cs">
+      <DependentUpon>Lang.zh-TW.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Lang.zh-CN.Designer.cs">
+      <DependentUpon>Lang.zh-CN.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Lang.ja-JP.Designer.cs">
+      <DependentUpon>Lang.ja-JP.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Lang.en-US.Designer.cs">
+      <DependentUpon>Lang.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Logs\SystemLog.cs" />
@@ -240,13 +261,25 @@
     <EmbeddedResource Include="Form\RollMap\FormRollMap.resx">
       <DependentUpon>FormRollMap.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Language.zh-TW.resx" />
-    <EmbeddedResource Include="Language.zh-CN.resx" />
-    <EmbeddedResource Include="Language.ja-JP.resx" />
-    <EmbeddedResource Include="Language.en-US.resx" />
-    <EmbeddedResource Include="Language.resx">
+    <EmbeddedResource Include="Lang.zh-TW.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <LastGenOutput>Lang.zh-TW.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lang.zh-CN.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.zh-CN.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lang.ja-JP.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.ja-JP.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lang.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lang.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Lang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

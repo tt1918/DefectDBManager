@@ -10,4 +10,5 @@ namespace MarkrCompare.Delegate
     public delegate void UpdatePrepLncdInfo(DefectDBManager.Preproc.eProc proc);
     public delegate void UpdateEvent();
     public delegate void UpdatePrepLot(PreprocLot lot);
+    public delegate void DeleUpdateLanguage(string culture);
 }

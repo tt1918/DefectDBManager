@@ -117,25 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnAdd" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="btnCancel" xml:space="preserve">
+    <value>CANCEL</value>
+  </data>
+  <data name="btnClear" xml:space="preserve">
+    <value>CLEAR</value>
+  </data>
   <data name="btnClose" xml:space="preserve">
-    <value>  종료</value>
+    <value>CLOSE</value>
+  </data>
+  <data name="btnDel" xml:space="preserve">
+    <value>DELETE</value>
+  </data>
+  <data name="btnOK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="btnParam" xml:space="preserve">
-    <value>   파라미터</value>
+    <value> PARAM</value>
   </data>
   <data name="btnSetting" xml:space="preserve">
-    <value>   라인 공정</value>
+    <value>  PROCESS</value>
   </data>
   <data name="btnSystem" xml:space="preserve">
-    <value>시스템</value>
+    <value> SYSTEM</value>
+  </data>
+  <data name="filterDgvModel" xml:space="preserve">
+    <value>MODEL</value>
+  </data>
+  <data name="filterDgvDuration" xml:space="preserve">
+    <value>DURATION</value>
+  </data>
+  <data name="filterDgvLine" xml:space="preserve">
+    <value>LINE</value>
+  </data>
+  <data name="filterDgvNo" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="filterDgvProdName" xml:space="preserve">
+    <value>PRODUCT NAME</value>
+  </data>
+  <data name="formProdFilterSyncDuration" xml:space="preserve">
+    <value>Sync Duration</value>
+  </data>
+  <data name="formProdFilterTitle" xml:space="preserve">
+    <value>Setting Up Product Filters</value>
+  </data>
+  <data name="LiveSearch" xml:space="preserve">
+    <value>Real-Time</value>
+  </data>
+  <data name="mainFormTitle" xml:space="preserve">
+    <value>Marking Data Comparision</value>
+  </data>
+  <data name="PeridoSearch" xml:space="preserve">
+    <value>Selected Period</value>
   </data>
   <data name="ProcLiveSearch" xml:space="preserve">
-    <value>실시간 감시 중</value>
+    <value>Real-time monitoring</value>
   </data>
   <data name="ProcSearch" xml:space="preserve">
-    <value>기간 설정 검사 중</value>
+    <value>Monitor Selected Period</value>
   </data>
   <data name="ProcStop" xml:space="preserve">
-    <value>정지</value>
+    <value>STOP</value>
+  </data>
+  <data name="tabLive" xml:space="preserve">
+    <value>Real-Time</value>
+  </data>
+  <data name="tabSearch" xml:space="preserve">
+    <value>Selected Period</value>
+  </data>
+  <data name="formSystemTitle" xml:space="preserve">
+    <value>SYSTEM</value>
+  </data>
+  <data name="formLNCDTitle" xml:space="preserve">
+    <value>Setting Up Line Data</value>
+  </data>
+  <data name="formLNCDSymbol" xml:space="preserve">
+    <value>SYMBOL</value>
+  </data>
+  <data name="formLNCDSetIP" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="formLNCDCycle" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="formLNCDLineCheck" xml:space="preserve">
+    <value>Check Line State</value>
+  </data>
+  <data name="btnOK1" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="btnApply" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="btnLoad" xml:space="preserve">
+    <value>LOAD</value>
+  </data>
+  <data name="btnSave" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
+  <data name="btnDel1" xml:space="preserve">
+    <value>DEL</value>
+  </data>
+  <data name="dgvMeterialNo" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="dgvMeterialModel" xml:space="preserve">
+    <value>MODEL</value>
+  </data>
+  <data name="formAddDelName" xml:space="preserve">
+    <value>NAME</value>
+  </data>
+  <data name="formAddDelTitle" xml:space="preserve">
+    <value>Add Job</value>
+  </data>
+  <data name="formAddDelOK" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="formAddDelCancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="btnLoad1" xml:space="preserve">
+    <value>LOAD</value>
+  </data>
+  <data name="btnSave1" xml:space="preserve">
+    <value>SAVE</value>
+  </data>
+  <data name="formStatCheckSetTitle" xml:space="preserve">
+    <value>Setting Up Line Status</value>
+  </data>
+  <data name="formStatCheckSetDuration" xml:space="preserve">
+    <value>DURATION(Min)</value>
+  </data>
+  <data name="btnCancel1" xml:space="preserve">
+    <value>CANCEL</value>
   </data>
 </root>

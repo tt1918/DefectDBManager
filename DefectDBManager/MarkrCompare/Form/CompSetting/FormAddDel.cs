@@ -12,12 +12,15 @@ namespace MarkrCompare
 {
     public partial class FormAddDel : Form
     {
+        public string CultureCode;
         public string Title { get; set; }
         public string ScriptName { get; set; }
         public string DataName { get; set; }
         public FormAddDel(string title, string scriptName, string btnOkName, string btnCancelName, string dataName = "")
         {
             InitializeComponent();
+
+            
 
             Title = title;
             ScriptName = scriptName;
@@ -88,7 +91,12 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage()
         {
-
+            string fontName = Functions.GetCultureFontName(CultureCode);
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            lblTitle.Font = newFont;
+            lblName.Font = newFont;
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
         }
         #endregion
     }

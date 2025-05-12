@@ -384,7 +384,7 @@
             this.tableLayoutPanel6.ColumnCount = 3;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel6.Controls.Add(this.btnSelectColor, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.tbSymbol, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.lblSymbol, 0, 0);
@@ -408,10 +408,10 @@
             this.btnSelectColor.FlatAppearance.BorderSize = 0;
             this.btnSelectColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSelectColor.ForeColor = System.Drawing.Color.White;
-            this.btnSelectColor.Location = new System.Drawing.Point(205, 1);
+            this.btnSelectColor.Location = new System.Drawing.Point(195, 1);
             this.btnSelectColor.Margin = new System.Windows.Forms.Padding(1);
             this.btnSelectColor.Name = "btnSelectColor";
-            this.btnSelectColor.Size = new System.Drawing.Size(128, 31);
+            this.btnSelectColor.Size = new System.Drawing.Size(138, 31);
             this.btnSelectColor.TabIndex = 10;
             this.btnSelectColor.TextColor = System.Drawing.Color.White;
             this.btnSelectColor.UseVisualStyleBackColor = false;
@@ -435,7 +435,7 @@
             this.tbSymbol.PasswordChar = false;
             this.tbSymbol.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.tbSymbol.PlaceholderText = "";
-            this.tbSymbol.Size = new System.Drawing.Size(119, 32);
+            this.tbSymbol.Size = new System.Drawing.Size(109, 32);
             this.tbSymbol.TabIndex = 9;
             this.tbSymbol.Texts = "";
             this.tbSymbol.UnderlinedStyle = false;
@@ -482,9 +482,9 @@
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 3;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tableLayoutPanel8.Controls.Add(this.btnSetStatusCheck, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblCheckIP, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblCheckIPData, 1, 0);
@@ -508,10 +508,10 @@
             this.btnSetStatusCheck.FlatAppearance.BorderSize = 0;
             this.btnSetStatusCheck.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetStatusCheck.ForeColor = System.Drawing.Color.White;
-            this.btnSetStatusCheck.Location = new System.Drawing.Point(238, 1);
+            this.btnSetStatusCheck.Location = new System.Drawing.Point(220, 1);
             this.btnSetStatusCheck.Margin = new System.Windows.Forms.Padding(1);
             this.btnSetStatusCheck.Name = "btnSetStatusCheck";
-            this.btnSetStatusCheck.Size = new System.Drawing.Size(95, 28);
+            this.btnSetStatusCheck.Size = new System.Drawing.Size(113, 28);
             this.btnSetStatusCheck.TabIndex = 11;
             this.btnSetStatusCheck.Text = "SET";
             this.btnSetStatusCheck.TextColor = System.Drawing.Color.White;
@@ -534,7 +534,7 @@
             this.lblCheckIP.Location = new System.Drawing.Point(1, 1);
             this.lblCheckIP.Margin = new System.Windows.Forms.Padding(1);
             this.lblCheckIP.Name = "lblCheckIP";
-            this.lblCheckIP.Size = new System.Drawing.Size(53, 28);
+            this.lblCheckIP.Size = new System.Drawing.Size(80, 28);
             this.lblCheckIP.TabIndex = 6;
             this.lblCheckIP.Text = "IP";
             this.lblCheckIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -553,10 +553,10 @@
             this.lblCheckIPData.IsFillLT = false;
             this.lblCheckIPData.IsFillRB = false;
             this.lblCheckIPData.IsFillRT = false;
-            this.lblCheckIPData.Location = new System.Drawing.Point(56, 1);
+            this.lblCheckIPData.Location = new System.Drawing.Point(83, 1);
             this.lblCheckIPData.Margin = new System.Windows.Forms.Padding(1);
             this.lblCheckIPData.Name = "lblCheckIPData";
-            this.lblCheckIPData.Size = new System.Drawing.Size(180, 28);
+            this.lblCheckIPData.Size = new System.Drawing.Size(135, 28);
             this.lblCheckIPData.TabIndex = 6;
             this.lblCheckIPData.Text = "IP";
             this.lblCheckIPData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -565,9 +565,9 @@
             // tableLayoutPanel11
             // 
             this.tableLayoutPanel11.ColumnCount = 3;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 82F));
             this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tableLayoutPanel11.Controls.Add(this.lblCheckDurationData, 1, 0);
             this.tableLayoutPanel11.Controls.Add(this.lblDuration, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.chbCheckState, 2, 0);
@@ -594,10 +594,10 @@
             this.lblCheckDurationData.IsFillLT = false;
             this.lblCheckDurationData.IsFillRB = false;
             this.lblCheckDurationData.IsFillRT = false;
-            this.lblCheckDurationData.Location = new System.Drawing.Point(56, 1);
+            this.lblCheckDurationData.Location = new System.Drawing.Point(83, 1);
             this.lblCheckDurationData.Margin = new System.Windows.Forms.Padding(1);
             this.lblCheckDurationData.Name = "lblCheckDurationData";
-            this.lblCheckDurationData.Size = new System.Drawing.Size(181, 28);
+            this.lblCheckDurationData.Size = new System.Drawing.Size(135, 28);
             this.lblCheckDurationData.TabIndex = 6;
             this.lblCheckDurationData.Text = "5";
             this.lblCheckDurationData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -619,7 +619,7 @@
             this.lblDuration.Location = new System.Drawing.Point(2, 1);
             this.lblDuration.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.lblDuration.Name = "lblDuration";
-            this.lblDuration.Size = new System.Drawing.Size(52, 28);
+            this.lblDuration.Size = new System.Drawing.Size(79, 28);
             this.lblDuration.TabIndex = 6;
             this.lblDuration.Text = "주기";
             this.lblDuration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -630,9 +630,9 @@
             this.chbCheckState.AutoSize = true;
             this.chbCheckState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chbCheckState.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chbCheckState.Location = new System.Drawing.Point(241, 3);
+            this.chbCheckState.Location = new System.Drawing.Point(222, 3);
             this.chbCheckState.Name = "chbCheckState";
-            this.chbCheckState.Size = new System.Drawing.Size(90, 24);
+            this.chbCheckState.Size = new System.Drawing.Size(109, 24);
             this.chbCheckState.TabIndex = 7;
             this.chbCheckState.Text = "실시간 확인";
             this.chbCheckState.UseVisualStyleBackColor = true;

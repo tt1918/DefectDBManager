@@ -23,6 +23,13 @@ namespace MarkrCompare
 
         }
 
+        public SystemParam Clone()
+        {
+            SystemParam param = new SystemParam();
+            param.Language = _language;
+            return param;
+        }
+
         public bool Load()
         {
             string path = Define.SystemParamPath;

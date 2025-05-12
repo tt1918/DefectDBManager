@@ -1,6 +1,4 @@
-﻿using DefectDBManager;
-using DefectDBManager.Preproc;
-using MarkrCompare.Delegate;
+﻿using MarkrCompare.Delegate;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,7 +24,7 @@ namespace MarkrCompare
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
         //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
-        public event UpdateEvent OnUpdateLanguage = null;
+        public event DeleUpdateLanguage OnUpdateLanguage = null;
         #endregion
 
         public FormMarkDiff()
@@ -88,11 +86,11 @@ namespace MarkrCompare
         private void timerStateView(object sender, EventArgs e)
         {
             if(_dbProcess.IsRunLiveTimer)
-                lblRunState.Text = Language.ProcLiveSearch;
+                lblRunState.Text = Lang.ProcLiveSearch;
             else if(_dbProcess.IsRunSearchingLotList)
-                lblRunState.Text = Language.ProcSearch;
+                lblRunState.Text = Lang.ProcSearch;
             else
-                lblRunState.Text = Language.ProcStop;
+                lblRunState.Text = Lang.ProcStop;
         }
         #endregion
 
@@ -302,7 +300,7 @@ namespace MarkrCompare
                 _lotListForms = new FormLotList[size];
                 for (int i = 0; i < size; i++)
                 {
-                    _lotListForms[i] = new FormLotList((eProc)i);
+                    _lotListForms[i] = new FormLotList((DefectDBManager.Preproc.eProc)i);
                     _lotListForms[i].TopLevel = false;
                     _lotListForms[i].Show();
                 }
@@ -453,12 +451,12 @@ namespace MarkrCompare
         {
             BeginInvoke(new Action(delegate 
             {
-                _lotListForms[(int)eProc.Search].OnClearSummaryData();
-                _lotListForms[(int)eProc.Search].SetTapControl(_lotManager.CrtProcFilter[(int)eProc.Search]);
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].OnClearSummaryData();
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControl(_lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search]);
             }));
-            foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
+            foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
             {
-                PreprocItem procItem = new PreprocItem();
+                DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
                 foreach (var set in _lotManager.ProcSetting.Data)
                 {
                     if (set.Name == item.Model)
@@ -470,15 +468,15 @@ namespace MarkrCompare
 
                 if (_lotManager.LOT.ContainsKey(item.ToString()))
                 {
-                    _lotListForms[(int)eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
                 }
             }
         }
 
-        public void UpdateRollmap(PreprocLot lot)
+        public void UpdateRollmap(DefectDBManager.PreprocLot lot)
         {
-            PreprocItem procItem = new PreprocItem();
-            foreach (var item in _lotManager.CrtProcFilter[(int)eProc.Search].Data)
+            DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+            foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
             {
                 if (_lotManager.ProcSetting.Data.Find(x => x.Name == item.Model) != null)
                 {
@@ -487,7 +485,7 @@ namespace MarkrCompare
                 }
             }
 
-            PreprocLNCDInfo info = new PreprocLNCDInfo();
+            DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
             _rollMapForm.ClearMap();
             foreach (var item in lot.INSPDAT)
             {
@@ -543,7 +541,7 @@ namespace MarkrCompare
 
                 BeginInvoke(new Action(delegate
                 {
-                    _lotListForms[(int)eProc.Search].OnClearSummaryData();
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].OnClearSummaryData();
                 }));
 
                 SystemLog.DisplayFileServerLog("Csv 비교 완료");
@@ -580,22 +578,31 @@ namespace MarkrCompare
                 OnUpdateLanguage -= _lotListForms[i].UpdateLanguage;
         }
 
-        public async void UpdateLanguage()
+        public async void UpdateLanguage(string culture)
         {
+            string fontName = Functions.GetCultureFontName(culture);
+
             // 
-            await Task.Run(() => OnUpdateLanguage?.Invoke());
+            await Task.Run(() => OnUpdateLanguage?.Invoke(culture));
             
             // 변경할 언어 표시 추가
             await Task.Run(() =>
             {
+                Font newFont = new Font(fontName, 9);
                 string text = "";
-                if (_dbProcess.IsRunLiveTimer) text = Language.ProcLiveSearch;
-                else if (_dbProcess.IsRunSearchingLotList) text = Language.ProcSearch;
-                else text = Language.ProcStop;
+                if (_dbProcess.IsRunLiveTimer) text = Lang.ProcLiveSearch;
+                else if (_dbProcess.IsRunSearchingLotList) text = Lang.ProcSearch;
+                else text = Lang.ProcStop;
                 lblRunState.BeginInvoke(new Action(() => lblRunState.Text = text));
+
+                tabSearchSet.BeginInvoke(new Action(() =>
+                {
+                    tabSearchSet.Font = newFont;
+                    tabSearchSet.TabPages[0].Text = Lang.LiveSearch;
+                    tabSearchSet.TabPages[1].Text = Lang.PeridoSearch;
+                }));
             });
         }
         #endregion
-
     }
 }

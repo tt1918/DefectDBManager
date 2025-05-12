@@ -27,7 +27,6 @@ namespace MarkrCompare
         {
             InitializeComponent();
             initLotSummary();
-            UpdateLanguage();
             // 전체 보기를 기본으로 처리함
             rbShowAll.Checked = true;
         }
@@ -279,7 +278,7 @@ namespace MarkrCompare
         #endregion
 
         #region 언어 변경
-        public void UpdateLanguage()
+        public void UpdateLanguage(string curtule)
         {
 
         }

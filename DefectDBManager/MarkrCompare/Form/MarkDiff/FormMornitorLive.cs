@@ -51,7 +51,6 @@ namespace MarkrCompare
         {
             initLNCDCtrl();
             initLotSearchTimer();
-            UpdateLanguage();
         }
 
         private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
@@ -225,7 +224,8 @@ namespace MarkrCompare
             {
                 using (FormProductFilter form = new FormProductFilter(_lotManager, _procIdx))
                 {
-                    if(form.ShowDialog()==DialogResult.OK)
+                    form.CultureCode = _cultureCode;
+                    if (form.ShowDialog()==DialogResult.OK)
                     {
                         setLNCDCtrlData();
                         OnUpdatePrepLncdInfo?.Invoke(eProc.Live);
@@ -290,9 +290,10 @@ namespace MarkrCompare
         #endregion
 
         #region 언어 변경
-        public void UpdateLanguage()
+        string _cultureCode = "";
+        public void UpdateLanguage(string culture)
         {
-
+            _cultureCode = culture;
         }
         #endregion
     }

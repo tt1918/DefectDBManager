@@ -10,6 +10,7 @@ namespace MarkrCompare
     {
 
         #region Param
+        public string CultureCode="";
         public DefectDBManager.Preproc.PreprocLNCD MaterialDate
         {
             get { return _materialData; }
@@ -34,7 +35,7 @@ namespace MarkrCompare
 
             tbSymbol._TextChanged += this.tbSymbolTextChanged;
 
-            UpdateLanguage();
+            UpdateLanguage(CultureCode);
         }
 
         private void FormLNCD_Load(object sender, EventArgs e)
@@ -74,7 +75,6 @@ namespace MarkrCompare
             }
         }
         #endregion
-
 
         #region 공통 사용 함수
         private int getValidTaskIdx(string name)
@@ -156,7 +156,8 @@ namespace MarkrCompare
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            FormAddDel form = new FormAddDel("작업 추가", "이름", "추가", "취소");
+            FormAddDel form = new FormAddDel(Lang.formAddDelTitle, Lang.formAddDelName, Lang.formAddDelOK, Lang.formAddDelCancel);
+            form.CultureCode = CultureCode;
             if (form.ShowDialog() != DialogResult.OK) return;
 
             if (form.DataName == "")
@@ -397,7 +398,8 @@ namespace MarkrCompare
 
             using (FormStatusCheckSetting form = new FormStatusCheckSetting(ip, duration))
             {
-                if(form.ShowDialog()==DialogResult.OK)
+                form.CultureCode = CultureCode;
+                if (form.ShowDialog()==DialogResult.OK)
                 {
                     MaterialDate[selProcIdx].TargetIP = form.IP;
                     MaterialDate[selProcIdx].CheckDuration = form.Duration;
@@ -486,9 +488,56 @@ namespace MarkrCompare
         #endregion
 
         #region 언어
-        public void UpdateLanguage()
+        public void UpdateLanguage(string cultrue)
         {
+            string fontName = Functions.GetCultureFontName(cultrue);
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
 
+            lblTitle.Font = newFont;
+            lblLNCD.Font = newFont;
+            lblSelLNCD.Font = newFont;
+            lblSymbol.Font = newFont;
+            
+            lblCheckIP.Font = newFont;
+            lblDuration.Font = newFont;
+            btnSelectColor.Font = newFont;
+
+            newFont = new Font(fontName, 9);
+            chbCheckState.Font = newFont;
+            btnSetStatusCheck.Font = newFont;
+            btnAdd.Font = newFont;
+            btnDelete.Font = newFont;
+            btnLoad.Font = newFont;
+            btnSave.Font = newFont;
+            btnAddMaterial.Font = newFont;
+            btnDelMaterial.Font = newFont;
+            btnApply.Font = newFont;
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
+            lvLNCDList.Font = newFont;
+            dgvMaterial.Font = newFont;
+
+            lblTitle.Text = Lang.formLNCDTitle;
+            lblSymbol.Text = Lang.formLNCDSymbol;
+            lblDuration.Text = Lang.formLNCDCycle;
+            chbCheckState.Text = Lang.formLNCDLineCheck;
+
+            btnSetStatusCheck.Text = Lang.formLNCDSetIP;
+            btnAdd.Text = Lang.btnAdd;
+            btnDelete.Text = Lang.btnDel1;
+            btnLoad.Text = Lang.btnLoad1;
+            btnSave.Text = Lang.btnSave1;
+
+            btnAddMaterial.Text = Lang.btnAdd;
+            btnDelMaterial.Text = Lang.btnDel1;
+
+            btnApply.Text = Lang.btnApply;
+            btnCancel.Text = Lang.btnCancel;
+            btnOK.Text = Lang.btnOK1;
+
+            
+            dgvMaterial.Columns[0].Name = Lang.dgvMeterialNo;
+            dgvMaterial.Columns[1].Name = Lang.dgvMeterialModel;
         }
         #endregion
 

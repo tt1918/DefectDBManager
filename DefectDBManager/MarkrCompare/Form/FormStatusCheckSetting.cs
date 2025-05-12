@@ -14,6 +14,7 @@ namespace MarkrCompare
     public partial class FormStatusCheckSetting : Form
     {
         #region Param
+        public string CultureCode = "";
         public string IP { get; set; }
         public int Duration { get; set; }
         #endregion
@@ -26,7 +27,7 @@ namespace MarkrCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            UpdateLanguage();
+            
         }
 
         public FormStatusCheckSetting(string ip, int duration)
@@ -35,6 +36,8 @@ namespace MarkrCompare
 
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
+
+            UpdateLanguage();
 
             this.IP = ip;
             this.Duration = duration;
@@ -123,7 +126,20 @@ namespace MarkrCompare
 
         #region 언어 변경
         public void UpdateLanguage()
-        { 
+        {
+            string fontName = Functions.GetCultureFontName(CultureCode);
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+
+            lblTitle.Font = newFont;
+            lblDuration.Font = newFont;
+            lblIP.Font = newFont;
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
+
+            lblTitle.Text = Lang.formStatCheckSetTitle;
+            lblDuration.Text = Lang.formStatCheckSetDuration;
+            btnCancel.Text = Lang.btnCancel1;
+            btnOK.Text = Lang.btnOK;
         }
         #endregion
     }
