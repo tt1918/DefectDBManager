@@ -53,10 +53,16 @@ namespace MarkrCompare
             initStateViewTimer();
 
             switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Live);
+
+            // 언어 변경 함수 연결
+            initLanguageFunc();
         }
 
         private void FormMarkDiff_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // 언어 변경 함수 연결 해제
+            closeLanguageFunc();
+
             closeTabSearchSetting();
             closeLotListForms();
             closeInOutTimer();
@@ -82,11 +88,11 @@ namespace MarkrCompare
         private void timerStateView(object sender, EventArgs e)
         {
             if(_dbProcess.IsRunLiveTimer)
-                lblRunState.Text = "실시간 검사 중";
+                lblRunState.Text = Language.ProcLiveSearch;
             else if(_dbProcess.IsRunSearchingLotList)
-                lblRunState.Text = "기간 설정 검사 중";
+                lblRunState.Text = Language.ProcSearch;
             else
-                lblRunState.Text = "정지";
+                lblRunState.Text = Language.ProcStop;
         }
         #endregion
 
@@ -235,9 +241,6 @@ namespace MarkrCompare
             _formMorSearch.OnOpenCsvForm += OpenFormCsv;
             _formMorSearch.Dock = DockStyle.Fill;
             
-            OnUpdateLanguage += _formMorLive.UpdateLanguage;
-            OnUpdateLanguage += _formMorSearch.UpdateLanguage;
-
             _formMorSearch.Show();
             _formMorLive.Show();
         }
@@ -249,9 +252,6 @@ namespace MarkrCompare
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.OnOpenCsvForm -= OpenFormCsv;
-
-            OnUpdateLanguage -= _formMorLive.UpdateLanguage;
-            OnUpdateLanguage -= _formMorSearch.UpdateLanguage;
 
             _formMorLive?.Close();
             _formMorSearch?.Close();
@@ -305,9 +305,6 @@ namespace MarkrCompare
                     _lotListForms[i] = new FormLotList((eProc)i);
                     _lotListForms[i].TopLevel = false;
                     _lotListForms[i].Show();
-
-                    OnUpdateLanguage += _lotListForms[i].UpdateLanguage;
-
                 }
                 showLotListForm(DefectDBManager.Preproc.eProc.Live);
                 updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Live);
@@ -323,10 +320,7 @@ namespace MarkrCompare
             if (_lotListForms != null)
             {
                 for (int i = 0; i < (int)DefectDBManager.Preproc.eProc.Total; i++)
-                {
-                    OnUpdateLanguage -= _lotListForms[i].UpdateLanguage;
                     _lotListForms[i].Dispose();
-                }
 
                 _lotListForms = null;
             }
@@ -566,12 +560,40 @@ namespace MarkrCompare
         }
 
         #region 언어 변경
-        public void UpdateLanguage()
+        private void initLanguageFunc()
         {
-            OnUpdateLanguage?.Invoke();
+            OnUpdateLanguage += _formMorLive.UpdateLanguage;
+            OnUpdateLanguage += _formMorSearch.UpdateLanguage;
 
+            int size = (int)DefectDBManager.Preproc.eProc.Total;
+            for(int i=0; i<size; i++)
+                OnUpdateLanguage += _lotListForms[i].UpdateLanguage;
+        }
+
+        private void closeLanguageFunc()
+        {
+            OnUpdateLanguage -= _formMorLive.UpdateLanguage;
+            OnUpdateLanguage -= _formMorSearch.UpdateLanguage;
+
+            int size = (int)DefectDBManager.Preproc.eProc.Total;
+            for (int i = 0; i < size; i++)
+                OnUpdateLanguage -= _lotListForms[i].UpdateLanguage;
+        }
+
+        public async void UpdateLanguage()
+        {
+            // 
+            await Task.Run(() => OnUpdateLanguage?.Invoke());
+            
             // 변경할 언어 표시 추가
-
+            await Task.Run(() =>
+            {
+                string text = "";
+                if (_dbProcess.IsRunLiveTimer) text = Language.ProcLiveSearch;
+                else if (_dbProcess.IsRunSearchingLotList) text = Language.ProcSearch;
+                else text = Language.ProcStop;
+                lblRunState.BeginInvoke(new Action(() => lblRunState.Text = text));
+            });
         }
         #endregion
 

@@ -100,6 +100,12 @@
     <Compile Include="Form\FormCsv.Designer.cs">
       <DependentUpon>FormCsv.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\FormSystem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormSystem.Designer.cs">
+      <DependentUpon>FormSystem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormProductFilter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,12 @@
     <Compile Include="Form\RollMap\FormRollMap.Designer.cs">
       <DependentUpon>FormRollMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\EnumToStringConverter.cs" />
+    <Compile Include="Language.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Language.resx</DependentUpon>
+    </Compile>
     <Compile Include="Logs\Log.cs" />
     <Compile Include="Logs\SystemLog.cs" />
     <Compile Include="Program.cs" />
@@ -176,26 +188,7 @@
     <Compile Include="Control\RoundLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="String.zh-CN.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>String.zh-CN.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Strings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Strings.en-US.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Strings.ja-JP.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.ja-JP.resx</DependentUpon>
-    </Compile>
+    <Compile Include="SystemParam.cs" />
     <EmbeddedResource Include="Control\RoundTextBox.resx">
       <DependentUpon>RoundTextBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormCsv.resx">
       <DependentUpon>FormCsv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormSystem.resx">
+      <DependentUpon>FormSystem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormProductFilter.resx">
       <DependentUpon>FormProductFilter.cs</DependentUpon>
@@ -244,6 +240,14 @@
     <EmbeddedResource Include="Form\RollMap\FormRollMap.resx">
       <DependentUpon>FormRollMap.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Language.zh-TW.resx" />
+    <EmbeddedResource Include="Language.zh-CN.resx" />
+    <EmbeddedResource Include="Language.ja-JP.resx" />
+    <EmbeddedResource Include="Language.en-US.resx" />
+    <EmbeddedResource Include="Language.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -254,22 +258,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="String.zh-CN.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>String.zh-CN.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Strings.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Strings.ja-JP.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.ja-JP.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Strings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

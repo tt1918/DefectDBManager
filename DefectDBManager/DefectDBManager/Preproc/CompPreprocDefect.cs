@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -500,6 +500,13 @@ namespace DefectDBManager
                 if (lot.MarkCompList.Data.Count > 0)
                     maxStep = lot.MarkCompList.Data[0].Comp.GetLength(0);
 
+                List<CompareResult>[] tempData = new List<CompareResult>[maxStep];
+                for (int i = 0; i < maxStep; i++)
+                {
+                    tempData[i] = new List<CompareResult>();
+                }
+
+
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
                 {
@@ -537,6 +544,7 @@ namespace DefectDBManager
                                     idx2++;
                                 }
                                 idx1++;
+                                tempData[i].Add(item);
                             }
                         }
                     }

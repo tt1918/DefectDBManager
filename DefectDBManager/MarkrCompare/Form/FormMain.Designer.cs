@@ -40,6 +40,7 @@
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
             this.btnSetting = new CustomControls.RoundButton();
+            this.btnSystem = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -191,18 +192,19 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.tableLayoutPanel5.ColumnCount = 7;
+            this.tableLayoutPanel5.ColumnCount = 8;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Controls.Add(this.btnClose, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnClose, 6, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnParam, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSetting, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSystem, 3, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 791);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
@@ -243,6 +245,7 @@
             this.btnParam.BorderColor = System.Drawing.Color.Black;
             this.btnParam.BorderRadius = 5;
             this.btnParam.BorderSize = 1;
+            this.btnParam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnParam.FlatAppearance.BorderSize = 0;
             this.btnParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -252,9 +255,9 @@
             this.btnParam.Location = new System.Drawing.Point(11, 1);
             this.btnParam.Margin = new System.Windows.Forms.Padding(1);
             this.btnParam.Name = "btnParam";
-            this.btnParam.Size = new System.Drawing.Size(118, 56);
+            this.btnParam.Size = new System.Drawing.Size(138, 56);
             this.btnParam.TabIndex = 1;
-            this.btnParam.Text = "    PARAM";
+            this.btnParam.Text = "     PARAM";
             this.btnParam.TextColor = System.Drawing.Color.White;
             this.btnParam.UseVisualStyleBackColor = false;
             this.btnParam.Click += new System.EventHandler(this.btnParam_Click);
@@ -266,21 +269,46 @@
             this.btnSetting.BorderColor = System.Drawing.Color.Black;
             this.btnSetting.BorderRadius = 5;
             this.btnSetting.BorderSize = 1;
+            this.btnSetting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSetting.FlatAppearance.BorderSize = 0;
             this.btnSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetting.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetting.ForeColor = System.Drawing.Color.White;
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
             this.btnSetting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSetting.Location = new System.Drawing.Point(131, 1);
+            this.btnSetting.Location = new System.Drawing.Point(151, 1);
             this.btnSetting.Margin = new System.Windows.Forms.Padding(1);
             this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(118, 56);
+            this.btnSetting.Size = new System.Drawing.Size(138, 56);
             this.btnSetting.TabIndex = 1;
-            this.btnSetting.Text = "   SET";
+            this.btnSetting.Text = "     PRODUCT";
             this.btnSetting.TextColor = System.Drawing.Color.White;
             this.btnSetting.UseVisualStyleBackColor = false;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            // 
+            // btnSystem
+            // 
+            this.btnSystem.BackColor = System.Drawing.Color.DimGray;
+            this.btnSystem.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnSystem.BorderColor = System.Drawing.Color.Black;
+            this.btnSystem.BorderRadius = 5;
+            this.btnSystem.BorderSize = 1;
+            this.btnSystem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSystem.FlatAppearance.BorderSize = 0;
+            this.btnSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSystem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSystem.ForeColor = System.Drawing.Color.White;
+            this.btnSystem.Image = ((System.Drawing.Image)(resources.GetObject("btnSystem.Image")));
+            this.btnSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSystem.Location = new System.Drawing.Point(291, 1);
+            this.btnSystem.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSystem.Name = "btnSystem";
+            this.btnSystem.Size = new System.Drawing.Size(138, 56);
+            this.btnSystem.TabIndex = 1;
+            this.btnSystem.Text = "       SYSTEM";
+            this.btnSystem.TextColor = System.Drawing.Color.White;
+            this.btnSystem.UseVisualStyleBackColor = false;
+            this.btnSystem.Click += new System.EventHandler(this.btnSystem_Click);
             // 
             // FormMain
             // 
@@ -322,6 +350,7 @@
         private CustomControls.RoundButton btnSetting;
         private CustomControls.RoundButton btnDBConnect;
         private CustomControls.RoundButton btnMaximize;
+        private CustomControls.RoundButton btnSystem;
     }
 }
 

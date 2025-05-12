@@ -22,6 +22,8 @@ namespace DefectDBManager
         public static string PreprocSetPath { get { return Path.Combine(MainPath, "PreprocSet.json"); } }
         public static string MaterialListPath { get { return Path.Combine(MainPath, "MaterialList.json"); } }
         public static string FilterSetPath { get { return Path.Combine(MainPath, "FilterSet.json"); } }
+
+        public static string SystemParamPath { get { return Path.Combine(MainPath, "SystemParam.json"); } }
     }
 
     public class Global

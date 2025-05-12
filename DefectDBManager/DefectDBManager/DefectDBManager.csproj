@@ -274,6 +274,7 @@
     <EmbeddedResource Include="Language.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Language.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language.zh-TW.resx" />
     <EmbeddedResource Include="Language.zh-CN.resx" />

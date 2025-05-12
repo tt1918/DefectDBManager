@@ -994,10 +994,11 @@ namespace DefectDBManager.Preproc
 
                                     finalXPos = data.XPOS_M;
                                     if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                    if (useAIFromDB == false)
+                                    if (useAIFromDB == false) // AI 미사용시
                                     {
                                         tmpKey = data.MNTTAN.TrimStart();
-                                        if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;
+                                        if (string.IsNullOrEmpty(tmpKey)) 
+                                            tmpKey = data.FLTID;
                                     }
                                     else tmpKey = data.FLTID;
 
@@ -1187,10 +1188,11 @@ namespace DefectDBManager.Preproc
 
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                        if (useAIFromDB == false)
+                                        if (useAIFromDB == false) // AI 미사용시
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
-                                            if (string.IsNullOrEmpty(tmpKey)) tmpKey = data.FLTID;
+                                            if (string.IsNullOrEmpty(tmpKey)) 
+                                                tmpKey = data.FLTID;
                                         }
                                         else tmpKey = data.FLTID;
 

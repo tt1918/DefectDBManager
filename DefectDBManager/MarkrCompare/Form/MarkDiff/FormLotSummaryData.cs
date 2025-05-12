@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -262,45 +263,52 @@ namespace MarkrCompare
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "COSS\\Status"));
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "nexteye\\Status"));
 
-            StringBuilder sb = new StringBuilder();
-            // 세부 사항 업데이트
-            foreach (var path in Paths)
+            try
             {
-                if (Directory.Exists(path))
+                StringBuilder sb = new StringBuilder();
+                // 세부 사항 업데이트
+                foreach (var path in Paths)
                 {
-                    string[] files = Directory.GetFiles(path);
-                    
-                    foreach (var file in files)
+                    if (Directory.Exists(path))
                     {
-                        if (file.Contains("Status.txt"))
+                        string[] files = Directory.GetFiles(path);
+
+                        foreach (var file in files)
                         {
-                            using (StreamReader sr = new StreamReader(file, Encoding.Default))
+                            if (file.Contains("Status.txt"))
                             {
-                                string text;
-                                while ((text = sr.ReadLine()) != null)
+                                using (StreamReader sr = new StreamReader(file, Encoding.Default))
                                 {
-                                    if (sb.Length > 0) sb.Append("\n");
-                                    sb.Append(text);
+                                    string text;
+                                    while ((text = sr.ReadLine()) != null)
+                                    {
+                                        if (sb.Length > 0) sb.Append("\n");
+                                        sb.Append(text);
+                                    }
+                                    sr.Close();
                                 }
-                                sr.Close();
                             }
                         }
-                    }   
+                    }
                 }
-            }
 
-            if (sb.Length > 0) lblProcess.Text = sb.ToString();
-            else sb.Append("status.txt 파일을 확인할 수 없습니다.");
+                if (sb.Length > 0) lblProcess.Text = sb.ToString();
+                else sb.Append("status.txt 파일을 확인할 수 없습니다.");
 
-            if (lblProcess.InvokeRequired)
-            {
-                lblProcess.BeginInvoke(new Action(() =>
+                if (lblProcess.InvokeRequired)
                 {
+                    lblProcess.BeginInvoke(new Action(() =>
+                    {
+                        lblProcess.Text = sb.ToString();
+                    }));
+                }
+                else
                     lblProcess.Text = sb.ToString();
-                }));
             }
-            else 
-                lblProcess.Text = sb.ToString();
+            catch(Exception ex)
+            {
+                SystemLog.DisplaySystemLog($"Status Check:{ex.Message}", Log.Level.Error);
+            }
         }
 
         private void displayLineName()

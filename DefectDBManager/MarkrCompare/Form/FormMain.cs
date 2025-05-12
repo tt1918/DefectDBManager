@@ -37,6 +37,7 @@ namespace MarkrCompare
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
         DefectDBManager.CompPreprocDefect _dbManager = null;
+        SystemParam _systemParam = new SystemParam();
         #endregion
 
         #region Event
@@ -72,6 +73,8 @@ namespace MarkrCompare
             initClockTimer();
             initMarkDiffForm();
 
+            _systemParam.Load();
+
             SystemLog.DisplaySystemLog = _markDiffForm.OnDisplaySystemLog;
             SystemLog.DisplayFileServerLog = _markDiffForm.OnDisplayFileServerLog;
             SystemLog.OnDisplayLogData = _markDiffForm.OnDisplayLog;
@@ -87,6 +90,8 @@ namespace MarkrCompare
 
             // 하부 폼이 먼저 만들어져야 해서 마지막에 처리
             initLanguageFunc();
+
+            ChangeLanguage();
 
             SystemLog.DisplaySystemLog("Program Start");
         }
@@ -207,6 +212,15 @@ namespace MarkrCompare
             FormLNCD form = new FormLNCD();
             if (form.ShowDialog() == DialogResult.OK)
                 this._lotManager.SetLNCDData(form.MaterialDate);
+        }
+
+        private void btnSystem_Click(object sender, EventArgs e)
+        {
+            FormSystem form = new FormSystem(_systemParam);
+            if(form.ShowDialog() == DialogResult.OK)
+            {
+                ChangeLanguage();
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -378,17 +392,50 @@ namespace MarkrCompare
         private void initLanguageFunc()
         {
             OnUpdateLanguage += _markDiffForm.UpdateLanguage;
+            OnUpdateLanguage += this.UpdateLanguage;
         }
 
         private void closeLanguageFunc()
         {
             OnUpdateLanguage -= _markDiffForm.UpdateLanguage;
+            OnUpdateLanguage -= this.UpdateLanguage;
         }
 
-        public void ChangeLanguage(string cultureCode)
+        public void ChangeLanguage()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+            string curtureCode = "";
+            switch (_systemParam.Language)
+            {
+                case eLanguage.Korean:
+                    curtureCode = "Ko-Kr";
+                    break;
+
+                case eLanguage.English:
+                    curtureCode = "en-US";
+                    break;
+
+                case eLanguage.Japanese:
+                    curtureCode = "ja-JP";
+                    break;
+
+                case eLanguage.Chinese:
+                    curtureCode = "zh-CN";
+                    break;
+
+                case eLanguage.TaiwaneseHokkien:
+                    curtureCode = "zh-TW";
+                    break;
+            }
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(curtureCode);
             OnUpdateLanguage?.Invoke();
+        }
+
+        public void UpdateLanguage()
+        {
+            btnParam.Text = Language.btnParam;
+            btnSetting.Text = Language.btnSetting;
+            btnSystem.Text = Language.btnSystem;
+            btnClose.Text = Language.btnClose;
         }
         #endregion
 
