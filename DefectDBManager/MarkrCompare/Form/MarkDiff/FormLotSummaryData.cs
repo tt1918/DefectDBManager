@@ -1,4 +1,5 @@
 ﻿using DefectDBManager;
+using MarkrCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -99,109 +100,145 @@ namespace MarkrCompare
         #region 데이터 표시
         private void displayLotSummery()
         {
+            displayLotName();
             displayDetail();
             displayCompareResult();
-            displayLotName();
         }
 
         private void displayCompareResult()
         {
-            if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
+            try
             {
-                lblStatus.Text = "Error";
-                return;
-            }
+                if(_lotSummery==null)
+                {
+                    lblStatus.Text = "Error";
+                    SystemLog.DisplaySystemLog($"Lot Summary : Lot Summary information is empty", Log.Level.Error);
+                    return;
+                }
 
-            if (isError)
-            {
-                lblStatus.BkColor = Color.Red;
-                lblStatus.Text = "오차 발생";
+                if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
+                {
+                    lblStatus.Text = "Error";
+                    return;
+                }
+
+                if (isError)
+                {
+                    lblStatus.BkColor = Color.Red;
+                    lblStatus.Text = "오차 발생";
+                }
+                else
+                {
+                    lblStatus.BkColor = Color.MidnightBlue;
+                    lblStatus.Text = "정상";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                lblStatus.BkColor = Color.MidnightBlue;
-                lblStatus.Text = "정상";
+                SystemLog.DisplaySystemLog($"Lot Summary (Comp result) :{ex.Message}", Log.Level.Error);
             }
         }
 
         private void displayLotName()
         {
-            string str = _lotSummery.LotName;
-            lblLotName.Text = str + $" - {filter}";
+            try
+            {
+                string str = _lotSummery.LotName;
+                lblLotName.Text = str + $" - {filter}";
 
-            if (isError)
-                lblLotName.BkColor = Color.Red;
-            else
-                lblLotName.BkColor = Color.MidnightBlue;
+                if (isError)
+                    lblLotName.BkColor = Color.Red;
+                else
+                    lblLotName.BkColor = Color.MidnightBlue;
+            }
+            catch(Exception ex)
+            {
+                SystemLog.DisplaySystemLog($"Lot Summary (Lot Name) :{ex.Message}", Log.Level.Error);
+            }
+            
         }
 
         private void displayDetail()
         {
-            if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
+            try
             {
-                lblProcess.Text = "비교 데이터 없음";
-                return;
-            }
-            
-            string str = null;
-            int[,] compCnt = _lotSummery.CompCnt;
-
-            bool isEmpty = true;
-            foreach (var cnt in compCnt)
-                if (cnt > 0) isEmpty = false;
-            
-            if (isEmpty)
-            {
-                lblProcess.Text = "동일 비교 결점 없음";
-                return;
-            }
-
-            double[] result = new double[procItem.CompRange.Count+1];
-            
-            StringBuilder sb = new StringBuilder();
-
-            for(int idx=0; idx < procItem.Compare.Count; idx++)
-            {
-                if (idx > 0) sb.Append("\n");
-                isEmpty = true;
-                for (int i = 0; i < compCnt.GetLength(1); i++)
-                    if (compCnt[idx, i] > 0) isEmpty = false;
-                if(isEmpty)
+                if (_lotSummery == null)
                 {
-                    sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] 동일 비교 결점 없음 ");
-                    continue;
+                    lblProcess.Text = "Lot 요약 정보가 존재하지 않습니다.";
+                    SystemLog.DisplaySystemLog($"Show Detail: Lot 요약 정보가 존재하지 않습니다.", Log.Level.Error);
+                    return;
                 }
 
-                result[0] = 100.0;
-                if(compCnt[idx, 0]==0)  sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :0%({compCnt[idx, 0]}), ");
-                else                    sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :{result[0]:F1}%({compCnt[idx, 0]}), ");
-
-                for (int i = 1; i < procItem.CompRange.Count+1; i++)
+                if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
-                    if (compCnt[idx, i - 1] > 0)
+                    lblProcess.Text = "비교 데이터 없음";
+                    return;
+                }
+
+                string str = null;
+                int[,] compCnt = _lotSummery.CompCnt;
+
+                bool isEmpty = true;
+                foreach (var cnt in compCnt)
+                    if (cnt > 0) isEmpty = false;
+
+                if (isEmpty)
+                {
+                    lblProcess.Text = "동일 비교 결점 없음";
+                    return;
+                }
+
+                double[] result = new double[procItem.CompRange.Count + 1];
+
+                StringBuilder sb = new StringBuilder();
+
+                for (int idx = 0; idx < procItem.Compare.Count; idx++)
+                {
+                    if (idx > 0) sb.Append("\n");
+                    isEmpty = true;
+                    for (int i = 0; i < compCnt.GetLength(1); i++)
+                        if (compCnt[idx, i] > 0) isEmpty = false;
+                    if (isEmpty)
                     {
-                        result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, i - 1]) * 100.0;
-                        sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                        sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] 동일 비교 결점 없음 ");
+                        continue;
                     }
-                    else
+
+                    result[0] = 100.0;
+                    if (compCnt[idx, 0] == 0) sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :0%({compCnt[idx, 0]}), ");
+                    else sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :{result[0]:F1}%({compCnt[idx, 0]}), ");
+
+                    for (int i = 1; i < procItem.CompRange.Count + 1; i++)
                     {
-                        if(compCnt[idx, i]>0)
+                        if (compCnt[idx, i - 1] > 0)
                         {
-                            result[i] = (double)compCnt[idx, i] * 100.0;
+                            result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, i - 1]) * 100.0;
                             sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
                         }
                         else
-                            sb.Append($"Case {i} : 0%({compCnt[idx, i]})");
+                        {
+                            if (compCnt[idx, i] > 0)
+                            {
+                                result[i] = (double)compCnt[idx, i] * 100.0;
+                                sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                            }
+                            else
+                                sb.Append($"Case {i} : 0%({compCnt[idx, i]})");
+                        }
+
+                        if (i < procItem.CompRange.Count) sb.Append(", ");
+
+                        if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy)
+                            isError = true;
                     }
-
-                    if (i < procItem.CompRange.Count)  sb.Append(", ");
-
-                    if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy)
-                        isError = true;
                 }
-            }
 
-            lblProcess.Text = sb.ToString();
+                lblProcess.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                SystemLog.DisplaySystemLog($"Lot Summary (Show Detail) :{ex.Message}", Log.Level.Error);
+            }
         }
 
         /// <summary>
@@ -223,6 +260,8 @@ namespace MarkrCompare
         string _targetIP = string.Empty;
         int _duration = 60 * 1000;
         string _lineName = string.Empty;
+
+        bool _isCheckStatus = false;
 
         public void SetStatusCheck(string lineName, string ip, int min)
         {
@@ -263,6 +302,10 @@ namespace MarkrCompare
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "COSS\\Status"));
             Paths.Add(Path.Combine($"\\\\{_targetIP}", "nexteye\\Status"));
 
+            if (_isCheckStatus == true) return;
+
+            _isCheckStatus = true;
+
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -291,23 +334,17 @@ namespace MarkrCompare
                         }
                     }
                 }
-
-                if (sb.Length > 0) lblProcess.Text = sb.ToString();
-                else sb.Append("status.txt 파일을 확인할 수 없습니다.");
-
-                if (lblProcess.InvokeRequired)
-                {
-                    lblProcess.BeginInvoke(new Action(() =>
-                    {
-                        lblProcess.Text = sb.ToString();
-                    }));
-                }
-                else
-                    lblProcess.Text = sb.ToString();
+            
+                if(sb.Length<=0) sb.Append("status.txt 파일을 확인할 수 없습니다.");
+                UIHelper.SetText(lblProcess, sb.ToString());
             }
             catch(Exception ex)
             {
                 SystemLog.DisplaySystemLog($"Status Check:{ex.Message}", Log.Level.Error);
+            }
+            finally
+            {
+                _isCheckStatus = false;
             }
         }
 

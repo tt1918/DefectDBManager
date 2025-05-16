@@ -1,4 +1,5 @@
 ﻿using DefectDBManager.Preproc;
+using MarkrCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -277,15 +278,7 @@ namespace MarkrCompare
                 case CompProc.None: message = $"대기"; break;
             }
 
-            if (lblProcess.InvokeRequired)
-            {
-                lblProcess.BeginInvoke(new Action(() =>
-                {
-                    lblProcess.Text = message;
-                }));
-            }
-            else
-                lblProcess.Text = message;
+            UIHelper.SetText(lblProcess, message);
         }
         #endregion
 

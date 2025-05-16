@@ -858,6 +858,8 @@ namespace Coss.Controls
                                 float y1 = (float)((prevErrorArea[i].startY - real.Y) * ScaleRealY + view.Top);
                                 float x2 = (float)((prevErrorArea[i].endX - real.X) * ScaleRealX + view.Left);
                                 float y2 = (float)((prevErrorArea[i].endY - real.Y) * ScaleRealY + view.Top);
+                                if (y2 - y1 < 15)
+                                    y2 = y1 + 15;
                                 renderTarget.FillRectangle(new RawRectangleF(x1, y1, x2, y2), brush);
                             }
 

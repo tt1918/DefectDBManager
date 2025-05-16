@@ -376,6 +376,150 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   전체과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingCheckAll {
+            get {
+                return ResourceManager.GetString("formSettingCheckAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최대X과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvCompRangeMaxX {
+            get {
+                return ResourceManager.GetString("formSettingDgvCompRangeMaxX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최대Y과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvCompRangeMaxY {
+            get {
+                return ResourceManager.GetString("formSettingDgvCompRangeMaxY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최소X과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvCompRangeMinX {
+            get {
+                return ResourceManager.GetString("formSettingDgvCompRangeMinX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   최소Y과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvCompRangeMinY {
+            get {
+                return ResourceManager.GetString("formSettingDgvCompRangeMinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비율과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvCompRangeRate {
+            get {
+                return ResourceManager.GetString("formSettingDgvCompRangeRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   이름과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvProcIdx1 {
+            get {
+                return ResourceManager.GetString("formSettingDgvProcIdx1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvTitleNo {
+            get {
+                return ResourceManager.GetString("formSettingDgvTitleNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   결점 크기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingDgvTitleSize {
+            get {
+                return ResourceManager.GetString("formSettingDgvTitleSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비교 공정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingGroupCompProc {
+            get {
+                return ResourceManager.GetString("formSettingGroupCompProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   검색 영역 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingGroupCompRange {
+            get {
+                return ResourceManager.GetString("formSettingGroupCompRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   맵 표시 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingGroupJudgeRange {
+            get {
+                return ResourceManager.GetString("formSettingGroupJudgeRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   공정 정보과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingGroupProc {
+            get {
+                return ResourceManager.GetString("formSettingGroupProc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   기준 공정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingGroupRefer {
+            get {
+                return ResourceManager.GetString("formSettingGroupRefer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   모델 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingTitle {
+            get {
+                return ResourceManager.GetString("formSettingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AI 결과 사용과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingUseMNTTAN {
+            get {
+                return ResourceManager.GetString("formSettingUseMNTTAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   검색 주기(분)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string formStatCheckSetDuration {

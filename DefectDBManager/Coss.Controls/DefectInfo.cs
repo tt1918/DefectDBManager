@@ -406,6 +406,7 @@ namespace Coss.Controls
             light1.Channel = value;
 
             //채널정보가 들어가면, 폭이 커져야 한다.
+            
             if (light1.InvokeRequired)
             {
                 light1.BeginInvoke(new Action(() =>

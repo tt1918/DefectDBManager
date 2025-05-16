@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager.Preproc
@@ -446,8 +447,7 @@ namespace DefectDBManager.Preproc
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
-                //success = SearchFLTDAT_TEST(lotID);
-                success = SearchFLTDAT();
+                success = SearchFLTDAT_TEST(lotID);
                 if (success == false) { errOut = -7; return null; }
 
                 // 처리 완료되면 데이터 정리
@@ -614,7 +614,10 @@ namespace DefectDBManager.Preproc
                         {
                             string strYOKLOT = reader[7].ToString();
                             string strY0LNSN = reader[9].ToString();
-                            int nY0PPCD = Int32.Parse(reader[2].ToString());
+
+                            // 파싱이 잘못되었을 경우, 999로 처리함.
+                            if (Int32.TryParse(reader[2].ToString(), out int nY0PPCD) == false)
+                                nY0PPCD = 999;
 
                             if (Char.IsLetter(strYOKLOT, 0) == true)
                             {
@@ -630,25 +633,28 @@ namespace DefectDBManager.Preproc
                             PTRY0PData data = new PTRY0PData();
                             data.Parse(reader);
 
-                            // 연신
-                            if (nY0PPCD == 100)
+                            switch(nY0PPCD)
                             {
-                                _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
-                                logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
-                            }
+                                case 100:   // 연신
+                                {
+                                    _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+                                    logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
+                                    break;
+                                }
+                                    
+                                case 400:   // 도공
+                                {
+                                    _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
+                                    logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
+                                      break;
+                                }
 
-                            // 도공
-                            if (nY0PPCD == 400)
-                            {
-                                _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
-                                logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
-                            }
-
-                            // 그외
-                            if (nY0PPCD != 100 && nY0PPCD != 400)
-                            {
-                                _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
-                                logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
+                                default: // 그 외
+                                {
+                                    _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                                    logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
+                                    break;
+                                }
                             }
 
                             logData = string.Format($"{logCnt}\t-\t{data.ToString()}");

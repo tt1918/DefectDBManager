@@ -1,4 +1,5 @@
 ﻿using MarkrCompare.Delegate;
+using MarkrCompare.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -473,7 +474,7 @@ namespace MarkrCompare
             }
         }
 
-        public void UpdateRollmap(DefectDBManager.PreprocLot lot)
+        public void UpdateRollmap(DefectDBManager.PreprocLot lot, string name)
         {
             DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
             foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
@@ -487,13 +488,16 @@ namespace MarkrCompare
 
             DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
             _rollMapForm.ClearMap();
+
+            string[] filterInfo = name.Split('_');
+            if (filterInfo == null) return;
             foreach (var item in lot.INSPDAT)
             {
                 foreach (var item2 in item)
                 {
                     foreach (var item3 in item2.Data)
                     {
-                        info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD);
+                        info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
                         if (info != null)   _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
                     }
                 }
@@ -593,8 +597,8 @@ namespace MarkrCompare
                 if (_dbProcess.IsRunLiveTimer) text = Lang.ProcLiveSearch;
                 else if (_dbProcess.IsRunSearchingLotList) text = Lang.ProcSearch;
                 else text = Lang.ProcStop;
-                lblRunState.BeginInvoke(new Action(() => lblRunState.Text = text));
 
+                UIHelper.SetText(lblRunState, text);
                 tabSearchSet.BeginInvoke(new Action(() =>
                 {
                     tabSearchSet.Font = newFont;

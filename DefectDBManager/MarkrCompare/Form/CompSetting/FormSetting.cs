@@ -17,6 +17,7 @@ namespace MarkrCompare
     public partial class FormSetting : Form
     {
         #region Param
+        public string CultureCode = "";
         public DefectDBManager.Preproc.PreprocSet PreprocSet
         {
             get { return _preprocSet; }
@@ -43,8 +44,6 @@ namespace MarkrCompare
                 _preprocSet.Add(item.Clone());
                 count++;
             }
-
-            UpdateLanguage();
         }
 
         #region 마우스로 폼 드래그
@@ -77,6 +76,8 @@ namespace MarkrCompare
             initDgvCompRange();
             initReferenceProcessCtrl();
             initDgvCompProc();
+
+            UpdateLanguage();
         }
 
         private void FormSetting_FormClosing(object sender, FormClosingEventArgs e)
@@ -1075,10 +1076,98 @@ namespace MarkrCompare
             }
         }
 
-        #region MyRegion
+        #region 언어 변경
         public void UpdateLanguage()
         {
+            string fontName = Functions.GetCultureFontName(CultureCode);
 
+            // Font 10, Bold 사용
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            lblTitle.Font = newFont;
+            lblName.Font = newFont;
+
+            // Font 9 사용
+            newFont = new Font(fontName, 9);
+            lvSetList.Font = newFont;
+            btnAdd.Font = newFont;
+            btnDelete.Font = newFont;
+            btnLoad.Font = newFont;
+            btnSave.Font = newFont;
+
+            groupProcess.Font = newFont;
+            btnAddProc.Font = newFont;
+            btnDelProc.Font = newFont;
+            dgvProcess.Font = newFont;
+
+            groupCompRange.Font = newFont;
+            btnAddCompRange.Font = newFont;
+            btnDelCompRange.Font = newFont;
+            dgvCompRange.Font = newFont;
+
+            gpJudgeRange.Font = newFont;
+
+            cbUseMNTTAN.Font = newFont;
+
+            gpReference.Font = newFont;
+            cbRefFltAll.Font = newFont;
+            btnAddRefFlt.Font = newFont;
+            btnDelRefFlt.Font = newFont;
+            dgvRefProc.Font = newFont;
+
+            gpCompProc.Font = newFont;
+            cbCompFltAll.Font = newFont;
+            btnAddCompFlt.Font = newFont;
+            btnDelCompFlt.Font= newFont;
+            dgvCompProc.Font= newFont;
+
+            btnApply.Font = newFont;
+            btnCancel.Font = newFont;
+            btnOK.Font = newFont;
+
+            // Font 10, Bold 사용
+            lblTitle.Text = Lang.formSettingTitle;
+
+            // Font 9
+            btnAdd.Text = Lang.btnAdd;
+            btnDelete.Text = Lang.btnDel1;
+            btnLoad.Text = Lang.btnLoad1;
+            btnSave.Text = Lang.btnSave1;
+            groupProcess.Text = Lang.formSettingGroupProc;
+            btnAddProc.Text = Lang.btnAdd;
+            btnDelProc.Text = Lang.btnDel1;
+            dgvProcess.Columns[0].Name = Lang.formSettingDgvTitleNo;
+            dgvProcess.Columns[1].Name = Lang.formSettingDgvProcIdx1;
+
+            groupCompRange.Text = Lang.formSettingGroupCompRange;
+            btnAddCompRange.Text = Lang.btnAdd;
+            btnDelCompRange.Text = Lang.btnDel1;
+            dgvCompRange.Columns[0].Name = Lang.formSettingDgvTitleNo;
+            dgvCompRange.Columns[1].Name = Lang.formSettingDgvCompRangeMinX;
+            dgvCompRange.Columns[2].Name = Lang.formSettingDgvCompRangeMaxX;
+            dgvCompRange.Columns[3].Name = Lang.formSettingDgvCompRangeMinY;
+            dgvCompRange.Columns[4].Name = Lang.formSettingDgvCompRangeMaxY;
+            dgvCompRange.Columns[5].Name = Lang.formSettingDgvCompRangeRate;
+
+            gpJudgeRange.Text = Lang.formSettingGroupJudgeRange;
+
+            cbUseMNTTAN.Text = Lang.formSettingUseMNTTAN;
+
+            gpReference.Text = Lang.formSettingGroupRefer;
+            cbRefFltAll.Text = Lang.formSettingCheckAll;
+            btnAddRefFlt.Text = Lang.btnAdd;
+            btnDelRefFlt.Text = Lang.btnDel1;
+            dgvRefProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
+
+
+            gpCompProc.Text= Lang.formSettingGroupCompProc;
+            cbCompFltAll.Text = Lang.formSettingCheckAll;
+            btnAddCompFlt.Text = Lang.btnAdd;
+            btnDelCompFlt.Text= Lang.btnDel1;
+            dgvCompProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
+
+            btnApply.Text = Lang.btnApply;
+            btnCancel.Text = Lang.btnCancel;
+            btnOK.Text = Lang.btnOK1;
         }
         #endregion
     }

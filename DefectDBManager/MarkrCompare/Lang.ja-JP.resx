@@ -255,4 +255,52 @@
   <data name="btnCancel1" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="formSettingTitle" xml:space="preserve">
+    <value>モデル設定</value>
+  </data>
+  <data name="formSettingGroupProc" xml:space="preserve">
+    <value>プロセス情報</value>
+  </data>
+  <data name="formSettingGroupCompRange" xml:space="preserve">
+    <value>比較範囲の設定</value>
+  </data>
+  <data name="formSettingGroupJudgeRange" xml:space="preserve">
+    <value>欠陥マップ範囲</value>
+  </data>
+  <data name="formSettingUseMNTTAN" xml:space="preserve">
+    <value>AI結果を使用</value>
+  </data>
+  <data name="formSettingGroupRefer" xml:space="preserve">
+    <value>参考プロセス</value>
+  </data>
+  <data name="formSettingCheckAll" xml:space="preserve">
+    <value>全部</value>
+  </data>
+  <data name="formSettingGroupCompProc" xml:space="preserve">
+    <value>比較プロセス</value>
+  </data>
+  <data name="formSettingDgvTitleNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="formSettingDgvProcIdx1" xml:space="preserve">
+    <value>名前</value>
+  </data>
+  <data name="formSettingDgvCompRangeMinX" xml:space="preserve">
+    <value>最小X</value>
+  </data>
+  <data name="formSettingDgvCompRangeMinY" xml:space="preserve">
+    <value>最小Y</value>
+  </data>
+  <data name="formSettingDgvCompRangeMaxX" xml:space="preserve">
+    <value>最大X</value>
+  </data>
+  <data name="formSettingDgvCompRangeMaxY" xml:space="preserve">
+    <value>最大Y</value>
+  </data>
+  <data name="formSettingDgvCompRangeRate" xml:space="preserve">
+    <value>レート</value>
+  </data>
+  <data name="formSettingDgvTitleSize" xml:space="preserve">
+    <value>欠陥サイズ</value>
+  </data>
 </root>

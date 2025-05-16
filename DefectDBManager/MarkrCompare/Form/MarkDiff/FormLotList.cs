@@ -239,7 +239,7 @@ namespace MarkrCompare
             {
                 if (item.Contains(data))
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery);
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
                     break;
                 }
             }
@@ -267,7 +267,7 @@ namespace MarkrCompare
             {
                 if (form.StateCheckbox)
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(form.LotSummery);
+                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(form.LotSummery, form.Filter);
                 }
             }
 
