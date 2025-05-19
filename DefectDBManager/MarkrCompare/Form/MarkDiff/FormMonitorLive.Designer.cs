@@ -1,6 +1,6 @@
 ﻿namespace MarkrCompare
 {
-    partial class FormMornitorLive
+    partial class FormMonitorLive
     {
         /// <summary>
         /// Required designer variable.
@@ -163,7 +163,7 @@
             this.lblProcess.Name = "lblProcess";
             this.lblProcess.Size = new System.Drawing.Size(225, 26);
             this.lblProcess.TabIndex = 1;
-            this.lblProcess.Text = "Mornitoring......";
+            this.lblProcess.Text = "Monitoring......";
             this.lblProcess.Thickness = 1;
             // 
             // tableLayoutPanel5

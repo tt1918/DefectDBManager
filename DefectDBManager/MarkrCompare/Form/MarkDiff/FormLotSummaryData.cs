@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace MarkrCompare
 {
-    public enum eSummaryMode { Mornitoring, LiveErrorCheck }
+    public enum eSummaryMode { Monitoring, LiveErrorCheck }
     public partial class FormLotSummaryData : Form
     {
         public DefectDBManager.PreprocLot LotSummery
@@ -30,7 +30,7 @@ namespace MarkrCompare
         /// 상위 검사 랏 서머리 정보 
         /// </summary>
         private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
-        private eSummaryMode _mode = eSummaryMode.Mornitoring;
+        private eSummaryMode _mode = eSummaryMode.Monitoring;
 
         public DefectDBManager.Preproc.PreprocItem ProcItem
         {
@@ -111,31 +111,31 @@ namespace MarkrCompare
             {
                 if(_lotSummery==null)
                 {
-                    lblStatus.Text = "Error";
-                    SystemLog.DisplaySystemLog($"Lot Summary : Lot Summary information is empty", Log.Level.Error);
+                    UIHelper.SetText(lblStatus, Lang.error);
+                    SystemLog.DisplaySystemLog(Lang.LotSummaryIsEmpty, Log.Level.Error);
                     return;
                 }
 
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
-                    lblStatus.Text = "Error";
+                    UIHelper.SetText(lblStatus, Lang.error);
                     return;
                 }
 
                 if (isError)
                 {
                     lblStatus.BkColor = Color.Red;
-                    lblStatus.Text = "오차 발생";
+                    lblStatus.Text = Lang.ErrorOccurrence;
                 }
                 else
                 {
                     lblStatus.BkColor = Color.MidnightBlue;
-                    lblStatus.Text = "정상";
+                    lblStatus.Text = Lang.Normal;
                 }
             }
             catch (Exception ex)
             {
-                SystemLog.DisplaySystemLog($"Lot Summary (Comp result) :{ex.Message}", Log.Level.Error);
+                SystemLog.DisplaySystemLog($"{Lang.lotSummaryCompResult}:{ex.Message}", Log.Level.Error);
             }
         }
 
@@ -153,7 +153,7 @@ namespace MarkrCompare
             }
             catch(Exception ex)
             {
-                SystemLog.DisplaySystemLog($"Lot Summary (Lot Name) :{ex.Message}", Log.Level.Error);
+                SystemLog.DisplaySystemLog($"{Lang.lotSummaryLotName} :{ex.Message}", Log.Level.Error);
             }
             
         }
@@ -164,14 +164,14 @@ namespace MarkrCompare
             {
                 if (_lotSummery == null)
                 {
-                    lblProcess.Text = "Lot 요약 정보가 존재하지 않습니다.";
-                    SystemLog.DisplaySystemLog($"Show Detail: Lot 요약 정보가 존재하지 않습니다.", Log.Level.Error);
+                    UIHelper.SetText(lblProcess, Lang.NoLotSummaryData);
+                    SystemLog.DisplaySystemLog($"Show Detail: {Lang.NoLotSummaryData}", Log.Level.Error);
                     return;
                 }
 
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
-                    lblProcess.Text = "비교 데이터 없음";
+                    UIHelper.SetText(lblProcess, Lang.NoComparingData);
                     return;
                 }
 
@@ -184,7 +184,7 @@ namespace MarkrCompare
 
                 if (isEmpty)
                 {
-                    lblProcess.Text = "동일 비교 결점 없음";
+                    UIHelper.SetText(lblProcess, Lang.NoComparingData);
                     return;
                 }
 
@@ -200,7 +200,7 @@ namespace MarkrCompare
                         if (compCnt[idx, i] > 0) isEmpty = false;
                     if (isEmpty)
                     {
-                        sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] 동일 비교 결점 없음 ");
+                        sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] {Lang.NoComparingData}");
                         continue;
                     }
 
@@ -233,11 +233,11 @@ namespace MarkrCompare
                     }
                 }
 
-                lblProcess.Text = sb.ToString();
+                UIHelper.SetText(lblProcess, sb.ToString());
             }
             catch (Exception ex)
             {
-                SystemLog.DisplaySystemLog($"Lot Summary (Show Detail) :{ex.Message}", Log.Level.Error);
+                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{ex.Message}", Log.Level.Error);
             }
         }
 
@@ -335,12 +335,12 @@ namespace MarkrCompare
                     }
                 }
             
-                if(sb.Length<=0) sb.Append("status.txt 파일을 확인할 수 없습니다.");
+                if(sb.Length<=0) sb.Append(Lang.CanNotFindStatusTxtFile);
                 UIHelper.SetText(lblProcess, sb.ToString());
             }
             catch(Exception ex)
             {
-                SystemLog.DisplaySystemLog($"Status Check:{ex.Message}", Log.Level.Error);
+                SystemLog.DisplaySystemLog($"{Lang.StatusCheck}:{ex.Message}", Log.Level.Error);
             }
             finally
             {

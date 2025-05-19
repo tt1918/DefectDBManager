@@ -315,4 +315,118 @@
   <data name="plzChooseProcess" xml:space="preserve">
     <value>请选择流程</value>
   </data>
+  <data name="formAddDelProcessAdd" xml:space="preserve">
+    <value>添加流程</value>
+  </data>
+  <data name="formAddEmptyProcessName" xml:space="preserve">
+    <value>进程名称为空。</value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="deleteData1" xml:space="preserve">
+    <value>您想删除数据吗？</value>
+  </data>
+  <data name="deleteData2" xml:space="preserve">
+    <value>删除数据</value>
+  </data>
+  <data name="loadData1" xml:space="preserve">
+    <value>您想导入数据吗？</value>
+  </data>
+  <data name="loadData2" xml:space="preserve">
+    <value>加载数据</value>
+  </data>
+  <data name="saveCurrentData1" xml:space="preserve">
+    <value>要保存当前数据吗？</value>
+  </data>
+  <data name="saveCurrentData2" xml:space="preserve">
+    <value>保存数据</value>
+  </data>
+  <data name="doneSavingData" xml:space="preserve">
+    <value>已完成数据保存。</value>
+  </data>
+  <data name="lineIdIsEmpty" xml:space="preserve">
+    <value>LINE ID 为空</value>
+  </data>
+  <data name="lncdIsEmpty" xml:space="preserve">
+    <value>LNCD 为空</value>
+  </data>
+  <data name="sameLineIdExsits" xml:space="preserve">
+    <value>存在同名的LINE ID</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>等待</value>
+  </data>
+  <data name="searchingDataCancel" xml:space="preserve">
+    <value>搜索数据已取消。</value>
+  </data>
+  <data name="processingData" xml:space="preserve">
+    <value>处理数据</value>
+  </data>
+  <data name="dataProcessingComplete" xml:space="preserve">
+    <value>数据处理完成</value>
+  </data>
+  <data name="noFilterData" xml:space="preserve">
+    <value>无数据过滤器</value>
+  </data>
+  <data name="theSearingIsInProgress" xml:space="preserve">
+    <value>勘探正在进行中。</value>
+  </data>
+  <data name="realtimeExplorationInProgress" xml:space="preserve">
+    <value>实时探索正在进行中。</value>
+  </data>
+  <data name="startRealtimeExploration" xml:space="preserve">
+    <value>开始实时探索</value>
+  </data>
+  <data name="ConditionalLotSearchIsRunning" xml:space="preserve">
+    <value>正在进行条件 Lot 搜索。</value>
+  </data>
+  <data name="InformationDoesNotExist" xml:space="preserve">
+    <value>信息不存在</value>
+  </data>
+  <data name="product" xml:space="preserve">
+    <value>品种</value>
+  </data>
+  <data name="RealtimeExplorationIsAlreadyStopped" xml:space="preserve">
+    <value>实时探索已经停止。</value>
+  </data>
+  <data name="StopRealtimeExploration" xml:space="preserve">
+    <value>停止实时探索。</value>
+  </data>
+  <data name="SelectiveMonitoring" xml:space="preserve">
+    <value>选择性监测</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>误差</value>
+  </data>
+  <data name="ErrorOccurrence" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>正常</value>
+  </data>
+  <data name="LotSummaryIsEmpty" xml:space="preserve">
+    <value>批次摘要：批次摘要信息为空</value>
+  </data>
+  <data name="lotSummaryCompResult" xml:space="preserve">
+    <value>批量汇总（比较结果）</value>
+  </data>
+  <data name="lotSummaryLotName" xml:space="preserve">
+    <value>地块摘要（地块名称）</value>
+  </data>
+  <data name="NoLotSummaryData" xml:space="preserve">
+    <value>无批量汇总数据</value>
+  </data>
+  <data name="NoComparingData" xml:space="preserve">
+    <value>无数据比较</value>
+  </data>
+  <data name="LotSummaryShowDetail" xml:space="preserve">
+    <value>地块摘要（显示详情）</value>
+  </data>
+  <data name="StatusCheck" xml:space="preserve">
+    <value>状态检查</value>
+  </data>
+  <data name="CanNotFindStatusTxtFile" xml:space="preserve">
+    <value>找不到 status.txt 文件。</value>
+  </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿namespace MarkrCompare
 {
-    partial class FormMornitorSearch
+    partial class FormMonitorSearch
     {
         /// <summary>
         /// Required designer variable.
@@ -155,7 +155,7 @@
             this.lblProcess.Name = "lblProcess";
             this.lblProcess.Size = new System.Drawing.Size(362, 26);
             this.lblProcess.TabIndex = 1;
-            this.lblProcess.Text = "Mornitoring......";
+            this.lblProcess.Text = "Monitoring......";
             this.lblProcess.Thickness = 1;
             // 
             // tableLayoutPanel5
@@ -273,7 +273,7 @@
             this.timePickerEnd.Size = new System.Drawing.Size(146, 23);
             this.timePickerEnd.TabIndex = 2;
             // 
-            // FormMornitorSearch
+            // FormMonitorSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -283,7 +283,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "FormMornitorSearch";
+            this.Name = "FormMonitorSearch";
             this.Text = "FormMornitorLive";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMornitorSearch_FormClosing);

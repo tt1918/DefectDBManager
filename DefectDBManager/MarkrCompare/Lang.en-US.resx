@@ -178,7 +178,7 @@
     <value>Real-time monitoring</value>
   </data>
   <data name="ProcSearch" xml:space="preserve">
-    <value>Monitor Selected Period</value>
+    <value>Monitoring Selected Period</value>
   </data>
   <data name="ProcStop" xml:space="preserve">
     <value>STOP</value>
@@ -314,5 +314,119 @@
   </data>
   <data name="plzChooseProcess" xml:space="preserve">
     <value>Please choose process</value>
+  </data>
+  <data name="formAddDelProcessAdd" xml:space="preserve">
+    <value>Add Process</value>
+  </data>
+  <data name="formAddEmptyProcessName" xml:space="preserve">
+    <value>Process name is empty. </value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="deleteData1" xml:space="preserve">
+    <value>Do you want to delete the data?</value>
+  </data>
+  <data name="deleteData2" xml:space="preserve">
+    <value>Deleting Data</value>
+  </data>
+  <data name="loadData1" xml:space="preserve">
+    <value>Do you want to load data?</value>
+  </data>
+  <data name="loadData2" xml:space="preserve">
+    <value>Loading Data</value>
+  </data>
+  <data name="saveCurrentData1" xml:space="preserve">
+    <value>Do you want to save current data?</value>
+  </data>
+  <data name="saveCurrentData2" xml:space="preserve">
+    <value>Saving Data</value>
+  </data>
+  <data name="doneSavingData" xml:space="preserve">
+    <value>Saving data has been done.</value>
+  </data>
+  <data name="lineIdIsEmpty" xml:space="preserve">
+    <value>Line ID is empty</value>
+  </data>
+  <data name="lncdIsEmpty" xml:space="preserve">
+    <value>LNCD is empty</value>
+  </data>
+  <data name="sameLineIdExsits" xml:space="preserve">
+    <value>A Line ID with the same name exists</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="searchingDataCancel" xml:space="preserve">
+    <value>Searching data has been canceled.</value>
+  </data>
+  <data name="processingData" xml:space="preserve">
+    <value>Processing data ...</value>
+  </data>
+  <data name="dataProcessingComplete" xml:space="preserve">
+    <value>Data processing complete</value>
+  </data>
+  <data name="noFilterData" xml:space="preserve">
+    <value>No filter data</value>
+  </data>
+  <data name="theSearingIsInProgress" xml:space="preserve">
+    <value>Exploration in progress.</value>
+  </data>
+  <data name="realtimeExplorationInProgress" xml:space="preserve">
+    <value>Realtime Exploration in progress.</value>
+  </data>
+  <data name="startRealtimeExploration" xml:space="preserve">
+    <value>Start realtime exploration</value>
+  </data>
+  <data name="ConditionalLotSearchIsRunning" xml:space="preserve">
+    <value>A conditional Lot search is running.</value>
+  </data>
+  <data name="InformationDoesNotExist" xml:space="preserve">
+    <value>Information doesn't exist</value>
+  </data>
+  <data name="product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="RealtimeExplorationIsAlreadyStopped" xml:space="preserve">
+    <value>Real-time exploration is already stopped</value>
+  </data>
+  <data name="StopRealtimeExploration" xml:space="preserve">
+    <value>Stop the real-time exploration.</value>
+  </data>
+  <data name="SelectiveMonitoring" xml:space="preserve">
+    <value>Selective Monitoring</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorOccurrence" xml:space="preserve">
+    <value>Error Occurrence</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="LotSummaryIsEmpty" xml:space="preserve">
+    <value>Lot Summary : Lot Summary information is empty</value>
+  </data>
+  <data name="lotSummaryCompResult" xml:space="preserve">
+    <value>Lot Summary (Comp result)</value>
+  </data>
+  <data name="lotSummaryLotName" xml:space="preserve">
+    <value>Lot Summary (Lot Name)</value>
+  </data>
+  <data name="NoLotSummaryData" xml:space="preserve">
+    <value>No Lot summary data</value>
+  </data>
+  <data name="NoComparingData" xml:space="preserve">
+    <value>No comparing data</value>
+  </data>
+  <data name="LotSummaryShowDetail" xml:space="preserve">
+    <value>Lot Summary (Show Detail)</value>
+  </data>
+  <data name="StatusCheck" xml:space="preserve">
+    <value>Status Check</value>
+  </data>
+  <data name="CanNotFindStatusTxtFile" xml:space="preserve">
+    <value>Can not find status.txt file.</value>
   </data>
 </root>

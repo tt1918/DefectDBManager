@@ -199,27 +199,27 @@ namespace MarkrCompare
         #endregion
 
         #region Tab Serach Setting
-        public FormMornitorLive FormMorLive
+        public FormMonitorLive FormMorLive
         {
             get { return _formMorLive; }
             private set { _formMorLive = value; }
         }
-        private FormMornitorLive _formMorLive;
+        private FormMonitorLive _formMorLive;
 
-        public FormMornitorSearch FormMorSearch
+        public FormMonitorSearch FormMorSearch
         {
             get { return _formMorSearch; }
             private set { _formMorSearch = value; }
         }
-        private FormMornitorSearch _formMorSearch;
+        private FormMonitorSearch _formMorSearch;
 
         private void initTabSearchSetting()
         {
-            _formMorLive = new FormMornitorLive(_lotManager);
+            _formMorLive = new FormMonitorLive(_lotManager);
             _formMorLive.Process = _dbProcess;
             _formMorLive.TopLevel = false;
 
-            _formMorSearch = new FormMornitorSearch(_lotManager);
+            _formMorSearch = new FormMonitorSearch(_lotManager);
             _formMorSearch.Process = _dbProcess;
             _formMorSearch.TopLevel = false;
 
@@ -228,7 +228,7 @@ namespace MarkrCompare
             tabSearchSet.TabPages[0].Controls.Add(_formMorLive.Controls[0]);
             _formMorLive.Dock = DockStyle.Fill;
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            _formMorLive.OnUpdatePrepLncdInfo += updateLiveMornitoringCtrl;
+            _formMorLive.OnUpdatePrepLncdInfo += updateLiveMonitoringCtrl;
             OnUpdateLiveLNCDInfo += _formMorLive.DisplayLNCDCtrlData;
 
             // Search Tab
@@ -246,7 +246,7 @@ namespace MarkrCompare
 
         private void closeTabSearchSetting()
         {
-            _formMorLive.OnUpdatePrepLncdInfo -= updateLiveMornitoringCtrl;
+            _formMorLive.OnUpdatePrepLncdInfo -= updateLiveMonitoringCtrl;
             _formMorSearch.OnUpdatePrepLncdInfo -= showLotListForm;
             OnUpdateLiveLNCDInfo -= _formMorLive.DisplayLNCDCtrlData;
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
@@ -306,7 +306,7 @@ namespace MarkrCompare
                     _lotListForms[i].Show();
                 }
                 showLotListForm(DefectDBManager.Preproc.eProc.Live);
-                updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc.Live);
+                updateLiveMonitoringCtrl(DefectDBManager.Preproc.eProc.Live);
             }
             catch
             {
@@ -325,7 +325,7 @@ namespace MarkrCompare
             }
         }
 
-        private void updateLiveMornitoringCtrl(DefectDBManager.Preproc.eProc proc)
+        private void updateLiveMonitoringCtrl(DefectDBManager.Preproc.eProc proc)
         {
             int idx = (int)proc;
             _lotListForms[idx].OnClearSummaryData();

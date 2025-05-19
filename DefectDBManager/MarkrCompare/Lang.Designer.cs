@@ -223,6 +223,51 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   status.txt 파일을 확인할 수 없습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CanNotFindStatusTxtFile {
+            get {
+                return ResourceManager.GetString("CanNotFindStatusTxtFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   조건 Lot 검색이 실행 중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ConditionalLotSearchIsRunning {
+            get {
+                return ResourceManager.GetString("ConditionalLotSearchIsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 처리 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string dataProcessingComplete {
+            get {
+                return ResourceManager.GetString("dataProcessingComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터를 삭제하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string deleteData1 {
+            get {
+                return ResourceManager.GetString("deleteData1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 삭제하기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string deleteData2 {
+            get {
+                return ResourceManager.GetString("deleteData2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   모델과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string dgvMeterialModel {
@@ -237,6 +282,33 @@ namespace MarkrCompare {
         internal static string dgvMeterialNo {
             get {
                 return ResourceManager.GetString("dgvMeterialNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 저장 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string doneSavingData {
+            get {
+                return ResourceManager.GetString("doneSavingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   오류과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string error {
+            get {
+                return ResourceManager.GetString("error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   오차 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ErrorOccurrence {
+            get {
+                return ResourceManager.GetString("ErrorOccurrence", resourceCulture);
             }
         }
         
@@ -315,9 +387,27 @@ namespace MarkrCompare {
         /// <summary>
         ///   작업 추가과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
+        internal static string formAddDelProcessAdd {
+            get {
+                return ResourceManager.GetString("formAddDelProcessAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   작업 추가과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
         internal static string formAddDelTitle {
             get {
                 return ResourceManager.GetString("formAddDelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   이름이 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formAddEmptyProcessName {
+            get {
+                return ResourceManager.GetString("formAddEmptyProcessName", resourceCulture);
             }
         }
         
@@ -574,6 +664,24 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string InformationDoesNotExist {
+            get {
+                return ResourceManager.GetString("InformationDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   LINE ID가 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string lineIdIsEmpty {
+            get {
+                return ResourceManager.GetString("lineIdIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   실시간 감시과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string LiveSearch {
@@ -583,11 +691,110 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   LNCD가 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string lncdIsEmpty {
+            get {
+                return ResourceManager.GetString("lncdIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터를 불러오겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string loadData1 {
+            get {
+                return ResourceManager.GetString("loadData1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 불러오기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string loadData2 {
+            get {
+                return ResourceManager.GetString("loadData2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 요약(비교 결과)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string lotSummaryCompResult {
+            get {
+                return ResourceManager.GetString("lotSummaryCompResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 요약 : Lot 요약 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string LotSummaryIsEmpty {
+            get {
+                return ResourceManager.GetString("LotSummaryIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 요약(Lot 이름)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string lotSummaryLotName {
+            get {
+                return ResourceManager.GetString("lotSummaryLotName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 요약(세부 표시)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string LotSummaryShowDetail {
+            get {
+                return ResourceManager.GetString("LotSummaryShowDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   마킹 오차 비교과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string mainFormTitle {
             get {
                 return ResourceManager.GetString("mainFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   비교 데이터 없음과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NoComparingData {
+            get {
+                return ResourceManager.GetString("NoComparingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   탐색할 필터 데이터가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string noFilterData {
+            get {
+                return ResourceManager.GetString("noFilterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 요약 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NoLotSummaryData {
+            get {
+                return ResourceManager.GetString("NoLotSummaryData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정상과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Normal {
+            get {
+                return ResourceManager.GetString("Normal", resourceCulture);
             }
         }
         
@@ -606,6 +813,15 @@ namespace MarkrCompare {
         internal static string plzChooseProcess {
             get {
                 return ResourceManager.GetString("plzChooseProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 처리 중....과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string processingData {
+            get {
+                return ResourceManager.GetString("processingData", resourceCulture);
             }
         }
         
@@ -637,6 +853,105 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   품종과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string product {
+            get {
+                return ResourceManager.GetString("product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 검색이 실행 중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string realtimeExplorationInProgress {
+            get {
+                return ResourceManager.GetString("realtimeExplorationInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 검식이 이미 정지되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string RealtimeExplorationIsAlreadyStopped {
+            get {
+                return ResourceManager.GetString("RealtimeExplorationIsAlreadyStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   동일한 이름의 Line ID가 존재합니다과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string sameLineIdExsits {
+            get {
+                return ResourceManager.GetString("sameLineIdExsits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   현재 내용을 저장하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string saveCurrentData1 {
+            get {
+                return ResourceManager.GetString("saveCurrentData1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 저장하기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string saveCurrentData2 {
+            get {
+                return ResourceManager.GetString("saveCurrentData2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 검색이 취소되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchingDataCancel {
+            get {
+                return ResourceManager.GetString("searchingDataCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   선택 탐색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SelectiveMonitoring {
+            get {
+                return ResourceManager.GetString("SelectiveMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 검색 시작과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startRealtimeExploration {
+            get {
+                return ResourceManager.GetString("startRealtimeExploration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   상태 확인과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string StatusCheck {
+            get {
+                return ResourceManager.GetString("StatusCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 감시 중지과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string StopRealtimeExploration {
+            get {
+                return ResourceManager.GetString("StopRealtimeExploration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   실시간 감시과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string tabLive {
@@ -651,6 +966,33 @@ namespace MarkrCompare {
         internal static string tabSearch {
             get {
                 return ResourceManager.GetString("tabSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   탐색 진행 중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string theSearingIsInProgress {
+            get {
+                return ResourceManager.GetString("theSearingIsInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   대기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string waiting {
+            get {
+                return ResourceManager.GetString("waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   경고과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string warning {
+            get {
+                return ResourceManager.GetString("warning", resourceCulture);
             }
         }
     }

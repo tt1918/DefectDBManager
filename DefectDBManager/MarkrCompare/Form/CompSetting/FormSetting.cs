@@ -192,12 +192,12 @@ namespace MarkrCompare
         #region Setting Item 관련 Control
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            FormAddDel form = new FormAddDel("작업 추가", "이름", "추가", "취소");
+            FormAddDel form = new FormAddDel(Lang.formAddDelProcessAdd, Lang.formAddDelName, Lang.formAddDelOK, Lang.formAddDelCancel);
             if (form.ShowDialog() != DialogResult.OK) return;
 
             if (form.DataName == "")
             {
-                MessageBox.Show($"이름이 비어있습니다.", "경고");
+                MessageBox.Show(Lang.formAddEmptyProcessName, Lang.warning);
                 return;
             }
             DefectDBManager.Preproc.PreprocItem item = new DefectDBManager.Preproc.PreprocItem(form.DataName);
@@ -210,7 +210,7 @@ namespace MarkrCompare
         {
             int index = lvSetList.SelectedItems[0].Index;
             string name = lvSetList.SelectedItems[0].SubItems[1].Text;
-            if (MessageBox.Show($"{name} 데이터를 삭제하시겠습니까?", "데이터 삭제하기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show($"{name} {Lang.deleteData1}", Lang.deleteData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _preprocSet.Remove(_selSetName);
@@ -220,7 +220,7 @@ namespace MarkrCompare
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"데이터를 불러오겠습니까?", "데이터 불러오기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(Lang.loadData1, Lang.loadData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _preprocSet.Load();
@@ -230,11 +230,11 @@ namespace MarkrCompare
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"현재 내용을 저장하시겠습니까?", "모델 저장하기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(Lang.saveCurrentData1, Lang.saveCurrentData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _preprocSet.Save();
-            SystemLog.DisplayFileServerLog("PARAM 저장 완료");
+            SystemLog.DisplayFileServerLog(Lang.doneSavingData);
         }
         #endregion
 
@@ -463,11 +463,11 @@ namespace MarkrCompare
             }
 
             string lineID, lncd;
-            FormAddDel form = new FormAddDel("프로세스 추가", "LINE ID", "추가", "취소");
+            FormAddDel form = new FormAddDel(Lang.formAddDelProcessAdd, "LINE ID", Lang.formAddDelOK, Lang.btnCancel);
             if (form.ShowDialog() != DialogResult.OK) return;
             if (form.DataName == "")
             {
-                MessageBox.Show($"Line ID가 비어있습니다.", "경고");
+                MessageBox.Show(Lang.lineIdIsEmpty, Lang.warning);
                 return;
             }
 
@@ -478,7 +478,7 @@ namespace MarkrCompare
             if (form.ShowDialog() != DialogResult.OK) return;
             if (form.DataName == "")
             {
-                MessageBox.Show($"LNCD가 비어있습니다.", "경고");
+                MessageBox.Show(Lang.lncdIsEmpty, Lang.warning);
                 return;
             }
 
@@ -493,7 +493,7 @@ namespace MarkrCompare
 
             if (isExist == true)
             {
-                MessageBox.Show($"동일한 이름의 Line ID가 존재합니다.", "경고");
+                MessageBox.Show(Lang.sameLineIdExsits, Lang.warning);
                 return;
             }
 

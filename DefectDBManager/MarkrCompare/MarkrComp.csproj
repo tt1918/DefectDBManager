@@ -154,17 +154,17 @@
     <Compile Include="Form\MarkDiff\FormLotSummery.Designer.cs">
       <DependentUpon>FormLotSummery.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\MarkDiff\FormMornitorSearch.cs">
+    <Compile Include="Form\MarkDiff\FormMonitorSearch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\MarkDiff\FormMornitorSearch.Designer.cs">
-      <DependentUpon>FormMornitorSearch.cs</DependentUpon>
+    <Compile Include="Form\MarkDiff\FormMonitorSearch.Designer.cs">
+      <DependentUpon>FormMonitorSearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\MarkDiff\FormMornitorLive.cs">
+    <Compile Include="Form\MarkDiff\FormMonitorLive.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\MarkDiff\FormMornitorLive.Designer.cs">
-      <DependentUpon>FormMornitorLive.cs</DependentUpon>
+    <Compile Include="Form\MarkDiff\FormMonitorLive.Designer.cs">
+      <DependentUpon>FormMonitorLive.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\RollMap\FormRollMap.cs">
       <SubType>Form</SubType>
@@ -253,11 +253,11 @@
     <EmbeddedResource Include="Form\MarkDiff\FormLotSummery.resx">
       <DependentUpon>FormLotSummery.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\MarkDiff\FormMornitorSearch.resx">
-      <DependentUpon>FormMornitorSearch.cs</DependentUpon>
+    <EmbeddedResource Include="Form\MarkDiff\FormMonitorSearch.resx">
+      <DependentUpon>FormMonitorSearch.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\MarkDiff\FormMornitorLive.resx">
-      <DependentUpon>FormMornitorLive.cs</DependentUpon>
+    <EmbeddedResource Include="Form\MarkDiff\FormMonitorLive.resx">
+      <DependentUpon>FormMonitorLive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\RollMap\FormRollMap.resx">
       <DependentUpon>FormRollMap.cs</DependentUpon>

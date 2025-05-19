@@ -1,4 +1,5 @@
-﻿using DefectDBManager.Preproc;
+﻿
+using CustomControls;
 using MarkrCompare.Helper;
 using System;
 using System.Collections.Generic;
@@ -9,71 +10,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
+using static System.Net.Mime.MediaTypeNames;
+
+
 
 namespace MarkrCompare
 {
-    public partial class FormMornitorLive : Form
+    public partial class FormMonitorSearch : Form
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
-        DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Live;
+        DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Search;
 
         public DefectDBManager.CompPreprocDefect Process = null;
 
-        public bool IsRun 
+        public bool IsRun
         {
             get { return _timerLotSearchProcess.Enabled; }
         }
-
-        private bool _isError = false;
-
         #endregion
 
         #region Event
         public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
-        public event MarkrCompare.Delegate.UpdateEvent OnStartLiveSearch;
-        public event MarkrCompare.Delegate.UpdateEvent OnStopLiveSearch;
+        public event MarkrCompare.Delegate.UpdateEvent OnStartLotSearch;
+        public event MarkrCompare.Delegate.UpdateEvent OnStopLotSearch;
+        public event Delegate.UpdateEvent OnOpenCsvForm;
         #endregion
 
         #region Create/Destroy
-        public FormMornitorLive()
+        public FormMonitorSearch()
         {
             InitializeComponent();
         }
 
-        public FormMornitorLive(DefectDBManager.PreprocLotManager lotManager)
+        public FormMonitorSearch(DefectDBManager.PreprocLotManager lotManager)
         {
             InitializeComponent();
             _lotManager = lotManager;
         }
-
-        private void FormMornitorLive_Load(object sender, EventArgs e)
+        private void FormMornitorSearch_Load(object sender, EventArgs e)
         {
             initLNCDCtrl();
             initLotSearchTimer();
         }
 
-        private void FormMornitorLive_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormMornitorSearch_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }
 
-        private void FormMornitorLive_VisibleChanged(object sender, EventArgs e)
+        private void FormMornitorSearch_VisibleChanged(object sender, EventArgs e)
         {
             if(this.Visible==true)
             {
                 setLNCDCtrlData();
             }
         }
+
+        #endregion
+
+        #region Setting Combo Box 처리
+        
         #endregion
 
         #region 체크 버튼 인식
-        
+        List<CheckBox> _lncdCheckBox = null;
+
+        bool _isModelError = false;
+
         private void initLNCDCtrl()
         {
             if (_lotManager == null) return;
-
         }
 
         /// <summary>
@@ -81,62 +88,62 @@ namespace MarkrCompare
         /// </summary>
         private void setLNCDCtrlData()
         {
-
             int ctrlCount = _lotManager.CrtProcFilter[(int)_procIdx].Count;
             bool isError = false;
-            List<string> strError=new List<string>();
+            List<string> strError = new List<string>();
+
             try
             {
                 lvFilterList.BeginUpdate();
                 lvFilterList.Items.Clear();
                 foreach (var item in _lotManager.CrtProcFilter[(int)_procIdx].Data)
                 {
-                    bool isExistProd=false;
+                    bool isExistProd = false;
                     bool isExistModel = false;
                     foreach (var procInfo in _lotManager.ProcLNCD.Info)
                     {
-                        if(procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
+                        if (procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
                         {
                             isExistProd = true;
                             break;
-                        }    
+                        }
                     }
 
-                    foreach(var prodModel in _lotManager.ProcSetting.Data)
+                    foreach (var prodModel in _lotManager.ProcSetting.Data)
                     {
-                        if(prodModel.Name == item.Model)
+                        if (prodModel.Name == item.Model)
                         {
                             isExistModel = true;
                             break;
                         }
                     }
 
-                    if(isExistProd==false)
+                    if (isExistProd == false)
                     {
-                        strError.Add($"라인 : {item.Line}, 품종 : {item.Product} 정보가 존재하지 않습니다.");
+                        strError.Add($"Line : {item.Line}, {Lang.product} : {item.Product} {Lang.InformationDoesNotExist}");
                         isError = true;
                     }
-                    if(isExistModel==false)
+                    if (isExistModel == false)
                     {
-                        strError.Add($"모델 : {item.Model} 정보가 존재하지 않습니다.");
+                        strError.Add($"{Lang.dgvMeterialModel} : {item.Model} {Lang.InformationDoesNotExist}");
                         isError = true;
                     }
 
-                    if(isError==true)
+                    if (isError == true)
                         continue;
 
-                    string format = $"{item.Line} - Product:[{item.Product}], Model:[{item.Model}]";
+                    string format = $"{item.Line} - {Lang.product}:[{item.Product}], {Lang.filterDgvModel}:[{item.Model}]";
                     ListViewItem lvi = new ListViewItem(format);
                     lvFilterList.Items.Add(lvi);
                 }
 
-                _isError = isError;
+                _isModelError = isError;
 
-                if (isError ==true)
+                if (isError == true)
                 {
                     if (strError.Count > 0)
                     {
-                        strError.Insert(0, "실시간 감시");
+                        strError.Insert(0, Lang.SelectiveMonitoring);
                         var errorMessage = string.Join("\n", strError.Select((error, index) => $"{index + 1}. {error}"));
                         MessageBox.Show(errorMessage, "Error List", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -156,6 +163,7 @@ namespace MarkrCompare
         {
             setLNCDCtrlData();
         }
+
         #endregion
 
         #region Control
@@ -163,36 +171,38 @@ namespace MarkrCompare
         {
             try
             {
-                if(_isError==true)
+                if(_isModelError==true)
                 {
-                    SystemLog.DisplayFileServerLog("검사 모델 데이터가 존재하지 않습니다.");
+                    SystemLog.DisplayFileServerLog(Lang.noFilterData);
                     return;
                 }
 
-                if (IsRun == true)
+                if (IsRun == true || _lotManager == null)
                 {
-                    SystemLog.DisplayFileServerLog("이미 실행중입니다.");
+                    SystemLog.DisplayFileServerLog(Lang.theSearingIsInProgress);
                     return;
                 }
 
-                if(Process.IsRunSearchingLotList)
+                if (Process.IsRunLiveTimer)
                 {
-                    SystemLog.DisplayFileServerLog("조건 LOT 검색이 실행중입니다.");
+                    SystemLog.DisplayFileServerLog(Lang.realtimeExplorationInProgress);
                     Invoke(new Action(() =>
                     {
-                        MessageBox.Show(this, "조건 LOT 검색이 실행중입니다.");
+                        MessageBox.Show(this, Lang.realtimeExplorationInProgress);
                     }));
                     return;
                 }
 
-                OnUpdatePrepLncdInfo?.Invoke(_procIdx);
-                _timerLotSearchProcess.Start();
-                OnStartLiveSearch?.Invoke();
-                SystemLog.DisplayFileServerLog("실시간 검사 시작");
-            }
-            catch
-            {
+                _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
 
+                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Search);
+
+                OnStartLotSearch?.Invoke();
+                _timerLotSearchProcess.Start();
+            }
+            catch (Exception ex)
+            {
+                SystemLog.DisplaySystemLog(ex.Message, Log.Level.Error);
             }
         }
 
@@ -200,22 +210,16 @@ namespace MarkrCompare
         {
             try
             {
-                if (IsRun == false)
-                {
-                    SystemLog.DisplayFileServerLog("실시간 검사가 이미 중지되었습니다.");
-                    return;
-                }
-                SystemLog.DisplayFileServerLog("실시간 검사 중지");
+                if (IsRun == false) return;
+                
                 _timerLotSearchProcess.Stop();
-
-                // 검사 정지
-                OnStopLiveSearch?.Invoke();
+                OnStopLotSearch?.Invoke();
 
                 updateLotSearchRes(CompProc.Stop);
             }
-            catch
+            catch (Exception ex)
             {
-
+                SystemLog.DisplaySystemLog(ex.Message, Log.Level.Error);
             }
         }
 
@@ -225,11 +229,9 @@ namespace MarkrCompare
             {
                 using (FormProductFilter form = new FormProductFilter(_lotManager, _procIdx))
                 {
-                    form.CultureCode = _cultureCode;
-                    if (form.ShowDialog()==DialogResult.OK)
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
                         setLNCDCtrlData();
-                        OnUpdatePrepLncdInfo?.Invoke(eProc.Live);
                     }
                 }
             }
@@ -243,7 +245,8 @@ namespace MarkrCompare
         #region 검색 완료
         public void EndLotSearch()
         {
-            // 여기서 timer_LotSearch 종료하면 안됨.
+            // 타이머 종료
+            _timerLotSearchProcess.Stop();
             // 마지막 데이터 업데이트
             updateLotSearchRes(CompProc.End);
         }
@@ -266,27 +269,31 @@ namespace MarkrCompare
 
         private void updateLotSearchRes(CompProc eProc = CompProc.Proc)
         {
-            int total = _lotManager.TotalLiveProduct;
-            int count = _lotManager.TotalLiveLot;
+            int total = _lotManager.TotalLot;
+            int count = _lotManager.TotalProduct;
 
-            string message = "";
-            switch (eProc)
+            string message ="";
+            switch(eProc)
             {
-                case CompProc.Proc: message = $"데이터 처리 중... [{count} / {total}]"; break;
-                case CompProc.Stop: message = $"검사 중지 [{count} / {total}]"; break;
-                case CompProc.End: message = $"데이터 처리 완료 [{count} / {total}]"; break;
-                case CompProc.None: message = $"대기"; break;
+                case CompProc.Proc: message = $"{Lang.processingData} [{count} / {total}]"; break;
+                case CompProc.Stop: message = $"{Lang.searchingDataCancel} [{count} / {total}]"; break;
+                case CompProc.End: message = $"{Lang.dataProcessingComplete} [{count} / {total}]"; break;
+                case CompProc.None: message = Lang.waiting; break;
             }
 
             UIHelper.SetText(lblProcess, message);
         }
         #endregion
 
+        private void btnCsv_Click(object sender, EventArgs e)
+        {
+            OnOpenCsvForm?.Invoke();
+        }
+
         #region 언어 변경
-        string _cultureCode = "";
         public void UpdateLanguage(string culture)
         {
-            _cultureCode = culture;
+
         }
         #endregion
     }

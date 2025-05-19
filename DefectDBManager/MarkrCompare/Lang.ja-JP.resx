@@ -229,7 +229,7 @@
     <value>モデル</value>
   </data>
   <data name="formAddDelName" xml:space="preserve">
-    <value>商品名</value>
+    <value>名前</value>
   </data>
   <data name="formAddDelTitle" xml:space="preserve">
     <value>タスク追加</value>
@@ -314,5 +314,119 @@
   </data>
   <data name="plzChooseProcess" xml:space="preserve">
     <value>プロセスを選択してください</value>
+  </data>
+  <data name="formAddDelProcessAdd" xml:space="preserve">
+    <value>プロセス追加</value>
+  </data>
+  <data name="formAddEmptyProcessName" xml:space="preserve">
+    <value>プロセス名が空である。</value>
+  </data>
+  <data name="warning" xml:space="preserve">
+    <value>警告</value>
+  </data>
+  <data name="deleteData1" xml:space="preserve">
+    <value>データを削除しますか？</value>
+  </data>
+  <data name="deleteData2" xml:space="preserve">
+    <value>データを削除</value>
+  </data>
+  <data name="loadData1" xml:space="preserve">
+    <value>データを取り込みますか？</value>
+  </data>
+  <data name="loadData2" xml:space="preserve">
+    <value>データのロード</value>
+  </data>
+  <data name="saveCurrentData1" xml:space="preserve">
+    <value>現在のデータを保存しますか？</value>
+  </data>
+  <data name="saveCurrentData2" xml:space="preserve">
+    <value>データ保存</value>
+  </data>
+  <data name="doneSavingData" xml:space="preserve">
+    <value>データの保存が完了しました。</value>
+  </data>
+  <data name="lineIdIsEmpty" xml:space="preserve">
+    <value>ラインIDは空です</value>
+  </data>
+  <data name="lncdIsEmpty" xml:space="preserve">
+    <value>LNCDは空です</value>
+  </data>
+  <data name="sameLineIdExsits" xml:space="preserve">
+    <value>同名のラインIDが存在する</value>
+  </data>
+  <data name="waiting" xml:space="preserve">
+    <value>待機中</value>
+  </data>
+  <data name="searchingDataCancel" xml:space="preserve">
+    <value>データの検索がキャンセルされました。</value>
+  </data>
+  <data name="processingData" xml:space="preserve">
+    <value>データ処理中...</value>
+  </data>
+  <data name="dataProcessingComplete" xml:space="preserve">
+    <value>データ処理完了</value>
+  </data>
+  <data name="noFilterData" xml:space="preserve">
+    <value>データフィルタなし</value>
+  </data>
+  <data name="theSearingIsInProgress" xml:space="preserve">
+    <value>探査中。</value>
+  </data>
+  <data name="realtimeExplorationInProgress" xml:space="preserve">
+    <value>リアルタイム探査中。</value>
+  </data>
+  <data name="startRealtimeExploration" xml:space="preserve">
+    <value>リアルタイム探査の開始</value>
+  </data>
+  <data name="ConditionalLotSearchIsRunning" xml:space="preserve">
+    <value>条件付きロット検索が実行されている。</value>
+  </data>
+  <data name="InformationDoesNotExist" xml:space="preserve">
+    <value>情報は存在しない</value>
+  </data>
+  <data name="product" xml:space="preserve">
+    <value>品種</value>
+  </data>
+  <data name="RealtimeExplorationIsAlreadyStopped" xml:space="preserve">
+    <value>リアルタイムの探査はすでに停止している。</value>
+  </data>
+  <data name="StopRealtimeExploration" xml:space="preserve">
+    <value>リアルタイムの探査を止める。</value>
+  </data>
+  <data name="SelectiveMonitoring" xml:space="preserve">
+    <value>選択的モニタリング</value>
+  </data>
+  <data name="error" xml:space="preserve">
+    <value>エラー</value>
+  </data>
+  <data name="ErrorOccurrence" xml:space="preserve">
+    <value>誤差発生</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>通常</value>
+  </data>
+  <data name="LotSummaryIsEmpty" xml:space="preserve">
+    <value>Lot概要：Lot概要情報が存在しません。</value>
+  </data>
+  <data name="lotSummaryCompResult" xml:space="preserve">
+    <value>ロット概要（比較結果）</value>
+  </data>
+  <data name="lotSummaryLotName" xml:space="preserve">
+    <value>ロット概要（ロット名）</value>
+  </data>
+  <data name="NoLotSummaryData" xml:space="preserve">
+    <value>ロット概要データなし</value>
+  </data>
+  <data name="NoComparingData" xml:space="preserve">
+    <value>比較データなし</value>
+  </data>
+  <data name="LotSummaryShowDetail" xml:space="preserve">
+    <value>ロット概要（詳細を表示）</value>
+  </data>
+  <data name="StatusCheck" xml:space="preserve">
+    <value>ステータスチェック</value>
+  </data>
+  <data name="CanNotFindStatusTxtFile" xml:space="preserve">
+    <value>status.txtファイルが見つかりません。</value>
   </data>
 </root>
