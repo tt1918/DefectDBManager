@@ -303,4 +303,16 @@
   <data name="formSettingDgvTitleSize" xml:space="preserve">
     <value>Defect Size</value>
   </data>
+  <data name="formSettingPlzSelectModel" xml:space="preserve">
+    <value>Please select model</value>
+  </data>
+  <data name="formSettingModelApplyed" xml:space="preserve">
+    <value>Data has been applied</value>
+  </data>
+  <data name="appliedParam" xml:space="preserve">
+    <value>Applied Param</value>
+  </data>
+  <data name="plzChooseProcess" xml:space="preserve">
+    <value>Please choose process</value>
+  </data>
 </root>

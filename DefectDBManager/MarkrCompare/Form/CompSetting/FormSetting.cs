@@ -250,12 +250,12 @@ namespace MarkrCompare
             {
                 if (string.IsNullOrWhiteSpace(lblName.Text))
                 {
-                    MessageBox.Show("모델을 선택해 주세요.");
+                    MessageBox.Show(Lang.formSettingPlzSelectModel);
                     return;
                 }
                 updateAllDgvCtrl();
-                MessageBox.Show("적용되었습니다.");
-                SystemLog.DisplayFileServerLog("PARAM 적용");
+                MessageBox.Show(Lang.formSettingModelApplyed);
+                SystemLog.DisplayFileServerLog(Lang.appliedParam);
             }
             catch (Exception ex)
             {
@@ -356,7 +356,6 @@ namespace MarkrCompare
             {
                 dgvProcess.ResumeLayout();
             }
-
         }
 
         private void updateDgvProcess()
@@ -460,7 +459,7 @@ namespace MarkrCompare
 
             if (selIdx == -1)
             {
-                MessageBox.Show("작업이 설정되지 않았습니다."); return;
+                MessageBox.Show(Lang.plzChooseProcess); return;
             }
 
             string lineID, lncd;
@@ -511,7 +510,7 @@ namespace MarkrCompare
 
             if (selIdx == -1)
             {
-                MessageBox.Show("작업이 설정되지 않았습니다."); return;
+                MessageBox.Show(Lang.plzChooseProcess); return;
             }
 
             deleteDgvProcess();

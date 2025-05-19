@@ -303,4 +303,16 @@
   <data name="formSettingDgvTitleSize" xml:space="preserve">
     <value>缺陷尺寸</value>
   </data>
+  <data name="formSettingPlzSelectModel" xml:space="preserve">
+    <value>請選擇型號</value>
+  </data>
+  <data name="formSettingModelApplyed" xml:space="preserve">
+    <value>模型資料已應用於系統</value>
+  </data>
+  <data name="appliedParam" xml:space="preserve">
+    <value>已套用參數</value>
+  </data>
+  <data name="plzChooseProcess" xml:space="preserve">
+    <value>請選擇製程</value>
+  </data>
 </root>

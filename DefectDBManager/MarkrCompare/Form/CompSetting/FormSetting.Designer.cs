@@ -1193,8 +1193,8 @@
             // tableLayoutPanel19
             // 
             this.tableLayoutPanel19.ColumnCount = 2;
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 122F));
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 181F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 139F));
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel19.Controls.Add(this.cbUseMNTTAN, 0, 0);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1212,7 +1212,7 @@
             this.cbUseMNTTAN.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbUseMNTTAN.Location = new System.Drawing.Point(3, 3);
             this.cbUseMNTTAN.Name = "cbUseMNTTAN";
-            this.cbUseMNTTAN.Size = new System.Drawing.Size(116, 24);
+            this.cbUseMNTTAN.Size = new System.Drawing.Size(158, 24);
             this.cbUseMNTTAN.TabIndex = 10;
             this.cbUseMNTTAN.Text = "USE AI RESULT";
             this.cbUseMNTTAN.UseVisualStyleBackColor = true;

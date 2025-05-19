@@ -303,4 +303,16 @@
   <data name="formSettingDgvTitleSize" xml:space="preserve">
     <value>결점 크기</value>
   </data>
+  <data name="formSettingPlzSelectModel" xml:space="preserve">
+    <value>모델을 선택하여 주십시요.</value>
+  </data>
+  <data name="formSettingModelApplyed" xml:space="preserve">
+    <value>적용되었습니다.</value>
+  </data>
+  <data name="appliedParam" xml:space="preserve">
+    <value>PARAM 적용</value>
+  </data>
+  <data name="plzChooseProcess" xml:space="preserve">
+    <value>프로세스를 선택하여주십시오</value>
+  </data>
 </root>

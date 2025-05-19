@@ -61,6 +61,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   PARAM 적용과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string appliedParam {
+            get {
+                return ResourceManager.GetString("appliedParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    추가과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnAdd {
@@ -502,6 +511,24 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   적용되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingModelApplyed {
+            get {
+                return ResourceManager.GetString("formSettingModelApplyed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   모델을 선택하여 주십시요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSettingPlzSelectModel {
+            get {
+                return ResourceManager.GetString("formSettingPlzSelectModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   모델 설정과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string formSettingTitle {
@@ -570,6 +597,15 @@ namespace MarkrCompare {
         internal static string PeridoSearch {
             get {
                 return ResourceManager.GetString("PeridoSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   프로세스를 선택하여주십시오과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string plzChooseProcess {
+            get {
+                return ResourceManager.GetString("plzChooseProcess", resourceCulture);
             }
         }
         
