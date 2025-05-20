@@ -200,6 +200,13 @@ namespace MarkrCompare
                 MessageBox.Show(Lang.formAddEmptyProcessName, Lang.warning);
                 return;
             }
+
+            if(form.DataName.Contains('_'))
+            {
+                MessageBox.Show(Lang.NamesCannotContain, Lang.warning);
+                return;
+            }
+
             DefectDBManager.Preproc.PreprocItem item = new DefectDBManager.Preproc.PreprocItem(form.DataName);
             _preprocSet.Add(item);
 

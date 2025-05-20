@@ -1,10 +1,12 @@
 ﻿using DefectDBManager;
+using MarkrCompare.Delegate;
 using MarkrCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,8 @@ namespace MarkrCompare
     public enum eSummaryMode { Monitoring, LiveErrorCheck }
     public partial class FormLotSummaryData : Form
     {
+        public event UpdateSummaryCheck OnClickSummaryCheck;
+
         public DefectDBManager.PreprocLot LotSummery
         {
             get { return _lotSummery; }
@@ -59,14 +63,14 @@ namespace MarkrCompare
 
         public bool ShowCheckbox
         {
-            get { return this.checkBox1.Visible; }
-            set { this.checkBox1.Visible = value; }
+            get { return this.cbViewSelect.Visible; }
+            set { this.cbViewSelect.Visible = value; }
         }
 
         public bool StateCheckbox
         {
-            get { return this.checkBox1.Checked; }
-            set { this.checkBox1.Checked = value; }
+            get { return this.cbViewSelect.Checked; }
+            set { this.cbViewSelect.Checked = value; }
         }
 
         #region Form
@@ -366,8 +370,22 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage()
         {
+            CultureInfo culture = CultureInfo.CurrentCulture;
 
+            string fontName = Functions.GetCultureFontName(culture.Name);
+
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            lblStatus.Font = newFont;
+            lblLotName.Font = newFont;
+
+            newFont = new Font(fontName, 9, FontStyle.Bold);
+            lblProcess.Font = newFont;
         }
         #endregion
+
+        private void cbViewSelect_CheckedChanged(object sender, EventArgs e)
+        {
+            OnClickSummaryCheck?.Invoke(this);
+        }
     }
 }

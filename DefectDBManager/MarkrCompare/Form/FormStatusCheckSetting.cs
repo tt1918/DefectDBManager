@@ -96,7 +96,7 @@ namespace MarkrCompare
             int[] ips = new int[4];
             if (strings.Length != 4)
             {
-                MessageBox.Show("IP 주소 입력이 잘못 되었습니다.");
+                MessageBox.Show(Lang.IpAddressIsWrong);
                 return false;
             }
 
@@ -105,7 +105,7 @@ namespace MarkrCompare
                 ips[i] = Convert.ToInt32(strings[i]);
                 if (ips[i] < 0 || ips[i] > 255)
                 {
-                    MessageBox.Show($"{i + 1} 번째 주소가 0~255 사의 값이 아닙니다.");
+                    MessageBox.Show($"[{i + 1}, {ips[i]}] : {Lang.InsertCorrectNumber}");
                     return false;
                 }
             }
@@ -113,7 +113,7 @@ namespace MarkrCompare
             int duration;
             if(int.TryParse(tbDuration.Texts, out duration)==false)
             {
-                MessageBox.Show($"검색 주기에 대한 상수를 입력해주십시요.");
+                MessageBox.Show(Lang.enterSearchInterval);
                 return false;
             }
 

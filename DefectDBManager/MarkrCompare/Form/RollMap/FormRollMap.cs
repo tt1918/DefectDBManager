@@ -18,7 +18,10 @@ namespace MarkrCompare
     {
         #region Param
         private PreprocLot _crtLot = null;
+        private PreprocLNCDInfo _info = null;
+        private PreprocItem _procItem = null;
         private Font rollmapDefectFont = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+
         #endregion
 
         #region RollMap
@@ -112,49 +115,89 @@ namespace MarkrCompare
         {
             if (lot.FaultData == null) return;
             _crtLot = lot;
-            
+            _info = info;
+            _procItem = procItem;
+
+            lblLotName.Text = _crtLot.LotName;
+
+            if (cbProcess.InvokeRequired)
+            {
+                cbProcess.BeginInvoke(new Action(() =>
+                {
+                    cbProcess.Items.Clear();
+
+                    for (int i = 0; i < procItem.Compare.Count; i++)
+                    {
+                        string itemName = $"{i+1}:{procItem.Reference.LNCD}_{procItem.Compare[i].LNCD}";
+                        cbProcess.Items.Add(itemName);
+                    }
+                    cbProcess.SelectedIndex = 0;
+                }));
+            }
+            else
+            {
+                cbProcess.Items.Clear();
+
+                for (int i = 0; i < procItem.Compare.Count; i++)
+                {
+                    string itemName = $"{i+1}:{procItem.Reference.LNCD}_{procItem.Compare[i].LNCD}";
+                    cbProcess.Items.Add(itemName);
+                }
+
+                cbProcess.SelectedIndex = 0;
+            }
+
             // Rollmap update
+            drawMap(_crtLot, _info, _procItem);
+        }
+
+        private void drawMap(PreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
+        {
             int defIdx = 0;
+
+            double posX = 0, posY = 0;
+            double oldX = 0, oldY = 0;
+
+            double maxPosY = 0;
+
             foreach (var item in lot.MarkCompList.Data)
             {
-                //int compCnt = 0;
-                //foreach (var item2 in item.Comp)
-                //{
-                //    foreach (var d in item2)
-                //    {
-                //        Rollmap.AddPrevDefect(new PrevCompareDefect(0, d.XPOS_M, d.YPOS_M, d.SIZE, 0, defIdx++, info.SymbolColor, info.Symbol));
-                //    }
-
-                //    if (item2.Count > 0)
-                //        compCnt++;
-                //}
-
-                //if (compCnt <= 0)
-                //{
-                //    int areaX = (int)(item.Base.XPOS_M / procItem.Judge.X);
-                //    int areaY = (int)(item.Base.YPOS_M / (procItem.Judge.Y * 1000));
-
-                //    double x = areaX * procItem.Judge.X;
-                //    double y = areaY * procItem.Judge.Y * 1000;
-                //    Rollmap.AddPrevErrorArea(new PrevErrorAreaPosition(x, y, x + procItem.Judge.X, y + (procItem.Judge.Y * 1000)));
-                //}
-
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
                 {
                     int baseCnt = 0;
                     int compCnt = 0;
+                    
+                    if (i != cbProcess.SelectedIndex) continue;
+
+                    Rollmap.AddPrevDefect(new PrevCompareDefect(0, item.Base.XPOS_M, item.Base.OFFSET, item.Base.SIZE, 0, defIdx++, Color.Gray, info.Symbol));
+
+                    if (maxPosY < item.Base.OFFSET)
+                        maxPosY = item.Base.OFFSET;
+
+                    oldX = oldY = 0;
+
                     for (int j = 0; j < item.Comp.GetLength(1); j++)
                     {
                         for (int k = 0; k < item.Comp[i, j].Count; k++)
                         {
+                            posX = item.Comp[i, j][k].XPOS_M;
+                            posY = item.Comp[i, j][k].OFFSET;
                             if (j == 0)
                             {
-                                Rollmap.AddPrevDefect(new PrevCompareDefect(0, item.Comp[i, j][k].XPOS_M, item.Comp[i, j][k].YPOS_M, item.Comp[i, j][k].SIZE, 0, defIdx++, info.SymbolColor, "R"));
+                                oldX = posX;
+                                oldY = posY;
+                                Rollmap.AddPrevDefect(new PrevCompareDefect(0, posX, posY, item.Comp[i, j][k].SIZE, 0, defIdx++, Color.Yellow, "R"));
                                 baseCnt++;
                             }
                             else
                             {
-                                Rollmap.AddPrevDefect(new PrevCompareDefect(0, item.Comp[i, j][k].XPOS_M, item.Comp[i, j][k].YPOS_M, item.Comp[i, j][k].SIZE, 0, defIdx++, info.SymbolColor, info.Symbol));
+                                if(Math.Abs(oldX - posX)>5 || Math.Abs(oldX - posX) > 5)
+                                {
+                                    string symbolE = $"C_{j}";
+                                    oldX = posX;
+                                    oldX = posX;
+                                    Rollmap.AddPrevDefect(new PrevCompareDefect(0, posX, posY, item.Comp[i, j][k].SIZE, 0, defIdx++, Color.Red, symbolE));
+                                }
                                 compCnt++;
                             }
                         }
@@ -164,18 +207,18 @@ namespace MarkrCompare
                             int index = baseCnt > 0 ? 0 : j;
                             for (int l = 0; l < item.Comp[i, index].Count; l++)
                             {
-                                float posX = 0;
-                                float posY = 0;
+                                posX = 0;
+                                posY = 0;
 
                                 if (baseCnt > 0)
                                 {
                                     posX = item.Comp[i, 0][l].XPOS_M;
-                                    posY = item.Comp[i, 0][l].YPOS_M;
+                                    posY = (float)(item.Comp[i, 0][l].OFFSET);
                                 }
                                 else
                                 {
                                     posX = item.Comp[i, j][l].XPOS_M;
-                                    posY = item.Comp[i, j][l].YPOS_M;
+                                    posY = (float)(item.Comp[i, j][l].OFFSET);
                                 }
 
                                 int areaX = (int)(posX / procItem.Judge.X);
@@ -189,6 +232,8 @@ namespace MarkrCompare
                     }
                 }
             }
+
+            Rollmap.WholeHeight = (int)maxPosY+100000;
 
             Rollmap.RedrawAll();
         }
@@ -208,5 +253,15 @@ namespace MarkrCompare
         {
 
         }
+
+        #region Combo Box 업데이트
+        private void cbProcess_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearMap();
+            // Rollmap update
+            drawMap(_crtLot, _info, _procItem);
+        }
+        #endregion
+
     }
 }

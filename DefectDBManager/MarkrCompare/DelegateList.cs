@@ -11,4 +11,5 @@ namespace MarkrCompare.Delegate
     public delegate void UpdateEvent();
     public delegate void UpdatePrepLot(PreprocLot lot);
     public delegate void DeleUpdateLanguage(string culture);
+    public delegate void UpdateSummaryCheck(object obj);
 }

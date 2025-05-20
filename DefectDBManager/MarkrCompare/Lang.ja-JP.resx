@@ -429,4 +429,28 @@
   <data name="CanNotFindStatusTxtFile" xml:space="preserve">
     <value>status.txtファイルが見つかりません。</value>
   </data>
+  <data name="enterSearchInterval" xml:space="preserve">
+    <value>検索間隔の定数を入力する。</value>
+  </data>
+  <data name="InsertCorrectNumber" xml:space="preserve">
+    <value>0～255の間で正しい数字を入れる</value>
+  </data>
+  <data name="IpAddressIsWrong" xml:space="preserve">
+    <value>IPアドレスが間違っている</value>
+  </data>
+  <data name="NoLineInformation" xml:space="preserve">
+    <value>ライン情報なし</value>
+  </data>
+  <data name="NoProductInformation" xml:space="preserve">
+    <value>品種情報なし</value>
+  </data>
+  <data name="NoModelInformation" xml:space="preserve">
+    <value>モデル情報なし</value>
+  </data>
+  <data name="startComparingCSV" xml:space="preserve">
+    <value>CSVファイルの比較を開始する</value>
+  </data>
+  <data name="NamesCannotContain" xml:space="preserve">
+    <value>名前に[ _ ]を含めることはできない。</value>
+  </data>
 </root>

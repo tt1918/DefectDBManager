@@ -224,7 +224,7 @@ namespace MarkrCompare
             _formMorSearch.TopLevel = false;
 
             // Live Tab
-            tabSearchSet.TabPages[0].Text = "LIVE";
+            tabSearchSet.TabPages[0].Text = Lang.LiveSearch;
             tabSearchSet.TabPages[0].Controls.Add(_formMorLive.Controls[0]);
             _formMorLive.Dock = DockStyle.Fill;
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -232,7 +232,7 @@ namespace MarkrCompare
             OnUpdateLiveLNCDInfo += _formMorLive.DisplayLNCDCtrlData;
 
             // Search Tab
-            tabSearchSet.TabPages[1].Text = "SEARCH";
+            tabSearchSet.TabPages[1].Text = Lang.PeridoSearch;
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSearch.OnUpdatePrepLncdInfo += showLotListForm;
@@ -498,7 +498,8 @@ namespace MarkrCompare
                     foreach (var item3 in item2.Data)
                     {
                         info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
-                        if (info != null)   _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
+                        if (info != null)  
+                            _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
                     }
                 }
             }
@@ -520,7 +521,7 @@ namespace MarkrCompare
         {
             try
             {
-                SystemLog.DisplayFileServerLog("Csv 비교 시작");
+                SystemLog.DisplayFileServerLog(Lang.startComparingCSV);
                 Dictionary<int, List<PointF>> defPos = new Dictionary<int, List<PointF>>();
                 int cnt = 0;
                 int headerCnt = 0;

@@ -34,7 +34,7 @@
             this.lblLotName = new CustomControls.RoundLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblProcess = new CustomControls.RoundLabel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cbViewSelect = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -130,7 +130,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Controls.Add(this.lblProcess, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.checkBox1, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.cbViewSelect, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 45);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -162,17 +162,18 @@
             this.lblProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProcess.Thickness = 1;
             // 
-            // checkBox1
+            // cbViewSelect
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(44, 72);
-            this.checkBox1.TabIndex = 3;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
+            this.cbViewSelect.AutoSize = true;
+            this.cbViewSelect.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbViewSelect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbViewSelect.Location = new System.Drawing.Point(3, 3);
+            this.cbViewSelect.Name = "cbViewSelect";
+            this.cbViewSelect.Size = new System.Drawing.Size(44, 72);
+            this.cbViewSelect.TabIndex = 3;
+            this.cbViewSelect.UseVisualStyleBackColor = true;
+            this.cbViewSelect.Visible = false;
+            this.cbViewSelect.CheckedChanged += new System.EventHandler(this.cbViewSelect_CheckedChanged);
             // 
             // FormLotSummaryData
             // 
@@ -205,6 +206,6 @@
         private CustomControls.RoundLabel lblStatus;
         private CustomControls.RoundLabel lblLotName;
         private CustomControls.RoundLabel lblProcess;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbViewSelect;
     }
 }

@@ -429,4 +429,28 @@
   <data name="CanNotFindStatusTxtFile" xml:space="preserve">
     <value>Can not find status.txt file.</value>
   </data>
+  <data name="enterSearchInterval" xml:space="preserve">
+    <value>Enter a constant for the search interval.</value>
+  </data>
+  <data name="InsertCorrectNumber" xml:space="preserve">
+    <value>Insert correct number between 0~255</value>
+  </data>
+  <data name="IpAddressIsWrong" xml:space="preserve">
+    <value>IP address is wrong</value>
+  </data>
+  <data name="NoLineInformation" xml:space="preserve">
+    <value>No Line information</value>
+  </data>
+  <data name="NoProductInformation" xml:space="preserve">
+    <value>No Product information</value>
+  </data>
+  <data name="NoModelInformation" xml:space="preserve">
+    <value>No Model information</value>
+  </data>
+  <data name="startComparingCSV" xml:space="preserve">
+    <value>Start comparing CSV</value>
+  </data>
+  <data name="NamesCannotContain" xml:space="preserve">
+    <value>Names cannot contain [ _ ] </value>
+  </data>
 </root>

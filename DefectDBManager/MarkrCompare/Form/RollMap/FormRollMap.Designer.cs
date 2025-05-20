@@ -35,9 +35,13 @@
             this.rbScale2 = new System.Windows.Forms.RadioButton();
             this.rbScale3 = new System.Windows.Forms.RadioButton();
             this.rbScale4 = new System.Windows.Forms.RadioButton();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbProcess = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblLotName = new CustomControls.RoundLabel();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,14 +49,15 @@
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.Rollmap, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel1, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.Rollmap, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel1, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowCount = 3;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(843, 748);
@@ -72,7 +77,7 @@
             this.Rollmap.DsPosX = 0F;
             this.Rollmap.GraphType = Coss.Controls.Rollmap.OptionGraphType.kVerticalScroll;
             this.Rollmap.IsAiMode = false;
-            this.Rollmap.Location = new System.Drawing.Point(3, 4);
+            this.Rollmap.Location = new System.Drawing.Point(3, 34);
             this.Rollmap.MapManualStartPos = 0;
             this.Rollmap.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Rollmap.MarkingSerieIndex = -1;
@@ -88,7 +93,7 @@
             this.Rollmap.ShowPeriod = false;
             this.Rollmap.ShowPeriodDefect = null;
             this.Rollmap.ShowSameDefect = null;
-            this.Rollmap.Size = new System.Drawing.Size(837, 712);
+            this.Rollmap.Size = new System.Drawing.Size(837, 682);
             this.Rollmap.StdOptic = 0;
             this.Rollmap.TabIndex = 0;
             this.Rollmap.UseColor2 = false;
@@ -178,6 +183,33 @@
             this.rbScale4.UseVisualStyleBackColor = true;
             this.rbScale4.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Controls.Add(this.lblLotName, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.cbProcess, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(843, 30);
+            this.tableLayoutPanel3.TabIndex = 2;
+            // 
+            // cbProcess
+            // 
+            this.cbProcess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbProcess.FormattingEnabled = true;
+            this.cbProcess.Location = new System.Drawing.Point(203, 3);
+            this.cbProcess.Name = "cbProcess";
+            this.cbProcess.Size = new System.Drawing.Size(144, 23);
+            this.cbProcess.TabIndex = 0;
+            this.cbProcess.SelectedIndexChanged += new System.EventHandler(this.cbProcess_SelectedIndexChanged);
+            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
@@ -192,6 +224,26 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(843, 748);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // lblLotName
+            // 
+            this.lblLotName.AutoSize = true;
+            this.lblLotName.BkColor = System.Drawing.Color.DimGray;
+            this.lblLotName.BorderColor = System.Drawing.Color.MidnightBlue;
+            this.lblLotName.CornerR = 10;
+            this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblLotName.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblLotName.IsFillLB = false;
+            this.lblLotName.IsFillLT = false;
+            this.lblLotName.IsFillRB = false;
+            this.lblLotName.IsFillRT = false;
+            this.lblLotName.Location = new System.Drawing.Point(2, 2);
+            this.lblLotName.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLotName.Name = "lblLotName";
+            this.lblLotName.Size = new System.Drawing.Size(196, 26);
+            this.lblLotName.TabIndex = 1;
+            this.lblLotName.Thickness = 1;
             // 
             // FormRollMap
             // 
@@ -212,6 +264,8 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -227,5 +281,8 @@
         private System.Windows.Forms.RadioButton rbScale3;
         private System.Windows.Forms.RadioButton rbScale4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.ComboBox cbProcess;
+        private CustomControls.RoundLabel lblLotName;
     }
 }

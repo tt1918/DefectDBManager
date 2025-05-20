@@ -71,10 +71,11 @@ namespace MarkrCompare
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            _systemParam.Load();
+            SetCultureCode();
+
             initClockTimer();
             initMarkDiffForm();
-
-            _systemParam.Load();
 
             SystemLog.DisplaySystemLog = _markDiffForm.OnDisplaySystemLog;
             SystemLog.DisplayFileServerLog = _markDiffForm.OnDisplayFileServerLog;
@@ -223,6 +224,7 @@ namespace MarkrCompare
             if (form.ShowDialog() == DialogResult.OK)
             {
                 _systemParam = form.SysParam;
+                SetCultureCode();
                 ChangeLanguage();
             }
         }
@@ -404,7 +406,7 @@ namespace MarkrCompare
             OnUpdateLanguage -= this.UpdateLanguage;
         }
 
-        public void ChangeLanguage()
+        public void SetCultureCode()
         {
             string cultureCode = "";
             switch (_systemParam.Language)
@@ -430,8 +432,14 @@ namespace MarkrCompare
                     break;
             }
             _cultureCode = cultureCode;
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
-            OnUpdateLanguage?.Invoke(cultureCode);
+            var cultrue = new CultureInfo(cultureCode);
+            System.Threading.Thread.CurrentThread.CurrentCulture = cultrue;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = cultrue;
+        }
+
+        public void ChangeLanguage()
+        {
+            OnUpdateLanguage?.Invoke(_cultureCode);
         }
 
         public void UpdateLanguage(string culture)

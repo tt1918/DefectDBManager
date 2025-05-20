@@ -41,7 +41,7 @@ namespace MarkrCompare
                 case eProc.Search: initSearchFilterCtrl(); break;
             }
             initSyncDurationCtrl();
-            UpdateLanguage(CultureCode);
+            //UpdateLanguage(CultureCode);
         }
 
         private void FormProductFilter_Load(object sender, EventArgs e)
@@ -298,17 +298,17 @@ namespace MarkrCompare
                     bool bError = false;
                     if(lineName.Contains(item.Line)==false)
                     {
-                        errString.Add($"Line 정보: {item.Line}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Line}] : {Lang.NoLineInformation}");
                         bError = true;
                     }
                     if(material.Contains(item.Product) == false)
                     {
-                        errString.Add($"품종 정보: {item.Product}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Product}] : {Lang.NoProductInformation}");
                         bError = true;
                     }
                     if(model.Contains(item.Model) == false)
                     {
-                        errString.Add($"모델 정보: {item.Product}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Product}] : {Lang.NoModelInformation}");
                         bError = true;
                     }
 
@@ -469,17 +469,17 @@ namespace MarkrCompare
                     bool bError = false;
                     if (lineName.Contains(item.Line) == false)
                     {
-                        errString.Add($"Line 정보: {item.Line}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Line}] : {Lang.NoLineInformation}");
                         bError = true;
                     }
                     if (material.Contains(item.Product) == false)
                     {
-                        errString.Add($"품종 정보: {item.Product}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Product}] : {Lang.NoProductInformation}");
                         bError = true;
                     }
                     if (model.Contains(item.Model) == false)
                     {
-                        errString.Add($"모델 정보: {item.Product}가 존재하지 않습니다.");
+                        errString.Add($"[{item.Product}] : {Lang.NoModelInformation}");
                         bError = true;
                     }
 

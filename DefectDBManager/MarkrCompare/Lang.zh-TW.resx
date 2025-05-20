@@ -429,4 +429,28 @@
   <data name="CanNotFindStatusTxtFile" xml:space="preserve">
     <value>找不到 status.txt 檔案。</value>
   </data>
+  <data name="enterSearchInterval" xml:space="preserve">
+    <value>輸入搜尋間隔的常數。</value>
+  </data>
+  <data name="InsertCorrectNumber" xml:space="preserve">
+    <value>在 0~255 之間插入正確的數字</value>
+  </data>
+  <data name="IpAddressIsWrong" xml:space="preserve">
+    <value>IP 位址錯誤</value>
+  </data>
+  <data name="NoLineInformation" xml:space="preserve">
+    <value>無產線資訊</value>
+  </data>
+  <data name="NoProductInformation" xml:space="preserve">
+    <value>無品種資訊</value>
+  </data>
+  <data name="NoModelInformation" xml:space="preserve">
+    <value>無型號資訊</value>
+  </data>
+  <data name="startComparingCSV" xml:space="preserve">
+    <value>開始比較 CSV 檔案</value>
+  </data>
+  <data name="NamesCannotContain" xml:space="preserve">
+    <value>名稱不能包含 [ _ ]</value>
+  </data>
 </root>

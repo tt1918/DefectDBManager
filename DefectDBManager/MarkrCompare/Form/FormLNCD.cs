@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace MarkrCompare
@@ -162,9 +163,16 @@ namespace MarkrCompare
 
             if (form.DataName == "")
             {
-                MessageBox.Show($"이름이 비어있습니다.", "경고");
+                MessageBox.Show(Lang.formAddEmptyProcessName, Lang.warning);
                 return;
             }
+
+            if (form.DataName.Contains('_'))
+            {
+                MessageBox.Show(Lang.NamesCannotContain, Lang.warning);
+                return;
+            }
+
             PreprocLNCDInfo item = new PreprocLNCDInfo();
             item.Name = form.DataName;
             _materialData.Info.Add(item);

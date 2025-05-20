@@ -143,7 +143,10 @@ namespace MarkrCompare
             foreach(var list in _dicFormSummary)
             {
                 foreach (var form in list.Value)
+                {
+                    form.OnClickSummaryCheck-= SelectLot;
                     form.Dispose();
+                }
             }
             _dicFormSummary.Clear();
         }
@@ -176,6 +179,7 @@ namespace MarkrCompare
                     form.ShowCheckbox = true;
                     form.TopLevel = false;
                     form.Show();
+                    form.OnClickSummaryCheck += SelectLot;
                     if (_dicFormSummary.ContainsKey("Search"))
                     {
                         _dicFormSummary["Search"].Add(form);
@@ -273,6 +277,30 @@ namespace MarkrCompare
 
             MessageBox.Show("선택한 LOT을 불러왔습니다.");
         }
+
+        #region CheckBox 후처리
+        private void SelectLot(object obj)
+        {
+            FormLotSummaryData form = (FormLotSummaryData)obj;
+
+            bool isCheck = form.StateCheckbox;
+
+            // 선택이 되어있으면 다른 check 박스를 확인해서 체크박스 해제
+            if(isCheck==true)
+            {
+                foreach (var form1 in _dicFormSummary["Search"])
+                {
+                    if (form1.StateCheckbox && 
+                        (form.LotSummery.LotName != form1.LotSummery.LotName ||
+                        form.ProcItem.ToString() != form1.ProcItem.ToString()))
+                    {
+                        form1.StateCheckbox = false;
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         #region 언어 변경
         public void UpdateLanguage(string culture)

@@ -295,6 +295,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   검색 주기에 대한 상수를 입력해주십시요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string enterSearchInterval {
+            get {
+                return ResourceManager.GetString("enterSearchInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   오류과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string error {
@@ -673,6 +682,24 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   0~255 사이에 올바른 숫자를 입력해주십시오과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string InsertCorrectNumber {
+            get {
+                return ResourceManager.GetString("InsertCorrectNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   IP 주소가 잘못 입력되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string IpAddressIsWrong {
+            get {
+                return ResourceManager.GetString("IpAddressIsWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   LINE ID가 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string lineIdIsEmpty {
@@ -763,6 +790,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   이름에는 [ _ ] 를 포함할 수 없습니다. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NamesCannotContain {
+            get {
+                return ResourceManager.GetString("NamesCannotContain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   비교 데이터 없음과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string NoComparingData {
@@ -781,11 +817,38 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   Line 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NoLineInformation {
+            get {
+                return ResourceManager.GetString("NoLineInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Lot 요약 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string NoLotSummaryData {
             get {
                 return ResourceManager.GetString("NoLotSummaryData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   모델 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NoModelInformation {
+            get {
+                return ResourceManager.GetString("NoModelInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   품종 정보가 존재하지 않습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string NoProductInformation {
+            get {
+                return ResourceManager.GetString("NoProductInformation", resourceCulture);
             }
         }
         
@@ -921,6 +984,15 @@ namespace MarkrCompare {
         internal static string SelectiveMonitoring {
             get {
                 return ResourceManager.GetString("SelectiveMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CSV 비교 시작과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startComparingCSV {
+            get {
+                return ResourceManager.GetString("startComparingCSV", resourceCulture);
             }
         }
         
