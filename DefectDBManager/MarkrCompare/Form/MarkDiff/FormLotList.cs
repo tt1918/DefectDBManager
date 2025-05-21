@@ -248,7 +248,7 @@ namespace MarkrCompare
                 }
             }
 
-            MessageBox.Show("선택한 결점을 불러왔습니다.");
+            MessageBox.Show(Lang.SelectedLotIsLoaded);
         }
 
         public void AddCsvData()
@@ -275,7 +275,7 @@ namespace MarkrCompare
                 }
             }
 
-            MessageBox.Show("선택한 LOT을 불러왔습니다.");
+            MessageBox.Show(Lang.SelectedLotIsLoaded);
         }
 
         #region CheckBox 후처리

@@ -61,6 +61,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   적용되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string applied1 {
+            get {
+                return ResourceManager.GetString("applied1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   PARAM 적용과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string appliedParam {
@@ -232,6 +241,33 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   이력 삭제과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string clearHistory {
+            get {
+                return ResourceManager.GetString("clearHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   프로그램을 종료하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string closeProgram {
+            get {
+                return ResourceManager.GetString("closeProgram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   2개 이상의 CSV 파일을 비교하십시요.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string compare2OrMore {
+            get {
+                return ResourceManager.GetString("compare2OrMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   조건 Lot 검색이 실행 중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string ConditionalLotSearchIsRunning {
@@ -246,6 +282,33 @@ namespace MarkrCompare {
         internal static string dataProcessingComplete {
             get {
                 return ResourceManager.GetString("dataProcessingComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   DB 연결 오류과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DbConnError {
+            get {
+                return ResourceManager.GetString("DbConnError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   DB 연결 실패과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBConnFailed {
+            get {
+                return ResourceManager.GetString("DBConnFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   DB 접속에 성공하였습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DBConnIsSuccessed {
+            get {
+                return ResourceManager.GetString("DBConnIsSuccessed", resourceCulture);
             }
         }
         
@@ -322,6 +385,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   파일명과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string fileName {
+            get {
+                return ResourceManager.GetString("fileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   주기과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string filterDgvDuration {
@@ -363,6 +435,15 @@ namespace MarkrCompare {
         internal static string filterDgvProdName {
             get {
                 return ResourceManager.GetString("filterDgvProdName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   CSV 파일 비교 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string finishedComparingCSV {
+            get {
+                return ResourceManager.GetString("finishedComparingCSV", resourceCulture);
             }
         }
         
@@ -435,15 +516,6 @@ namespace MarkrCompare {
         internal static string formLNCDLineCheck {
             get {
                 return ResourceManager.GetString("formLNCDLineCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   설정과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        internal static string formLNCDSetIP {
-            get {
-                return ResourceManager.GetString("formLNCDSetIP", resourceCulture);
             }
         }
         
@@ -691,6 +763,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   파일 이름을 입력해주십시오과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string InsertFileName {
+            get {
+                return ResourceManager.GetString("InsertFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   IP 주소가 잘못 입력되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string IpAddressIsWrong {
@@ -790,6 +871,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   최대 CSV 파일 갯수는 100개입니다과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string maximumCsvFiles {
+            get {
+                return ResourceManager.GetString("maximumCsvFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   이름에는 [ _ ] 를 포함할 수 없습니다. 과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string NamesCannotContain {
@@ -862,11 +952,29 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   선택된 행이 없습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string noSelectedRow {
+            get {
+                return ResourceManager.GetString("noSelectedRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   기간 검색과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string PeridoSearch {
             get {
                 return ResourceManager.GetString("PeridoSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   기간 선택 검색 작업이 완료되었습니다. 과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string periodOperationIsComplete {
+            get {
+                return ResourceManager.GetString("periodOperationIsComplete", resourceCulture);
             }
         }
         
@@ -943,6 +1051,15 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   실시간 검색이 완료되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string realtimeSearchOperationIscomplete {
+            get {
+                return ResourceManager.GetString("realtimeSearchOperationIscomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   동일한 이름의 Line ID가 존재합니다과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string sameLineIdExsits {
@@ -979,11 +1096,38 @@ namespace MarkrCompare {
         }
         
         /// <summary>
+        ///   선택한 LOT을 불러왔습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SelectedLotIsLoaded {
+            get {
+                return ResourceManager.GetString("SelectedLotIsLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   선택 탐색과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string SelectiveMonitoring {
             get {
                 return ResourceManager.GetString("SelectiveMonitoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string setting {
+            get {
+                return ResourceManager.GetString("setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   시작과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string start {
+            get {
+                return ResourceManager.GetString("start", resourceCulture);
             }
         }
         
@@ -1047,6 +1191,15 @@ namespace MarkrCompare {
         internal static string theSearingIsInProgress {
             get {
                 return ResourceManager.GetString("theSearingIsInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   시간과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string time {
+            get {
+                return ResourceManager.GetString("time", resourceCulture);
             }
         }
         

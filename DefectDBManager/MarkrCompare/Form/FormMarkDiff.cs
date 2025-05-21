@@ -549,7 +549,7 @@ namespace MarkrCompare
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].OnClearSummaryData();
                 }));
 
-                SystemLog.DisplayFileServerLog("Csv 비교 완료");
+                SystemLog.DisplayFileServerLog(Lang.finishedComparingCSV);
             }
             catch (Exception e)
             {

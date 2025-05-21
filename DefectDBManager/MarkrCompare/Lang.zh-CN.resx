@@ -198,7 +198,7 @@
   <data name="formLNCDSymbol" xml:space="preserve">
     <value>符号</value>
   </data>
-  <data name="formLNCDSetIP" xml:space="preserve">
+  <data name="setting" xml:space="preserve">
     <value>设置</value>
   </data>
   <data name="formLNCDCycle" xml:space="preserve">
@@ -452,5 +452,56 @@
   </data>
   <data name="NamesCannotContain" xml:space="preserve">
     <value>名称不能包含 [ _ ]</value>
+  </data>
+  <data name="finishedComparingCSV" xml:space="preserve">
+    <value>已完成 CSV 文件的比较</value>
+  </data>
+  <data name="closeProgram" xml:space="preserve">
+    <value>您想退出程序吗？</value>
+  </data>
+  <data name="periodOperationIsComplete" xml:space="preserve">
+    <value>所选时段搜索操作完成 </value>
+  </data>
+  <data name="realtimeSearchOperationIscomplete" xml:space="preserve">
+    <value>所选时段搜索操作完成 </value>
+  </data>
+  <data name="DbConnError" xml:space="preserve">
+    <value>数据库连接错误</value>
+  </data>
+  <data name="DBConnIsSuccessed" xml:space="preserve">
+    <value>成功连接数据库</value>
+  </data>
+  <data name="DBConnFailed" xml:space="preserve">
+    <value>数据库连接失败</value>
+  </data>
+  <data name="applied1" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="compare2OrMore" xml:space="preserve">
+    <value>比较 2 个或多个 Csv 文件。</value>
+  </data>
+  <data name="maximumCsvFiles" xml:space="preserve">
+    <value>最大 CSV 文件数为 100</value>
+  </data>
+  <data name="noSelectedRow" xml:space="preserve">
+    <value>无选定行</value>
+  </data>
+  <data name="fileName" xml:space="preserve">
+    <value>文件名</value>
+  </data>
+  <data name="InsertFileName" xml:space="preserve">
+    <value>插入文件名</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="start" xml:space="preserve">
+    <value>开始</value>
+  </data>
+  <data name="clearHistory" xml:space="preserve">
+    <value>删除历史记录</value>
+  </data>
+  <data name="SelectedLotIsLoaded" xml:space="preserve">
+    <value>所选批次已加载</value>
   </data>
 </root>

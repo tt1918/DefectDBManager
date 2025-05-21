@@ -280,7 +280,11 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage(string curtule)
         {
+            string fontName = Functions.GetCultureFontName(curtule);
+            Font newFont = new Font(fontName, 9, FontStyle.Bold);
 
+            btnClearHistory.Font = newFont;
+            btnClearHistory.Text = Lang.clearHistory;
         }
         #endregion
     }

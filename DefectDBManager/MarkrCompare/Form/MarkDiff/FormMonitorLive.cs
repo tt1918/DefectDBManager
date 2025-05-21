@@ -287,6 +287,18 @@ namespace MarkrCompare
         public void UpdateLanguage(string culture)
         {
             _cultureCode = culture;
+
+            string fontName = Functions.GetCultureFontName(culture);
+
+            Font newFont = new Font(fontName, 9, FontStyle.Regular);
+            btnStart.Font = newFont;
+            btnStop.Font = newFont;
+            btnMaterialFilter.Font = newFont;
+
+            btnStart.Text = Lang.start;
+            btnStop.Text = Lang.ProcStop;
+            btnMaterialFilter.Text = Lang.setting;
+
         }
         #endregion
     }

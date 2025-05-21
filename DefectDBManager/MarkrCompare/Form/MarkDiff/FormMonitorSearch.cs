@@ -293,7 +293,21 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage(string culture)
         {
+            string fontName = Functions.GetCultureFontName(culture);
 
+            Font newFont = new Font(fontName, 9, FontStyle.Bold);
+            lblTime.Font = newFont;
+
+            lblTime.Text = Lang.time;
+
+            newFont = new Font(fontName, 9, FontStyle.Regular);
+            btnStart.Font = newFont;
+            btnStop.Font = newFont;
+            btnMaterialFilter.Font = newFont;
+
+            btnStart.Text = Lang.start;
+            btnStop.Text = Lang.ProcStop;
+            btnMaterialFilter.Text = Lang.setting;
         }
         #endregion
     }

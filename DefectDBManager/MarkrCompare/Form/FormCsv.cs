@@ -41,7 +41,7 @@ namespace MarkrCompare
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count < 2 && MessageBox.Show("2개 이상의 Csv 부터 비교 가능합니다.") == DialogResult.OK)
+            if (dataGridView1.Rows.Count < 2 && MessageBox.Show(Lang.compare2OrMore) == DialogResult.OK)
             {
                 return;
             }
@@ -62,7 +62,7 @@ namespace MarkrCompare
         {
             if (dataGridView1.Rows.Count >= 100)
             {
-                MessageBox.Show("Csv 개수가 100 개를 초과할 수 없습니다.");
+                MessageBox.Show(Lang.maximumCsvFiles);
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace MarkrCompare
         {
             if (dataGridView1.Rows.Count == 0 || dataGridView1.SelectedRows.Count == 0) 
             {
-                MessageBox.Show("선택된 행이 없습니다.");
+                MessageBox.Show(Lang.noSelectedRow);
                 return; 
             }
 
@@ -115,12 +115,12 @@ namespace MarkrCompare
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            FormAddDel form = new FormAddDel("저장", "파일명", "확인", "취소");
+            FormAddDel form = new FormAddDel(Lang.btnSave1, Lang.fileName, Lang.btnOK1, Lang.btnCancel1);
             if(form.ShowDialog() == DialogResult.Cancel) return;
 
             if (string.IsNullOrWhiteSpace(form.DataName))
             {
-                MessageBox.Show("파일명을 입력해주세요.");
+                MessageBox.Show(Lang.InsertFileName);
                 return;
             }
 

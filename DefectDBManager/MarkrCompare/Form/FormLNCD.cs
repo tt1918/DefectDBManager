@@ -184,7 +184,7 @@ namespace MarkrCompare
         {
             int index = lvLNCDList.SelectedItems[0].Index;
             string name = lvLNCDList.SelectedItems[0].SubItems[1].Text;
-            if (MessageBox.Show($"{name} 데이터를 삭제하시겠습니까?", "데이터 삭제하기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show($"{name} {Lang.deleteData1}", Lang.deleteData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _materialData.Remove(name);
@@ -194,7 +194,7 @@ namespace MarkrCompare
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"데이터를 불러오겠습니까?", "데이터 불러오기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(Lang.loadData1, Lang.loadData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _materialData.Load();
@@ -204,11 +204,11 @@ namespace MarkrCompare
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show($"현재 내용을 저장하시겠습니까?", "모델 저장하기", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show(Lang.saveCurrentData1, Lang.saveCurrentData2, MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             _materialData.Save();
-            SystemLog.DisplayFileServerLog("SET 저장 완료");
+            SystemLog.DisplayFileServerLog(Lang.doneSavingData);
         }
         #endregion
 
@@ -362,8 +362,8 @@ namespace MarkrCompare
                 updateMaterialCtrl();
                 updateSymbolData();
 
-                MessageBox.Show("적용되었습니다.");
-                SystemLog.DisplayFileServerLog("SET 적용");
+                MessageBox.Show(Lang.applied1);
+                SystemLog.DisplayFileServerLog(Lang.applied1);
             }
             catch (Exception ex)
             {
@@ -530,7 +530,7 @@ namespace MarkrCompare
             lblDuration.Text = Lang.formLNCDCycle;
             chbCheckState.Text = Lang.formLNCDLineCheck;
 
-            btnSetStatusCheck.Text = Lang.formLNCDSetIP;
+            btnSetStatusCheck.Text = Lang.setting;
             btnAdd.Text = Lang.btnAdd;
             btnDelete.Text = Lang.btnDel1;
             btnLoad.Text = Lang.btnLoad1;

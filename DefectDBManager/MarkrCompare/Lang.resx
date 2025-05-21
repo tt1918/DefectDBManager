@@ -198,7 +198,7 @@
   <data name="formLNCDSymbol" xml:space="preserve">
     <value>심볼</value>
   </data>
-  <data name="formLNCDSetIP" xml:space="preserve">
+  <data name="setting" xml:space="preserve">
     <value>설정</value>
   </data>
   <data name="formLNCDCycle" xml:space="preserve">
@@ -452,5 +452,56 @@
   </data>
   <data name="NamesCannotContain" xml:space="preserve">
     <value>이름에는 [ _ ] 를 포함할 수 없습니다. </value>
+  </data>
+  <data name="finishedComparingCSV" xml:space="preserve">
+    <value>CSV 파일 비교 완료</value>
+  </data>
+  <data name="closeProgram" xml:space="preserve">
+    <value>프로그램을 종료하시겠습니까?</value>
+  </data>
+  <data name="periodOperationIsComplete" xml:space="preserve">
+    <value>기간 선택 검색 작업이 완료되었습니다. </value>
+  </data>
+  <data name="realtimeSearchOperationIscomplete" xml:space="preserve">
+    <value>실시간 검색이 완료되었습니다.</value>
+  </data>
+  <data name="DbConnError" xml:space="preserve">
+    <value>DB 연결 오류</value>
+  </data>
+  <data name="DBConnIsSuccessed" xml:space="preserve">
+    <value>DB 접속에 성공하였습니다.</value>
+  </data>
+  <data name="DBConnFailed" xml:space="preserve">
+    <value>DB 연결 실패</value>
+  </data>
+  <data name="applied1" xml:space="preserve">
+    <value>적용되었습니다.</value>
+  </data>
+  <data name="compare2OrMore" xml:space="preserve">
+    <value>2개 이상의 CSV 파일을 비교하십시요.</value>
+  </data>
+  <data name="maximumCsvFiles" xml:space="preserve">
+    <value>최대 CSV 파일 갯수는 100개입니다</value>
+  </data>
+  <data name="noSelectedRow" xml:space="preserve">
+    <value>선택된 행이 없습니다.</value>
+  </data>
+  <data name="fileName" xml:space="preserve">
+    <value>파일명</value>
+  </data>
+  <data name="InsertFileName" xml:space="preserve">
+    <value>파일 이름을 입력해주십시오</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>시간</value>
+  </data>
+  <data name="start" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="clearHistory" xml:space="preserve">
+    <value>이력 삭제</value>
+  </data>
+  <data name="SelectedLotIsLoaded" xml:space="preserve">
+    <value>선택한 LOT을 불러왔습니다.</value>
   </data>
 </root>

@@ -198,7 +198,7 @@
   <data name="formLNCDSymbol" xml:space="preserve">
     <value>SYMBOL</value>
   </data>
-  <data name="formLNCDSetIP" xml:space="preserve">
+  <data name="setting" xml:space="preserve">
     <value>Setting</value>
   </data>
   <data name="formLNCDCycle" xml:space="preserve">
@@ -343,7 +343,7 @@
     <value>Saving Data</value>
   </data>
   <data name="doneSavingData" xml:space="preserve">
-    <value>Saving data has been done.</value>
+    <value>Saving data is complete.</value>
   </data>
   <data name="lineIdIsEmpty" xml:space="preserve">
     <value>Line ID is empty</value>
@@ -373,10 +373,10 @@
     <value>Exploration in progress.</value>
   </data>
   <data name="realtimeExplorationInProgress" xml:space="preserve">
-    <value>Realtime Exploration in progress.</value>
+    <value>Real-time monitoring in progress.</value>
   </data>
   <data name="startRealtimeExploration" xml:space="preserve">
-    <value>Start realtime exploration</value>
+    <value>Start realtime monitoring</value>
   </data>
   <data name="ConditionalLotSearchIsRunning" xml:space="preserve">
     <value>A conditional Lot search is running.</value>
@@ -388,10 +388,10 @@
     <value>Product</value>
   </data>
   <data name="RealtimeExplorationIsAlreadyStopped" xml:space="preserve">
-    <value>Real-time exploration is already stopped</value>
+    <value>Real-time monitoring is already stopped</value>
   </data>
   <data name="StopRealtimeExploration" xml:space="preserve">
-    <value>Stop the real-time exploration.</value>
+    <value>Stop the real-time monitoring</value>
   </data>
   <data name="SelectiveMonitoring" xml:space="preserve">
     <value>Selective Monitoring</value>
@@ -452,5 +452,56 @@
   </data>
   <data name="NamesCannotContain" xml:space="preserve">
     <value>Names cannot contain [ _ ] </value>
+  </data>
+  <data name="finishedComparingCSV" xml:space="preserve">
+    <value>Comparing CSV files has been finished</value>
+  </data>
+  <data name="closeProgram" xml:space="preserve">
+    <value>Do you want to exit the program?</value>
+  </data>
+  <data name="periodOperationIsComplete" xml:space="preserve">
+    <value>the selected period search operation is complete </value>
+  </data>
+  <data name="realtimeSearchOperationIscomplete" xml:space="preserve">
+    <value>The real-time monitoring is complete</value>
+  </data>
+  <data name="DbConnError" xml:space="preserve">
+    <value>Error DB Connection</value>
+  </data>
+  <data name="DBConnIsSuccessed" xml:space="preserve">
+    <value>Successfully connected to DB</value>
+  </data>
+  <data name="DBConnFailed" xml:space="preserve">
+    <value>DB connection failed</value>
+  </data>
+  <data name="applied1" xml:space="preserve">
+    <value>Applied</value>
+  </data>
+  <data name="compare2OrMore" xml:space="preserve">
+    <value>Compare 2 or more CSV files</value>
+  </data>
+  <data name="maximumCsvFiles" xml:space="preserve">
+    <value>Maximum CSV files are 100</value>
+  </data>
+  <data name="noSelectedRow" xml:space="preserve">
+    <value>No selected row</value>
+  </data>
+  <data name="fileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="InsertFileName" xml:space="preserve">
+    <value>Insert file name</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="start" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="clearHistory" xml:space="preserve">
+    <value>Clear history</value>
+  </data>
+  <data name="SelectedLotIsLoaded" xml:space="preserve">
+    <value>Selected Lot is loaded</value>
   </data>
 </root>

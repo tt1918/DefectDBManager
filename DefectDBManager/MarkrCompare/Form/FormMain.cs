@@ -231,9 +231,9 @@ namespace MarkrCompare
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            string msg = "프로그램을 종료하시겠습니까?";
+            string msg = Lang.closeProgram;
             
-            if (MessageBox.Show(msg, "CLOSE", MessageBoxButtons.OKCancel) != DialogResult.OK)
+            if (MessageBox.Show(msg, Lang.btnClose, MessageBoxButtons.OKCancel) != DialogResult.OK)
                 return;
 
             SystemLog.DisplaySystemLog("Program Close");
@@ -287,10 +287,10 @@ namespace MarkrCompare
 
         public void EndSearchLotList()
         {
-            SystemLog.DisplayFileServerLog("기간 검색 작업이 완료되었습니다.");
+            SystemLog.DisplayFileServerLog(Lang.periodOperationIsComplete);
             Invoke(new Action(() => 
             {
-                MessageBox.Show(this, "기간 검색 작업이 완료되었습니다.");
+                MessageBox.Show(this, Lang.periodOperationIsComplete);
             }));
         }
         #endregion
@@ -311,17 +311,17 @@ namespace MarkrCompare
                     {
                         if(lot.CompResult==eCompResult.ProcNg)
                         {
-                            sb.Append($"[{item.Key}-{lot.LotName}] : 오차 발생 \n");
+                            sb.Append($"[{item.Key}-{lot.LotName}] : {Lang.ErrorOccurrence} \n");
                             isError = true;
                         }
                     }
                 }
             }
 
-            SystemLog.DisplayFileServerLog("실시간 검사가 완료되었습니다.");
+            SystemLog.DisplayFileServerLog(Lang.realtimeSearchOperationIscomplete);
             Invoke(new Action(() =>
             {
-                if(isError==false)  MessageBox.Show(this, "실시간 검사가 완료되었습니다.");
+                if(isError==false)  MessageBox.Show(this, Lang.realtimeSearchOperationIscomplete);
                 else                MessageBox.Show(this,sb.ToString());
             }));
         }
@@ -371,7 +371,7 @@ namespace MarkrCompare
                     isDbConnOn = false;
                     btnDBConnect.Image = ledOff;
                 }
-                SystemLog.DisplaySystemLog("DB Connect Error", Log.Level.Error);
+                SystemLog.DisplaySystemLog(Lang.DbConnError, Log.Level.Error);
                 return;
             }
             else
@@ -380,13 +380,13 @@ namespace MarkrCompare
                 {
                     btnDBConnect.Image = ledOn;
                     isDbConnOn = true;
-                    SystemLog.DisplayFileServerLog("DB 연결 성공");
+                    SystemLog.DisplayFileServerLog(Lang.DBConnIsSuccessed);
                 }
                 else if(isDbConnOn == true && _dbManager._DbConn.IsDBConnected == false)
                 {
                     btnDBConnect.Image = ledOff;
                     isDbConnOn = false;
-                    SystemLog.DisplayFileServerLog("DB 연결 실패");
+                    SystemLog.DisplayFileServerLog(Lang.DBConnFailed);
                 }
             }
         }
