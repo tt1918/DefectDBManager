@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeReaderDLL", "CodeReader
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpDllTest", "SharpDllTest\SharpDllTest.csproj", "{B1661D69-D122-4083-BB7D-052099D84E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkrComp", "MarkrCompare\MarkrComp.csproj", "{24C92AE0-2ED5-4853-82A9-86703F991A21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkComp", "MarkrCompare\MarkComp.csproj", "{24C92AE0-2ED5-4853-82A9-86703F991A21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coss.Controls", "Coss.Controls\Coss.Controls.csproj", "{52760EA1-5A39-4830-A698-1C9FD1389411}"
 EndProject

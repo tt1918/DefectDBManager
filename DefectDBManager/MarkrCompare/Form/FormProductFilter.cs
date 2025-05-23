@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormProductFilter : Form
     {
@@ -41,7 +41,7 @@ namespace MarkrCompare
                 case eProc.Search: initSearchFilterCtrl(); break;
             }
             initSyncDurationCtrl();
-            //UpdateLanguage(CultureCode);
+            UpdateLanguage(CultureCode);
         }
 
         private void FormProductFilter_Load(object sender, EventArgs e)
@@ -663,7 +663,8 @@ namespace MarkrCompare
             dgvFilter.Columns[1].Name = Lang.filterDgvLine;
             dgvFilter.Columns[2].Name = Lang.filterDgvProdName;
             dgvFilter.Columns[3].Name = Lang.filterDgvModel;
-            dgvFilter.Columns[4].Name = Lang.filterDgvDuration;
+            if (dgvFilter.Columns.Count == 5)
+                dgvFilter.Columns[4].Name = Lang.filterDgvDuration;
         }
         #endregion
     }

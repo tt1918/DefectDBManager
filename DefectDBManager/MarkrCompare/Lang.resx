@@ -504,4 +504,7 @@
   <data name="SelectedLotIsLoaded" xml:space="preserve">
     <value>선택한 LOT을 불러왔습니다.</value>
   </data>
+  <data name="filterSet" xml:space="preserve">
+    <value>필터 설정</value>
+  </data>
 </root>

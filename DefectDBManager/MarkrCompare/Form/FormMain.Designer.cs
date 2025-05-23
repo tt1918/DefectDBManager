@@ -1,4 +1,4 @@
-﻿namespace MarkrCompare
+﻿namespace MarkCompare
 {
     partial class FormMain
     {
@@ -179,7 +179,7 @@
             this.btnMaximize.FlatAppearance.BorderSize = 0;
             this.btnMaximize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMaximize.ForeColor = System.Drawing.Color.White;
-            this.btnMaximize.Image = global::MarkrCompare.Properties.Resources.min_24;
+            this.btnMaximize.Image = global::MarkCompare.Properties.Resources.min_24;
             this.btnMaximize.Location = new System.Drawing.Point(1324, 1);
             this.btnMaximize.Margin = new System.Windows.Forms.Padding(1);
             this.btnMaximize.Name = "btnMaximize";

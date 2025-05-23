@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     internal static class Program
     {

@@ -1,6 +1,6 @@
 ﻿
 using CustomControls;
-using MarkrCompare.Helper;
+using MarkCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormMonitorSearch : Form
     {
@@ -31,9 +31,9 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
-        public event MarkrCompare.Delegate.UpdateEvent OnStartLotSearch;
-        public event MarkrCompare.Delegate.UpdateEvent OnStopLotSearch;
+        public event MarkCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
+        public event MarkCompare.Delegate.UpdateEvent OnStartLotSearch;
+        public event MarkCompare.Delegate.UpdateEvent OnStopLotSearch;
         public event Delegate.UpdateEvent OnOpenCsvForm;
         #endregion
 
@@ -293,21 +293,23 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage(string culture)
         {
-            string fontName = Functions.GetCultureFontName(culture);
+            this.BeginInvoke(new Action(() =>
+            {
+                string fontName = Functions.GetCultureFontName(culture);
 
-            Font newFont = new Font(fontName, 9, FontStyle.Bold);
-            lblTime.Font = newFont;
+                Font newFont = new Font(fontName, 9, FontStyle.Bold);
+                lblTime.Font = newFont;
+                lblTime.Text = Lang.time;
 
-            lblTime.Text = Lang.time;
+                newFont = new Font(fontName, 9, FontStyle.Regular);
+                btnStart.Font = newFont;
+                btnStop.Font = newFont;
+                btnMaterialFilter.Font = newFont;
 
-            newFont = new Font(fontName, 9, FontStyle.Regular);
-            btnStart.Font = newFont;
-            btnStop.Font = newFont;
-            btnMaterialFilter.Font = newFont;
-
-            btnStart.Text = Lang.start;
-            btnStop.Text = Lang.ProcStop;
-            btnMaterialFilter.Text = Lang.setting;
+                btnStart.Text = Lang.start;
+                btnStop.Text = Lang.ProcStop;
+                btnMaterialFilter.Text = Lang.filterSet;
+            }));
         }
         #endregion
     }

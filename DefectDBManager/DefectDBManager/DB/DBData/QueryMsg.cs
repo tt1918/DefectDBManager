@@ -541,5 +541,31 @@ namespace DefectDBManager
                 return sbMsg.ToString();
             }
         }
+
+        public class FLTDAT_Daily_New_Query : QueryMsg
+        {
+            public string GetQuery()
+            {
+                StringBuilder sbMsg = new StringBuilder();
+                sbMsg.Append("SELECT * ");
+                sbMsg.Append("FROM FAULTDAT, FLTMST, INSPDAT ");
+                sbMsg.Append("WHERE FAULTDAT.FLTID = FLTMST.FLTID ");
+                sbMsg.Append("AND FAULTDAT.CTLNO = INSPDAT.CTLNO ");
+                sbMsg.Append("AND FAULTDAT.CTLNO = :ctlno ");
+                sbMsg.Append("ORDER BY FAULTDAT.FLTID ");
+                sbMsg.Append("OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY");
+                return sbMsg.ToString();
+            }
+        }
+
+        public class FLTDAT_Daily_Count_Query : QueryMsg
+        {
+            public string GetQuery()
+            {
+                string msg = @"SELECT COUNT(*) FROM FAULTDAT FD, FLTMST FM, INSPDAT ID WHERE FD.FLTID = FM.FLTID AND FD.CTLNO = ID.CTLNO AND FD.CTLNO = :ctlno";
+                return msg;
+            }
+        }
+
     }
 }

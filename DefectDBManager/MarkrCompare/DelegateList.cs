@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkrCompare.Delegate
+namespace MarkCompare.Delegate
 {
     public delegate void UpdatePrepLncdInfo(DefectDBManager.Preproc.eProc proc);
     public delegate void UpdateEvent();

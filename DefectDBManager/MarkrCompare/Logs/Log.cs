@@ -16,7 +16,7 @@ using log4net.Appender;
 using System.Reflection;
 using DefectDBManager;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public class Log
     {

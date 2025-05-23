@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormLotSummery : Form
     {
@@ -280,11 +280,15 @@ namespace MarkrCompare
         #region 언어 변경
         public void UpdateLanguage(string curtule)
         {
-            string fontName = Functions.GetCultureFontName(curtule);
-            Font newFont = new Font(fontName, 9, FontStyle.Bold);
+            this.BeginInvoke(new Action(() =>
+            {
+                string fontName = Functions.GetCultureFontName(curtule);
+                Font newFont = new Font(fontName, 9, FontStyle.Bold);
 
-            btnClearHistory.Font = newFont;
-            btnClearHistory.Text = Lang.clearHistory;
+                btnClearHistory.Font = newFont;
+                btnClearHistory.Text = Lang.clearHistory;
+
+            }));
         }
         #endregion
     }

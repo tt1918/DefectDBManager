@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public class EnumToStringConverter : EnumConverter
     {

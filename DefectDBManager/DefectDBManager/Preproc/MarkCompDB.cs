@@ -941,124 +941,162 @@ namespace DefectDBManager.Preproc
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
 
-                        QueryMsg.FLTDAT_Daily_Query msg = new QueryMsg.FLTDAT_Daily_Query();
-                        query = msg.GetQuery(inspdata.CTLNO);
-
-                        _LOG.WriteLoadData(_SubPath, query, 0, "FAULTDAT", 0.0);
-
-                        if (query == "")
+                        // FLTDAT 갯수 얻어오기
+                        int rowCount = 0;
+                        QueryMsg.FLTDAT_Daily_Count_Query cntMsg = new QueryMsg.FLTDAT_Daily_Count_Query();
+                        query = cntMsg.GetQuery();
+                        using (var comm = new OracleCommand(query, conn.Connection))
                         {
-                            Log.Write($"[Error] FAULTDAT_{((eFCD)fcdIdx).ToString()} Query message is empty.");
-                            return false;
+                            comm.Parameters.Add(":ctlno", OracleDbType.Varchar2).Value = inspdata.CTLNO;
+
+                            // log용 string
+                            string logQuery = string.Copy(query); // 문자열 복사
+                            logQuery.Replace(":ctlno", $"'{inspdata.CTLNO}'");
+                            _LOG.WriteLoadData(_SubPath, logQuery, 0, "FAULTDAT", 0.0);
+
+                            object result = comm.ExecuteScalar();
+                            rowCount = Convert.ToInt32(result);
+
+                            logData = $"{inspdata.CTLNO} data size : {rowCount}"; 
+                            _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
                         }
-                        
+
+                        // 갯수를 100개씩 만들어서 처리함.
+                        int pageSize = 100;
+                        int totalPage = rowCount% pageSize == 0 ? rowCount / pageSize : rowCount / pageSize + 1;
+                        int rowOffset = 0;
+
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
 
-                        using (var comm = new OracleCommand(query, conn.Connection))
+                        // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
+                        if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
                         {
-                            using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                            mkcdLncdData = _PreprocItem.Reference;
+                            dataTarget = eProcDataType.Reference;
+                        }
+                        else
+                        {
+                            bool isFindComp = false;
+                            foreach (var compItem in _PreprocItem.Compare)
                             {
-                                dbCnt = reader.RowSize;
-
-                                PreprocMrkDat preMarkData = new PreprocMrkDat();
-                                preMarkData.LNCD = inspdata.LNCD;
-
-
-                                // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
-                                if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
+                                if (inspdata.LNCD == compItem.LNCD)
                                 {
-                                    mkcdLncdData = _PreprocItem.Reference;
-                                    dataTarget = eProcDataType.Reference;
+                                    isFindComp = true;
+                                    mkcdLncdData = compItem;
+                                    dataTarget = eProcDataType.Compare;
+                                    break;
                                 }
-                                else
-                                {
-                                    bool isFindComp = false;
-                                    foreach (var compItem in _PreprocItem.Compare)
-                                    {
-                                        if (inspdata.LNCD == compItem.LNCD)
-                                        {
-                                            isFindComp = true;
-                                            mkcdLncdData = compItem;
-                                            dataTarget = eProcDataType.Compare;
-                                            break;
-                                        }
-                                    }
-                                    if (isFindComp == false)
-                                    {
-                                        mkcdLncdData = null;
-                                        continue; // 데이터 탐색 안함.
-                                    }
-                                }
-
-                                while (reader.Read())
-                                {
-                                    FLTDATA_DailyData data = new FLTDATA_DailyData();
-                                    data.Parse(reader);
-
-                                    tmpFaltID = data.FLTID.ToUpper();
-
-
-                                    finalXPos = data.XPOS_M;
-                                    if (useXOffset == true) finalXPos += inspdata.OffsetX;
-                                    if (useAIFromDB == false) // AI 미사용시
-                                    {
-                                        tmpKey = data.MNTTAN.TrimStart();
-                                        if (string.IsNullOrEmpty(tmpKey)) 
-                                            tmpKey = data.FLTID;
-                                    }
-                                    else tmpKey = data.FLTID;
-
-
-                                    // Log는 무조건 데이터 다 남기도록 수정
-                                    dataCnt++;
-                                    logData = data.GetString(dataCnt, inspdata.BCNO);
-                                    _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
-
-                                    // MKCD Model에서 데이터 가져와서 다시 탐색함. 
-                                    bValid = false;
-                                    if (mkcdLncdData != null)
-                                    {
-                                        bValid = mkcdLncdData.IsValidFLTID(tmpKey, data.AREA_M + 0.00001f);
-                                        if(bValid==false)   continue;
-                                    }
-                                    else continue;
-
-                                    if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
-                                    if (finalXPos < 0.0f) continue;
-
-                                    // 전체 데이터를 저장한다. 
-                                    // Fault Data 처리
-                                    FaultDatum tmpFltData = new FaultDatum();
-                                    tmpFltData.SetData(inspdata.BCNO, data);
-                                    if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
-                                    if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-
-                                    // 마킹 데이터만 처리
-                                    if (bValid == false) continue;
-
-                                    // 코드 불량 카운트 증가
-                                    if (inspdata.CTLNO == data.CTLNO) inspdata.RollCtlCnt++;
-
-                                    // Marking fault data 추가
-                                    MarkingFaultDatum markData = new MarkingFaultDatum();
-                                    markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
-
-                                    if (dataTarget == eProcDataType.Reference)
-                                        FaultData.MarkData.Add(markData);
-                                    else// 마킹 대상 결점
-                                        preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
-
-                                    //dataCnt++;
-                                    //logData = data.GetString(dataCnt, tmpFltData.TBCNO);
-                                    //_LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
-                                    defectCnt[fcdIdx]++;
-                                }
-
-                                // 그렇지 않고 Compare Data이면 PreMarkData에 입력
-                                if (dataTarget == eProcDataType.Compare)
-                                    FaultData.PreMarkData[fcdIdx].Add(preMarkData);
                             }
+                            if (isFindComp == false)
+                            {
+                                mkcdLncdData = null;
+                                continue; // 데이터 탐색 안함.
+                            }
+                        }
+
+                        for (int pageIdx = 0; pageIdx < totalPage; pageIdx++)
+                        {
+                            rowOffset = pageIdx * pageSize;
+
+                            QueryMsg.FLTDAT_Daily_New_Query msg = new QueryMsg.FLTDAT_Daily_New_Query();
+                            query = msg.GetQuery();
+
+                            using (var comm = new OracleCommand(query, conn.Connection))
+                            {
+                                comm.Parameters.Add(":ctlno", OracleDbType.Varchar2).Value = inspdata.CTLNO;
+                                comm.Parameters.Add(":offset", OracleDbType.Int32).Value = rowOffset;
+                                comm.Parameters.Add(":pageSize", OracleDbType.Int32).Value = pageSize;
+
+                                // log용 string
+                                string logQuery = string.Copy(query); // 문자열 복사
+                                logQuery.Replace(":ctlno", $"'{inspdata.CTLNO}'");
+                                logQuery.Replace(":offset", $"'{rowOffset}'");
+                                logQuery.Replace(":pageSize", $"'{pageSize}'");
+
+                                _LOG.WriteLoadData(_SubPath, logQuery, 0, "FAULTDAT", 0.0);
+
+                                if (logQuery == "")
+                                {
+                                    Log.Write($"[Error] FAULTDAT_{((eFCD)fcdIdx).ToString()} Query message is empty.");
+                                    return false;
+                                }
+
+                                using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                                {
+                                    PreprocMrkDat preMarkData = new PreprocMrkDat();
+                                    preMarkData.LNCD = inspdata.LNCD;
+
+
+                                    while (reader.Read())
+                                    {
+                                        FLTDATA_DailyData data = new FLTDATA_DailyData();
+                                        data.Parse(reader);
+
+                                        tmpFaltID = data.FLTID.ToUpper();
+
+
+                                        finalXPos = data.XPOS_M;
+                                        if (useXOffset == true) finalXPos += inspdata.OffsetX;
+                                        if (useAIFromDB == false) // AI 미사용시
+                                        {
+                                            tmpKey = data.MNTTAN.TrimStart();
+                                            if (string.IsNullOrEmpty(tmpKey))
+                                                tmpKey = data.FLTID;
+                                        }
+                                        else tmpKey = data.FLTID;
+
+
+                                        // Log는 무조건 데이터 다 남기도록 수정
+                                        dataCnt++;
+                                        logData = data.GetString(dataCnt, inspdata.BCNO);
+                                        _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
+
+                                        // MKCD Model에서 데이터 가져와서 다시 탐색함. 
+                                        bValid = false;
+                                        if (mkcdLncdData != null)
+                                        {
+                                            bValid = mkcdLncdData.IsValidFLTID(tmpKey, data.AREA_M + 0.00001f);
+                                            if (bValid == false) continue;
+                                        }
+                                        else continue;
+
+                                        if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
+                                        if (finalXPos < 0.0f) continue;
+
+                                        // 전체 데이터를 저장한다. 
+                                        // Fault Data 처리
+                                        FaultDatum tmpFltData = new FaultDatum();
+                                        tmpFltData.SetData(inspdata.BCNO, data);
+                                        if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
+                                        if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
+
+                                        // 마킹 데이터만 처리
+                                        if (bValid == false) continue;
+
+                                        // 코드 불량 카운트 증가
+                                        if (inspdata.CTLNO == data.CTLNO) inspdata.RollCtlCnt++;
+
+                                        // Marking fault data 추가
+                                        MarkingFaultDatum markData = new MarkingFaultDatum();
+                                        markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
+
+                                        if (dataTarget == eProcDataType.Reference)
+                                            FaultData.MarkData.Add(markData);
+                                        else// 마킹 대상 결점
+                                            preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
+
+                                        //dataCnt++;
+                                        //logData = data.GetString(dataCnt, tmpFltData.TBCNO);
+                                        //_LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
+                                        defectCnt[fcdIdx]++;
+                                    }
+
+                                    // 그렇지 않고 Compare Data이면 PreMarkData에 입력
+                                    if (dataTarget == eProcDataType.Compare)
+                                        FaultData.PreMarkData[fcdIdx].Add(preMarkData);
+                                }
+                            }           
                         }
                     }
                 }

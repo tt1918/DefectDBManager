@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MarkrCompare {
+namespace MarkCompare {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MarkrCompare {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MarkrCompare.Lang", typeof(Lang).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MarkCompare.Lang", typeof(Lang).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -435,6 +435,15 @@ namespace MarkrCompare {
         internal static string filterDgvProdName {
             get {
                 return ResourceManager.GetString("filterDgvProdName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   필터 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string filterSet {
+            get {
+                return ResourceManager.GetString("filterSet", resourceCulture);
             }
         }
         

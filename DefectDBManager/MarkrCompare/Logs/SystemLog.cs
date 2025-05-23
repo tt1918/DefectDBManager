@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using log4net;
 using log4net.Config;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public delegate void DisplayLogHandler(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false);
 

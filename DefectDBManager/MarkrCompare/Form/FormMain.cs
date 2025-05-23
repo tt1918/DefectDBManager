@@ -1,7 +1,7 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
-using MarkrCompare.Delegate;
-using MarkrCompare.Properties;
+using MarkCompare.Delegate;
+using MarkCompare.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormMain : Form
     {

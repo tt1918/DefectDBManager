@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace MarkrCompare.Helper
+namespace MarkCompare.Helper
 {
     public static class UIHelper
     {

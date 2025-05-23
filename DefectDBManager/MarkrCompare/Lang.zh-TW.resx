@@ -504,4 +504,7 @@
   <data name="SelectedLotIsLoaded" xml:space="preserve">
     <value>選取的批次已載入</value>
   </data>
+  <data name="filterSet" xml:space="preserve">
+    <value>濾波器組</value>
+  </data>
 </root>

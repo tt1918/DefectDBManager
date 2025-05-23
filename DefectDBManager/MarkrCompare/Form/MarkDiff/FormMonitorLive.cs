@@ -1,5 +1,5 @@
 ﻿using DefectDBManager.Preproc;
-using MarkrCompare.Helper;
+using MarkCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormMonitorLive : Form
     {
@@ -31,9 +31,9 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public event MarkrCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
-        public event MarkrCompare.Delegate.UpdateEvent OnStartLiveSearch;
-        public event MarkrCompare.Delegate.UpdateEvent OnStopLiveSearch;
+        public event MarkCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
+        public event MarkCompare.Delegate.UpdateEvent OnStartLiveSearch;
+        public event MarkCompare.Delegate.UpdateEvent OnStopLiveSearch;
         #endregion
 
         #region Create/Destroy
@@ -288,17 +288,18 @@ namespace MarkrCompare
         {
             _cultureCode = culture;
 
-            string fontName = Functions.GetCultureFontName(culture);
+            this.BeginInvoke(new Action(() =>
+            {
+                string fontName = Functions.GetCultureFontName(culture);
+                Font newFont = new Font(fontName, 9, FontStyle.Regular);
+                btnStart.Font = newFont;
+                btnStop.Font = newFont;
+                btnMaterialFilter.Font = newFont;
 
-            Font newFont = new Font(fontName, 9, FontStyle.Regular);
-            btnStart.Font = newFont;
-            btnStop.Font = newFont;
-            btnMaterialFilter.Font = newFont;
-
-            btnStart.Text = Lang.start;
-            btnStop.Text = Lang.ProcStop;
-            btnMaterialFilter.Text = Lang.setting;
-
+                btnStart.Text = Lang.start;
+                btnStop.Text = Lang.ProcStop;
+                btnMaterialFilter.Text = Lang.filterSet;
+            }));
         }
         #endregion
     }

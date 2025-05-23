@@ -1,6 +1,6 @@
 ﻿using DefectDBManager;
-using MarkrCompare.Delegate;
-using MarkrCompare.Helper;
+using MarkCompare.Delegate;
+using MarkCompare.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public enum eSummaryMode { Monitoring, LiveErrorCheck }
     public partial class FormLotSummaryData : Form

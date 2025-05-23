@@ -1,5 +1,5 @@
-﻿using MarkrCompare.Delegate;
-using MarkrCompare.Helper;
+﻿using MarkCompare.Delegate;
+using MarkCompare.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormMarkDiff : Form
     {
@@ -22,8 +22,8 @@ namespace MarkrCompare
         #endregion
 
         #region Event
-        public event MarkrCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
-        public event MarkrCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
+        public event MarkCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
+        public event MarkCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
         //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
         public event DeleUpdateLanguage OnUpdateLanguage = null;
         #endregion

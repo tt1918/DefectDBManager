@@ -504,4 +504,7 @@
   <data name="SelectedLotIsLoaded" xml:space="preserve">
     <value>選択したロットがロードされる</value>
   </data>
+  <data name="filterSet" xml:space="preserve">
+    <value>フィルターセット</value>
+  </data>
 </root>

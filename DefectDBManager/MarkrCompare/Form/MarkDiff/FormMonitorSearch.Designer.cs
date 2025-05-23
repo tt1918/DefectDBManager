@@ -1,4 +1,4 @@
-﻿namespace MarkrCompare
+﻿namespace MarkCompare
 {
     partial class FormMonitorSearch
     {
@@ -82,9 +82,9 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 4;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 19F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel3.Controls.Add(this.btnStart, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.btnStop, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblProcess, 0, 0);
@@ -108,10 +108,10 @@
             this.btnStart.FlatAppearance.BorderSize = 0;
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(386, 1);
+            this.btnStart.Location = new System.Drawing.Point(366, 1);
             this.btnStart.Margin = new System.Windows.Forms.Padding(1, 1, 2, 1);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(77, 28);
+            this.btnStart.Size = new System.Drawing.Size(87, 28);
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "START";
             this.btnStart.TextColor = System.Drawing.Color.White;
@@ -129,10 +129,10 @@
             this.btnStop.FlatAppearance.BorderSize = 0;
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.ForeColor = System.Drawing.Color.White;
-            this.btnStop.Location = new System.Drawing.Point(467, 1);
+            this.btnStop.Location = new System.Drawing.Point(457, 1);
             this.btnStop.Margin = new System.Windows.Forms.Padding(2, 1, 1, 1);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(77, 28);
+            this.btnStop.Size = new System.Drawing.Size(87, 28);
             this.btnStop.TabIndex = 0;
             this.btnStop.Text = "STOP";
             this.btnStop.TextColor = System.Drawing.Color.White;
@@ -153,7 +153,7 @@
             this.lblProcess.Location = new System.Drawing.Point(2, 2);
             this.lblProcess.Margin = new System.Windows.Forms.Padding(2);
             this.lblProcess.Name = "lblProcess";
-            this.lblProcess.Size = new System.Drawing.Size(362, 26);
+            this.lblProcess.Size = new System.Drawing.Size(350, 26);
             this.lblProcess.TabIndex = 1;
             this.lblProcess.Text = "Monitoring......";
             this.lblProcess.Thickness = 1;
@@ -161,12 +161,12 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 6;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 92F));
             this.tableLayoutPanel5.Controls.Add(this.btnCsv, 4, 0);
             this.tableLayoutPanel5.Controls.Add(this.lblTime, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnMaterialFilter, 5, 0);
@@ -193,10 +193,10 @@
             this.btnCsv.FlatAppearance.BorderSize = 0;
             this.btnCsv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCsv.ForeColor = System.Drawing.Color.White;
-            this.btnCsv.Location = new System.Drawing.Point(385, 1);
+            this.btnCsv.Location = new System.Drawing.Point(364, 1);
             this.btnCsv.Margin = new System.Windows.Forms.Padding(1);
             this.btnCsv.Name = "btnCsv";
-            this.btnCsv.Size = new System.Drawing.Size(78, 28);
+            this.btnCsv.Size = new System.Drawing.Size(88, 28);
             this.btnCsv.TabIndex = 5;
             this.btnCsv.Text = "CSV";
             this.btnCsv.TextColor = System.Drawing.Color.White;
@@ -219,7 +219,7 @@
             this.lblTime.Location = new System.Drawing.Point(1, 1);
             this.lblTime.Margin = new System.Windows.Forms.Padding(1);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(58, 28);
+            this.lblTime.Size = new System.Drawing.Size(63, 28);
             this.lblTime.TabIndex = 4;
             this.lblTime.Text = "TIME";
             this.lblTime.Thickness = 1;
@@ -235,10 +235,10 @@
             this.btnMaterialFilter.FlatAppearance.BorderSize = 0;
             this.btnMaterialFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMaterialFilter.ForeColor = System.Drawing.Color.White;
-            this.btnMaterialFilter.Location = new System.Drawing.Point(465, 1);
+            this.btnMaterialFilter.Location = new System.Drawing.Point(454, 1);
             this.btnMaterialFilter.Margin = new System.Windows.Forms.Padding(1);
             this.btnMaterialFilter.Name = "btnMaterialFilter";
-            this.btnMaterialFilter.Size = new System.Drawing.Size(79, 28);
+            this.btnMaterialFilter.Size = new System.Drawing.Size(90, 28);
             this.btnMaterialFilter.TabIndex = 3;
             this.btnMaterialFilter.Text = "FILTER";
             this.btnMaterialFilter.TextColor = System.Drawing.Color.White;
@@ -249,7 +249,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(212, 0);
+            this.label1.Location = new System.Drawing.Point(204, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(20, 30);
@@ -260,17 +260,17 @@
             // timePickerStart
             // 
             this.timePickerStart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.timePickerStart.Location = new System.Drawing.Point(63, 3);
+            this.timePickerStart.Location = new System.Drawing.Point(68, 3);
             this.timePickerStart.Name = "timePickerStart";
-            this.timePickerStart.Size = new System.Drawing.Size(146, 23);
+            this.timePickerStart.Size = new System.Drawing.Size(133, 23);
             this.timePickerStart.TabIndex = 2;
             // 
             // timePickerEnd
             // 
             this.timePickerEnd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.timePickerEnd.Location = new System.Drawing.Point(235, 3);
+            this.timePickerEnd.Location = new System.Drawing.Point(227, 3);
             this.timePickerEnd.Name = "timePickerEnd";
-            this.timePickerEnd.Size = new System.Drawing.Size(146, 23);
+            this.timePickerEnd.Size = new System.Drawing.Size(133, 23);
             this.timePickerEnd.TabIndex = 2;
             // 
             // FormMonitorSearch

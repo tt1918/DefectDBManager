@@ -1,4 +1,4 @@
-﻿namespace MarkrCompare
+﻿namespace MarkCompare
 {
     partial class FormLotSummery
     {

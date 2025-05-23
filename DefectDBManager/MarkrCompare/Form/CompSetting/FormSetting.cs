@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MarkrCompare
+namespace MarkCompare
 {
     public partial class FormSetting : Form
     {
