@@ -339,21 +339,49 @@ namespace DefectDBManager.Preproc
                 }
 
                 Log.Write($"Step - 1");
-                using (var comm = new OracleCommand(query, conn.Connection))
+                
+                // 끊어짐에 대한 재연결 처리
+                conn.ResetDisconCheck();
+
+                while(true)
                 {
-                    using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                    // 검색하다가 튕겨나갈 수 있으니 데이터 삭제 처리 후 다시 검색함
+                    _DbResult.PTRLYP.Clear();
+
+                    using (var comm = new OracleCommand(query, conn.Connection))
                     {
-                        dbCnt = reader.RowSize;
-                        while (reader.Read())
+                        using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                         {
-                            PTRYLPdata data = new PTRYLPdata();
-                            data.Parse(reader);
-                            _DbResult.PTRLYP.Add(data);
-                            string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(_SubPath, logData, 0, "PTRYLP", 0);
+                            dbCnt = reader.RowSize;
+                            while (reader.Read())
+                            {
+                                PTRYLPdata data = new PTRYLPdata();
+                                data.Parse(reader);
+                                _DbResult.PTRLYP.Add(data);
+                                string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
+                                _LOG.WriteLoadData(_SubPath, logData, 0, "PTRYLP", 0);
+                            }
+
+                            success = true;
+                        }
+                    }
+
+                    if (conn.IsDBConnected == true)
+                        break;
+                    else
+                    {
+                        if (conn.CheckDisconn() == true)
+                        {
+                            while (!conn.Connect())
+                            {
+                                System.Threading.Thread.Sleep(500);
+
+                                if (conn.IsDisconnCheckout() == true)
+                                    break;
+                            }
                         }
 
-                        success = true;
+                        break;
                     }
                 }
 
@@ -369,12 +397,10 @@ namespace DefectDBManager.Preproc
                 if (success == false) { errOut = 3; return null; }
 
                 Log.Write($"Step - 4");
-
                 success = SearchPTRY0P(lotID);
                 if (success == false) { errOut = 4; return null; }
 
                 Log.Write($"Step - 5");
-
                 success = SearchINSPDAT(lotID);
                 if (success == false) { errOut = 6; return null; }
 
@@ -447,7 +473,8 @@ namespace DefectDBManager.Preproc
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
-                success = SearchFLTDAT_TEST(lotID);
+                //success = SearchFLTDAT_TEST(lotID);
+                success = SearchFLTDAT();
                 if (success == false) { errOut = -7; return null; }
 
                 // 처리 완료되면 데이터 정리
@@ -468,35 +495,62 @@ namespace DefectDBManager.Preproc
 
             try
             {
-                QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
-                string query = msg.GetQuery();
-                _LOG.WriteLoadData(_SubPath, query, 0, "XOFSMST", 0.0);
-                if (query == "")
-                {
-                    Log.Write($"[Error] DB Serach XOFSMST query is empty.");
-                    return false;
-                }
+                // 연결 횟수 확인 초기화
+                conn.ResetDisconCheck();
 
-                long dbCnt = 0;
-                string logData;
-                using (var comm = new OracleCommand(query, conn.Connection))
+                while (true)
                 {
-                    using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                    QueryMsg.XOFSMST_Query msg = new QueryMsg.XOFSMST_Query(lotID);
+                    string query = msg.GetQuery();
+                    _LOG.WriteLoadData(_SubPath, query, 0, "XOFSMST", 0.0);
+                    if (query == "")
                     {
-                        dbCnt = reader.RowSize;
-                        while (reader.Read())
-                        {
-                            XOFSMSTData data = new XOFSMSTData();
-                            data.Parse(reader);
-                            _DbResult.XOFSMST.Add(data);
+                        Log.Write($"[Error] DB Serach XOFSMST query is empty.");
+                        return false;
+                    }
 
-                            logData = string.Format($"{_DbResult.XOFSMST.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(_SubPath, logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
+                    long dbCnt = 0;
+                    string logData;
+                    _DbResult.XOFSMST.Clear();
+                    using (var comm = new OracleCommand(query, conn.Connection))
+                    {
+                        using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                        {
+                            dbCnt = reader.RowSize;
+                            while (reader.Read())
+                            {
+                                XOFSMSTData data = new XOFSMSTData();
+                                data.Parse(reader);
+                                _DbResult.XOFSMST.Add(data);
+
+                                logData = string.Format($"{_DbResult.XOFSMST.Count}\t-\t{data.ToString()}");
+                                _LOG.WriteLoadData(_SubPath, logData, _DbResult.XOFSMST.Count, "XOFSMST", 0.0);
+                            }
                         }
                     }
+
+                    if (conn.IsDBConnected == true)
+                        break;
+                    else
+                    {
+                        if (conn.CheckDisconn() == true)
+                        {
+                            while (!conn.Connect())
+                            {
+                                System.Threading.Thread.Sleep(500);
+
+                                if (conn.IsDisconnCheckout() == true)
+                                    break;
+                            }
+                        }
+
+                        break;
+                    }
                 }
+                
+
                 return true;
-                ;
+                
             }
             catch (Exception ex)
             {
@@ -601,67 +655,94 @@ namespace DefectDBManager.Preproc
                     return false;
                 }
 
-                long dbCnt = 0;
-                string logData = "";
-                int logCnt = 0;
-                using (var comm = new OracleCommand(query, conn.Connection))
+                conn.ResetDisconCheck();
+
+                while (true)
                 {
-                    using (OracleDataReader reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                    for (int i = 0; i < _DbResult.PTRY0P.Length; i++)
+                        _DbResult.PTRY0P[i].Clear();
+
+                    long dbCnt = 0;
+                    string logData = "";
+                    int logCnt = 0;
+                    using (var comm = new OracleCommand(query, conn.Connection))
                     {
-                        dbCnt = reader.RowSize;
-
-                        while (reader.Read())
+                        using (OracleDataReader reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                         {
-                            string strYOKLOT = reader[7].ToString();
-                            string strY0LNSN = reader[9].ToString();
+                            dbCnt = reader.RowSize;
 
-                            // 파싱이 잘못되었을 경우, 999로 처리함.
-                            if (Int32.TryParse(reader[2].ToString(), out int nY0PPCD) == false)
-                                nY0PPCD = 999;
-
-                            if (Char.IsLetter(strYOKLOT, 0) == true)
+                            while (reader.Read())
                             {
-                                strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
-                            }
-                            else
-                            {
-                                int pos = strYOKLOT.IndexOf(' ');
-                                if (pos > 0)
-                                    strYOKLOT = strYOKLOT.Substring(0, pos);
-                            }
+                                string strYOKLOT = reader[7].ToString();
+                                string strY0LNSN = reader[9].ToString();
 
-                            PTRY0PData data = new PTRY0PData();
-                            data.Parse(reader);
+                                // 파싱이 잘못되었을 경우, 999로 처리함.
+                                if (Int32.TryParse(reader[2].ToString(), out int nY0PPCD) == false)
+                                    nY0PPCD = 999;
 
-                            switch(nY0PPCD)
-                            {
-                                case 100:   // 연신
+                                if (Char.IsLetter(strYOKLOT, 0) == true)
                                 {
-                                    _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
-                                    logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
-                                    break;
+                                    strYOKLOT = strYOKLOT.Substring(0, 10); // 나중에 사이즈는 설정해야함.
                                 }
-                                    
-                                case 400:   // 도공
+                                else
                                 {
-                                    _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
-                                    logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
-                                      break;
+                                    int pos = strYOKLOT.IndexOf(' ');
+                                    if (pos > 0)
+                                        strYOKLOT = strYOKLOT.Substring(0, pos);
                                 }
 
-                                default: // 그 외
-                                {
-                                    _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
-                                    logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
-                                    break;
-                                }
-                            }
+                                PTRY0PData data = new PTRY0PData();
+                                data.Parse(reader);
 
-                            logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(_SubPath, logData, logCnt, "PTRY0P", 0.0);
+                                switch (nY0PPCD)
+                                {
+                                    case 100:   // 연신
+                                        {
+                                            _DbResult.PTRY0P[(int)eFCD.ES].Add(data);
+                                            logCnt = _DbResult.PTRY0P[(int)eFCD.ES].Count;
+                                            break;
+                                        }
+
+                                    case 400:   // 도공
+                                        {
+                                            _DbResult.PTRY0P[(int)eFCD.TG].Add(data);
+                                            logCnt = _DbResult.PTRY0P[(int)eFCD.TG].Count;
+                                            break;
+                                        }
+
+                                    default: // 그 외
+                                        {
+                                            _DbResult.PTRY0P[(int)eFCD.ETC].Add(data);
+                                            logCnt = _DbResult.PTRY0P[(int)eFCD.ETC].Count;
+                                            break;
+                                        }
+                                }
+
+                                logData = string.Format($"{logCnt}\t-\t{data.ToString()}");
+                                _LOG.WriteLoadData(_SubPath, logData, logCnt, "PTRY0P", 0.0);
+                            }
                         }
                     }
+
+                    if (conn.IsDBConnected == true)
+                        break;
+                    else
+                    {
+                        if (conn.CheckDisconn() == true)
+                        {
+                            while (!conn.Connect())
+                            {
+                                System.Threading.Thread.Sleep(500);
+
+                                if (conn.IsDisconnCheckout() == true)
+                                    break;
+                            }
+                        }
+
+                        break;
+                    }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -726,6 +807,9 @@ namespace DefectDBManager.Preproc
             if (conn?.IsConnected() == false)
                 return false;
 
+            // 끊어짐에 대한 재연결 처리
+            conn.ResetDisconCheck();
+
             int procStep = 0;
             try
             {
@@ -760,29 +844,52 @@ namespace DefectDBManager.Preproc
                             return false;
                         }
 
+
                         INSPDATList inspDataList = new INSPDATList();
-
-                        using (var comm = new OracleCommand(query, conn.Connection))
+                        while(true)
                         {
-                            using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
+                            inspDataList.Clear();
+                            using (var comm = new OracleCommand(query, conn.Connection))
                             {
-                                dbCnt = reader.RowSize;
-
-                                while (reader.Read())
+                                using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                                 {
+                                    dbCnt = reader.RowSize;
 
-                                    INSPDATData data = new INSPDATData();
-                                    data.Y0KLOT = _DbResult.PTRY0P[idx][i].Y0KLOT;
-                                    data.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
-                                    data.Parse(reader);
+                                    while (reader.Read())
+                                    {
 
-                                    // 리스트에 데이터 추가함
-                                    inspDataList.Add(data);
-                                    dataCnt++;
-                                    _LOG.WriteLoadData(_SubPath, data.ToString(), dataCnt, "INSPDAT", 0.0);
+                                        INSPDATData data = new INSPDATData();
+                                        data.Y0KLOT = _DbResult.PTRY0P[idx][i].Y0KLOT;
+                                        data.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
+                                        data.Parse(reader);
+
+                                        // 리스트에 데이터 추가함
+                                        inspDataList.Add(data);
+                                        dataCnt++;
+                                        _LOG.WriteLoadData(_SubPath, data.ToString(), dataCnt, "INSPDAT", 0.0);
+                                    }
                                 }
                             }
+
+                            if (conn.IsDBConnected == true)
+                                break;
+                            else
+                            {
+                                if (conn.CheckDisconn() == true)
+                                {
+                                    while (!conn.Connect())
+                                    {
+                                        System.Threading.Thread.Sleep(500);
+
+                                        if (conn.IsDisconnCheckout() == true)
+                                            break;
+                                    }
+                                }
+
+                                break;
+                            }
                         }
+                        
                         // 최종 데이터 입력
                         _DbResult.INSPDAT[idx].Add(inspDataList);
                     }
@@ -871,7 +978,6 @@ namespace DefectDBManager.Preproc
             }
         }
 
-
         public bool SearchFLTDAT()
         {
             // 연결 확인
@@ -907,9 +1013,12 @@ namespace DefectDBManager.Preproc
             bool bValid = false;
 
             FaultData = new PreProcResultData();
-            
+
             // 현재 데이터는 마킹 비교 결점 데이터라는 것을 표시함.
             FaultData.IsPreProc = true;
+
+            // 체크 카운트 초기화
+            conn.ResetDisconCheck();
 
             try
             {
@@ -941,30 +1050,16 @@ namespace DefectDBManager.Preproc
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
 
-                        // FLTDAT 갯수 얻어오기
-                        int rowCount = 0;
-                        QueryMsg.FLTDAT_Daily_Count_Query cntMsg = new QueryMsg.FLTDAT_Daily_Count_Query();
-                        query = cntMsg.GetQuery();
-                        using (var comm = new OracleCommand(query, conn.Connection))
+                        QueryMsg.FLTDAT_Daily_Query msg = new QueryMsg.FLTDAT_Daily_Query();
+                        query = msg.GetQuery(inspdata.CTLNO);
+
+                        _LOG.WriteLoadData(_SubPath, query, 0, "FAULTDAT", 0.0);
+
+                        if (query == "")
                         {
-                            comm.Parameters.Add(":ctlno", OracleDbType.Varchar2).Value = inspdata.CTLNO;
-
-                            // log용 string
-                            string logQuery = string.Copy(query); // 문자열 복사
-                            logQuery.Replace(":ctlno", $"'{inspdata.CTLNO}'");
-                            _LOG.WriteLoadData(_SubPath, logQuery, 0, "FAULTDAT", 0.0);
-
-                            object result = comm.ExecuteScalar();
-                            rowCount = Convert.ToInt32(result);
-
-                            logData = $"{inspdata.CTLNO} data size : {rowCount}"; 
-                            _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
+                            Log.Write($"[Error] FAULTDAT_{((eFCD)fcdIdx).ToString()} Query message is empty.");
+                            return false;
                         }
-
-                        // 갯수를 100개씩 만들어서 처리함.
-                        int pageSize = 100;
-                        int totalPage = rowCount% pageSize == 0 ? rowCount / pageSize : rowCount / pageSize + 1;
-                        int rowOffset = 0;
 
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
@@ -995,38 +1090,16 @@ namespace DefectDBManager.Preproc
                             }
                         }
 
-                        for (int pageIdx = 0; pageIdx < totalPage; pageIdx++)
+                        while(true)
                         {
-                            rowOffset = pageIdx * pageSize;
-
-                            QueryMsg.FLTDAT_Daily_New_Query msg = new QueryMsg.FLTDAT_Daily_New_Query();
-                            query = msg.GetQuery();
-
                             using (var comm = new OracleCommand(query, conn.Connection))
                             {
-                                comm.Parameters.Add(":ctlno", OracleDbType.Varchar2).Value = inspdata.CTLNO;
-                                comm.Parameters.Add(":offset", OracleDbType.Int32).Value = rowOffset;
-                                comm.Parameters.Add(":pageSize", OracleDbType.Int32).Value = pageSize;
-
-                                // log용 string
-                                string logQuery = string.Copy(query); // 문자열 복사
-                                logQuery.Replace(":ctlno", $"'{inspdata.CTLNO}'");
-                                logQuery.Replace(":offset", $"'{rowOffset}'");
-                                logQuery.Replace(":pageSize", $"'{pageSize}'");
-
-                                _LOG.WriteLoadData(_SubPath, logQuery, 0, "FAULTDAT", 0.0);
-
-                                if (logQuery == "")
-                                {
-                                    Log.Write($"[Error] FAULTDAT_{((eFCD)fcdIdx).ToString()} Query message is empty.");
-                                    return false;
-                                }
-
                                 using (var reader = comm.ExecuteReader(CommandBehavior.SequentialAccess))
                                 {
+                                    dbCnt = reader.RowSize;
+
                                     PreprocMrkDat preMarkData = new PreprocMrkDat();
                                     preMarkData.LNCD = inspdata.LNCD;
-
 
                                     while (reader.Read())
                                     {
@@ -1081,10 +1154,10 @@ namespace DefectDBManager.Preproc
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
                                         markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
 
-                                        if (dataTarget == eProcDataType.Reference)
-                                            FaultData.MarkData.Add(markData);
-                                        else// 마킹 대상 결점
-                                            preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
+                                        //if (dataTarget == eProcDataType.Reference)
+                                        //    FaultData.MarkData.Add(markData);
+                                        //else// 마킹 대상 결점
+                                        preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
 
                                         //dataCnt++;
                                         //logData = data.GetString(dataCnt, tmpFltData.TBCNO);
@@ -1095,9 +1168,38 @@ namespace DefectDBManager.Preproc
                                     // 그렇지 않고 Compare Data이면 PreMarkData에 입력
                                     if (dataTarget == eProcDataType.Compare)
                                         FaultData.PreMarkData[fcdIdx].Add(preMarkData);
+                                    else if(dataTarget == eProcDataType.Reference)
+                                    {
+                                        FaultData.MarkData.Data.Clear();
+                                        foreach(var datum in preMarkData.Data)
+                                            FaultData.MarkData.Add(datum);
+                                    }
                                 }
-                            }           
+                            }
+
+                            if (conn.IsDBConnected == true)
+                            {
+                                conn.ResetDisconCheck();
+                                break;
+                            }
+                            else
+                            {
+                                if (conn.CheckDisconn() == true)
+                                {
+                                    while (!conn.Connect())
+                                    {
+                                        System.Threading.Thread.Sleep(500);
+                                        conn.CheckDisconn();
+                                        if (conn.IsDisconnCheckout() == true)
+                                            break;
+                                    }
+                                }
+
+                                break;
+                            }
                         }
+
+                        System.Threading.Thread.Sleep (1000);
                     }
                 }
 

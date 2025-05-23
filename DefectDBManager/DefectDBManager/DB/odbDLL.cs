@@ -96,6 +96,7 @@ namespace DefectDBManager
                         bDBConnCheck = true;
                         if(this.OnDbConnect!=null)
                             this.OnDbConnect(true);
+                        ResetDisconCheck();
                         Log.Write("DB 연결에 성공하였습니다.");
                     }
                     else
@@ -109,9 +110,10 @@ namespace DefectDBManager
             {
                 string message = String.Format($"[Error] DB Login is Failed. Message : {e.Message}");
                 Log.Write(message);
+                return false;
             }
 
-            return true;
+            return IsDBConnected;
         }
 
         public bool IsDBConnected
@@ -161,9 +163,7 @@ namespace DefectDBManager
                             + $"User Id={LoginInfo.ID};Password={LoginInfo.PW}");
             }
 
-            connectToDB(DBConnString);
-
-            return true;
+            return connectToDB(DBConnString);
         }
 
         public void Disconnect()
@@ -174,6 +174,29 @@ namespace DefectDBManager
             conn.Close();
             conn = null;
         }
+
+        #region 끊어짐에 대한 재연결 처리 확인
+        private int _disconCheckCnt = 0;
+        private const int _disconCheckLimit = 10;
+        public void ResetDisconCheck()
+        {
+            _disconCheckCnt = 0;
+        }
+
+        public bool CheckDisconn()
+        {
+            if(IsDBConnected == true) return false;
+
+            _disconCheckCnt++;
+            return true;
+        }
+
+        public bool IsDisconnCheckout()
+        {
+            return _disconCheckCnt >= _disconCheckLimit ? true : false;
+        }
+        #endregion
+
     }
 
     public class NittoDB
