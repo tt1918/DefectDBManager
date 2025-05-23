@@ -119,12 +119,11 @@
             this.tableLayoutPanel4.Controls.Add(this.lbLog, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblRunState, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(355, 1);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(357, 3);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(658, 198);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(654, 194);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // lbLog
@@ -136,7 +135,7 @@
             this.lbLog.Margin = new System.Windows.Forms.Padding(1);
             this.lbLog.Name = "lbLog";
             this.lbLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbLog.Size = new System.Drawing.Size(211, 196);
+            this.lbLog.Size = new System.Drawing.Size(207, 192);
             this.lbLog.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -155,9 +154,8 @@
             // 
             // lblRunState
             // 
-            this.lblRunState.AutoSize = true;
-            this.lblRunState.BkColor = System.Drawing.Color.Snow;
-            this.lblRunState.BorderColor = System.Drawing.Color.DarkGray;
+            this.lblRunState.BkColor = System.Drawing.Color.Gainsboro;
+            this.lblRunState.BorderColor = System.Drawing.Color.LightGray;
             this.lblRunState.CornerR = 10;
             this.lblRunState.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblRunState.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -166,13 +164,13 @@
             this.lblRunState.IsFillLT = false;
             this.lblRunState.IsFillRB = false;
             this.lblRunState.IsFillRT = false;
-            this.lblRunState.Location = new System.Drawing.Point(2, 2);
-            this.lblRunState.Margin = new System.Windows.Forms.Padding(2);
+            this.lblRunState.Location = new System.Drawing.Point(3, 3);
+            this.lblRunState.Margin = new System.Windows.Forms.Padding(3);
             this.lblRunState.Name = "lblRunState";
-            this.lblRunState.Size = new System.Drawing.Size(441, 194);
+            this.lblRunState.Size = new System.Drawing.Size(439, 188);
             this.lblRunState.TabIndex = 2;
             this.lblRunState.Text = "STOP";
-            this.lblRunState.Thickness = 2;
+            this.lblRunState.Thickness = 1;
             // 
             // FormMarkDiff
             // 
@@ -192,7 +190,6 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tabSearchSet.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
 
         }

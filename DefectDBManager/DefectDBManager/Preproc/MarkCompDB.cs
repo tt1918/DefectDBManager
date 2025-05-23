@@ -1153,15 +1153,7 @@ namespace DefectDBManager.Preproc
                                         // Marking fault data 추가
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
                                         markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
-
-                                        //if (dataTarget == eProcDataType.Reference)
-                                        //    FaultData.MarkData.Add(markData);
-                                        //else// 마킹 대상 결점
                                         preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
-
-                                        //dataCnt++;
-                                        //logData = data.GetString(dataCnt, tmpFltData.TBCNO);
-                                        //_LOG.WriteLoadData(logData, dataCnt, "FAULTDAT", 0.0);
                                         defectCnt[fcdIdx]++;
                                     }
 
@@ -1170,9 +1162,12 @@ namespace DefectDBManager.Preproc
                                         FaultData.PreMarkData[fcdIdx].Add(preMarkData);
                                     else if(dataTarget == eProcDataType.Reference)
                                     {
-                                        FaultData.MarkData.Data.Clear();
-                                        foreach(var datum in preMarkData.Data)
-                                            FaultData.MarkData.Add(datum);
+                                        // DB 연결이 되어있는 경우에만 FaultData에 기준 데이터를 업데이트한다. 
+                                        if (conn.IsDBConnected == true)
+                                        {
+                                            foreach (var datum in preMarkData.Data)
+                                                FaultData.MarkData.Add(datum);
+                                        }
                                     }
                                 }
                             }

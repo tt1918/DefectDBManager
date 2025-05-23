@@ -256,18 +256,17 @@ namespace MarkCompare
             try
             {
                 List<string> errString = new List<string>();
-                int size;
-                string lncd = string.Empty;
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
 
                 DefectDBManager.Preproc.ProcFilterList list = _lotManager.CrtProcFilter[_procIdx];
-
-                size = list.Count;
+                string lncd = string.Empty;
+                int size= list.Count;
+                int idx = 0;
 
                 dgvFilter.Rows.Clear();
-                int idx = 0;
+                
                 foreach (var item in list.Data)
                 {
                     lineName.Clear();
@@ -277,6 +276,8 @@ namespace MarkCompare
                     // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                     foreach (var info in _lotManager.ProcLNCD.Info)
                     {
+                        if (info.CheckStatus == true) continue;
+
                         lineName.Add(info.Name);
 
                         if (info.Name == item.Line)
@@ -447,6 +448,7 @@ namespace MarkCompare
                     // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                     foreach (var info in _lotManager.ProcLNCD.Info)
                     {
+                        if (info.CheckStatus == true) continue;
                         lineName.Add(info.Name);
 
                         if (info.Name == item.Line)

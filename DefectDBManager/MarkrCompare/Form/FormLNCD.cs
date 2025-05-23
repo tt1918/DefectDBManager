@@ -394,6 +394,10 @@ namespace MarkCompare
             lblCheckIPData.Text = info.TargetIP;
             lblCheckDurationData.Text = info.CheckDuration.ToString();
             chbCheckState.Checked = info.CheckStatus;
+
+            dgvMaterial.Visible = !chbCheckState.Checked;
+            btnAddMaterial.Visible = !chbCheckState.Checked;
+            btnDelMaterial.Visible = !chbCheckState.Checked;
         }
 
         private void btnSetStatusCheck_Click(object sender, EventArgs e)
@@ -422,6 +426,9 @@ namespace MarkCompare
             if (selProcIdx == -1 || _selSetName == "") return;
             PreprocLNCDInfo info = MaterialDate[selProcIdx];
             MaterialDate[selProcIdx].CheckStatus = chbCheckState.Checked;
+            dgvMaterial.Visible = !chbCheckState.Checked;
+            btnAddMaterial.Visible = !chbCheckState.Checked;
+            btnDelMaterial.Visible = !chbCheckState.Checked;
         }
 
         #endregion

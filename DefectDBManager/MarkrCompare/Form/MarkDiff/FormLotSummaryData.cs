@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
@@ -255,7 +256,8 @@ namespace MarkCompare
         #endregion
 
         #region Status.txt 상태 표시
-        Timer _timerStatus = null;
+        System.Windows.Forms.Timer _timerStatus = null;
+        private readonly SemaphoreSlim _statusLock = new SemaphoreSlim(1, 1);
         public string TargetIP
         {
             get { return _targetIP; }
@@ -300,55 +302,68 @@ namespace MarkCompare
             }
         }
 
-        private void timerDisplayStatus(object sender, EventArgs e)
+        
+
+        private async void timerDisplayStatus(object sender, EventArgs e)
         {
-            List<string> Paths = new List<string>();
-            Paths.Add(Path.Combine($"\\\\{_targetIP}", "COSS\\Status"));
-            Paths.Add(Path.Combine($"\\\\{_targetIP}", "nexteye\\Status"));
-
-            if (_isCheckStatus == true) return;
-
-            _isCheckStatus = true;
+            if (!await _statusLock.WaitAsync(0)) return;
 
             try
             {
-                StringBuilder sb = new StringBuilder();
-                // 세부 사항 업데이트
-                foreach (var path in Paths)
+                string result = await Task.Run(() =>
                 {
-                    if (Directory.Exists(path))
+                    var sb = new StringBuilder();
+                    var paths = new List<string>
                     {
-                        string[] files = Directory.GetFiles(path);
+                        Path.Combine($"\\\\{_targetIP}", "COSS\\Status"),
+                        Path.Combine($"\\\\{_targetIP}", "nexteye\\Status")
+                    };
 
+                    foreach (var path in paths)
+                    {
+                        if (!Directory.Exists(path)) continue;
+
+                        var files = Directory.GetFiles(path, "Status.txt", System.IO.SearchOption.TopDirectoryOnly);
                         foreach (var file in files)
                         {
-                            if (file.Contains("Status.txt"))
+                            try
                             {
-                                using (StreamReader sr = new StreamReader(file, Encoding.Default))
+                                foreach (var line in File.ReadLines(file, Encoding.Default))
                                 {
-                                    string text;
-                                    while ((text = sr.ReadLine()) != null)
+                                    char[] separators = new char[] { ',' };
+                                    var texts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                                    for (int i = 0; i < texts.Length; i += 2)
                                     {
-                                        if (sb.Length > 0) sb.Append("\n");
-                                        sb.Append(text);
+                                        sb.Append(texts[i]);
+                                        if (i + 1 < texts.Length)
+                                            sb.Append(", ").Append(texts[i + 1]);
+                                        sb.AppendLine();
                                     }
-                                    sr.Close();
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                sb.AppendLine($"파일 읽기 실패: {file}, 이유: {ex.Message}");
                             }
                         }
                     }
-                }
-            
-                if(sb.Length<=0) sb.Append(Lang.CanNotFindStatusTxtFile);
-                UIHelper.SetText(lblProcess, sb.ToString());
+
+                    if (sb.Length == 0)
+                        sb.Append(Lang.CanNotFindStatusTxtFile);
+
+                    return sb.ToString();
+                });
+
+                // UI 갱신은 UI 스레드에서
+                lblProcess.BeginInvoke( new Action(() => lblProcess.Text = result));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SystemLog.DisplaySystemLog($"{Lang.StatusCheck}:{ex.Message}", Log.Level.Error);
+                SystemLog.DisplaySystemLog($"{Lang.StatusCheck}: {ex.Message}", Log.Level.Error);
             }
             finally
             {
-                _isCheckStatus = false;
+                _statusLock.Release(); // 작업 종료 후 잠금 해제
             }
         }
 
