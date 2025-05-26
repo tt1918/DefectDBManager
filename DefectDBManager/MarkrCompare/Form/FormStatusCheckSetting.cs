@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace MarkCompare
         {
             if (Visible == true)
             {
-                tbIP.Texts = IP;
+                lblPath.Text = IP;
                 tbDuration.Texts = Duration.ToString();
             }
         }
@@ -74,6 +75,29 @@ namespace MarkCompare
         #endregion
 
         #region Control
+        private void btnSetPath_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Select File Paht";
+                dialog.Filter = "All Files (*.*)|*.*";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFilePath = dialog.FileName;
+                    string selFolderPath = Path.GetDirectoryName(selectedFilePath);
+                    SystemLog.DisplaySystemLog("선택한 파일 경로: " + selFolderPath, Log.Level.Info);
+
+                    lblPath.Text = selFolderPath;
+
+                }
+                else
+                {
+                    Console.WriteLine("파일 선택을 취소했습니다.");
+                }
+            }
+        }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
@@ -92,23 +116,23 @@ namespace MarkCompare
 
         private bool updateIpData()
         {
-            string[] strings = tbIP.Texts.Split('.');
-            int[] ips = new int[4];
-            if (strings.Length != 4)
-            {
-                MessageBox.Show(Lang.IpAddressIsWrong);
-                return false;
-            }
+            //string[] strings = lblPath.Text.Split('.');
+            //int[] ips = new int[4];
+            //if (strings.Length != 4)
+            //{
+            //    MessageBox.Show(Lang.IpAddressIsWrong);
+            //    return false;
+            //}
 
-            for (int i = 0; i < 4; i++)
-            {
-                ips[i] = Convert.ToInt32(strings[i]);
-                if (ips[i] < 0 || ips[i] > 255)
-                {
-                    MessageBox.Show($"[{i + 1}, {ips[i]}] : {Lang.InsertCorrectNumber}");
-                    return false;
-                }
-            }
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    ips[i] = Convert.ToInt32(strings[i]);
+            //    if (ips[i] < 0 || ips[i] > 255)
+            //    {
+            //        MessageBox.Show($"[{i + 1}, {ips[i]}] : {Lang.InsertCorrectNumber}");
+            //        return false;
+            //    }
+            //}
 
             int duration;
             if(int.TryParse(tbDuration.Texts, out duration)==false)
@@ -117,7 +141,7 @@ namespace MarkCompare
                 return false;
             }
 
-            IP = tbIP.Texts;
+            IP = lblPath.Text;
             Duration = duration;
 
             return true;
@@ -142,5 +166,6 @@ namespace MarkCompare
             btnOK.Text = Lang.btnOK;
         }
         #endregion
+
     }
 }

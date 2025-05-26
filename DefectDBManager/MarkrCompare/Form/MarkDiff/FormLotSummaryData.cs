@@ -117,25 +117,48 @@ namespace MarkCompare
                 if(_lotSummery==null)
                 {
                     UIHelper.SetText(lblStatus, Lang.error);
-                    SystemLog.DisplaySystemLog(Lang.LotSummaryIsEmpty, Log.Level.Error);
+                    UIHelper.SetBackColor(lblStatus, Color.Black);
+                    UIHelper.SetForeColor(lblStatus, Color.White);
+
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.BackColor = Color.WhiteSmoke;
+                        SystemLog.DisplaySystemLog(Lang.LotSummaryIsEmpty, Log.Level.Error);
+                    }));
+                    
                     return;
                 }
 
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
                     UIHelper.SetText(lblStatus, Lang.error);
+                    UIHelper.SetBackColor(lblStatus, Color.Black);
+                    UIHelper.SetForeColor(lblStatus, Color.White);
+
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        this.BackColor = Color.WhiteSmoke;
+                    }));
                     return;
                 }
 
                 if (isError)
                 {
-                    lblStatus.BkColor = Color.Red;
-                    lblStatus.Text = Lang.ErrorOccurrence;
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        lblStatus.BkColor = Color.Red;
+                        this.BackColor = Color.Pink;
+                        lblStatus.Text = Lang.ErrorOccurrence;
+                    }));
                 }
                 else
                 {
-                    lblStatus.BkColor = Color.MidnightBlue;
-                    lblStatus.Text = Lang.Normal;
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        lblStatus.BkColor = Color.MidnightBlue;
+                        this.BackColor = Color.WhiteSmoke;
+                        lblStatus.Text = Lang.Normal;
+                    }));
                 }
             }
             catch (Exception ex)
@@ -313,17 +336,21 @@ namespace MarkCompare
                 string result = await Task.Run(() =>
                 {
                     var sb = new StringBuilder();
-                    var paths = new List<string>
-                    {
-                        Path.Combine($"\\\\{_targetIP}", "COSS\\Status"),
-                        Path.Combine($"\\\\{_targetIP}", "nexteye\\Status")
-                    };
+                    //var paths = new List<string>
+                    //{
+                    //    //Path.Combine($"\\\\{_targetIP}", "COSS\\Status"),
+                    //    //Path.Combine($"\\\\{_targetIP}", "nexteye\\Status")
+                    //    Path.Combine(_targetIP, "Status")
+                    //};
 
-                    foreach (var path in paths)
+                    //foreach (var path in paths)
                     {
-                        if (!Directory.Exists(path)) continue;
+                        if (!Directory.Exists(_targetIP))
+                        {
+                            return sb.ToString();
+                        }
 
-                        var files = Directory.GetFiles(path, "Status.txt", System.IO.SearchOption.TopDirectoryOnly);
+                        var files = Directory.GetFiles(_targetIP, "Status.txt", System.IO.SearchOption.TopDirectoryOnly);
                         foreach (var file in files)
                         {
                             try

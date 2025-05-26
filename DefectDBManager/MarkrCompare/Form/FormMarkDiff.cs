@@ -494,21 +494,25 @@ namespace MarkCompare
 
         public void UpdateRollmap(DefectDBManager.PreprocLot lot, string name)
         {
-            DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-            foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
-            {
-                if (_lotManager.ProcSetting.Data.Find(x => x.Name == item.Model) != null)
-                {
-                    procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == item.Model);
-                    break;
-                }
-            }
-
-            DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
             _rollMapForm.ClearMap();
 
             string[] filterInfo = name.Split('_');
             if (filterInfo == null) return;
+
+            DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+            //foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
+            {
+                //if (_lotManager.ProcSetting.Data.Find(x => x.Name == item.Model) != null)
+                {
+                    procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == filterInfo[2]);
+                   // break;
+                }
+            }
+
+            DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
+            
+
+            
             foreach (var item in lot.INSPDAT)
             {
                 foreach (var item2 in item)

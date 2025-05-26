@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace MarkCompare.Helper
@@ -41,6 +42,16 @@ namespace MarkCompare.Helper
         public static void SetVisible(Control control, bool visible)
         {
             RunOnUIThread(control, () => control.Visible = visible);
+        }
+
+        public static void SetBackColor(Control control, Color color)
+        {
+            RunOnUIThread(control, () => control.BackColor = color);
+        }
+
+        public static void SetForeColor(Control control, Color color)
+        {
+            RunOnUIThread(control, () => control.ForeColor = color);
         }
     }
 }

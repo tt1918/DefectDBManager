@@ -558,7 +558,7 @@
             this.lblLineID.Name = "lblLineID";
             this.lblLineID.Size = new System.Drawing.Size(66, 31);
             this.lblLineID.TabIndex = 6;
-            this.lblLineID.Text = "ID";
+            this.lblLineID.Text = "NAME";
             this.lblLineID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLineID.Thickness = 1;
             // 
@@ -851,7 +851,7 @@
             this.lblCompLineID.Name = "lblCompLineID";
             this.lblCompLineID.Size = new System.Drawing.Size(66, 29);
             this.lblCompLineID.TabIndex = 5;
-            this.lblCompLineID.Text = "ID";
+            this.lblCompLineID.Text = "NAME";
             this.lblCompLineID.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCompLineID.Thickness = 1;
             // 
