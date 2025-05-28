@@ -100,6 +100,12 @@
     <Compile Include="Form\FormCsv.Designer.cs">
       <DependentUpon>FormCsv.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\FormErrorLotDisp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormErrorLotDisp.Designer.cs">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormSystem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +231,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormCsv.resx">
       <DependentUpon>FormCsv.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormErrorLotDisp.en-US.resx">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormErrorLotDisp.ja-JP.resx">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormErrorLotDisp.resx">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormErrorLotDisp.zh-CN.resx">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormErrorLotDisp.zh-TW.resx">
+      <DependentUpon>FormErrorLotDisp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\FormSystem.resx">
       <DependentUpon>FormSystem.cs</DependentUpon>

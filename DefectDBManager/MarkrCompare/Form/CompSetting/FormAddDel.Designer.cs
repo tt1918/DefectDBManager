@@ -79,6 +79,7 @@
             this.lblTitle.Size = new System.Drawing.Size(347, 27);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "TITLE";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.Thickness = 0;
             // 
             // tableLayoutPanel2
@@ -140,6 +141,7 @@
             this.lblName.Size = new System.Drawing.Size(93, 32);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "NAME";
+            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblName.Thickness = 0;
             // 
             // tableLayoutPanel3

@@ -192,6 +192,39 @@ namespace MarkCompare
             displayDataList();
         }
 
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            int index = lvLNCDList.SelectedItems[0].Index;
+            string name = lvLNCDList.SelectedItems[0].SubItems[1].Text;
+
+            FormAddDel form = new FormAddDel(Lang.formAddDelTitleCopy, Lang.formAddDelName, Lang.formAddDelOK, Lang.formAddDelCancel);
+            form.CultureCode = CultureCode;
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            if (form.DataName == "")
+            {
+                MessageBox.Show(Lang.formAddEmptyProcessName, Lang.warning);
+                return;
+            }
+
+            if (form.DataName.Contains('_'))
+            {
+                MessageBox.Show(Lang.NamesCannotContain, Lang.warning);
+                return;
+            }
+
+            PreprocLNCDInfo item = _materialData.GetInfo(name);
+            if (item != null)
+            {
+                PreprocLNCDInfo item1 = new PreprocLNCDInfo();
+                item1.Set(item);
+                item1.Name = form.DataName;
+                _materialData.Info.Add(item1);
+                displayDataList();
+            }
+        }
+
         private void btnLoad_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(Lang.loadData1, Lang.loadData2, MessageBoxButtons.YesNo) == DialogResult.No)
@@ -521,6 +554,7 @@ namespace MarkCompare
             chbCheckState.Font = newFont;
             btnSetStatusCheck.Font = newFont;
             btnAdd.Font = newFont;
+            btnCopy.Font = newFont;
             btnDelete.Font = newFont;
             btnLoad.Font = newFont;
             btnSave.Font = newFont;
@@ -542,6 +576,7 @@ namespace MarkCompare
             btnDelete.Text = Lang.btnDel1;
             btnLoad.Text = Lang.btnLoad1;
             btnSave.Text = Lang.btnSave1;
+            btnCopy.Text = Lang.btnCopy;
 
             btnAddMaterial.Text = Lang.btnAdd;
             btnDelMaterial.Text = Lang.btnDel1;

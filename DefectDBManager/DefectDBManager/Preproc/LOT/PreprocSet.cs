@@ -316,6 +316,20 @@ namespace DefectDBManager.Preproc
                 }
             }
         }
+        
+        public PreprocItem Get(string name)
+        {
+            for (int i = 0; i < _data.Count; i++)
+            {
+                if (_data[i].Name == name)
+                {
+                    return _data[i].Clone();
+                }
+                    
+            }
+
+            return null;
+        }
 
 
         /// <summary>

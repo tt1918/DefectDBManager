@@ -507,4 +507,16 @@
   <data name="filterSet" xml:space="preserve">
     <value>濾波器組</value>
   </data>
+  <data name="formErrorLotDispTitleLive" xml:space="preserve">
+    <value>[即時監控] 錯誤 LOT</value>
+  </data>
+  <data name="formErrorLotDispTitleSearch" xml:space="preserve">
+    <value>[選擇性監控] 错误 LOT</value>
+  </data>
+  <data name="formAddDelTitleCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
+  <data name="btnCopy" xml:space="preserve">
+    <value>複製</value>
+  </data>
 </root>

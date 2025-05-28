@@ -12,4 +12,5 @@ namespace MarkCompare.Delegate
     public delegate void UpdatePrepLot(PreprocLot lot);
     public delegate void DeleUpdateLanguage(string culture);
     public delegate void UpdateSummaryCheck(object obj);
+    public delegate void UpdateErrorLots(string[] errLots);
 }

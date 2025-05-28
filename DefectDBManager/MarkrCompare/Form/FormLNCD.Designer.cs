@@ -64,6 +64,7 @@
             this.btnDelete = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
+            this.btnCopy = new CustomControls.RoundButton();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -81,15 +82,18 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 5;
+            this.tableLayoutPanel5.ColumnCount = 7;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.btnCancel, 3, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnOK, 4, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnApply, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnCancel, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnOK, 6, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSave, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnLoad, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 511);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
@@ -152,10 +156,10 @@
             this.btnApply.FlatAppearance.BorderSize = 0;
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.ForeColor = System.Drawing.Color.White;
-            this.btnApply.Location = new System.Drawing.Point(272, 1);
+            this.btnApply.Location = new System.Drawing.Point(21, 1);
             this.btnApply.Margin = new System.Windows.Forms.Padding(1);
             this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(98, 49);
+            this.btnApply.Size = new System.Drawing.Size(58, 33);
             this.btnApply.TabIndex = 1;
             this.btnApply.Text = "APPLY";
             this.btnApply.TextColor = System.Drawing.Color.White;
@@ -199,6 +203,7 @@
             this.lblTitle.Size = new System.Drawing.Size(587, 26);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "LINE DATA SETTING";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.Thickness = 1;
             // 
             // tableLayoutPanel2
@@ -258,13 +263,15 @@
             // 
             // tableLayoutPanel10
             // 
-            this.tableLayoutPanel10.ColumnCount = 4;
+            this.tableLayoutPanel10.ColumnCount = 5;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel10.Controls.Add(this.btnAddMaterial, 2, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnDelMaterial, 3, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnAddMaterial, 3, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnDelMaterial, 4, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnApply, 1, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 446);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
@@ -690,6 +697,7 @@
             this.lblSelLNCD.Size = new System.Drawing.Size(253, 27);
             this.lblSelLNCD.TabIndex = 2;
             this.lblSelLNCD.Text = "AAA";
+            this.lblSelLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSelLNCD.Thickness = 1;
             // 
             // tableLayoutPanel4
@@ -699,10 +707,9 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel4.Controls.Add(this.btnCopy, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnAdd, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnDelete, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnLoad, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnSave, 3, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 446);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
@@ -765,10 +772,10 @@
             this.btnLoad.FlatAppearance.BorderSize = 0;
             this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoad.ForeColor = System.Drawing.Color.White;
-            this.btnLoad.Location = new System.Drawing.Point(129, 1);
+            this.btnLoad.Location = new System.Drawing.Point(1, 1);
             this.btnLoad.Margin = new System.Windows.Forms.Padding(1);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(62, 33);
+            this.btnLoad.Size = new System.Drawing.Size(98, 49);
             this.btnLoad.TabIndex = 0;
             this.btnLoad.Text = "LOAD";
             this.btnLoad.TextColor = System.Drawing.Color.White;
@@ -786,15 +793,36 @@
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(193, 1);
+            this.btnSave.Location = new System.Drawing.Point(101, 1);
             this.btnSave.Margin = new System.Windows.Forms.Padding(1);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(63, 33);
+            this.btnSave.Size = new System.Drawing.Size(98, 49);
             this.btnSave.TabIndex = 0;
             this.btnSave.Text = "SAVE";
             this.btnSave.TextColor = System.Drawing.Color.White;
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCopy.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCopy.BorderColor = System.Drawing.Color.Lavender;
+            this.btnCopy.BorderRadius = 5;
+            this.btnCopy.BorderSize = 2;
+            this.btnCopy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCopy.FlatAppearance.BorderSize = 0;
+            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopy.ForeColor = System.Drawing.Color.White;
+            this.btnCopy.Location = new System.Drawing.Point(129, 1);
+            this.btnCopy.Margin = new System.Windows.Forms.Padding(1);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(62, 33);
+            this.btnCopy.TabIndex = 1;
+            this.btnCopy.Text = "COPY";
+            this.btnCopy.TextColor = System.Drawing.Color.White;
+            this.btnCopy.UseVisualStyleBackColor = false;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // FormLNCD
             // 
@@ -870,5 +898,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.CheckBox chbCheckState;
+        private CustomControls.RoundButton btnCopy;
     }
 }

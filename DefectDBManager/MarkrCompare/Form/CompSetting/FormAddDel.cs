@@ -97,6 +97,11 @@ namespace MarkCompare
             lblName.Font = newFont;
             btnCancel.Font = newFont;
             btnOK.Font = newFont;
+
+            lblTitle.Text = Lang.formAddDelTitle;
+            lblName.Text = Lang.formAddDelName;
+            btnCancel.Text = Lang.btnCancel1;
+            btnOK.Text = Lang.btnOK1;
         }
         #endregion
     }

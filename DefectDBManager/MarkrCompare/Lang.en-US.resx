@@ -507,4 +507,16 @@
   <data name="filterSet" xml:space="preserve">
     <value>Set Filter</value>
   </data>
+  <data name="formErrorLotDispTitleLive" xml:space="preserve">
+    <value>[Real-time Monitoring] Error Lot</value>
+  </data>
+  <data name="formErrorLotDispTitleSearch" xml:space="preserve">
+    <value>[Selective Monitoring] Error Lot</value>
+  </data>
+  <data name="formAddDelTitleCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="btnCopy" xml:space="preserve">
+    <value>COPY</value>
+  </data>
 </root>

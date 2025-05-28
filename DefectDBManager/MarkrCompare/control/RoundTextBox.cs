@@ -188,7 +188,8 @@ namespace CustomControls
             {
                 placeholderText = value;
                 textBox1.Text = "";
-                SetPlaceholder();
+                if (!this.DesignMode)
+                    SetPlaceholder();
             }
         }
         #endregion

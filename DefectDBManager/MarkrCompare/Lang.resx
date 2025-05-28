@@ -507,4 +507,16 @@
   <data name="filterSet" xml:space="preserve">
     <value>필터 설정</value>
   </data>
+  <data name="formErrorLotDispTitleLive" xml:space="preserve">
+    <value>[실시간 감시] 오차 발생 LOT</value>
+  </data>
+  <data name="formErrorLotDispTitleSearch" xml:space="preserve">
+    <value>[선택 검색] 오차 발생 LOT</value>
+  </data>
+  <data name="formAddDelTitleCopy" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="btnCopy" xml:space="preserve">
+    <value>복사</value>
+  </data>
 </root>

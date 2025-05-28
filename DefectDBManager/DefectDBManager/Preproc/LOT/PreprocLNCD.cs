@@ -157,5 +157,18 @@ namespace DefectDBManager.Preproc
                 }
             }
         }
+
+        public PreprocLNCDInfo GetInfo(string name)
+        {
+            for (int i = 0; i < Info.Count; i++)
+            {
+                if (Info[i].Name == name)
+                {
+                    return Info[i];
+                }
+            }
+
+            return null;
+        }
     }
 }

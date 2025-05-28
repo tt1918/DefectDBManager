@@ -225,6 +225,33 @@ namespace MarkCompare
             displayDataList();
         }
 
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            string name = lvSetList.SelectedItems[0].SubItems[1].Text;
+
+            FormAddDel form = new FormAddDel(Lang.formAddDelTitleCopy, Lang.formAddDelName, Lang.formAddDelOK, Lang.formAddDelCancel);
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            if (form.DataName == "")
+            {
+                MessageBox.Show(Lang.formAddEmptyProcessName, Lang.warning);
+                return;
+            }
+
+            if (form.DataName.Contains('_'))
+            {
+                MessageBox.Show(Lang.NamesCannotContain, Lang.warning);
+                return;
+            }
+
+            PreprocItem item = _preprocSet.Get(name);
+            item.Name = form.DataName;
+
+            _preprocSet.Add(item);
+
+            displayDataList();
+        }
+
         private void btnLoad_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(Lang.loadData1, Lang.loadData2, MessageBoxButtons.YesNo) == DialogResult.No)
@@ -243,6 +270,7 @@ namespace MarkCompare
             _preprocSet.Save();
             SystemLog.DisplayFileServerLog(Lang.doneSavingData);
         }
+
         #endregion
 
         #region Bottom Area
@@ -1097,6 +1125,7 @@ namespace MarkCompare
             lvSetList.Font = newFont;
             btnAdd.Font = newFont;
             btnDelete.Font = newFont;
+            btnCopy.Font = newFont;
             btnLoad.Font = newFont;
             btnSave.Font = newFont;
 
@@ -1136,6 +1165,7 @@ namespace MarkCompare
             // Font 9
             btnAdd.Text = Lang.btnAdd;
             btnDelete.Text = Lang.btnDel1;
+            btnCopy.Text = Lang.btnCopy;
             btnLoad.Text = Lang.btnLoad1;
             btnSave.Text = Lang.btnSave1;
             groupProcess.Text = Lang.formSettingGroupProc;
@@ -1176,5 +1206,7 @@ namespace MarkCompare
             btnOK.Text = Lang.btnOK1;
         }
         #endregion
+
+        
     }
 }

@@ -507,4 +507,16 @@
   <data name="filterSet" xml:space="preserve">
     <value>フィルターセット</value>
   </data>
+  <data name="formErrorLotDispTitleLive" xml:space="preserve">
+    <value>[リアルタイムモニタリング】エラーロット</value>
+  </data>
+  <data name="formErrorLotDispTitleSearch" xml:space="preserve">
+    <value>[選択的監視] エラーロット</value>
+  </data>
+  <data name="formAddDelTitleCopy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="btnCopy" xml:space="preserve">
+    <value>コピー</value>
+  </data>
 </root>

@@ -133,6 +133,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   복사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string btnCopy {
+            get {
+                return ResourceManager.GetString("btnCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   선택 삭제과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnDel {
@@ -502,11 +511,38 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   복사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formAddDelTitleCopy {
+            get {
+                return ResourceManager.GetString("formAddDelTitleCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   이름이 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string formAddEmptyProcessName {
             get {
                 return ResourceManager.GetString("formAddEmptyProcessName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [실시간 감시] 오차 발생 LOT과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formErrorLotDispTitleLive {
+            get {
+                return ResourceManager.GetString("formErrorLotDispTitleLive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [선택 검색] 오차 발생 LOT과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formErrorLotDispTitleSearch {
+            get {
+                return ResourceManager.GetString("formErrorLotDispTitleSearch", resourceCulture);
             }
         }
         

@@ -1,4 +1,5 @@
-﻿using MarkCompare.Delegate;
+﻿using DefectDBManager;
+using MarkCompare.Delegate;
 using MarkCompare.Helper;
 using System;
 using System.Collections.Concurrent;
@@ -435,12 +436,33 @@ namespace MarkCompare
 
         public void UpdateLotSummary()
         {
+            List<string> errLot = new List<string>();
+
             foreach (var item in _lotManager.LiveProduct)
             {
                 string[] keyData = item.Key.Split('_');
                 string lncd = keyData[0];
 
                 _formLotSummary.SetLotSummary(item.Key, _lotManager.LiveLot[item.Key], _lotManager, item.Key);
+
+                foreach(var lot in _lotManager.LiveLot[item.Key])
+                {
+                    if (lot.CompResult == eCompResult.ProcNg)
+                    {
+                        string strTemp = $"{item.ToString()} : {lot.LotName}";
+                        errLot.Add(strTemp);
+                    }
+                }
+            }
+
+            if (errLot.Count > 0)
+            {
+                BeginInvoke(new Action(delegate
+                {
+                    FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
+                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.Show();
+                }));
             }
         }
         #endregion
@@ -473,6 +495,9 @@ namespace MarkCompare
                 _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].OnClearSummaryData();
                 _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControl(_lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search]);
             }));
+
+            List<string> errLot = new List<string>();
+
             foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
             {
                 DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
@@ -488,8 +513,28 @@ namespace MarkCompare
                 if (_lotManager.LOT.ContainsKey(item.ToString()))
                 {
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
+
+                    foreach (var lot in _lotManager.LOT[item.ToString()])
+                    {
+                        if(lot.CompResult== eCompResult.ProcNg)
+                        {
+                            string strTemp = $"{item.ToString()} : {lot.LotName}";
+                            errLot.Add(strTemp);
+                        }
+                    }
                 }
             }
+
+            if(errLot.Count>0)
+            {
+                BeginInvoke(new Action(delegate
+                {
+                    FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Search);
+                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.Show();
+                }));
+            }
+
         }
 
         public void UpdateRollmap(DefectDBManager.PreprocLot lot, string name)
