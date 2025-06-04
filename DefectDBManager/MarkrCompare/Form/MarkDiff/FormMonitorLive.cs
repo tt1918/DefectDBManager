@@ -84,6 +84,7 @@ namespace MarkCompare
 
             int ctrlCount = _lotManager.CrtProcFilter[(int)_procIdx].Count;
             bool isError = false;
+            bool isSkip = false;
             List<string> strError=new List<string>();
             try
             {
@@ -93,10 +94,13 @@ namespace MarkCompare
                 {
                     bool isExistProd=false;
                     bool isExistModel = false;
+                    isSkip = false;
                     foreach (var procInfo in _lotManager.ProcLNCD.Info)
                     {
                         if(procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
                         {
+                            if (procInfo.CheckStatus == true)
+                                isSkip = true;
                             isExistProd = true;
                             break;
                         }    
@@ -111,18 +115,18 @@ namespace MarkCompare
                         }
                     }
 
-                    if(isExistProd==false)
+                    if (isExistProd == false && isSkip == false)
                     {
                         strError.Add($"Line : {item.Line}, {Lang.product} : {item.Product} {Lang.InformationDoesNotExist}");
                         isError = true;
                     }
-                    if(isExistModel==false)
+                    if (isExistModel == false && isSkip == false)
                     {
                         strError.Add($"{Lang.dgvMeterialModel} : {item.Model} {Lang.InformationDoesNotExist}");
                         isError = true;
                     }
 
-                    if(isError==true)
+                    if(isError==true || isSkip == true)
                         continue;
 
                     string format = $"{item.Line} - {Lang.filterDgvProdName}:[{item.Product}], {Lang.dgvMeterialModel}:[{item.Model}]";

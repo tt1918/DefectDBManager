@@ -375,6 +375,7 @@ namespace DefectDBManager.Preproc
         public string Product { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
         public int Duration { get; set; } = 0;
+        public bool IsSkip { get; set; } = false;
 
         private DateTime _setTime;
         private int      _spanHour = 0;
@@ -394,12 +395,14 @@ namespace DefectDBManager.Preproc
         {
             _setTime = DateTime.Now;
             _spanHour = Duration;
+            _isFirst = true;
         }
 
         public void SetTime(int spanHour)
         {
             _setTime = DateTime.Now;
             _spanHour = spanHour;
+            _isFirst = true;
         }
 
         public void ResetTime()

@@ -111,6 +111,7 @@ namespace MarkCompare
 
             for (int i = 0; i < count; i++)
             {
+                if (filters.Data[i].IsSkip == true) continue;
                 string key = filters.Data[i].ToString();
                 TabPage tabPage = new TabPage(key);
                 FlowLayoutPanel flowPanel = new FlowLayoutPanel();

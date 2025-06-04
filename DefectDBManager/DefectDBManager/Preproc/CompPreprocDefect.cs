@@ -306,19 +306,30 @@ namespace DefectDBManager
 
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
             string lncd = string.Empty;
+            bool isSkip = false;
             foreach (var data in filter.Data)
             {
                 // 검색 대상이 아니면 처리하지 않음.
                 if (data.IsInTime() == false) continue;
 
                 lncd = string.Empty;
+                isSkip = false;
+
                 for (int i=0; i< LotManager.ProcLNCD.Info.Count; i++)
                 {
                     if (LotManager.ProcLNCD.Info[i].Name == data.Line)
                     {
+                        if (LotManager.ProcLNCD.Info[i].CheckStatus == true)
+                            isSkip = true;
                         lncd = LotManager.ProcLNCD.Info[i].LNCD;
                         break;
                     }    
+                }
+
+                if (isSkip == true)
+                {
+                    data.ResetTime();
+                    continue;
                 }
 #if TEST_MODE
                 if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
@@ -352,18 +363,27 @@ namespace DefectDBManager
 
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Search];
             string lncd = string.Empty;
+            bool isSkip = false;
 
             foreach (var data in filter.Data)
             {
+                isSkip = false;
+                data.IsSkip = false;
                 lncd = string.Empty;
                 for (int i = 0; i < LotManager.ProcLNCD.Info.Count; i++)
                 {
                     if (LotManager.ProcLNCD.Info[i].Name == data.Line)
                     {
+                        if(LotManager.ProcLNCD.Info[i].CheckStatus==true)
+                            isSkip = true;
                         lncd = LotManager.ProcLNCD.Info[i].LNCD;
                         break;
                     }
                 }
+
+                data.IsSkip = isSkip;
+                if (isSkip) continue;
+
                 string productName = data.Product;
                 bool isWildCard = false;
                 if (productName.ElementAt(0) == '*' && productName.ElementAt(productName.Length - 1) == '*')
@@ -650,5 +670,13 @@ namespace DefectDBManager
             SearchLiveMarkDiff();
         }
 #endregion
+
+        public void dbReconnect()
+        {
+            _DbConn?.Dispose();
+
+            _DbConn = new OracleDbConnection();
+        }
+
     }
 }

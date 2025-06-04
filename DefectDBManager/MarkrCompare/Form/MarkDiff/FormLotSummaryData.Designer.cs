@@ -156,6 +156,7 @@
             this.lblProcess.Location = new System.Drawing.Point(51, 1);
             this.lblProcess.Margin = new System.Windows.Forms.Padding(1);
             this.lblProcess.Name = "lblProcess";
+            this.lblProcess.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.lblProcess.Size = new System.Drawing.Size(553, 76);
             this.lblProcess.TabIndex = 2;
             this.lblProcess.Text = "Case 1:";

@@ -442,6 +442,7 @@ namespace MarkCompare
             {
                 string[] keyData = item.Key.Split('_');
                 string lncd = keyData[0];
+                if (_lotManager.LiveLot.ContainsKey(item.Key) == false) continue;
 
                 _formLotSummary.SetLotSummary(item.Key, _lotManager.LiveLot[item.Key], _lotManager, item.Key);
 

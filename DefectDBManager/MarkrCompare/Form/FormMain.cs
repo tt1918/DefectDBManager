@@ -307,6 +307,9 @@ namespace MarkCompare
                     string[] keyData = item.Key.Split('_');
                     string lncd = keyData[0];
 
+                    if (_lotManager.LiveLot.ContainsKey(item.Key) == false)
+                        continue;
+
                     foreach(var lot in _lotManager.LiveLot[item.Key])
                     {
                         if(lot.CompResult==eCompResult.ProcNg)

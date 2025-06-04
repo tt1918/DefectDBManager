@@ -28,7 +28,19 @@ namespace MarkCompare
             set
             {
                 _lotSummery = value;
-                displayLotSummery();
+                if (this.InvokeRequired)
+                {
+                    this.BeginInvoke(new Action(()=>
+                    {
+                        if (this.Visible == false) this.Visible = true;
+                        displayLotSummery();
+                    }));
+                }
+                else
+                {
+                    if (this.Visible == false) this.Visible = true;
+                    displayLotSummery();
+                }
             }
         }
         /// <summary>
@@ -336,6 +348,7 @@ namespace MarkCompare
                 string result = await Task.Run(() =>
                 {
                     var sb = new StringBuilder();
+                    var sbFiles = new StringBuilder();
                     //var paths = new List<string>
                     //{
                     //    //Path.Combine($"\\\\{_targetIP}", "COSS\\Status"),
@@ -345,32 +358,31 @@ namespace MarkCompare
 
                     //foreach (var path in paths)
                     {
-                        if (!Directory.Exists(_targetIP))
+                        if (Directory.Exists(_targetIP))
                         {
-                            return sb.ToString();
-                        }
-
-                        var files = Directory.GetFiles(_targetIP, "Status.txt", System.IO.SearchOption.TopDirectoryOnly);
-                        foreach (var file in files)
-                        {
-                            try
+                            var files = Directory.GetFiles(_targetIP, "*Status.txt", System.IO.SearchOption.TopDirectoryOnly);
+                            foreach (var file in files)
                             {
-                                foreach (var line in File.ReadLines(file, Encoding.Default))
+                                try
                                 {
-                                    char[] separators = new char[] { ',' };
-                                    var texts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-                                    for (int i = 0; i < texts.Length; i += 2)
+                                    sbFiles.Append(file+" ");
+                                    foreach (var line in File.ReadLines(file, Encoding.Default))
                                     {
-                                        sb.Append(texts[i]);
-                                        if (i + 1 < texts.Length)
-                                            sb.Append(", ").Append(texts[i + 1]);
-                                        sb.AppendLine();
+                                        char[] separators = new char[] { ',' };
+                                        var texts = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                                        for (int i = 0; i < texts.Length; i += 2)
+                                        {
+                                            sb.Append(texts[i]);
+                                            if (i + 1 < texts.Length)
+                                                sb.Append(", ").Append(texts[i + 1]);
+                                            sb.AppendLine();
+                                        }
                                     }
                                 }
-                            }
-                            catch (Exception ex)
-                            {
-                                sb.AppendLine($"파일 읽기 실패: {file}, 이유: {ex.Message}");
+                                catch (Exception ex)
+                                {
+                                    sb.AppendLine($"파일 읽기 실패: {file}, 이유: {ex.Message}");
+                                }
                             }
                         }
                     }
@@ -378,11 +390,14 @@ namespace MarkCompare
                     if (sb.Length == 0)
                         sb.Append(Lang.CanNotFindStatusTxtFile);
 
+
+                    // UI 갱신은 UI 스레드에서
+                    UIHelper.SetText(lblProcess, sb.ToString());
+                    if(sbFiles.Length>0)    UIHelper.SetText(lblLotName, sbFiles.ToString());
+                   
                     return sb.ToString();
                 });
 
-                // UI 갱신은 UI 스레드에서
-                lblProcess.BeginInvoke( new Action(() => lblProcess.Text = result));
             }
             catch (Exception ex)
             {

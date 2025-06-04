@@ -172,7 +172,6 @@ namespace DefectDBManager
                 return;
 
             conn.Close();
-            conn = null;
         }
 
         #region 끊어짐에 대한 재연결 처리 확인

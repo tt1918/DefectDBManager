@@ -273,11 +273,20 @@ namespace MarkCompare
                     material.Clear();
                     model.Clear();
 
+                    bool isSkip=false;
+
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line && info.CheckStatus == true)
+                            isSkip = true;
+                    }
+
+                    if (isSkip) continue;
+
                     // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                     foreach (var info in _lotManager.ProcLNCD.Info)
                     {
                         if (info.CheckStatus == true) continue;
-
                         lineName.Add(info.Name);
 
                         if (info.Name == item.Line)
@@ -287,6 +296,7 @@ namespace MarkCompare
                             foreach (var product in info.Material.Items)
                                 material.Add(product);
                         }
+
                     }
 
                     foreach (var data in _lotManager.ProcSetting.Data)
@@ -372,6 +382,7 @@ namespace MarkCompare
                 // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                 foreach (var info in _lotManager.ProcLNCD.Info)
                 {
+                    if (info.CheckStatus) continue;
                     lineName.Add(info.Name);
                 }
 
@@ -444,6 +455,16 @@ namespace MarkCompare
                     lineName.Clear();
                     material.Clear();
                     model.Clear();
+
+                    bool isSkip = false;
+
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line && info.CheckStatus == true)
+                            isSkip = true;
+                    }
+
+                    if (isSkip) continue;
 
                     // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                     foreach (var info in _lotManager.ProcLNCD.Info)
@@ -546,6 +567,7 @@ namespace MarkCompare
                 // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                 foreach (var info in _lotManager.ProcLNCD.Info)
                 {
+                    if (info.CheckStatus == true) continue;
                     lineName.Add(info.Name);
                 }
 

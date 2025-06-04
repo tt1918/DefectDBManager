@@ -233,6 +233,7 @@
             this.lblTitle.Size = new System.Drawing.Size(587, 26);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "PRODUCT SETTING";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.Thickness = 1;
             // 
             // tableLayoutPanel2
@@ -283,6 +284,7 @@
             this.lblSyncDuration.Size = new System.Drawing.Size(116, 26);
             this.lblSyncDuration.TabIndex = 3;
             this.lblSyncDuration.Text = "Sync Duration";
+            this.lblSyncDuration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSyncDuration.Thickness = 1;
             // 
             // comboSyncDuration
