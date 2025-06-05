@@ -179,6 +179,7 @@ namespace DefectDBManager.Preproc
 
             try
             {
+                Log.Write("생산 LOT 검색");
                 string strLine = $"[{filter.Line}_{filter.Product}_{filter.Model}]";
                 strLine = strLine.Replace("*", "@");
 
@@ -238,6 +239,8 @@ namespace DefectDBManager.Preproc
 
                 // 이름으로 랏 정렬을 한다.
                 PTRY0PList_Data.Copy(PTRY0PList_Data.Data.OrderBy(p => p.Y0KLOT).ToList());
+
+                Log.Write($"검색 LOT 갯수 : {PTRY0PList_Data.Count}");
             }
             catch (Exception ex)
             {
@@ -338,7 +341,7 @@ namespace DefectDBManager.Preproc
                     Log.Write($"[Error] DB Serach PTRYLP query is empty.");
                 }
 
-                Log.Write($"Step - 1");
+                Log.Write($"[{lotID}] PTRLYP 검색");
 
                 bool isDbError = false;
                 // 끊어짐에 대한 재연결 처리
@@ -393,34 +396,52 @@ namespace DefectDBManager.Preproc
                     }
                 }
 
-                Log.Write($"Step - 2");
-
                 if (success == false)
                 {
+                    Log.Write($"[{lotID}] PTRLYP 검색 후 에러 발생");
                     errOut = 2;
                     return null;
                 }
-                Log.Write($"Step - 3");
+
+                Log.Write($"[{lotID}] XOFSMST 검색");
                 success = SearchXOFSMST(lotID);
-                if (success == false) { errOut = 3; return null; }
+                if (success == false) 
+                { 
+                    errOut = 3;
+                    Log.Write($"[{lotID}] XOFSMST 검색 후 에러 발생");
+                    return null; 
+                }
 
-                Log.Write($"Step - 4");
+                Log.Write($"[{lotID}] PTRY0P 검색");
                 success = SearchPTRY0P(lotID);
-                if (success == false) { errOut = 4; return null; }
+                if (success == false)
+                { 
+                    errOut = 4;
+                    Log.Write($"[{lotID}] PTRY0P 검색 후 에러 발생");
+                    return null; 
+                }
 
-                Log.Write($"Step - 5");
+                Log.Write($"[{lotID}] INSPDAT 검색");
                 success = SearchINSPDAT(lotID);
-                if (success == false) { errOut = 6; return null; }
+                if (success == false) 
+                { 
+                    errOut = 6;
+                    Log.Write($"[{lotID}] INSPDAT 검색 후 에러 발생");
+                    return null; 
+                }
 
-                Log.Write($"Step - 6");
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
-                Log.Write($"Step - 7");
+                Log.Write($"[{lotID}] FLTDAT 검색");
                 success = SearchFLTDAT();
-                if (success == false) { errOut = -7; return null; }
-
-                Log.Write($"Step - 8");
+                if (success == false) 
+                { 
+                    errOut = -7;
+                    Log.Write($"[{lotID}] FLTDAT 검색 후 에러 발생");
+                    return null; 
+                }
+                Log.Write($"[{lotID}] 데이터 검색 완료");
                 // 처리 완료되면 데이터 정리
 
                 return new PreprocLot(lotID, _DbResult, FaultData);
@@ -448,6 +469,7 @@ namespace DefectDBManager.Preproc
                     dbOption.useKT = false;
                 _LOG.Lot = lotID;
 
+                Log.Write($"[{lotID}] PTRLYP 검색");
                 string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRYLP_DBResult.txt");
 
                 using (var reader = new StreamReader(path, Encoding.UTF8))
@@ -467,22 +489,48 @@ namespace DefectDBManager.Preproc
                 if (success == false)
                 {
                     errOut = 2;
+                    Log.Write($"[{lotID}] PTRLYP 검색 후 에러 발생");
                     return null;
                 }
+
+                Log.Write($"[{lotID}] XOFSMST 검색");
                 success = SearchXOFSMST_TEST(lotID);
-                if (success == false) { errOut = 3; return null; }
+                if (success == false)
+                { 
+                    errOut = 3;
+                    Log.Write($"[{lotID}] XOFSMST 검색 후 에러 발생");
+                    return null;
+                }
 
+                Log.Write($"[{lotID}] PTRY0P 검색");
                 success = SearchPTRY0P_TEST(lotID);
-                if (success == false) { errOut = 4; return null; }
+                if (success == false) 
+                { 
+                    errOut = 4;
+                    Log.Write($"[{lotID}] PTRY0P 검색 후 에러 발생");
+                    return null; 
+                }
 
+                Log.Write($"[{lotID}] INSPDAT 검색");
                 success = SearchINSPDAT_TEST(lotID);
-                if (success == false) { errOut = 6; return null; }
+                if (success == false) 
+                {
+                    errOut = 6;
+                    Log.Write($"[{lotID}] INSPDAT 검색 후 에러 발생");
+                    return null; 
+                }
 
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
+                Log.Write($"[{lotID}] FLTDAT 검색");
                 success = SearchFLTDAT_TEST(lotID);
-                if (success == false) { errOut = -7; return null; }
+                if (success == false) 
+                { 
+                    errOut = -7;
+                    Log.Write($"[{lotID}] FLTDAT 검색 후 에러 발생");
+                    return null; 
+                }
 
                 // 처리 완료되면 데이터 정리
                 return new PreprocLot(lotID, _DbResult, FaultData);

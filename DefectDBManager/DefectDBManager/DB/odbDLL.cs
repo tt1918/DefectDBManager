@@ -74,6 +74,7 @@ namespace DefectDBManager
 
         private bool connectToDB(string dbConn)
         {
+            Log.Write("DB 연결을 시도합니다.");
             if (conn == null)
             {
                 conn = new OracleConnection(dbConn);

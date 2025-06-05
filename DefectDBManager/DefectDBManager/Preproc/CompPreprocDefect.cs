@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -204,6 +204,7 @@ namespace DefectDBManager
                 Thread.Sleep(1000);
             }
 
+            Log.Write("실시간 오차 검색 시작");
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
 
@@ -238,6 +239,7 @@ namespace DefectDBManager
             StopLiveSearch = false;
             IsRunLiveSearch = false;
 
+            Log.Write("실시간 오차 검색 완료");
             // 완료 보고
             OnEndLiveSearchLot?.Invoke();
         }
@@ -253,6 +255,7 @@ namespace DefectDBManager
                 Thread.Sleep(1000);
             }
 
+            Log.Write("선택 공정 결점 오차 검색 시작");
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
@@ -291,6 +294,7 @@ namespace DefectDBManager
             StopSearchingLotList = false;
             IsRunSearchingLotList = false;
 
+            Log.Write("선택 공정 결점 오차 검색 완료");
             // 완료 보고
             OnEndSearchingLotList?.Invoke();
         }

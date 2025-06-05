@@ -132,7 +132,7 @@ namespace MarkCompare
         private void timerLogProc(object sender, EventArgs e)
         {
             _timerLog.Stop();
-
+            int maxCnt = 200;
             try
             {
                 int queueSize = _queueLog.Count;
@@ -145,22 +145,21 @@ namespace MarkCompare
                 lbLog.BeginUpdate();
 
                 // 100개 까지만 데이터 표시함
-                while (lbLog.Items.Count > 100)
+                while (lbLog.Items.Count > maxCnt)
                 {
-                    lbLog.Items.RemoveAt(0);
+                    lbLog.Items.RemoveAt(maxCnt-1);
                 }
 
                 while (queueSize > 0)
                 {
-                    if (lbLog.Items.Count > 100)
-                        lbLog.Items.RemoveAt(0);
+                    if (lbLog.Items.Count > maxCnt)
+                        lbLog.Items.RemoveAt(maxCnt - 1);
 
                     string strData;
                     if (_queueLog.TryDequeue(out strData) == true)
-                        lbLog.Items.Add(strData);
+                        lbLog.Items.Insert(0, strData);
                     queueSize--;
                 }
-                lbLog.SetSelected(lbLog.Items.Count - 1, true);
             }
             catch
             {
@@ -193,27 +192,49 @@ namespace MarkCompare
 
         public void OnDisplayFileServerLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
         {
-            AddLog(text, level);
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, level);
             if (write) SystemLog.FileServer.Write(level, text);
         }
         public void OnDisplayNetworkLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
         {
-            AddLog(text, level);
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, level);
             if (write) SystemLog.Network.Write(level, text);
         }
         public void OnDisplaySystemLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
         {
-            AddLog(text, level);
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, level);
             if (write) SystemLog.System.Write(level, text);
         }
         public void OnDisplayAlarmLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
         {
-            AddLog(text, level);
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, level);
             if (write) SystemLog.Alarm.Write(level, text);
         }
         public void OnDisplayLog(string text, Log.Level level = Log.Level.Info, bool write = true, bool duplicate = false)
         {
-            AddLog(text, level);
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, level);
+        }
+        public void OnDispDBLog(string text)
+        {
+            DateTime time = DateTime.Now;
+            string data;
+            data = $"{time.Hour}:{time.Minute}:{time.Second} {text}";
+            AddLog(data, Log.Level.Info);
         }
         #endregion
 

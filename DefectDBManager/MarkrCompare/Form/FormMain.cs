@@ -82,6 +82,7 @@ namespace MarkCompare
             SystemLog.OnDisplayLogData = _markDiffForm.OnDisplayLog;
             SystemLog.DisplayNetworkLog = _markDiffForm.OnDisplayNetworkLog;
             SystemLog.DisplayAlarmLog = _markDiffForm.OnDisplayAlarmLog;
+            DefectDBManager.Log.OnDispEventLog += _markDiffForm.OnDispDBLog;
 
             _dbManager.OnEndSearchingLotList += EndSearchLotList;
             _dbManager.OnEndLiveSearchLot += EndLiveSearch;
@@ -100,6 +101,7 @@ namespace MarkCompare
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            DefectDBManager.Log.OnDispEventLog -= _markDiffForm.OnDispDBLog;
             _dbManager.OnEndSearchingLotList -= EndSearchLotList;
             _dbManager.OnEndLiveSearchLot -= EndLiveSearch;
 

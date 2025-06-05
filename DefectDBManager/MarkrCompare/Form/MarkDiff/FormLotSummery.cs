@@ -96,6 +96,9 @@ namespace MarkCompare
                         form.TopLevel = false;
                         form.Show();
 
+                        if(_dicLotSummary==null)
+                            _dicLotSummary = new Dictionary<string, List<FormLotSummaryData>>();
+
                         if (_dicLotSummary.ContainsKey(lncd))
                         {
                             _dicLotSummary[lncd].Add(form);

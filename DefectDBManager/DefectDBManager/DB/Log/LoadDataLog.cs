@@ -7,14 +7,20 @@ using System.Threading.Tasks;
 
 namespace DefectDBManager
 {
+    public delegate void DisplayEventLog(string str);
+
     public static class Log
     {
+        public static event DisplayEventLog OnDispEventLog;
+     
         public static void Write(string str)
         {
             int nDay;
 
             DateTime time = DateTime.Now;
             string data, fileName, folderName;
+
+            OnDispEventLog?.Invoke(str);
 
             nDay = time.Day;
             folderName = $"{Define.LogPath}\\{time.Month:D2}";
@@ -27,6 +33,7 @@ namespace DefectDBManager
                 {
                     data = $"{time.Hour}:{time.Minute}:{time.Second} {str}";
                     sw.WriteLine(data);
+                    sw.Close();
                 }
             }
             finally
@@ -46,11 +53,8 @@ namespace DefectDBManager
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, $"{name}_{Define.DBResultName}");
             
-            if(clear==true)
-            {
-                File.Delete(path);
-            }
-
+            if(clear==true) File.Delete(path);
+            
             try
             {
                 using (StreamWriter sw = File.AppendText(path))
