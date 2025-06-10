@@ -73,8 +73,6 @@ namespace MarkCompare
         {
             try
             {
-                //flpLotSummary.Controls.Clear();
-
                 foreach (var lot in lotSummary)
                 {
                     BeginInvoke(new Action(delegate 

@@ -250,9 +250,9 @@ namespace MarkCompare
 
                     for (int i = 1; i < procItem.CompRange.Count + 1; i++)
                     {
-                        if (compCnt[idx, i - 1] > 0)
+                        if (compCnt[idx, 0] > 0)
                         {
-                            result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, i - 1]) * 100.0;
+                            result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, 0]) * 100.0;
                             sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
                         }
                         else

@@ -519,4 +519,10 @@
   <data name="btnCopy" xml:space="preserve">
     <value>複製</value>
   </data>
+  <data name="compLncdAndRefLncdIsSame" xml:space="preserve">
+    <value>比較 LNCD 和參考 LNCD 相同。</value>
+  </data>
+  <data name="sameLNCDexists" xml:space="preserve">
+    <value>存在同名的LNCD</value>
+  </data>
 </root>

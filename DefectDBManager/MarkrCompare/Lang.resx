@@ -519,4 +519,10 @@
   <data name="btnCopy" xml:space="preserve">
     <value>복사</value>
   </data>
+  <data name="compLncdAndRefLncdIsSame" xml:space="preserve">
+    <value>비교 공정 이름과 기준 공정 이름이 동일합니다.</value>
+  </data>
+  <data name="sameLNCDexists" xml:space="preserve">
+    <value>동일한 이름의 LNCD가 존재합니다.</value>
+  </data>
 </root>

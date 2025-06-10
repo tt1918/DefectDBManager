@@ -250,6 +250,19 @@ namespace DefectDBManager
 
 
         #region Live Lot 데이터 관리
+
+        public void DeleteLiveProduct(string lncd, string lotName)
+        {
+            if (LiveProduct.ContainsKey(lncd))
+            {
+                foreach(var item in LiveProduct[lncd].Data)
+                {
+                    if (item.Y0KLOT == lotName)
+                        LiveProduct[lncd].Data.Remove(item);
+                }
+            }
+        }
+
         /// <summary>
         /// 랏관리 데이터에 신규 랏 정보를 추가
         /// </summary>

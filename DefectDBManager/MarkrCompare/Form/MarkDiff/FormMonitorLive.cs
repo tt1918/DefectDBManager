@@ -215,7 +215,8 @@ namespace MarkCompare
                 // 검사 정지
                 OnStopLiveSearch?.Invoke();
 
-                updateLotSearchRes(CompProc.Stop);
+                _compProc = CompProc.Stop;
+                updateLotSearchRes(_compProc);
             }
             catch
             {
@@ -245,11 +246,19 @@ namespace MarkCompare
         #endregion
 
         #region 검색 완료
+        public void StartLotSearch()
+        {
+            // 타이머에서 처음 데이터 업데이트
+            _compProc = CompProc.Proc;
+            updateLotSearchRes(_compProc);
+        }
+
         public void EndLotSearch()
         {
             // 여기서 timer_LotSearch 종료하면 안됨.
             // 마지막 데이터 업데이트
-            updateLotSearchRes(CompProc.End);
+            _compProc = CompProc.End;
+            updateLotSearchRes(_compProc);
         }
         #endregion
 
@@ -265,10 +274,11 @@ namespace MarkCompare
 
         private void timer_LotSearch(object sender, EventArgs e)
         {
-            updateLotSearchRes();
+            updateLotSearchRes(_compProc);
         }
 
-        private void updateLotSearchRes(CompProc eProc = CompProc.Proc)
+        CompProc _compProc = CompProc.None;
+        private void updateLotSearchRes(CompProc eProc)
         {
             int total = _lotManager.TotalLiveProduct;
             int count = _lotManager.TotalLiveLot;

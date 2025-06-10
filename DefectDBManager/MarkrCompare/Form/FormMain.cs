@@ -132,6 +132,7 @@ namespace MarkCompare
 
             _markDiffForm.FormMorLive.OnStartLiveSearch += _dbManager.StartLiveLot;
             _markDiffForm.FormMorLive.OnStopLiveSearch += _dbManager.StopLiveLot;
+            _dbManager.OnStartLiveDefectSearching += _markDiffForm.FormMorLive.StartLotSearch;
 
             _dbManager.OnEndSearchingLotList += _markDiffForm.FormMorSearch.EndLotSearch;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
@@ -147,6 +148,7 @@ namespace MarkCompare
 
             _markDiffForm.FormMorLive.OnStartLiveSearch -= _dbManager.StartLiveLot;
             _markDiffForm.FormMorLive.OnStopLiveSearch -= _dbManager.StopLiveLot;
+            _dbManager.OnStartLiveDefectSearching -= _markDiffForm.FormMorLive.StartLotSearch;
 
             _dbManager.OnEndSearchingLotList -= _markDiffForm.FormMorSearch.EndLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;

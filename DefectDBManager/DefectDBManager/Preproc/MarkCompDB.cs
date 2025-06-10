@@ -180,10 +180,14 @@ namespace DefectDBManager.Preproc
             try
             {
                 Log.Write("생산 LOT 검색");
-                string strLine = $"[{filter.Line}_{filter.Product}_{filter.Model}]";
-                strLine = strLine.Replace("*", "@");
+                string strFilter = $"{filter.Line}_{filter.Product}_{filter.Model}";
+                strFilter = strFilter.Replace("*", "@");
+                string strLine = $"[{strFilter}]";
 
                 _LOG.Lot = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
+
+                // 임시로 패스 경로를 설정한다.
+                _SubPath = strFilter;
 
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
@@ -223,6 +227,15 @@ namespace DefectDBManager.Preproc
                                 if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
                                     continue;
 
+                                // 동일 경로가 존재하는 경우 패스
+                                int newLotCnt = GetLotSpliceCnt(data.Y0KLOT);
+                                if (newLotCnt > 0)
+                                {
+                                    string logData1 = string.Format($"{PTRY0PList_Data.Count}\t-\tSkip {data.ToString()} : Already Check");
+                                    _LOG.WriteLoadData(logData1, 0, listFileName, 0);
+                                    continue;
+                                }
+
                                 // 우선 전체 데이터 넣는다.
                                 PTRY0PList_Data.Add(data);
 
@@ -255,11 +268,13 @@ namespace DefectDBManager.Preproc
         {
             try
             {
-                string strLine = $"[{filter.Line}_{filter.Product}_{filter.Model}]";
-                strLine = strLine.Replace("*", "@");
+                string strFilter = $"{filter.Line}_{filter.Product}_{filter.Model}";
+                strFilter = strFilter.Replace("*", "@");
+                string strLine = $"[{strFilter}]";
                 string path = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
                 path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
 
+                _SubPath = strFilter;
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
 
@@ -278,6 +293,11 @@ namespace DefectDBManager.Preproc
 
                         if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
                             continue;
+
+                        // 동일 경로가 존재하는 경우 패스
+                        //int newLotCnt = GetLotSpliceCnt(data.Y0KLOT);
+                        //if (newLotCnt > 0)
+                        //    continue;
 
                         // 우선 전체 데이터 넣는다.
                         PTRY0PList_Data.Add(data);
@@ -298,7 +318,7 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref int errOut)
+        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref eSearchError errOut)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -321,6 +341,7 @@ namespace DefectDBManager.Preproc
                 if (newLotCnt > 0)
                 {
                     Log.Write($"스플라이스가 존재함");
+                    errOut = eSearchError.SpliceExistErr;
                     // 재갱신 데이터가 아니면 업데이트 안하고 스킵함.
                     if (renewal == false)
                         return null;
@@ -337,7 +358,7 @@ namespace DefectDBManager.Preproc
 
                 if (query == "")
                 {
-                    errOut = 1;
+                    errOut = eSearchError.PTRYLPEmpty;
                     Log.Write($"[Error] DB Serach PTRYLP query is empty.");
                 }
 
@@ -399,7 +420,7 @@ namespace DefectDBManager.Preproc
                 if (success == false)
                 {
                     Log.Write($"[{lotID}] PTRLYP 검색 후 에러 발생");
-                    errOut = 2;
+                    errOut = eSearchError.PTRLYPSearchErr;
                     return null;
                 }
 
@@ -407,7 +428,7 @@ namespace DefectDBManager.Preproc
                 success = SearchXOFSMST(lotID);
                 if (success == false) 
                 { 
-                    errOut = 3;
+                    errOut = eSearchError.XOFSMSTSearchErr;
                     Log.Write($"[{lotID}] XOFSMST 검색 후 에러 발생");
                     return null; 
                 }
@@ -416,7 +437,7 @@ namespace DefectDBManager.Preproc
                 success = SearchPTRY0P(lotID);
                 if (success == false)
                 { 
-                    errOut = 4;
+                    errOut = eSearchError.PTRY0PSearchErr;
                     Log.Write($"[{lotID}] PTRY0P 검색 후 에러 발생");
                     return null; 
                 }
@@ -425,7 +446,7 @@ namespace DefectDBManager.Preproc
                 success = SearchINSPDAT(lotID);
                 if (success == false) 
                 { 
-                    errOut = 6;
+                    errOut = eSearchError.INSPDATSearchErr;
                     Log.Write($"[{lotID}] INSPDAT 검색 후 에러 발생");
                     return null; 
                 }
@@ -437,7 +458,7 @@ namespace DefectDBManager.Preproc
                 success = SearchFLTDAT();
                 if (success == false) 
                 { 
-                    errOut = -7;
+                    errOut = eSearchError.FLTDATSearchErr;
                     Log.Write($"[{lotID}] FLTDAT 검색 후 에러 발생");
                     return null; 
                 }
@@ -453,7 +474,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, ref int errOut)
+        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, ref eSearchError errOut)
         {
             bool success = false;
             try
@@ -488,7 +509,7 @@ namespace DefectDBManager.Preproc
 
                 if (success == false)
                 {
-                    errOut = 2;
+                    errOut = eSearchError.PTRLYPSearchErr;
                     Log.Write($"[{lotID}] PTRLYP 검색 후 에러 발생");
                     return null;
                 }
@@ -497,7 +518,7 @@ namespace DefectDBManager.Preproc
                 success = SearchXOFSMST_TEST(lotID);
                 if (success == false)
                 { 
-                    errOut = 3;
+                    errOut = eSearchError.XOFSMSTSearchErr;
                     Log.Write($"[{lotID}] XOFSMST 검색 후 에러 발생");
                     return null;
                 }
@@ -506,7 +527,7 @@ namespace DefectDBManager.Preproc
                 success = SearchPTRY0P_TEST(lotID);
                 if (success == false) 
                 { 
-                    errOut = 4;
+                    errOut = eSearchError.PTRY0PSearchErr;
                     Log.Write($"[{lotID}] PTRY0P 검색 후 에러 발생");
                     return null; 
                 }
@@ -515,7 +536,7 @@ namespace DefectDBManager.Preproc
                 success = SearchINSPDAT_TEST(lotID);
                 if (success == false) 
                 {
-                    errOut = 6;
+                    errOut = eSearchError.INSPDATSearchErr;
                     Log.Write($"[{lotID}] INSPDAT 검색 후 에러 발생");
                     return null; 
                 }
@@ -527,7 +548,7 @@ namespace DefectDBManager.Preproc
                 success = SearchFLTDAT_TEST(lotID);
                 if (success == false) 
                 { 
-                    errOut = -7;
+                    errOut = eSearchError.FLTDATSearchErr;
                     Log.Write($"[{lotID}] FLTDAT 검색 후 에러 발생");
                     return null; 
                 }

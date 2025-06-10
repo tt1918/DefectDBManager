@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ namespace DefectDBManager
         public event DelegateProcessEvent OnProcessEvent = null;
          // 랏 검색 진행 상황을 상위로 보고
         public event DelegateLotProgress OnLotProgress = null;
+
+        public event DelegateEvent OnStartLiveDefectSearching = null;
         #endregion Event
 
         #region Param
@@ -205,9 +208,12 @@ namespace DefectDBManager
             }
 
             Log.Write("실시간 오차 검색 시작");
+            OnStartLiveDefectSearching?.Invoke();
+
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
 
+            // 데이터 검색
             int productIdx = 0;
             foreach (var list in LotManager.LiveProduct)
             {
@@ -222,7 +228,7 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
-                    ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Search][productIdx];
+                    ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Live][productIdx];
 
                     _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
 
@@ -427,7 +433,7 @@ namespace DefectDBManager
 #region 결점 데이터 검색
         public void SearchLiveDefectData(string lncd, string lotName, PreprocItem preprocItem, ProcFilter filter)
         {
-            int error = -1;
+            eSearchError error = eSearchError.Normal;
             bool usemkcdModel = LotManager.UseMrkctlmstModel;
             try
             {
@@ -436,7 +442,7 @@ namespace DefectDBManager
 #else
                 PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
 #endif
-                if (lot == null) return;
+                if (lot == null)    return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
                 lot.ComparePosition(preprocItem);
@@ -500,7 +506,7 @@ namespace DefectDBManager
 
         public void SearchDefectData(string lncd, string lotName , PreprocItem preprocItem, ProcFilter filter)
         {
-            int error = -1;
+            eSearchError error = eSearchError.Normal;
             try
             {
 #if TEST_MODE

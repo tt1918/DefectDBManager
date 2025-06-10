@@ -285,9 +285,20 @@ namespace MarkCompare
             {
                 if (string.IsNullOrWhiteSpace(lblName.Text))
                 {
-                    MessageBox.Show(Lang.formSettingPlzSelectModel);
+                    MessageBox.Show(Lang.compLncdAndRefLncdIsSame);
                     return;
                 }
+
+                string refLNCD = tbRefLNCD.Texts;
+                foreach(var item in _tmpCompProc)
+                {
+                    if(refLNCD==item.LNCD)
+                    {
+                        MessageBox.Show(Lang.formSettingModelApplyed);
+                        return;
+                    }
+                }
+
                 updateAllDgvCtrl();
                 MessageBox.Show(Lang.formSettingModelApplyed);
                 SystemLog.DisplayFileServerLog(Lang.appliedParam);
@@ -339,7 +350,6 @@ namespace MarkCompare
 
             foreach (var item in _preprocSet[selIdx].Compare)
                 _tmpCompProc.Add(item.Clone());
-
         }
 
         private void initDgvProcess()
@@ -373,6 +383,7 @@ namespace MarkCompare
                     int idx = 0;
                     foreach (var item in _tmpCompProc)
                     {
+
                         string[] data = new string[(int)eDgvPrcess.Total];
                         data[(int)eDgvPrcess.No] = Convert.ToString(idx);
                         data[(int)eDgvPrcess.LineID] = item.LineID;
@@ -519,16 +530,30 @@ namespace MarkCompare
 
             lncd = form.DataName;
 
-            // 같은 이름이 있는지 확인
+            // 기준 공정과 같은 이름이 있는지 확인
             bool isExist = false;
-            foreach (var item in _tmpCompProc)
+            if(tbRefLNCD.Texts==lncd)
             {
-                if (lineID == item.LineID) { isExist = true; break; }
+                MessageBox.Show(Lang.compLncdAndRefLncdIsSame, Lang.warning);
+                return;
             }
 
+            // 같은 이름이 있는지 확인
+            isExist = false;
+            foreach (var item in _tmpCompProc)
+                if (lineID == item.LineID) { isExist = true; break; }
             if (isExist == true)
             {
                 MessageBox.Show(Lang.sameLineIdExsits, Lang.warning);
+                return;
+            }
+
+            isExist = false;
+            foreach (var item in _tmpCompProc)
+                if (lncd == item.LNCD) { isExist = true; break; }
+            if (isExist == true)
+            {
+                MessageBox.Show(Lang.sameLNCDexists, Lang.warning);
                 return;
             }
 

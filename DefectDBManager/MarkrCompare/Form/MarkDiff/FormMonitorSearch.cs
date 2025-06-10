@@ -219,6 +219,7 @@ namespace MarkCompare
                 _timerLotSearchProcess.Stop();
                 OnStopLotSearch?.Invoke();
 
+
                 updateLotSearchRes(CompProc.Stop);
             }
             catch (Exception ex)

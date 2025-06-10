@@ -277,6 +277,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   비교 공정 이름과 기준 공정 이름이 동일합니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string compLncdAndRefLncdIsSame {
+            get {
+                return ResourceManager.GetString("compLncdAndRefLncdIsSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   조건 Lot 검색이 실행 중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string ConditionalLotSearchIsRunning {
@@ -1110,6 +1119,15 @@ namespace MarkCompare {
         internal static string sameLineIdExsits {
             get {
                 return ResourceManager.GetString("sameLineIdExsits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   동일한 이름의 LNCD가 존재합니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string sameLNCDexists {
+            get {
+                return ResourceManager.GetString("sameLNCDexists", resourceCulture);
             }
         }
         

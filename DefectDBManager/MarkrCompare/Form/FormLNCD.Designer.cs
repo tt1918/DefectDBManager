@@ -31,6 +31,8 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.btnCancel = new CustomControls.RoundButton();
             this.btnOK = new CustomControls.RoundButton();
+            this.btnSave = new CustomControls.RoundButton();
+            this.btnLoad = new CustomControls.RoundButton();
             this.btnApply = new CustomControls.RoundButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTitle = new CustomControls.RoundLabel();
@@ -60,11 +62,9 @@
             this.lvLNCDList = new System.Windows.Forms.ListView();
             this.lblSelLNCD = new CustomControls.RoundLabel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCopy = new CustomControls.RoundButton();
             this.btnAdd = new CustomControls.RoundButton();
             this.btnDelete = new CustomControls.RoundButton();
-            this.btnLoad = new CustomControls.RoundButton();
-            this.btnSave = new CustomControls.RoundButton();
-            this.btnCopy = new CustomControls.RoundButton();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -145,6 +145,48 @@
             this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSave.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnSave.BorderColor = System.Drawing.Color.Lavender;
+            this.btnSave.BorderRadius = 5;
+            this.btnSave.BorderSize = 2;
+            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(101, 1);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(98, 49);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "SAVE";
+            this.btnSave.TextColor = System.Drawing.Color.White;
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnLoad.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnLoad.BorderColor = System.Drawing.Color.Lavender;
+            this.btnLoad.BorderRadius = 5;
+            this.btnLoad.BorderSize = 2;
+            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnLoad.FlatAppearance.BorderSize = 0;
+            this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLoad.ForeColor = System.Drawing.Color.White;
+            this.btnLoad.Location = new System.Drawing.Point(1, 1);
+            this.btnLoad.Margin = new System.Windows.Forms.Padding(1);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(98, 49);
+            this.btnLoad.TabIndex = 0;
+            this.btnLoad.Text = "LOAD";
+            this.btnLoad.TextColor = System.Drawing.Color.White;
+            this.btnLoad.UseVisualStyleBackColor = false;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
             // btnApply
             // 
             this.btnApply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -156,7 +198,7 @@
             this.btnApply.FlatAppearance.BorderSize = 0;
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.ForeColor = System.Drawing.Color.White;
-            this.btnApply.Location = new System.Drawing.Point(21, 1);
+            this.btnApply.Location = new System.Drawing.Point(275, 1);
             this.btnApply.Margin = new System.Windows.Forms.Padding(1);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(58, 33);
@@ -225,6 +267,7 @@
             // 
             // tableLayoutPanel9
             // 
+            this.tableLayoutPanel9.BackColor = System.Drawing.Color.White;
             this.tableLayoutPanel9.ColumnCount = 1;
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.Controls.Add(this.dgvMaterial, 0, 3);
@@ -264,14 +307,14 @@
             // tableLayoutPanel10
             // 
             this.tableLayoutPanel10.ColumnCount = 5;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel10.Controls.Add(this.btnAddMaterial, 3, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnDelMaterial, 4, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnApply, 1, 0);
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel10.Controls.Add(this.btnAddMaterial, 1, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnDelMaterial, 2, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnApply, 4, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 446);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
@@ -292,7 +335,7 @@
             this.btnAddMaterial.FlatAppearance.BorderSize = 0;
             this.btnAddMaterial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddMaterial.ForeColor = System.Drawing.Color.White;
-            this.btnAddMaterial.Location = new System.Drawing.Point(215, 1);
+            this.btnAddMaterial.Location = new System.Drawing.Point(145, 1);
             this.btnAddMaterial.Margin = new System.Windows.Forms.Padding(1);
             this.btnAddMaterial.Name = "btnAddMaterial";
             this.btnAddMaterial.Size = new System.Drawing.Size(58, 33);
@@ -313,7 +356,7 @@
             this.btnDelMaterial.FlatAppearance.BorderSize = 0;
             this.btnDelMaterial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelMaterial.ForeColor = System.Drawing.Color.White;
-            this.btnDelMaterial.Location = new System.Drawing.Point(275, 1);
+            this.btnDelMaterial.Location = new System.Drawing.Point(205, 1);
             this.btnDelMaterial.Margin = new System.Windows.Forms.Padding(1);
             this.btnDelMaterial.Name = "btnDelMaterial";
             this.btnDelMaterial.Size = new System.Drawing.Size(58, 33);
@@ -647,6 +690,7 @@
             // 
             // tableLayoutPanel3
             // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.Gainsboro;
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.lvLNCDList, 0, 1);
@@ -719,6 +763,27 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(257, 35);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
+            // btnCopy
+            // 
+            this.btnCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCopy.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCopy.BorderColor = System.Drawing.Color.Lavender;
+            this.btnCopy.BorderRadius = 5;
+            this.btnCopy.BorderSize = 2;
+            this.btnCopy.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCopy.FlatAppearance.BorderSize = 0;
+            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCopy.ForeColor = System.Drawing.Color.White;
+            this.btnCopy.Location = new System.Drawing.Point(129, 1);
+            this.btnCopy.Margin = new System.Windows.Forms.Padding(1);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(62, 33);
+            this.btnCopy.TabIndex = 1;
+            this.btnCopy.Text = "COPY";
+            this.btnCopy.TextColor = System.Drawing.Color.White;
+            this.btnCopy.UseVisualStyleBackColor = false;
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
             // btnAdd
             // 
             this.btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -760,69 +825,6 @@
             this.btnDelete.TextColor = System.Drawing.Color.White;
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnLoad
-            // 
-            this.btnLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnLoad.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnLoad.BorderColor = System.Drawing.Color.Lavender;
-            this.btnLoad.BorderRadius = 5;
-            this.btnLoad.BorderSize = 2;
-            this.btnLoad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnLoad.FlatAppearance.BorderSize = 0;
-            this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoad.ForeColor = System.Drawing.Color.White;
-            this.btnLoad.Location = new System.Drawing.Point(1, 1);
-            this.btnLoad.Margin = new System.Windows.Forms.Padding(1);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(98, 49);
-            this.btnLoad.TabIndex = 0;
-            this.btnLoad.Text = "LOAD";
-            this.btnLoad.TextColor = System.Drawing.Color.White;
-            this.btnLoad.UseVisualStyleBackColor = false;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnSave.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnSave.BorderColor = System.Drawing.Color.Lavender;
-            this.btnSave.BorderRadius = 5;
-            this.btnSave.BorderSize = 2;
-            this.btnSave.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(101, 1);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(1);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(98, 49);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "SAVE";
-            this.btnSave.TextColor = System.Drawing.Color.White;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnCopy
-            // 
-            this.btnCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnCopy.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnCopy.BorderColor = System.Drawing.Color.Lavender;
-            this.btnCopy.BorderRadius = 5;
-            this.btnCopy.BorderSize = 2;
-            this.btnCopy.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCopy.FlatAppearance.BorderSize = 0;
-            this.btnCopy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCopy.ForeColor = System.Drawing.Color.White;
-            this.btnCopy.Location = new System.Drawing.Point(129, 1);
-            this.btnCopy.Margin = new System.Windows.Forms.Padding(1);
-            this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(62, 33);
-            this.btnCopy.TabIndex = 1;
-            this.btnCopy.Text = "COPY";
-            this.btnCopy.TextColor = System.Drawing.Color.White;
-            this.btnCopy.UseVisualStyleBackColor = false;
-            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // FormLNCD
             // 
