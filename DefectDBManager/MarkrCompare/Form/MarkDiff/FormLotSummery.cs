@@ -77,37 +77,53 @@ namespace MarkCompare
                 {
                     BeginInvoke(new Action(delegate 
                     {
-                        FormLotSummaryData form = new FormLotSummaryData();
-                        DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-                        foreach (var item in lotManager.LiveProduct)
-                        {
-                            var keyData = item.Key.Split('_');
-                            for (int i = 0; i < lotManager.ProcSetting.Count; i++)
-                            {
-                                if (lotManager.ProcSetting[i].Name == keyData[2])
-                                    procItem = lotManager.ProcSetting[i];
-                            }
-                        }
-                        form.ProcItem = procItem;
-                        form.Filter = filter;
-                        form.LotSummery = lot;
-                        form.TopLevel = false;
-                        form.Show();
-
-                        if(_dicLotSummary==null)
-                            _dicLotSummary = new Dictionary<string, List<FormLotSummaryData>>();
-
+                        bool isExist = false;
+                        // 동일 랏이 처리되어 있는지 확인함
                         if (_dicLotSummary.ContainsKey(lncd))
                         {
-                            _dicLotSummary[lncd].Add(form);
-                            flpLotSummary.Controls.Add(form);
+                            foreach(var view in _dicLotSummary[lncd])
+                            {
+                                if (view.LotSummery.LotName == lot.LotName)
+                                    isExist = true;
+                            }
                         }
-                        else
+
+                        if(isExist==false)
                         {
-                            _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
-                            _dicLotSummary[lncd].Add(form);
-                            flpLotSummary.Controls.Add(form);
+                            DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                            foreach (var item in lotManager.LiveProduct)
+                            {
+                                var keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
+                                for (int i = 0; i < lotManager.ProcSetting.Count; i++)
+                                {
+                                    if (lotManager.ProcSetting[i].Name == keyData[2])
+                                        procItem = lotManager.ProcSetting[i];
+                                }
+                            }
+
+                            FormLotSummaryData form = new FormLotSummaryData();
+                            form.ProcItem = procItem;
+                            form.Filter = filter;
+                            form.LotSummery = lot;
+                            form.MODE = eSummaryMode.LiveErrorCheck;
+                            form.TopLevel = false;
+                            form.Show();
+
+                            if (_dicLotSummary == null) _dicLotSummary = new Dictionary<string, List<FormLotSummaryData>>();
+
+                            if (_dicLotSummary.ContainsKey(lncd))
+                            {
+                                _dicLotSummary[lncd].Add(form);
+                                flpLotSummary.Controls.Add(form);
+                            }
+                            else
+                            {
+                                _dicLotSummary.Add(lncd, new List<FormLotSummaryData>());
+                                _dicLotSummary[lncd].Add(form);
+                                flpLotSummary.Controls.Add(form);
+                            }
                         }
+                        
                     }));
                 }
             }

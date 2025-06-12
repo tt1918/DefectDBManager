@@ -219,6 +219,7 @@
     <Compile Include="DB\odbDLL.cs" />
     <Compile Include="DB\Param\Option.cs" />
     <Compile Include="DB\Param\Param.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Preproc\Data\ProcMaterial.cs" />
     <Compile Include="enumError.cs" />
     <Compile Include="Preproc\LOT\MarkCompData.cs" />

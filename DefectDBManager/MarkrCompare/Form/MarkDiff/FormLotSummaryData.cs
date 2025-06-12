@@ -47,6 +47,12 @@ namespace MarkCompare
         /// 상위 검사 랏 서머리 정보 
         /// </summary>
         private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
+
+        public eSummaryMode MODE
+        {
+            get { return _mode; }
+            set { _mode = value; }
+        }
         private eSummaryMode _mode = eSummaryMode.Monitoring;
 
         public DefectDBManager.Preproc.PreprocItem ProcItem
@@ -85,6 +91,13 @@ namespace MarkCompare
             get { return this.cbViewSelect.Checked; }
             set { this.cbViewSelect.Checked = value; }
         }
+
+        public bool IsCSV
+        {
+            get { return isCSV; }
+            set { isCSV = value; }
+        }
+        private bool isCSV = false;
 
         #region Form
         public FormLotSummaryData()
@@ -228,6 +241,16 @@ namespace MarkCompare
                     return;
                 }
 
+                if (compCnt.GetLength(0) != procItem.Compare.Count || compCnt.GetLength(1)!= procItem.CompRange.Count + 1)
+                {
+                    StringBuilder sb1 = new StringBuilder();
+                    sb1.AppendLine($"Model Name : {procItem.Name}");
+                    sb1.Append($"CompCnt[{compCnt.GetLength(0)},{compCnt.GetLength(1)}], Compare.Count:{procItem.Compare.Count}, CompRange:{procItem.CompRange.Count + 1}");
+                    UIHelper.SetText(lblProcess, $"{Lang.LotSummaryShowDetail} :{sb1.ToString()}");
+                    SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{sb1.ToString()}", Log.Level.Error);
+                    return;
+                }
+
                 double[] result = new double[procItem.CompRange.Count + 1];
 
                 StringBuilder sb = new StringBuilder();
@@ -277,7 +300,10 @@ namespace MarkCompare
             }
             catch (Exception ex)
             {
-                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{ex.Message}", Log.Level.Error);
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"Proc Name: {procItem.Name}");
+                UIHelper.SetText(lblProcess, sb.ToString());
+                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :[{procItem.Name}]{ex.Message}", Log.Level.Error);
             }
         }
 
@@ -421,7 +447,8 @@ namespace MarkCompare
         {
             if (_mode == eSummaryMode.LiveErrorCheck) return;
 
-            ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
+            if(this.ParentForm is FormLotList)
+                ((FormLotList)this.ParentForm).DoubleClickSummaryData(this);
         }
 
         #region 언어 변경

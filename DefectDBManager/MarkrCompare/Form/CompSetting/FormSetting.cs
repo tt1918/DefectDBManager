@@ -1022,10 +1022,10 @@ namespace MarkCompare
                 if (idx != 0)
                 {
                     dgvCompRange.Rows.RemoveAt(idx);
-                    dgvCompRange.Rows[0].Cells[(int)eDgvPrcess.No].Value = "R";
+                    dgvCompRange.Rows[0].Cells[(int)eDgvCompRange.No].Value = "R";
 
-                    for (int i = 1; i < dgvProcess.Rows.Count; i++)
-                        dgvCompRange.Rows[i].Cells[(int)eDgvPrcess.No].Value = Convert.ToString(i);
+                    for (int i = 1; i < dgvCompRange.Rows.Count; i++)
+                        dgvCompRange.Rows[i].Cells[(int)eDgvCompRange.No].Value = Convert.ToString(i);
                 }
             }
             catch

@@ -1,4 +1,5 @@
 ﻿using DefectDBManager;
+using DefectDBManager.Preproc;
 using MarkCompare.Delegate;
 using MarkCompare.Helper;
 using System;
@@ -20,6 +21,9 @@ namespace MarkCompare
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
         DefectDBManager.CompPreprocDefect _dbProcess = null;
+
+        CSVProcParam _csvCompParam = new CSVProcParam();
+        PreProcResultData _csvCompData = new PreProcResultData();
         #endregion
 
         #region Event
@@ -32,7 +36,7 @@ namespace MarkCompare
         public FormMarkDiff()
         {
             InitializeComponent();
-
+            _csvCompParam.Load();
         }
 
         public FormMarkDiff(DefectDBManager.PreprocLotManager lotManager, DefectDBManager.CompPreprocDefect proc)
@@ -40,6 +44,7 @@ namespace MarkCompare
             InitializeComponent();
             _lotManager = lotManager;
             _dbProcess = proc;
+            _csvCompParam.Load();
         }
 
         #region Create/Destroy
@@ -380,7 +385,7 @@ namespace MarkCompare
                     case DefectDBManager.Preproc.eProc.Live:
                         if (_lotManager.ProcLNCD.Info[i].CheckStatus == true)
                         {
-                            line = $"{_lotManager.ProcLNCD.Info[i].Name}_{_lotManager.ProcLNCD.Info[i].LNCD}";
+                            line = $"{_lotManager.ProcLNCD.Info[i].Name}";// _{_lotManager.ProcLNCD.Info[i].LNCD}";
                             ip = _lotManager.ProcLNCD.Info[i].TargetIP;
                             checkDuration = _lotManager.ProcLNCD.Info[i].CheckDuration;
 
@@ -461,7 +466,7 @@ namespace MarkCompare
 
             foreach (var item in _lotManager.LiveProduct)
             {
-                string[] keyData = item.Key.Split('_');
+                string[] keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
                 string lncd = keyData[0];
                 if (_lotManager.LiveLot.ContainsKey(item.Key) == false) continue;
 
@@ -562,45 +567,45 @@ namespace MarkCompare
         public void UpdateRollmap(DefectDBManager.PreprocLot lot, string name)
         {
             _rollMapForm.ClearMap();
-
-            string[] filterInfo = name.Split('_');
-            if (filterInfo == null) return;
-
-            DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-            //foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
+            if(name!=null)
             {
-                //if (_lotManager.ProcSetting.Data.Find(x => x.Name == item.Model) != null)
-                {
-                    procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == filterInfo[2]);
-                   // break;
-                }
-            }
+                string[] filterInfo = DefectDBManager.Helper.SplitKeyData(name);
+                if (filterInfo == null) return;
 
-            DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
-            
+                DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == filterInfo[2]);
 
-            
-            foreach (var item in lot.INSPDAT)
-            {
-                foreach (var item2 in item)
+                DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
+
+                foreach (var item in lot.INSPDAT)
                 {
-                    foreach (var item3 in item2.Data)
+                    foreach (var item2 in item)
                     {
-                        info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
-                        if (info != null)  
-                            _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
+                        foreach (var item3 in item2.Data)
+                        {
+                            info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
+                            if (info != null)
+                                _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
+                        }
                     }
                 }
             }
+            else
+            {
+                // CSV 파일이 업데이트 됨
+                _rollMapForm.OnUpdateLotInfo(lot, _csvCompParam);
+            }
+           
         }
         #endregion
 
         List<string> csvList = new List<string>();
         public void OpenFormCsv()
         {
-            FormCsv form = new FormCsv();
+            FormCsv form = new FormCsv(_csvCompParam);
             if (form.ShowDialog() == DialogResult.OK)
             {
+                _csvCompParam = form._procItem;
                 csvList = form.Csv;
                 CompareCsv();
             }
@@ -610,33 +615,131 @@ namespace MarkCompare
         {
             try
             {
+                string strLot = "";
+                // 데이터 초기화
+                _csvCompData.ResetAll();
+                PreprocItem preprocItem = new PreprocItem();
                 SystemLog.DisplayFileServerLog(Lang.startComparingCSV);
                 Dictionary<int, List<PointF>> defPos = new Dictionary<int, List<PointF>>();
                 int cnt = 0;
                 int headerCnt = 0;
+
+                NittoDB dataBase = new NittoDB(null, null);
+                dataBase.ResultDefect = new ResultData();
+                dataBase.CrtParam = new Param();
+                dataBase.DbDestConfig = new DestConfig();
+                dataBase.DbOption = new DefectDBManager.Option(0);
+                dataBase.DbDestConfig.CSVType = eCSV_TYPE.NITTO;
+                dataBase.DbDestConfig.CSV_Ver = 1;
+
                 foreach (var item in csvList)
                 {
-                    if (!string.IsNullOrWhiteSpace(item) && File.Exists(item))
-                    {
-                        string[] txt = File.ReadAllLines(item);
-                        defPos.Add(cnt, new List<PointF>());
+                    dataBase.ResultDefect.ResetAll();
+                    DefectCSV.OpenCompareCsV(item, dataBase);
 
-                        foreach (string str in txt)
+                    // 여기서 데이터 후처리
+                    
+
+                    if (_csvCompParam.CompType==0)
+                    {
+                        foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
                         {
-                            if (headerCnt++ < 4) continue;
-                            string[] data = str.Replace("\"", "").Split(',');
-                            double posX = Convert.ToDouble(data[7]);
-                            double posY = Convert.ToDouble(data[14]);
-                            defPos[cnt].Add(new PointF((float)posX, (float)posY));
+                            // 데이터는 처리가 필요함. 
+                            _csvCompData.MarkData.Add(item1);
                         }
-                        cnt++;
+                    }
+                    else
+                    {
+                        strLot = dataBase._CSVLoadInfo[0].LotNo;
+                        int refIdx = 100;
+                        int[] lut = new int[10];
+
+                        List<PreprocMrkDat> preMarkData = new List<PreprocMrkDat>();
+                        for (int i = 0; i < 2; i++)
+                            preMarkData.Add(new PreprocMrkDat());
+
+                        if (_csvCompParam.CompType == 1)
+                        {
+                            refIdx = 8;
+                            lut[8] = 2;
+                            lut[9] = 0;
+                            lut[7] = 1;
+
+                            ProcessData tmpProc1 = new ProcessData("TG", "TG");
+                            preprocItem.Compare.Add(tmpProc1);
+                            ProcessData tmpProc2 = new ProcessData("ETC", "ETC");
+                            preprocItem.Compare.Add(tmpProc2);
+
+                            _csvCompData.MarkData.LNCD = "ES";
+                            preMarkData[0].LNCD = "TG";
+                            preMarkData[1].LNCD = "ETC";
+                        }
+                        else if (_csvCompParam.CompType == 2)
+                        {
+                            refIdx = 9;
+                            lut[9] = 2;
+                            lut[8] = 0;
+                            lut[7] = 1;
+
+                            ProcessData tmpProc1 = new ProcessData("ES", "ES");
+                            preprocItem.Compare.Add(tmpProc1);
+                            ProcessData tmpProc2 = new ProcessData("ETC", "ETC");
+                            preprocItem.Compare.Add(tmpProc2);
+
+                            _csvCompData.MarkData.LNCD = "TG";
+                            preMarkData[0].LNCD = "ES";
+                            preMarkData[1].LNCD = "ETC";
+                        }
+                        else
+                        {
+                            refIdx = 7;
+                            lut[7] = 2;
+                            lut[8] = 0;
+                            lut[9] = 1;
+                            ProcessData tmpProc1 = new ProcessData("ES", "ES");
+                            preprocItem.Compare.Add(tmpProc1);
+                            ProcessData tmpProc2 = new ProcessData("TG", "TG");
+                            preprocItem.Compare.Add(tmpProc2);
+
+                            _csvCompData.MarkData.LNCD = "ETC";
+                            preMarkData[0].LNCD = "ES";
+                            preMarkData[1].LNCD = "TG";
+                        }
+
+
+                        foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
+                        {
+                            // 데이터는 처리가 필요함. 
+                            if (item1.DefectLine%10 == refIdx)
+                                _csvCompData.MarkData.Add(item1);
+                            else
+                                preMarkData[lut[item1.DefectLine % 10]].Data.Add(item1);
+                        }
+                        _csvCompData.PreMarkData[0].Add(preMarkData[0]);
+                        _csvCompData.PreMarkData[0].Add(preMarkData[1]);
                     }
                 }
+
+                // Data 비교 처리
+                PreprocLot tmpLot = new PreprocLot(strLot, null, _csvCompData);
+
+                
+                preprocItem.BasicRange = _csvCompParam.BasicRange;
+                preprocItem.CompRange = _csvCompParam.CompRange;
+                preprocItem.UseAiResult = _csvCompParam.UseAiResult;
+                tmpLot.ComparePosition(preprocItem);
+                
+                // 데이터 정리
+                _lotManager.ClearLot();
+                _lotManager.AddLot("CSV", tmpLot);
 
                 BeginInvoke(new Action(delegate
                 {
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].OnClearSummaryData();
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControlCsv();
                 }));
+
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"]);
 
                 SystemLog.DisplayFileServerLog(Lang.finishedComparingCSV);
             }

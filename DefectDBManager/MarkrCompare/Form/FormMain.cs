@@ -308,7 +308,7 @@ namespace MarkCompare
             {   
                 foreach (var item in _lotManager.LiveProduct)
                 {
-                    string[] keyData = item.Key.Split('_');
+                    string[] keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
                     string lncd = keyData[0];
 
                     if (_lotManager.LiveLot.ContainsKey(item.Key) == false)

@@ -488,4 +488,58 @@ namespace DefectDBManager.Preproc
     }
 
     #endregion
+
+    public class CSVProcParam
+    {
+        #region Compare Range
+        [Category("items")]
+        [Description("Basic Range")]
+        public CompRange BasicRange { get; set; } = new CompRange();
+
+        [Category("items")]
+        [Description("Compare Range")]
+        public List<CompRange> CompRange { get; set; } = new List<CompRange>();
+        #endregion
+
+        [Category("items")]
+        [Description("Judge Range")]
+        public JudgeRange Judge { get; set; } = new JudgeRange();
+
+        [Category("items")]
+        [Description("Defect ID Type")]
+        public bool UseAiResult { get; set; } = false;
+
+        [Category("items")]
+        [Description("Comp Type")]
+        public int CompType { get; set; } = 0;
+
+        public void Save()
+        {
+            string path = Define.CsvParamSetPath;
+            string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+            System.IO.File.WriteAllText(path, jsonString);
+        }
+
+        public void Load()
+        {
+            try
+            {
+                string path = Define.CsvParamSetPath;
+                string jsonString = "";
+
+                if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
+                else return;
+
+                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<CSVProcParam>(jsonString);
+                this.BasicRange = obj.BasicRange;
+                this.CompRange = obj.CompRange;
+                this.Judge = obj.Judge; 
+                this.UseAiResult = obj.UseAiResult;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+    }
 }

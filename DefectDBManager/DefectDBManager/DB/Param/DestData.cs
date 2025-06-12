@@ -290,6 +290,7 @@ namespace DefectDBManager
         public int CSV_Ver
         {
             get { return csvVer; }
+            set { csvVer = value; }
         }
         private int csvVer;              // CSV 버전
 

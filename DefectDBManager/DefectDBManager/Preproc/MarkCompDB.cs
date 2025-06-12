@@ -6,10 +6,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace DefectDBManager.Preproc
 {
@@ -107,7 +103,7 @@ namespace DefectDBManager.Preproc
             _PreprocItem = item;
 
             _SubPath = $"{lncd}_{productName}_{item.Name}";
-            _SubPath = _SubPath.Replace("*", "@");
+            _SubPath = Helper.ReplaceInvalidPathChar(_SubPath);
 
             // 품종 wild card 확인
             if (_ProductName.Length < 2)
@@ -180,8 +176,7 @@ namespace DefectDBManager.Preproc
             try
             {
                 Log.Write("생산 LOT 검색");
-                string strFilter = $"{filter.Line}_{filter.Product}_{filter.Model}";
-                strFilter = strFilter.Replace("*", "@");
+                string strFilter = Helper.ReplaceInvalidPathChar($"{filter.Line}_{filter.Product}_{filter.Model}");
                 string strLine = $"[{strFilter}]";
 
                 _LOG.Lot = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
@@ -268,8 +263,7 @@ namespace DefectDBManager.Preproc
         {
             try
             {
-                string strFilter = $"{filter.Line}_{filter.Product}_{filter.Model}";
-                strFilter = strFilter.Replace("*", "@");
+                string strFilter = Helper.ReplaceInvalidPathChar($"{filter.Line}_{filter.Product}_{filter.Model}");
                 string strLine = $"[{strFilter}]";
                 string path = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
                 path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
@@ -278,7 +272,7 @@ namespace DefectDBManager.Preproc
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
 
-                if (File.Exists(path) == false)
+                if (System.IO.File.Exists(path) == false)
                     return false;
 
                 using (var file = new StreamReader(path, Encoding.Default))
@@ -1273,7 +1267,6 @@ namespace DefectDBManager.Preproc
                                                 FaultData.MarkData.Add(datum);
                                         }
                                     }
-
                                 }
                             }
 
@@ -1290,7 +1283,6 @@ namespace DefectDBManager.Preproc
                                         break;
                                 }
                             }
-
                         }
 
                         System.Threading.Thread.Sleep(1000);

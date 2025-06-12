@@ -156,6 +156,7 @@
             this.lblProcess.Size = new System.Drawing.Size(350, 26);
             this.lblProcess.TabIndex = 1;
             this.lblProcess.Text = "Monitoring......";
+            this.lblProcess.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblProcess.Thickness = 1;
             // 
             // tableLayoutPanel5
@@ -222,6 +223,7 @@
             this.lblTime.Size = new System.Drawing.Size(63, 28);
             this.lblTime.TabIndex = 4;
             this.lblTime.Text = "TIME";
+            this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTime.Thickness = 1;
             // 
             // btnMaterialFilter

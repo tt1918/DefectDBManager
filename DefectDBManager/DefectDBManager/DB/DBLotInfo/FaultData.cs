@@ -154,7 +154,7 @@ namespace DefectDBManager
         public float SIZE_Y;
         // 표시용 데이터
         //////////////////////////////////////////////////////////
-
+    
         public MarkingFaultDatum Clone()
         {
             MarkingFaultDatum data = new MarkingFaultDatum();
@@ -319,6 +319,7 @@ namespace DefectDBManager
         /// </summary>
         public MkFltDatumList Data = null;
         public Dictionary<int, MkFltDatumList> Dic = null;
+        public string LNCD = "";
         public float MinXPos;
         public float MaxXPos;
         public float MinSize;
@@ -328,7 +329,10 @@ namespace DefectDBManager
         {
             Data = new MkFltDatumList();
             Dic = new Dictionary<int, MkFltDatumList>();
+            LNCD = "";
         }
+
+        public void Clear()     { this.Reset(); }
 
         public void Reset()
         {
@@ -421,7 +425,6 @@ namespace DefectDBManager
                 }
             }
         }
-
     }
 
     #endregion MrkFltDat
@@ -606,6 +609,7 @@ namespace DefectDBManager
                 data.FLTDAT[i].Copy(FLTDAT[i]);
 
             // 마킹 대상 결점 데이터
+            data.MarkData.LNCD = MarkData.LNCD;
             foreach (var mrks in MarkData.Data.Data)
                 data.Add(mrks.Clone());
 

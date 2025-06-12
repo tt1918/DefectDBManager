@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -108,7 +108,6 @@ namespace DefectDBManager
 
         #endregion Param
 
-
         public CompPreprocDefect(object parent)
         {
             this.parent = parent;
@@ -209,6 +208,10 @@ namespace DefectDBManager
 
             Log.Write("실시간 오차 검색 시작");
             OnStartLiveDefectSearching?.Invoke();
+            
+            // 기존 데이터 삭제
+            LotManager.LiveProduct.Clear();
+            LotManager.LiveLot.Clear();
 
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
@@ -217,7 +220,8 @@ namespace DefectDBManager
             int productIdx = 0;
             foreach (var list in LotManager.LiveProduct)
             {
-                string[] keyData = list.Key.Split('_');
+                string[] keyData = Helper.SplitKeyData(list.Key);
+
                 string lncd = keyData[0];
                 foreach (var item in list.Value.Data)
                 {
@@ -269,7 +273,7 @@ namespace DefectDBManager
             int productIdx = 0;
             foreach(var list in LotManager.Product)
             {
-                string[] keyData = list.Key.Split('_');
+                string[] keyData = Helper.SplitKeyData(list.Key);
                 string lncd = keyData[0];
 
                 ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Search][productIdx];
@@ -341,6 +345,16 @@ namespace DefectDBManager
                     data.ResetTime();
                     continue;
                 }
+
+                string productName = data.Product;
+                bool isWildCard = false;
+                if (productName.ElementAt(0) == '*' && productName.ElementAt(productName.Length - 1) == '*')
+                {
+                    isWildCard = true;
+                    // * 은 지우고 필요한 내용만 남김
+                    productName = productName.Trim('*');
+                }
+                else isWildCard = false;
 #if TEST_MODE
                 if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
 #else
@@ -350,7 +364,12 @@ namespace DefectDBManager
                     PTRY0PList list = new PTRY0PList();
 
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    {
+                        if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
+                        else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
+
                         list.Add(ptry0p.Clone());
+                    }
 
                     // 리스트 데이터 추가
                     LotManager.LiveProduct.Add(data.ToString(), list);
@@ -360,7 +379,6 @@ namespace DefectDBManager
             }
         }
 #endregion
-
         #region 기간 공정 별 생산 리스트 취합.
         private void searchLotList()
         {
@@ -417,8 +435,8 @@ namespace DefectDBManager
                 {
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
-                        if (/*isWildCard == true && */ptry0p.Y0ZKNM.Contains(productName) == false) continue;
-                        //else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
+                        if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
+                        else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
                         
                         list.Add(ptry0p.Clone());
                     }

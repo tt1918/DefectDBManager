@@ -85,6 +85,7 @@ namespace DefectDBManager
         /// <param name="result"></param>
         public void SetQueryResult(DBLotInfo.LotData result)
         {
+            if (result == null) return;
             PTRLYP_Data.Copy(result.PTRLYP);
 
             int count = System.Enum.GetValues(typeof(eFCD)).Length;

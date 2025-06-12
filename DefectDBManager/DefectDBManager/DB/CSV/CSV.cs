@@ -195,7 +195,9 @@ namespace DefectDBManager
         public bool Load()
         {
             string text;
-            bool useMask = option.searchOP.useMask;
+            bool useMask = false;
+            if(option!=null)
+                useMask = option.searchOP.useMask;
 
             // 에러 대비 초기화
             DB._RollDefectInfo = null;
@@ -829,6 +831,12 @@ namespace DefectDBManager
                     break;
             }
 
+            return file.Load();
+        }
+
+        public static bool OpenCompareCsV(string path, NittoDB db)
+        {
+            ICSVFile file = new CSVNitto(db, path);
             return file.Load();
         }
 

@@ -127,6 +127,38 @@ namespace MarkCompare
             }
         }
 
+        public void SetTapControlCsv()
+        {
+            tcLotSummary.Controls.Clear();
+            foreach (var panel in _flpSummeryDic)
+            {
+                FlowLayoutPanel flowPanel = panel.Value;
+
+                foreach (var item in flowPanel.Controls)
+                {
+                    FormLotSummaryData form = item as FormLotSummaryData;
+                    form.Dispose();
+                }
+
+                flowPanel.Dispose();
+            }
+            _flpSummeryDic.Clear();
+
+            
+            string key = "CSV";
+            TabPage tabPage = new TabPage(key);
+            FlowLayoutPanel flowPanel1 = new FlowLayoutPanel();
+            flowPanel1.FlowDirection = FlowDirection.LeftToRight;
+            flowPanel1.Dock = DockStyle.Fill;
+            flowPanel1.AutoScroll = true;
+            flowPanel1.BackColor = Color.White;
+            tabPage.Controls.Add(flowPanel1);
+
+            if (_flpSummeryDic.ContainsKey(key) == false)
+                _flpSummeryDic.Add(key, flowPanel1);
+            tcLotSummary.TabPages.Add(tabPage);
+        }
+
         private void initFlpInfo()
         {
             clearFlpInfo();
@@ -163,6 +195,42 @@ namespace MarkCompare
 
         }
 
+        public void AddSummaryData(List<PreprocLot> lotSummary)
+        {
+            BeginInvoke(new Action(delegate
+            {
+                foreach (var summary in lotSummary)
+                {
+                    FormLotSummaryData form = new FormLotSummaryData();
+                    form.TopLevel = false;
+
+                    if (_flpSummeryDic.ContainsKey("CSV"))
+                        form.Parent = this._flpSummeryDic["CSV"];
+                    form.ProcItem = null;
+                    form.Filter = null;
+                    form.LotSummery = summary;
+                    form.IsCSV = true;
+                    form.ShowCheckbox = true;
+                    form.TopLevel = false;
+                    form.Show();
+                    form.OnClickSummaryCheck += SelectLot;
+                    if (_dicFormSummary.ContainsKey("Search"))
+                    {
+                        _dicFormSummary["Search"].Add(form);
+                    }
+                    else
+                    {
+                        _dicFormSummary.Add("Search", new List<FormLotSummaryData>());
+
+                        _dicFormSummary["Search"].Add(form);
+                        if (_flpSummeryDic.ContainsKey("CSV"))
+                            this._flpSummeryDic["CSV"].Controls.Add(form);
+                    }
+                }
+                this._flpSummeryDic["CSV"].Show();
+            }));
+        }
+
         public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem, string filter)
         {
             BeginInvoke(new Action(delegate
@@ -177,6 +245,7 @@ namespace MarkCompare
                     form.ProcItem = procItem;
                     form.Filter = filter;
                     form.LotSummery = summary;
+                    form.IsCSV = false;
                     form.ShowCheckbox = true;
                     form.TopLevel = false;
                     form.Show();
@@ -291,11 +360,20 @@ namespace MarkCompare
             {
                 foreach (var form1 in _dicFormSummary["Search"])
                 {
-                    if (form1.StateCheckbox && 
-                        (form.LotSummery.LotName != form1.LotSummery.LotName ||
-                        form.ProcItem.ToString() != form1.ProcItem.ToString()))
+                    if (form.IsCSV == false)
                     {
-                        form1.StateCheckbox = false;
+                        if (form1.StateCheckbox &&
+                            (form.LotSummery.LotName != form1.LotSummery.LotName ||
+                            form.ProcItem.ToString() != form1.ProcItem.ToString()))
+                        {
+                            form1.StateCheckbox = false;
+                        }
+                    }
+                    else
+                    {
+                        if (form1.StateCheckbox &&
+                            (form.LotSummery.LotName != form1.LotSummery.LotName))
+                            form1.StateCheckbox = false;
                     }
                 }
             }
