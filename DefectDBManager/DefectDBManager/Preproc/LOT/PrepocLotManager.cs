@@ -130,6 +130,14 @@ namespace DefectDBManager
                 return val;
             }
         }
+
+        public LotHistory LotHistory
+        {
+            get { return _lotHistroy; }
+            private set { _lotHistroy = value; }
+        }
+        private LotHistory _lotHistroy = null;
+
         #endregion LOT 정보
 
         #region 공정 정보 
@@ -179,6 +187,8 @@ namespace DefectDBManager
 
             _crtProcFilter = new ProcFilterSet();
             _crtProcFilter.Load();
+
+            LotHistory = new LotHistory();
         }
 
 
@@ -250,7 +260,6 @@ namespace DefectDBManager
 
 
         #region Live Lot 데이터 관리
-
         public void DeleteLiveProduct(string lncd, string lotName)
         {
             if (LiveProduct.ContainsKey(lncd))
@@ -278,6 +287,11 @@ namespace DefectDBManager
                 list.Add(info);
                     LiveLot.Add(lncd, list);
             }
+
+            DateTime day = DateTime.Now;
+            string strDay = day.ToString("yyyyMMdd");
+            int nDay = int.Parse(strDay);
+            LotHistory.AddHistory(nDay, lncd, info.LotName);
         }
 
         /// <summary>

@@ -476,7 +476,7 @@ namespace MarkCompare
                 {
                     if (lot.CompResult == eCompResult.ProcNg)
                     {
-                        string strTemp = $"{item.ToString()} : {lot.LotName}";
+                        string strTemp = $"{item.Key} : {lot.LotName}";
                         errLot.Add(strTemp);
                     }
                 }
@@ -632,25 +632,46 @@ namespace MarkCompare
                 dataBase.DbDestConfig.CSVType = eCSV_TYPE.NITTO;
                 dataBase.DbDestConfig.CSV_Ver = 1;
 
+                int idxCnt = 0;
                 foreach (var item in csvList)
                 {
                     dataBase.ResultDefect.ResetAll();
                     DefectCSV.OpenCompareCsV(item, dataBase);
 
                     // 여기서 데이터 후처리
-                    
 
+                    strLot = dataBase._CSVLoadInfo[0].LotNo;
                     if (_csvCompParam.CompType==0)
                     {
-                        foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
+                        if (idxCnt == 0)
                         {
-                            // 데이터는 처리가 필요함. 
-                            _csvCompData.MarkData.Add(item1);
+                            string pathL = Path.GetFileNameWithoutExtension(item);
+                            _csvCompData.MarkData.LNCD = pathL;
+                            ProcessData tmpProc = new ProcessData(pathL, pathL);
+                            preprocItem.Reference = tmpProc;
+                            foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
+                            {
+                                // 데이터는 처리가 필요함. 
+                                _csvCompData.MarkData.Add(item1);
+                            }
+                        }
+                        else
+                        {
+                            string pathL = Path.GetFileNameWithoutExtension(item);
+                            PreprocMrkDat preMarkData = new PreprocMrkDat();
+                            preMarkData.LNCD = pathL;
+                            foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
+                            {
+                                // 데이터는 처리가 필요함. 
+                               preMarkData.Data.Add(item1);
+                            }
+                            ProcessData tmpProc = new ProcessData(pathL, pathL);
+                            preprocItem.Compare.Add(tmpProc);
+                            _csvCompData.PreMarkData[0].Add(preMarkData);
                         }
                     }
                     else
                     {
-                        strLot = dataBase._CSVLoadInfo[0].LotNo;
                         int refIdx = 100;
                         int[] lut = new int[10];
 
@@ -665,6 +686,8 @@ namespace MarkCompare
                             lut[9] = 0;
                             lut[7] = 1;
 
+                            ProcessData tmpProc = new ProcessData("ES", "ES");
+                            preprocItem.Reference = tmpProc;
                             ProcessData tmpProc1 = new ProcessData("TG", "TG");
                             preprocItem.Compare.Add(tmpProc1);
                             ProcessData tmpProc2 = new ProcessData("ETC", "ETC");
@@ -681,6 +704,8 @@ namespace MarkCompare
                             lut[8] = 0;
                             lut[7] = 1;
 
+                            ProcessData tmpProc = new ProcessData("TG", "TG");
+                            preprocItem.Reference = tmpProc;
                             ProcessData tmpProc1 = new ProcessData("ES", "ES");
                             preprocItem.Compare.Add(tmpProc1);
                             ProcessData tmpProc2 = new ProcessData("ETC", "ETC");
@@ -696,6 +721,9 @@ namespace MarkCompare
                             lut[7] = 2;
                             lut[8] = 0;
                             lut[9] = 1;
+
+                            ProcessData tmpProc = new ProcessData("ETC", "ETC");
+                            preprocItem.Reference = tmpProc;
                             ProcessData tmpProc1 = new ProcessData("ES", "ES");
                             preprocItem.Compare.Add(tmpProc1);
                             ProcessData tmpProc2 = new ProcessData("TG", "TG");
@@ -718,6 +746,7 @@ namespace MarkCompare
                         _csvCompData.PreMarkData[0].Add(preMarkData[0]);
                         _csvCompData.PreMarkData[0].Add(preMarkData[1]);
                     }
+                    idxCnt++;
                 }
 
                 // Data 비교 처리
@@ -727,7 +756,7 @@ namespace MarkCompare
                 preprocItem.BasicRange = _csvCompParam.BasicRange;
                 preprocItem.CompRange = _csvCompParam.CompRange;
                 preprocItem.UseAiResult = _csvCompParam.UseAiResult;
-                tmpLot.ComparePosition(preprocItem);
+                tmpLot.CompareCsvPos(preprocItem);
                 
                 // 데이터 정리
                 _lotManager.ClearLot();
@@ -739,7 +768,7 @@ namespace MarkCompare
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControlCsv();
                 }));
 
-                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"]);
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"], preprocItem);
 
                 SystemLog.DisplayFileServerLog(Lang.finishedComparingCSV);
             }

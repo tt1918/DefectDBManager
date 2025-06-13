@@ -195,7 +195,7 @@ namespace MarkCompare
 
         }
 
-        public void AddSummaryData(List<PreprocLot> lotSummary)
+        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem)
         {
             BeginInvoke(new Action(delegate
             {
@@ -206,7 +206,7 @@ namespace MarkCompare
 
                     if (_flpSummeryDic.ContainsKey("CSV"))
                         form.Parent = this._flpSummeryDic["CSV"];
-                    form.ProcItem = null;
+                    form.ProcItem = procItem;
                     form.Filter = null;
                     form.LotSummery = summary;
                     form.IsCSV = true;

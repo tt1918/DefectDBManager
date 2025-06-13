@@ -168,7 +168,7 @@ namespace DefectDBManager.Preproc
             return nNewCnt;
         }
 
-        public bool SearchPTRYOPList(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime)
+        public bool SearchPTRYOPList(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history)
         {
             // 연결 확인
             if (conn?.IsConnected() == false) return false;
@@ -222,15 +222,13 @@ namespace DefectDBManager.Preproc
                                 if (data.Y0KKOL.Substring(8) == "000000" && data.Y0KSOL.Substring(8) == "000000")
                                     continue;
 
-                                // 동일 경로가 존재하는 경우 패스
-                                int newLotCnt = GetLotSpliceCnt(data.Y0KLOT);
-                                if (newLotCnt > 0)
+                                // LotHistory에 존재하면 스킵함
+                                if(history!=null)
                                 {
-                                    string logData1 = string.Format($"{PTRY0PList_Data.Count}\t-\tSkip {data.ToString()} : Already Check");
-                                    _LOG.WriteLoadData(logData1, 0, listFileName, 0);
-                                    continue;
+                                    if (history.IsLotExist(filter.ToString(), data.Y0KLOT))
+                                        continue;
                                 }
-
+                                
                                 // 우선 전체 데이터 넣는다.
                                 PTRY0PList_Data.Add(data);
 
@@ -259,7 +257,7 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public bool SearchPTRYOPList_TEST(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime)
+        public bool SearchPTRYOPList_TEST(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history)
         {
             try
             {
@@ -289,9 +287,11 @@ namespace DefectDBManager.Preproc
                             continue;
 
                         // 동일 경로가 존재하는 경우 패스
-                        //int newLotCnt = GetLotSpliceCnt(data.Y0KLOT);
-                        //if (newLotCnt > 0)
-                        //    continue;
+                        if (history != null)
+                        {
+                            if (history.IsLotExist(filter.ToString(), data.Y0KLOT))
+                                continue;
+                        }
 
                         // 우선 전체 데이터 넣는다.
                         PTRY0PList_Data.Add(data);

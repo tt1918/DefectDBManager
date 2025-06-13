@@ -36,9 +36,9 @@
             this.rbScale3 = new System.Windows.Forms.RadioButton();
             this.rbScale4 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblLotName = new CustomControls.RoundLabel();
             this.cbProcess = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLotName = new CustomControls.RoundLabel();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -187,7 +187,7 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 364F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.lblLotName, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.cbProcess, 1, 0);
@@ -199,31 +199,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(843, 30);
             this.tableLayoutPanel3.TabIndex = 2;
-            // 
-            // cbProcess
-            // 
-            this.cbProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbProcess.FormattingEnabled = true;
-            this.cbProcess.Location = new System.Drawing.Point(203, 3);
-            this.cbProcess.Name = "cbProcess";
-            this.cbProcess.Size = new System.Drawing.Size(144, 23);
-            this.cbProcess.TabIndex = 0;
-            this.cbProcess.SelectedIndexChanged += new System.EventHandler(this.cbProcess_SelectedIndexChanged);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 1;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(843, 748);
-            this.tableLayoutPanel2.TabIndex = 2;
             // 
             // lblLotName
             // 
@@ -243,7 +218,33 @@
             this.lblLotName.Name = "lblLotName";
             this.lblLotName.Size = new System.Drawing.Size(196, 26);
             this.lblLotName.TabIndex = 1;
+            this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblLotName.Thickness = 1;
+            // 
+            // cbProcess
+            // 
+            this.cbProcess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbProcess.FormattingEnabled = true;
+            this.cbProcess.Location = new System.Drawing.Point(203, 3);
+            this.cbProcess.Name = "cbProcess";
+            this.cbProcess.Size = new System.Drawing.Size(358, 23);
+            this.cbProcess.TabIndex = 0;
+            this.cbProcess.SelectedIndexChanged += new System.EventHandler(this.cbProcess_SelectedIndexChanged);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(843, 748);
+            this.tableLayoutPanel2.TabIndex = 2;
             // 
             // FormRollMap
             // 

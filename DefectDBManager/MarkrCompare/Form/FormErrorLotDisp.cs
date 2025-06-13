@@ -110,7 +110,7 @@ namespace MarkCompare
             else
                 lblTitle.Text = Lang.formErrorLotDispTitleSearch;
 
-            btnOK.Text = Lang.btnOK;
+            btnOK.Text = Lang.btnOK1;
         }
         #endregion
 

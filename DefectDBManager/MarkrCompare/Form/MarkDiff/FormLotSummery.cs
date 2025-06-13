@@ -69,6 +69,21 @@ namespace MarkCompare
             _dicLotSummary = null;
         }
 
+        private void clearLotSummery()
+        {
+            if (_dicLotSummary != null)
+            {
+                foreach (var list in _dicLotSummary.Values)
+                {
+                    foreach (var form in list)
+                        form.Dispose();
+                    list.Clear();
+                }
+                _dicLotSummary.Clear();
+            }
+
+        }
+
         public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager, string filter)
         {
             try
@@ -137,8 +152,7 @@ namespace MarkCompare
         {
             try
             {
-                closeLotSummary();
-                //flpLotSummary.Controls.Clear();
+                clearLotSummery();
             }
             catch
             {

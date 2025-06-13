@@ -329,7 +329,7 @@ namespace MarkCompare
             Invoke(new Action(() =>
             {
                 if(isError==false)  MessageBox.Show(this, Lang.realtimeSearchOperationIscomplete);
-                else                MessageBox.Show(this,sb.ToString());
+                //else                MessageBox.Show(this,sb.ToString());
             }));
         }
         #endregion

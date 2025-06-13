@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -356,9 +356,9 @@ namespace DefectDBManager
                 }
                 else isWildCard = false;
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.LotHistory) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.LotHistory) == true)
 #endif
                 {
                     PTRY0PList list = new PTRY0PList();
@@ -428,9 +428,9 @@ namespace DefectDBManager
 
                 PTRY0PList list = new PTRY0PList();
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null) == true)
 #endif
                 {
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
