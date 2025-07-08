@@ -1,4 +1,5 @@
-﻿using DefectDBManager;
+﻿using CustomControls;
+using DefectDBManager;
 using MarkCompare.Delegate;
 using MarkCompare.Helper;
 using System;
@@ -103,6 +104,7 @@ namespace MarkCompare
         public FormLotSummaryData()
         {
             InitializeComponent();
+            lblProcess.Hide();
         }
 
         public FormLotSummaryData(DefectDBManager.PreprocLot lotSummery)
@@ -110,6 +112,7 @@ namespace MarkCompare
             InitializeComponent();
 
             _lotSummery = lotSummery;
+            lblProcess.Hide();
         }
 
         private void FormLotSummaryData_Load(object sender, EventArgs e)
@@ -130,6 +133,7 @@ namespace MarkCompare
         #region 데이터 표시
         private void displayLotSummery()
         {
+            
             displayLotName();
             displayDetail();
             displayCompareResult();
@@ -213,8 +217,13 @@ namespace MarkCompare
 
         private void displayDetail()
         {
+            int maxLine = 0;
+            int lineCnt = 0;
             try
             {
+                // 컨트롤 리소스 삭제
+                flpResult.Controls.Clear();
+
                 if (_lotSummery == null)
                 {
                     UIHelper.SetText(lblProcess, Lang.NoLotSummaryData);
@@ -253,50 +262,90 @@ namespace MarkCompare
 
                 double[] result = new double[procItem.CompRange.Count + 1];
 
-                StringBuilder sb = new StringBuilder();
-
                 for (int idx = 0; idx < procItem.Compare.Count; idx++)
                 {
-                    if (idx > 0) sb.Append("\n");
+                    StringBuilder sb1 = new StringBuilder();
+                    lineCnt = 0;
                     isEmpty = true;
                     for (int i = 0; i < compCnt.GetLength(1); i++)
                         if (compCnt[idx, i] > 0) isEmpty = false;
                     if (isEmpty)
                     {
-                        sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] {Lang.NoComparingData}");
+                        sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n{Lang.NoComparingData}");
+                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
                         continue;
                     }
 
                     result[0] = 100.0;
-                    if (compCnt[idx, 0] == 0) sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :0%({compCnt[idx, 0]}), ");
-                    else sb.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}] REF :{result[0]:F1}%({compCnt[idx, 0]}), ");
+                    // 데이터 입력
+                    sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
+                    lineCnt++;
+
+                    foreach (var data in _lotSummery.PTRY0P_Data)
+                    {
+                        foreach(var subData in data.Data)
+                        {
+                            if(subData.LNCD == procItem.Compare[idx].LNCD)
+                            {
+                                // 생산 시간 입력
+                                sb1.Append($"[{subData.Y0KKOL}-{subData.Y0KSOL}]\n"); lineCnt++;
+                                // 품명 추가
+                                sb1.Append($"[{subData.Y0KLOT}]\n"); lineCnt++;
+                            }
+                        }
+                    }
+
+                    if (compCnt[idx, 0] == 0) { sb1.Append($"REF :0%({compCnt[idx, 0]})"); lineCnt++; }
+                    else { sb1.Append($"REF :{result[0]:F1}%({compCnt[idx, 0]})"); lineCnt++; }
+
+                        if (procItem.CompRange.Count>0)
+                        sb1.Append("\n");
 
                     for (int i = 1; i < procItem.CompRange.Count + 1; i++)
                     {
                         if (compCnt[idx, 0] > 0)
                         {
                             result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, 0]) * 100.0;
-                            sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                            sb1.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                            lineCnt++;
                         }
                         else
                         {
                             if (compCnt[idx, i] > 0)
                             {
                                 result[i] = (double)compCnt[idx, i] * 100.0;
-                                sb.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                                sb1.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
                             }
                             else
-                                sb.Append($"Case {i} : 0%({compCnt[idx, i]})");
+                            {
+                                sb1.Append($"Case {i} : 0%({compCnt[idx, i]})");
+                            }
+                            lineCnt++;
                         }
 
-                        if (i < procItem.CompRange.Count) sb.Append(", ");
-
-                        if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy)
+                        if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy || isError == true)
+                        {
+                            sb1.Append($" *");
                             isError = true;
+                        }
+
+                        if (i < procItem.CompRange.Count) { sb1.Append("\n"); lineCnt++; }
                     }
+
+                    if (lineCnt > maxLine) maxLine = lineCnt;
+                    
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isError));
                 }
 
-                UIHelper.SetText(lblProcess, sb.ToString());
+                if (maxLine > 4)
+                {
+                    this.Height += (maxLine - 4) * 18;
+
+                    foreach (Control ctrl in flpResult.Controls)
+                    {
+                        ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -305,6 +354,32 @@ namespace MarkCompare
                 UIHelper.SetText(lblProcess, sb.ToString());
                 SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :[{procItem.Name}]{ex.Message}", Log.Level.Error);
             }
+        }
+
+        private RoundLabel makeProcessInfoLabel(string text, bool isError)
+        {
+            RoundLabel label = new RoundLabel();
+            label.Width = 270;
+            label.Height = 110;
+            if(isError) label.BkColor = System.Drawing.Color.Crimson;
+            else        label.BkColor = System.Drawing.Color.MidnightBlue;
+            label.BorderColor = System.Drawing.Color.LightSteelBlue;
+            label.CornerR = 10;
+            label.Font = new System.Drawing.Font(fontName, 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            label.ForeColor = System.Drawing.Color.WhiteSmoke;
+            label.IsFillLB = false;
+            label.IsFillLT = false;
+            label.IsFillRB = false;
+            label.IsFillRT = false;
+            label.Margin = new System.Windows.Forms.Padding(1);
+            label.Name = "lblProcess";
+            label.Padding = new System.Windows.Forms.Padding(5, 5, 1, 1);
+            label.Text = text;
+            label.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            label.Thickness = 1; 
+            label.Show();
+
+            return label;
         }
 
         /// <summary>
@@ -336,6 +411,14 @@ namespace MarkCompare
             _targetIP = ip;
             _duration = 60 * min * 1000;
             _lineName = lineName;
+
+            // flpResult 숨기고 lblProcess 컨트롤 중심으로 옮김
+            flpResult.Hide();
+            tableLayoutPanel3.Controls.Remove(lblProcess);
+            tableLayoutPanel3.Controls.Remove(flpResult);
+            tableLayoutPanel3.Controls.Add(lblProcess, 1, 0);
+            lblProcess.Dock = DockStyle.Fill;
+            lblProcess.Show();
             displayLineName();
             initStatusTimer();
         }
@@ -362,8 +445,6 @@ namespace MarkCompare
                 _timerStatus = null;
             }
         }
-
-        
 
         private async void timerDisplayStatus(object sender, EventArgs e)
         {
@@ -439,6 +520,7 @@ namespace MarkCompare
         {
             lblStatus.Text = _lineName;
             lblLotName.Text = _targetIP;
+            lblProcess.Show();
             lblProcess.Text = "";
         }
         #endregion
@@ -452,11 +534,12 @@ namespace MarkCompare
         }
 
         #region 언어 변경
+        string fontName;
         public void UpdateLanguage()
         {
             CultureInfo culture = CultureInfo.CurrentCulture;
 
-            string fontName = Functions.GetCultureFontName(culture.Name);
+            fontName = Functions.GetCultureFontName(culture.Name);
 
             Font newFont = new Font(fontName, 10, FontStyle.Bold);
             lblStatus.Font = newFont;

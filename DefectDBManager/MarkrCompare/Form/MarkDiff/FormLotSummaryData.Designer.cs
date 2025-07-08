@@ -30,11 +30,12 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbViewSelect = new System.Windows.Forms.CheckBox();
+            this.flpResult = new System.Windows.Forms.FlowLayoutPanel();
             this.lblStatus = new CustomControls.RoundLabel();
             this.lblLotName = new CustomControls.RoundLabel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblProcess = new CustomControls.RoundLabel();
-            this.cbViewSelect = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -52,8 +53,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 78F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(655, 128);
             this.tableLayoutPanel1.TabIndex = 0;
@@ -76,6 +77,50 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(655, 35);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 3;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Controls.Add(this.cbViewSelect, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.lblProcess, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.flpResult, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 40);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(655, 80);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // cbViewSelect
+            // 
+            this.cbViewSelect.AutoSize = true;
+            this.cbViewSelect.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbViewSelect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbViewSelect.Location = new System.Drawing.Point(3, 3);
+            this.cbViewSelect.Name = "cbViewSelect";
+            this.cbViewSelect.Size = new System.Drawing.Size(44, 74);
+            this.cbViewSelect.TabIndex = 3;
+            this.cbViewSelect.UseVisualStyleBackColor = true;
+            this.cbViewSelect.Visible = false;
+            this.cbViewSelect.CheckedChanged += new System.EventHandler(this.cbViewSelect_CheckedChanged);
+            // 
+            // flpResult
+            // 
+            this.flpResult.AutoScroll = true;
+            this.flpResult.BackColor = System.Drawing.Color.White;
+            this.flpResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpResult.Location = new System.Drawing.Point(51, 1);
+            this.flpResult.Margin = new System.Windows.Forms.Padding(1);
+            this.flpResult.Name = "flpResult";
+            this.flpResult.Size = new System.Drawing.Size(553, 78);
+            this.flpResult.TabIndex = 4;
+            this.flpResult.WrapContents = false;
             // 
             // lblStatus
             // 
@@ -122,59 +167,27 @@
             this.lblLotName.Thickness = 1;
             this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
             // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Controls.Add(this.lblProcess, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.cbViewSelect, 0, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 45);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(655, 78);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
             // lblProcess
             // 
             this.lblProcess.AutoSize = true;
             this.lblProcess.BkColor = System.Drawing.Color.MidnightBlue;
             this.lblProcess.BorderColor = System.Drawing.Color.LightSteelBlue;
             this.lblProcess.CornerR = 10;
-            this.lblProcess.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblProcess.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProcess.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblProcess.IsFillLB = false;
             this.lblProcess.IsFillLT = false;
             this.lblProcess.IsFillRB = false;
             this.lblProcess.IsFillRT = false;
-            this.lblProcess.Location = new System.Drawing.Point(51, 1);
+            this.lblProcess.Location = new System.Drawing.Point(606, 1);
             this.lblProcess.Margin = new System.Windows.Forms.Padding(1);
             this.lblProcess.Name = "lblProcess";
             this.lblProcess.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.lblProcess.Size = new System.Drawing.Size(553, 76);
+            this.lblProcess.Size = new System.Drawing.Size(46, 34);
             this.lblProcess.TabIndex = 2;
             this.lblProcess.Text = "Case 1:";
             this.lblProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProcess.Thickness = 1;
-            // 
-            // cbViewSelect
-            // 
-            this.cbViewSelect.AutoSize = true;
-            this.cbViewSelect.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbViewSelect.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbViewSelect.Location = new System.Drawing.Point(3, 3);
-            this.cbViewSelect.Name = "cbViewSelect";
-            this.cbViewSelect.Size = new System.Drawing.Size(44, 72);
-            this.cbViewSelect.TabIndex = 3;
-            this.cbViewSelect.UseVisualStyleBackColor = true;
-            this.cbViewSelect.Visible = false;
-            this.cbViewSelect.CheckedChanged += new System.EventHandler(this.cbViewSelect_CheckedChanged);
             // 
             // FormLotSummaryData
             // 
@@ -208,5 +221,6 @@
         private CustomControls.RoundLabel lblLotName;
         private CustomControls.RoundLabel lblProcess;
         private System.Windows.Forms.CheckBox cbViewSelect;
+        private System.Windows.Forms.FlowLayoutPanel flpResult;
     }
 }

@@ -368,7 +368,6 @@ namespace MarkCompare
             }
 
             dgvProcess.Columns[(int)eDgvPrcess.No].ReadOnly = true;
-
         }
 
         private void displayDgvProcess()
@@ -392,6 +391,9 @@ namespace MarkCompare
                         dgvProcess.Rows.Add(data);
                         idx++;
                     }
+
+                    if (idx > 0)
+                        dgvProcess.Rows[0].Cells[0].Selected = false;
                 }
             }
             catch
@@ -574,6 +576,35 @@ namespace MarkCompare
             }
 
             deleteDgvProcess();
+        }
+
+        private void btnProcessUp_Click(object sender, EventArgs e)
+        {
+            if (dgvProcess.SelectedCells.Count == 0) return;
+            int idx = dgvProcess.SelectedCells[0].RowIndex;
+            if (idx == 0) return;
+
+            ProcessData tmp = _tmpCompProc[idx-1];
+            _tmpCompProc[idx - 1] = _tmpCompProc[idx];
+            _tmpCompProc[idx] = tmp;
+            
+            displayDgvProcess();
+
+            dgvProcess.Rows[idx - 1].Cells[1].Selected = true;
+        }
+
+        private void btnProcessDn_Click(object sender, EventArgs e)
+        {
+            if (dgvProcess.SelectedCells.Count == 0) return;
+            int idx = dgvProcess.SelectedCells[0].RowIndex;
+            if (idx >= dgvProcess.Rows.Count-1) return ;
+
+            ProcessData tmp = _tmpCompProc[idx+1];
+            _tmpCompProc[idx + 1] = _tmpCompProc[idx];
+            _tmpCompProc[idx] = tmp;
+
+            displayDgvProcess();
+            dgvProcess.Rows[idx + 1].Cells[1].Selected = true;
         }
 
         #endregion
@@ -1230,8 +1261,8 @@ namespace MarkCompare
             btnCancel.Text = Lang.btnCancel;
             btnOK.Text = Lang.btnOK1;
         }
+
         #endregion
 
-        
     }
 }

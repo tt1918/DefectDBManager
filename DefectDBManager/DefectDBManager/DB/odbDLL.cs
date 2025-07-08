@@ -17,6 +17,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 using System.Data;
 using System.Threading;
 using DefectDBManager.DB;
+using System.Windows.Forms;
 
 namespace DefectDBManager
 {
@@ -74,7 +75,8 @@ namespace DefectDBManager
 
         private bool connectToDB(string dbConn)
         {
-            Log.Write("DB 연결을 시도합니다.");
+            Log.Write("Try connecting to DB");
+            Log.Write($"Connection String : {dbConn}");
             if (conn == null)
             {
                 conn = new OracleConnection(dbConn);
@@ -98,12 +100,12 @@ namespace DefectDBManager
                         if(this.OnDbConnect!=null)
                             this.OnDbConnect(true);
                         ResetDisconCheck();
-                        Log.Write("DB 연결에 성공하였습니다.");
+                        Log.Write("Succeeding connection to DB ");
                     }
                     else
                     {
                         bDBConnCheck = false;
-                        Log.Write("DB 연결에 실패하였습니다.");
+                        Log.Write("Failed to connect to DB");
                     }
                 }
             }
@@ -151,20 +153,32 @@ namespace DefectDBManager
         {
             if (IsDBConnected == true) return true;
 
-            if (LoginInfo.StringType == 0)
+            bool isConn = false;
+
+            try
             {
-                DBConnString = String.Format($"Data Source={LoginInfo.Name};" +
-                             $"User Id={LoginInfo.ID};Password={LoginInfo.PW};Connection Timeout=30;");
+                if (LoginInfo.StringType == 0)
+                {
+                    DBConnString = String.Format($"Data Source={LoginInfo.Name};" +
+                                 $"User Id={LoginInfo.ID};Password={LoginInfo.PW};Connection Timeout=30;");
+                }
+                else if (LoginInfo.StringType == 1)
+                {
+                    DBConnString = String.Format("Data Source=(DESCRIPTION="
+                                + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={LoginInfo.IP})(PORT={LoginInfo.Port})))"
+                                + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={LoginInfo.Name})));"
+                                + $"User Id={LoginInfo.ID};Password={LoginInfo.PW}");
+                }
+
+                isConn = connectToDB(DBConnString);
             }
-            else if (LoginInfo.StringType == 1)
+            catch (Exception e)
             {
-                DBConnString = String.Format("Data Source=(DESCRIPTION="
-                            + $"(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST={LoginInfo.IP})(PORT={LoginInfo.Port})))"
-                            + $"(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME={LoginInfo.Name})));"
-                            + $"User Id={LoginInfo.ID};Password={LoginInfo.PW}");
+                isConn = false;
+                return isConn;
             }
 
-            return connectToDB(DBConnString);
+            return isConn;
         }
 
         public void Disconnect()

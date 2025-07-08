@@ -126,8 +126,8 @@ namespace DefectDBManager
             {
                 for (j = 30 - 1; j >= 0; j--)
                 {
-                    if (j == 0) strLowPath = Path.Combine(Define.BCRPath, lotID);
-                    else strLowPath = Path.Combine(Define.BCRPath, $"{lotID}_{j:D2}");
+                    if (j == 0) strLowPath = Path.Combine(_LOG.GetBcrPath(), lotID);
+                    else strLowPath = Path.Combine(_LOG.GetBcrPath(), $"{lotID}_{j:D2}");
 
                     if (Directory.Exists(strLowPath)) nLotCnt = j;
 

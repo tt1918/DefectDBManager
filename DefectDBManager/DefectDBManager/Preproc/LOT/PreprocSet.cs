@@ -374,7 +374,20 @@ namespace DefectDBManager.Preproc
         public string Line { get; set; } = string.Empty;
         public string Product { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 수동 검사에서 사용 여부
+        /// </summary>
+        public bool Use { get; set; } = true;
+
+        /// <summary>
+        /// 검사 주가
+        /// </summary>
         public int Duration { get; set; } = 0;
+        
+        /// <summary>
+        /// 검사 후 표시 여부
+        /// </summary>
         public bool IsSkip { get; set; } = false;
 
         private DateTime _setTime;
@@ -425,7 +438,6 @@ namespace DefectDBManager.Preproc
 
             return false;
         }
-
     }
 
     public class ProcFilterList : ItemList<ProcFilter>

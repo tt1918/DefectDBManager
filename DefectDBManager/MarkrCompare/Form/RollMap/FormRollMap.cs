@@ -271,7 +271,8 @@ namespace MarkCompare
 
             var selectedIndex = cbProcess.SelectedIndex;
 
-            Parallel.ForEach(lot.MarkCompList.Data, item =>
+            //Parallel.ForEach(lot.MarkCompList.Data, item =>
+            foreach(var item in lot.MarkCompList.Data)
             {
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
                 {
@@ -343,7 +344,7 @@ namespace MarkCompare
                         if (localMaxY > maxPosY) maxPosY = localMaxY;
                     }
                 }
-            });
+            }
 
             foreach (var def in defects)
                 Rollmap.AddPrevDefect(def);

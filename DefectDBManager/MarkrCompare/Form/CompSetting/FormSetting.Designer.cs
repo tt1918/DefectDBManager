@@ -94,6 +94,8 @@
             this.btnOK = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
+            this.btnProcessUp = new CustomControls.RoundButton();
+            this.btnProcessDn = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -637,12 +639,16 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnCount = 5;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel8.Controls.Add(this.btnAddProc, 1, 0);
-            this.tableLayoutPanel8.Controls.Add(this.btnDelProc, 2, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnAddProc, 3, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnDelProc, 4, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnProcessUp, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnProcessDn, 2, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(2, 221);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
@@ -1365,6 +1371,46 @@
             this.btnLoad.UseVisualStyleBackColor = false;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // btnProcessUp
+            // 
+            this.btnProcessUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessUp.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessUp.BorderColor = System.Drawing.Color.Lavender;
+            this.btnProcessUp.BorderRadius = 5;
+            this.btnProcessUp.BorderSize = 2;
+            this.btnProcessUp.FlatAppearance.BorderSize = 0;
+            this.btnProcessUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProcessUp.ForeColor = System.Drawing.Color.White;
+            this.btnProcessUp.Location = new System.Drawing.Point(97, 1);
+            this.btnProcessUp.Margin = new System.Windows.Forms.Padding(1);
+            this.btnProcessUp.Name = "btnProcessUp";
+            this.btnProcessUp.Size = new System.Drawing.Size(38, 33);
+            this.btnProcessUp.TabIndex = 2;
+            this.btnProcessUp.Text = "△";
+            this.btnProcessUp.TextColor = System.Drawing.Color.White;
+            this.btnProcessUp.UseVisualStyleBackColor = false;
+            this.btnProcessUp.Click += new System.EventHandler(this.btnProcessUp_Click);
+            // 
+            // btnProcessDn
+            // 
+            this.btnProcessDn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessDn.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessDn.BorderColor = System.Drawing.Color.Lavender;
+            this.btnProcessDn.BorderRadius = 5;
+            this.btnProcessDn.BorderSize = 2;
+            this.btnProcessDn.FlatAppearance.BorderSize = 0;
+            this.btnProcessDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProcessDn.ForeColor = System.Drawing.Color.White;
+            this.btnProcessDn.Location = new System.Drawing.Point(137, 1);
+            this.btnProcessDn.Margin = new System.Windows.Forms.Padding(1);
+            this.btnProcessDn.Name = "btnProcessDn";
+            this.btnProcessDn.Size = new System.Drawing.Size(38, 33);
+            this.btnProcessDn.TabIndex = 2;
+            this.btnProcessDn.Text = "▽";
+            this.btnProcessDn.TextColor = System.Drawing.Color.White;
+            this.btnProcessDn.UseVisualStyleBackColor = false;
+            this.btnProcessDn.Click += new System.EventHandler(this.btnProcessDn_Click);
+            // 
             // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1496,5 +1542,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel20;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel21;
         private CustomControls.RoundButton btnCopy;
+        private CustomControls.RoundButton btnProcessUp;
+        private CustomControls.RoundButton btnProcessDn;
     }
 }

@@ -525,4 +525,7 @@
   <data name="sameLNCDexists" xml:space="preserve">
     <value>同名のLNCDが存在する</value>
   </data>
+  <data name="filterDgvUse" xml:space="preserve">
+    <value>使用</value>
+  </data>
 </root>

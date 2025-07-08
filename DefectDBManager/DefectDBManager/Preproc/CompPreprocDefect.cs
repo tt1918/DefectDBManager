@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
@@ -210,8 +211,7 @@ namespace DefectDBManager
             OnStartLiveDefectSearching?.Invoke();
             
             // 기존 데이터 삭제
-            LotManager.LiveProduct.Clear();
-            LotManager.LiveLot.Clear();
+            LotManager.ClearLiveData();
 
             // 해당 공정에 대한 결점 정보 확인
             searchLiveLotList();
@@ -277,27 +277,29 @@ namespace DefectDBManager
                 string lncd = keyData[0];
 
                 ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Search][productIdx];
-
-                PreprocItem preprocItem = null;
-                for (int i = 0; i < LotManager.ProcSetting.Count; i++)
-                    if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
-
-                _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
-
-                foreach (var item in list.Value.Data)
+                if(filter.Use==true)
                 {
-                    if (StopSearchingLotList == true) break;
+                    PreprocItem preprocItem = null;
+                    for (int i = 0; i < LotManager.ProcSetting.Count; i++)
+                        if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
-                    string lotName = item.Y0KLOT;
-                    //filter 로 구분하도록 수정 @ATW 250321
-                    //SearchDefectData(lncd, lotName, preprocItem);
-                    SearchDefectData(list.Key, lotName, preprocItem, filter);
+                    _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
 
-                    // 검색 진행 상황을 
-                    int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
-                    OnLotProgress?.Invoke(rate);
+                    foreach (var item in list.Value.Data)
+                    {
+                        if (StopSearchingLotList == true) break;
+
+                        string lotName = item.Y0KLOT;
+                        //filter 로 구분하도록 수정 @ATW 250321
+                        //SearchDefectData(lncd, lotName, preprocItem);
+                        SearchDefectData(list.Key, lotName, preprocItem, filter);
+
+                        // 검색 진행 상황을 
+                        int rate = (int)((float)LotManager.TotalLot / (float)LotManager.TotalProduct);
+                        OnLotProgress?.Invoke(rate);
+                    }
                 }
-
+                
                 productIdx++;
             }
             
@@ -356,13 +358,12 @@ namespace DefectDBManager
                 }
                 else isWildCard = false;
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.LotHistory) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.LotHistory, true) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.LotHistory) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.LotHistory, true) == true)
 #endif
                 {
                     PTRY0PList list = new PTRY0PList();
-
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
                         if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
@@ -395,6 +396,13 @@ namespace DefectDBManager
 
             foreach (var data in filter.Data)
             {
+                if (data.Use == false)
+                {
+                    PTRY0PList list1 = new PTRY0PList();
+                    LotManager.Product.Add(data.ToString(), list1);
+                    continue;
+                }
+
                 isSkip = false;
                 data.IsSkip = false;
                 lncd = string.Empty;
@@ -428,16 +436,16 @@ namespace DefectDBManager
 
                 PTRY0PList list = new PTRY0PList();
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null, false) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null, false) == true)
 #endif
                 {
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
                     {
                         if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
                         else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
-                        
+
                         list.Add(ptry0p.Clone());
                     }
                 }
@@ -456,9 +464,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, true, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, true, ref error);
 #endif
                 if (lot == null)    return;
 
@@ -528,9 +536,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, false, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, false, ref error);
 #endif
 
                 if (lot == null) return;
@@ -553,7 +561,6 @@ namespace DefectDBManager
                 {
                     tempData[i] = new List<CompareResult>();
                 }
-
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -647,26 +654,32 @@ namespace DefectDBManager
 
         public void StartLiveLot()      
         {   
-            _timerCheckLiveLot.Start();
-            int size = LotManager.CrtProcFilter[(int)eProc.Live].Count;
             bool isSync = LotManager.CrtProcFilter.UseLiveSync;
-            int syncDuration = LotManager.CrtProcFilter.SyncDuration;
-            
             // 전체 싱크 모드를 사용하면
             if(isSync==true)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    LotManager.CrtProcFilter[(int)eProc.Live].Data[i].SetTime(syncDuration);
-                }
+                int syncDuration = LotManager.CrtProcFilter.SyncDuration;
+                foreach (var data in LotManager.CrtProcFilter[(int)eProc.Live].Data)
+                    data.SetTime(syncDuration);
             }
             else
             {
-                for (int i = 0; i < size; i++)
-                {
-                    LotManager.CrtProcFilter[(int)eProc.Live].Data[i].SetTime();
-                }
+                foreach(var data in LotManager.CrtProcFilter[(int)eProc.Live].Data)
+                    data.SetTime();
             }
+#if !TEST_MODE
+            // 검색 데이터 폴더 정리
+            foreach (var data in LotManager.CrtProcFilter[(int)eProc.Live].Data)
+            {
+                string filter = Helper.ReplaceInvalidPathChar(data.ToString());
+                string path = $"{Define.RealtimeBCRPath}\\{filter}";
+                if(Directory.Exists(path))
+                    Directory.Delete(path, true);
+            }
+
+            LotManager.LotHistory.Histroy.Clear();
+#endif
+            _timerCheckLiveLot.Start();
         }
         public void StopLiveLot()       
         {   

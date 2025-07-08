@@ -315,6 +315,15 @@ namespace DefectDBManager
             return isSuccess;
         }
 
+        public void ClearLiveData()
+        {
+            foreach(var lot in LiveProduct)
+                lot.Value.Clear();
+            LiveProduct.Clear();
+
+            ClearLiveLot();
+        }
+
         public void ClearLiveLot()
         {
             // 각 공정 별 랏 정보 삭제

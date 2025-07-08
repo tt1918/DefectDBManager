@@ -86,6 +86,7 @@
             this.lblTitle.Size = new System.Drawing.Size(865, 31);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "상태 확인 설정";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.Thickness = 0;
             // 
             // tableLayoutPanel2
@@ -164,6 +165,7 @@
             this.lblIP.Size = new System.Drawing.Size(65, 31);
             this.lblIP.TabIndex = 1;
             this.lblIP.Text = "IP";
+            this.lblIP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblIP.Thickness = 0;
             // 
             // lblPath
@@ -185,6 +187,7 @@
             this.lblPath.Size = new System.Drawing.Size(713, 31);
             this.lblPath.TabIndex = 1;
             this.lblPath.Text = "IP";
+            this.lblPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblPath.Thickness = 2;
             // 
             // tableLayoutPanel6
@@ -245,6 +248,7 @@
             this.lblDuration.Size = new System.Drawing.Size(123, 31);
             this.lblDuration.TabIndex = 1;
             this.lblDuration.Text = "검색 시간(분)";
+            this.lblDuration.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblDuration.Thickness = 0;
             // 
             // tableLayoutPanel3

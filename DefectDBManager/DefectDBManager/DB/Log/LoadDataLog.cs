@@ -46,9 +46,12 @@ namespace DefectDBManager
     public class LogDB
         {
         public string Lot { get; set; }
+        public bool RealtimeMode { get; set; } = false;
         public void WriteLoadData(string str, int nc, string name, double time, bool clear=false)
         {
-            string path = Path.Combine(Define.BCRPath, Lot);
+            string path = string.Empty;
+            path = Path.Combine(GetBcrPath(), Lot);
+
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, $"{name}_{Define.DBResultName}");
@@ -76,7 +79,9 @@ namespace DefectDBManager
 
         public void WriteLoadData(string subPath, string str, int nc, string name, double time, bool clear = false)
         {
-            string path = Path.Combine(Define.BCRPath, subPath, Lot);
+            string path = string.Empty;
+            path = Path.Combine(GetBcrPath(), subPath, Lot);
+
             if (Directory.Exists(path) == false)
                 Directory.CreateDirectory(path);
             path = Path.Combine(path, $"{name}_{Define.DBResultName}");
@@ -109,7 +114,9 @@ namespace DefectDBManager
         {
             try
             {
-                string path = Path.Combine(Define.BCRPath,strLot);
+                string path = string.Empty;
+                path = Path.Combine(GetBcrPath(), strLot);
+
                 if (Directory.Exists(path) == true)
                     Directory.Delete(path, true);
             }
@@ -123,7 +130,8 @@ namespace DefectDBManager
         {
             try
             {
-                string path = Path.Combine(Define.BCRPath, subPath, strLot);
+                string path = Path.Combine(GetBcrPath(), strLot);
+
                 if (Directory.Exists(path) == true)
                     Directory.Delete(path, true);
             }
@@ -133,5 +141,13 @@ namespace DefectDBManager
             }
         }
 
+        public string GetBcrPath()
+        {
+            string path = string.Empty;
+
+            if (RealtimeMode == false) path = Define.BCRPath;
+            else path = Define.RealtimeBCRPath;
+            return path;
+        }
     }
 }

@@ -148,12 +148,13 @@ namespace DefectDBManager.Preproc
             TimeSpan ts = new TimeSpan(1, 0, 0, 0);
 
             string strLowPath;
+
             for (i = 0; i < 10; i++)
             {
                 for (j = 30 - 1; j >= 0; j--)
                 {
-                    if (j == 0) strLowPath = Path.Combine(Define.BCRPath, _SubPath, lotID);
-                    else strLowPath = Path.Combine(Define.BCRPath, _SubPath, $"{lotID}_{j:D2}");
+                    if (j == 0) strLowPath = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID);
+                    else strLowPath = Path.Combine(_LOG.GetBcrPath(), _SubPath, $"{lotID}_{j:D2}");
 
                     if (Directory.Exists(strLowPath)) nLotCnt = j;
 
@@ -168,7 +169,7 @@ namespace DefectDBManager.Preproc
             return nNewCnt;
         }
 
-        public bool SearchPTRYOPList(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history)
+        public bool SearchPTRYOPList(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history, bool isRealTimeMode)
         {
             // 연결 확인
             if (conn?.IsConnected() == false) return false;
@@ -179,6 +180,7 @@ namespace DefectDBManager.Preproc
                 string strFilter = Helper.ReplaceInvalidPathChar($"{filter.Line}_{filter.Product}_{filter.Model}");
                 string strLine = $"[{strFilter}]";
 
+                _LOG.RealtimeMode = isRealTimeMode;
                 _LOG.Lot = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
 
                 // 임시로 패스 경로를 설정한다.
@@ -203,7 +205,7 @@ namespace DefectDBManager.Preproc
 
                     string query = ptry0p.GetQuery();
                     string listFileName = $"[{lncd}] PTRY0PList";
-                    _LOG.WriteLoadData(query.ToString(), 0, listFileName, 0);
+                    _LOG.WriteLoadData(query.ToString(), 0, listFileName, 0, true);
 
                     if (query == "")
                     {
@@ -257,15 +259,19 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public bool SearchPTRYOPList_TEST(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history)
+        public bool SearchPTRYOPList_TEST(string lncd, ProcFilter filter, DateTime startTime, DateTime endTime, LotHistory history, bool isRealTimeMode)
         {
             try
             {
                 string strFilter = Helper.ReplaceInvalidPathChar($"{filter.Line}_{filter.Product}_{filter.Model}");
                 string strLine = $"[{strFilter}]";
                 string path = $"{strLine} PTRY0PList" + startTime.ToString("yyyyMMdd");
-                path = Path.Combine(Define.BCRPath, path, $"[{lncd}] PTRY0PList_DBResult.txt");
 
+                // 실시간 감시 모드를 업데이트한다. 
+                _LOG.RealtimeMode = isRealTimeMode;
+
+                path = Path.Combine(_LOG.GetBcrPath(), path, $"[{lncd}] PTRY0PList_DBResult.txt");
+                 
                 _SubPath = strFilter;
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
@@ -312,7 +318,7 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, ref eSearchError errOut)
+        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, bool isRealTime, ref eSearchError errOut)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -343,6 +349,7 @@ namespace DefectDBManager.Preproc
                     _LOG.DeleteFolder(_SubPath, lotID);
                 }
 
+                _LOG.RealtimeMode = isRealTime;
                 _LOG.Lot = lotID;
 
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
@@ -468,7 +475,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, ref eSearchError errOut)
+        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, bool isRealtime, ref eSearchError errOut)
         {
             bool success = false;
             try
@@ -482,10 +489,12 @@ namespace DefectDBManager.Preproc
                     dbOption.useKT = true;
                 else
                     dbOption.useKT = false;
+
+                _LOG.RealtimeMode = isRealtime;
                 _LOG.Lot = lotID;
 
                 Log.Write($"[{lotID}] PTRLYP 검색");
-                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRYLP_DBResult.txt");
+                string path = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID, "PTRYLP_DBResult.txt");
 
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
@@ -637,7 +646,7 @@ namespace DefectDBManager.Preproc
         {
             try
             {
-                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "XOFSMST_DBResult.txt");
+                string path = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID, "XOFSMST_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -837,7 +846,7 @@ namespace DefectDBManager.Preproc
 
             try
             {
-                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "PTRY0P_DBResult.txt");
+                string path = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID, "PTRY0P_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -1004,7 +1013,7 @@ namespace DefectDBManager.Preproc
 
                 Dictionary<string, INSPDATList> dicList = new Dictionary<string, INSPDATList>();
 
-                string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "INSPDAT_DBResult.txt");
+                string path = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID, "INSPDAT_DBResult.txt");
                 using (var reader = new StreamReader(path, Encoding.UTF8))
                 {
                     string text;
@@ -1398,7 +1407,7 @@ namespace DefectDBManager.Preproc
                         inspdata.RollCtlCnt = 0;
 
                         bool isTextEnd = false;
-                        string path = Path.Combine(Define.BCRPath, _SubPath, lotID, "FAULTDAT_DBResult.txt");
+                        string path = Path.Combine(_LOG.GetBcrPath(), _SubPath, lotID, "FAULTDAT_DBResult.txt");
                         using (var reader = new StreamReader(path, Encoding.UTF8))
                         {
                             string text;
