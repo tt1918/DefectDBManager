@@ -288,9 +288,11 @@ namespace MarkCompare
                             if(subData.LNCD == procItem.Compare[idx].LNCD)
                             {
                                 // 생산 시간 입력
-                                sb1.Append($"[{subData.Y0KKOL}-{subData.Y0KSOL}]\n"); lineCnt++;
+                                sb1.Append($"[ {subData.Y0KKOL}-{subData.Y0KSOL}\n"); lineCnt++;
                                 // 품명 추가
-                                sb1.Append($"[{subData.Y0KLOT}]\n"); lineCnt++;
+                                sb1.Append($"{Lang.product}: {subData.Y0ZKNM}\n"); lineCnt++;
+                                // 품명 추가
+                                sb1.Append($"LOT: {subData.Y0KLOT} ]\n"); lineCnt++;
                             }
                         }
                     }
@@ -358,6 +360,8 @@ namespace MarkCompare
 
         private RoundLabel makeProcessInfoLabel(string text, bool isError)
         {
+            if (fontName == null)
+                fontName = "Segoe UI";
             RoundLabel label = new RoundLabel();
             label.Width = 270;
             label.Height = 110;
