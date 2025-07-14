@@ -8,6 +8,7 @@ namespace DefectDBManager.Preproc
 {
     public enum eProc
     {
+        None=-1,
         Live,
         Search,
         Total

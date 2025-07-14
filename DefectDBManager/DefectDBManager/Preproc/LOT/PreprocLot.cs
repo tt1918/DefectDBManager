@@ -352,13 +352,11 @@ namespace DefectDBManager
 
             bool isEmpty = true;
             foreach (var cnt in CompCnt)
-            {
                 if (cnt > 0) isEmpty = false;
-            }
+           
             if (isEmpty)
             {
                 // 데이터 처리 과정 필요함
-
                 CompResult = eCompResult.NoCommPosData;
                 return;
             }
@@ -375,8 +373,8 @@ namespace DefectDBManager
                 result[0] = 100.0;
                 for (int i = 1; i < procData.CompRange.Count + 1; i++)
                 {
-                    if (CompCnt[idx, i - 1] > 0)
-                        result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, i - 1]) * 100.0;
+                    if (CompCnt[idx, 0] > 0)
+                        result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, 0]) * 100.0;
                     else
                     {
                         if (CompCnt[idx, i] > 0)

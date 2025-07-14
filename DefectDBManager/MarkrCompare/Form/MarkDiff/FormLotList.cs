@@ -28,7 +28,7 @@ namespace MarkCompare
         }
         private Dictionary<string, List<FormLotSummaryData>> _dicFormSummary = null;
         private Dictionary<string ,FlowLayoutPanel> _flpSummeryDic = new Dictionary<string, FlowLayoutPanel>();
-        eProc _procType = eProc.Live;
+        eProc _procType = eProc.None;
         #endregion
 
         #region Event
@@ -41,7 +41,7 @@ namespace MarkCompare
             InitializeComponent();
 
             _dicFormSummary = new Dictionary<string, List<FormLotSummaryData>>();
-            proc = _procType;
+            _procType = proc;
         }
 
         public FormLotList(object owner, string name)
@@ -217,6 +217,8 @@ namespace MarkCompare
                     if (_dicFormSummary.ContainsKey("Search"))
                     {
                         _dicFormSummary["Search"].Add(form);
+                        if (_flpSummeryDic.ContainsKey("CSV"))
+                            this._flpSummeryDic["CSV"].Controls.Add(form);
                     }
                     else
                     {
@@ -253,6 +255,8 @@ namespace MarkCompare
                     if (_dicFormSummary.ContainsKey("Search"))
                     {
                         _dicFormSummary["Search"].Add(form);
+                        if (_flpSummeryDic.ContainsKey(filter))
+                            this._flpSummeryDic[filter].Controls.Add(form);
                     }
                     else
                     {
@@ -363,6 +367,7 @@ namespace MarkCompare
                     if (form.IsCSV == false)
                     {
                         if (form1.StateCheckbox &&
+                            form.Filter!=form1.Filter ||
                             (form.LotSummery.LotName != form1.LotSummery.LotName ||
                             form.ProcItem.ToString() != form1.ProcItem.ToString()))
                         {

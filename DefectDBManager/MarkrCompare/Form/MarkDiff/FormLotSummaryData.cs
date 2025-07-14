@@ -221,6 +221,7 @@ namespace MarkCompare
             int lineCnt = 0;
             try
             {
+                isError = false;
                 // 컨트롤 리소스 삭제
                 flpResult.Controls.Clear();
 
@@ -233,7 +234,43 @@ namespace MarkCompare
 
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
-                    UIHelper.SetText(lblProcess, Lang.NoComparingData);
+                    
+                    for (int idx = 0; idx < procItem.Compare.Count; idx++)
+                    {
+                        lineCnt = 0;
+                        StringBuilder sb1 = new StringBuilder();
+                        sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n"); lineCnt++;
+
+                        foreach (var data in _lotSummery.PTRY0P_Data)
+                        {
+                            foreach (var subData in data.Data)
+                            {
+                                if (subData.LNCD == procItem.Compare[idx].LNCD)
+                                {
+                                    // 생산 시간 입력
+                                    sb1.Append($"[ {subData.Y0KKOL}-{subData.Y0KSOL}\n"); lineCnt++;
+                                    // 품명 추가
+                                    sb1.Append($"{Lang.product}: {subData.Y0ZKNM}\n"); lineCnt++;
+                                    // 품명 추가
+                                    sb1.Append($"LOT: {subData.Y0KLOT} ]\n"); lineCnt++;
+                                }
+                            }
+                        }
+                        sb1.Append($"{Lang.NoComparingData}"); lineCnt++;
+
+                        if (lineCnt > maxLine) maxLine = lineCnt;
+                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
+                    }
+
+                    if (maxLine > 2)
+                    {
+                        this.Height += (maxLine - 2) * 18;
+
+                        foreach (Control ctrl in flpResult.Controls)
+                        {
+                            ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                        }
+                    }
                     return;
                 }
 
@@ -335,13 +372,13 @@ namespace MarkCompare
                     }
 
                     if (lineCnt > maxLine) maxLine = lineCnt;
-                    
+
                     flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isError));
                 }
 
-                if (maxLine > 4)
+                if (maxLine > 2)
                 {
-                    this.Height += (maxLine - 4) * 18;
+                    this.Height += (maxLine - 2) * 18;
 
                     foreach (Control ctrl in flpResult.Controls)
                     {
