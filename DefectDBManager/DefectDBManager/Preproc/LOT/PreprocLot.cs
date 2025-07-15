@@ -37,6 +37,8 @@ namespace DefectDBManager
         public eCompResult CompResult { get; private set; }
         public int[,] CompCnt { get; private set; }
 
+        public List<int[,]> Comp1Cnt { get; private set; }
+
         /// <summary>
         /// 초기화
         /// </summary>
@@ -136,6 +138,7 @@ namespace DefectDBManager
             {
                 CompareResult comp = new CompareResult();
                 comp.Base = item;
+                comp.IdxSize = compCount;
                 comp.SetCompRange(lineCompCount, compCount);
 
                 posX = item.XPOS_M;
@@ -171,6 +174,8 @@ namespace DefectDBManager
 
                         foreach (var preItem2 in subData)
                             comp.AddCompData(lncdIdx, compIdx, preItem2);
+                            
+                        comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                     }
                 }
                 #endregion
@@ -207,6 +212,8 @@ namespace DefectDBManager
 
                             foreach (var preItem2 in subData)
                                 comp.AddCompData(lncdIdx, compIdx, preItem2);
+
+                            comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                         }
                     }
                 }
@@ -337,7 +344,65 @@ namespace DefectDBManager
                 return;
             }
 
+            MarkCompList.SetCTLNOArray(procData.Compare.Count);
+
             CompCnt = new int[procData.Compare.Count, procData.CompRange.Count + 1];
+
+            Comp1Cnt = new List<int[,]>();
+            for(int i=0; i< procData.Compare.Count; i++)
+            {
+                int count = 0;
+                // 여기서 조건 분기
+                if (procData.Compare[i].IsSplitCTLNO==true)
+                {
+                    if(MarkCompList.Data.Count!=0)
+                    {
+                        bool exists = MarkCompList.Data[0].Comp1.Keys.Any(k => k.Item1 == procData.Compare[i].LNCD);
+
+                        if (exists == true)
+                        {
+                            foreach (var aaa in MarkCompList.Data[0].Comp1)
+                            {
+                                if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                                {
+                                    MarkCompList.CTLNO[i].Add(aaa.Key.Item2);
+                                    count++;
+                                }
+                            }
+
+                            if (count == 0) Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+                            else // 여기서 데이터 추가함
+                            {
+                                Comp1Cnt.Add(new int[count, procData.CompRange.Count + 1]);
+
+                                count = 0;
+                                int iter = 0;
+                                int idx = Comp1Cnt.Count - 1;
+                                foreach (var aaa in MarkCompList.Data[0].Comp1)
+                                {
+                                    if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                                    {
+                                        foreach (var item in MarkCompList.Data)
+                                        {
+                                            if (item.Comp1[aaa.Key][0].Count > 0)
+                                                Comp1Cnt[idx][count, 0]++;
+
+                                            for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
+                                                if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++; ;
+                                        }
+                                        count++;
+                                    }
+                                    iter++;
+                                }
+                            }
+                        }
+                        else
+                            Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+                    }
+                }
+                else
+                    Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+            }
 
             foreach (var item in MarkCompList.Data)
             {

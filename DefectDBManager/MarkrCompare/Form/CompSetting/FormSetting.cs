@@ -671,6 +671,7 @@ namespace MarkCompare
                 }
 
                 cbCompFltAll.Checked = refer.IsFltAll;
+                ckbSplitCTLNO.Checked =  refer.IsSplitCTLNO;
             }
             catch
             {
@@ -703,7 +704,8 @@ namespace MarkCompare
                     listInfo.Add(fltInfo);
                 }
                 _tmpCompProc[selIdx].FltInfos = listInfo;
-                _tmpCompProc[selIdx].SetIsFltAll(cbCompFltAll.Checked);
+                _tmpCompProc[selIdx].IsFltAll = cbCompFltAll.Checked;
+                _tmpCompProc[selIdx].IsSplitCTLNO = ckbSplitCTLNO.Checked;
             }
         }
 
@@ -833,6 +835,7 @@ namespace MarkCompare
                 }
 
                 cbRefFltAll.Checked = refer.IsFltAll;
+                ckbSplitCTLNO.Checked = refer.IsSplitCTLNO;
             }
             catch
             {
@@ -858,7 +861,8 @@ namespace MarkCompare
             }
 
             refer.FltInfos = listInfo;
-            refer.SetIsFltAll(cbRefFltAll.Checked);
+            refer.IsFltAll = cbRefFltAll.Checked;
+            refer.IsSplitCTLNO = ckbSplitCTLNO.Checked;
         }
 
         private void addRefFlt()
@@ -1134,6 +1138,7 @@ namespace MarkCompare
             if (selProcIdx == -1 || _selSetName == "") return;
 
             cbUseMNTTAN.Checked = _preprocSet[selProcIdx].UseAiResult;
+
         }
         #endregion
 

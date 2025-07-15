@@ -1163,6 +1163,7 @@ namespace DefectDBManager.Preproc
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
                         {
+                            FaultData.MarkData.LNCD = inspdata.LNCD;
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
                         }
@@ -1201,7 +1202,8 @@ namespace DefectDBManager.Preproc
 
                                     PreprocMrkDat preMarkData = new PreprocMrkDat();
                                     preMarkData.LNCD = inspdata.LNCD;
-                                    
+                                    preMarkData.CTLNO = inspdata.CTLNO;
+
                                     while (true)
                                     {
                                         if(conn.Connection.State!=ConnectionState.Open)
@@ -1377,9 +1379,11 @@ namespace DefectDBManager.Preproc
                         eProcDataType dataTarget = eProcDataType.None;
                         PreprocMrkDat preMarkData = new PreprocMrkDat();
                         preMarkData.LNCD = inspdata.LNCD;
+                        preMarkData.CTLNO = inspdata.CTLNO;
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
                         {
+                            FaultData.MarkData.LNCD = inspdata.LNCD;
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
                         }

@@ -58,6 +58,8 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.btnAddProc = new CustomControls.RoundButton();
             this.btnDelProc = new CustomControls.RoundButton();
+            this.btnProcessUp = new CustomControls.RoundButton();
+            this.btnProcessDn = new CustomControls.RoundButton();
             this.gpCompProc = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvCompProc = new System.Windows.Forms.DataGridView();
@@ -94,8 +96,7 @@
             this.btnOK = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
-            this.btnProcessUp = new CustomControls.RoundButton();
-            this.btnProcessDn = new CustomControls.RoundButton();
+            this.ckbSplitCTLNO = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -700,6 +701,46 @@
             this.btnDelProc.UseVisualStyleBackColor = false;
             this.btnDelProc.Click += new System.EventHandler(this.btnDelProc_Click);
             // 
+            // btnProcessUp
+            // 
+            this.btnProcessUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessUp.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessUp.BorderColor = System.Drawing.Color.Lavender;
+            this.btnProcessUp.BorderRadius = 5;
+            this.btnProcessUp.BorderSize = 2;
+            this.btnProcessUp.FlatAppearance.BorderSize = 0;
+            this.btnProcessUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProcessUp.ForeColor = System.Drawing.Color.White;
+            this.btnProcessUp.Location = new System.Drawing.Point(97, 1);
+            this.btnProcessUp.Margin = new System.Windows.Forms.Padding(1);
+            this.btnProcessUp.Name = "btnProcessUp";
+            this.btnProcessUp.Size = new System.Drawing.Size(38, 33);
+            this.btnProcessUp.TabIndex = 2;
+            this.btnProcessUp.Text = "△";
+            this.btnProcessUp.TextColor = System.Drawing.Color.White;
+            this.btnProcessUp.UseVisualStyleBackColor = false;
+            this.btnProcessUp.Click += new System.EventHandler(this.btnProcessUp_Click);
+            // 
+            // btnProcessDn
+            // 
+            this.btnProcessDn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessDn.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnProcessDn.BorderColor = System.Drawing.Color.Lavender;
+            this.btnProcessDn.BorderRadius = 5;
+            this.btnProcessDn.BorderSize = 2;
+            this.btnProcessDn.FlatAppearance.BorderSize = 0;
+            this.btnProcessDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProcessDn.ForeColor = System.Drawing.Color.White;
+            this.btnProcessDn.Location = new System.Drawing.Point(137, 1);
+            this.btnProcessDn.Margin = new System.Windows.Forms.Padding(1);
+            this.btnProcessDn.Name = "btnProcessDn";
+            this.btnProcessDn.Size = new System.Drawing.Size(38, 33);
+            this.btnProcessDn.TabIndex = 2;
+            this.btnProcessDn.Text = "▽";
+            this.btnProcessDn.TextColor = System.Drawing.Color.White;
+            this.btnProcessDn.UseVisualStyleBackColor = false;
+            this.btnProcessDn.Click += new System.EventHandler(this.btnProcessDn_Click);
+            // 
             // gpCompProc
             // 
             this.gpCompProc.Controls.Add(this.tableLayoutPanel13);
@@ -717,16 +758,18 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Controls.Add(this.dgvCompProc, 0, 1);
-            this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel14, 0, 2);
+            this.tableLayoutPanel13.Controls.Add(this.dgvCompProc, 0, 2);
+            this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel14, 0, 3);
             this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel18, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.ckbSplitCTLNO, 0, 1);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(1, 17);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel13.RowCount = 3;
+            this.tableLayoutPanel13.RowCount = 4;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel13.Size = new System.Drawing.Size(314, 342);
@@ -740,12 +783,12 @@
             this.dgvCompProc.AllowUserToResizeRows = false;
             this.dgvCompProc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCompProc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvCompProc.Location = new System.Drawing.Point(3, 38);
+            this.dgvCompProc.Location = new System.Drawing.Point(3, 63);
             this.dgvCompProc.Margin = new System.Windows.Forms.Padding(1);
             this.dgvCompProc.Name = "dgvCompProc";
             this.dgvCompProc.RowTemplate.Height = 23;
             this.dgvCompProc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCompProc.Size = new System.Drawing.Size(308, 266);
+            this.dgvCompProc.Size = new System.Drawing.Size(308, 241);
             this.dgvCompProc.TabIndex = 5;
             // 
             // tableLayoutPanel14
@@ -1371,45 +1414,17 @@
             this.btnLoad.UseVisualStyleBackColor = false;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
-            // btnProcessUp
+            // ckbSplitCTLNO
             // 
-            this.btnProcessUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnProcessUp.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnProcessUp.BorderColor = System.Drawing.Color.Lavender;
-            this.btnProcessUp.BorderRadius = 5;
-            this.btnProcessUp.BorderSize = 2;
-            this.btnProcessUp.FlatAppearance.BorderSize = 0;
-            this.btnProcessUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProcessUp.ForeColor = System.Drawing.Color.White;
-            this.btnProcessUp.Location = new System.Drawing.Point(97, 1);
-            this.btnProcessUp.Margin = new System.Windows.Forms.Padding(1);
-            this.btnProcessUp.Name = "btnProcessUp";
-            this.btnProcessUp.Size = new System.Drawing.Size(38, 33);
-            this.btnProcessUp.TabIndex = 2;
-            this.btnProcessUp.Text = "△";
-            this.btnProcessUp.TextColor = System.Drawing.Color.White;
-            this.btnProcessUp.UseVisualStyleBackColor = false;
-            this.btnProcessUp.Click += new System.EventHandler(this.btnProcessUp_Click);
-            // 
-            // btnProcessDn
-            // 
-            this.btnProcessDn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnProcessDn.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnProcessDn.BorderColor = System.Drawing.Color.Lavender;
-            this.btnProcessDn.BorderRadius = 5;
-            this.btnProcessDn.BorderSize = 2;
-            this.btnProcessDn.FlatAppearance.BorderSize = 0;
-            this.btnProcessDn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProcessDn.ForeColor = System.Drawing.Color.White;
-            this.btnProcessDn.Location = new System.Drawing.Point(137, 1);
-            this.btnProcessDn.Margin = new System.Windows.Forms.Padding(1);
-            this.btnProcessDn.Name = "btnProcessDn";
-            this.btnProcessDn.Size = new System.Drawing.Size(38, 33);
-            this.btnProcessDn.TabIndex = 2;
-            this.btnProcessDn.Text = "▽";
-            this.btnProcessDn.TextColor = System.Drawing.Color.White;
-            this.btnProcessDn.UseVisualStyleBackColor = false;
-            this.btnProcessDn.Click += new System.EventHandler(this.btnProcessDn_Click);
+            this.ckbSplitCTLNO.AutoSize = true;
+            this.ckbSplitCTLNO.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ckbSplitCTLNO.Location = new System.Drawing.Point(4, 39);
+            this.ckbSplitCTLNO.Margin = new System.Windows.Forms.Padding(2);
+            this.ckbSplitCTLNO.Name = "ckbSplitCTLNO";
+            this.ckbSplitCTLNO.Size = new System.Drawing.Size(306, 21);
+            this.ckbSplitCTLNO.TabIndex = 7;
+            this.ckbSplitCTLNO.Text = "SPLIT CTLNO";
+            this.ckbSplitCTLNO.UseVisualStyleBackColor = true;
             // 
             // FormSetting
             // 
@@ -1448,6 +1463,7 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.gpCompProc.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
+            this.tableLayoutPanel13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCompProc)).EndInit();
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel14.PerformLayout();
@@ -1544,5 +1560,6 @@
         private CustomControls.RoundButton btnCopy;
         private CustomControls.RoundButton btnProcessUp;
         private CustomControls.RoundButton btnProcessDn;
+        private System.Windows.Forms.CheckBox ckbSplitCTLNO;
     }
 }

@@ -432,6 +432,8 @@ namespace DefectDBManager
     public class PreprocMrkDat
     {
         public string LNCD { get; set; } = "";
+        public string CTLNO { get; set; } = "";
+
         public List<MarkingFaultDatum> Data = null;
 
         public MarkingFaultDatum this[int idx]
@@ -447,6 +449,7 @@ namespace DefectDBManager
         public void Reset()
         {
             LNCD = "";
+            CTLNO = "";
             Data.Clear();
         }
 
@@ -455,6 +458,7 @@ namespace DefectDBManager
             PreprocMrkDat data = new PreprocMrkDat();
 
             data.LNCD = LNCD;
+            data.CTLNO = CTLNO;
 
             foreach(var item in Data)
                 data.Data.Add(item);

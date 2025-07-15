@@ -76,9 +76,14 @@ namespace DefectDBManager.Preproc
         [Description("Fault All")]
         public bool IsFltAll { get; set; }
 
+        [Category("Process")]
+        [Description("Split CTLNO")]
+        public bool IsSplitCTLNO { get; set; }
+
         public ProcessData()
         {
             IsFltAll = false;
+            IsSplitCTLNO = false;
             FltInfos = new List<FltInfo>();
         }
 
@@ -87,6 +92,7 @@ namespace DefectDBManager.Preproc
             LineID = lineID;
             LNCD = lncd;
             IsFltAll = false;
+            IsSplitCTLNO = false;
             FltInfos = new List<FltInfo>();
         }
 
@@ -101,13 +107,9 @@ namespace DefectDBManager.Preproc
                 item.FltInfos.Add(info.Clone());
 
             item.IsFltAll = this.IsFltAll;
+            item.IsSplitCTLNO = this.IsSplitCTLNO;
 
             return item;
-        }
-
-        public void SetIsFltAll(bool isState)
-        {
-            IsFltAll = isState;
         }
 
         public bool IsValidFLTID(string key, float size)
