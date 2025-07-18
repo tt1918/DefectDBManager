@@ -36,6 +36,7 @@
             this.btnMinimize = new CustomControls.RoundButton();
             this.lblTime = new System.Windows.Forms.Label();
             this.btnMaximize = new CustomControls.RoundButton();
+            this.lvVersion = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
@@ -68,17 +69,19 @@
             this.tableLayoutPanel2.BackColor = System.Drawing.Color.Azure;
             this.tableLayoutPanel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanel2.BackgroundImage")));
             this.tableLayoutPanel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.tableLayoutPanel2.ColumnCount = 5;
+            this.tableLayoutPanel2.ColumnCount = 6;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 57F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 169F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.Controls.Add(this.btnDBConnect, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblTitle, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnMinimize, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblTime, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnMaximize, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnMinimize, 5, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTime, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnMaximize, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lvVersion, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -102,7 +105,7 @@
             this.btnDBConnect.ForeColor = System.Drawing.Color.White;
             this.btnDBConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnDBConnect.Image")));
             this.btnDBConnect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDBConnect.Location = new System.Drawing.Point(1100, 1);
+            this.btnDBConnect.Location = new System.Drawing.Point(1000, 1);
             this.btnDBConnect.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnDBConnect.Name = "btnDBConnect";
             this.btnDBConnect.Size = new System.Drawing.Size(51, 29);
@@ -129,9 +132,10 @@
             this.lblTitle.Location = new System.Drawing.Point(2, 2);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(2);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(1093, 27);
+            this.lblTitle.Size = new System.Drawing.Size(993, 27);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "MARKING COMPARISION";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTitle.Thickness = 1;
             // 
             // btnMinimize
@@ -188,6 +192,17 @@
             this.btnMaximize.TextColor = System.Drawing.Color.White;
             this.btnMaximize.UseVisualStyleBackColor = false;
             this.btnMaximize.Click += new System.EventHandler(this.btnMaximize_Click);
+            // 
+            // lvVersion
+            // 
+            this.lvVersion.AutoSize = true;
+            this.lvVersion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvVersion.Location = new System.Drawing.Point(1057, 0);
+            this.lvVersion.Name = "lvVersion";
+            this.lvVersion.Size = new System.Drawing.Size(94, 31);
+            this.lvVersion.TabIndex = 5;
+            this.lvVersion.Text = "Ver.25071819";
+            this.lvVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
             // 
@@ -351,6 +366,7 @@
         private CustomControls.RoundButton btnDBConnect;
         private CustomControls.RoundButton btnMaximize;
         private CustomControls.RoundButton btnSystem;
+        private System.Windows.Forms.Label lvVersion;
     }
 }
 

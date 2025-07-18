@@ -129,10 +129,18 @@ namespace MarkCompare
                 else
                 {
                     int size = _crtLot.MarkCompList.CTLNO[i].Count;
-                    for(int j=0; j<size; j++)
+                    if(size==0)
                     {
-                        string itemName = $"{i + 1}-{j+1}:{_procItem.Reference.LNCD}_{_procItem.Compare[i].LNCD}_{_crtLot.MarkCompList.CTLNO[i][j]}";
+                        string itemName = $"{i + 1}:{_procItem.Reference.LNCD}_{_procItem.Compare[i].LNCD}";
                         cbProcess.Items.Add(itemName);
+                    }
+                    else
+                    {
+                        for (int j = 0; j < size; j++)
+                        {
+                            string itemName = $"{i + 1}-{j + 1}:{_procItem.Reference.LNCD}_{_procItem.Compare[i].LNCD}_{_crtLot.MarkCompList.CTLNO[i][j]}";
+                            cbProcess.Items.Add(itemName);
+                        }
                     }
                 }
             }
@@ -209,8 +217,14 @@ namespace MarkCompare
             {
                 string[] string2 = string1[1].Split('_');
 
-                key[0] = string2[1];
-                key[1] = string2[2];
+                if (string2.Length ==3)
+                {
+                    key[0] = string2[1];
+                    key[1] = string2[2];
+                }
+                else
+                    isSplit = false;
+                
             }
 
 

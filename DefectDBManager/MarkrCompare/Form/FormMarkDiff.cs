@@ -539,7 +539,7 @@ namespace MarkCompare
 
                 if (_lotManager.LOT.ContainsKey(item.ToString()))
                 {
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString());
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
 
                     foreach (var lot in _lotManager.LOT[item.ToString()])
                     {
@@ -768,7 +768,7 @@ namespace MarkCompare
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControlCsv();
                 }));
 
-                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"], preprocItem);
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"], preprocItem, _lotManager);
 
                 SystemLog.DisplayFileServerLog(Lang.finishedComparingCSV);
             }

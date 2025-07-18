@@ -97,26 +97,26 @@ namespace MarkCompare
                         if (_dicLotSummary.ContainsKey(lncd))
                         {
                             foreach(var view in _dicLotSummary[lncd])
-                            {
-                                if (view.LotSummery.LotName == lot.LotName)
-                                    isExist = true;
-                            }
+                                if (view.LotSummery.LotName == lot.LotName) isExist = true;
                         }
 
                         if(isExist==false)
                         {
                             DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-                            foreach (var item in lotManager.LiveProduct)
+                          
+                            var keyData = DefectDBManager.Helper.SplitKeyData(filter);
+                            for (int i = 0; i < lotManager.ProcSetting.Count; i++)
                             {
-                                var keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
-                                for (int i = 0; i < lotManager.ProcSetting.Count; i++)
+                                if (lotManager.ProcSetting[i].Name == keyData[2])
                                 {
-                                    if (lotManager.ProcSetting[i].Name == keyData[2])
-                                        procItem = lotManager.ProcSetting[i];
+                                    procItem = lotManager.ProcSetting[i];
+                                    break;
                                 }
                             }
+                            
 
                             FormLotSummaryData form = new FormLotSummaryData();
+                            form.LotManager = lotManager;
                             form.ProcItem = procItem;
                             form.Filter = filter;
                             form.LotSummery = lot;

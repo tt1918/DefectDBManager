@@ -1,5 +1,6 @@
 ﻿using CustomControls;
 using DefectDBManager;
+using log4net;
 using MarkCompare.Delegate;
 using MarkCompare.Helper;
 using System;
@@ -48,6 +49,8 @@ namespace MarkCompare
         /// 상위 검사 랏 서머리 정보 
         /// </summary>
         private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
+
+        public DefectDBManager.PreprocLotManager LotManager { get; set; } = null;
 
         public eSummaryMode MODE
         {
@@ -133,7 +136,27 @@ namespace MarkCompare
         #region 데이터 표시
         private void displayLotSummery()
         {
-            
+            if (_lotSummery.ProcName != procItem.Name)
+            {
+                StringBuilder sb1 = new StringBuilder();
+                sb1.AppendLine($"Model Name : {procItem.Name}");
+                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{sb1.ToString()}", Log.Level.Error);
+
+                string procName = _lotSummery.ProcName;
+                for (int i = 0; i < LotManager.ProcSetting.Count; i++)
+                {
+                    if (LotManager.ProcSetting[i].Name == procName)
+                    {
+                        procItem = LotManager.ProcSetting[i];
+                        break;
+                    }
+                }
+
+                StringBuilder sb2 = new StringBuilder();
+                sb2.AppendLine($"Changed Model Name : {procItem.Name}");
+                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{sb2.ToString()}", Log.Level.Error);
+            }
+
             displayLotName();
             displayDetail();
             displayCompareResult();
@@ -227,12 +250,28 @@ namespace MarkCompare
 
                 if (_lotSummery == null)
                 {
-                    UIHelper.SetText(lblProcess, Lang.NoLotSummaryData);
+                    flpResult.Controls.Add(makeProcessInfoLabel("No Lot Info", true));
                     SystemLog.DisplaySystemLog($"Show Detail: {Lang.NoLotSummaryData}", Log.Level.Error);
+                    
+                    this.Height += 18;
+                    foreach (Control ctrl in flpResult.Controls)
+                        ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
                     return;
                 }
 
-                if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
+                string str = null;
+                int[,] compCnt = _lotSummery.CompCnt;
+
+                List<int[,]> comp1Cnt = _lotSummery.Comp1Cnt;
+
+                bool isEmpty = true;
+                if (_lotSummery.MarkCompList != null && _lotSummery.MarkCompList.Data.Count > 0)
+                {
+                    foreach (var cnt in compCnt)
+                        if (cnt > 0) isEmpty = false;
+                }
+
+                if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0 || isEmpty==true)
                 {
                     
                     for (int idx = 0; idx < procItem.Compare.Count; idx++)
@@ -265,37 +304,23 @@ namespace MarkCompare
                     if (maxLine > 2)
                     {
                         this.Height += (maxLine - 2) * 18;
-
                         foreach (Control ctrl in flpResult.Controls)
-                        {
                             ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
-                        }
+                    }
+                    else
+                    {
+                        this.Height += 18;
+                        foreach (Control ctrl in flpResult.Controls)
+                            ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
                     }
                     return;
                 }
 
-                string str = null;
-                int[,] compCnt = _lotSummery.CompCnt;
-
-                List<int[,]>comp1Cnt = _lotSummery.Comp1Cnt;
-
-                bool isEmpty = true;
-                foreach (var cnt in compCnt)
-                    if (cnt > 0) isEmpty = false;
+                
 
                 if (isEmpty)
                 {
                     UIHelper.SetText(lblProcess, Lang.NoComparingData);
-                    return;
-                }
-
-                if (compCnt.GetLength(0) != procItem.Compare.Count || compCnt.GetLength(1)!= procItem.CompRange.Count + 1)
-                {
-                    StringBuilder sb1 = new StringBuilder();
-                    sb1.AppendLine($"Model Name : {procItem.Name}");
-                    sb1.Append($"CompCnt[{compCnt.GetLength(0)},{compCnt.GetLength(1)}], Compare.Count:{procItem.Compare.Count}, CompRange:{procItem.CompRange.Count + 1}");
-                    UIHelper.SetText(lblProcess, $"{Lang.LotSummaryShowDetail} :{sb1.ToString()}");
-                    SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{sb1.ToString()}", Log.Level.Error);
                     return;
                 }
 
@@ -366,7 +391,7 @@ namespace MarkCompare
                                 lineCnt++;
                             }
 
-                            if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy || isError == true)
+                            if (Math.Abs(result[0] - result[i]) > procItem.CompRange[i - 1].Accuracy || isError == true)
                             {
                                 sb1.Append($" *");
                                 isError = true;
@@ -381,93 +406,123 @@ namespace MarkCompare
                     }
                     else
                     {
-                        for(int subIdx = 0; subIdx< _lotSummery.MarkCompList.CTLNO[idx].Count; subIdx++)
+                        if(_lotSummery.MarkCompList.CTLNO[idx].Count==0)
                         {
-                            StringBuilder sb1 = new StringBuilder();
                             lineCnt = 0;
-                            isEmpty = true;
-                            isError = false;
-                            for (int i = 0; i < compCnt.GetLength(1); i++)
-                                if (comp1Cnt[idx][subIdx,i] > 0) isEmpty = false;
-                            if (isEmpty)
-                            {
-                                sb1.AppendLine($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]");
-                                sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}");
-                                sb1.AppendLine($"{Lang.NoComparingData}");
-                                flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
-                                continue;
-                            }
+                            StringBuilder sb1 = new StringBuilder();
+                            sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n"); lineCnt++;
 
-                            result[0] = 100.0;
-                            // 데이터 입력
-                            sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
-                            lineCnt++;
-
-                            bool isFindCTLNO=false;
-                            foreach (var data in _lotSummery.INSPDAT)
+                            foreach (var data in _lotSummery.PTRY0P_Data)
                             {
-                                foreach (var subData in data)
+                                foreach (var subData in data.Data)
                                 {
-                                    foreach (var subData2 in subData.Data) 
+                                    if (subData.LNCD == procItem.Compare[idx].LNCD)
                                     {
+                                        // 생산 시간 입력
+                                        sb1.Append($"[ {subData.Y0KKOL}-{subData.Y0KSOL}\n"); lineCnt++;
+                                        // 품명 추가
+                                        sb1.Append($"{Lang.product}: {subData.Y0ZKNM}\n"); lineCnt++;
+                                        // 품명 추가
+                                        sb1.Append($"LOT: {subData.Y0KLOT} ]\n"); lineCnt++;
+                                    }
+                                }
+                            }
+                            sb1.Append($"{Lang.NoComparingData}"); lineCnt++;
 
-                                        if (subData2.LNCD == procItem.Compare[idx].LNCD && subData2.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx] 
-                                            && isFindCTLNO==false)
+                            if (lineCnt > maxLine) maxLine = lineCnt;
+                            flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
+                        }
+                        else
+                        {
+                            for (int subIdx = 0; subIdx < _lotSummery.MarkCompList.CTLNO[idx].Count; subIdx++)
+                            {
+                                StringBuilder sb1 = new StringBuilder();
+                                lineCnt = 0;
+                                bool isSubError = false;
+                                isEmpty = true;
+                                for (int i = 0; i < compCnt.GetLength(1); i++)
+                                    if (comp1Cnt[idx][subIdx, i] > 0) isEmpty = false;
+                                if (isEmpty)
+                                {
+                                    sb1.AppendLine($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]");
+                                    sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}");
+                                    sb1.AppendLine($"{Lang.NoComparingData}");
+                                    flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
+                                    continue;
+                                }
+
+                                result[0] = 100.0;
+                                // 데이터 입력
+                                sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
+                                lineCnt++;
+
+                                bool isFindCTLNO = false;
+                                foreach (var data in _lotSummery.INSPDAT)
+                                {
+                                    foreach (var subData in data)
+                                    {
+                                        foreach (var subData2 in subData.Data)
                                         {
-                                            // 생산 시간 입력
-                                            sb1.AppendLine($"[ {subData2.STRDT}{subData2.STRTM}-{subData2.ENDDT}{subData2.ENDTM}"); lineCnt++;
-                                            // 품명 추가
-                                            sb1.AppendLine($"{Lang.product}: {subData2.HINMEI}"); lineCnt++;
-                                            // LOT 추가
-                                            sb1.AppendLine($"LOT: {subData2.LOTNO} ]"); lineCnt++;
-                                            // CTLO 추가
-                                            sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}"); lineCnt++;
-                                            isFindCTLNO = true;
+
+                                            if (subData2.LNCD == procItem.Compare[idx].LNCD && subData2.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx]
+                                                && isFindCTLNO == false)
+                                            {
+                                                // 생산 시간 입력
+                                                sb1.AppendLine($"[ {subData2.STRDT}{subData2.STRTM}-{subData2.ENDDT}{subData2.ENDTM}"); lineCnt++;
+                                                // 품명 추가
+                                                sb1.AppendLine($"{Lang.product}: {subData2.HINMEI}"); lineCnt++;
+                                                // LOT 추가
+                                                sb1.AppendLine($"LOT: {subData2.LOTNO} ]"); lineCnt++;
+                                                // CTLO 추가
+                                                sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}"); lineCnt++;
+                                                isFindCTLNO = true;
+                                            }
                                         }
                                     }
                                 }
-                            }
 
-                            if (comp1Cnt[idx][subIdx, 0] == 0) { sb1.Append($"REF :0%({comp1Cnt[idx][subIdx, 0]})"); lineCnt++; }
-                            else { sb1.Append($"REF :{result[0]:F1}%({comp1Cnt[idx][subIdx, 0]})"); lineCnt++; }
+                                if (comp1Cnt[idx][subIdx, 0] == 0) { sb1.Append($"REF :0%({comp1Cnt[idx][subIdx, 0]})"); lineCnt++; }
+                                else { sb1.Append($"REF :{result[0]:F1}%({comp1Cnt[idx][subIdx, 0]})"); lineCnt++; }
 
-                            if (procItem.CompRange.Count > 0)
-                                sb1.Append("\n");
+                                if (procItem.CompRange.Count > 0)
+                                    sb1.Append("\n");
 
-                            for (int i = 1; i < procItem.CompRange.Count + 1; i++)
-                            {
-                                if (comp1Cnt[idx][subIdx, 0] > 0)
+                                for (int i = 1; i < procItem.CompRange.Count + 1; i++)
                                 {
-                                    result[i] = (double)((double)comp1Cnt[idx][subIdx, i] / (double)comp1Cnt[idx][subIdx, 0]) * 100.0;
-                                    sb1.Append($"Case {i} : {result[i]:F1}%({comp1Cnt[idx][subIdx, i]})");
-                                    lineCnt++;
-                                }
-                                else
-                                {
-                                    if (comp1Cnt[idx][subIdx, i] > 0)
+                                    if (comp1Cnt[idx][subIdx, 0] > 0)
                                     {
-                                        result[i] = (double)comp1Cnt[idx][subIdx, i] * 100.0;
+                                        result[i] = (double)((double)comp1Cnt[idx][subIdx, i] / (double)comp1Cnt[idx][subIdx, 0]) * 100.0;
                                         sb1.Append($"Case {i} : {result[i]:F1}%({comp1Cnt[idx][subIdx, i]})");
+                                        lineCnt++;
                                     }
                                     else
                                     {
-                                        sb1.Append($"Case {i} : 0%({comp1Cnt[idx][subIdx, i]})");
+                                        if (comp1Cnt[idx][subIdx, i] > 0)
+                                        {
+                                            result[i] = (double)comp1Cnt[idx][subIdx, i] * 100.0;
+                                            sb1.Append($"Case {i} : {result[i]:F1}%({comp1Cnt[idx][subIdx, i]})");
+                                        }
+                                        else
+                                        {
+                                            sb1.Append($"Case {i} : 0%({comp1Cnt[idx][subIdx, i]})");
+                                        }
+                                        lineCnt++;
                                     }
-                                    lineCnt++;
+
+                                    if (Math.Abs(result[0] - result[i]) > procItem.CompRange[i - 1].Accuracy || isSubError == true)
+                                    {
+                                        sb1.Append($" *");
+                                        isSubError = true;
+                                    }
+
+                                    if (i < procItem.CompRange.Count) { sb1.Append("\n"); lineCnt++; }
                                 }
 
-                                if (Math.Abs(result[i] - result[i - 1]) > procItem.CompRange[i - 1].Accuracy || isError == true)
-                                {
-                                    sb1.Append($" *");
-                                    isError = true;
-                                }
+                                if (lineCnt > maxLine) maxLine = lineCnt;
+                                if (isSubError == true) isError = true;
 
-                                if (i < procItem.CompRange.Count) { sb1.Append("\n"); lineCnt++; }
+                                flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                             }
-
-                            if (lineCnt > maxLine) maxLine = lineCnt;
-
-                            flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isError));
                         }
                     }
                 }

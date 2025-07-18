@@ -19,6 +19,8 @@ namespace DefectDBManager
         /// </summary>
         public string LotName { get; set; }
 
+        public string ProcName { get; set; }
+
         public PTRYLPList PTRLYP_Data { get; private set; }
         public XOFSMSTList XOFSMST_Data { get; private set; }
         public PTRY0PList[] PTRY0P_Data { get; private set; }
@@ -125,6 +127,9 @@ namespace DefectDBManager
             double minX, maxX, minY, maxY;
             double posX, posY;
 
+
+            ProcName = procData.Name;
+
             // 결점 데이터는 최종 데이터 기준으로 이전 데이터를 추가하는 방식을 취함
             MarkCompData compList = new MarkCompData();
 
@@ -224,6 +229,7 @@ namespace DefectDBManager
             }
 
             MarkCompList = compList;
+
             // 에러율 처리
             CheckComparision(procData);
         }
@@ -431,23 +437,50 @@ namespace DefectDBManager
             for (int idx = 0; idx < procData.Compare.Count; idx++)
             {
                 isEmpty = true;
-                for (int i = 0; i < CompCnt.GetLength(1); i++)
-                    if (CompCnt[idx, i] > 0) isEmpty = false;
-                if (isEmpty)    continue;
-
-                result[0] = 100.0;
-                for (int i = 1; i < procData.CompRange.Count + 1; i++)
+                if (procData.Compare[idx].IsSplitCTLNO != true)
                 {
-                    if (CompCnt[idx, 0] > 0)
-                        result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, 0]) * 100.0;
-                    else
-                    {
-                        if (CompCnt[idx, i] > 0)
-                            result[i] = (double)CompCnt[idx, i] * 100.0;
-                    }
+                    for (int i = 0; i < CompCnt.GetLength(1); i++)
+                        if (CompCnt[idx, i] > 0) isEmpty = false;
+                    if (isEmpty) continue;
 
-                    if (Math.Abs(result[i] - result[i - 1]) > procData.CompRange[i - 1].Accuracy)
-                        isError = true;
+                    result[0] = 100.0;
+                    for (int i = 1; i < procData.CompRange.Count + 1; i++)
+                    {
+                        if (CompCnt[idx, 0] > 0)
+                            result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, 0]) * 100.0;
+                        else
+                        {
+                            if (CompCnt[idx, i] > 0)
+                                result[i] = (double)CompCnt[idx, i] * 100.0;
+                        }
+
+                        if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
+                            isError = true;
+                    }
+                }
+                else
+                {
+                    for(int idx1 = 0; idx1< Comp1Cnt[idx].GetLength(0); idx1++)
+                    {
+                        isEmpty = true;
+                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                        if(isEmpty) continue;
+
+                        result[0] = 100.0;
+                        for(int i=1; i<procData.CompRange.Count + 1;i++)
+                        {
+                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                            else
+                            {
+                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                            }
+                            if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
+                                isError = true;
+                        }
+                    }
                 }
             }
 
