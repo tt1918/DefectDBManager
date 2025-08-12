@@ -23,7 +23,7 @@ namespace MarkCompare
         private CSVProcParam _csvInfo = null;
         private PreprocItem _procItem = null;
         private bool _isCSV = false;
-        private Font rollmapDefectFont = new System.Drawing.Font("굴림", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+        private Font rollmapDefectFont = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
 
         private Dictionary<int, string> dicProcInfo = new Dictionary<int, string>();
 
@@ -227,8 +227,9 @@ namespace MarkCompare
                 
             }
 
+            double compRangeX = procItem.CompRange[0].MaxXRange;
+            double compRangeY = procItem.CompRange[0].MaxYRange;
 
-            //Parallel.ForEach(lot.MarkCompList.Data, item =>
             foreach (var item in lot.MarkCompList.Data)
             {
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
@@ -246,10 +247,15 @@ namespace MarkCompare
                         0, item.Base.XPOS_M, item.Base.OFFSET, item.Base.SIZE,
                         0, Interlocked.Increment(ref defIdx), Color.Gray, info.Symbol));
 
-                    if(isSplit==false)
+                    oldX = item.Base.XPOS_M;
+                    oldY = item.Base.OFFSET;
+
+                    if (isSplit==false)
                     {
                         for (int j = 0; j < item.Comp.GetLength(1); j++)
                         {
+                            bool isSet = false, isSetC=false;
+                            PrevCompareDefect tmpItem = new PrevCompareDefect();
                             var compList = item.Comp[i, j];
                             for (int k = 0; k < compList.Count; k++)
                             {
@@ -259,26 +265,29 @@ namespace MarkCompare
 
                                 if (j == 0)
                                 {
-                                    oldX = posX;
-                                    oldY = posY;
-                                    localDefects.Add(new PrevCompareDefect(
+                                    tmpItem = new PrevCompareDefect(
                                         0, posX, posY, comp.SIZE,
-                                        0, Interlocked.Increment(ref defIdx), Color.Yellow, "R"));
+                                        0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
+                                    isSet = true;
                                     baseCnt++;
                                 }
                                 else
                                 {
-                                    if (Math.Abs(oldX - posX) > 5 || Math.Abs(oldY - posY) > 5)
+                                    if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
                                     {
-                                        oldX = posX;
-                                        oldY = posY;
-                                        string symbolE = $"C_{j}";
-                                        localDefects.Add(new PrevCompareDefect(
+                                        if(isSetC==false)
+                                        {
+                                            string symbolE = $"C_{j}";
+                                            tmpItem = new PrevCompareDefect(
                                             0, posX, posY, comp.SIZE,
-                                            0, Interlocked.Increment(ref defIdx), Color.Red, symbolE));
+                                            0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
+                                            isSet = isSetC = true;
+                                        }
                                     }
                                     compCnt++;
                                 }
+
+                                if (isSet) localDefects.Add(tmpItem);
 
                                 if (posY > localMaxY) localMaxY = posY;
                             }
@@ -308,6 +317,8 @@ namespace MarkCompare
                         for (int j = 0; j < item.Comp1[(key[0], key[1])].GetLength(0); j++)
                         {
                             var compList = item.Comp1[(key[0], key[1])][j];
+                            PrevCompareDefect tmpItem=new PrevCompareDefect();
+                            bool isSet = false, isSetC = false;
                             for (int k = 0; k < compList.Count; k++)
                             {
                                 var comp = compList[k];
@@ -316,26 +327,29 @@ namespace MarkCompare
 
                                 if (j == 0)
                                 {
-                                    oldX = posX;
-                                    oldY = posY;
-                                    localDefects.Add(new PrevCompareDefect(
+                                    tmpItem = new PrevCompareDefect(
                                         0, posX, posY, comp.SIZE,
-                                        0, Interlocked.Increment(ref defIdx), Color.Yellow, "R"));
+                                        0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
+                                    isSet = true;
                                     baseCnt++;
                                 }
                                 else
                                 {
-                                    if (Math.Abs(oldX - posX) > 5 || Math.Abs(oldY - posY) > 5)
+                                    if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
                                     {
-                                        oldX = posX;
-                                        oldY = posY;
-                                        string symbolE = $"C_{j}";
-                                        localDefects.Add(new PrevCompareDefect(
+                                        if (isSetC == false)
+                                        {
+                                            string symbolE = $"C_{j}";
+                                            tmpItem = new PrevCompareDefect(
                                             0, posX, posY, comp.SIZE,
-                                            0, Interlocked.Increment(ref defIdx), Color.Red, symbolE));
+                                            0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
+                                            isSet = isSetC = true;
+                                        }
                                     }
                                     compCnt++;
                                 }
+
+                                if (isSet) localDefects.Add(tmpItem);
 
                                 if (posY > localMaxY) localMaxY = posY;
                             }
@@ -384,6 +398,9 @@ namespace MarkCompare
 
             var selectedIndex = cbProcess.SelectedIndex;
 
+            double compRangeX = param.CompRange[0].MaxXRange;
+            double compRangeY = param.CompRange[0].MaxYRange;
+
             Parallel.ForEach(lot.MarkCompList.Data, item =>
             {
                 for (int i = 0; i < item.Comp.GetLength(0); i++)
@@ -401,8 +418,13 @@ namespace MarkCompare
                         0, item.Base.XPOS_M, item.Base.OFFSET, item.Base.SIZE,
                         0, Interlocked.Increment(ref defIdx), Color.Gray, "C"));
 
+                    oldX = item.Base.XPOS_M;
+                    oldY = item.Base.OFFSET;
+
                     for (int j = 0; j < item.Comp.GetLength(1); j++)
                     {
+                        bool isSet = false, isSetC = false;
+                        PrevCompareDefect tmpItem = new PrevCompareDefect();
                         var compList = item.Comp[i, j];
                         for (int k = 0; k < compList.Count; k++)
                         {
@@ -412,29 +434,33 @@ namespace MarkCompare
 
                             if (j == 0)
                             {
-                                oldX = posX;
-                                oldY = posY;
-                                localDefects.Add(new PrevCompareDefect(
+                                tmpItem = new PrevCompareDefect(
                                     0, posX, posY, comp.SIZE,
-                                    0, Interlocked.Increment(ref defIdx), Color.Yellow, "R"));
+                                    0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
+                                isSet = true;
                                 baseCnt++;
                             }
                             else
                             {
-                                if (Math.Abs(oldX - posX) > 5 || Math.Abs(oldY - posY) > 5)
+                                if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
                                 {
-                                    oldX = posX;
-                                    oldY = posY;
-                                    string symbolE = $"C_{j}";
-                                    localDefects.Add(new PrevCompareDefect(
+                                    if (isSetC == false)
+                                    {
+                                        string symbolE = $"C_{j}";
+                                        tmpItem = new PrevCompareDefect(
                                         0, posX, posY, comp.SIZE,
-                                        0, Interlocked.Increment(ref defIdx), Color.Red, symbolE));
+                                        0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
+                                        isSet = isSetC = true;
+                                    }
                                 }
                                 compCnt++;
                             }
 
+                            if(isSet) if (isSet) localDefects.Add(tmpItem);
+
                             if (posY > localMaxY) localMaxY = posY;
                         }
+
 
                         // Error area 생성
                         if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)

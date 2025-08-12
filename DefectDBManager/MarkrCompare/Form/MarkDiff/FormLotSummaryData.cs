@@ -70,11 +70,11 @@ namespace MarkCompare
         //private DefectDBManager.PreprocLotManager _lotManager = new DefectDBManager.PreprocLotManager();
         private DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
 
-        bool isError = false;
+        bool _isError = false;
         public bool IsError 
         {
-            get { return isError; }
-            set { isError = value; }
+            get { return _isError; }
+            set { _isError = value; }
         }
 
         string filter = null;
@@ -194,7 +194,7 @@ namespace MarkCompare
                     return;
                 }
 
-                if (isError)
+                if (_isError)
                 {
                     this.BeginInvoke(new Action(() =>
                     {
@@ -226,7 +226,7 @@ namespace MarkCompare
                 string str = _lotSummery.LotName;
                 lblLotName.Text = str + $" - {filter}";
 
-                if (isError)
+                if (_isError)
                     lblLotName.BkColor = Color.Red;
                 else
                     lblLotName.BkColor = Color.MidnightBlue;
@@ -244,7 +244,7 @@ namespace MarkCompare
             int lineCnt = 0;
             try
             {
-                isError = false;
+                _isError = false;
                 // 컨트롤 리소스 삭제
                 flpResult.Controls.Clear();
 
@@ -328,8 +328,10 @@ namespace MarkCompare
 
                 for (int idx = 0; idx < procItem.Compare.Count; idx++)
                 {
+                    
                     if (procItem.Compare[idx].IsSplitCTLNO==false)
                     {
+                        bool isSubError = false;
                         StringBuilder sb1 = new StringBuilder();
                         lineCnt = 0;
                         isEmpty = true;
@@ -391,10 +393,10 @@ namespace MarkCompare
                                 lineCnt++;
                             }
 
-                            if (Math.Abs(result[0] - result[i]) > procItem.CompRange[i - 1].Accuracy || isError == true)
+                            if (Math.Abs(result[0] - result[i]) > procItem.CompRange[i - 1].Accuracy || isSubError == true)
                             {
                                 sb1.Append($" *");
-                                isError = true;
+                                isSubError = true;
                             }
 
                             if (i < procItem.CompRange.Count) { sb1.Append("\n"); lineCnt++; }
@@ -402,7 +404,8 @@ namespace MarkCompare
 
                         if (lineCnt > maxLine) maxLine = lineCnt;
 
-                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isError));
+                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                        if (isSubError == true) _isError = true;
                     }
                     else
                     {
@@ -519,7 +522,7 @@ namespace MarkCompare
                                 }
 
                                 if (lineCnt > maxLine) maxLine = lineCnt;
-                                if (isSubError == true) isError = true;
+                                if (isSubError == true) _isError = true;
 
                                 flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                             }

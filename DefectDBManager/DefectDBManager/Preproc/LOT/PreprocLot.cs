@@ -191,8 +191,8 @@ namespace DefectDBManager
                 {
                     compIdx++;
 
-                    minX = procData.CompRange[compIdx-1].MinXRange;
-                    maxX = procData.CompRange[compIdx-1].MaxXRange;
+                    minX = procData.CompRange[compIdx - 1].MinXRange;
+                    maxX = procData.CompRange[compIdx - 1].MaxXRange;
                     minY = procData.CompRange[compIdx - 1].MinYRange;
                     maxY = procData.CompRange[compIdx - 1].MaxYRange;
 

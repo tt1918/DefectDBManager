@@ -36,7 +36,7 @@ namespace Coss.Controls
             BgTopColor = Color.White;
             BgBottomColor = Color.White;
             BgGridColor = Color.LightGray;
-            GridMeterFont = new System.Drawing.Font("굴림", 14F, System.Drawing.FontStyle.Regular,
+            GridMeterFont = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular,
             System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             GridMeterBrush = new SolidBrush(Color.LightGray);
             BgGridPenWidth = 4;

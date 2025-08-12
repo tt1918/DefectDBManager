@@ -201,7 +201,7 @@
             this.lvVersion.Name = "lvVersion";
             this.lvVersion.Size = new System.Drawing.Size(94, 31);
             this.lvVersion.TabIndex = 5;
-            this.lvVersion.Text = "Ver.25071819";
+            this.lvVersion.Text = "Ver.25081215";
             this.lvVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
