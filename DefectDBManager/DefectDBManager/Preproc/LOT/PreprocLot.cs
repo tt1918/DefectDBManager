@@ -144,7 +144,6 @@ namespace DefectDBManager
                 CompareResult comp = new CompareResult();
                 comp.Base = item;
                 comp.IdxSize = compCount;
-                comp.SetCompRange(lineCompCount, compCount);
 
                 posX = item.XPOS_M;
                 posY = item.OFFSET; 
@@ -176,10 +175,6 @@ namespace DefectDBManager
                                                         Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
                                                         Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
-
-                        foreach (var preItem2 in subData)
-                            comp.AddCompData(lncdIdx, compIdx, preItem2);
-                            
                         comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                     }
                 }
@@ -214,10 +209,6 @@ namespace DefectDBManager
                                                             Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
                                                             Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
-
-                            foreach (var preItem2 in subData)
-                                comp.AddCompData(lncdIdx, compIdx, preItem2);
-
                             comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                         }
                     }
@@ -252,7 +243,7 @@ namespace DefectDBManager
             {
                 CompareResult comp = new CompareResult();
                 comp.Base = item;
-                comp.SetCompRange(lineCompCount, compCount);
+                comp.IdxSize = compCount;
 
                 posX = item.XPOS_M;
                 posY = item.OFFSET;
@@ -284,8 +275,7 @@ namespace DefectDBManager
                                                         Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
 
-                        foreach (var preItem2 in subData)
-                            comp.AddCompData(lncdIdx, compIdx, preItem2);
+                        comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                     }
                 }
                 #endregion
@@ -319,8 +309,10 @@ namespace DefectDBManager
                                                             Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
 
-                            foreach (var preItem2 in subData)
-                                comp.AddCompData(lncdIdx, compIdx, preItem2);
+                            comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
+
+                            //foreach (var preItem2 in subData)
+                            //    comp.AddCompData(lncdIdx, compIdx, preItem2);
                         }
                     }
                 }
@@ -359,9 +351,9 @@ namespace DefectDBManager
             {
                 int count = 0;
                 // 여기서 조건 분기
-                if (procData.Compare[i].IsSplitCTLNO==true)
+                if (procData.Compare[i].IsSplitCTLNO == true)
                 {
-                    if(MarkCompList.Data.Count!=0)
+                    if (MarkCompList.Data.Count != 0)
                     {
                         bool exists = MarkCompList.Data[0].Comp1.Keys.Any(k => k.Item1 == procData.Compare[i].LNCD);
 
@@ -382,7 +374,6 @@ namespace DefectDBManager
                                 Comp1Cnt.Add(new int[count, procData.CompRange.Count + 1]);
 
                                 count = 0;
-                                int iter = 0;
                                 int idx = Comp1Cnt.Count - 1;
                                 foreach (var aaa in MarkCompList.Data[0].Comp1)
                                 {
@@ -398,7 +389,6 @@ namespace DefectDBManager
                                         }
                                         count++;
                                     }
-                                    iter++;
                                 }
                             }
                         }
@@ -407,31 +397,27 @@ namespace DefectDBManager
                     }
                 }
                 else
-                    Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
-            }
-
-            foreach (var item in MarkCompList.Data)
-            {
-                for (int i = 0; i < item.Comp.GetLength(0); i++)
                 {
-                    if (item.Comp[i, 0].Count > 0) CompCnt[i, 0]++;
+                    Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+                    int idx = Comp1Cnt.Count - 1;
+                    foreach (var aaa in MarkCompList.Data[0].Comp1)
+                    {
+                        if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                        {
+                            foreach (var item in MarkCompList.Data)
+                            {
+                                if (item.Comp1[aaa.Key][0].Count > 0)
+                                    Comp1Cnt[idx][0, 0]++;
 
-                    for (int j = 1; j < item.Comp.GetLength(1); j++)
-                        if (item.Comp[i, j].Count > 0) CompCnt[i, j]++;
+                                for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
+                                    if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                            }
+                        }
+                    }
                 }
             }
 
             bool isEmpty = true;
-            foreach (var cnt in CompCnt)
-                if (cnt > 0) isEmpty = false;
-           
-            if (isEmpty)
-            {
-                // 데이터 처리 과정 필요함
-                CompResult = eCompResult.NoCommPosData;
-                return;
-            }
-
             bool isError = false;
             double[] result = new double[procData.CompRange.Count + 1];
             for (int idx = 0; idx < procData.Compare.Count; idx++)
@@ -439,23 +425,26 @@ namespace DefectDBManager
                 isEmpty = true;
                 if (procData.Compare[idx].IsSplitCTLNO != true)
                 {
-                    for (int i = 0; i < CompCnt.GetLength(1); i++)
-                        if (CompCnt[idx, i] > 0) isEmpty = false;
-                    if (isEmpty) continue;
-
-                    result[0] = 100.0;
-                    for (int i = 1; i < procData.CompRange.Count + 1; i++)
+                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
                     {
-                        if (CompCnt[idx, 0] > 0)
-                            result[i] = (double)((double)CompCnt[idx, i] / (double)CompCnt[idx, 0]) * 100.0;
-                        else
-                        {
-                            if (CompCnt[idx, i] > 0)
-                                result[i] = (double)CompCnt[idx, i] * 100.0;
-                        }
+                        isEmpty = true;
+                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                        if (isEmpty) continue;
 
-                        if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
-                            isError = true;
+                        result[0] = 100.0;
+                        for (int i = 1; i < procData.CompRange.Count + 1; i++)
+                        {
+                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                            else
+                            {
+                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                            }
+                            if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
+                                isError = true;
+                        }
                     }
                 }
                 else
@@ -487,6 +476,5 @@ namespace DefectDBManager
             if (isError == false) CompResult = eCompResult.ProcOk;
             else CompResult = eCompResult.ProcNg;
         }
-
     }
 }

@@ -260,20 +260,20 @@ namespace MarkCompare
                 }
 
                 string str = null;
-                int[,] compCnt = _lotSummery.CompCnt;
-
                 List<int[,]> comp1Cnt = _lotSummery.Comp1Cnt;
 
                 bool isEmpty = true;
                 if (_lotSummery.MarkCompList != null && _lotSummery.MarkCompList.Data.Count > 0)
                 {
-                    foreach (var cnt in compCnt)
-                        if (cnt > 0) isEmpty = false;
+                    foreach(var cnt1 in comp1Cnt)
+                    {
+                        foreach(var cntA in cnt1)
+                            if (cntA > 0) isEmpty = false;  
+                    }
                 }
 
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0 || isEmpty==true)
                 {
-                    
                     for (int idx = 0; idx < procItem.Compare.Count; idx++)
                     {
                         lineCnt = 0;
@@ -316,27 +316,21 @@ namespace MarkCompare
                     return;
                 }
 
-                
-
-                if (isEmpty)
-                {
-                    UIHelper.SetText(lblProcess, Lang.NoComparingData);
-                    return;
-                }
+                if (isEmpty)    { UIHelper.SetText(lblProcess, Lang.NoComparingData); return; }
 
                 double[] result = new double[procItem.CompRange.Count + 1];
 
                 for (int idx = 0; idx < procItem.Compare.Count; idx++)
                 {
-                    
                     if (procItem.Compare[idx].IsSplitCTLNO==false)
                     {
                         bool isSubError = false;
                         StringBuilder sb1 = new StringBuilder();
                         lineCnt = 0;
                         isEmpty = true;
-                        for (int i = 0; i < compCnt.GetLength(1); i++)
-                            if (compCnt[idx, i] > 0) isEmpty = false;
+                        foreach (var cnt1 in comp1Cnt[idx])
+                            if (cnt1 > 0) isEmpty = false;
+
                         if (isEmpty)
                         {
                             sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n{Lang.NoComparingData}");
@@ -365,31 +359,33 @@ namespace MarkCompare
                             }
                         }
 
-                        if (compCnt[idx, 0] == 0) { sb1.Append($"REF :0%({compCnt[idx, 0]})"); lineCnt++; }
-                        else { sb1.Append($"REF :{result[0]:F1}%({compCnt[idx, 0]})"); lineCnt++; }
+                        int[] defectCnt = new int[comp1Cnt[idx].GetLength(1)];
+                        for(int a2=0; a2< defectCnt.Length; a2++)
+                            for (int aaa1 = 0; aaa1 < comp1Cnt[idx].GetLength(0); aaa1++)
+                                defectCnt[a2] += comp1Cnt[idx][aaa1, a2];
 
-                        if (procItem.CompRange.Count > 0)
-                            sb1.Append("\n");
+                        if (defectCnt[0] == 0) { sb1.Append($"REF :0%({defectCnt[0]})"); lineCnt++; }
+                        else { sb1.Append($"REF :{result[0]:F1}%({defectCnt[0]})"); lineCnt++; }
+
+                        if (procItem.CompRange.Count > 0)   sb1.Append("\n");
 
                         for (int i = 1; i < procItem.CompRange.Count + 1; i++)
                         {
-                            if (compCnt[idx, 0] > 0)
+                            if (defectCnt[0] > 0)
                             {
-                                result[i] = (double)((double)compCnt[idx, i] / (double)compCnt[idx, 0]) * 100.0;
-                                sb1.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                                result[i] = (double)((double)defectCnt[i] / (double)defectCnt[0]) * 100.0;
+                                sb1.Append($"Case {i} : {result[i]:F1}%({defectCnt[i]})");
                                 lineCnt++;
                             }
                             else
                             {
-                                if (compCnt[idx, i] > 0)
+                                if (defectCnt[i] > 0)
                                 {
-                                    result[i] = (double)compCnt[idx, i] * 100.0;
-                                    sb1.Append($"Case {i} : {result[i]:F1}%({compCnt[idx, i]})");
+                                    result[i] = (double)defectCnt[i] * 100.0;
+                                    sb1.Append($"Case {i} : {result[i]:F1}%({defectCnt[i]})");
                                 }
                                 else
-                                {
-                                    sb1.Append($"Case {i} : 0%({compCnt[idx, i]})");
-                                }
+                                    sb1.Append($"Case {i} : 0%({defectCnt[i]})");
                                 lineCnt++;
                             }
 
@@ -443,7 +439,7 @@ namespace MarkCompare
                                 lineCnt = 0;
                                 bool isSubError = false;
                                 isEmpty = true;
-                                for (int i = 0; i < compCnt.GetLength(1); i++)
+                                for (int i = 0; i < comp1Cnt[idx].GetLength(1); i++)
                                     if (comp1Cnt[idx][subIdx, i] > 0) isEmpty = false;
                                 if (isEmpty)
                                 {
@@ -535,9 +531,7 @@ namespace MarkCompare
                     this.Height += (maxLine - 2) * 18;
 
                     foreach (Control ctrl in flpResult.Controls)
-                    {
                         ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
-                    }
                 }
             }
             catch (Exception ex)

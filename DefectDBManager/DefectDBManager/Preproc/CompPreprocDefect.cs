@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -203,9 +203,7 @@ namespace DefectDBManager
 
             // 동시에 Live와 Search가 구동되지 못 하도록 함.
             while(IsRunSearchingLotList)
-            {
                 Thread.Sleep(1000);
-            }
 
             Log.Write("실시간 오차 검색 시작");
             OnStartLiveDefectSearching?.Invoke();
@@ -261,9 +259,7 @@ namespace DefectDBManager
 
             // 동시에 Live와 Search가 구동되지 못 하도록 함.
             while (IsRunLiveSearch)
-            {
                 Thread.Sleep(1000);
-            }
 
             Log.Write("선택 공정 결점 오차 검색 시작");
             // 해당 공정에 대한 결점 정보 확인
@@ -353,8 +349,7 @@ namespace DefectDBManager
                 if (productName.ElementAt(0) == '*' && productName.ElementAt(productName.Length - 1) == '*')
                 {
                     isWildCard = true;
-                    // * 은 지우고 필요한 내용만 남김
-                    productName = productName.Trim('*');
+                    productName = productName.Trim('*');    // * 은 지우고 필요한 내용만 남김
                 }
                 else isWildCard = false;
 #if TEST_MODE
@@ -479,9 +474,7 @@ namespace DefectDBManager
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
 
-                int maxStep = 0;
-                if (lot.MarkCompList.Data.Count > 0)
-                    maxStep = lot.MarkCompList.Data[0].Comp.GetLength(0);
+                int maxStep = maxStep = preprocItem.CompRange.Count + 1;
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -489,7 +482,7 @@ namespace DefectDBManager
                     if (preprocItem.Compare[i].IsSplitCTLNO == false)
                     {
                         logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = lot.MarkCompList.Data[0].Comp.GetLength(1); // 비교 거리 데이터 확인용
+                        int nStep = preprocItem.Compare.Count; // 비교 거리 데이터 확인용
                         for (int j = 0; j < nStep; j++)
                         {
                             if (j == 0)
@@ -502,27 +495,33 @@ namespace DefectDBManager
                                 CompRange range = preprocItem.CompRange[j - 1];
                                 log.WriteLoadData(subPath, $"[COMPARE Range {j}] - [{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0);
                             }
+
                             idx1 = 0;
                             foreach (var item in lot.MarkCompList.Data)
                             {
-                                if (item.Comp[i, j].Count > 0)
-                                {
-                                    idx2 = 0;
-                                    string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
-                                                                $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
-                                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
-                                    idx2++;
+                                if (!item.Comp1.Any(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD
+                                                    && kv.Value[j].Count > 0)) continue;
 
-                                    for (int k = 0; k < item.Comp[i, j].Count; k++)
+                                var itemList = item.Comp1.
+                                       Where(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD).ToList();
+
+                                idx2 = 0;
+                                string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
+                                log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
+                                idx2++;
+
+                                foreach (var kv in itemList)
+                                {
+                                    foreach (var datum in kv.Value[j])
                                     {
-                                        MarkingFaultDatum datum = item.Comp[i, j][k];
                                         msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
                                                                 $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.MNTTID}, {datum.BCNO}");
                                         log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                         idx2++;
                                     }
-                                    idx1++;
                                 }
+                                idx1++;
                             }
                         }
                     }
@@ -614,9 +613,7 @@ namespace DefectDBManager
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
 
-                int maxStep = 0;
-                if (lot.MarkCompList.Data.Count > 0)
-                    maxStep = lot.MarkCompList.Data[0].Comp.GetLength(0);
+                int maxStep = preprocItem.CompRange.Count+1;
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -624,7 +621,7 @@ namespace DefectDBManager
                     if (preprocItem.Compare[i].IsSplitCTLNO==false)
                     {
                         logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = lot.MarkCompList.Data[0].Comp.GetLength(1); // 비교 거리 데이터 확인용
+                        int nStep = preprocItem.Compare.Count; // 비교 거리 데이터 확인용
                         for (int j = 0; j < nStep; j++)
                         {
                             if (j == 0)
@@ -637,27 +634,33 @@ namespace DefectDBManager
                                 CompRange range = preprocItem.CompRange[j - 1];
                                 log.WriteLoadData(subPath, $"[COMPARE Range {j}] - [{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0);
                             }
+
                             idx1 = 0;
                             foreach (var item in lot.MarkCompList.Data)
                             {
-                                if (item.Comp[i, j].Count > 0)
-                                {
-                                    idx2 = 0;
-                                    string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
-                                                                $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
-                                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
-                                    idx2++;
+                                if (!item.Comp1.Any(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD
+                                                    && kv.Value[j].Count > 0)) continue;
 
-                                    for (int k = 0; k < item.Comp[i, j].Count; k++)
+                                var itemList = item.Comp1.
+                                       Where(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD).ToList();
+
+                                idx2 = 0;
+                                string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                            $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
+                                log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
+                                idx2++;
+
+                                foreach(var kv in itemList)
+                                {
+                                    foreach (var datum in kv.Value[j])
                                     {
-                                        MarkingFaultDatum datum = item.Comp[i, j][k];
                                         msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
                                                                 $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.MNTTID}, {datum.BCNO}");
                                         log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
                                         idx2++;
                                     }
-                                    idx1++;
                                 }
+                                idx1++;
                             }
                         }
                     }

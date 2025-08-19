@@ -17,7 +17,6 @@ namespace DefectDBManager
         /// 0: 공정 인덱스
         /// 1: 불량 갯수
         /// </summary>
-        public List<MarkingFaultDatum>[,] Comp { get; set; } = null;
 
         public Dictionary<(string, string), List<MarkingFaultDatum>[]> Comp1 { get; set; } = null;
 
@@ -28,22 +27,6 @@ namespace DefectDBManager
             Base = new MarkingFaultDatum();
 
             Comp1 = new Dictionary<(string, string), List<MarkingFaultDatum>[]>();
-        }
-
-        public void SetCompRange(int lineCont, int count)
-        {
-            Comp = new List<MarkingFaultDatum>[lineCont,count];
-            for (int i = 0; i < lineCont; i++)
-            {
-                for (int j = 0; j < count; j++)
-                {
-                    Comp[i,j] = new List<MarkingFaultDatum>();
-                }
-            }
-        }
-        public void AddCompData(int lineIdx, int idx, MarkingFaultDatum data)
-        {
-            Comp[lineIdx, idx].Add(data);
         }
 
         public void AddComp1Data(string lncd, string ctrno, int idx, List<MarkingFaultDatum> data)
@@ -65,7 +48,6 @@ namespace DefectDBManager
 
             foreach( var item in data)
                 Comp1[key][idx].Add(item);
-
         }
 
     }

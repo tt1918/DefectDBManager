@@ -694,8 +694,8 @@ namespace MarkCompare
                             preprocItem.Compare.Add(tmpProc2);
 
                             _csvCompData.MarkData.LNCD = "ES";
-                            preMarkData[0].LNCD = "TG";
-                            preMarkData[1].LNCD = "ETC";
+                            preMarkData[0].LNCD = preMarkData[0].CTLNO = "TG";
+                            preMarkData[1].LNCD = preMarkData[1].CTLNO = "ETC";
                         }
                         else if (_csvCompParam.CompType == 2)
                         {
@@ -712,8 +712,8 @@ namespace MarkCompare
                             preprocItem.Compare.Add(tmpProc2);
 
                             _csvCompData.MarkData.LNCD = "TG";
-                            preMarkData[0].LNCD = "ES";
-                            preMarkData[1].LNCD = "ETC";
+                            preMarkData[0].LNCD = preMarkData[0].CTLNO = "ES";
+                            preMarkData[1].LNCD = preMarkData[1].CTLNO = "ETC";
                         }
                         else
                         {
@@ -730,8 +730,8 @@ namespace MarkCompare
                             preprocItem.Compare.Add(tmpProc2);
 
                             _csvCompData.MarkData.LNCD = "ETC";
-                            preMarkData[0].LNCD = "ES";
-                            preMarkData[1].LNCD = "TG";
+                            preMarkData[0].LNCD = preMarkData[0].CTLNO = "ES";
+                            preMarkData[1].LNCD = preMarkData[1].CTLNO = "TG";
                         }
 
 
