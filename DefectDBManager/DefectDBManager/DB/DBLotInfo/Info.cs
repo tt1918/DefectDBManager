@@ -39,6 +39,8 @@ namespace DefectDBManager.DBLotInfo
         // 현재 생산중인 Lot의 InspData
         public DB.INSPDATList[] INSPDATArray;
 
+        public string SelectedDbLNCD = string.Empty;
+
         public LotData()
         {
             Init();

@@ -3,11 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+
 
 namespace DefectDBManager.Preproc
 {
@@ -503,6 +499,7 @@ namespace DefectDBManager.Preproc
 
     #endregion
 
+    #region CSV 프로세스 파라미터
     public class CSVProcParam
     {
         #region Compare Range
@@ -547,7 +544,7 @@ namespace DefectDBManager.Preproc
                 var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<CSVProcParam>(jsonString);
                 this.BasicRange = obj.BasicRange;
                 this.CompRange = obj.CompRange;
-                this.Judge = obj.Judge; 
+                this.Judge = obj.Judge;
                 this.UseAiResult = obj.UseAiResult;
             }
             catch (Exception ex)
@@ -556,4 +553,110 @@ namespace DefectDBManager.Preproc
             }
         }
     }
+    #endregion
+
+    #region LOT 지정 검사
+    public enum FilterType
+    {
+        UserFilter = 0,
+        DbFilter
+    }
+
+    public class DBFilter
+    {
+        [Category("DB Filter")]
+        [Description("Title")]
+        public string Title { get; set; } =string.Empty;
+        [Category("DB Filter")]
+        [Description("MKCD")]
+        public string MKCD { get; set; } = string.Empty;
+        [Category("DB Filter")]
+        [Description("Use ES")]
+        public bool UseES { get; set; } = false;
+        [Category("DB Filter")]
+        [Description("Use TG")] 
+        public bool UseTG { get; set; } = false;
+        [Category("DB Filter")]
+        [Description("Use ETC")]
+        public bool UseETC { get; set; } = false;
+
+        public DBFilter()
+        {
+
+        }
+    }
+
+    public class LotSelProcParam
+    {
+        #region Compare Range
+        [Category("items")]
+        [Description("Basic Range")]
+        public CompRange BasicRange { get; set; } = new CompRange();
+
+        [Category("items")]
+        [Description("Compare Range")]
+        public List<CompRange> CompRange { get; set; } = new List<CompRange>();
+        #endregion
+
+        [Category("items")]
+        [Description("Judge Range")]
+        public JudgeRange Judge { get; set; } = new JudgeRange();
+
+        [Category("items")]
+        [Description("Defect ID Type")]
+        public bool UseAiResult { get; set; } = false;
+
+        [Category("items")]
+        [Description("Filter Type")]
+        public FilterType FilterType { get; set; } = FilterType.UserFilter;
+
+        [Category("items")]
+        [Description("DB Filter")]
+        public DBFilter DBFilter { get; set; } = new DBFilter();
+
+        [Category("items")]
+        [Description("User Filter")]
+        public ProcFilterList UserFilter { get; set; } = new ProcFilterList();
+
+        public void Save()
+        {
+            try
+            {
+                string path = Define.CsvParamSetPath;
+                string jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
+                System.IO.File.WriteAllText(path, jsonString);
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] Save Lot Select Process Param : {ex.Message}");
+            }
+        }
+
+        public void Load()
+        {
+            try
+            {
+                string path = Define.CsvParamSetPath;
+                string jsonString = "";
+                
+                if (System.IO.File.Exists(path)) jsonString = System.IO.File.ReadAllText(path);
+                else return;
+
+                var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<LotSelProcParam>(jsonString);
+                this.BasicRange = obj.BasicRange;
+                this.CompRange = obj.CompRange;
+                this.Judge = obj.Judge;
+                this.UseAiResult = obj.UseAiResult;
+                this.FilterType = obj.FilterType;
+                this.DBFilter = obj.DBFilter;
+                this.UserFilter = obj.UserFilter;
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] Load Lot Select Process Param : {ex.Message}");
+            }
+        }
+    }
+    #endregion
+
 }

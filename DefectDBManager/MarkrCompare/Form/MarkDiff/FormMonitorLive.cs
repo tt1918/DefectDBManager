@@ -280,8 +280,8 @@ namespace MarkCompare
         CompProc _compProc = CompProc.None;
         private void updateLotSearchRes(CompProc eProc)
         {
-            int total = _lotManager.TotalLiveProduct;
-            int count = _lotManager.TotalLiveLot;
+            int total = _lotManager.Live.TotalProduct;
+            int count = _lotManager.Live.TotalLot;
 
             string message = "";
             switch (eProc)

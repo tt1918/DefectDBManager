@@ -91,6 +91,12 @@
     <Compile Include="Form\CompSetting\FormSetting.Designer.cs">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\FormSelectLot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormSelectLot.Designer.cs">
+      <DependentUpon>FormSelectLot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormCsv.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,6 +162,12 @@
     </Compile>
     <Compile Include="Form\MarkDiff\FormLotSummery.Designer.cs">
       <DependentUpon>FormLotSummery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMonitorSelectedLot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormMonitorSelectedLot.Designer.cs">
+      <DependentUpon>FormMonitorSelectedLot.cs</DependentUpon>
     </Compile>
     <Compile Include="Form\MarkDiff\FormMonitorSearch.cs">
       <SubType>Form</SubType>
@@ -226,6 +238,9 @@
     <EmbeddedResource Include="Form\CompSetting\FormSetting.resx">
       <DependentUpon>FormSetting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormSelectLot.resx">
+      <DependentUpon>FormSelectLot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\FormCsv.resx">
       <DependentUpon>FormCsv.cs</DependentUpon>
     </EmbeddedResource>
@@ -270,6 +285,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\MarkDiff\FormLotSummery.resx">
       <DependentUpon>FormLotSummery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\MarkDiff\FormMonitorSelectedLot.resx">
+      <DependentUpon>FormMonitorSelectedLot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\MarkDiff\FormMonitorSearch.resx">
       <DependentUpon>FormMonitorSearch.cs</DependentUpon>

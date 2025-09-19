@@ -226,6 +226,7 @@
     <Compile Include="Preproc\Data\ProcMaterial.cs" />
     <Compile Include="enumError.cs" />
     <Compile Include="Preproc\LotHistory.cs" />
+    <Compile Include="Preproc\LOT\CompLotList.cs" />
     <Compile Include="Preproc\LOT\MarkCompData.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />

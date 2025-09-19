@@ -1,5 +1,6 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
+using DefectDBManager.Preproc;
 using MarkCompare.Delegate;
 using MarkCompare.Properties;
 using System;
@@ -127,35 +128,50 @@ namespace MarkCompare
             _markDiffForm.Dock = DockStyle.Fill;
             _markDiffForm.Show();
 
+            #region 기간 설정 탐색
             _markDiffForm.FormMorSearch.OnStartLotSearch += StartSearchLotList;
             _markDiffForm.FormMorSearch.OnStopLotSearch += StopSearchLotList;
 
+            _dbManager.OnEndSearchingLotList += _markDiffForm.FormMorSearch.EndLotSearch;
+            _dbManager.OnEndSearchingLotList += _markDiffForm.UpdateSearchLotList;
+            #endregion
+
+            #region 실시간 탐색
             _markDiffForm.FormMorLive.OnStartLiveSearch += _dbManager.StartLiveLot;
             _markDiffForm.FormMorLive.OnStopLiveSearch += _dbManager.StopLiveLot;
+            
             _dbManager.OnStartLiveDefectSearching += _markDiffForm.FormMorLive.StartLotSearch;
-
-            _dbManager.OnEndSearchingLotList += _markDiffForm.FormMorSearch.EndLotSearch;
-            _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
-
             _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
-            _dbManager.OnEndSearchingLotList += _markDiffForm.UpdateSearchLotList;
+            _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
+            #endregion
+
+            #region 선택 Lot 탐색
+            _markDiffForm.FormMorSelectedLot.OnStartLotSearch += StartSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnStopLotSearch += EndSelectedLotProcess;
+            #endregion
         }
 
         private void destroyMarkDiffForm()
         {
+            #region 기간 설정 탐색
             _markDiffForm.FormMorSearch.OnStartLotSearch -= StartSearchLotList;
             _markDiffForm.FormMorSearch.OnStopLotSearch -= StopSearchLotList;
+            _dbManager.OnEndSearchingLotList -= _markDiffForm.FormMorSearch.EndLotSearch;
+            _dbManager.OnEndSearchingLotList -= _markDiffForm.UpdateSearchLotList;
+            #endregion
 
+            #region 실시간 탐색
             _markDiffForm.FormMorLive.OnStartLiveSearch -= _dbManager.StartLiveLot;
             _markDiffForm.FormMorLive.OnStopLiveSearch -= _dbManager.StopLiveLot;
             _dbManager.OnStartLiveDefectSearching -= _markDiffForm.FormMorLive.StartLotSearch;
-
-            _dbManager.OnEndSearchingLotList -= _markDiffForm.FormMorSearch.EndLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;
-
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.UpdateLotSummary;
+            #endregion
 
-            _dbManager.OnEndSearchingLotList -= _markDiffForm.UpdateSearchLotList;
+            #region 선택 Lot 탐색
+            _markDiffForm.FormMorSelectedLot.OnStartLotSearch += StartSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnStopLotSearch += EndSelectedLotProcess;
+            #endregion
         }
         #endregion Marking Comparision Form
 
@@ -306,15 +322,15 @@ namespace MarkCompare
             StringBuilder sb = new StringBuilder();
             if (_lotManager != null)
             {   
-                foreach (var item in _lotManager.LiveProduct)
+                foreach (var item in _lotManager.Live.Product)
                 {
                     string[] keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
                     string lncd = keyData[0];
 
-                    if (_lotManager.LiveLot.ContainsKey(item.Key) == false)
+                    if (_lotManager.Live.LOT.ContainsKey(item.Key) == false)
                         continue;
 
-                    foreach(var lot in _lotManager.LiveLot[item.Key])
+                    foreach(var lot in _lotManager.Live.LOT[item.Key])
                     {
                         if(lot.CompResult==eCompResult.ProcNg)
                         {
@@ -332,6 +348,30 @@ namespace MarkCompare
                 //else                MessageBox.Show(this,sb.ToString());
             }));
         }
+        #endregion
+
+        #region 선택 Lot 검색 Process
+        public void StartSelectedLotProcess()
+        {
+            LotSelProcParam param = _markDiffForm.SelLotParam;
+            List<string> list = _markDiffForm.SelLotList;
+            _dbManager.SearchSelectedLotMarkDiff(list, param);
+        }
+
+        public void StopSelectedLotProcess()
+        {
+            _dbManager.StopSelectedLotList = false;
+        }
+
+        public void EndSelectedLotProcess()
+        {
+            SystemLog.DisplayFileServerLog(Lang.periodOperationIsComplete);
+            Invoke(new Action(() =>
+            {
+                MessageBox.Show(this, Lang.periodOperationIsComplete);
+            }));
+        }
+
         #endregion
 
         #region DB Connection

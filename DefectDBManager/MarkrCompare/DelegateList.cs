@@ -1,4 +1,5 @@
 ﻿using DefectDBManager;
+using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,4 +14,5 @@ namespace MarkCompare.Delegate
     public delegate void DeleUpdateLanguage(string culture);
     public delegate void UpdateSummaryCheck(object obj);
     public delegate void UpdateErrorLots(string[] errLots);
+    public delegate void RunSelectedLotComparing(List<string> lots, LotSelProcParam param);
 }

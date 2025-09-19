@@ -16,13 +16,16 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace MarkCompare
 {
-    public partial class FormMonitorSearch : Form
+    public partial class FormMonitorSelectedLot : Form
     {
         #region Param
         DefectDBManager.PreprocLotManager _lotManager = null;
-        DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Search;
+        DefectDBManager.Preproc.eProc _procIdx = DefectDBManager.Preproc.eProc.Selected;
 
         public DefectDBManager.CompPreprocDefect Process = null;
+
+        private DefectDBManager.Preproc.LotSelProcParam _param;
+
 
         public bool IsRun
         {
@@ -32,21 +35,22 @@ namespace MarkCompare
 
         #region Event
         public event MarkCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
-        public event MarkCompare.Delegate.UpdateEvent OnStartLotSearch;
+        public event MarkCompare.Delegate.UpdateEvent OnSearchSelectedLot;
         public event MarkCompare.Delegate.UpdateEvent OnStopLotSearch;
-        public event Delegate.UpdateEvent OnOpenCsvForm;
+        public event Delegate.UpdateEvent OnOpenSelectLotForm;
         #endregion
 
         #region Create/Destroy
-        public FormMonitorSearch()
+        public FormMonitorSelectedLot()
         {
             InitializeComponent();
         }
 
-        public FormMonitorSearch(DefectDBManager.PreprocLotManager lotManager)
+        public FormMonitorSelectedLot(DefectDBManager.PreprocLotManager lotManager, DefectDBManager.Preproc.LotSelProcParam param)
         {
             InitializeComponent();
             _lotManager = lotManager;
+            _param = param;
         }
         private void FormMornitorSearch_Load(object sender, EventArgs e)
         {
@@ -63,7 +67,7 @@ namespace MarkCompare
         {
             if(this.Visible==true)
             {
-                setLNCDCtrlData();
+                updateFilterData();
             }
         }
 
@@ -86,9 +90,9 @@ namespace MarkCompare
         /// <summary>
         /// _lotManager.ProcLNCD.Info -> tlLncd
         /// </summary>
-        private void setLNCDCtrlData()
+        private void updateFilterData()
         {
-            int ctrlCount = _lotManager.CrtProcFilter[(int)_procIdx].Count;
+            int ctrlCount = _param.UserFilter.Count;
             bool isError = false;
             bool isSkip = false;
             List<string> strError = new List<string>();
@@ -97,49 +101,62 @@ namespace MarkCompare
             {
                 lvFilterList.BeginUpdate();
                 lvFilterList.Items.Clear();
-                foreach (var item in _lotManager.CrtProcFilter[(int)_procIdx].Data)
+                if(_param.FilterType == DefectDBManager.Preproc.FilterType.UserFilter)
                 {
-                    bool isExistProd = false;
-                    bool isExistModel = false;
-                    isSkip = false;
-                    foreach (var procInfo in _lotManager.ProcLNCD.Info)
+                    foreach (var item in _param.UserFilter.Data)
                     {
-                        if (procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
+                        bool isExistProd = false;
+                        bool isExistModel = false;
+                        isSkip = false;
+                        foreach (var procInfo in _lotManager.ProcLNCD.Info)
                         {
-                            if (procInfo.CheckStatus == true)
-                                isSkip = true;
-                            isExistProd = true;
-                            break;
+                            if (procInfo.Name == item.Line && procInfo.Material.Items.Contains(item.Product))
+                            {
+                                if (procInfo.CheckStatus == true)
+                                    isSkip = true;
+                                isExistProd = true;
+                                break;
+                            }
                         }
-                    }
 
-                    foreach (var prodModel in _lotManager.ProcSetting.Data)
-                    {
-                        if (prodModel.Name == item.Model)
+                        foreach (var prodModel in _lotManager.ProcSetting.Data)
                         {
-                            isExistModel = true;
-                            break;
+                            if (prodModel.Name == item.Model)
+                            {
+                                isExistModel = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if (isExistProd == false && isSkip==false)
-                    {
-                        strError.Add($"Line : {item.Line}, {Lang.product} : {item.Product} {Lang.InformationDoesNotExist}");
-                        isError = true;
-                    }
-                    if (isExistModel == false && isSkip == false)
-                    {
-                        strError.Add($"{Lang.dgvMeterialModel} : {item.Model} {Lang.InformationDoesNotExist}");
-                        isError = true;
-                    }
+                        if (isExistProd == false && isSkip == false)
+                        {
+                            strError.Add($"Line : {item.Line}, {Lang.product} : {item.Product} {Lang.InformationDoesNotExist}");
+                            isError = true;
+                        }
+                        if (isExistModel == false && isSkip == false)
+                        {
+                            strError.Add($"{Lang.dgvMeterialModel} : {item.Model} {Lang.InformationDoesNotExist}");
+                            isError = true;
+                        }
 
-                    if (isError == true || isSkip==true)
-                        continue;
+                        if (isError == true || isSkip == true)
+                            continue;
 
-                    string format = $"{item.Line} - {Lang.product}:[{item.Product}], {Lang.filterDgvModel}:[{item.Model}]";
-                    ListViewItem lvi = new ListViewItem(format);
-                    lvFilterList.Items.Add(lvi);
+                        string format = $"{item.Line} - {Lang.product}:[{item.Product}], {Lang.filterDgvModel}:[{item.Model}]";
+                        ListViewItem lvi = new ListViewItem(format);
+                        lvFilterList.Items.Add(lvi);
+                    }
                 }
+                else if(_param.FilterType == DefectDBManager.Preproc.FilterType.DbFilter)
+                {
+                    string format = $"DB Filter [{_param.DBFilter.Title}] [MKCD: {_param.DBFilter.MKCD}], " +
+                        $"[ES: {_param.DBFilter.UseES.ToString()}], " +
+                        $"[TG: {_param.DBFilter.UseTG.ToString()}]," +
+                        $"[EtC: {_param.DBFilter.UseETC.ToString()}]";
+                    ListViewItem listViewItem = new ListViewItem(format);
+                    lvFilterList.Items.Add(listViewItem);
+                }
+                
 
                 _isModelError = isError;
 
@@ -165,7 +182,7 @@ namespace MarkCompare
 
         public void DisplayLNCDCtrlData()
         {
-            setLNCDCtrlData();
+            updateFilterData();
         }
 
         #endregion
@@ -175,15 +192,28 @@ namespace MarkCompare
         {
             try
             {
-                if(_isModelError==true)
+
+                // 현재 검사 중이거나 랏메니저가 null 이면 검사 안 함.
+                if (IsRun == true || _lotManager == null)
+                {
+                    SystemLog.DisplayFileServerLog(Lang.theSearingIsInProgress);
+                    return;
+                }
+
+                // 모델에 에러가 있으면 실행 안 함.
+                if (_isModelError==true)
                 {
                     SystemLog.DisplayFileServerLog(Lang.noFilterData);
                     return;
                 }
 
-                if (IsRun == true || _lotManager == null)
+                if (Process.IsRunSearchingLotList)
                 {
                     SystemLog.DisplayFileServerLog(Lang.theSearingIsInProgress);
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, Lang.theSearingIsInProgress);
+                    }));
                     return;
                 }
 
@@ -197,11 +227,9 @@ namespace MarkCompare
                     return;
                 }
 
-                _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
+                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Selected);
 
-                OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Search);
-
-                OnStartLotSearch?.Invoke();
+                OnSearchSelectedLot?.Invoke();
                 _timerLotSearchProcess.Start();
             }
             catch (Exception ex)
@@ -219,30 +247,11 @@ namespace MarkCompare
                 _timerLotSearchProcess.Stop();
                 OnStopLotSearch?.Invoke();
 
-
                 updateLotSearchRes(CompProc.Stop);
             }
             catch (Exception ex)
             {
                 SystemLog.DisplaySystemLog(ex.Message, Log.Level.Error);
-            }
-        }
-
-        private void btnMaterialFilter_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                using (FormProductFilter form = new FormProductFilter(_lotManager, _procIdx))
-                {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        setLNCDCtrlData();
-                    }
-                }
-            }
-            catch
-            {
-
             }
         }
         #endregion
@@ -274,8 +283,8 @@ namespace MarkCompare
 
         private void updateLotSearchRes(CompProc eProc = CompProc.Proc)
         {
-            int total = _lotManager.Search.TotalLot;
-            int count = _lotManager.Search.TotalProduct;
+            int total = _lotManager.Selected.TotalLot;
+            int count = _lotManager.Selected.TotalProduct;
 
             string message ="";
             switch(eProc)
@@ -290,9 +299,9 @@ namespace MarkCompare
         }
         #endregion
 
-        private void btnCsv_Click(object sender, EventArgs e)
+        private void btnSetLot_Click(object sender, EventArgs e)
         {
-            OnOpenCsvForm?.Invoke();
+            OnOpenSelectLotForm?.Invoke();
         }
 
         #region 언어 변경
@@ -303,17 +312,14 @@ namespace MarkCompare
                 string fontName = Functions.GetCultureFontName(culture);
 
                 Font newFont = new Font(fontName, 9, FontStyle.Bold);
-                lblTime.Font = newFont;
-                lblTime.Text = Lang.time;
+               
 
                 newFont = new Font(fontName, 9, FontStyle.Regular);
                 btnStart.Font = newFont;
                 btnStop.Font = newFont;
-                btnMaterialFilter.Font = newFont;
 
                 btnStart.Text = Lang.start;
                 btnStop.Text = Lang.ProcStop;
-                btnMaterialFilter.Text = Lang.filterSet;
             }));
         }
         #endregion

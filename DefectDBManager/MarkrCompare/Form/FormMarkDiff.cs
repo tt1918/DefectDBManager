@@ -29,6 +29,7 @@ namespace MarkCompare
         #region Event
         public event MarkCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
+        public event MarkCompare.Delegate.UpdateEvent OnUpdateSelectedLNCDInfo = null;
         //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
         public event DeleUpdateLanguage OnUpdateLanguage = null;
         #endregion
@@ -258,6 +259,13 @@ namespace MarkCompare
         }
         private FormMonitorSearch _formMorSearch;
 
+        public FormMonitorSelectedLot FormMorSelectedLot
+        {
+            get { return _formMorSelectedLot; }
+            private set { _formMorSelectedLot = value; }
+        }
+        private FormMonitorSelectedLot _formMorSelectedLot;
+
         private void initTabSearchSetting()
         {
             _formMorLive = new FormMonitorLive(_lotManager);
@@ -268,8 +276,16 @@ namespace MarkCompare
             _formMorSearch.Process = _dbProcess;
             _formMorSearch.TopLevel = false;
 
+            _selLotParam.Load();
+            _formMorSelectedLot = new FormMonitorSelectedLot(_lotManager, _selLotParam);
+            _formMorSelectedLot.Process = _dbProcess;
+            _formMorSelectedLot.TopLevel = false;
+
+            tabSearchSet.TabPages.Clear();
+
             // Live Tab
-            tabSearchSet.TabPages[0].Text = Lang.LiveSearch;
+            TabPage tabPage = new TabPage(Lang.LiveSearch);
+            tabSearchSet.TabPages.Add(tabPage);
             tabSearchSet.TabPages[0].Controls.Add(_formMorLive.Controls[0]);
             _formMorLive.Dock = DockStyle.Fill;
             _formMorLive.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -277,16 +293,28 @@ namespace MarkCompare
             OnUpdateLiveLNCDInfo += _formMorLive.DisplayLNCDCtrlData;
 
             // Search Tab
-            tabSearchSet.TabPages[1].Text = Lang.PeridoSearch;
+            TabPage tabPage1 = new TabPage(Lang.PeridoSearch);
+            tabSearchSet.TabPages.Add(tabPage1);
             tabSearchSet.TabPages[1].Controls.Add(_formMorSearch.Controls[0]);
             _formMorSearch.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSearch.OnUpdatePrepLncdInfo += showLotListForm;
             OnUpdateSearchLNCDInfo += _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.OnOpenCsvForm += OpenFormCsv;
             _formMorSearch.Dock = DockStyle.Fill;
-            
+
+            // Lot 지정 검사
+            TabPage tabPage2 = new TabPage("LOT 지정 검사");
+            tabSearchSet.TabPages.Add(tabPage2);
+            tabSearchSet.TabPages[2].Controls.Add(_formMorSelectedLot.Controls[0]);
+            _formMorSelectedLot.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            _formMorSelectedLot.OnUpdatePrepLncdInfo += showLotListForm;
+            OnUpdateSelectedLNCDInfo += _formMorSelectedLot.DisplayLNCDCtrlData;
+            _formMorSelectedLot.OnOpenSelectLotForm += OpenFormSelectedLot;
+            _formMorSelectedLot.Dock = DockStyle.Fill;
+
             _formMorSearch.Show();
             _formMorLive.Show();
+            _formMorSelectedLot.Show();
         }
 
         private void closeTabSearchSetting()
@@ -297,8 +325,16 @@ namespace MarkCompare
             OnUpdateSearchLNCDInfo -= _formMorSearch.DisplayLNCDCtrlData;
             _formMorSearch.OnOpenCsvForm -= OpenFormCsv;
 
+            _formMorSelectedLot.OnOpenSelectLotForm -= OpenFormSelectedLot;
+            OnUpdateSelectedLNCDInfo -= _formMorSelectedLot.DisplayLNCDCtrlData;
+
             _formMorLive?.Close();
             _formMorSearch?.Close();
+            _formMorSelectedLot?.Close();
+
+            _formMorLive.Dispose();
+            _formMorSearch.Dispose();
+            _formMorSelectedLot.Dispose();
         }
 
         private void tabSearchSet_SelectedIndexChanged(object sender, EventArgs e)
@@ -316,6 +352,12 @@ namespace MarkCompare
                     showLotListForm(DefectDBManager.Preproc.eProc.Search);
                     switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Search);
                     break;
+
+                case 2: // Selected Form
+                    OnUpdateSelectedLNCDInfo?.Invoke();
+                    showLotListForm(DefectDBManager.Preproc.eProc.Selected);
+                    switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Selected);
+                    break;
             }
         }
         #endregion
@@ -331,8 +373,13 @@ namespace MarkCompare
             _rollMapForm.Show();
 
         }
-        #endregion Roll Map Form
 
+        public void RemoveAll()
+        {
+            _rollMapForm.ClearMap();
+        }
+
+        #endregion Roll Map Form
 
         #region Lot List of Product Line
         private FormLotList[] _lotListForms = null;
@@ -411,24 +458,16 @@ namespace MarkCompare
             }
         }
 
+        Form _selForm=null;
+
         private void showLotListForm(DefectDBManager.Preproc.eProc proc)
         {
-            switch (proc)
-            {
-                case DefectDBManager.Preproc.eProc.Live:
-                    tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search]);
-                    tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live], 0, 0);
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Live].Dock = DockStyle.Fill;
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Live].ShowPanel(false);
-                    break;
-
-                case DefectDBManager.Preproc.eProc.Search:
-                    tableLayoutPanel3.Controls.Remove(_lotListForms[(int)DefectDBManager.Preproc.eProc.Live]);
-                    tableLayoutPanel3.Controls.Add(_lotListForms[(int)DefectDBManager.Preproc.eProc.Search], 0, 0);
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].Dock = DockStyle.Fill;
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].ShowPanel(true);
-                    break;
-            }
+            if(_selForm!=null)
+                tableLayoutPanel3.Controls.Remove(_selForm);
+            _selForm = _lotListForms[(int)proc];
+            tableLayoutPanel3.Controls.Add(_selForm, 0, 0);
+            _lotListForms[(int)proc].Dock = DockStyle.Fill;
+            _lotListForms[(int)proc].ShowPanel(true);
         }
         #endregion
 
@@ -464,15 +503,15 @@ namespace MarkCompare
         {
             List<string> errLot = new List<string>();
 
-            foreach (var item in _lotManager.LiveProduct)
+            foreach (var item in _lotManager.Live.Product)
             {
                 string[] keyData = DefectDBManager.Helper.SplitKeyData(item.Key);
                 string lncd = keyData[0];
-                if (_lotManager.LiveLot.ContainsKey(item.Key) == false) continue;
+                if (_lotManager.Live.LOT.ContainsKey(item.Key) == false) continue;
 
-                _formLotSummary.SetLotSummary(item.Key, _lotManager.LiveLot[item.Key], _lotManager, item.Key);
+                _formLotSummary.SetLotSummary(item.Key, _lotManager.Live.LOT[item.Key], _lotManager, item.Key);
 
-                foreach(var lot in _lotManager.LiveLot[item.Key])
+                foreach(var lot in _lotManager.Live.LOT[item.Key])
                 {
                     if (lot.CompResult == eCompResult.ProcNg)
                     {
@@ -506,10 +545,12 @@ namespace MarkCompare
                     break;
 
                 case DefectDBManager.Preproc.eProc.Search: // Roll Map
+                case DefectDBManager.Preproc.eProc.Selected:
                     tableLayoutPanel3.Controls.Remove(_formLotSummary);
                     tableLayoutPanel3.Controls.Add(_rollMapForm, 1, 0);
                     if(_rollMapForm.Dock!=DockStyle.Fill) _rollMapForm.Dock = DockStyle.Fill;
                     break;
+
             }
         }
         #endregion
@@ -537,11 +578,11 @@ namespace MarkCompare
                     }
                 }
 
-                if (_lotManager.LOT.ContainsKey(item.ToString()))
+                if (_lotManager.Search.LOT.ContainsKey(item.ToString()))
                 {
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.Search.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
 
-                    foreach (var lot in _lotManager.LOT[item.ToString()])
+                    foreach (var lot in _lotManager.Search.LOT[item.ToString()])
                     {
                         if(lot.CompResult== eCompResult.ProcNg)
                         {
@@ -599,6 +640,7 @@ namespace MarkCompare
         }
         #endregion
 
+        #region CSV 데이터 비교
         List<string> csvList = new List<string>();
         public void OpenFormCsv()
         {
@@ -610,7 +652,6 @@ namespace MarkCompare
                 CompareCsv();
             }
         }
-
         public void CompareCsv()
         {
             try
@@ -641,7 +682,7 @@ namespace MarkCompare
                     // 여기서 데이터 후처리
 
                     strLot = dataBase._CSVLoadInfo[0].LotNo;
-                    if (_csvCompParam.CompType==0)
+                    if (_csvCompParam.CompType == 0)
                     {
                         if (idxCnt == 0)
                         {
@@ -663,7 +704,7 @@ namespace MarkCompare
                             foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
                             {
                                 // 데이터는 처리가 필요함. 
-                               preMarkData.Data.Add(item1);
+                                preMarkData.Data.Add(item1);
                             }
                             ProcessData tmpProc = new ProcessData(pathL, pathL);
                             preprocItem.Compare.Add(tmpProc);
@@ -738,7 +779,7 @@ namespace MarkCompare
                         foreach (var item1 in dataBase.ResultDefect.MarkFault.Data.Data)
                         {
                             // 데이터는 처리가 필요함. 
-                            if (item1.DefectLine%10 == refIdx)
+                            if (item1.DefectLine % 10 == refIdx)
                                 _csvCompData.MarkData.Add(item1);
                             else
                                 preMarkData[lut[item1.DefectLine % 10]].Data.Add(item1);
@@ -752,15 +793,15 @@ namespace MarkCompare
                 // Data 비교 처리
                 PreprocLot tmpLot = new PreprocLot(strLot, null, _csvCompData);
 
-                
+
                 preprocItem.BasicRange = _csvCompParam.BasicRange;
                 preprocItem.CompRange = _csvCompParam.CompRange;
                 preprocItem.UseAiResult = _csvCompParam.UseAiResult;
                 tmpLot.CompareCsvPos(preprocItem);
-                
+
                 // 데이터 정리
-                _lotManager.ClearLot();
-                _lotManager.AddLot("CSV", tmpLot);
+                _lotManager.Search.ClearLot();
+                _lotManager.Search.AddLot("CSV", tmpLot);
 
                 BeginInvoke(new Action(delegate
                 {
@@ -768,7 +809,7 @@ namespace MarkCompare
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControlCsv();
                 }));
 
-                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.LOT["CSV"], preprocItem, _lotManager);
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].AddSummaryData(_lotManager.Search.LOT["CSV"], preprocItem, _lotManager);
 
                 SystemLog.DisplayFileServerLog(Lang.finishedComparingCSV);
             }
@@ -777,11 +818,33 @@ namespace MarkCompare
                 SystemLog.DisplaySystemLog($"CompareCsv Error, {e.Message}", Log.Level.Error);
             }
         }
+        #endregion
 
-        public void RemoveAll()
+        #region Lot 선택 검사 처리
+       
+        public LotSelProcParam SelLotParam { get { return _selLotParam; } }
+        LotSelProcParam _selLotParam = new LotSelProcParam();
+
+        // 검사할 Lot 배열
+        public List<string> SelLotList  {   get { return _selLotList; } }
+        List<string> _selLotList = new List<string>();
+
+        public void OpenFormSelectedLot()
         {
-            _rollMapForm.ClearMap();
+            FormSelectedLot form = new FormSelectedLot(_selLotParam, _lotManager);
+            
+            // 검사 시작하지 않으면 저장된 랏 정보를 Form에 넣어준다.
+            form._LotList.AddRange(_selLotList);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                _selLotParam = form.ProcItem;
+                _selLotList = form._LotList;
+                OnUpdateSelectedLNCDInfo?.Invoke();
+            }
         }
+        #endregion
+
+        
 
         #region 언어 변경
         private void initLanguageFunc()

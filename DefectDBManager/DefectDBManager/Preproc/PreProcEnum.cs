@@ -11,6 +11,7 @@ namespace DefectDBManager.Preproc
         None=-1,
         Live,
         Search,
+        Selected,
         Total
     }
 

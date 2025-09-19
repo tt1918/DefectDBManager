@@ -21,6 +21,7 @@ namespace MarkCompare
         public string CultureCode = "";
         DefectDBManager.PreprocLotManager _lotManager = null;
         int _procIdx = -1;
+        public ProcFilterList Filter { get; set; } = new ProcFilterList();
         #endregion
 
         #region Form Control
@@ -38,11 +39,35 @@ namespace MarkCompare
             switch ((DefectDBManager.Preproc.eProc)proc)
             {
                 case eProc.Live: initLiveFilterCtrl(); break;
-                case eProc.Search: initSearchFilterCtrl(); break;
+                case eProc.Search: initFilterCtrl(); break;
+                case eProc.Selected: initFilterCtrl(); break;
             }
             initSyncDurationCtrl();
             UpdateLanguage(CultureCode);
         }
+
+        public FormProductFilter(DefectDBManager.PreprocLotManager manager, DefectDBManager.Preproc.eProc proc, ProcFilterList filter)
+        {
+            InitializeComponent();
+
+
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+
+            _lotManager = manager;
+            _procIdx = (int)proc;
+            Filter = filter;
+
+            switch ((DefectDBManager.Preproc.eProc)proc)
+            {
+                case eProc.Live: initLiveFilterCtrl(); break;
+                case eProc.Search: initFilterCtrl(); break;
+                case eProc.Selected: initFilterCtrl(); break;
+            }
+            initSyncDurationCtrl();
+            UpdateLanguage(CultureCode);
+        }
+
 
         private void FormProductFilter_Load(object sender, EventArgs e)
         {
@@ -52,6 +77,7 @@ namespace MarkCompare
                 {
                     case eProc.Live:  displayLiveFilterCtrl();  break;
                     case eProc.Search: displaySearchFilterCtrl(); break;
+                    case eProc.Selected: displaySelectedFilterCtrl(); break;
                 }
             }
         }
@@ -227,7 +253,7 @@ namespace MarkCompare
         #endregion
 
         #region Data Grid View Search Filter Info
-        private void initSearchFilterCtrl()
+        private void initFilterCtrl()
         {
             try
             {
@@ -352,6 +378,8 @@ namespace MarkCompare
 
             }
         }
+
+
         private void updateSearchFilterCtrl()
         {
             try
@@ -376,7 +404,7 @@ namespace MarkCompare
 
             }
         }
-        private void addSearchFilter()
+        private void addFilter()
         {
             dgvFilter.SuspendLayout();
             try
@@ -604,10 +632,139 @@ namespace MarkCompare
         }
         #endregion
 
+        #region Data Grid View Selected Lot Filter Info
+
+        private void displaySelectedFilterCtrl()
+        {
+            try
+            {
+                List<string> errString = new List<string>();
+                List<string> lineName = new List<string>();
+                List<string> material = new List<string>();
+                List<string> model = new List<string>();
+
+                DefectDBManager.Preproc.ProcFilterList list = Filter;
+                string lncd = string.Empty;
+                int size = list.Count;
+                int idx = 0;
+
+                dgvFilter.Rows.Clear();
+
+                foreach (var item in list.Data)
+                {
+                    lineName.Clear();
+                    material.Clear();
+                    model.Clear();
+
+                    bool isSkip = false;
+
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line && info.CheckStatus == true)
+                            isSkip = true;
+                    }
+
+                    if (isSkip) continue;
+
+                    // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.CheckStatus == true) continue;
+                        lineName.Add(info.Name);
+
+                        if (info.Name == item.Line)
+                        {
+                            lncd = info.LNCD;
+
+                            foreach (var product in info.Material.Items)
+                                material.Add(product);
+                        }
+
+                    }
+
+                    foreach (var data in _lotManager.ProcSetting.Data)
+                    {
+                        // 해당 라인 코드에 맞는 모델만 추가한다.
+                        model.Add(data.Name);
+                    }
+
+                    // 에러 체크 추가
+                    bool bError = false;
+                    if (lineName.Contains(item.Line) == false)
+                    {
+                        errString.Add($"[{item.Line}] : {Lang.NoLineInformation}");
+                        bError = true;
+                    }
+                    if (material.Contains(item.Product) == false)
+                    {
+                        errString.Add($"[{item.Product}] : {Lang.NoProductInformation}");
+                        bError = true;
+                    }
+                    if (model.Contains(item.Model) == false)
+                    {
+                        errString.Add($"[{item.Product}] : {Lang.NoModelInformation}");
+                        bError = true;
+                    }
+
+                    if (bError) continue;
+
+                    object[] s = new object[(int)eDgvSearchFilter.Total];
+                    dgvFilter.Rows.Add(s);
+
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.No].Value = idx.ToString();
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
+
+                    DataGridViewCheckBoxCell checkBoxCell1 = new DataGridViewCheckBoxCell();
+                    checkBoxCell1.Value = item.Use;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Use] = checkBoxCell1;
+
+                    idx++;
+                }
+
+                if (errString.Count > 0)
+                {
+                    var errorMessage = string.Join("\n", errString.Select((error, index) => $"{index + 1}. {error}"));
+                    MessageBox.Show(errorMessage, "Error List", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void updateSelectedFilterCtrl()
+        {
+            try
+            {
+                DefectDBManager.Preproc.ProcFilterList list = Filter;
+
+                list.Clear();
+
+                foreach (DataGridViewRow item in dgvFilter.Rows)
+                {
+                    DefectDBManager.Preproc.ProcFilter filter = new ProcFilter();
+                    filter.Line = item.Cells[(int)eDgvSearchFilter.Line].FormattedValue as string;
+                    filter.Product = item.Cells[(int)eDgvSearchFilter.Product].FormattedValue as string;
+                    filter.Model = item.Cells[(int)eDgvSearchFilter.Model].FormattedValue as string;
+                    filter.Use = Convert.ToBoolean(item.Cells[(int)eDgvSearchFilter.Use].FormattedValue);
+                    list.Add(filter);
+                }
+                Filter = list;
+            }
+            catch
+            {
+
+            }
+        }
+        #endregion
+
         #region Sync Duration 
         private void initSyncDurationCtrl()
         {
-            if((DefectDBManager.Preproc.eProc)_procIdx== DefectDBManager.Preproc.eProc.Search)
+            if((DefectDBManager.Preproc.eProc)_procIdx != DefectDBManager.Preproc.eProc.Live)
             {
                 lblSyncDuration.Hide();
                 cbSyncDuration.Hide();
@@ -633,7 +790,8 @@ namespace MarkCompare
             switch ((DefectDBManager.Preproc.eProc)_procIdx)
             {
                 case eProc.Live:    addLiveFilter(); break;
-                case eProc.Search:  addSearchFilter(); break;
+                case eProc.Search:  addFilter(); break;
+                case eProc.Selected: addFilter(); break;
             }
         }
         private void btnDelMaterial_Click(object sender, EventArgs e)
@@ -661,6 +819,7 @@ namespace MarkCompare
                         break;
                     }
                 case eProc.Search:  updateSearchFilterCtrl(); break;
+                case eProc.Selected: updateSelectedFilterCtrl(); break;
             }
             
             _lotManager.CrtProcFilter.Save();
@@ -701,7 +860,10 @@ namespace MarkCompare
             switch ((DefectDBManager.Preproc.eProc)_procIdx)
             {
                 case eProc.Live: dgvFilter.Columns[4].Name = Lang.filterDgvDuration; break;
-                case eProc.Search: dgvFilter.Columns[4].Name = Lang.filterDgvUse; break;
+                case eProc.Search:
+                case eProc.Selected:
+                    dgvFilter.Columns[4].Name = Lang.filterDgvUse; break;
+
             }                
         }
         #endregion
