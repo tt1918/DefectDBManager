@@ -20,7 +20,6 @@ namespace MarkCompare
 {
     public partial class FormMain : Form
     {
-        
         #region Form 종료 못하게 막기
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
@@ -87,6 +86,7 @@ namespace MarkCompare
 
             _dbManager.OnEndSearchingLotList += EndSearchLotList;
             _dbManager.OnEndLiveSearchLot += EndLiveSearch;
+            _dbManager.OnEndSelectedLot += EndSelectedLotProcess;
 
             ledOn = Properties.Resources.icons8_green_square_16;
             ledOff = Properties.Resources.icons8_black_medium_square_16;
@@ -105,6 +105,7 @@ namespace MarkCompare
             DefectDBManager.Log.OnDispEventLog -= _markDiffForm.OnDispDBLog;
             _dbManager.OnEndSearchingLotList -= EndSearchLotList;
             _dbManager.OnEndLiveSearchLot -= EndLiveSearch;
+            _dbManager.OnEndSelectedLot -= EndSelectedLotProcess;
 
             // 폼 삭제 전에 이벤트 연결 삭제
             closeLanguageFunc();
@@ -146,8 +147,11 @@ namespace MarkCompare
             #endregion
 
             #region 선택 Lot 탐색
-            _markDiffForm.FormMorSelectedLot.OnStartLotSearch += StartSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnSearchSelectedLot += StartSelectedLotProcess;
             _markDiffForm.FormMorSelectedLot.OnStopLotSearch += EndSelectedLotProcess;
+
+            _dbManager.OnEndSelectedLot += _markDiffForm.FormMorSelectedLot.EndLotSearch;
+            _dbManager.OnEndSelectedLot += _markDiffForm.UpdateSelectedLotList;
             #endregion
         }
 
@@ -169,8 +173,10 @@ namespace MarkCompare
             #endregion
 
             #region 선택 Lot 탐색
-            _markDiffForm.FormMorSelectedLot.OnStartLotSearch += StartSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnSearchSelectedLot += StartSelectedLotProcess;
             _markDiffForm.FormMorSelectedLot.OnStopLotSearch += EndSelectedLotProcess;
+            _dbManager.OnEndSelectedLot -= _markDiffForm.FormMorSelectedLot.EndLotSearch;
+            _dbManager.OnEndSelectedLot -= _markDiffForm.UpdateSelectedLotList;
             #endregion
         }
         #endregion Marking Comparision Form
@@ -510,7 +516,5 @@ namespace MarkCompare
             lblTitle.Text = Lang.mainFormTitle;
         }
         #endregion
-
-       
     }
 }

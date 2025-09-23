@@ -95,7 +95,7 @@ namespace DefectDBManager.Preproc
                 conn?.Dispose();
         }
 
-        public void SetFilterParam(string lncd, string productName, PreprocItem item)
+        public void SetFilterParam(string lncd, string productName, PreprocItem item, bool skipWildCard=false)
         {
             _SearchY0LNCD = lncd;
             _ProductName = productName;
@@ -103,6 +103,12 @@ namespace DefectDBManager.Preproc
 
             _SubPath = $"{lncd}_{productName}_{item.Name}";
             _SubPath = Helper.ReplaceInvalidPathChar(_SubPath);
+
+            if(skipWildCard)
+            {
+                _isWildCard = false;
+                return;
+            }
 
             // 품종 wild card 확인
             if (_ProductName.Length < 2)

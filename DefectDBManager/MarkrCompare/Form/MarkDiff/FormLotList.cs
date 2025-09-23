@@ -159,6 +159,38 @@ namespace MarkCompare
             tcLotSummary.TabPages.Add(tabPage);
         }
 
+        public void SetTapControlDB()
+        {
+            tcLotSummary.Controls.Clear();
+            foreach (var panel in _flpSummeryDic)
+            {
+                FlowLayoutPanel flowPanel = panel.Value;
+
+                foreach (var item in flowPanel.Controls)
+                {
+                    FormLotSummaryData form = item as FormLotSummaryData;
+                    form.Dispose();
+                }
+
+                flowPanel.Dispose();
+            }
+            _flpSummeryDic.Clear();
+
+
+            string key = "LOT INSP";
+            TabPage tabPage = new TabPage(key);
+            FlowLayoutPanel flowPanel1 = new FlowLayoutPanel();
+            flowPanel1.FlowDirection = FlowDirection.LeftToRight;
+            flowPanel1.Dock = DockStyle.Fill;
+            flowPanel1.AutoScroll = true;
+            flowPanel1.BackColor = Color.White;
+            tabPage.Controls.Add(flowPanel1);
+
+            if (_flpSummeryDic.ContainsKey(key) == false)
+                _flpSummeryDic.Add(key, flowPanel1);
+            tcLotSummary.TabPages.Add(tabPage);
+        }
+
         private void initFlpInfo()
         {
             clearFlpInfo();

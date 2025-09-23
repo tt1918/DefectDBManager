@@ -15,4 +15,6 @@ namespace MarkCompare.Delegate
     public delegate void UpdateSummaryCheck(object obj);
     public delegate void UpdateErrorLots(string[] errLots);
     public delegate void RunSelectedLotComparing(List<string> lots, LotSelProcParam param);
+
+    public delegate void UpdateSelectedLotInfo(List<string> lotInfo);
 }

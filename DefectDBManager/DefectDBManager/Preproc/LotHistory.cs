@@ -35,12 +35,7 @@ namespace DefectDBManager.Preproc
         ~LotHistory()
         {
             closeCheckHistoryTimer();
-
-            if(_history!=null)
-            {
-                _history.Clear();
-                _history = null;
-            }
+            Clear();
         }
 
         public void AddHistory(int day, string filter, string lotName)
@@ -49,6 +44,14 @@ namespace DefectDBManager.Preproc
                 _history[(day, filter)] = new List<string>();
             
             _history[(day, filter)].Add(lotName);
+        }
+        public void Clear()
+        {
+            if (_history != null)
+            {
+                _history.Clear();
+                _history = null;
+            }
         }
 
         public bool IsLotExist(string filter, string lotName)

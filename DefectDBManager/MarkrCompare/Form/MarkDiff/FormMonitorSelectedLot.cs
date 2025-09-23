@@ -67,7 +67,7 @@ namespace MarkCompare
         {
             if(this.Visible==true)
             {
-                updateFilterData();
+                displayFilterData();
             }
         }
 
@@ -90,7 +90,7 @@ namespace MarkCompare
         /// <summary>
         /// _lotManager.ProcLNCD.Info -> tlLncd
         /// </summary>
-        private void updateFilterData()
+        private void displayFilterData()
         {
             int ctrlCount = _param.UserFilter.Count;
             bool isError = false;
@@ -180,9 +180,33 @@ namespace MarkCompare
             }
         }
 
-        public void DisplayLNCDCtrlData()
+        private void displayLotList(List<string> lot)
         {
-            updateFilterData();
+            try
+            {
+               lvLotList.BeginUpdate();
+                lvLotList.Items.Clear();
+
+                foreach (var item in lot)
+                {
+                    ListViewItem listViewItem = new ListViewItem(item);
+                    lvLotList.Items.Add(item);
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                lvLotList.EndUpdate();
+            }
+        }
+
+        public void DisplayLNCDCtrlData(List<string> listLot)
+        {
+            displayFilterData();
+            displayLotList(listLot);
         }
 
         #endregion
@@ -298,12 +322,7 @@ namespace MarkCompare
             UIHelper.SetText(lblProcess, message);
         }
         #endregion
-
-        private void btnSetLot_Click(object sender, EventArgs e)
-        {
-            OnOpenSelectLotForm?.Invoke();
-        }
-
+        
         #region 언어 변경
         public void UpdateLanguage(string culture)
         {
@@ -323,5 +342,10 @@ namespace MarkCompare
             }));
         }
         #endregion
+
+        private void btnSetLot_Click(object sender, EventArgs e)
+        {
+            OnOpenSelectLotForm?.Invoke();
+        }
     }
 }

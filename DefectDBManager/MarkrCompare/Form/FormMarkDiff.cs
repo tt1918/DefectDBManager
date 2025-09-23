@@ -29,7 +29,7 @@ namespace MarkCompare
         #region Event
         public event MarkCompare.Delegate.UpdateEvent OnUpdateLiveLNCDInfo = null;
         public event MarkCompare.Delegate.UpdateEvent OnUpdateSearchLNCDInfo = null;
-        public event MarkCompare.Delegate.UpdateEvent OnUpdateSelectedLNCDInfo = null;
+        public event MarkCompare.Delegate.UpdateSelectedLotInfo OnUpdateSelLotInfo = null;
         //public event MarkrCompare.Delegate.UpdatePrepLot OnUpdatePrepLot = null;
         public event DeleUpdateLanguage OnUpdateLanguage = null;
         #endregion
@@ -308,7 +308,7 @@ namespace MarkCompare
             tabSearchSet.TabPages[2].Controls.Add(_formMorSelectedLot.Controls[0]);
             _formMorSelectedLot.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             _formMorSelectedLot.OnUpdatePrepLncdInfo += showLotListForm;
-            OnUpdateSelectedLNCDInfo += _formMorSelectedLot.DisplayLNCDCtrlData;
+            OnUpdateSelLotInfo += _formMorSelectedLot.DisplayLNCDCtrlData;
             _formMorSelectedLot.OnOpenSelectLotForm += OpenFormSelectedLot;
             _formMorSelectedLot.Dock = DockStyle.Fill;
 
@@ -326,7 +326,7 @@ namespace MarkCompare
             _formMorSearch.OnOpenCsvForm -= OpenFormCsv;
 
             _formMorSelectedLot.OnOpenSelectLotForm -= OpenFormSelectedLot;
-            OnUpdateSelectedLNCDInfo -= _formMorSelectedLot.DisplayLNCDCtrlData;
+            OnUpdateSelLotInfo -= _formMorSelectedLot.DisplayLNCDCtrlData;
 
             _formMorLive?.Close();
             _formMorSearch?.Close();
@@ -354,7 +354,7 @@ namespace MarkCompare
                     break;
 
                 case 2: // Selected Form
-                    OnUpdateSelectedLNCDInfo?.Invoke();
+                    OnUpdateSelLotInfo?.Invoke(_selLotList);
                     showLotListForm(DefectDBManager.Preproc.eProc.Selected);
                     switchRollmapAndLotHistroy(DefectDBManager.Preproc.eProc.Selected);
                     break;
@@ -831,20 +831,73 @@ namespace MarkCompare
 
         public void OpenFormSelectedLot()
         {
-            FormSelectedLot form = new FormSelectedLot(_selLotParam, _lotManager);
-            
-            // 검사 시작하지 않으면 저장된 랏 정보를 Form에 넣어준다.
-            form._LotList.AddRange(_selLotList);
-            if (form.ShowDialog() == DialogResult.OK)
+            using (FormSelectedLot form = new FormSelectedLot(_selLotParam, _lotManager))
             {
-                _selLotParam = form.ProcItem;
-                _selLotList = form._LotList;
-                OnUpdateSelectedLNCDInfo?.Invoke();
+                // 검사 시작하지 않으면 저장된 랏 정보를 Form에 넣어준다.
+                form._LotList.AddRange(_selLotList);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    _selLotParam = form.ProcItem;
+                    _selLotList = form._LotList;
+                    OnUpdateSelLotInfo?.Invoke(_selLotList);
+                }
             }
         }
+
+        public void UpdateSelectedLotList()
+        {
+            BeginInvoke(new Action(delegate
+            {
+                _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].OnClearSummaryData();
+                if (_selLotParam.FilterType == FilterType.UserFilter)
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].SetTapControl(_selLotParam.UserFilter);
+                else if (_selLotParam.FilterType == FilterType.DbFilter)
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].SetTapControlDB();
+            }));
+
+            List<string> errLot = new List<string>();
+
+            foreach (var item in _selLotParam.UserFilter.Data)
+            {
+                DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                foreach (var set in _lotManager.ProcSetting.Data)
+                {
+                    if (set.Name == item.Model)
+                    {
+                        procItem = set;
+                        break;
+                    }
+                }
+
+                if (_lotManager.Selected.LOT.ContainsKey(item.ToString()))
+                {
+                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].AddSummaryData(_lotManager.Selected.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
+
+                    foreach (var lot in _lotManager.Selected.LOT[item.ToString()])
+                    {
+                        if (lot.CompResult == eCompResult.ProcNg)
+                        {
+                            string strTemp = $"{item.ToString()} : {lot.LotName}";
+                            errLot.Add(strTemp);
+                        }
+                    }
+                }
+            }
+
+            if (errLot.Count > 0)
+            {
+                BeginInvoke(new Action(delegate
+                {
+                    FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Selected);
+                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.Show();
+                }));
+            }
+        }
+
         #endregion
 
-        
+
 
         #region 언어 변경
         private void initLanguageFunc()

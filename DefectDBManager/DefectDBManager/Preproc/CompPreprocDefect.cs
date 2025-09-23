@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -34,6 +34,8 @@ namespace DefectDBManager
         /// 실시간 검색
         /// </summary>
         public event DelegateEvent OnEndLiveSearchLot = null;
+
+        public event DelegateEvent OnEndSelectedLot = null;
 
         // 프로세스 상에 발생하는 이벤트 보고용
         public event DelegateProcessEvent OnProcessEvent = null;
@@ -310,7 +312,7 @@ namespace DefectDBManager
 #if TEST_MODE
                 if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.Live.LotHistory, true) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.LotHistory, true) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.Live.LotHistory, true) == true)
 #endif
                 {
                     PTRY0PList list = new PTRY0PList();
@@ -538,7 +540,7 @@ namespace DefectDBManager
                     Directory.Delete(path, true);
             }
 
-            LotManager.LotHistory.Histroy.Clear();
+            LotManager.Live.LotHistory.Clear();
 #endif
             _timerCheckLiveLot.Start();
         }
@@ -866,20 +868,20 @@ namespace DefectDBManager
 
         #region 선택 Lot 데이터 오차 비교
         List<string> _selLot = null;
-        LotSelProcParam _selPaam = null;
+        LotSelProcParam _selParam = null;
         /// <summary>
         /// task 실행
         /// </summary>
         public void SearchSelectedLotMarkDiff(List<string> lotList, LotSelProcParam param)
         {
             _selLot = lotList;
-            _selPaam = param;
+            _selParam = param;
 
             Task task = null;
-            if (_selPaam.FilterType == FilterType.UserFilter) task = new Task(searchSelectedLotDefectByUserFilter, null);
-            else if (_selPaam.FilterType == FilterType.DbFilter) task = new Task(searchSelectedLotDefectByDB, null);
+            if (_selParam.FilterType == FilterType.UserFilter) task = new Task(searchSelectedLotDefectByUserFilter, null);
+            else if (_selParam.FilterType == FilterType.DbFilter) task = new Task(searchSelectedLotDefectByDB, null);
 
-            if (task != null) 
+            if (task == null) 
             {
                 Log.Write("[Error] Filter type is not initialized.");
                 return; 
@@ -900,7 +902,7 @@ namespace DefectDBManager
             Log.Write("선택 공정 결점 오차 검색 시작");
 
             // Lot 정보는 획득 PTRYOP 데이터 생성해야 함. 
-            foreach (var data in _selPaam.UserFilter.Data)
+            foreach (var data in _selParam.UserFilter.Data)
             {
                 bool isSkip = false;
                 string lncd = string.Empty;
@@ -928,7 +930,7 @@ namespace DefectDBManager
                 }
                 
                 // 리스트 데이터 추가
-                LotManager.Search.Product.Add(data.ToString(), list);
+                LotManager.Selected.Product.Add(data.ToString(), list);
             }
 
             LotManager.Selected.ClearLot();
@@ -938,7 +940,7 @@ namespace DefectDBManager
                 string[] keyData = Helper.SplitKeyData(list.Key);
                 string lncd = keyData[0];
 
-                ProcFilter filter = _selPaam.UserFilter[productIdx];
+                ProcFilter filter = _selParam.UserFilter[productIdx];
                 if (filter.Use == true)
                 {
                     PreprocItem preprocItem = null;
@@ -956,8 +958,7 @@ namespace DefectDBManager
                         SearchSelectedLotDefect(list.Key, lotName, preprocItem, filter);
 
                         // 검색 진행 상황을 
-                        int rate = (int)((float)LotManager.Search.TotalLot / (float)LotManager.Search.TotalProduct);
-                        OnLotProgress?.Invoke(rate);
+                        int rate = (int)((float)LotManager.Selected.TotalLot / (float)LotManager.Selected.TotalProduct);
                     }
                 }
 
@@ -969,7 +970,7 @@ namespace DefectDBManager
 
             Log.Write("선택 공정 결점 오차 검색 완료");
             // 완료 보고
-            OnEndSearchingLotList?.Invoke();
+            OnEndSelectedLot?.Invoke();
         }
 
         private void searchSelectedLotDefectByDB(object obj)
@@ -993,7 +994,7 @@ namespace DefectDBManager
             }
             LotManager.Search.Product.Add("DB", oplist);
 
-            DBFilter filter = _selPaam.DBFilter;
+            DBFilter filter = _selParam.DBFilter;
             LotManager.Selected.ClearLot();
             int productIdx = 0;
             foreach (var list in LotManager.Selected.Product)
@@ -1152,7 +1153,7 @@ namespace DefectDBManager
                     }
                 }
 
-                LotManager.Search.AddLot(lncd, lot);
+                LotManager.Selected.AddLot(lncd, lot);
 
                 Thread.Sleep(200);
             }
