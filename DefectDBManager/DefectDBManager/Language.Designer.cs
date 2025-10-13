@@ -403,6 +403,33 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   오류과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeNG {
+            get {
+                return ResourceManager.GetString("judgeNG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 없음과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeNoData {
+            get {
+                return ResourceManager.GetString("judgeNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정상과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeOK {
+            get {
+                return ResourceManager.GetString("judgeOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   M^2 불량수과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string listBCNO_3 {

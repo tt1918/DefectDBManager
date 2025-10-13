@@ -844,6 +844,24 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   에러과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeNG {
+            get {
+                return ResourceManager.GetString("judgeNG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   정상과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeOK {
+            get {
+                return ResourceManager.GetString("judgeOK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   LINE ID가 비어있습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string lineIdIsEmpty {
@@ -1164,6 +1182,15 @@ namespace MarkCompare {
         internal static string searchingDataCancel {
             get {
                 return ResourceManager.GetString("searchingDataCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   선택 LOT 검색이 진행중입니다.과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SearchingSelectedLotIsRunning {
+            get {
+                return ResourceManager.GetString("SearchingSelectedLotIsRunning", resourceCulture);
             }
         }
         

@@ -44,9 +44,16 @@ namespace DefectDBManager
     }
 
     public class LogDB
+    {
+        public enum eDataType
         {
+            SearchLot = 0,
+            Realtime,
+            SelectedLot
+        }
+
         public string Lot { get; set; }
-        public bool RealtimeMode { get; set; } = false;
+        public eDataType LogMode { get; set; } = eDataType.SearchLot;
         public void WriteLoadData(string str, int nc, string name, double time, bool clear=false)
         {
             string path = string.Empty;
@@ -145,8 +152,9 @@ namespace DefectDBManager
         {
             string path = string.Empty;
 
-            if (RealtimeMode == false) path = Define.BCRPath;
-            else path = Define.RealtimeBCRPath;
+            if (LogMode == eDataType.SearchLot) path = Define.BCRPath;
+            else if (LogMode == eDataType.Realtime) path = Define.RealtimeBCRPath;
+            else path = Define.SelectedBCRPath;
             return path;
         }
     }

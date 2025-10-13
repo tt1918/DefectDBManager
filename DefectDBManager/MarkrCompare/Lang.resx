@@ -528,4 +528,13 @@
   <data name="filterDgvUse" xml:space="preserve">
     <value>사용</value>
   </data>
+  <data name="SearchingSelectedLotIsRunning" xml:space="preserve">
+    <value>선택 LOT 검색이 진행중입니다.</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>정상</value>
+  </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>에러</value>
+  </data>
 </root>

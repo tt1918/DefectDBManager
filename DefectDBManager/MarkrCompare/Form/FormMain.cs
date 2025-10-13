@@ -1,6 +1,7 @@
 ﻿using Coss.Controls;
 using DefectDBManager;
 using DefectDBManager.Preproc;
+using log4net;
 using MarkCompare.Delegate;
 using MarkCompare.Properties;
 using System;
@@ -9,6 +10,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -313,6 +315,20 @@ namespace MarkCompare
 
         public void EndSearchLotList()
         {
+            DateTime time = DateTime.Now;
+            string filePath = Path.Combine(Define.BCRPath, time.ToString("MMddHHmm"));
+
+            int i = 0;
+            foreach (var list in _lotManager.Search.LOT)
+            {
+                foreach (var lot in list.Value)
+                {
+                    lot.LotSummary.SaveSummary(filePath, i);
+                    lot.LotSummary.SaveDetail(filePath, i);
+                    i++;
+                }
+            }
+
             SystemLog.DisplayFileServerLog(Lang.periodOperationIsComplete);
             Invoke(new Action(() => 
             {
@@ -326,6 +342,11 @@ namespace MarkCompare
         {
             bool isError = false;
             StringBuilder sb = new StringBuilder();
+
+            DateTime time = DateTime.Now;
+            string filePath = Path.Combine(Define.RealtimeBCRPath, time.ToString("MMddHHmm"));
+            int i = 0;
+            
             if (_lotManager != null)
             {   
                 foreach (var item in _lotManager.Live.Product)
@@ -343,6 +364,10 @@ namespace MarkCompare
                             sb.Append($"[{item.Key}-{lot.LotName}] : {Lang.ErrorOccurrence} \n");
                             isError = true;
                         }
+
+                        lot.LotSummary.SaveSummary(filePath, i);
+                        lot.LotSummary.SaveDetail(filePath, i);
+                        i++;
                     }
                 }
             }
@@ -371,6 +396,20 @@ namespace MarkCompare
 
         public void EndSelectedLotProcess()
         {
+            DateTime time = DateTime.Now;
+            string filePath = Path.Combine(Define.SelectedBCRPath, time.ToString("MMddHHmm"));
+
+            int i = 0;
+            foreach (var list in _lotManager.Selected.LOT)
+            {
+                foreach (var lot in list.Value)
+                {
+                    lot.LotSummary.SaveSummary(filePath, i);
+                    lot.LotSummary.SaveDetail(filePath, i);
+                    i++;
+                }
+            }
+
             SystemLog.DisplayFileServerLog(Lang.periodOperationIsComplete);
             Invoke(new Action(() =>
             {
@@ -380,7 +419,7 @@ namespace MarkCompare
 
         #endregion
 
-        #region DB Connection
+            #region DB Connection
         Timer _timerDBConn = null;
         private bool isDbConnOn = false;
         private Image ledOn = null;

@@ -528,4 +528,13 @@
   <data name="filterDgvUse" xml:space="preserve">
     <value>USE</value>
   </data>
+  <data name="SearchingSelectedLotIsRunning" xml:space="preserve">
+    <value>Searching selected lots is running</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>PASS</value>
+  </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
 </root>

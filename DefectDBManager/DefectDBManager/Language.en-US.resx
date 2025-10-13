@@ -160,12 +160,10 @@
     <value>HOST IP</value>
   </data>
   <data name="DBLoginID" xml:space="preserve">
-    <value>ID
-</value>
+    <value>ID</value>
   </data>
   <data name="DBLoginPort" xml:space="preserve">
-    <value>PORT
-</value>
+    <value>PORT</value>
   </data>
   <data name="DBLoginPW" xml:space="preserve">
     <value>PW</value>
@@ -232,6 +230,15 @@
   </data>
   <data name="gbSizeSkip" xml:space="preserve">
     <value>Skip Size</value>
+  </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="judgeNoData" xml:space="preserve">
+    <value>No Data</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>PASS</value>
   </data>
   <data name="listBCNO_3" xml:space="preserve">
     <value>Bad Cnt/M^2</value>
@@ -317,7 +324,7 @@
     <value>LOT</value>
   </data>
   <data name="listTodayPTLY0P_1" xml:space="preserve">
-    <value>공정</value>
+    <value>PROCESS</value>
   </data>
   <data name="listTodayPTLY0P_2" xml:space="preserve">
     <value>LNCD</value>

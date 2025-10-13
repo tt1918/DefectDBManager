@@ -197,6 +197,16 @@ namespace MarkCompare
                     return;
                 }
 
+                if(Process.IsRunSelectedLotList)
+                {
+                    SystemLog.DisplayFileServerLog(Lang.SearchingSelectedLotIsRunning);
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, Lang.SearchingSelectedLotIsRunning);
+                    }));
+                    return;
+                }
+
                 _lotManager.SearchTime.SetTime(timePickerStart.Value, timePickerEnd.Value);
 
                 OnUpdatePrepLncdInfo?.Invoke(DefectDBManager.Preproc.eProc.Search);

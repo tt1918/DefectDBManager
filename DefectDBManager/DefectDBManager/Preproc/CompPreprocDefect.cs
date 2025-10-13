@@ -310,9 +310,9 @@ namespace DefectDBManager
                 }
                 else isWildCard = false;
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.Live.LotHistory, true) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.Live.LotHistory, true) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime) == true)
 #endif
                 {
                     PTRY0PList list = new PTRY0PList();
@@ -346,9 +346,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, true, ref error);
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.Realtime, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, true, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, LogDB.eDataType.Realtime, ref error);
 #endif
                 if (lot == null) return;
 
@@ -699,9 +699,9 @@ namespace DefectDBManager
 
                 PTRY0PList list = new PTRY0PList();
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null, false) == true)
+                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null, LogDB.eDataType.SearchLot) == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null, false) == true)
+                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null, LogDB.eDataType.SearchLot) == true)
 #endif
                 {
                     foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
@@ -731,9 +731,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.SearchLot, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SearchLot, ref error);
 #endif
 
                 if (lot == null) return;
@@ -877,6 +877,8 @@ namespace DefectDBManager
             _selLot = lotList;
             _selParam = param;
 
+            LotManager.Selected.ClearData();
+
             Task task = null;
             if (_selParam.FilterType == FilterType.UserFilter) task = new Task(searchSelectedLotDefectByUserFilter, null);
             else if (_selParam.FilterType == FilterType.DbFilter) task = new Task(searchSelectedLotDefectByDB, null);
@@ -992,7 +994,7 @@ namespace DefectDBManager
                 data.Y0KLOT = item;
                 oplist.Add(data);
             }
-            LotManager.Search.Product.Add("DB", oplist);
+            LotManager.Selected.Product.Add("DB", oplist);
 
             DBFilter filter = _selParam.DBFilter;
             LotManager.Selected.ClearLot();
@@ -1004,11 +1006,12 @@ namespace DefectDBManager
                     if (StopSelectedLotList == true) break;
 
                     string lotName = item.Y0KLOT;
-                    
-                    SearchSelectedDBLotDefect(lotName, filter.MKCD, filter.UseETC, filter.UseTG, filter.UseETC);
+                    _DBProc.SetDBParam(filter.Title);
+
+                    SearchSelectedDBLotDefect(lotName, _selParam);
 
                     // 검색 진행 상황을 
-                    int rate = (int)((float)LotManager.Search.TotalLot / (float)LotManager.Search.TotalProduct);
+                    int rate = (int)((float)LotManager.Selected.TotalLot / (float)LotManager.Selected.TotalProduct);
                     OnLotProgress?.Invoke(rate);
                 }
 
@@ -1020,7 +1023,7 @@ namespace DefectDBManager
 
             Log.Write("선택 공정 결점 오차 검색 완료");
             // 완료 보고
-            OnEndSearchingLotList?.Invoke();
+            OnEndSelectedLot?.Invoke();
         }
 
         public void SearchSelectedLotDefect(string lncd, string lotName, PreprocItem preprocItem, ProcFilter filter)
@@ -1029,9 +1032,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, false, ref error);
+                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
 #endif
 
                 if (lot == null) return;
@@ -1163,9 +1166,100 @@ namespace DefectDBManager
             }
         }
 
-        public void SearchSelectedDBLotDefect(string lotName, string mkcd, bool useES, bool useTG, bool useETC)
+        public void SearchSelectedDBLotDefect(string lotName, LotSelProcParam param)
         {
+            eSearchError error = eSearchError.Normal;
+            try
+            {
+#if TEST_MODE
+                PreprocLot lot = _DBProc.SearchDBLot_TEST(lotName, param, false, ref error);
+#else
+                PreprocLot lot = _DBProc.SearchDBLot(lotName, param, false, ref error);
+#endif
+                if (lot == null) return;
 
+                string refLNCD = lot.FaultData.MarkData.LNCD;
+                List<string> listLNCD = new List<string>();
+                foreach(var data in lot.FaultData.PreMarkData)
+                {
+                    foreach (var item in data)
+                    {
+                        if (listLNCD.Contains(item.LNCD) == false)
+                            listLNCD.Add(item.LNCD);
+                    }
+                }
+
+                // 입력 받은 데이터 기준으로 좌표 비교
+                lot.CompareDBPos(param, refLNCD, listLNCD);
+
+                string logName = $"CompData";
+                string subPath = _DBProc._SubPath;
+
+                LogDB log = _DBProc._LOG;
+                int idx1 = 0, idx2 = 0;
+
+                int maxIndex = listLNCD.Count;
+
+                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
+                for (int i = 0; i < maxIndex; i++)
+                {
+                    logName = $"CompData_{refLNCD}_{listLNCD[i]}";
+                    int nStep = param.CompRange.Count + 1; // 비교 거리 데이터 확인용
+                    for (int j = 0; j < nStep; j++)
+                    {
+                        if (j == 0)
+                        {
+                            CompRange range = param.BasicRange;
+                            log.WriteLoadData(subPath, $"[COMPARE BASIC]-[{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0, true);
+                        }
+                        else
+                        {
+                            CompRange range = param.CompRange[j - 1];
+                            log.WriteLoadData(subPath, $"[COMPARE Range {j}] - [{range.MinXRange},{range.MinYRange}]~[{range.MaxXRange},{range.MaxYRange}]", j, logName, 0.0);
+                        }
+
+                        idx1 = 0;
+                        foreach (var item in lot.MarkCompList.Data)
+                        {
+                            if (!item.Comp1.Any(kv => kv.Key.Item1 == listLNCD[i]
+                                                && kv.Value[j].Count > 0)) continue;
+
+                            var itemList = item.Comp1.
+                                    Where(kv => kv.Key.Item1 == listLNCD[i]).ToList();
+
+                            idx2 = 0;
+                            string msg = String.Format($"{idx1},{idx2}\t-\t{item.Base.CTLNO}, {item.Base.FLTNO}, {item.Base.OFFSET:0.00}, {item.Base.YPOS_M:0.00}, {item.Base.XPOS_M:0.00}, " +
+                                                        $"{item.Base.FAULTID}, {item.Base.SIZE:0.00}, {item.Base.CAM_NO}, {item.Base.MNTTID}, {item.Base.BCNO}");
+                            log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
+                            idx2++;
+
+                            foreach (var kv in itemList)
+                            {
+                                foreach (var datum in kv.Value[j])
+                                {
+                                    msg = String.Format($"{idx1},{idx2}\t-\t{datum.CTLNO}, {datum.FLTNO}, {datum.OFFSET:0.00}, {datum.YPOS_M:0.00}, {datum.XPOS_M:0.00}, " +
+                                                            $"{datum.FAULTID}, {datum.SIZE:0.00}, {datum.CAM_NO}, {datum.MNTTID}, {datum.BCNO}");
+                                    log.WriteLoadData(subPath, msg, idx1, logName, 0.0);
+                                    idx2++;
+                                }
+                            }
+                            idx1++;
+                        }
+                    }   
+                }
+
+                LotManager.Selected.AddLot("DB", lot);
+
+                Thread.Sleep(200);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
         }
 
         #endregion

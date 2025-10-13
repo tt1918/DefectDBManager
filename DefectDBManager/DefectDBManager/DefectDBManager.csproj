@@ -223,10 +223,16 @@
     <Compile Include="DB\Param\Option.cs" />
     <Compile Include="DB\Param\Param.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Language.ja-JP.Designer.cs">
+      <DependentUpon>Language.ja-JP.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Preproc\Data\ProcMaterial.cs" />
     <Compile Include="enumError.cs" />
     <Compile Include="Preproc\LotHistory.cs" />
     <Compile Include="Preproc\LOT\CompLotList.cs" />
+    <Compile Include="Preproc\LOT\CompResult.cs" />
     <Compile Include="Preproc\LOT\MarkCompData.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />
@@ -315,6 +321,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormTest.resx">
       <DependentUpon>FormTest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language.ja-JP.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Language.ja-JP.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language.en-US.resx" />
     <EmbeddedResource Include="Language.resx">

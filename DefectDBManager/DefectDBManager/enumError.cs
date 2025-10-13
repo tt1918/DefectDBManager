@@ -13,6 +13,7 @@ namespace DefectDBManager
         PTRLYPSearchErr,
         XOFSMSTSearchErr,
         PTRY0PSearchErr,
+        MRKCTLMSTSearchErr,
         INSPDATSearchErr,
         FLTDATSearchErr,
         SpliceExistErr

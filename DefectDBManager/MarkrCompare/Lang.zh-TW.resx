@@ -528,4 +528,13 @@
   <data name="filterDgvUse" xml:space="preserve">
     <value>使用</value>
   </data>
+  <data name="SearchingSelectedLotIsRunning" xml:space="preserve">
+    <value>選定批次搜尋中</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>合格</value>
+  </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>錯誤</value>
+  </data>
 </root>

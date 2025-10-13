@@ -242,6 +242,55 @@ namespace DefectDBManager
                 this.DefectLine += Global.MaxDefectLine * data.CAMNO;
         }
 
+        public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string lncd, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATAData data, bool useKT)
+        {
+            this.BCNO = bcno;
+            this.LNCD = lncd;
+            this.FLTNO = data.FLTNO;
+            this.FAULTID = data.FLTID;
+            this.OFFSET = fltDat.OFFSET;
+            this.YPOS_M = fltDat.YPOS_M;
+            this.XPOS_M = fltDat.XPOS_M;
+            this.XOFFSET = offsetX;
+            this.UseCSVResult = false;
+            this.CAM_NO = data.CAMNO;
+            this.CTLNO = data.CTLNO;
+            this.SIZE = data.AREA_M;
+            this.MNTTID = data.MNTTAN;
+            this.MACNO = data.MACNO;
+
+            if (data.CAMNO != 9) this.XOFFSET_ALARM = offsetX;
+            else this.XOFFSET_ALARM = float.MaxValue;
+
+            if (csvType == eCSV_TYPE.NITTO)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; // 점착
+                else this.DefectLine = 8; // 그외
+            }
+            else if (csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.KORENO_RK_IJP)
+            {
+                if (fcd == eFCD.TG) this.DefectLine = 9; //점착 
+                else if (fcd == eFCD.ES) this.DefectLine = 8; // 연신 - 기타
+                else this.DefectLine = 7; // 그외
+            }
+            else
+            {
+                if (fcd == eFCD.TG && useKT == true) // 점착
+                {
+                    int fldID = Int32.Parse(data.FLTID.Substring(data.FLTID.Length - 2));
+                    this.DefectLine = FalutFunction.GetLineFromFLTID(fldID);
+                }
+                else if (fcd == eFCD.ES || fcd == eFCD.ETC)
+                    this.DefectLine = 0;
+            }
+
+            // User Defect Class에 등록된 FLTID는 별도 클래스로 구분
+            int defectLine = this.DefectLine;
+
+            //RK는 CAMNO별로 Defect Class 를 구분
+            if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
+                this.DefectLine += Global.MaxDefectLine * data.CAMNO;
+        }
 
         public void SetFaultData(eFCD fcd, eCSV_TYPE csvType, string lncd, string bcno, float offsetX, bool csvRes, FaultDatum fltDat, DB.FLTDATA_DailyData data, bool useKT)
         {

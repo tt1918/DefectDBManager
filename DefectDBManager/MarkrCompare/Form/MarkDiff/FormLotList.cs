@@ -65,10 +65,7 @@ namespace MarkCompare
         {
             if(this.Visible)
             {
-                //for(int i=0; i<flowLayoutPanel1.Controls.Count; i++)
-                //{
-                //    flowLayoutPanel1.Controls[i].Show();
-                //}
+
             }
         }
         #endregion
@@ -305,6 +302,45 @@ namespace MarkCompare
             }));
         }
 
+        public void AddSummaryData(List<PreprocLot> lotSummary, LotSelProcParam procItem, string filter, PreprocLotManager lotManager)
+        {
+            BeginInvoke(new Action(delegate
+            {
+                foreach (var summary in lotSummary)
+                {
+                    FormLotSummaryData form = new FormLotSummaryData();
+                    form.TopLevel = false;
+
+                    if (_flpSummeryDic.ContainsKey(filter))
+                        form.Parent = this._flpSummeryDic[filter];
+                    form.LotManager = lotManager;
+                    form.SelParam = procItem;
+                    form.Filter = filter;
+                    form.LotSummery = summary;
+                    form.IsCSV = false;
+                    form.ShowCheckbox = true;
+                    form.TopLevel = false;
+                    form.Show();
+                    form.OnClickSummaryCheck += SelectLot;
+                    if (_dicFormSummary.ContainsKey("Search"))
+                    {
+                        _dicFormSummary["Search"].Add(form);
+                        if (_flpSummeryDic.ContainsKey(filter))
+                            this._flpSummeryDic[filter].Controls.Add(form);
+                    }
+                    else
+                    {
+                        _dicFormSummary.Add("Search", new List<FormLotSummaryData>());
+
+                        _dicFormSummary["Search"].Add(form);
+                        if (_flpSummeryDic.ContainsKey(filter))
+                            this._flpSummeryDic[filter].Controls.Add(form);
+                    }
+                }
+                this._flpSummeryDic[filter].Show();
+            }));
+        }
+
         public void RemoveSummary(bool[] lots)
         {
 
@@ -351,7 +387,27 @@ namespace MarkCompare
             {
                 if (item.Contains(data))
                 {
-                    ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
+                    switch(_procType)
+                    {
+                        case eProc.Search:
+                            if(data.Filter!=null)
+                                ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
+                            else
+                                ((FormMarkDiff)this.ParentForm).UpdateRollmapCSV(data.LotSummery);
+                            break;
+
+                        case eProc.Live:
+                            ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
+                            break;
+
+                        case eProc.Selected:
+                            if(data.Filter=="LOT INSP")
+                                ((FormMarkDiff)this.ParentForm).UpdateRollmapDB(data.LotSummery);
+                            else
+                                ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
+                            break;
+                    }
+                    
                     break;
                 }
             }

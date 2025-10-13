@@ -184,7 +184,7 @@ namespace MarkCompare
         {
             try
             {
-               lvLotList.BeginUpdate();
+                lvLotList.BeginUpdate();
                 lvLotList.Items.Clear();
 
                 foreach (var item in lot)

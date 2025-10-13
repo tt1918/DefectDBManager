@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -59,16 +60,31 @@ namespace MarkCompare
         }
         private eSummaryMode _mode = eSummaryMode.Monitoring;
 
+        bool isTypeDB = false;
+
         public DefectDBManager.Preproc.PreprocItem ProcItem
         {
             get { return procItem; }
             set
             {
                 procItem = value;
+                isTypeDB = false;
             }
         }
-        //private DefectDBManager.PreprocLotManager _lotManager = new DefectDBManager.PreprocLotManager();
         private DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+
+        #region DB Lot Summary
+        public DefectDBManager.Preproc.LotSelProcParam SelParam
+        {
+            get { return selParam; }
+            set { selParam = value; isTypeDB = true; }
+        }
+        private DefectDBManager.Preproc.LotSelProcParam selParam = new DefectDBManager.Preproc.LotSelProcParam();
+
+        public string RefLNCD { get; set; }
+        public List<string> CompLNCD { get; set; }
+
+        #endregion
 
         bool _isError = false;
         public bool IsError 
@@ -136,6 +152,36 @@ namespace MarkCompare
         #region 데이터 표시
         private void displayLotSummery()
         {
+            if (isTypeDB == false)
+            {
+                displaySummary();
+
+                displayLotName();
+                displayDetail();
+                displayCompareResult();
+            }
+            else
+            {
+                RefLNCD = _lotSummery.FaultData.MarkData.LNCD;
+                List<string> compLNCDList = new List<string>();
+                foreach (var data in _lotSummery.FaultData.PreMarkData)
+                {
+                    foreach (var item in data)
+                    {
+                        if (compLNCDList.Contains(item.LNCD) == false)
+                            compLNCDList.Add(item.LNCD);
+                    }
+                }
+                CompLNCD = compLNCDList;
+
+                displayLotName(); 
+                displayDBDetail();
+                displayCompareResult();
+            }
+        }
+
+        private void displaySummary()
+        {
             if (_lotSummery.ProcName != procItem.Name)
             {
                 StringBuilder sb1 = new StringBuilder();
@@ -156,10 +202,6 @@ namespace MarkCompare
                 sb2.AppendLine($"Changed Model Name : {procItem.Name}");
                 SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :{sb2.ToString()}", Log.Level.Error);
             }
-
-            displayLotName();
-            displayDetail();
-            displayCompareResult();
         }
 
         private void displayCompareResult()
@@ -533,6 +575,219 @@ namespace MarkCompare
                     foreach (Control ctrl in flpResult.Controls)
                         ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
                 }
+            }
+            catch (Exception ex)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append($"Proc Name: LOT INSP");
+                UIHelper.SetText(lblProcess, sb.ToString());
+                SystemLog.DisplaySystemLog($"{Lang.LotSummaryShowDetail} :[LOT INSP]{ex.Message}", Log.Level.Error);
+            }
+        }
+
+        private void displayDBDetail()
+        {
+            List<string> listSummery =  new List<string>();
+
+            listSummery.Add(_lotSummery.LotName);
+            listSummery.Add(SelParam.DBFilter.Title);
+            
+            int maxLine = 0;
+            int lineCnt = 0;
+            
+            try
+            {
+                _isError = false;
+                // 컨트롤 리소스 삭제
+                flpResult.Controls.Clear();
+
+                if (_lotSummery == null)
+                {
+                    flpResult.Controls.Add(makeProcessInfoLabel("No Lot Info", true));
+                    SystemLog.DisplaySystemLog($"Show Detail: {Lang.NoLotSummaryData}", Log.Level.Error);
+
+                    this.Height += 18;
+                    foreach (Control ctrl in flpResult.Controls)
+                        ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                    return;
+                }
+
+                string str = null;
+                List<int[,]> comp1Cnt = _lotSummery.Comp1Cnt;
+
+                bool isEmpty = true;
+                if (_lotSummery.MarkCompList != null && _lotSummery.MarkCompList.Data.Count > 0)
+                {
+                    foreach (var cnt1 in comp1Cnt)
+                    {
+                        foreach (var cntA in cnt1)
+                            if (cntA > 0) isEmpty = false;
+                    }
+                }
+
+                if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0 || isEmpty == true)
+                {
+                    for (int idx = 0; idx < CompLNCD.Count; idx++)
+                    {
+                        lineCnt = 0;
+                        StringBuilder sb1 = new StringBuilder();
+                        sb1.Append($"[{RefLNCD}-{CompLNCD[idx]}]\n"); lineCnt++;
+
+                        foreach (var data in _lotSummery.PTRY0P_Data)
+                        {
+                            foreach (var subData in data.Data)
+                            {
+                                if (subData.LNCD == CompLNCD[idx])
+                                {
+                                    // 생산 시간 입력
+                                    sb1.Append($"[ {subData.Y0KKOL}-{subData.Y0KSOL}\n"); lineCnt++;
+                                    // 품명 추가
+                                    sb1.Append($"{Lang.product}: {subData.Y0ZKNM}\n"); lineCnt++;
+                                    // 품명 추가
+                                    sb1.Append($"LOT: {subData.Y0KLOT} ]\n"); lineCnt++;
+                                }
+                            }
+                        }
+                        sb1.Append($"{Lang.NoComparingData}"); lineCnt++;
+
+                        if (lineCnt > maxLine) maxLine = lineCnt;
+                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
+                    }
+
+                    if (maxLine > 2)
+                    {
+                        this.Height += (maxLine - 2) * 18;
+                        foreach (Control ctrl in flpResult.Controls)
+                            ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                    }
+                    else
+                    {
+                        this.Height += 18;
+                        foreach (Control ctrl in flpResult.Controls)
+                            ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                    }
+                    return;
+                }
+
+                if (isEmpty) { UIHelper.SetText(lblProcess, Lang.NoComparingData); return; }
+
+                double[] result = new double[selParam.CompRange.Count + 1];
+
+                for (int idx = 0; idx < CompLNCD.Count; idx++)
+                {   
+                    bool isSubError = false;
+                    StringBuilder sb1 = new StringBuilder();
+                    StringBuilder sbSummary = new StringBuilder();
+                    lineCnt = 0;
+                    isEmpty = true;
+                    foreach (var cnt1 in comp1Cnt[idx])
+                        if (cnt1 > 0) isEmpty = false;
+
+                    if (isEmpty)
+                    {
+                        sb1.Append($"[{RefLNCD}-{CompLNCD[idx]}]\n{Lang.NoComparingData}");
+                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), false));
+                        continue;
+                    }
+
+                    result[0] = 100.0;
+                    // 데이터 입력
+                    sb1.Append($"[{RefLNCD}-{CompLNCD[idx]}]\n");
+                    sbSummary.Append($"[{RefLNCD}-{CompLNCD[idx]}]");
+                    lineCnt++;
+
+                    foreach (var data in _lotSummery.PTRY0P_Data)
+                    {
+                        foreach (var subData in data.Data)
+                        {
+                            if (subData.LNCD == CompLNCD[idx])
+                            {
+                                // 생산 시간 입력
+                                sb1.Append($"[ {subData.Y0KKOL}-{subData.Y0KSOL}\n"); lineCnt++;
+                                // 품명 추가
+                                sb1.Append($"{Lang.product}: {subData.Y0ZKNM}\n"); lineCnt++;
+                                // 품명 추가
+                                sb1.Append($"LOT: {subData.Y0KLOT} ]\n"); lineCnt++;
+                            }
+                        }
+                    }
+
+                    int[] defectCnt = new int[comp1Cnt[idx].GetLength(1)];
+                    for (int a2 = 0; a2 < defectCnt.Length; a2++)
+                        for (int aaa1 = 0; aaa1 < comp1Cnt[idx].GetLength(0); aaa1++)
+                            defectCnt[a2] += comp1Cnt[idx][aaa1, a2];
+
+                    if (defectCnt[0] == 0) 
+                    { 
+                        sb1.Append($"REF :0%({defectCnt[0]})"); lineCnt++;
+                        sbSummary.Append($"REF:0%({defectCnt[0]})");
+                    }
+                    else 
+                    { 
+                        sb1.Append($"REF :{result[0]:F1}%({defectCnt[0]})"); lineCnt++;
+                        sbSummary.Append($"REF:{result[0]:F1}%({defectCnt[0]})");
+                    }
+
+                    if (selParam.CompRange.Count > 0) sb1.Append("\n");
+
+                    for (int i = 1; i < selParam.CompRange.Count + 1; i++)
+                    {
+                        if (defectCnt[0] > 0)
+                        {
+                            result[i] = (double)((double)defectCnt[i] / (double)defectCnt[0]) * 100.0;
+                            sb1.Append($"Case {i} : {result[i]:F1}%({defectCnt[i]})");
+                            sbSummary.Append($",Case{i}:{result[i]:F1}%({defectCnt[i]})");
+                            lineCnt++;
+                        }
+                        else
+                        {
+                            if (defectCnt[i] > 0)
+                            {
+                                result[i] = (double)defectCnt[i] * 100.0;
+                                sb1.Append($"Case {i} : {result[i]:F1}%({defectCnt[i]})");
+                                sbSummary.Append($",Case{i}:{result[i]:F1}%({defectCnt[i]})");
+                            }
+                            else
+                            {
+                                sb1.Append($"Case {i} : 0%({defectCnt[i]})");
+                                sbSummary.Append($",Case{i}:0%({defectCnt[i]})");
+                            }
+                            lineCnt++;
+                        }
+
+                        if (Math.Abs(result[0] - result[i]) > selParam.CompRange[i - 1].Accuracy || isSubError == true)
+                        {
+                            sb1.Append($" *");
+                            listSummery.Add(sbSummary.ToString());
+                            isSubError = true;
+                        }
+
+                        if (i < selParam.CompRange.Count) { sb1.Append("\n"); lineCnt++; }
+                    }
+
+                    if (lineCnt > maxLine) maxLine = lineCnt;
+
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                    if (isSubError == true) _isError = true;
+                }
+
+                if(_isError==true)
+                {
+                    listSummery.Insert(2, Lang.ErrorOccurrence);
+                }
+                else
+                {
+                    listSummery.Insert(2, Lang.Normal);
+                }
+
+                if (maxLine > 2)
+                {
+                    this.Height += (maxLine - 2) * 18;
+
+                    foreach (Control ctrl in flpResult.Controls)
+                        ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
+                }
+
             }
             catch (Exception ex)
             {

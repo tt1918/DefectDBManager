@@ -231,6 +231,15 @@
   <data name="gbSizeSkip" xml:space="preserve">
     <value>排除缺陷大小</value>
   </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="judgeNoData" xml:space="preserve">
+    <value>无数据</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>合格</value>
+  </data>
   <data name="listBCNO_3" xml:space="preserve">
     <value>M^2 不良数</value>
     <comment>BCnoHeader</comment>

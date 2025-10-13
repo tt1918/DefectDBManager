@@ -114,7 +114,6 @@ namespace MarkCompare
                                 }
                             }
                             
-
                             FormLotSummaryData form = new FormLotSummaryData();
                             form.LotManager = lotManager;
                             form.ProcItem = procItem;
@@ -138,7 +137,6 @@ namespace MarkCompare
                                 flpLotSummary.Controls.Add(form);
                             }
                         }
-                        
                     }));
                 }
             }

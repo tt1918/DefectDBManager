@@ -231,6 +231,15 @@
   <data name="gbSizeSkip" xml:space="preserve">
     <value>불량 제외 크기</value>
   </data>
+  <data name="judgeNG" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="judgeNoData" xml:space="preserve">
+    <value>데이터 없음</value>
+  </data>
+  <data name="judgeOK" xml:space="preserve">
+    <value>정상</value>
+  </data>
   <data name="listBCNO_3" xml:space="preserve">
     <value>M^2 불량수</value>
     <comment>BCnoHeader</comment>

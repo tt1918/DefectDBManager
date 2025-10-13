@@ -108,6 +108,12 @@ namespace MarkCompare
                     lblRunState.ForeColor = Color.DarkBlue;
                     lblRunState.Text = Lang.ProcSearch;
                 }
+                else if(_dbProcess.IsRunSelectedLotList)
+                {
+                    lblRunState.BkColor = Color.White;
+                    lblRunState.ForeColor = Color.DarkBlue;
+                    lblRunState.Text = "선택 랏 검색 중";
+                }
                 else
                 {
                     lblRunState.BkColor = Color.Black;
@@ -610,34 +616,55 @@ namespace MarkCompare
             _rollMapForm.ClearMap();
             if(name!=null)
             {
-                string[] filterInfo = DefectDBManager.Helper.SplitKeyData(name);
-                if (filterInfo == null) return;
-
-                DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-                procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == filterInfo[2]);
-
-                DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
-
-                foreach (var item in lot.INSPDAT)
+                if(name!="LOT INSP")
                 {
-                    foreach (var item2 in item)
+                    string[] filterInfo = DefectDBManager.Helper.SplitKeyData(name);
+                    if (filterInfo == null) return;
+
+                    DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                    procItem = _lotManager.ProcSetting.Data.Find(x => x.Name == filterInfo[2]);
+
+                    DefectDBManager.Preproc.PreprocLNCDInfo info = new DefectDBManager.Preproc.PreprocLNCDInfo();
+
+                    foreach (var item in lot.INSPDAT)
                     {
-                        foreach (var item3 in item2.Data)
+                        foreach (var item2 in item)
                         {
-                            info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
-                            if (info != null)
-                                _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
+                            foreach (var item3 in item2.Data)
+                            {
+                                info = _lotManager.ProcLNCD.Info.Find(x => x.LNCD == item3.LNCD && x.Name == filterInfo[0]);
+                                if (info != null)
+                                    _rollMapForm.OnUpdateLotInfo(lot, info, procItem);
+                            }
                         }
                     }
+                }
+                else
+                {
+                    _rollMapForm.OnUpdateLotInfo(lot, SelLotParam);
                 }
             }
             else
             {
-                // CSV 파일이 업데이트 됨
-                _rollMapForm.OnUpdateLotInfo(lot, _csvCompParam);
+               
             }
            
         }
+
+        public void UpdateRollmapCSV(DefectDBManager.PreprocLot lot)
+        {
+            _rollMapForm.ClearMap();
+            // CSV 파일이 업데이트 됨
+            _rollMapForm.OnUpdateLotInfo(lot, _csvCompParam);
+        }
+
+        public void UpdateRollmapDB(DefectDBManager.PreprocLot lot)
+        {
+            _rollMapForm.ClearMap();
+
+            _rollMapForm.OnUpdateLotInfo(lot, SelLotParam);
+        }
+
         #endregion
 
         #region CSV 데이터 비교
@@ -857,27 +884,47 @@ namespace MarkCompare
 
             List<string> errLot = new List<string>();
 
-            foreach (var item in _selLotParam.UserFilter.Data)
+            if(_selLotParam.FilterType==FilterType.UserFilter)
             {
-                DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
-                foreach (var set in _lotManager.ProcSetting.Data)
+                foreach (var item in _selLotParam.UserFilter.Data)
                 {
-                    if (set.Name == item.Model)
+                    DefectDBManager.Preproc.PreprocItem procItem = new DefectDBManager.Preproc.PreprocItem();
+                    foreach (var set in _lotManager.ProcSetting.Data)
                     {
-                        procItem = set;
-                        break;
+                        if (set.Name == item.Model)
+                        {
+                            procItem = set;
+                            break;
+                        }
+                    }
+
+                    if (_lotManager.Selected.LOT.ContainsKey(item.ToString()))
+                    {
+                        _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].AddSummaryData(_lotManager.Selected.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
+
+                        foreach (var lot in _lotManager.Selected.LOT[item.ToString()])
+                        {
+                            if (lot.CompResult == eCompResult.ProcNg)
+                            {
+                                string strTemp = $"{item.ToString()} : {lot.LotName}";
+                                errLot.Add(strTemp);
+                            }
+                        }
                     }
                 }
-
-                if (_lotManager.Selected.LOT.ContainsKey(item.ToString()))
+            }
+            else
+            {
+                foreach(var lots in _lotManager.Selected.LOT)
                 {
-                    _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].AddSummaryData(_lotManager.Selected.LOT[item.ToString()], procItem, item.ToString(), _lotManager);
-
-                    foreach (var lot in _lotManager.Selected.LOT[item.ToString()])
+                    if(lots.Key== "DB")
+                        _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].AddSummaryData(lots.Value, _selLotParam, "LOT INSP", _lotManager);
+             
+                    foreach (var lot in lots.Value)
                     {
                         if (lot.CompResult == eCompResult.ProcNg)
                         {
-                            string strTemp = $"{item.ToString()} : {lot.LotName}";
+                            string strTemp = $"DB : {lot.LotName}";
                             errLot.Add(strTemp);
                         }
                     }

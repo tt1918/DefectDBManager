@@ -49,7 +49,6 @@ namespace MarkCompare
             InitGridView();
             initDgvCompRange();
 
-
             initUserFilterCtrl();
             initDbFilterCtrl();
 
@@ -60,7 +59,10 @@ namespace MarkCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            if(ProcItem.FilterType==FilterType.UserFilter)
+            btnDel.Click += btnDel_Click;
+            btnClear.Click += btnClear_Click;
+
+            if (ProcItem.FilterType==FilterType.UserFilter)
                 rbFilterType1.Checked = true;
             else
                 rbFilterType2.Checked = true;
@@ -188,7 +190,7 @@ namespace MarkCompare
             try
             {
                 int idx = dgvLotList.SelectedRows[0].Index;
-                if (idx != 0)
+                if (idx >= 0)
                 {
                     dgvLotList.Rows.RemoveAt(idx);
 
@@ -228,11 +230,18 @@ namespace MarkCompare
 
         private void dgvLotList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int index = (int)e.RowIndex;
+            try
+            {
+                int index = (int)e.RowIndex;
 
-            var name = dgvLotList.Rows[index].Cells[(int)eDgvLotName.Name].Value.ToString();
-            if (name.Length > 12)
-                dgvLotList.Rows[index].Cells[(int)eDgvLotName.Name].Value = name.Substring(0,12);
+                var name = dgvLotList.Rows[index].Cells[(int)eDgvLotName.Name].Value.ToString();
+                if (name.Length > 12)
+                    dgvLotList.Rows[index].Cells[(int)eDgvLotName.Name].Value = name.Substring(0, 12);
+            }
+            catch
+            {
+
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

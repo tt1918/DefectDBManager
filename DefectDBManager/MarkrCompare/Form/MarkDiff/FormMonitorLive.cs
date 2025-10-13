@@ -189,6 +189,16 @@ namespace MarkCompare
                     return;
                 }
 
+                if(Process.IsRunSelectedLotList)
+                {
+                    SystemLog.DisplayFileServerLog(Lang.SearchingSelectedLotIsRunning);
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, Lang.SearchingSelectedLotIsRunning);
+                    }));
+                    return;
+                }
+
                 OnUpdatePrepLncdInfo?.Invoke(_procIdx);
                 _timerLotSearchProcess.Start();
                 OnStartLiveSearch?.Invoke();
