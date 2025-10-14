@@ -89,7 +89,7 @@ namespace DefectDBManager.Preproc.LOT
         public void SaveSummary(string path, int index)
         {
             string filePath = path+"_InspectResult_List.txt";
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new StreamWriter(filePath, true))
             {
                 foreach(var item in Summary)
                 {
@@ -127,7 +127,7 @@ namespace DefectDBManager.Preproc.LOT
                     }
                     sw.WriteLine(sb.ToString());
                 }
-                
+                sw.WriteLine("");
                 sw.Close();
             }
         }
@@ -135,7 +135,7 @@ namespace DefectDBManager.Preproc.LOT
         public void SaveDetail(string path, int index)
         {
             string filePath = path + "_InspectResult_Detail.txt";
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new StreamWriter(filePath, true))
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -214,6 +214,7 @@ namespace DefectDBManager.Preproc.LOT
 
                     sw.WriteLine(sb.ToString());
                 }
+                sw.WriteLine("");
                 #endregion                
                 sw.Close();
             }

@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;

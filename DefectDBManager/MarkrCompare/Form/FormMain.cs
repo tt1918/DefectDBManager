@@ -99,6 +99,8 @@ namespace MarkCompare
 
             ChangeLanguage();
 
+            lvVersion.Text = Functions.GetVersion();
+
             SystemLog.DisplaySystemLog("Program Start");
         }
 

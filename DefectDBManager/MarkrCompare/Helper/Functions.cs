@@ -35,5 +35,16 @@ namespace MarkCompare
 
             return name;
         }
+
+        public static string GetVersion()
+        {
+            string version = null;
+            var name = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+            string path = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"{name.Name}.exe");
+            var info = new System.IO.FileInfo(path);
+            version = $"Ver.{info.LastWriteTime.ToString("yyMMddHH")}";
+
+            return version;
+        }
     }
 }
