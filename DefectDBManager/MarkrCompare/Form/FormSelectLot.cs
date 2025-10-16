@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MarkCompare
 {
@@ -59,6 +60,7 @@ namespace MarkCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
+            btnAdd.Click += btnAdd_Click;
             btnDel.Click += btnDel_Click;
             btnClear.Click += btnClear_Click;
 
@@ -127,7 +129,7 @@ namespace MarkCompare
 
                 dgvLotList.Columns[(int)eDgvLotName.No].ReadOnly = true;
 
-                this.btnAdd.Click += btnAdd_Click;
+                
             }
             catch
             {
@@ -163,7 +165,7 @@ namespace MarkCompare
             }
         }
 
-        private void addMaterial()
+        private void addMaterial(string name="")
         {
             dgvLotList.SuspendLayout();
             try
@@ -171,7 +173,7 @@ namespace MarkCompare
                 int idx = dgvLotList.Rows.Count;
                 string[] data = new string[(int)eDgvLotName.Total];
                 data[(int)eDgvLotName.No] = Convert.ToString(idx);
-                data[(int)eDgvLotName.Name] = "";
+                data[(int)eDgvLotName.Name] = name;
                 dgvLotList.Rows.Add(data);
             }
             catch
@@ -699,5 +701,24 @@ namespace MarkCompare
 
         #endregion
 
+        private void btnAddList_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog browser = new OpenFileDialog())
+            {
+                browser.RestoreDirectory = true;
+
+                if (browser.ShowDialog() == DialogResult.OK)
+                {
+                    using (StreamReader reader = new StreamReader(browser.FileName))
+                    {
+                        string text;
+                        while ((text = reader.ReadLine()) != null)
+                        {
+                            addMaterial(text);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

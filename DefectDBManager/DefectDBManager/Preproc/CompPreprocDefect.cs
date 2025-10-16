@@ -747,7 +747,7 @@ namespace DefectDBManager
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
 
-                int maxStep = preprocItem.CompRange.Count + 1;
+                int maxStep = preprocItem.Compare.Count;
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -755,7 +755,7 @@ namespace DefectDBManager
                     if (preprocItem.Compare[i].IsSplitCTLNO == false)
                     {
                         logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.Compare.Count; // 비교 거리 데이터 확인용
+                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
                         for (int j = 0; j < nStep; j++)
                         {
                             if (j == 0)
@@ -946,8 +946,18 @@ namespace DefectDBManager
                 if (filter.Use == true)
                 {
                     PreprocItem preprocItem = null;
+
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
-                        if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
+                    {
+                        if (LotManager.ProcSetting[i].Name == keyData[2])
+                        {
+                            preprocItem = LotManager.ProcSetting[i].Clone();
+                            //preprocItem.CompRange = _selParam.CompRange;
+                            //preprocItem.BasicRange = _selParam.BasicRange;
+                            //preprocItem.Judge = _selParam.Judge;
+                            //preprocItem.UseAiResult = _selParam.UseAiResult;
+                        }
+                    }
 
                     _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
 
@@ -1048,7 +1058,7 @@ namespace DefectDBManager
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
 
-                int maxStep = preprocItem.CompRange.Count + 1;
+                int maxStep = preprocItem.Compare.Count;
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -1056,7 +1066,7 @@ namespace DefectDBManager
                     if (preprocItem.Compare[i].IsSplitCTLNO == false)
                     {
                         logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.Compare.Count; // 비교 거리 데이터 확인용
+                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
                         for (int j = 0; j < nStep; j++)
                         {
                             if (j == 0)

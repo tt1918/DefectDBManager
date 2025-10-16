@@ -99,18 +99,31 @@ namespace DefectDBManager.Preproc.LOT
                     sb.Append("_");
                     sb.Append(Product);
                     sb.Append("_");
-                    if (item.CompJudge.Any(judge=> judge == false)) sb.Append(Language.judgeNG);
-                    else                                            sb.Append(Language.judgeOK);
-                    
+
+                    bool isNg = item.CompJudge.Any(judge => judge == false);
+
+                    if(isNg)
+                    {
+                        sb.Append(Language.judgeNG);
+                    }
+                    else
+                    {
+                        if(item.CompCount.All(count=>count==0))
+                            sb.Append(Language.judgeNoCompData);
+                        else
+                            sb.Append(Language.judgeOK);
+                    }
+
                     sb.Append("_");
                     sb.Append($"{RefLNCD}-{item.Name}");
+                    
                     if (item.CTLNO != string.Empty)
                     {
                         sb.Append($"_{item.CTLNO}");
-                        if (Judge != eCompResult.ProcOk)    sb.Append("_");
+                        if (isNg)    sb.Append("_");
                     }
 
-                    if (Judge != eCompResult.ProcOk)
+                    if (isNg)
                     {
                         sb.Append("(");
                         sb.Append($"Ref:100%");
@@ -145,13 +158,12 @@ namespace DefectDBManager.Preproc.LOT
                 sb.Append("_");
                 sb.Append(Product);
                 sb.Append("_");
-                if (Judge == eCompResult.ProcOk)
+                switch(Judge)
                 {
-                    sb.Append(Language.judgeOK);
-                }
-                else
-                {
-                    sb.Append(Language.judgeNG);
+                    case eCompResult.ProcOk: sb.Append(Language.judgeOK); break;
+                    case eCompResult.ProcNg: sb.Append(Language.judgeNG); break;
+                    case eCompResult.NoDbData: sb.Append(Language.judgeNoData); break;
+                    case eCompResult.NoCommPosData: sb.Append(Language.judgeNoCompData); break;
                 }
                 sw.WriteLine(sb.ToString());
                 #endregion

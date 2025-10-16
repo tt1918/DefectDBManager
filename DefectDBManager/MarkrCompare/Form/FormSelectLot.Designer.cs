@@ -69,6 +69,7 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvLotList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddList = new CustomControls.RoundButton();
             this.btnClear = new CustomControls.RoundButton();
             this.btnDel = new CustomControls.RoundButton();
             this.btnAdd = new CustomControls.RoundButton();
@@ -794,21 +795,44 @@
             // 
             // tableLayoutPanel9
             // 
-            this.tableLayoutPanel9.ColumnCount = 3;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel9.Controls.Add(this.btnClear, 2, 0);
-            this.tableLayoutPanel9.Controls.Add(this.btnDel, 1, 0);
-            this.tableLayoutPanel9.Controls.Add(this.btnAdd, 0, 0);
+            this.tableLayoutPanel9.ColumnCount = 4;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.Controls.Add(this.btnAddList, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnClear, 3, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnDel, 2, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnAdd, 1, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 539);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 47F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(288, 47);
             this.tableLayoutPanel9.TabIndex = 3;
+            // 
+            // btnAddList
+            // 
+            this.btnAddList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddList.BorderColor = System.Drawing.Color.Lavender;
+            this.btnAddList.BorderRadius = 1;
+            this.btnAddList.BorderSize = 2;
+            this.btnAddList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddList.FlatAppearance.BorderSize = 0;
+            this.btnAddList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddList.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddList.ForeColor = System.Drawing.Color.White;
+            this.btnAddList.Location = new System.Drawing.Point(1, 1);
+            this.btnAddList.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddList.Name = "btnAddList";
+            this.btnAddList.Size = new System.Drawing.Size(70, 45);
+            this.btnAddList.TabIndex = 8;
+            this.btnAddList.Text = "ADD LIST";
+            this.btnAddList.TextColor = System.Drawing.Color.White;
+            this.btnAddList.UseVisualStyleBackColor = false;
+            this.btnAddList.Click += new System.EventHandler(this.btnAddList_Click);
             // 
             // btnClear
             // 
@@ -822,10 +846,10 @@
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClear.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnClear.ForeColor = System.Drawing.Color.White;
-            this.btnClear.Location = new System.Drawing.Point(191, 1);
+            this.btnClear.Location = new System.Drawing.Point(217, 1);
             this.btnClear.Margin = new System.Windows.Forms.Padding(1);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(96, 45);
+            this.btnClear.Size = new System.Drawing.Size(70, 45);
             this.btnClear.TabIndex = 7;
             this.btnClear.Text = "CLEAR";
             this.btnClear.TextColor = System.Drawing.Color.White;
@@ -843,10 +867,10 @@
             this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnDel.ForeColor = System.Drawing.Color.White;
-            this.btnDel.Location = new System.Drawing.Point(96, 1);
+            this.btnDel.Location = new System.Drawing.Point(145, 1);
             this.btnDel.Margin = new System.Windows.Forms.Padding(1);
             this.btnDel.Name = "btnDel";
-            this.btnDel.Size = new System.Drawing.Size(93, 45);
+            this.btnDel.Size = new System.Drawing.Size(70, 45);
             this.btnDel.TabIndex = 6;
             this.btnDel.Text = "DEL";
             this.btnDel.TextColor = System.Drawing.Color.White;
@@ -864,10 +888,10 @@
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
-            this.btnAdd.Location = new System.Drawing.Point(1, 1);
+            this.btnAdd.Location = new System.Drawing.Point(73, 1);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(1);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(93, 45);
+            this.btnAdd.Size = new System.Drawing.Size(70, 45);
             this.btnAdd.TabIndex = 5;
             this.btnAdd.Text = "ADD";
             this.btnAdd.TextColor = System.Drawing.Color.White;
@@ -960,5 +984,6 @@
         private CustomControls.RoundButton btnDel;
         private CustomControls.RoundButton btnAdd;
         private System.Windows.Forms.DataGridView dgvLotList;
+        private CustomControls.RoundButton btnAddList;
     }
 }

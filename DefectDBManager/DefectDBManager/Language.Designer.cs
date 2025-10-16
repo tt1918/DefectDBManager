@@ -412,6 +412,15 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   비교 데이터 없음과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string judgeNoCompData {
+            get {
+                return ResourceManager.GetString("judgeNoCompData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   데이터 없음과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string judgeNoData {

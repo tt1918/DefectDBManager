@@ -137,7 +137,7 @@ namespace DefectDBManager
         {
             try
             {
-                string path = Path.Combine(GetBcrPath(), strLot);
+                string path = Path.Combine(GetBcrPath(), subPath, strLot);
 
                 if (Directory.Exists(path) == true)
                     Directory.Delete(path, true);

@@ -38,7 +38,6 @@ namespace DefectDBManager
         public MarkCompData MarkCompList { get; set; } = null;
 
         public eCompResult CompResult { get; private set; }
-        public int[,] CompCnt { get; private set; }
 
         public List<int[,]> Comp1Cnt { get; private set; }
 
@@ -83,7 +82,6 @@ namespace DefectDBManager
                 INSPDAT[i] = new List<INSPDATList>();
 
             CompResult = eCompResult.None;
-            CompCnt = null;
 
             LotSummary = new Preproc.LOT.CompResult();
         }
@@ -437,6 +435,9 @@ namespace DefectDBManager
             CompRange basicRange = procData.BasicRange;
             List<CompRange> compRange = procData.CompRange;
 
+            MarkCompList.SetCTLNOArray(procData.Compare.Count);
+            Comp1Cnt = new List<int[,]>();
+
             LotSummary.SetRange(procData);
             LotSummary.Name = LotName;
             LotSummary.Product = procData.Name;
@@ -444,15 +445,25 @@ namespace DefectDBManager
 
             if (MarkCompList.Data.Count <= 0)
             {
-                LotSummary.Judge = CompResult = eCompResult.NoDbData;
+                LotSummary.Judge = CompResult = eCompResult.NoCommPosData;
+
+                for (int idx = 0; idx < procData.Compare.Count; idx++)
+                {
+                    CompSummary summary = new CompSummary();
+                    summary.Name = procData.Compare[idx].LNCD;
+                    LotSummary.Summary.Add(summary);
+                    summary.BasicCount = 0;
+                    for (int i = 0; i < procData.CompRange.Count; i++)
+                    {
+                        summary.CompCount.Add(0);
+                        summary.CompRate.Add(0.0);
+                        summary.CompJudge.Add(true);
+                    }
+                }
                 return;
             }
 
-            MarkCompList.SetCTLNOArray(procData.Compare.Count);
-
-            CompCnt = new int[procData.Compare.Count, procData.CompRange.Count + 1];
-
-            Comp1Cnt = new List<int[,]>();
+            
             for (int i = 0; i < procData.Compare.Count; i++)
             {
                 int count = 0;
@@ -665,14 +676,25 @@ namespace DefectDBManager
             
             if (MarkCompList.Data.Count <= 0)
             {
-                LotSummary.Judge = CompResult = eCompResult.NoDbData;
+                LotSummary.Judge = CompResult = eCompResult.NoCommPosData;
+
+                for (int idx = 0; idx < compLNCD.Count; idx++)
+                {
+                    CompSummary summary = new CompSummary();
+                    summary.Name = compLNCD[idx];
+                    LotSummary.Summary.Add(summary);
+                    summary.BasicCount = 0;
+                    for (int i = 0; i < param.CompRange.Count; i++)
+                    {
+                        summary.CompCount.Add(0);
+                        summary.CompRate.Add(0.0);
+                        summary.CompJudge.Add(true);
+                    }
+                }
                 return;
             }
 
             MarkCompList.SetCTLNOArray(compLNCD.Count);
-
-            CompCnt = new int[compLNCD.Count, param.CompRange.Count + 1];
-
             Comp1Cnt = new List<int[,]>();
             for (int i = 0; i < compLNCD.Count; i++)
             {

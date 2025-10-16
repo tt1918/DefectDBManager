@@ -234,6 +234,9 @@
   <data name="judgeNG" xml:space="preserve">
     <value>エラー</value>
   </data>
+  <data name="judgeNoCompData" xml:space="preserve">
+    <value>比較データなし</value>
+  </data>
   <data name="judgeNoData" xml:space="preserve">
     <value>データなし</value>
   </data>
