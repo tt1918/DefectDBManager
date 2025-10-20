@@ -477,6 +477,7 @@ namespace MarkCompare
             updateDbFilterOption();
             updateDgvCompRange();
             updateJudgeRange();
+            ProcItem.UseAiResult = cbUseMNTTAN.Checked;
             ProcItem.Save();
         }
 

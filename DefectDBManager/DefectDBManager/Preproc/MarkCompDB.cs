@@ -592,6 +592,10 @@ namespace DefectDBManager.Preproc
                 lotID = lotID.ToUpper();
 
                 this.SearchLotName = lotID;
+
+                _LOG.LogMode = LogDB.eDataType.SelectedLot;
+                _LOG.Lot = lotID;
+
                 if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
                     dbOption.useKT = true;
                 else
@@ -607,6 +611,7 @@ namespace DefectDBManager.Preproc
                     _LOG.DeleteFolder(_SubPath, lotID);
                 }
 
+                Log.Write($"[{lotID}] PTRLYP 검색");
                 QueryMsg.PTRYLP_Query ptrylp = new QueryMsg.PTRYLP_Query(lotID);
                 string query = ptrylp.GetQuery();
                 long dbCnt = 0;
@@ -626,7 +631,7 @@ namespace DefectDBManager.Preproc
                             data.Parse(reader);
                             _DbResult.PTRLYP.Add(data);
                             string logData = string.Format($"{_DbResult.PTRLYP.Count}\t-\t{data.ToString()}");
-                            _LOG.WriteLoadData(logData, 0, "PTRYLP", 0);
+                            _LOG.WriteLoadData(_SubPath, logData, 0, "PTRYLP", 0);
                         }
 
                         success = true;
@@ -637,6 +642,8 @@ namespace DefectDBManager.Preproc
                 {
                     return null;
                 }
+
+                Log.Write($"[{lotID}] XOFSMST 검색");
                 success = SearchXOFSMST(lotID);
                 if (success == false) return null;
 
@@ -645,10 +652,16 @@ namespace DefectDBManager.Preproc
                     success = SearchAreaDel(lotID, ref _DbResult.AREADEL);
                     if (success == false) return null;
                 }
+
+                Log.Write($"[{lotID}] PTRY0P 검색");
                 success = SearchPTRY0P(lotID);
                 if (success == false) return null;
+
+                Log.Write($"[{lotID}] MRKCTLMST 검색");
                 success = SearchMRKCTLMST(lotID, procParam);
                 if (success == false) return null;
+
+                Log.Write($"[{lotID}] INSPDAT 검색");
                 success = SearchINSPDAT(lotID);
                 if (success == false) return null;
 
@@ -669,6 +682,7 @@ namespace DefectDBManager.Preproc
                 // 첫 검사 랏은 복사하여둔다
                 InspDatToFCDArray();
 
+                Log.Write($"[{lotID}] FLTDAT 검색");
                 success = SearchFLTDAT_DB(procParam);
 
                 // 처리 완료되면 데이터 정리
@@ -1194,7 +1208,6 @@ namespace DefectDBManager.Preproc
                 if (destUnit == null)
                 {
                     destConfig.SetSelDest(procParam.DBFilter.Title);
-                    destConfig.SelDestUnit = destUnit;
                 }
 
                 long dbCnt = 0;
@@ -1992,8 +2005,6 @@ namespace DefectDBManager.Preproc
             float inspStartY = 0.0f;
             float inspEndY = 0.0f;
 
-            bool bValid = false;
-
             FaultData = new PreProcResultData();
 
             // 현재 데이터는 마킹 비교 결점 데이터라는 것을 표시함.
@@ -2024,6 +2035,23 @@ namespace DefectDBManager.Preproc
                     for (int inspIdx = 0; inspIdx < inspCnt; inspIdx++)
                     {
                         if (_DbResult.INSPDATArray[fcdIdx][inspIdx] == null) continue;
+                        string inspLNCD = _DbResult.INSPDATArray[fcdIdx][inspIdx].LNCD;
+                        int mkcdIdx = -1;
+                        for (int mkcdI = 0; mkcdI < _DbResult.INSPDATArray[fcdIdx].Count; mkcdI++)
+                        {
+                            for (int aaa = 0; aaa < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; aaa++)
+                            {
+                                if (_DbResult.INSPDAT[fcdIdx][mkcdI][aaa].LNCD == inspLNCD)
+                                {
+                                    mkcdIdx = mkcdI;
+                                    break;
+                                }
+                            }
+                            if(mkcdIdx !=-1) break;
+                        }
+
+                        _DbResult.UpdateDicMRKF1Data(fcdIdx, mkcdIdx);
+                        _DbResult.UpdateDicSizeData(fcdIdx, mkcdIdx);
 
                         inspdata = _DbResult.INSPDATArray[fcdIdx][inspIdx];
 
@@ -2055,20 +2083,7 @@ namespace DefectDBManager.Preproc
                         }
                         else
                         {
-                            bool isFindComp = false;
-                            foreach (var compItem in _PreprocItem.Compare)
-                            {
-                                if (inspdata.LNCD == compItem.LNCD)
-                                {
-                                    isFindComp = true;
-                                    dataTarget = eProcDataType.Compare;
-                                    break;
-                                }
-                            }
-                            if (isFindComp == false)
-                            {
-                                continue; // 데이터 탐색 안함.
-                            }
+                            dataTarget = eProcDataType.Compare;    
                         }
 
                         while (true)
@@ -2097,7 +2112,7 @@ namespace DefectDBManager.Preproc
                                         }
                                         if (reader.Read() == false) break;
 
-                                        FLTDATA_DailyData data = new FLTDATA_DailyData();
+                                        FLTDATAData data = new FLTDATAData();
                                         data.Parse(reader);
 
                                         tmpFaltID = data.FLTID.ToUpper();
@@ -2130,9 +2145,6 @@ namespace DefectDBManager.Preproc
                                         tmpFltData.SetData(inspdata.BCNO, data);
                                         if (minXPos > data.XPOS_M) minXPos = data.XPOS_M;
                                         if (maxXPos < data.XPOS_M) maxXPos = data.XPOS_M;
-
-                                        // 마킹 데이터만 처리
-                                        if (bValid == false) continue;
 
                                         // 코드 불량 카운트 증가
                                         if (inspdata.CTLNO == data.CTLNO) inspdata.RollCtlCnt++;
