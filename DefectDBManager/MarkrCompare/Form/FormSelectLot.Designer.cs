@@ -51,6 +51,7 @@
             this.tbJudgeRangeY = new CustomControls.RoundTextBox();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
             this.cbUseMNTTAN = new System.Windows.Forms.CheckBox();
+            this.cbUseSplit = new System.Windows.Forms.CheckBox();
             this.gbFilterType = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lvFilterList = new System.Windows.Forms.ListView();
@@ -504,6 +505,7 @@
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 222F));
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel19.Controls.Add(this.cbUseMNTTAN, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(this.cbUseSplit, 1, 0);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel19.Location = new System.Drawing.Point(2, 511);
             this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
@@ -524,6 +526,18 @@
             this.cbUseMNTTAN.TabIndex = 10;
             this.cbUseMNTTAN.Text = "USE AI RESULT";
             this.cbUseMNTTAN.UseVisualStyleBackColor = true;
+            // 
+            // cbUseSplit
+            // 
+            this.cbUseSplit.AutoSize = true;
+            this.cbUseSplit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbUseSplit.Location = new System.Drawing.Point(167, 4);
+            this.cbUseSplit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cbUseSplit.Name = "cbUseSplit";
+            this.cbUseSplit.Size = new System.Drawing.Size(216, 23);
+            this.cbUseSplit.TabIndex = 10;
+            this.cbUseSplit.Text = "USE SPLIT CTRNO";
+            this.cbUseSplit.UseVisualStyleBackColor = true;
             // 
             // gbFilterType
             // 
@@ -985,5 +999,6 @@
         private CustomControls.RoundButton btnAdd;
         private System.Windows.Forms.DataGridView dgvLotList;
         private CustomControls.RoundButton btnAddList;
+        private System.Windows.Forms.CheckBox cbUseSplit;
     }
 }

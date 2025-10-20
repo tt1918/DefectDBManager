@@ -463,7 +463,6 @@ namespace DefectDBManager
                 return;
             }
 
-            
             for (int i = 0; i < procData.Compare.Count; i++)
             {
                 int count = 0;
@@ -698,19 +697,65 @@ namespace DefectDBManager
             Comp1Cnt = new List<int[,]>();
             for (int i = 0; i < compLNCD.Count; i++)
             {
-                Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
-                int idx = Comp1Cnt.Count - 1;
-                foreach (var aaa in MarkCompList.Data[0].Comp1)
+                if (param.UseSplit == true)
                 {
-                    if (aaa.Key.Item1 == compLNCD[i])
+                    int count = 0;
+                    // 여기서 조건 분기
+                    if (MarkCompList.Data.Count != 0)
                     {
-                        foreach (var item in MarkCompList.Data)
+                        bool exists = MarkCompList.Data[0].Comp1.Keys.Any(k => k.Item1 == compLNCD[i]);
+                        if (exists == true)
                         {
-                            if (item.Comp1[aaa.Key][0].Count > 0)
-                                Comp1Cnt[idx][0, 0]++;
+                            foreach (var aaa in MarkCompList.Data[0].Comp1)
+                            {
+                                if (aaa.Key.Item1 == compLNCD[i])
+                                {
+                                    MarkCompList.CTLNO[i].Add(aaa.Key.Item2);
+                                    count++;
+                                }
+                            }
+                            if (count == 0) Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
+                            else // 여기서 데이터 추가함
+                            {
+                                Comp1Cnt.Add(new int[count, param.CompRange.Count + 1]);
+                                count = 0;
+                                int idx = Comp1Cnt.Count - 1;
+                                foreach (var aaa in MarkCompList.Data[0].Comp1)
+                                {
+                                    if (aaa.Key.Item1 == compLNCD[i])
+                                    {
+                                        foreach (var item in MarkCompList.Data)
+                                        {
+                                            if (item.Comp1[aaa.Key][0].Count > 0)
+                                                Comp1Cnt[idx][count, 0]++;
+                                            for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
+                                                if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++;
+                                        }
+                                        count++;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                            Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
+                    }
+                }
+                else
+                {
+                    Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
+                    int idx = Comp1Cnt.Count - 1;
+                    foreach (var aaa in MarkCompList.Data[0].Comp1)
+                    {
+                        if (aaa.Key.Item1 == compLNCD[i])
+                        {
+                            foreach (var item in MarkCompList.Data)
+                            {
+                                if (item.Comp1[aaa.Key][0].Count > 0)
+                                    Comp1Cnt[idx][0, 0]++;
 
-                            for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
-                                if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                                for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
+                                    if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                            }
                         }
                     }
                 }
@@ -721,62 +766,118 @@ namespace DefectDBManager
             double[] result = new double[param.CompRange.Count + 1];
             for (int idx = 0; idx < compLNCD.Count; idx++)
             {
-                CompSummary summary = new CompSummary();
-                summary.Name = compLNCD[idx];
-                LotSummary.Summary.Add(summary);
-
                 isEmpty = true;
-                for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+
+                if (param.UseSplit != true)
                 {
-                    isEmpty = true;
-                    summary.BasicCount = Comp1Cnt[idx][idx1, 0];
+                    CompSummary summary = new CompSummary();
+                    summary.Name = compLNCD[idx];
+                    LotSummary.Summary.Add(summary);
 
-                    for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
                     {
-                        if(i>0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
-                        if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
-                    }
-                    if (isEmpty)
-                    {
-                        summary.CompRate.Add(0.0);
-                        summary.CompJudge.Add(true);
-                        continue;
-                    }
+                        isEmpty = true;
+                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
 
-                    result[0] = 100.0;
-                    
-                    for (int i = 1; i < param.CompRange.Count + 1; i++)
-                    {
-                        if (Comp1Cnt[idx][idx1, 0] > 0)
+                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
                         {
-                            result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
-                            summary.CompRate.Add(result[i]);
+                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
+                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
                         }
-                        else
+                        if (isEmpty)
                         {
-                            if (Comp1Cnt[idx][idx1, i] > 0)
+                            summary.CompRate.Add(0.0);
+                            summary.CompJudge.Add(true);
+                            continue;
+                        }
+
+                        result[0] = 100.0;
+
+                        for (int i = 1; i < param.CompRange.Count + 1; i++)
+                        {
+                            if (Comp1Cnt[idx][idx1, 0] > 0)
                             {
-                                result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
                                 summary.CompRate.Add(result[i]);
                             }
                             else
                             {
-                                summary.CompRate.Add(0.0);
+                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                {
+                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    summary.CompRate.Add(result[i]);
+                                }
+                                else
+                                {
+                                    summary.CompRate.Add(0.0);
+                                }
+                            }
+                            if (Math.Abs(result[0] - result[i]) > param.CompRange[i - 1].Accuracy)
+                            {
+                                isError = true;
+                                summary.CompJudge.Add(false);
+                            }
+                            else
+                            {
+                                summary.CompJudge.Add(true);
                             }
                         }
-                        if (Math.Abs(result[0] - result[i]) > param.CompRange[i - 1].Accuracy)
+                    }
+                }
+                else
+                {
+                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+                    {
+                        CompSummary summary = new CompSummary();
+                        summary.Name = compLNCD[idx];
+                        summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
+                        LotSummary.Summary.Add(summary);
+                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
+                        isEmpty = true;
+                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
                         {
-                            isError = true;
-                            summary.CompJudge.Add(false);
+                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
+                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
                         }
-                        else
+                        if (isEmpty)
                         {
+                            summary.CompRate.Add(0.0);
                             summary.CompJudge.Add(true);
+                            continue;
+                        }
+                        result[0] = 100.0;
+                        for (int i = 1; i < param.CompRange.Count + 1; i++)
+                        {
+                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                            {
+                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                                summary.CompRate.Add(result[i]);
+                            }
+                            else
+                            {
+                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                {
+                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    summary.CompRate.Add(result[i]);
+                                }
+                                else
+                                {
+                                    summary.CompRate.Add(0.0);
+                                }
+                            }
+                            if (Math.Abs(result[0] - result[i]) > param.CompRange[i - 1].Accuracy)
+                            {
+                                isError = true;
+                                summary.CompJudge.Add(false);
+                            }
+                            else
+                            {
+                                summary.CompJudge.Add(true);
+                            }
                         }
                     }
                 }
             }
-
             if (isError == false) LotSummary.Judge=CompResult = eCompResult.ProcOk;
             else LotSummary.Judge = CompResult = eCompResult.ProcNg;
         }

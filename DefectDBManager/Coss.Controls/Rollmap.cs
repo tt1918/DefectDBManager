@@ -1228,6 +1228,12 @@ namespace Coss.Controls
             return defects.GetNearestDefects(_hwndRenderTarget, _dWriteFactory, _textFormat, _colorBrush, real, gdi, ViewRealRect, viewRect, defectSearchRange, mark);
         }
 
+        public Dictionary<int, RollmapDefect> GetNearestDefects(Point real, Point gdi)
+        {
+            return defects.GetNearestDefects(_hwndRenderTarget, _dWriteFactory, _textFormat, _colorBrush, real, gdi, ViewRealRect, viewRect, defectSearchRange, false);
+        }
+
+
         public void DrawRectangle(bool constant, bool draw, int x1, int y1, int width, int height, Pen pen)
         {
             var graphic = new RollmapGraphics(RollmapGraphics.GraphicType.Rect, x1, y1, width, height, pen);

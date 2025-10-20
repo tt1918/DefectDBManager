@@ -459,6 +459,7 @@ namespace MarkCompare
         private void displayOtherParam()
         {
             cbUseMNTTAN.Checked = ProcItem.UseAiResult;
+            cbUseSplit.Checked = ProcItem.UseSplit;
         }
 
         #endregion
@@ -478,6 +479,7 @@ namespace MarkCompare
             updateDgvCompRange();
             updateJudgeRange();
             ProcItem.UseAiResult = cbUseMNTTAN.Checked;
+            ProcItem.UseSplit = cbUseSplit.Checked;
             ProcItem.Save();
         }
 

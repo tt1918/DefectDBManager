@@ -37,6 +37,9 @@ namespace MarkCompare
 
         private Dictionary<int, string> dicProcInfo = new Dictionary<int, string>();
 
+
+        string[] _key = null;
+        bool _isSplit = false;
         #endregion
 
         #region RollMap
@@ -96,11 +99,109 @@ namespace MarkCompare
             MouseClicked?.Invoke(real, gdi, btn);
             RollmapDefect defect;
 
-            var defects = Rollmap.GetNearestDefects(real, gdi, true);
-            foreach (var d in defects)
-                DefectClicked?.Invoke(real, gdi, d.Key, d.Value);
+            double minDist = double.MaxValue;
+            double dist;
+            int idx = 0, minIdx=-1;
+            if(_crtLot.MarkCompList.Data==null) return;
+            foreach (var item in _crtLot.MarkCompList.Data)
+            {
+                dist = Math.Sqrt(Math.Pow(item.Base.XPOS_M - real.X, 2.0)+ Math.Pow(item.Base.OFFSET - real.Y, 2.0));
+                if(dist<minDist)
+                {
+                    minDist = dist;
+                    minIdx = idx;
+                }
+                idx++;
+            }
 
-            defect = defects.FirstOrDefault(e => e.Value.Id != -1).Value;
+            var defect1 = _crtLot.MarkCompList.Data.Select((item, index) => new
+            {
+                Index = index,
+                Dist = Math.Sqrt(
+                    Math.Pow(item.Base.XPOS_M - real.X, 2.0) +
+                    Math.Pow(item.Base.OFFSET - real.Y, 2.0)),
+                Defect = item
+            })
+            .OrderBy(x => x.Dist).First().Defect;
+
+            if (minIdx >= 0 && defect1 != null)
+            {
+                lbxRefInfo.BeginUpdate();
+                lbxRefInfo.Items.Clear();
+                lbxRefInfo.Items.Add($"X:{defect1.Base.XPOS_M:F1}");
+                lbxRefInfo.Items.Add($"Y:{defect1.Base.OFFSET:F1}");
+                lbxRefInfo.Items.Add($"Size:{defect1.Base.SIZE:F3}");
+                lbxRefInfo.Items.Add($"FAULTID:{defect1.Base.FAULTID:F3}");
+
+                lbxRefInfo.EndUpdate();
+
+                if (_isSplit)
+                {
+                    foreach (var def in defect1.Comp1)
+                    {
+                        if (def.Key.Item1 == _key[0] && def.Key.Item2 == _key[1])
+                        {
+                            lbxCompItem.BeginUpdate();
+                            lbxCompItem.Items.Clear();
+                            int cnt = 0;
+                            foreach (var d in def.Value)
+                            {
+                                if(cnt==0) lbxCompItem.Items.Add("== Reference ==");
+                                else lbxCompItem.Items.Add($"== Compare {cnt} ==");
+                                int subCnt = 0;
+                                foreach (var item in d)
+                                {
+                                    lbxCompItem.Items.Add($"Index:{subCnt}");
+                                    lbxCompItem.Items.Add($"X:{item.XPOS_M:F1}");
+                                    lbxCompItem.Items.Add($"Y:{item.OFFSET:F1}");
+                                    lbxCompItem.Items.Add($"Size:{item.SIZE:F3}");
+                                    lbxCompItem.Items.Add($"FAULTID:{item.FAULTID:F3}");
+                                    lbxCompItem.Items.Add("");
+                                    subCnt++;
+                                }
+                                cnt++;
+                            }
+                            lbxCompItem.EndUpdate();
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var def in defect1.Comp1)
+                    {
+                        if (def.Key.Item1 == _key[0])
+                        {
+                            lbxCompItem.BeginUpdate();
+                            lbxCompItem.Items.Clear();
+                            int cnt = 0;
+                            foreach (var d in def.Value)
+                            {
+                                if (cnt == 0) lbxCompItem.Items.Add("== Reference ==");
+                                else lbxCompItem.Items.Add($"== Compare {cnt} ==");
+                                int subCnt = 0;
+                                foreach (var item in d)
+                                {
+                                    lbxCompItem.Items.Add($"Index:{subCnt}");
+                                    lbxCompItem.Items.Add($"X:{item.XPOS_M:F1}");
+                                    lbxCompItem.Items.Add($"Y:{item.OFFSET:F1}");
+                                    lbxCompItem.Items.Add($"Size:{item.SIZE:F3}");
+                                    lbxCompItem.Items.Add($"FAULTID:{item.FAULTID:F3}");
+                                    lbxCompItem.Items.Add("");
+                                    subCnt++;
+                                }
+                                cnt++;
+                            }
+                            lbxCompItem.EndUpdate();
+                        }
+                    }
+                }
+            }
+
+            //var defects = Rollmap.GetNearestDefects(real, gdi);
+            //foreach (var d in defects)
+            //    DefectClicked?.Invoke(real, gdi, d.Key, d.Value);
+
+                //defect = defects.FirstOrDefault(e => e.Value.Id != -1).Value;
         }
 
         private void OnViewAreaChanged(object sender, MapViewOptionArgs viewOption, Rectangle rect)
@@ -186,10 +287,32 @@ namespace MarkCompare
                 }
             }
 
-            for(int i=0; i<listLNCD.Count; i++)
+            string refLNCD = _crtLot.FaultData.MarkData.LNCD;
+
+            for (int i=0; i<listLNCD.Count; i++)
             {
-                string itemName = $"{i + 1}:{_crtLot.FaultData.MarkData.LNCD}_{listLNCD[i]}";
-                cbProcess.Items.Add(itemName);
+                if(_selParam.UseSplit==false)
+                {
+                    string itemName = $"{i + 1}:{refLNCD}_{listLNCD[i]}";
+                    cbProcess.Items.Add(itemName);
+                }
+                else
+                {
+                    int size = _crtLot.MarkCompList.CTLNO[i].Count;
+                    if (size == 0)
+                    {
+                        string itemName = $"{i + 1}:{refLNCD}_{listLNCD[i]}";
+                        cbProcess.Items.Add(itemName);
+                    }
+                    else
+                    {
+                        for (int j = 0; j < size; j++)
+                        {
+                            string itemName = $"{i + 1}-{j + 1}:{refLNCD}_{listLNCD[i]}_{_crtLot.MarkCompList.CTLNO[i][j]}";
+                            cbProcess.Items.Add(itemName);
+                        }
+                    }
+                }
             }
 
             cbProcess.SelectedIndex = 0;
@@ -285,6 +408,9 @@ namespace MarkCompare
                 key[0] = procItem.Compare[selectedIndex].LNCD;
             }
 
+            _key = key;
+            _isSplit = isSplit;
+
             double compRangeX = procItem.CompRange[0].MaxXRange;
             double compRangeY = procItem.CompRange[0].MaxYRange;
 
@@ -319,7 +445,7 @@ namespace MarkCompare
                         if (compList1.Count >0)
                         {
                             errIdx = -1;
-                            for (int j = 0; j < compSize; j++)
+                            for (int j = 0; j < compStep; j++)
                             {
                                 foreach (var cList in compList1)
                                 {
@@ -504,6 +630,9 @@ namespace MarkCompare
             string[] key = { "", "" };
             key[0] = strLNCD[1];
 
+            _key = key;
+            _isSplit = false;
+
             double compRangeX = param.CompRange[0].MaxXRange;
             double compRangeY = param.CompRange[0].MaxYRange;
 
@@ -662,8 +791,6 @@ namespace MarkCompare
             string[] strSel = string1[0].Split('-');
             selectedIndex = int.Parse(strSel[0]) - 1;
 
-            string[] key = { "", "" };
-
             List<string> listLNCD = new List<string>();
             foreach (var item in _crtLot.FaultData.PreMarkData)
             {
@@ -674,7 +801,25 @@ namespace MarkCompare
                 }
             }
 
-            key[0] = listLNCD[selectedIndex];
+            string[] key = { "", "" };
+            _isSplit = _selParam.UseSplit;
+            if (_isSplit == true)
+            {
+                string[] string2 = string1[1].Split('_');
+                if (string2.Length == 3)
+                {
+                    key[0] = string2[1];
+                    key[1] = string2[2];
+                }
+                else
+                    _isSplit = false;
+            }
+            else
+            {
+                key[0] = listLNCD[selectedIndex];
+            }
+
+            _key = key;
             
             double compRangeX = param.CompRange[0].MaxXRange;
             double compRangeY = param.CompRange[0].MaxYRange;
@@ -701,109 +846,167 @@ namespace MarkCompare
 
                     oldX = item.Base.XPOS_M;
                     oldY = item.Base.OFFSET;
-
-                    var compList1 = item.Comp1.Where(kv => kv.Key.Item1 == key[0]).ToList();
-                    if (compList1.Count > 0)
+                    if (_isSplit == false)
                     {
-                        errIdx = -1;
-                        
-                        foreach (var cList in compList1)
+                        var compList1 = item.Comp1.Where(kv => kv.Key.Item1 == key[0]).ToList();
+                        if (compList1.Count > 0)
                         {
-                            for (int j = 0; j < cList.Value.Length; j++)
+                            errIdx = -1;
+
+                            foreach (var cList in compList1)
                             {
-                                if (j <= 1)
+                                for (int j = 0; j < cList.Value.Length; j++)
                                 {
-                                    compRangeX = param.BasicRange.MaxXRange;
-                                    compRangeY = param.BasicRange.MaxYRange;
-                                }
-                                else
-                                {
-                                    compRangeX = param.CompRange[j - 2].MaxXRange;
-                                    compRangeY = param.CompRange[j - 2].MaxYRange;
-                                }
-
-                                bool isSet = false;
-                                PrevCompareDefect tmpItem = new PrevCompareDefect();
-                                var compList = cList.Value[j];
-                                for (int k = 0; k < cList.Value[j].Count; k++)
-                                {
-                                    var comp = cList.Value[j][k];
-                                    double posX = comp.XPOS_M;
-                                    double posY = comp.OFFSET;
-
-                                    if (j == 0)
+                                    if (j <= 1)
                                     {
-                                        tmpItem = new PrevCompareDefect(
-                                            0, posX, posY, comp.SIZE,
-                                            0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
-                                        isSet = true;
-                                        baseCnt++;
+                                        compRangeX = param.BasicRange.MaxXRange;
+                                        compRangeY = param.BasicRange.MaxYRange;
                                     }
                                     else
                                     {
-                                        if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
-                                        {
-                                            string symbolE = $"C_{j}";
-                                            tmpItem = new PrevCompareDefect(
-                                            0, posX, posY, comp.SIZE,
-                                            0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
-                                            isSet = true;
-                                            
-                                            compCnt++;
-                                        }
+                                        compRangeX = param.CompRange[j - 2].MaxXRange;
+                                        compRangeY = param.CompRange[j - 2].MaxYRange;
                                     }
-                                    if (posY > localMaxY) localMaxY = posY;
-                                }
 
-                                if (isSet) localDefects.Add(tmpItem);
+                                    bool isSet = false;
+                                    PrevCompareDefect tmpItem = new PrevCompareDefect();
+                                    var compList = cList.Value[j];
+                                    for (int k = 0; k < cList.Value[j].Count; k++)
+                                    {
+                                        var comp = cList.Value[j][k];
+                                        double posX = comp.XPOS_M;
+                                        double posY = comp.OFFSET;
+
+                                        if (j == 0)
+                                        {
+                                            tmpItem = new PrevCompareDefect(
+                                                0, posX, posY, comp.SIZE,
+                                                0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
+                                            isSet = true;
+                                            baseCnt++;
+                                        }
+                                        else
+                                        {
+                                            if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
+                                            {
+                                                string symbolE = $"C_{j}";
+                                                tmpItem = new PrevCompareDefect(
+                                                0, posX, posY, comp.SIZE,
+                                                0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
+                                                isSet = true;
+
+                                                compCnt++;
+                                            }
+                                        }
+                                        if (posY > localMaxY) localMaxY = posY;
+                                    }
+
+                                    if (isSet) localDefects.Add(tmpItem);
 
 
-                                // Error area 생성
-                                if(tmpItem.symbol!=null && tmpItem.symbol.Contains("C_"))
-                                {
-                                    if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
-                                        errIdx = baseCnt > 0 ? 0 : j;
-                                    else if (baseCnt > 0 && compCnt > 0 && j > 0)
-                                        errIdx = j;
+                                    // Error area 생성
+                                    if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
+                                    {
+                                        if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
+                                            errIdx = baseCnt > 0 ? 0 : j;
+                                        else if (baseCnt > 0 && compCnt > 0 && j > 0)
+                                            errIdx = j;
+                                    }
                                 }
                             }
-                        }
 
-                        // Error area 생성
-                        if (errIdx >= 0)
-                        {
-                            var firstItem = compList1
-                                            .Select(kv => kv.Value)                               // 배열
-                                            .Where(arr => arr != null && arr.Length > errIdx)     // 인덱스 범위 체크
-                                            .Select(arr => arr[errIdx])                           // 리스트
-                                            .Where(list => list != null && list.Count > 0)        // 비어있지 않은 리스트만
-                                            .Select(list => list[0])                              // 리스트의 첫 요소
-                                            .FirstOrDefault();                                    // 전체 중 첫 요소
-
-                            if (firstItem != null)
+                            // Error area 생성
+                            if (errIdx >= 0)
                             {
-                                double x = (int)(firstItem.XPOS_M / param.Judge.X) * param.Judge.X;
-                                double y = (int)(firstItem.OFFSET / judgeY1000) * judgeY1000;
+                                var firstItem = compList1
+                                                .Select(kv => kv.Value)                               // 배열
+                                                .Where(arr => arr != null && arr.Length > errIdx)     // 인덱스 범위 체크
+                                                .Select(arr => arr[errIdx])                           // 리스트
+                                                .Where(list => list != null && list.Count > 0)        // 비어있지 않은 리스트만
+                                                .Select(list => list[0])                              // 리스트의 첫 요소
+                                                .FirstOrDefault();                                    // 전체 중 첫 요소
 
-                                var newError = new PrevErrorAreaPosition(x, y, x + param.Judge.X, y + judgeY1000);
-                                bool exists = localErrors.Any(e =>
-                                    Math.Abs(e.startX - newError.startX) < 0.001 &&
-                                    Math.Abs(e.startY - newError.startY) < 0.001 &&
-                                    Math.Abs(e.endX - newError.endX) < 0.001 &&
-                                    Math.Abs(e.endY - newError.endY) < 0.001
-                                );
+                                if (firstItem != null)
+                                {
+                                    double x = (int)(firstItem.XPOS_M / param.Judge.X) * param.Judge.X;
+                                    double y = (int)(firstItem.OFFSET / judgeY1000) * judgeY1000;
 
-                                if (!exists)
-                                    localErrors.Add(newError);
+                                    var newError = new PrevErrorAreaPosition(x, y, x + param.Judge.X, y + judgeY1000);
+                                    bool exists = localErrors.Any(e =>
+                                        Math.Abs(e.startX - newError.startX) < 0.001 &&
+                                        Math.Abs(e.startY - newError.startY) < 0.001 &&
+                                        Math.Abs(e.endX - newError.endX) < 0.001 &&
+                                        Math.Abs(e.endY - newError.endY) < 0.001
+                                    );
+
+                                    if (!exists)
+                                        localErrors.Add(newError);
+                                }
                             }
                         }
                     }
-
-                    lock (lockObj)
+                    else
                     {
-                        defects.AddRange(localDefects);
-                        errorAreas.AddRange(localErrors);
-                        if (localMaxY > maxPosY) maxPosY = localMaxY;
+                        for (int j = 0; j < item.Comp1[(key[0], key[1])].GetLength(0); j++)
+                        {
+                            var compList = item.Comp1[(key[0], key[1])][j];
+                            PrevCompareDefect tmpItem = new PrevCompareDefect();
+                            bool isSet = false;
+                            for (int k = 0; k < compList.Count; k++)
+                            {
+                                var comp = compList[k];
+                                double posX = comp.XPOS_M;
+                                double posY = comp.OFFSET;
+                                if (j == 0)
+                                {
+                                    tmpItem = new PrevCompareDefect(
+                                        0, posX, posY, comp.SIZE,
+                                        0, Interlocked.Increment(ref defIdx), Color.Yellow, "R");
+                                    isSet = true;
+                                    baseCnt++;
+                                }
+                                else
+                                {
+                                    if (Math.Abs(oldX - posX) > compRangeX || Math.Abs(oldY - posY) > compRangeY)
+                                    {
+                                        string symbolE = $"C_{j}";
+                                        tmpItem = new PrevCompareDefect(
+                                        0, posX, posY, comp.SIZE,
+                                        0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
+                                        isSet = true;
+                                        compCnt++;
+                                    }
+                                }
+                                if (posY > localMaxY) localMaxY = posY;
+                            }
+                            if (isSet) localDefects.Add(tmpItem);
+                            // Error area 생성
+                            if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
+                            {
+                                if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
+                                    errIdx = baseCnt > 0 ? 0 : j;
+                                else if (baseCnt > 0 && compCnt > 0 && j > 0)
+                                    errIdx = j;
+                            }
+                        }
+                        // Error area 생성
+                        if (errIdx > 0)
+                        {
+                            foreach (var comp in item.Comp1[(key[0], key[1])][errIdx])
+                            {
+                                double x = (int)(comp.XPOS_M / param.Judge.X) * param.Judge.X;
+                                double y = (int)(comp.OFFSET / judgeY1000) * judgeY1000;
+                                localErrors.Add(new PrevErrorAreaPosition(x, y, x + param.Judge.X, y + judgeY1000));
+                                break;
+                            }
+                        }
+
+                        lock (lockObj)
+                        {
+                            defects.AddRange(localDefects);
+                            errorAreas.AddRange(localErrors);
+                            if (localMaxY > maxPosY) maxPosY = localMaxY;
+                        }
                     }
                 }
             }

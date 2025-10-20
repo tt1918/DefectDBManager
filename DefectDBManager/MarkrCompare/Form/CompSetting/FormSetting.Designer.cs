@@ -72,6 +72,7 @@
             this.lblCompProcLineIDData = new CustomControls.RoundLabel();
             this.lblCompLNCD = new CustomControls.RoundLabel();
             this.lblCompLNCDData = new CustomControls.RoundLabel();
+            this.ckbSplitCTLNO = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.groupCompRange = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
@@ -96,7 +97,6 @@
             this.btnOK = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
-            this.ckbSplitCTLNO = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -972,6 +972,18 @@
             this.lblCompLNCDData.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblCompLNCDData.Thickness = 1;
             // 
+            // ckbSplitCTLNO
+            // 
+            this.ckbSplitCTLNO.AutoSize = true;
+            this.ckbSplitCTLNO.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ckbSplitCTLNO.Location = new System.Drawing.Point(4, 39);
+            this.ckbSplitCTLNO.Margin = new System.Windows.Forms.Padding(2);
+            this.ckbSplitCTLNO.Name = "ckbSplitCTLNO";
+            this.ckbSplitCTLNO.Size = new System.Drawing.Size(306, 21);
+            this.ckbSplitCTLNO.TabIndex = 7;
+            this.ckbSplitCTLNO.Text = "SPLIT CTLNO";
+            this.ckbSplitCTLNO.UseVisualStyleBackColor = true;
+            // 
             // tableLayoutPanel15
             // 
             this.tableLayoutPanel15.ColumnCount = 1;
@@ -1413,18 +1425,6 @@
             this.btnLoad.TextColor = System.Drawing.Color.White;
             this.btnLoad.UseVisualStyleBackColor = false;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
-            // ckbSplitCTLNO
-            // 
-            this.ckbSplitCTLNO.AutoSize = true;
-            this.ckbSplitCTLNO.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ckbSplitCTLNO.Location = new System.Drawing.Point(4, 39);
-            this.ckbSplitCTLNO.Margin = new System.Windows.Forms.Padding(2);
-            this.ckbSplitCTLNO.Name = "ckbSplitCTLNO";
-            this.ckbSplitCTLNO.Size = new System.Drawing.Size(306, 21);
-            this.ckbSplitCTLNO.TabIndex = 7;
-            this.ckbSplitCTLNO.Text = "SPLIT CTLNO";
-            this.ckbSplitCTLNO.UseVisualStyleBackColor = true;
             // 
             // FormSetting
             // 

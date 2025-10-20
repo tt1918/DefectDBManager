@@ -1983,7 +1983,7 @@ namespace DefectDBManager.Preproc
             float minXPos = float.MaxValue;
 
             bool useXOffset = false;
-            bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAIFromDB = procParam.UseAiResult;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -2206,7 +2206,7 @@ namespace DefectDBManager.Preproc
             float minXPos = float.MaxValue;
 
             bool useXOffset = false;
-            bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAIFromDB = procParam.UseAiResult;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;

@@ -607,6 +607,10 @@ namespace DefectDBManager.Preproc
         public bool UseAiResult { get; set; } = false;
 
         [Category("items")]
+        [Description("Split CTRLNO")]
+        public bool UseSplit { get; set; } = false;
+
+        [Category("items")]
         [Description("Filter Type")]
         public FilterType FilterType { get; set; } = FilterType.UserFilter;
 
@@ -650,6 +654,7 @@ namespace DefectDBManager.Preproc
                 this.FilterType = obj.FilterType;
                 this.DBFilter = obj.DBFilter;
                 this.UserFilter = obj.UserFilter;
+                this.UseSplit = obj.UseSplit;
             }
             catch (Exception ex)
             {
