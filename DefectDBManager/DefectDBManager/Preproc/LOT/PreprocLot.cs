@@ -603,17 +603,20 @@ namespace DefectDBManager
                     {
                         CompSummary summary = new CompSummary();
                         summary.Name = procData.Compare[idx].LNCD;
-                        summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
+                        
                         LotSummary.Summary.Add(summary);
-
                         summary.BasicCount = Comp1Cnt[idx][idx1, 0];
                         isEmpty = true;
+
+                        if (MarkCompList.CTLNO[idx].Count >= idx1 + 1)  summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
+                        else                                            summary.CTLNO = string.Empty;
 
                         for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
                         {
                             if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
                             if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
                         }
+
                         if (isEmpty)
                         {
                             for (int i = 1; i < procData.CompRange.Count + 1; i++)
@@ -621,7 +624,6 @@ namespace DefectDBManager
                                 summary.CompRate.Add(0.0);
                                 summary.CompJudge.Add(true);
                             }
-
                             continue;
                         }
 
@@ -830,7 +832,10 @@ namespace DefectDBManager
                     {
                         CompSummary summary = new CompSummary();
                         summary.Name = compLNCD[idx];
-                        summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
+
+                        if (MarkCompList.CTLNO[idx].Count >= idx1 + 1)  summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
+                        else                                            summary.CTLNO = string.Empty;
+
                         LotSummary.Summary.Add(summary);
                         summary.BasicCount = Comp1Cnt[idx][idx1, 0];
                         isEmpty = true;

@@ -592,14 +592,13 @@ namespace DefectDBManager.Preproc
                 lotID = lotID.ToUpper();
 
                 this.SearchLotName = lotID;
-
-                _LOG.LogMode = LogDB.eDataType.SelectedLot;
-                _LOG.Lot = lotID;
-
                 if (lotID.Substring(0, 2) == "TG" || lotID.Substring(0, 2) == "TS")
                     dbOption.useKT = true;
                 else
                     dbOption.useKT = false;
+
+                _LOG.LogMode = LogDB.eDataType.SelectedLot;
+                _LOG.Lot = lotID;
 
                 // 이전 랏데이터 확인해서 스플라이스 처리해야 함
                 // 이전 랏데이터 확인해서 데이터가 있으면 넘김
@@ -649,6 +648,7 @@ namespace DefectDBManager.Preproc
 
                 if (DbDestConfig.UseAREADEL == true)
                 {
+                    Log.Write($"[{lotID}] AREADEL 검색");
                     success = SearchAreaDel(lotID, ref _DbResult.AREADEL);
                     if (success == false) return null;
                 }
@@ -2037,7 +2037,7 @@ namespace DefectDBManager.Preproc
                         if (_DbResult.INSPDATArray[fcdIdx][inspIdx] == null) continue;
                         string inspLNCD = _DbResult.INSPDATArray[fcdIdx][inspIdx].LNCD;
                         int mkcdIdx = -1;
-                        for (int mkcdI = 0; mkcdI < _DbResult.INSPDATArray[fcdIdx].Count; mkcdI++)
+                        for (int mkcdI = 0; mkcdI < _DbResult.INSPDAT[fcdIdx].Count; mkcdI++)
                         {
                             for (int aaa = 0; aaa < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; aaa++)
                             {
@@ -2050,8 +2050,16 @@ namespace DefectDBManager.Preproc
                             if(mkcdIdx !=-1) break;
                         }
 
+                        if(mkcdIdx==-1)
+                        {
+                            continue;
+                        }
+
                         _DbResult.UpdateDicMRKF1Data(fcdIdx, mkcdIdx);
                         _DbResult.UpdateDicSizeData(fcdIdx, mkcdIdx);
+
+                        if (_DbResult.dicMRKF1Data.Count == 0 || _DbResult.dicSizeData.Count == 0)
+                            continue;
 
                         inspdata = _DbResult.INSPDATArray[fcdIdx][inspIdx];
 

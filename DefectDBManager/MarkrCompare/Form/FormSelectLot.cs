@@ -17,8 +17,10 @@ namespace MarkCompare
 {
     public partial class FormSelectedLot : Form
     {
+        public string CultureCode { get; set; } = "";
+
         static string[] _strDgvLotList = { "No", "Name" };
-        static int[] _DgvLotListLength = { 50, 235 };
+        static int[] _DgvLotListLength = { 50, 285 };
         enum eDgvLotName { No, Name, Total };
 
         public List<string> _LotList = new List<string>();
@@ -276,7 +278,40 @@ namespace MarkCompare
 
         #region 언어 변경
         public void UpdateLanguage()
-        { 
+        {
+            string fontName = Functions.GetCultureFontName(CultureCode);
+            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+
+            this.SuspendLayout();
+            lblTitle.Text = Lang.formSelectedLotTitle;
+
+            gbFilterType.Text = Lang.filterType;
+            rbFilterType1.Text = Lang.userFilter;
+            rbFilterType2.Text = Lang.dbFilter;
+
+            btnAddUserFilter.Text = Lang.btnAdd;
+
+            groupCompRange.Text = Lang.formSettingGroupCompRange;
+            btnAddCompRange.Text = Lang.btnAdd;
+            btnDelCompRange.Text = Lang.btnDel1;
+
+            gpJudgeRange.Text = Lang.formSettingGroupJudgeRange;
+
+            cbUseMNTTAN.Text = Lang.formSettingUseMNTTAN;
+            cbUseSplit.Text = Lang.splitCTLNO;
+
+            btnLoadParam.Text = Lang.btnLoad1;
+            btnSaveParam.Text = Lang.btnSave1;
+
+            btnAddList.Text = Lang.addList;
+            btnAdd.Text = Lang.btnAdd;
+            btnDel.Text = Lang.btnDel1;
+            btnClear.Text = Lang.btnClear;
+
+            btnCancel.Text = Lang.btnCancel;
+            btnOk.Text = Lang.btnOK;
+
+            this.ResumeLayout();
         }
         #endregion
 

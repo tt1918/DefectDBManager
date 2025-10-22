@@ -72,6 +72,11 @@ namespace DefectDBManager
             _lot = new Dictionary<string, List<PreprocLot>>();
         }
 
+        public void CreateLotHistory()
+        {
+            _lotHistroy = new LotHistory();
+        }
+
         /// <summary>
         /// 랏관리 데이터에 신규 랏 정보를 추가
         /// </summary>

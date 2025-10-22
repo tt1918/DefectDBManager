@@ -19,6 +19,8 @@ namespace MarkCompare
     public partial class FormMarkDiff : Form
     {
         #region Param
+        string _cultureCode = "";
+
         DefectDBManager.PreprocLotManager _lotManager = null;
         DefectDBManager.CompPreprocDefect _dbProcess = null;
 
@@ -860,6 +862,7 @@ namespace MarkCompare
         {
             using (FormSelectedLot form = new FormSelectedLot(_selLotParam, _lotManager))
             {
+                form.CultureCode = _cultureCode;
                 // 검사 시작하지 않으면 저장된 랏 정보를 Form에 넣어준다.
                 form._LotList.AddRange(_selLotList);
                 if (form.ShowDialog() == DialogResult.OK)
@@ -951,6 +954,7 @@ namespace MarkCompare
         {
             OnUpdateLanguage += _formMorLive.UpdateLanguage;
             OnUpdateLanguage += _formMorSearch.UpdateLanguage;
+            OnUpdateLanguage += _formMorSelectedLot.UpdateLanguage;
 
             int size = (int)DefectDBManager.Preproc.eProc.Total;
             for(int i=0; i<size; i++)
@@ -961,17 +965,19 @@ namespace MarkCompare
         {
             OnUpdateLanguage -= _formMorLive.UpdateLanguage;
             OnUpdateLanguage -= _formMorSearch.UpdateLanguage;
+            OnUpdateLanguage -= _formMorSelectedLot.UpdateLanguage;
 
             int size = (int)DefectDBManager.Preproc.eProc.Total;
             for (int i = 0; i < size; i++)
                 OnUpdateLanguage -= _lotListForms[i].UpdateLanguage;
         }
 
+
         public async void UpdateLanguage(string culture)
         {
+            _cultureCode = culture;
+            
             string fontName = Functions.GetCultureFontName(culture);
-
-            // 
             await Task.Run(() => OnUpdateLanguage?.Invoke(culture));
             
             // 변경할 언어 표시 추가

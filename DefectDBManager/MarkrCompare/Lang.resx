@@ -537,4 +537,22 @@
   <data name="judgeNG" xml:space="preserve">
     <value>에러</value>
   </data>
+  <data name="filterType" xml:space="preserve">
+    <value>필터 형식</value>
+  </data>
+  <data name="userFilter" xml:space="preserve">
+    <value>사용자 설정 필터</value>
+  </data>
+  <data name="dbFilter" xml:space="preserve">
+    <value>DB 필터</value>
+  </data>
+  <data name="splitCTLNO" xml:space="preserve">
+    <value>CTLNO 구분</value>
+  </data>
+  <data name="formSelectedLotTitle" xml:space="preserve">
+    <value>Lot 지정 검사 설정</value>
+  </data>
+  <data name="addList" xml:space="preserve">
+    <value>리스트 추가</value>
+  </data>
 </root>

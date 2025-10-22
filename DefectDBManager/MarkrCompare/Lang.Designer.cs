@@ -61,6 +61,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   리스트 추가과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string addList {
+            get {
+                return ResourceManager.GetString("addList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   적용되었습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string applied1 {
@@ -331,6 +340,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   DB 필터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string dbFilter {
+            get {
+                return ResourceManager.GetString("dbFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   데이터를 삭제하시겠습니까?과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string deleteData1 {
@@ -475,6 +493,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   필터 형식과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string filterType {
+            get {
+                return ResourceManager.GetString("filterType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   CSV 파일 비교 완료과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string finishedComparingCSV {
@@ -615,6 +642,15 @@ namespace MarkCompare {
         internal static string formProdFilterTitle {
             get {
                 return ResourceManager.GetString("formProdFilterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Lot 지정 검사 설정과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string formSelectedLotTitle {
+            get {
+                return ResourceManager.GetString("formSelectedLotTitle", resourceCulture);
             }
         }
         
@@ -1222,6 +1258,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   CTLNO 구분과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string splitCTLNO {
+            get {
+                return ResourceManager.GetString("splitCTLNO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   시작과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string start {
@@ -1299,6 +1344,15 @@ namespace MarkCompare {
         internal static string time {
             get {
                 return ResourceManager.GetString("time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   사용자 설정 필터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string userFilter {
+            get {
+                return ResourceManager.GetString("userFilter", resourceCulture);
             }
         }
         

@@ -91,6 +91,7 @@ namespace DefectDBManager.Preproc
 
         private void checkLotHistory(object sender, ElapsedEventArgs e)
         {
+            if (_history == null) return;
             var key1List = _history.Keys.Select(k => k.Item1).Distinct();
             DateTime today = DateTime.Now;
             int nToday = int.Parse(today.ToString("yyyyMMdd"));

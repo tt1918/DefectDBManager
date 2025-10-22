@@ -322,10 +322,12 @@ namespace MarkCompare
             UIHelper.SetText(lblProcess, message);
         }
         #endregion
-        
+
         #region 언어 변경
+        string _cultureCode = "";
         public void UpdateLanguage(string culture)
         {
+            _cultureCode = culture;
             this.BeginInvoke(new Action(() =>
             {
                 string fontName = Functions.GetCultureFontName(culture);
@@ -339,6 +341,7 @@ namespace MarkCompare
 
                 btnStart.Text = Lang.start;
                 btnStop.Text = Lang.ProcStop;
+                btnSetLot.Text = Lang.setting;
             }));
         }
         #endregion

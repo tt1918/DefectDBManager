@@ -309,6 +309,10 @@ namespace DefectDBManager
                     productName = productName.Trim('*');    // * 은 지우고 필요한 내용만 남김
                 }
                 else isWildCard = false;
+
+                if (LotManager.Live.LotHistory.Histroy == null)
+                    LotManager.Live.CreateLotHistory();
+
 #if TEST_MODE
                 if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime) == true)
 #else
@@ -361,7 +365,7 @@ namespace DefectDBManager
                 LogDB log = _DBProc._LOG;
                 int idx1 = 0, idx2 = 0;
 
-                int maxStep = maxStep = preprocItem.CompRange.Count + 1;
+                int maxStep = preprocItem.Compare.Count; 
 
                 // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
                 for (int i = 0; i < maxStep; i++)
@@ -369,7 +373,7 @@ namespace DefectDBManager
                     if (preprocItem.Compare[i].IsSplitCTLNO == false)
                     {
                         logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.Compare.Count; // 비교 거리 데이터 확인용
+                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
                         for (int j = 0; j < nStep; j++)
                         {
                             if (j == 0)
@@ -472,9 +476,9 @@ namespace DefectDBManager
 
                 Thread.Sleep(200);
             }
-            catch
+            catch(Exception ex)
             {
-
+                Log.Write($"[Error] SearchLiveDefectData : {ex.Message}");
             }
         }
         #endregion

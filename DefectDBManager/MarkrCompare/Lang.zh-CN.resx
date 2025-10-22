@@ -537,4 +537,22 @@
   <data name="judgeNG" xml:space="preserve">
     <value>错误</value>
   </data>
+  <data name="filterType" xml:space="preserve">
+    <value>过滤器类型</value>
+  </data>
+  <data name="userFilter" xml:space="preserve">
+    <value>定制过滤器</value>
+  </data>
+  <data name="dbFilter" xml:space="preserve">
+    <value>数据库过滤器</value>
+  </data>
+  <data name="splitCTLNO" xml:space="preserve">
+    <value>CTLNO分类</value>
+  </data>
+  <data name="formSelectedLotTitle" xml:space="preserve">
+    <value>特定批次的检验设置</value>
+  </data>
+  <data name="addList" xml:space="preserve">
+    <value>添加列表</value>
+  </data>
 </root>

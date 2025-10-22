@@ -537,4 +537,22 @@
   <data name="judgeNG" xml:space="preserve">
     <value>エラー</value>
   </data>
+  <data name="filterType" xml:space="preserve">
+    <value>フィルタタイプ</value>
+  </data>
+  <data name="userFilter" xml:space="preserve">
+    <value>ユーザー設定フィルタ</value>
+  </data>
+  <data name="dbFilter" xml:space="preserve">
+    <value>DBフィルタ</value>
+  </data>
+  <data name="splitCTLNO" xml:space="preserve">
+    <value>CTLNO区切り</value>
+  </data>
+  <data name="formSelectedLotTitle" xml:space="preserve">
+    <value>ロット指定チェック設定</value>
+  </data>
+  <data name="addList" xml:space="preserve">
+    <value>リスト追加</value>
+  </data>
 </root>
