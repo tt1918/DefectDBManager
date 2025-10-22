@@ -555,4 +555,10 @@
   <data name="addList" xml:space="preserve">
     <value>リスト追加</value>
   </data>
+  <data name="ProcSelectedLot" xml:space="preserve">
+    <value>選択ロット検索中</value>
+  </data>
+  <data name="SelectedLotSearch" xml:space="preserve">
+    <value>LOT指定検索</value>
+  </data>
 </root>

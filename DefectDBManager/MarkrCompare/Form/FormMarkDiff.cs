@@ -114,7 +114,7 @@ namespace MarkCompare
                 {
                     lblRunState.BkColor = Color.White;
                     lblRunState.ForeColor = Color.DarkBlue;
-                    lblRunState.Text = "선택 랏 검색 중";
+                    lblRunState.Text = Lang.ProcSelectedLot;
                 }
                 else
                 {
@@ -311,7 +311,7 @@ namespace MarkCompare
             _formMorSearch.Dock = DockStyle.Fill;
 
             // Lot 지정 검사
-            TabPage tabPage2 = new TabPage("LOT 지정 검사");
+            TabPage tabPage2 = new TabPage(Lang.SelectedLotSearch);
             tabSearchSet.TabPages.Add(tabPage2);
             tabSearchSet.TabPages[2].Controls.Add(_formMorSelectedLot.Controls[0]);
             _formMorSelectedLot.WindowState = System.Windows.Forms.FormWindowState.Maximized;

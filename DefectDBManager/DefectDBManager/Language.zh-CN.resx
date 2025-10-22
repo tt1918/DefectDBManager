@@ -225,6 +225,15 @@
   <data name="FileDoesNotExist" xml:space="preserve">
     <value>不存在文件</value>
   </data>
+  <data name="finishPeriodicSearch" xml:space="preserve">
+    <value>期间设定错误检索完成</value>
+  </data>
+  <data name="finishRealtimeSearch" xml:space="preserve">
+    <value>实时错误搜索完成</value>
+  </data>
+  <data name="finishSelectedLotSearch" xml:space="preserve">
+    <value>选定批次错误搜索完成</value>
+  </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>校验数据掩码</value>
   </data>
@@ -392,11 +401,23 @@
   <data name="Search" xml:space="preserve">
     <value>搜索</value>
   </data>
+  <data name="searchAREADEL" xml:space="preserve">
+    <value>AREADEL 搜索</value>
+  </data>
   <data name="SearchEndTime" xml:space="preserve">
     <value>結束时间</value>
   </data>
+  <data name="searchPTRY0P" xml:space="preserve">
+    <value>PTRY0P 搜索</value>
+  </data>
+  <data name="searchPTRYLP" xml:space="preserve">
+    <value>PTRLYP 搜索</value>
+  </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>开始时间</value>
+  </data>
+  <data name="searchXOFSMST" xml:space="preserve">
+    <value>XOFSMST 搜索</value>
   </data>
   <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
     <value>沒有选中(選中)的 CSV 格式。 请检查(請檢查) Dest.ini 文件</value>
@@ -437,6 +458,21 @@
   <data name="SkipParam6" xml:space="preserve">
     <value>微分反射</value>
   </data>
+  <data name="spliceExists" xml:space="preserve">
+    <value>存在拼接</value>
+  </data>
+  <data name="startRealtimeSearch" xml:space="preserve">
+    <value>开始实时错误搜索</value>
+  </data>
+  <data name="startSearchingbyPeriod" xml:space="preserve">
+    <value>开始搜索期间设置错误</value>
+  </data>
+  <data name="startSelectedLotSearchByDB" xml:space="preserve">
+    <value>开始搜索选定批次错误(DB)</value>
+  </data>
+  <data name="startSelectedLotSearchByUserFilter" xml:space="preserve">
+    <value>开始搜索选定批次错误(用户过滤器)</value>
+  </data>
   <data name="TG" xml:space="preserve">
     <value>TG</value>
   </data>
@@ -454,5 +490,38 @@
   </data>
   <data name="UseMask" xml:space="preserve">
     <value>校验数据掩码</value>
+  </data>
+  <data name="searchMRKCTLMST" xml:space="preserve">
+    <value>搜索 MRKCTLMST</value>
+  </data>
+  <data name="searchINSPDAT" xml:space="preserve">
+    <value>INSPDAT 搜索</value>
+  </data>
+  <data name="searchFLTDAT" xml:space="preserve">
+    <value>FLTDAT 搜索</value>
+  </data>
+  <data name="errorSearchPTRYLP" xml:space="preserve">
+    <value>PTRYLP 搜索错误发生</value>
+  </data>
+  <data name="errorSearchXOFSMST" xml:space="preserve">
+    <value>XOFSMST 搜索错误发生</value>
+  </data>
+  <data name="errorSearchPTRY0P" xml:space="preserve">
+    <value>PTRY0P 搜索错误发生</value>
+  </data>
+  <data name="errorSearchINSPDAT" xml:space="preserve">
+    <value>INSPDAT 搜索错误发生</value>
+  </data>
+  <data name="errorSearchFLTDAT" xml:space="preserve">
+    <value>FLTDAT 搜索错误发生</value>
+  </data>
+  <data name="finishLotSearch" xml:space="preserve">
+    <value>数据检索完成</value>
+  </data>
+  <data name="lotSearchCount" xml:space="preserve">
+    <value>搜索 LOT 数量</value>
+  </data>
+  <data name="searchProductedLot" xml:space="preserve">
+    <value>生产批次查询 </value>
   </data>
 </root>

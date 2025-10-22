@@ -215,7 +215,7 @@ namespace DefectDBManager
             while (IsRunSearchingLotList)
                 Thread.Sleep(1000);
 
-            Log.Write("실시간 오차 검색 시작");
+            Log.Write(Language.startRealtimeSearch);
             OnStartLiveDefectSearching?.Invoke();
 
             // 기존 데이터 삭제
@@ -257,7 +257,7 @@ namespace DefectDBManager
             StopLiveSearch = false;
             IsRunLiveSearch = false;
 
-            Log.Write("실시간 오차 검색 완료");
+            Log.Write(Language.finishRealtimeSearch);
             // 완료 보고
             OnEndLiveSearchLot?.Invoke();
         }
@@ -600,7 +600,7 @@ namespace DefectDBManager
             while (IsRunLiveSearch)
                 Thread.Sleep(1000);
 
-            Log.Write("선택 공정 결점 오차 검색 시작");
+            Log.Write(Language.startSearchingbyPeriod);
             // 해당 공정에 대한 결점 정보 확인
             searchLotList();
 
@@ -640,7 +640,7 @@ namespace DefectDBManager
             StopSearchingLotList = false;
             IsRunSearchingLotList = false;
 
-            Log.Write("선택 공정 결점 오차 검색 완료");
+            Log.Write(Language.finishPeriodicSearch);
             // 완료 보고
             OnEndSearchingLotList?.Invoke();
         }
@@ -905,7 +905,7 @@ namespace DefectDBManager
             while (IsRunLiveSearch || IsRunSearchingLotList)
                 Thread.Sleep(1000);
 
-            Log.Write("선택 공정 결점 오차 검색 시작");
+            Log.Write(Language.startSelectedLotSearchByUserFilter);
 
             // Lot 정보는 획득 PTRYOP 데이터 생성해야 함. 
             foreach (var data in _selParam.UserFilter.Data)
@@ -984,7 +984,7 @@ namespace DefectDBManager
             StopSelectedLotList = false;
             IsRunSelectedLotList = false;
 
-            Log.Write("선택 공정 결점 오차 검색 완료");
+            Log.Write(Language.finishSelectedLotSearch);
             // 완료 보고
             OnEndSelectedLot?.Invoke();
         }
@@ -998,7 +998,7 @@ namespace DefectDBManager
             while (IsRunLiveSearch || IsRunSearchingLotList)
                 Thread.Sleep(1000);
 
-            Log.Write("선택 LOT 결점 오차 검색 시작");
+            Log.Write(Language.startSelectedLotSearchByDB);
 
             // Lot 정보는 획득 PTRYOP 데이터 생성해야 함. 
             PTRY0PList oplist = new PTRY0PList();
@@ -1035,7 +1035,7 @@ namespace DefectDBManager
             StopSelectedLotList = false;
             IsRunSelectedLotList = false;
 
-            Log.Write("선택 공정 결점 오차 검색 완료");
+            Log.Write(Language.finishSelectedLotSearch);
             // 완료 보고
             OnEndSelectedLot?.Invoke();
         }

@@ -225,6 +225,15 @@
   <data name="FileDoesNotExist" xml:space="preserve">
     <value>Selected file does not eixst.</value>
   </data>
+  <data name="finishPeriodicSearch" xml:space="preserve">
+    <value>Finished searching error by period</value>
+  </data>
+  <data name="finishRealtimeSearch" xml:space="preserve">
+    <value>Finished searching realtime error</value>
+  </data>
+  <data name="finishSelectedLotSearch" xml:space="preserve">
+    <value>Finished searching selected lot</value>
+  </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>Inspection Data Mask</value>
   </data>
@@ -392,11 +401,23 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="searchAREADEL" xml:space="preserve">
+    <value>Search AREADEL</value>
+  </data>
   <data name="SearchEndTime" xml:space="preserve">
     <value>End Time</value>
   </data>
+  <data name="searchPTRY0P" xml:space="preserve">
+    <value>Search PTRY0P</value>
+  </data>
+  <data name="searchPTRYLP" xml:space="preserve">
+    <value>Search PTRLYP</value>
+  </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>Start Time</value>
+  </data>
+  <data name="searchXOFSMST" xml:space="preserve">
+    <value>Search XOFSMST</value>
   </data>
   <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
     <value>Selected CSV format does not exist. Please check dest.ini file.</value>
@@ -437,6 +458,21 @@
   <data name="SkipParam6" xml:space="preserve">
     <value>DEREVATIVE REFECT</value>
   </data>
+  <data name="spliceExists" xml:space="preserve">
+    <value>Splice exists</value>
+  </data>
+  <data name="startRealtimeSearch" xml:space="preserve">
+    <value>Start searching realtime error</value>
+  </data>
+  <data name="startSearchingbyPeriod" xml:space="preserve">
+    <value>Start searching error by period</value>
+  </data>
+  <data name="startSelectedLotSearchByDB" xml:space="preserve">
+    <value>Start searching selected lot error(DB)</value>
+  </data>
+  <data name="startSelectedLotSearchByUserFilter" xml:space="preserve">
+    <value>Start searching selected lot error(User Filter)</value>
+  </data>
   <data name="TG" xml:space="preserve">
     <value>TG</value>
   </data>
@@ -454,5 +490,38 @@
   </data>
   <data name="UseMask" xml:space="preserve">
     <value>Use Data Mask</value>
+  </data>
+  <data name="searchMRKCTLMST" xml:space="preserve">
+    <value>Search MRKCTLMST</value>
+  </data>
+  <data name="searchINSPDAT" xml:space="preserve">
+    <value>Search INSPDAT</value>
+  </data>
+  <data name="searchFLTDAT" xml:space="preserve">
+    <value>Search FLTDAT</value>
+  </data>
+  <data name="errorSearchPTRYLP" xml:space="preserve">
+    <value>PTRYLP Search Error Occurred</value>
+  </data>
+  <data name="errorSearchXOFSMST" xml:space="preserve">
+    <value>XOFSMST Search Error Occurred</value>
+  </data>
+  <data name="errorSearchPTRY0P" xml:space="preserve">
+    <value>PTRY0P Search Error Occurred</value>
+  </data>
+  <data name="errorSearchINSPDAT" xml:space="preserve">
+    <value>INSPDAT Search Error Occurred</value>
+  </data>
+  <data name="errorSearchFLTDAT" xml:space="preserve">
+    <value>FLTDAT Search Error Occurred</value>
+  </data>
+  <data name="finishLotSearch" xml:space="preserve">
+    <value>Data retrieval complete</value>
+  </data>
+  <data name="lotSearchCount" xml:space="preserve">
+    <value>Number of Search LOTs</value>
+  </data>
+  <data name="searchProductedLot" xml:space="preserve">
+    <value>Search Production LOT </value>
   </data>
 </root>

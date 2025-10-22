@@ -349,6 +349,51 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   FLTDAT 검색 에러 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string errorSearchFLTDAT {
+            get {
+                return ResourceManager.GetString("errorSearchFLTDAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   INSPDAT 검색 에러 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string errorSearchINSPDAT {
+            get {
+                return ResourceManager.GetString("errorSearchINSPDAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PTRY0P 검색 에러 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string errorSearchPTRY0P {
+            get {
+                return ResourceManager.GetString("errorSearchPTRY0P", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PTRYLP 검색 에러 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string errorSearchPTRYLP {
+            get {
+                return ResourceManager.GetString("errorSearchPTRYLP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   XOFSMST 검색 에러 발생과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string errorSearchXOFSMST {
+            get {
+                return ResourceManager.GetString("errorSearchXOFSMST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   연신과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string ES {
@@ -381,6 +426,42 @@ namespace DefectDBManager {
         internal static string FileDoesNotExist {
             get {
                 return ResourceManager.GetString("FileDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   데이터 검색 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string finishLotSearch {
+            get {
+                return ResourceManager.GetString("finishLotSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   기간 설정 오차 검색 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string finishPeriodicSearch {
+            get {
+                return ResourceManager.GetString("finishPeriodicSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 오차 검색 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string finishRealtimeSearch {
+            get {
+                return ResourceManager.GetString("finishRealtimeSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   선택 Lot 오차 검색 완료과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string finishSelectedLotSearch {
+            get {
+                return ResourceManager.GetString("finishSelectedLotSearch", resourceCulture);
             }
         }
         
@@ -673,6 +754,15 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   검색 LOT 갯수과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string lotSearchCount {
+            get {
+                return ResourceManager.GetString("lotSearchCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   마킹 그룹과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string MarkingGroup {
@@ -826,6 +916,15 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   AREADEL 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchAREADEL {
+            get {
+                return ResourceManager.GetString("searchAREADEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   종료 시간과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string SearchEndTime {
@@ -835,11 +934,74 @@ namespace DefectDBManager {
         }
         
         /// <summary>
+        ///   FLTDAT 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchFLTDAT {
+            get {
+                return ResourceManager.GetString("searchFLTDAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   INSPDAT 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchINSPDAT {
+            get {
+                return ResourceManager.GetString("searchINSPDAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MRKCTLMST 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchMRKCTLMST {
+            get {
+                return ResourceManager.GetString("searchMRKCTLMST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   생산 LOT 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchProductedLot {
+            get {
+                return ResourceManager.GetString("searchProductedLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PTRY0P 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchPTRY0P {
+            get {
+                return ResourceManager.GetString("searchPTRY0P", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PTRLYP 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchPTRYLP {
+            get {
+                return ResourceManager.GetString("searchPTRYLP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   시작 시간과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string SearchStartTime {
             get {
                 return ResourceManager.GetString("SearchStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   XOFSMST 검색과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string searchXOFSMST {
+            get {
+                return ResourceManager.GetString("searchXOFSMST", resourceCulture);
             }
         }
         
@@ -957,6 +1119,51 @@ namespace DefectDBManager {
         internal static string SkipParam6 {
             get {
                 return ResourceManager.GetString("SkipParam6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   스플라이스가 존재함과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string spliceExists {
+            get {
+                return ResourceManager.GetString("spliceExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   실시간 오차 검색 시작과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startRealtimeSearch {
+            get {
+                return ResourceManager.GetString("startRealtimeSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   기간 설정 오차 검색 시작과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startSearchingbyPeriod {
+            get {
+                return ResourceManager.GetString("startSearchingbyPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   선택 Lot 오차 검색 시작(DB)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startSelectedLotSearchByDB {
+            get {
+                return ResourceManager.GetString("startSelectedLotSearchByDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   선택 Lot 오차 검색 시작(사용자 필터)과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string startSelectedLotSearchByUserFilter {
+            get {
+                return ResourceManager.GetString("startSelectedLotSearchByUserFilter", resourceCulture);
             }
         }
         

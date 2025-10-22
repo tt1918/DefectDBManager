@@ -10,7 +10,7 @@ namespace DefectDBManager
     {
         Normal = 0,
         PTRYLPEmpty,
-        PTRLYPSearchErr,
+        PTRYLPSearchErr,
         XOFSMSTSearchErr,
         PTRY0PSearchErr,
         MRKCTLMSTSearchErr,

@@ -1132,6 +1132,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   선택 랏 검색 중과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ProcSelectedLot {
+            get {
+                return ResourceManager.GetString("ProcSelectedLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   정지과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string ProcStop {
@@ -1236,6 +1245,15 @@ namespace MarkCompare {
         internal static string SelectedLotIsLoaded {
             get {
                 return ResourceManager.GetString("SelectedLotIsLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   LOT 지정 검사과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SelectedLotSearch {
+            get {
+                return ResourceManager.GetString("SelectedLotSearch", resourceCulture);
             }
         }
         

@@ -225,6 +225,15 @@
   <data name="FileDoesNotExist" xml:space="preserve">
     <value>파일이 존재하지 않습니다.</value>
   </data>
+  <data name="finishPeriodicSearch" xml:space="preserve">
+    <value>기간 설정 오차 검색 완료</value>
+  </data>
+  <data name="finishRealtimeSearch" xml:space="preserve">
+    <value>실시간 오차 검색 완료</value>
+  </data>
+  <data name="finishSelectedLotSearch" xml:space="preserve">
+    <value>선택 Lot 오차 검색 완료</value>
+  </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>검사 데이터 마스크</value>
   </data>
@@ -392,11 +401,23 @@
   <data name="Search" xml:space="preserve">
     <value>검색</value>
   </data>
+  <data name="searchAREADEL" xml:space="preserve">
+    <value>AREADEL 검색</value>
+  </data>
   <data name="SearchEndTime" xml:space="preserve">
     <value>종료 시간</value>
   </data>
+  <data name="searchPTRY0P" xml:space="preserve">
+    <value>PTRY0P 검색</value>
+  </data>
+  <data name="searchPTRYLP" xml:space="preserve">
+    <value>PTRLYP 검색</value>
+  </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>시작 시간</value>
+  </data>
+  <data name="searchXOFSMST" xml:space="preserve">
+    <value>XOFSMST 검색</value>
   </data>
   <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
     <value>선택된 CSV형식이 없습니다.Dest.ini파일을 확인하시길 바랍니다.</value>
@@ -437,6 +458,21 @@
   <data name="SkipParam6" xml:space="preserve">
     <value>미분 반사</value>
   </data>
+  <data name="spliceExists" xml:space="preserve">
+    <value>스플라이스가 존재함</value>
+  </data>
+  <data name="startRealtimeSearch" xml:space="preserve">
+    <value>실시간 오차 검색 시작</value>
+  </data>
+  <data name="startSearchingbyPeriod" xml:space="preserve">
+    <value>기간 설정 오차 검색 시작</value>
+  </data>
+  <data name="startSelectedLotSearchByDB" xml:space="preserve">
+    <value>선택 Lot 오차 검색 시작(DB)</value>
+  </data>
+  <data name="startSelectedLotSearchByUserFilter" xml:space="preserve">
+    <value>선택 Lot 오차 검색 시작(사용자 필터)</value>
+  </data>
   <data name="TG" xml:space="preserve">
     <value>도공</value>
   </data>
@@ -454,5 +490,38 @@
   </data>
   <data name="UseMask" xml:space="preserve">
     <value>검사 데이터 마스크</value>
+  </data>
+  <data name="searchMRKCTLMST" xml:space="preserve">
+    <value>MRKCTLMST 검색</value>
+  </data>
+  <data name="searchINSPDAT" xml:space="preserve">
+    <value>INSPDAT 검색</value>
+  </data>
+  <data name="searchFLTDAT" xml:space="preserve">
+    <value>FLTDAT 검색</value>
+  </data>
+  <data name="errorSearchPTRYLP" xml:space="preserve">
+    <value>PTRYLP 검색 에러 발생</value>
+  </data>
+  <data name="errorSearchXOFSMST" xml:space="preserve">
+    <value>XOFSMST 검색 에러 발생</value>
+  </data>
+  <data name="errorSearchPTRY0P" xml:space="preserve">
+    <value>PTRY0P 검색 에러 발생</value>
+  </data>
+  <data name="errorSearchINSPDAT" xml:space="preserve">
+    <value>INSPDAT 검색 에러 발생</value>
+  </data>
+  <data name="errorSearchFLTDAT" xml:space="preserve">
+    <value>FLTDAT 검색 에러 발생</value>
+  </data>
+  <data name="finishLotSearch" xml:space="preserve">
+    <value>데이터 검색 완료</value>
+  </data>
+  <data name="lotSearchCount" xml:space="preserve">
+    <value>검색 LOT 갯수</value>
+  </data>
+  <data name="searchProductedLot" xml:space="preserve">
+    <value>생산 LOT 검색</value>
   </data>
 </root>

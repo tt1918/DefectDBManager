@@ -225,6 +225,15 @@
   <data name="FileDoesNotExist" xml:space="preserve">
     <value>Selected file does not eixst.</value>
   </data>
+  <data name="finishPeriodicSearch" xml:space="preserve">
+    <value>期間設定誤差検索完了</value>
+  </data>
+  <data name="finishRealtimeSearch" xml:space="preserve">
+    <value>リアルタイム誤差検索完了</value>
+  </data>
+  <data name="finishSelectedLotSearch" xml:space="preserve">
+    <value>選択ロットエラー検索完了</value>
+  </data>
   <data name="gbInspDataMask" xml:space="preserve">
     <value>Inspection Data Mask</value>
   </data>
@@ -392,11 +401,23 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="searchAREADEL" xml:space="preserve">
+    <value>AREADEL検索</value>
+  </data>
   <data name="SearchEndTime" xml:space="preserve">
     <value>End Time</value>
   </data>
+  <data name="searchPTRY0P" xml:space="preserve">
+    <value>PTRY0P検索</value>
+  </data>
+  <data name="searchPTRYLP" xml:space="preserve">
+    <value>PTRLYP検索</value>
+  </data>
   <data name="SearchStartTime" xml:space="preserve">
     <value>Start Time</value>
+  </data>
+  <data name="searchXOFSMST" xml:space="preserve">
+    <value>XOFSMST検索</value>
   </data>
   <data name="SelectedCSVFormatTypeDoesNotExist" xml:space="preserve">
     <value>Selected CSV format does not exist. Please check dest.ini file.</value>
@@ -437,6 +458,21 @@
   <data name="SkipParam6" xml:space="preserve">
     <value>DEREVATIVE REFECT</value>
   </data>
+  <data name="spliceExists" xml:space="preserve">
+    <value>スプライスが存在する</value>
+  </data>
+  <data name="startRealtimeSearch" xml:space="preserve">
+    <value>リアルタイムエラー検索を開始</value>
+  </data>
+  <data name="startSearchingbyPeriod" xml:space="preserve">
+    <value>期間設定誤差検索開始</value>
+  </data>
+  <data name="startSelectedLotSearchByDB" xml:space="preserve">
+    <value>選択ロットエラー検索を開始(DB)</value>
+  </data>
+  <data name="startSelectedLotSearchByUserFilter" xml:space="preserve">
+    <value>選択ロットエラー検索を開始(ユーザーフィルタ)</value>
+  </data>
   <data name="TG" xml:space="preserve">
     <value>TG</value>
   </data>
@@ -454,5 +490,38 @@
   </data>
   <data name="UseMask" xml:space="preserve">
     <value>Use Data Mask</value>
+  </data>
+  <data name="searchMRKCTLMST" xml:space="preserve">
+    <value>MRKCTLMST検索</value>
+  </data>
+  <data name="searchINSPDAT" xml:space="preserve">
+    <value>INSPDAT検索</value>
+  </data>
+  <data name="searchFLTDAT" xml:space="preserve">
+    <value>FLTDAT検索</value>
+  </data>
+  <data name="errorSearchPTRYLP" xml:space="preserve">
+    <value>PTRYLP検索エラー発生</value>
+  </data>
+  <data name="errorSearchXOFSMST" xml:space="preserve">
+    <value>XOFSMST検索エラー発生</value>
+  </data>
+  <data name="errorSearchPTRY0P" xml:space="preserve">
+    <value>PTRY0P検索エラー発生</value>
+  </data>
+  <data name="errorSearchINSPDAT" xml:space="preserve">
+    <value>INSPDAT検索エラー発生</value>
+  </data>
+  <data name="errorSearchFLTDAT" xml:space="preserve">
+    <value>FLTDAT検索エラー発生</value>
+  </data>
+  <data name="finishLotSearch" xml:space="preserve">
+    <value>データ検索完了</value>
+  </data>
+  <data name="lotSearchCount" xml:space="preserve">
+    <value>検索 LOT 数</value>
+  </data>
+  <data name="searchProductedLot" xml:space="preserve">
+    <value>生産ロット検索 </value>
   </data>
 </root>
