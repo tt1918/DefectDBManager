@@ -613,7 +613,7 @@ namespace MarkCompare
 
         }
 
-        public void UpdateRollmap(DefectDBManager.PreprocLot lot, string name)
+        public void UpdateRollmap(DefectDBManager.IPreprocLot lot, string name)
         {
             _rollMapForm.ClearMap();
             if(name!=null)
@@ -653,14 +653,14 @@ namespace MarkCompare
            
         }
 
-        public void UpdateRollmapCSV(DefectDBManager.PreprocLot lot)
+        public void UpdateRollmapCSV(DefectDBManager.IPreprocLot lot)
         {
             _rollMapForm.ClearMap();
             // CSV 파일이 업데이트 됨
             _rollMapForm.OnUpdateLotInfo(lot, _csvCompParam);
         }
 
-        public void UpdateRollmapDB(DefectDBManager.PreprocLot lot)
+        public void UpdateRollmapDB(DefectDBManager.IPreprocLot lot)
         {
             _rollMapForm.ClearMap();
 
@@ -820,13 +820,15 @@ namespace MarkCompare
                 }
 
                 // Data 비교 처리
-                PreprocLot tmpLot = new PreprocLot(strLot, null, _csvCompData);
-
-
                 preprocItem.BasicRange = _csvCompParam.BasicRange;
                 preprocItem.CompRange = _csvCompParam.CompRange;
                 preprocItem.UseAiResult = _csvCompParam.UseAiResult;
-                tmpLot.CompareCsvPos(preprocItem);
+
+                PreprocLotFilter tmpLot = new PreprocLotFilter(strLot, null, _csvCompData);
+                tmpLot.IsCSVMode = true;
+                tmpLot.ProcData = preprocItem;
+
+                tmpLot.ComparePosition();
 
                 // 데이터 정리
                 _lotManager.Search.ClearLot();

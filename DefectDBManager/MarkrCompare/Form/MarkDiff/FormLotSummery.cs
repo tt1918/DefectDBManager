@@ -84,7 +84,7 @@ namespace MarkCompare
 
         }
 
-        public void SetLotSummary(string lncd, List<DefectDBManager.PreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager, string filter)
+        public void SetLotSummary(string lncd, List<DefectDBManager.IPreprocLot> lotSummary, DefectDBManager.PreprocLotManager lotManager, string filter)
         {
             try
             {

@@ -330,7 +330,7 @@ namespace DefectDBManager.Preproc
             return true;
         }
 
-        public PreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, LogDB.eDataType logType, ref eSearchError errOut)
+        public IPreprocLot SearchLot(string lotID, bool renewal, bool bMsgOut, LogDB.eDataType logType, ref eSearchError errOut)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -478,7 +478,7 @@ namespace DefectDBManager.Preproc
                 Log.Write($"[{lotID}] {Language.finishLotSearch}");
                 // 처리 완료되면 데이터 정리
 
-                return new PreprocLot(lotID, _DbResult, FaultData);
+                return new PreprocLotFilter(lotID, _DbResult, FaultData);
             }
             catch (Exception ex)
             {
@@ -487,7 +487,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        public PreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, LogDB.eDataType logType, ref eSearchError errOut)
+        public IPreprocLot SearchLot_TEST(string lotID, bool renewal, bool bMsgOut, LogDB.eDataType logType, ref eSearchError errOut)
         {
             bool success = false;
             try
@@ -569,7 +569,7 @@ namespace DefectDBManager.Preproc
                 }
 
                 // 처리 완료되면 데이터 정리
-                return new PreprocLot(lotID, _DbResult, FaultData);
+                return new PreprocLotFilter(lotID, _DbResult, FaultData);
             }
             catch (Exception ex)
             {
@@ -578,7 +578,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        public PreprocLot SearchDBLot(string lotID, LotSelProcParam procParam, bool bMsgOut, ref eSearchError errOut)
+        public IPreprocLot SearchDBLot(string lotID, LotSelProcParam procParam, bool bMsgOut, ref eSearchError errOut)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -686,7 +686,7 @@ namespace DefectDBManager.Preproc
                 success = SearchFLTDAT_DB(procParam);
 
                 // 처리 완료되면 데이터 정리
-                return new PreprocLot(lotID, _DbResult, FaultData);
+                return new PreprocLotDB(lotID, _DbResult, FaultData);
             }
             catch (Exception ex)
             {
@@ -695,7 +695,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        public PreprocLot SearchDBLot_TEST(string lotID, LotSelProcParam procParam, bool bMsgOut, ref eSearchError errOut)
+        public IPreprocLot SearchDBLot_TEST(string lotID, LotSelProcParam procParam, bool bMsgOut, ref eSearchError errOut)
         {
             // 연결 확인
             bool success = false;
@@ -803,7 +803,7 @@ namespace DefectDBManager.Preproc
                 }
 
                 // 처리 완료되면 데이터 정리
-                return new PreprocLot(lotID, _DbResult, FaultData);
+                return new PreprocLotDB(lotID, _DbResult, FaultData);
             }
             catch (Exception ex)
             {

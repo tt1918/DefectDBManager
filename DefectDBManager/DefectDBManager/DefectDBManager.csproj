@@ -236,6 +236,10 @@
     <Compile Include="Preproc\LOT\MarkCompData.cs" />
     <Compile Include="Preproc\LOT\PrepocLotManager.cs" />
     <Compile Include="Preproc\LOT\PreprocLNCD.cs" />
+    <Compile Include="Preproc\LOT\PreprocLot\IPreprocLot.cs" />
+    <Compile Include="Preproc\LOT\PreprocLot\PreprocLotDB.cs" />
+    <Compile Include="Preproc\LOT\PreprocLot\PreprocLotDefault.cs" />
+    <Compile Include="Preproc\LOT\PreprocLot\PreprocLotFilter.cs" />
     <Compile Include="Preproc\LOT\PreprocSet.cs" />
     <Compile Include="Preproc\MarkCompDB.cs" />
     <Compile Include="Preproc\MRKCTLMST\mrkctlmstManager.cs" />
@@ -264,7 +268,6 @@
       <DependentUpon>Language.resx</DependentUpon>
     </Compile>
     <Compile Include="Preproc\MRKCTLMST\mkcdModel.cs" />
-    <Compile Include="Preproc\LOT\PreprocLot.cs" />
     <Compile Include="Preproc\CompPreprocDefect.cs" />
     <Compile Include="Preproc\PreProcCompProcess.cs" />
     <Compile Include="Preproc\PreProcEnum.cs" />

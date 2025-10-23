@@ -13,12 +13,12 @@ namespace DefectDBManager
         /// <summary>
         /// 데이터 비교 결과 리스트
         /// </summary>
-        public Dictionary<string, List<PreprocLot>> LOT
+        public Dictionary<string, List<IPreprocLot>> LOT
         {
             get { return _lot; }
             private set { _lot = value; }
         }
-        private Dictionary<string, List<PreprocLot>> _lot = null;
+        private Dictionary<string, List<IPreprocLot>> _lot = null;
 
         public int TotalLot
         {
@@ -69,7 +69,7 @@ namespace DefectDBManager
                 _lotHistroy = new LotHistory();
 
             _product = new Dictionary<string, PTRY0PList>();
-            _lot = new Dictionary<string, List<PreprocLot>>();
+            _lot = new Dictionary<string, List<IPreprocLot>>();
         }
 
         public void CreateLotHistory()
@@ -82,13 +82,13 @@ namespace DefectDBManager
         /// </summary>
         /// <param name="key">필터 이름</param>
         /// <param name="info">불량 랏 정보</param>
-        public void AddLot(string key, PreprocLot info)
+        public void AddLot(string key, IPreprocLot info)
         {
             if (LOT.ContainsKey(key) == true)
                 LOT[key].Add(info);
             else
             {
-                List<PreprocLot> list = new List<PreprocLot>();
+                List<IPreprocLot> list = new List<IPreprocLot>();
                 list.Add(info);
                 LOT.Add(key, list);
             }
@@ -113,7 +113,7 @@ namespace DefectDBManager
             bool isSuccess = true;
             if (LOT.ContainsKey(key) == true)
             {
-                foreach (PreprocLot info in LOT[key])
+                foreach (IPreprocLot info in LOT[key])
                 {
                     // 데이터 삭제
                     if (info.LotName == lotName) LOT[key].Remove(info);

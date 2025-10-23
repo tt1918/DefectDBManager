@@ -25,7 +25,7 @@ namespace MarkCompare
     {
         public event UpdateSummaryCheck OnClickSummaryCheck;
 
-        public DefectDBManager.PreprocLot LotSummery
+        public DefectDBManager.IPreprocLot LotSummery
         {
             get { return _lotSummery; }
             set
@@ -49,7 +49,7 @@ namespace MarkCompare
         /// <summary>
         /// 상위 검사 랏 서머리 정보 
         /// </summary>
-        private DefectDBManager.PreprocLot _lotSummery = new DefectDBManager.PreprocLot();
+        private DefectDBManager.IPreprocLot _lotSummery=null;
 
         public DefectDBManager.PreprocLotManager LotManager { get; set; } = null;
 
@@ -126,7 +126,7 @@ namespace MarkCompare
             lblProcess.Hide();
         }
 
-        public FormLotSummaryData(DefectDBManager.PreprocLot lotSummery)
+        public FormLotSummaryData(DefectDBManager.IPreprocLot lotSummery)
         {
             InitializeComponent();
 

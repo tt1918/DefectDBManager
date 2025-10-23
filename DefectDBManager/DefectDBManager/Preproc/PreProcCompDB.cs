@@ -398,9 +398,9 @@ namespace DefectDBManager
             return isResult;
         }
 
-        public PreprocLot SearchLot(string lotID, bool useMkcdModel, bool bMsgOut, ref int errOut)
+        public IPreprocLot SearchLot(string lotID, bool useMkcdModel, bool bMsgOut, ref int errOut)
         {
-            PreprocLot preprcLot = new PreprocLot();
+            IPreprocLot preprcLot = new PreprocLotFilter();
             preprcLot.LotName = lotID;
 
             // 연결 확인

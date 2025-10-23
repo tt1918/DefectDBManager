@@ -27,7 +27,7 @@ namespace MarkCompare
 
 
         #region Param
-        private PreprocLot _crtLot = null;
+        private IPreprocLot _crtLot = null;
         private PreprocLNCDInfo _info = null;
         private CSVProcParam _csvParam = null;
         private LotSelProcParam _selParam = null;
@@ -319,7 +319,7 @@ namespace MarkCompare
             cbProcess.SelectedIndex = 0;
         }
 
-        public void OnUpdateLotInfo(PreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
+        public void OnUpdateLotInfo(IPreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
         {
             if (lot.FaultData == null) return;
             _crtLot = lot;
@@ -338,7 +338,7 @@ namespace MarkCompare
             drawMap(_crtLot, _info, _procItem);
         }
 
-        public void OnUpdateLotInfo(PreprocLot lot, CSVProcParam info)
+        public void OnUpdateLotInfo(IPreprocLot lot, CSVProcParam info)
         {
             if (lot.FaultData == null) return;
             _crtLot = lot;
@@ -356,7 +356,7 @@ namespace MarkCompare
             drawMap(_crtLot, _csvParam);
         }
 
-        public void OnUpdateLotInfo(PreprocLot lot, LotSelProcParam info)
+        public void OnUpdateLotInfo(IPreprocLot lot, LotSelProcParam info)
         {
             if (lot.FaultData == null) return;
             _crtLot = lot;
@@ -374,7 +374,7 @@ namespace MarkCompare
             drawMap(_crtLot, _selParam);
         }
 
-        private void drawMap(PreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
+        private void drawMap(IPreprocLot lot, PreprocLNCDInfo info, PreprocItem procItem)
         {
             int defIdx = 0;
             double maxPosY = 0;
@@ -611,7 +611,7 @@ namespace MarkCompare
             Rollmap.RedrawAll();
         }
 
-        private void drawMap(PreprocLot lot, CSVProcParam param)
+        private void drawMap(IPreprocLot lot, CSVProcParam param)
         {
             int defIdx = 0;
             double maxPosY = 0;
@@ -776,7 +776,7 @@ namespace MarkCompare
             Rollmap.RedrawAll();
         }
 
-        private void drawMap(PreprocLot lot, LotSelProcParam param)
+        private void drawMap(IPreprocLot lot, LotSelProcParam param)
         {
             try
             {

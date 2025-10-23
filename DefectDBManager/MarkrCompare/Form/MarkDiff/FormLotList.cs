@@ -224,7 +224,7 @@ namespace MarkCompare
 
         }
 
-        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem, PreprocLotManager lotManager)
+        public void AddSummaryData(List<IPreprocLot> lotSummary, PreprocItem procItem, PreprocLotManager lotManager)
         {
             BeginInvoke(new Action(delegate
             {
@@ -263,7 +263,7 @@ namespace MarkCompare
             }));
         }
 
-        public void AddSummaryData(List<PreprocLot> lotSummary, PreprocItem procItem, string filter, PreprocLotManager lotManager)
+        public void AddSummaryData(List<IPreprocLot> lotSummary, PreprocItem procItem, string filter, PreprocLotManager lotManager)
         {
             BeginInvoke(new Action(delegate
             {
@@ -302,7 +302,7 @@ namespace MarkCompare
             }));
         }
 
-        public void AddSummaryData(List<PreprocLot> lotSummary, LotSelProcParam procItem, string filter, PreprocLotManager lotManager)
+        public void AddSummaryData(List<IPreprocLot> lotSummary, LotSelProcParam procItem, string filter, PreprocLotManager lotManager)
         {
             BeginInvoke(new Action(delegate
             {

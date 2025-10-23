@@ -1,4 +1,4 @@
-﻿//#define TEST_MODE
+﻿#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -350,14 +350,15 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.Realtime, ref error);
+                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.Realtime, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, false, false, LogDB.eDataType.Realtime, ref error);
+                IPreprocLot lot = _DBProc.SearchLot(lotName, false, false, LogDB.eDataType.Realtime, ref error);
 #endif
                 if (lot == null) return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
-                lot.ComparePosition(preprocItem);
+                ((PreprocLotFilter)lot).ProcData = preprocItem;
+                lot.ComparePosition();
 
                 string logName = $"CompData";
                 string subPath = _DBProc._SubPath;
@@ -735,15 +736,16 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.SearchLot, ref error);
+                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.SearchLot, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SearchLot, ref error);
+                IPreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SearchLot, ref error);
 #endif
 
                 if (lot == null) return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
-                lot.ComparePosition(preprocItem);
+                ((PreprocLotFilter)lot).ProcData = preprocItem;
+                lot.ComparePosition();
 
                 string logName = $"CompData";
                 string subPath = _DBProc._SubPath;
@@ -1046,15 +1048,16 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchLot_TEST(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
+                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
+                IPreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
 #endif
 
                 if (lot == null) return;
 
                 // 입력 받은 데이터 기준으로 좌표 비교
-                lot.ComparePosition(preprocItem);
+                ((PreprocLotFilter)lot).ProcData = preprocItem;
+                lot.ComparePosition();
 
                 string logName = $"CompData";
                 string subPath = _DBProc._SubPath;
@@ -1186,9 +1189,9 @@ namespace DefectDBManager
             try
             {
 #if TEST_MODE
-                PreprocLot lot = _DBProc.SearchDBLot_TEST(lotName, param, false, ref error);
+                IPreprocLot lot = _DBProc.SearchDBLot_TEST(lotName, param, false, ref error);
 #else
-                PreprocLot lot = _DBProc.SearchDBLot(lotName, param, false, ref error);
+                IPreprocLot lot = _DBProc.SearchDBLot(lotName, param, false, ref error);
 #endif
                 if (lot == null) return;
 
@@ -1204,7 +1207,9 @@ namespace DefectDBManager
                 }
 
                 // 입력 받은 데이터 기준으로 좌표 비교
-                lot.CompareDBPos(param, refLNCD, listLNCD);
+                PreprocLotDB lotDB = (PreprocLotDB)lot;
+                lotDB.SetInfo(param, refLNCD, listLNCD);
+                lot.ComparePosition();
 
                 string logName = $"CompData";
                 string subPath = _DBProc._SubPath;
