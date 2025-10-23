@@ -97,7 +97,7 @@ namespace MarkCompare
         private void OnRollMapMouseClicked(Point real, Point gdi, MouseButtons btn)
         {
             MouseClicked?.Invoke(real, gdi, btn);
-            RollmapDefect defect;
+            //RollmapDefect defect;
 
             double minDist = double.MaxValue;
             double dist;

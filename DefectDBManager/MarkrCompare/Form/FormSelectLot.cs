@@ -666,7 +666,7 @@ namespace MarkCompare
             }
             catch (Exception ex)
             {
-
+                string msg = ex.Message;
             }
         }
 

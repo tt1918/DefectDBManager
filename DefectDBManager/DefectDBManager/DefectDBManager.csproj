@@ -228,6 +228,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Preproc\CompDefectError\CompDBFilterDefect.cs" />
+    <Compile Include="Preproc\CompDefectError\CompDefectErrorDefault.cs" />
+    <Compile Include="Preproc\CompDefectError\CompUserFilterDefect.cs" />
+    <Compile Include="Preproc\CompDefectError\ICompareDefectError.cs" />
     <Compile Include="Preproc\Data\ProcMaterial.cs" />
     <Compile Include="enumError.cs" />
     <Compile Include="Preproc\LotHistory.cs" />

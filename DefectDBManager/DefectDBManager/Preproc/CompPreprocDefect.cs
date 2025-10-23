@@ -49,7 +49,8 @@ namespace DefectDBManager
         /// <summary>
         /// DB Query 및 탐색
         /// </summary>
-        public MarkCompDB _DBProc;
+        public ICompareDefectError _CompUserFD;
+        public ICompareDefectError _CompDBFD;
 
         /// <summary>
         /// DB 접근
@@ -141,12 +142,16 @@ namespace DefectDBManager
             _Option = new Option(0);
             _CodeConfig = new CodeConfig();
 
-            _DBProc = new MarkCompDB(this, _DbConn);
+            _CompUserFD = new CompUserFilterDefect(this, _DbConn);
+            _CompUserFD.DbDestConfig = _DestConfig;
+            _CompUserFD.DBCodeConfig = _CodeConfig;
+            _CompUserFD.DbOption = _Option;
 
-            _DBProc.DbDestConfig = _DestConfig;
-            _DBProc.DBCodeConfig = _CodeConfig;
-            _DBProc.DbOption = _Option;
-            
+            _CompDBFD = new CompDBFilterDefect(this, _DbConn);
+            _CompDBFD.DbDestConfig = _DestConfig;
+            _CompDBFD.DBCodeConfig = _CodeConfig;
+            _CompDBFD.DbOption = _Option;
+
             if (this.threadDBConnect != null)
             {
                 this.threadDBConnect.Join(100);
@@ -242,7 +247,7 @@ namespace DefectDBManager
 
                     ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Live][productIdx];
 
-                    _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
 
                     SearchLiveDefectData(list.Key, lotName, preprocItem, filter);
 
@@ -276,6 +281,9 @@ namespace DefectDBManager
             ProcFilterList filter = LotManager.CrtProcFilter[(int)eProc.Live];
             string lncd = string.Empty;
             bool isSkip = false;
+
+            CompUserFilterDefect comp = _CompUserFD as CompUserFilterDefect;
+
             foreach (var data in filter.Data)
             {
                 // 검색 대상이 아니면 처리하지 않음.
@@ -283,6 +291,8 @@ namespace DefectDBManager
 
                 lncd = string.Empty;
                 isSkip = false;
+
+               
 
                 for (int i = 0; i < LotManager.ProcLNCD.Info.Count; i++)
                 {
@@ -313,14 +323,16 @@ namespace DefectDBManager
                 if (LotManager.Live.LotHistory.Histroy == null)
                     LotManager.Live.CreateLotHistory();
 
+                // 데이터 설정 처리
+                comp.SetListSearchingParam(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime);
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime) == true)
+                if (comp.SearchPTRYOPList_TEST() == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, LotManager.Live.LotHistory, LogDB.eDataType.Realtime) == true)
+                if (comp.SearchPTRYOPList() == true)
 #endif
                 {
                     PTRY0PList list = new PTRY0PList();
-                    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    foreach (var ptry0p in comp.PTRY0PList_Data.Data)
                     {
                         if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
                         else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
@@ -349,10 +361,12 @@ namespace DefectDBManager
             bool usemkcdModel = LotManager.UseMrkctlmstModel;
             try
             {
+                CompUserFilterDefect comp = _CompUserFD as CompUserFilterDefect;
+                comp.SetLotSearchingParam(lotName, false, false, LogDB.eDataType.Realtime);
 #if TEST_MODE
-                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.Realtime, ref error);
+                IPreprocLot lot = comp.SearchLot_TEST(ref error);
 #else
-                IPreprocLot lot = _DBProc.SearchLot(lotName, false, false, LogDB.eDataType.Realtime, ref error);
+                IPreprocLot lot = comp.SearchLot(ref error);
 #endif
                 if (lot == null) return;
 
@@ -361,9 +375,9 @@ namespace DefectDBManager
                 lot.ComparePosition();
 
                 string logName = $"CompData";
-                string subPath = _DBProc._SubPath;
+                string subPath = comp._SubPath;
 
-                LogDB log = _DBProc._LOG;
+                LogDB log = comp._LOG;
                 int idx1 = 0, idx2 = 0;
 
                 int maxStep = preprocItem.Compare.Count; 
@@ -619,7 +633,7 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
-                    _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
 
                     foreach (var item in list.Value.Data)
                     {
@@ -662,6 +676,8 @@ namespace DefectDBManager
             string lncd = string.Empty;
             bool isSkip = false;
 
+            CompUserFilterDefect comp = _CompUserFD as CompUserFilterDefect;
+
             foreach (var data in filter.Data)
             {
                 if (data.Use == false)
@@ -674,6 +690,8 @@ namespace DefectDBManager
                 isSkip = false;
                 data.IsSkip = false;
                 lncd = string.Empty;
+
+
                 for (int i = 0; i < LotManager.ProcLNCD.Info.Count; i++)
                 {
                     if (LotManager.ProcLNCD.Info[i].Name == data.Line)
@@ -703,13 +721,16 @@ namespace DefectDBManager
                 }
 
                 PTRY0PList list = new PTRY0PList();
+
+                // 데이터 설정 처리
+                comp.SetListSearchingParam(lncd, data, stTime, edTime, null, LogDB.eDataType.SearchLot);
 #if TEST_MODE
-                if (_DBProc.SearchPTRYOPList_TEST(lncd, data, stTime, edTime, null, LogDB.eDataType.SearchLot) == true)
+                if (comp.SearchPTRYOPList_TEST() == true)
 #else
-                if (_DBProc.SearchPTRYOPList(lncd, data, stTime, edTime, null, LogDB.eDataType.SearchLot) == true)
+                if (comp.SearchPTRYOPList() == true)
 #endif
                 {
-                    foreach (var ptry0p in _DBProc.PTRY0PList_Data.Data)
+                    foreach (var ptry0p in comp.PTRY0PList_Data.Data)
                     {
                         if (isWildCard == true && ptry0p.Y0ZKNM.Contains(productName) == false) continue;
                         else if (isWildCard == false && ptry0p.Y0ZKNM != productName) continue;
@@ -735,10 +756,12 @@ namespace DefectDBManager
             eSearchError error = eSearchError.Normal;
             try
             {
+                CompUserFilterDefect comp = _CompUserFD as CompUserFilterDefect;
+                comp.SetLotSearchingParam(lotName, true, false, LogDB.eDataType.SearchLot);
 #if TEST_MODE
-                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, false, false, LogDB.eDataType.SearchLot, ref error);
+                IPreprocLot lot = comp.SearchLot_TEST(ref error);
 #else
-                IPreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SearchLot, ref error);
+                IPreprocLot lot = comp.SearchLot(ref error);
 #endif
 
                 if (lot == null) return;
@@ -748,9 +771,9 @@ namespace DefectDBManager
                 lot.ComparePosition();
 
                 string logName = $"CompData";
-                string subPath = _DBProc._SubPath;
+                string subPath = comp._SubPath;
 
-                LogDB log = _DBProc._LOG;
+                LogDB log = comp._LOG;
                 int idx1 = 0, idx2 = 0;
 
                 int maxStep = preprocItem.Compare.Count;
@@ -956,16 +979,11 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                     {
                         if (LotManager.ProcSetting[i].Name == keyData[2])
-                        {
                             preprocItem = LotManager.ProcSetting[i].Clone();
-                            //preprocItem.CompRange = _selParam.CompRange;
-                            //preprocItem.BasicRange = _selParam.BasicRange;
-                            //preprocItem.Judge = _selParam.Judge;
-                            //preprocItem.UseAiResult = _selParam.UseAiResult;
-                        }
+
                     }
 
-                    _DBProc.SetFilterParam(lncd, keyData[1], preprocItem);
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
 
                     foreach (var item in list.Value.Data)
                     {
@@ -1022,7 +1040,7 @@ namespace DefectDBManager
                     if (StopSelectedLotList == true) break;
 
                     string lotName = item.Y0KLOT;
-                    _DBProc.SetDBParam(filter.Title);
+                    (_CompDBFD as CompDBFilterDefect)?.SetDBParam(filter.Title);
 
                     SearchSelectedDBLotDefect(lotName, _selParam);
 
@@ -1047,10 +1065,12 @@ namespace DefectDBManager
             eSearchError error = eSearchError.Normal;
             try
             {
+                CompUserFilterDefect comp = _CompUserFD as CompUserFilterDefect;
+                comp.SetLotSearchingParam(lotName, true, false, LogDB.eDataType.SelectedLot);
 #if TEST_MODE
-                IPreprocLot lot = _DBProc.SearchLot_TEST(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
+                IPreprocLot lot = comp.SearchLot_TEST(ref error);
 #else
-                IPreprocLot lot = _DBProc.SearchLot(lotName, true, false, LogDB.eDataType.SelectedLot, ref error);
+                IPreprocLot lot = comp.SearchLot(ref error);
 #endif
 
                 if (lot == null) return;
@@ -1060,9 +1080,9 @@ namespace DefectDBManager
                 lot.ComparePosition();
 
                 string logName = $"CompData";
-                string subPath = _DBProc._SubPath;
+                string subPath = comp._SubPath;
 
-                LogDB log = _DBProc._LOG;
+                LogDB log = comp._LOG;
                 int idx1 = 0, idx2 = 0;
 
                 int maxStep = preprocItem.Compare.Count;
@@ -1188,10 +1208,12 @@ namespace DefectDBManager
             eSearchError error = eSearchError.Normal;
             try
             {
+                CompDBFilterDefect comp = _CompDBFD as CompDBFilterDefect;
+                comp.SetLotSearchingParam(lotName, param, false);
 #if TEST_MODE
-                IPreprocLot lot = _DBProc.SearchDBLot_TEST(lotName, param, false, ref error);
+                IPreprocLot lot = comp.SearchLot_TEST(ref error);
 #else
-                IPreprocLot lot = _DBProc.SearchDBLot(lotName, param, false, ref error);
+                IPreprocLot lot = comp.SearchLot(ref error);
 #endif
                 if (lot == null) return;
 
@@ -1212,9 +1234,9 @@ namespace DefectDBManager
                 lot.ComparePosition();
 
                 string logName = $"CompData";
-                string subPath = _DBProc._SubPath;
+                string subPath = comp._SubPath;
 
-                LogDB log = _DBProc._LOG;
+                LogDB log = comp._LOG;
                 int idx1 = 0, idx2 = 0;
 
                 int maxIndex = listLNCD.Count;
@@ -1338,7 +1360,6 @@ namespace DefectDBManager
 
             }
         }
-
         #endregion
 
         public void dbReconnect()

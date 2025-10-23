@@ -96,7 +96,7 @@ namespace DefectDBManager.Preproc
                 conn?.Dispose();
         }
 
-        public void SetFilterParam(string lncd, string productName, PreprocItem item, bool skipWildCard = false)
+        public void SetFilterParam(string lncd, string productName, PreprocItem item, bool skipWildCard=false)
         {
             _SearchY0LNCD = lncd;
             _ProductName = productName;
@@ -105,7 +105,7 @@ namespace DefectDBManager.Preproc
             _SubPath = $"{lncd}_{productName}_{item.Name}";
             _SubPath = Helper.ReplaceInvalidPathChar(_SubPath);
 
-            if (skipWildCard)
+            if(skipWildCard)
             {
                 _isWildCard = false;
                 return;
@@ -237,12 +237,12 @@ namespace DefectDBManager.Preproc
                                     continue;
 
                                 // LotHistory에 존재하면 스킵함
-                                if (history != null)
+                                if(history!=null)
                                 {
                                     if (history.IsLotExist(filter.ToString(), data.Y0KLOT))
                                         continue;
                                 }
-
+                                
                                 // 우선 전체 데이터 넣는다.
                                 PTRY0PList_Data.Add(data);
 
@@ -283,7 +283,7 @@ namespace DefectDBManager.Preproc
                 _LOG.LogMode = logType;
 
                 path = Path.Combine(_LOG.GetBcrPath(), path, $"[{lncd}] PTRY0PList_DBResult.txt");
-
+                 
                 _SubPath = strFilter;
                 // Daily Lot DATA 내용을 초기화 한다 
                 PTRY0PList_Data.Clear();
@@ -397,7 +397,7 @@ namespace DefectDBManager.Preproc
                         {
                             while (true)
                             {
-                                if (conn.Connection.State != ConnectionState.Open)
+                                if(conn.Connection.State!=ConnectionState.Open)
                                 {
                                     isDbError = true;
                                     break;
@@ -415,7 +415,7 @@ namespace DefectDBManager.Preproc
                         }
                     }
 
-                    if (isDbError == false)
+                    if (isDbError==false)
                         break;
 
                     if (conn.CheckDisconn() == true)
@@ -439,29 +439,29 @@ namespace DefectDBManager.Preproc
 
                 Log.Write($"[{lotID}] {Language.searchXOFSMST}");
                 success = SearchXOFSMST(lotID);
-                if (success == false)
-                {
+                if (success == false) 
+                { 
                     errOut = eSearchError.XOFSMSTSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchXOFSMST}");
-                    return null;
+                    return null; 
                 }
 
                 Log.Write($"[{lotID}] {Language.searchPTRY0P}");
                 success = SearchPTRY0P(lotID);
                 if (success == false)
-                {
+                { 
                     errOut = eSearchError.PTRY0PSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchPTRY0P}");
-                    return null;
+                    return null; 
                 }
 
                 Log.Write($"[{lotID}] {Language.searchINSPDAT}");
                 success = SearchINSPDAT(lotID);
-                if (success == false)
-                {
+                if (success == false) 
+                { 
                     errOut = eSearchError.INSPDATSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchINSPDAT}");
-                    return null;
+                    return null; 
                 }
 
                 // 첫 검사 랏은 복사하여둔다
@@ -469,11 +469,11 @@ namespace DefectDBManager.Preproc
 
                 Log.Write($"[{lotID}] {Language.searchFLTDAT}");
                 success = SearchFLTDAT();
-                if (success == false)
-                {
+                if (success == false) 
+                { 
                     errOut = eSearchError.FLTDATSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchFLTDAT}");
-                    return null;
+                    return null; 
                 }
                 Log.Write($"[{lotID}] {Language.finishLotSearch}");
                 // 처리 완료되면 데이터 정리
@@ -532,7 +532,7 @@ namespace DefectDBManager.Preproc
                 Log.Write($"[{lotID}] {Language.searchXOFSMST}");
                 success = SearchXOFSMST_TEST(lotID);
                 if (success == false)
-                {
+                { 
                     errOut = eSearchError.XOFSMSTSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchXOFSMST}");
                     return null;
@@ -540,20 +540,20 @@ namespace DefectDBManager.Preproc
 
                 Log.Write($"[{lotID}] {Language.searchPTRY0P}");
                 success = SearchPTRY0P_TEST(lotID);
-                if (success == false)
-                {
+                if (success == false) 
+                { 
                     errOut = eSearchError.PTRY0PSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchPTRY0P}");
-                    return null;
+                    return null; 
                 }
 
                 Log.Write($"[{lotID}] {Language.searchINSPDAT}");
                 success = SearchINSPDAT_TEST(lotID);
-                if (success == false)
+                if (success == false) 
                 {
                     errOut = eSearchError.INSPDATSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchINSPDAT}");
-                    return null;
+                    return null; 
                 }
 
                 // 첫 검사 랏은 복사하여둔다
@@ -561,11 +561,11 @@ namespace DefectDBManager.Preproc
 
                 Log.Write($"[{lotID}] {Language.searchFLTDAT}");
                 success = SearchFLTDAT_TEST(lotID);
-                if (success == false)
-                {
+                if (success == false) 
+                { 
                     errOut = eSearchError.FLTDATSearchErr;
                     Log.Write($"[{lotID}] {Language.errorSearchFLTDAT}");
-                    return null;
+                    return null; 
                 }
 
                 // 처리 완료되면 데이터 정리
@@ -670,7 +670,7 @@ namespace DefectDBManager.Preproc
                 foreach (var opList in _DbResult.PTRY0P)
                 {
                     PTRY0PData result = opList.Data.FirstOrDefault(x => x.Y0KLOT == lotID);
-                    if (result != null)
+                    if(result!=null)
                     {
                         _DbResult.SelectedDbLNCD = result.LNCD;
                         break;
@@ -812,7 +812,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchXOFSMST(string lotID)
+        public bool SearchXOFSMST(string lotID)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -847,7 +847,7 @@ namespace DefectDBManager.Preproc
                         {
                             while (true)
                             {
-                                if (conn.Connection.State != ConnectionState.Open)
+                                if(conn.Connection.State!=ConnectionState.Open)
                                 {
                                     isDbError = true;
                                     break;
@@ -863,9 +863,9 @@ namespace DefectDBManager.Preproc
                         }
                     }
 
-                    if (isDbError == false)
+                    if (isDbError==false)
                         break;
-
+                    
                     if (conn.CheckDisconn() == true)
                     {
                         while (!conn.Connect())
@@ -888,7 +888,7 @@ namespace DefectDBManager.Preproc
                 return false;
             }
         }
-        private bool SearchXOFSMST_TEST(string lotID)
+        public bool SearchXOFSMST_TEST(string lotID)
         {
             try
             {
@@ -916,7 +916,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchAreaDel(string lotID, ref AREADELList listAreaDel)
+        public bool SearchAreaDel(string lotID, ref AREADELList listAreaDel)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -961,7 +961,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchPTRYLP(string lotID)
+        public bool SearchPTRYLP(string lotID)
         {
             // 연결 확인
             if (conn?.IsConnected() == false)
@@ -1006,12 +1006,12 @@ namespace DefectDBManager.Preproc
             }
             catch (Exception ex)
             {
-                Log.Write($"[Error] DB Serach PTRYLP error message : [{ex.Message}]");
+                Log.Write($"[Error] DB Serach PTRY0P error message : [{ex.Message}]");
                 return false;
             }
         }
 
-        private bool SearchPTRY0P(string lotID)
+        public bool SearchPTRY0P(string lotID)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -1052,9 +1052,9 @@ namespace DefectDBManager.Preproc
                         {
                             while (true)
                             {
-                                if (conn.Connection.State != ConnectionState.Open)
+                                if(conn.Connection.State!=ConnectionState.Open)
                                 {
-                                    isDbError = true;
+                                    isDbError=true;
                                     break;
                                 }
                                 if (reader.Read() == false) break;
@@ -1111,7 +1111,7 @@ namespace DefectDBManager.Preproc
 
                     if (isDbError == false)
                         break;
-
+                    
                     if (conn.CheckDisconn() == true)
                     {
                         while (!conn.Connect())
@@ -1133,7 +1133,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchPTRY0P_TEST(string lotID)
+        public bool SearchPTRY0P_TEST(string lotID)
         {
 
             try
@@ -1184,12 +1184,12 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchMRKCTLMST(string logID, LotSelProcParam procParam)
+        public bool SearchMRKCTLMST(string logID, LotSelProcParam procParam)
         {
             return searchMRKCTLMSTfromDB(logID, procParam);
         }
 
-        private bool SearchMRKCTLMST_TEST(string logID, LotSelProcParam procParam)
+        public bool SearchMRKCTLMST_TEST(string logID, LotSelProcParam procParam)
         {
             return searchMRKCTLMSTfromDB_TEST(logID, procParam);
         }
@@ -1255,7 +1255,7 @@ namespace DefectDBManager.Preproc
                                         logData = string.Format($"{_DbResult.MRKCTLMST.Count}\t-\t{data.ToString()}");
                                         _LOG.WriteLoadData(_SubPath, logData, _DbResult.MRKCTLMST.Count, "MRKCTLMST", 0.0);
                                         // 조건문 추가해야 함
-
+                                        
                                         _DbResult.AddDicMRKCTLMST(i, j, data);
                                     }
                                 }
@@ -1360,7 +1360,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchINSPDAT(string lotID)
+        public bool SearchINSPDAT(string lotID)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -1470,7 +1470,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchINSPDAT_TEST(string lotID)
+        public bool SearchINSPDAT_TEST(string lotID)
         {
             int procStep = 0;
             try
@@ -1545,7 +1545,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchFLTDAT()
+        public bool SearchFLTDAT()
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -1677,7 +1677,7 @@ namespace DefectDBManager.Preproc
 
                                     while (true)
                                     {
-                                        if (conn.Connection.State != ConnectionState.Open)
+                                        if(conn.Connection.State!=ConnectionState.Open)
                                         {
                                             isDbError = true;
                                             break;
@@ -1737,7 +1737,7 @@ namespace DefectDBManager.Preproc
                                         preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
                                         defectCnt[fcdIdx]++;
                                     }
-
+                                    
                                     if (isDbError == false)
                                     {
                                         // 그렇지 않고 Compare Data이면 PreMarkData에 입력
@@ -1754,7 +1754,7 @@ namespace DefectDBManager.Preproc
 
                             if (isDbError == false)
                                 break;
-
+                            
                             if (conn.CheckDisconn() == true)
                             {
                                 while (!conn.Connect())
@@ -1782,7 +1782,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchFLTDAT_TEST(string lotID)
+        public bool SearchFLTDAT_TEST(string lotID)
         {
             float maxXPos = 0;
             float minXPos = float.MaxValue;
@@ -1973,7 +1973,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchFLTDAT_DB(LotSelProcParam procParam)
+        public bool SearchFLTDAT_DB(LotSelProcParam procParam)
         {
             // 연결 확인
             //if (conn?.IsConnected() == false)
@@ -2047,10 +2047,10 @@ namespace DefectDBManager.Preproc
                                     break;
                                 }
                             }
-                            if (mkcdIdx != -1) break;
+                            if(mkcdIdx !=-1) break;
                         }
 
-                        if (mkcdIdx == -1)
+                        if(mkcdIdx==-1)
                         {
                             continue;
                         }
@@ -2091,7 +2091,7 @@ namespace DefectDBManager.Preproc
                         }
                         else
                         {
-                            dataTarget = eProcDataType.Compare;
+                            dataTarget = eProcDataType.Compare;    
                         }
 
                         while (true)
@@ -2143,7 +2143,7 @@ namespace DefectDBManager.Preproc
                                         _LOG.WriteLoadData(_SubPath, logData, dataCnt, "FAULTDAT", 0.0);
 
                                         // MKCD Model에서 데이터 가져와서 다시 탐색함. 
-
+                                        
                                         if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
                                         if (finalXPos < 0.0f) continue;
 
@@ -2208,7 +2208,7 @@ namespace DefectDBManager.Preproc
             }
         }
 
-        private bool SearchFLTDAT_DB_TEST(LotSelProcParam procParam, string lotID)
+        public bool SearchFLTDAT_DB_TEST(LotSelProcParam procParam, string lotID)
         {
             float maxXPos = 0;
             float minXPos = float.MaxValue;
@@ -2282,9 +2282,9 @@ namespace DefectDBManager.Preproc
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;
                         }
-                        else
+                        else    
                             dataTarget = eProcDataType.Compare;
-
+                            
 
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
@@ -2322,7 +2322,7 @@ namespace DefectDBManager.Preproc
                                         else tmpKey = data.FLTID;
 
                                         // MKCD Model에서 데이터 가져와서 다시 탐색함. 
-
+                                       
                                         if (data.OFFSET < inspStartY || data.OFFSET > inspEndY) continue;
                                         if (finalXPos < 0.0f) continue;
 
@@ -2371,11 +2371,12 @@ namespace DefectDBManager.Preproc
             }
         }
 
+
         /// <summary>
         ///  현재 랏 생산할 데이터가 확인이 되면 다음 예약랏 FAULTDAT 데이터 탐색 위해서 전체 복사한다.
         ///  
         /// </summary>
-        private void InspDatToFCDArray()
+        public void InspDatToFCDArray()
         {
             int count = System.Enum.GetValues(typeof(eFCD)).Length;
             INSPDATList[] inspDat = new INSPDATList[count];
@@ -2390,6 +2391,57 @@ namespace DefectDBManager.Preproc
             }
 
             _DbResult.INSPDATArray = inspDat;
+        }
+
+        /// <summary>
+        /// 현재 검사 중인 Lot의 INSPDAT 공정 별 갯수
+        /// </summary>
+        /// <returns></returns>
+        public int[] GetCurrentInspDatCnt()
+        {
+            int size = System.Enum.GetValues(typeof(eFCD)).Length;
+
+            int[] count = new int[size];
+
+            // FLTDAT에 정보 담겨 있어서 INSPDAT 대신에 FLTDAT 검색 결과로 대신 처리함.
+            for (int i = 0; i < size; i++)
+                count[i] = FaultData.FLTDAT[i].Count;
+
+            return count;
+        }
+
+        /// <summary>
+        /// 각 해당 공정의 불량 데이터를 얻어온다. 
+        /// </summary>
+        /// <param name="fcd"> 공정 유형 0: 연신, 1: 점착, 2: 그외 </param>
+        /// <param name="index"> 검색하고자 하는 전공정 인덱스 </param>
+        /// <param name="LNCD"> 출력할 라인 코드 </param>
+        /// <param name="pts"> 결점 정보 </param>
+        public void GetSelectedPreprocDefects(eFCD fcd, int index, out string LNCD, out List<System.Drawing.PointF> pts)
+        {
+            LNCD = "";
+            pts = new List<System.Drawing.PointF>();
+
+            // 리스트 크기 얻어옴
+            int size = FaultData.FLTDAT[(int)fcd].Count;
+
+            // 입력 인덱스랑 크기 비교
+            if (index >= size) return;
+
+            // 해당 공정 코드 얻어옴.
+            LNCD = FaultData.FLTDAT[(int)fcd][index].LNCD;
+
+            // FltData 크기 얻어옴
+            int fltSize = FaultData.FLTDAT[(int)fcd][index].Data.Count;
+
+            // Data 검색해서 추가
+            foreach (FaultDatum item in FaultData.FLTDAT[(int)fcd][index].Data.Data)
+            {
+                System.Drawing.PointF pt = new System.Drawing.PointF();
+                pt.X = item.XPOS_M;
+                pt.Y = (float)item.OFFSET;
+                pts.Add(pt);
+            }
         }
     }
 }
