@@ -169,6 +169,10 @@ namespace DefectDBManager.Preproc
 
             return item;
         }
+        public string LogString()
+        {
+            return $"[{MinXRange},{MinYRange}]~[{MaxXRange},{MaxYRange}]";
+        }
     }
     #endregion
 

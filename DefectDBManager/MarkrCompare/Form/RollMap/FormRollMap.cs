@@ -138,7 +138,7 @@ namespace MarkCompare
 
                 if (_isSplit)
                 {
-                    foreach (var def in defect1.Comp1)
+                    foreach (var def in defect1.Comp)
                     {
                         if (def.Key.Item1 == _key[0] && def.Key.Item2 == _key[1])
                         {
@@ -168,7 +168,7 @@ namespace MarkCompare
                 }
                 else
                 {
-                    foreach (var def in defect1.Comp1)
+                    foreach (var def in defect1.Comp)
                     {
                         if (def.Key.Item1 == _key[0])
                         {
@@ -442,7 +442,7 @@ namespace MarkCompare
 
                     if (isSplit==false)
                     {
-                        var compList1 = item.Comp1.Where(kv => kv.Key.Item1 == key[0]).ToList();
+                        var compList1 = item.Comp.Where(kv => kv.Key.Item1 == key[0]).ToList();
                         if (compList1.Count >0)
                         {
                             errIdx = -1;
@@ -533,9 +533,9 @@ namespace MarkCompare
                     }
                     else
                     {
-                        for (int j = 0; j < item.Comp1[(key[0], key[1])].GetLength(0); j++)
+                        for (int j = 0; j < item.Comp[(key[0], key[1])].GetLength(0); j++)
                         {
-                            var compList = item.Comp1[(key[0], key[1])][j];
+                            var compList = item.Comp[(key[0], key[1])][j];
                             PrevCompareDefect tmpItem=new PrevCompareDefect();
                             bool isSet = false, isSetC = false;
                             for (int k = 0; k < compList.Count; k++)
@@ -582,7 +582,7 @@ namespace MarkCompare
                         // Error area 생성
                         if (errIdx>=0)
                         {
-                            foreach (var comp in item.Comp1[(key[0], key[1])][errIdx])
+                            foreach (var comp in item.Comp[(key[0], key[1])][errIdx])
                             {
                                 double x = (int)(comp.XPOS_M / procItem.Judge.X) * procItem.Judge.X;
                                 double y = (int)(comp.OFFSET / judgeY1000) * judgeY1000;
@@ -659,7 +659,7 @@ namespace MarkCompare
                 oldX = item.Base.XPOS_M;
                 oldY = item.Base.OFFSET;
 
-                var compList1 = item.Comp1.Where(kv => kv.Key.Item1 == key[0]).ToList();
+                var compList1 = item.Comp.Where(kv => kv.Key.Item1 == key[0]).ToList();
                 if (compList1.Count > 0)
                 {
                     errIdx = -1;
@@ -851,7 +851,7 @@ namespace MarkCompare
                         oldY = item.Base.OFFSET;
                         if (_isSplit == false)
                         {
-                            var compList1 = item.Comp1.Where(kv => kv.Key.Item1 == key[0]).ToList();
+                            var compList1 = item.Comp.Where(kv => kv.Key.Item1 == key[0]).ToList();
                             if (compList1.Count > 0)
                             {
                                 errIdx = -1;
@@ -957,9 +957,9 @@ namespace MarkCompare
                         }
                         else
                         {
-                            for (int j = 0; j < item.Comp1[(key[0], key[1])].GetLength(0); j++)
+                            for (int j = 0; j < item.Comp[(key[0], key[1])].GetLength(0); j++)
                             {
-                                var compList = item.Comp1[(key[0], key[1])][j];
+                                var compList = item.Comp[(key[0], key[1])][j];
                                 PrevCompareDefect tmpItem = new PrevCompareDefect();
                                 bool isSet = false;
                                 for (int k = 0; k < compList.Count; k++)
@@ -1002,7 +1002,7 @@ namespace MarkCompare
                             // Error area 생성
                             if (errIdx > 0)
                             {
-                                foreach (var comp in item.Comp1[(key[0], key[1])][errIdx])
+                                foreach (var comp in item.Comp[(key[0], key[1])][errIdx])
                                 {
                                     double x = (int)(comp.XPOS_M / param.Judge.X) * param.Judge.X;
                                     double y = (int)(comp.OFFSET / judgeY1000) * judgeY1000;

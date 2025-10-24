@@ -113,7 +113,5 @@ namespace DefectDBManager.Preproc
             }
         }
         #endregion
-
-
     }
 }

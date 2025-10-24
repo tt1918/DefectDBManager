@@ -85,7 +85,7 @@ namespace DefectDBManager
                                                         Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
                                                         Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
-                        comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
+                        comp.AddCompData(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                     }
                 }
                 #endregion
@@ -119,7 +119,7 @@ namespace DefectDBManager
                                                             Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
                                                             Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                             /*&& x.FAULTID == item.FAULTID*/); // 결점 정보가 같고
-                            comp.AddComp1Data(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
+                            comp.AddCompData(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                         }
                     }
                 }
@@ -176,11 +176,11 @@ namespace DefectDBManager
                 {
                     if (MarkCompList.Data.Count != 0)
                     {
-                        bool exists = MarkCompList.Data[0].Comp1.Keys.Any(k => k.Item1 == procData.Compare[i].LNCD);
+                        bool exists = MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == procData.Compare[i].LNCD);
 
                         if (exists == true)
                         {
-                            foreach (var aaa in MarkCompList.Data[0].Comp1)
+                            foreach (var aaa in MarkCompList.Data[0].Comp)
                             {
                                 if (aaa.Key.Item1 == procData.Compare[i].LNCD)
                                 {
@@ -196,17 +196,17 @@ namespace DefectDBManager
 
                                 count = 0;
                                 int idx = Comp1Cnt.Count - 1;
-                                foreach (var aaa in MarkCompList.Data[0].Comp1)
+                                foreach (var aaa in MarkCompList.Data[0].Comp)
                                 {
                                     if (aaa.Key.Item1 == procData.Compare[i].LNCD)
                                     {
                                         foreach (var item in MarkCompList.Data)
                                         {
-                                            if (item.Comp1[aaa.Key][0].Count > 0)
+                                            if (item.Comp[aaa.Key][0].Count > 0)
                                                 Comp1Cnt[idx][count, 0]++;
 
-                                            for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
-                                                if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++;
+                                            for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
+                                                if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++;
                                         }
                                         count++;
                                     }
@@ -221,17 +221,17 @@ namespace DefectDBManager
                 {
                     Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
                     int idx = Comp1Cnt.Count - 1;
-                    foreach (var aaa in MarkCompList.Data[0].Comp1)
+                    foreach (var aaa in MarkCompList.Data[0].Comp)
                     {
                         if (aaa.Key.Item1 == procData.Compare[i].LNCD)
                         {
                             foreach (var item in MarkCompList.Data)
                             {
-                                if (item.Comp1[aaa.Key][0].Count > 0)
+                                if (item.Comp[aaa.Key][0].Count > 0)
                                     Comp1Cnt[idx][0, 0]++;
 
-                                for (int j = 1; j < item.Comp1[aaa.Key].GetLength(0); j++)
-                                    if (item.Comp1[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                                for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
+                                    if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
                             }
                         }
                     }

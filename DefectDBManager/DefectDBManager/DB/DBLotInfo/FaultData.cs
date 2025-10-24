@@ -154,7 +154,7 @@ namespace DefectDBManager
         public float SIZE_Y;
         // 표시용 데이터
         //////////////////////////////////////////////////////////
-    
+
         public MarkingFaultDatum Clone()
         {
             MarkingFaultDatum data = new MarkingFaultDatum();
@@ -340,6 +340,12 @@ namespace DefectDBManager
             //RK는 CAMNO별로 Defect Class 를 구분
             if (csvType == eCSV_TYPE.NITTO_RK || csvType == eCSV_TYPE.NITTO_RTS || csvType == eCSV_TYPE.KORENO_RK_IJP)
                 this.DefectLine += Global.MaxDefectLine * data.CAMNO;
+        }
+
+        public string LogString()
+        {
+            string msg = String.Format($"{CTLNO}, {FLTNO}, {OFFSET:0.00}, {YPOS_M:0.00}, {XPOS_M:0.00}, {FAULTID}, {SIZE:0.00}, {CAM_NO}, {MNTTID}, {BCNO}");
+            return msg;
         }
     }
 
@@ -797,6 +803,4 @@ namespace DefectDBManager
         }
     }
     #endregion FalutFunction
-
-
 }

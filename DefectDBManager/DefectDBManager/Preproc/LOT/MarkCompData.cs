@@ -18,7 +18,7 @@ namespace DefectDBManager
         /// 1: 불량 갯수
         /// </summary>
 
-        public Dictionary<(string, string), List<MarkingFaultDatum>[]> Comp1 { get; set; } = null;
+        public Dictionary<(string, string), List<MarkingFaultDatum>[]> Comp { get; set; } = null;
 
         public int IdxSize { get; set; }
 
@@ -26,20 +26,20 @@ namespace DefectDBManager
         {
             Base = new MarkingFaultDatum();
 
-            Comp1 = new Dictionary<(string, string), List<MarkingFaultDatum>[]>();
+            Comp = new Dictionary<(string, string), List<MarkingFaultDatum>[]>();
         }
 
-        public void AddComp1Data(string lncd, string ctrno, int idx, List<MarkingFaultDatum> data)
+        public void AddCompData(string lncd, string ctrno, int idx, List<MarkingFaultDatum> data)
         {
             var key = (lncd, ctrno);
 
             // 키가 없으면 초기화
-            if (!Comp1.ContainsKey(key))
+            if (!Comp.ContainsKey(key))
             {
                 var listArray = new List<MarkingFaultDatum>[IdxSize];
                 for (int i = 0; i < IdxSize; i++)
                     listArray[i] = new List<MarkingFaultDatum>();
-                Comp1[key] = listArray;
+                Comp[key] = listArray;
             }
 
             // 예외 방지: idx 유효성 확인
@@ -47,7 +47,7 @@ namespace DefectDBManager
                 throw new IndexOutOfRangeException($"인덱스 {idx}는 유효하지 않습니다. 0 ~ {IdxSize - 1} 사이여야 합니다.");
 
             foreach( var item in data)
-                Comp1[key][idx].Add(item);
+                Comp[key][idx].Add(item);
         }
 
     }
