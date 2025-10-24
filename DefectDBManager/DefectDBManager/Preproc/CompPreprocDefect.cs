@@ -1,4 +1,4 @@
-﻿#define TEST_MODE
+﻿//#define TEST_MODE
 
 using DefectDBManager.DB;
 using DefectDBManager.Preproc;
@@ -343,7 +343,6 @@ namespace DefectDBManager
                     // 리스트 데이터 추가
                     LotManager.Live.AddProduct(data.ToString(), list);
                 }
-
                 data.ResetTime();
             }
         }
@@ -423,12 +422,12 @@ namespace DefectDBManager
                             bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
                             if (exists == true)
                             {
-                                foreach (var aaa in lot.MarkCompList.Data[0].Comp)
+                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == preprocItem.Compare[i].LNCD)
+                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
                                     {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{aaa.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[aaa.Key].GetLength(0); // 비교 거리 데이터 확인용
+                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
+                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
 
                                         for (int j = 0; j < nStep1; j++)
                                         {
@@ -438,11 +437,11 @@ namespace DefectDBManager
                                             idx1 = 0;
                                             foreach (var item1 in lot.MarkCompList.Data)
                                             {
-                                                if (item1.Comp[aaa.Key][j].Count > 0)
+                                                if (item1.Comp[compItem.Key][j].Count > 0)
                                                 {
                                                     log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[aaa.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[aaa.Key][j][k].LogString()}"), idx1, logName, 0.0);
+                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
+                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);
                                                     idx1++;
                                                 }
                                             }
@@ -788,12 +787,12 @@ namespace DefectDBManager
                             bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
                             if (exists == true)
                             {
-                                foreach (var aaa in lot.MarkCompList.Data[0].Comp)
+                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == preprocItem.Compare[i].LNCD)
+                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
                                     {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{aaa.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[aaa.Key].GetLength(0); // 비교 거리 데이터 확인용
+                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
+                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
 
                                         for (int j = 0; j < nStep1; j++)
                                         {
@@ -803,11 +802,11 @@ namespace DefectDBManager
                                             idx1 = 0;
                                             foreach (var item1 in lot.MarkCompList.Data)
                                             {
-                                                if (item1.Comp[aaa.Key][j].Count > 0)
+                                                if (item1.Comp[compItem.Key][j].Count > 0)
                                                 {
                                                     log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[aaa.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[aaa.Key][j][k].LogString()}"), idx1, logName, 0.0);      
+                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
+                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);      
                                                     idx1++;
                                                 }
                                             }
@@ -1066,12 +1065,12 @@ namespace DefectDBManager
                             bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
                             if (exists == true)
                             {
-                                foreach (var aaa in lot.MarkCompList.Data[0].Comp)
+                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == preprocItem.Compare[i].LNCD)
+                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
                                     {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{aaa.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[aaa.Key].GetLength(0); // 비교 거리 데이터 확인용
+                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
+                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
 
                                         for (int j = 0; j < nStep1; j++)
                                         {
@@ -1081,11 +1080,11 @@ namespace DefectDBManager
                                             idx1 = 0;
                                             foreach (var item1 in lot.MarkCompList.Data)
                                             {
-                                                if (item1.Comp[aaa.Key][j].Count > 0)
+                                                if (item1.Comp[compItem.Key][j].Count > 0)
                                                 {
                                                     log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[aaa.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[aaa.Key][j][k].LogString()}"), idx1, logName, 0.0);    
+                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
+                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);    
                                                     idx1++;
                                                 }
                                             }
@@ -1186,12 +1185,12 @@ namespace DefectDBManager
                             bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == listLNCD[i]);
                             if (exists == true)
                             {
-                                foreach (var aaa in lot.MarkCompList.Data[0].Comp)
+                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == listLNCD[i])
+                                    if (compItem.Key.Item1 == listLNCD[i])
                                     {
-                                        logName = $"CompData_{refLNCD}_{listLNCD[i]}_{aaa.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[aaa.Key].GetLength(0); // 비교 거리 데이터 확인용
+                                        logName = $"CompData_{refLNCD}_{listLNCD[i]}_{compItem.Key.Item2}";
+                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
 
                                         for (int j = 0; j < nStep1; j++)
                                         {
@@ -1201,11 +1200,11 @@ namespace DefectDBManager
                                             idx1 = 0;
                                             foreach (var item1 in lot.MarkCompList.Data)
                                             {
-                                                if (item1.Comp[aaa.Key][j].Count > 0)
+                                                if (item1.Comp[compItem.Key][j].Count > 0)
                                                 {
                                                     log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[aaa.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[aaa.Key][j][k].LogString()}"), idx1, logName, 0.0);
+                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
+                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);
                                                     idx1++;
                                                 }
                                             }

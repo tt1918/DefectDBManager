@@ -34,7 +34,7 @@ namespace DefectDBManager
 
         eCompResult CompResult { get; }
 
-        List<int[,]> Comp1Cnt { get; }
+        List<int[,]> CompCnt { get; }
 
         Preproc.LOT.CompResult LotSummary { get; }
 

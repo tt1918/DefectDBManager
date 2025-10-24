@@ -181,7 +181,7 @@ namespace DefectDBManager
             }
 
             MarkCompList.SetCTLNOArray(compLNCD.Count);
-            Comp1Cnt = new List<int[,]>();
+            CompCnt = new List<int[,]>();
             for (int i = 0; i < compLNCD.Count; i++)
             {
                 if (param.UseSplit == true)
@@ -193,30 +193,30 @@ namespace DefectDBManager
                         bool exists = MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == compLNCD[i]);
                         if (exists == true)
                         {
-                            foreach (var aaa in MarkCompList.Data[0].Comp)
+                            foreach (var compItem in MarkCompList.Data[0].Comp)
                             {
-                                if (aaa.Key.Item1 == compLNCD[i])
+                                if (compItem.Key.Item1 == compLNCD[i])
                                 {
-                                    MarkCompList.CTLNO[i].Add(aaa.Key.Item2);
+                                    MarkCompList.CTLNO[i].Add(compItem.Key.Item2);
                                     count++;
                                 }
                             }
-                            if (count == 0) Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
+                            if (count == 0) CompCnt.Add(new int[1, param.CompRange.Count + 1]);
                             else // 여기서 데이터 추가함
                             {
-                                Comp1Cnt.Add(new int[count, param.CompRange.Count + 1]);
+                                CompCnt.Add(new int[count, param.CompRange.Count + 1]);
                                 count = 0;
-                                int idx = Comp1Cnt.Count - 1;
-                                foreach (var aaa in MarkCompList.Data[0].Comp)
+                                int idx = CompCnt.Count - 1;
+                                foreach (var compItem in MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == compLNCD[i])
+                                    if (compItem.Key.Item1 == compLNCD[i])
                                     {
                                         foreach (var item in MarkCompList.Data)
                                         {
-                                            if (item.Comp[aaa.Key][0].Count > 0)
-                                                Comp1Cnt[idx][count, 0]++;
-                                            for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
-                                                if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++;
+                                            if (item.Comp[compItem.Key][0].Count > 0)
+                                                CompCnt[idx][count, 0]++;
+                                            for (int j = 1; j < item.Comp[compItem.Key].GetLength(0); j++)
+                                                if (item.Comp[compItem.Key][j].Count > 0) CompCnt[idx][count, j]++;
                                         }
                                         count++;
                                     }
@@ -224,29 +224,49 @@ namespace DefectDBManager
                             }
                         }
                         else
-                            Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
+                            CompCnt.Add(new int[1, param.CompRange.Count + 1]);
                     }
                 }
                 else
                 {
-                    Comp1Cnt.Add(new int[1, param.CompRange.Count + 1]);
-                    int idx = Comp1Cnt.Count - 1;
-                    foreach (var aaa in MarkCompList.Data[0].Comp)
+                    CompCnt.Add(new int[1, param.CompRange.Count + 1]);
+                    int idx = CompCnt.Count - 1;
+                    foreach (var compItem in MarkCompList.Data[0].Comp)
                     {
-                        if (aaa.Key.Item1 == compLNCD[i])
+                        if (compItem.Key.Item1 == compLNCD[i])
                         {
                             foreach (var item in MarkCompList.Data)
                             {
-                                if (item.Comp[aaa.Key][0].Count > 0)
-                                    Comp1Cnt[idx][0, 0]++;
+                                if (item.Comp[compItem.Key][0].Count > 0)
+                                    CompCnt[idx][0, 0]++;
 
-                                for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
-                                    if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                                for (int j = 1; j < item.Comp[compItem.Key].GetLength(0); j++)
+                                    if (item.Comp[compItem.Key][j].Count > 0) CompCnt[idx][0, j]++;
                             }
                         }
                     }
                 }
             }
+
+            #region 결점 다발 계산
+            void AddBunchDefects(int[] target, int[] source)
+            {
+                for (int i = 0; i < target.Length; i++)
+                    target[i] += source[i];
+            }
+
+            void CheckBunchDefects(CompSummary summary, int[] cntSum)
+            {
+                for (int i = 0; i < cntSum.Length; i++)
+                {
+                    if (cntSum[i] > param.BunchCount)
+                    {
+                        summary.IsBunchDefects = true;
+                        break;
+                    }
+                }
+            }
+            #endregion
 
             bool isEmpty = true;
             bool isError = false;
@@ -261,15 +281,31 @@ namespace DefectDBManager
                     summary.Name = compLNCD[idx];
                     LotSummary.Summary.Add(summary);
 
-                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+                    #region 결점 다발 체크
+                    int[] cntSum = new int[10000];
+                    AddBunchDefects(cntSum, FaultData.DefectCnt1M);
+
+                    foreach (var line in FaultData.PreMarkData)
+                    {
+                        foreach (var item in line)
+                        {
+                            if (item.LNCD == CompLNCD[idx])
+                                AddBunchDefects(cntSum, item.DefectCnt1M);
+                        }
+                    }
+
+                    CheckBunchDefects(summary, cntSum);
+                    #endregion
+
+                    for (int idx1 = 0; idx1 < CompCnt[idx].GetLength(0); idx1++)
                     {
                         isEmpty = true;
-                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
+                        summary.BasicCount = CompCnt[idx][idx1, 0];
 
-                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                        for (int i = 0; i < CompCnt[idx].GetLength(1); i++)
                         {
-                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
-                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                            if (i > 0) summary.CompCount.Add(CompCnt[idx][idx1, i]);
+                            if (CompCnt[idx][idx1, i] > 0) isEmpty = false;
                         }
                         if (isEmpty)
                         {
@@ -282,16 +318,16 @@ namespace DefectDBManager
 
                         for (int i = 1; i < param.CompRange.Count + 1; i++)
                         {
-                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                            if (CompCnt[idx][idx1, 0] > 0)
                             {
-                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                                result[i] = (double)((double)CompCnt[idx][idx1, i] / (double)CompCnt[idx][idx1, 0]) * 100.0;
                                 summary.CompRate.Add(result[i]);
                             }
                             else
                             {
-                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                if (CompCnt[idx][idx1, i] > 0)
                                 {
-                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    result[i] = (double)CompCnt[idx][idx1, i] * 100.0;
                                     summary.CompRate.Add(result[i]);
                                 }
                                 else
@@ -313,7 +349,7 @@ namespace DefectDBManager
                 }
                 else
                 {
-                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+                    for (int idx1 = 0; idx1 < CompCnt[idx].GetLength(0); idx1++)
                     {
                         CompSummary summary = new CompSummary();
                         summary.Name = compLNCD[idx];
@@ -322,12 +358,29 @@ namespace DefectDBManager
                         else summary.CTLNO = string.Empty;
 
                         LotSummary.Summary.Add(summary);
-                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
-                        isEmpty = true;
-                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+
+                        #region 결점 다발 체크
+                        int[] cntSum = new int[10000];
+                        AddBunchDefects(cntSum, FaultData.DefectCnt1M);
+
+                        foreach (var line in FaultData.PreMarkData)
                         {
-                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
-                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                            foreach (var item in line)
+                            {
+                                if (item.LNCD == CompLNCD[idx] && item.CTLNO == summary.CTLNO)
+                                    AddBunchDefects(cntSum, item.DefectCnt1M);
+                            }
+                        }
+
+                        CheckBunchDefects(summary, cntSum);
+                        #endregion
+
+                        summary.BasicCount = CompCnt[idx][idx1, 0];
+                        isEmpty = true;
+                        for (int i = 0; i < CompCnt[idx].GetLength(1); i++)
+                        {
+                            if (i > 0) summary.CompCount.Add(CompCnt[idx][idx1, i]);
+                            if (CompCnt[idx][idx1, i] > 0) isEmpty = false;
                         }
                         if (isEmpty)
                         {
@@ -338,16 +391,16 @@ namespace DefectDBManager
                         result[0] = 100.0;
                         for (int i = 1; i < param.CompRange.Count + 1; i++)
                         {
-                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                            if (CompCnt[idx][idx1, 0] > 0)
                             {
-                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                                result[i] = (double)((double)CompCnt[idx][idx1, i] / (double)CompCnt[idx][idx1, 0]) * 100.0;
                                 summary.CompRate.Add(result[i]);
                             }
                             else
                             {
-                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                if (CompCnt[idx][idx1, i] > 0)
                                 {
-                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    result[i] = (double)CompCnt[idx][idx1, i] * 100.0;
                                     summary.CompRate.Add(result[i]);
                                 }
                                 else

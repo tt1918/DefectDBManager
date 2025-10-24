@@ -2039,9 +2039,9 @@ namespace DefectDBManager.Preproc
                         int mkcdIdx = -1;
                         for (int mkcdI = 0; mkcdI < _DbResult.INSPDAT[fcdIdx].Count; mkcdI++)
                         {
-                            for (int aaa = 0; aaa < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; aaa++)
+                            for (int idx = 0; idx < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; idx++)
                             {
-                                if (_DbResult.INSPDAT[fcdIdx][mkcdI][aaa].LNCD == inspLNCD)
+                                if (_DbResult.INSPDAT[fcdIdx][mkcdI][idx].LNCD == inspLNCD)
                                 {
                                     mkcdIdx = mkcdI;
                                     break;

@@ -243,6 +243,9 @@ namespace MarkCompare
                         lblStatus.BkColor = Color.Red;
                         this.BackColor = Color.Pink;
                         lblStatus.Text = Lang.ErrorOccurrence;
+
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
+                            lblStatus.Text = lblStatus.Text + $" - {Lang.bunchDefect}";
                     }));
                 }
                 else
@@ -252,6 +255,9 @@ namespace MarkCompare
                         lblStatus.BkColor = Color.MidnightBlue;
                         this.BackColor = Color.WhiteSmoke;
                         lblStatus.Text = Lang.Normal;
+
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
+                            lblStatus.Text = lblStatus.Text + $" - {Lang.bunchDefect}";
                     }));
                 }
             }
@@ -302,7 +308,7 @@ namespace MarkCompare
                 }
 
                 string str = null;
-                List<int[,]> comp1Cnt = _lotSummery.Comp1Cnt;
+                List<int[,]> comp1Cnt = _lotSummery.CompCnt;
 
                 bool isEmpty = true;
                 if (_lotSummery.MarkCompList != null && _lotSummery.MarkCompList.Data.Count > 0)
@@ -401,6 +407,13 @@ namespace MarkCompare
                             }
                         }
 
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
+                                                                    s.IsBunchDefects == true))
+                        {
+                            sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+                        }
+
+
                         int[] defectCnt = new int[comp1Cnt[idx].GetLength(1)];
                         for(int a2=0; a2< defectCnt.Length; a2++)
                             for (int aaa1 = 0; aaa1 < comp1Cnt[idx].GetLength(0); aaa1++)
@@ -497,6 +510,8 @@ namespace MarkCompare
                                 sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
                                 lineCnt++;
 
+                                
+
                                 bool isFindCTLNO = false;
                                 foreach (var data in _lotSummery.INSPDAT)
                                 {
@@ -517,6 +532,14 @@ namespace MarkCompare
                                                 // CTLO 추가
                                                 sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}"); lineCnt++;
                                                 isFindCTLNO = true;
+
+                                                if (_lotSummery.LotSummary.Summary.Any(s => 
+                                                s.Name == procItem.Compare[idx].LNCD && 
+                                                s.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx]&&
+                                                s.IsBunchDefects==true))
+                                                {
+                                                    sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+                                                }
                                             }
                                         }
                                     }
@@ -613,7 +636,7 @@ namespace MarkCompare
                 }
 
                 string str = null;
-                List<int[,]> comp1Cnt = _lotSummery.Comp1Cnt;
+                List<int[,]> comp1Cnt = _lotSummery.CompCnt;
 
                 bool isEmpty = true;
                 if (_lotSummery.MarkCompList != null && _lotSummery.MarkCompList.Data.Count > 0)

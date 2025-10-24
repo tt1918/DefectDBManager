@@ -18,6 +18,12 @@ namespace MarkCompare
         public eLanguage Language { get { return _language; } set { _language = value; } }
         private eLanguage _language = eLanguage.Korean;
 
+        [CategoryAttribute("Param")]
+        [DisplayName("Defect Per 1M")]
+        [DescriptionAttribute("Bunch of defects")]
+        public int BunchOfDefect { get { return _bunchOfDefect; } set { _bunchOfDefect = value; } }
+        private int _bunchOfDefect = 10;
+
         public SystemParam()
         {
 
@@ -27,6 +33,7 @@ namespace MarkCompare
         {
             SystemParam param = new SystemParam();
             param.Language = _language;
+            param.BunchOfDefect = _bunchOfDefect;
             return param;
         }
 
@@ -41,6 +48,7 @@ namespace MarkCompare
             var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<SystemParam>(jsonString);
 
             this._language = obj.Language;
+            this._bunchOfDefect = obj.BunchOfDefect;
 
             return true;
         }

@@ -30,12 +30,12 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbViewSelect = new System.Windows.Forms.CheckBox();
-            this.flpResult = new System.Windows.Forms.FlowLayoutPanel();
             this.lblStatus = new CustomControls.RoundLabel();
             this.lblLotName = new CustomControls.RoundLabel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbViewSelect = new System.Windows.Forms.CheckBox();
             this.lblProcess = new CustomControls.RoundLabel();
+            this.flpResult = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -62,10 +62,10 @@
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 4;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 126F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.Controls.Add(this.lblStatus, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblLotName, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -74,9 +74,53 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(655, 35);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.BkColor = System.Drawing.Color.MidnightBlue;
+            this.lblStatus.BorderColor = System.Drawing.Color.LightSteelBlue;
+            this.lblStatus.CornerR = 10;
+            this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblStatus.IsFillLB = false;
+            this.lblStatus.IsFillLT = false;
+            this.lblStatus.IsFillRB = false;
+            this.lblStatus.IsFillRT = false;
+            this.lblStatus.Location = new System.Drawing.Point(1, 1);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(1);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(148, 33);
+            this.lblStatus.TabIndex = 2;
+            this.lblStatus.Text = "Status";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblStatus.Thickness = 1;
+            // 
+            // lblLotName
+            // 
+            this.lblLotName.AutoSize = true;
+            this.lblLotName.BkColor = System.Drawing.Color.MidnightBlue;
+            this.lblLotName.BorderColor = System.Drawing.Color.LightSteelBlue;
+            this.lblLotName.CornerR = 10;
+            this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLotName.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblLotName.IsFillLB = false;
+            this.lblLotName.IsFillLT = false;
+            this.lblLotName.IsFillRB = false;
+            this.lblLotName.IsFillRT = false;
+            this.lblLotName.Location = new System.Drawing.Point(159, 1);
+            this.lblLotName.Margin = new System.Windows.Forms.Padding(1);
+            this.lblLotName.Name = "lblLotName";
+            this.lblLotName.Size = new System.Drawing.Size(485, 33);
+            this.lblLotName.TabIndex = 2;
+            this.lblLotName.Text = "LOT";
+            this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblLotName.Thickness = 1;
+            this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
             // 
             // tableLayoutPanel3
             // 
@@ -110,63 +154,6 @@
             this.cbViewSelect.Visible = false;
             this.cbViewSelect.CheckedChanged += new System.EventHandler(this.cbViewSelect_CheckedChanged);
             // 
-            // flpResult
-            // 
-            this.flpResult.AutoScroll = true;
-            this.flpResult.BackColor = System.Drawing.Color.White;
-            this.flpResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpResult.Location = new System.Drawing.Point(51, 1);
-            this.flpResult.Margin = new System.Windows.Forms.Padding(1);
-            this.flpResult.Name = "flpResult";
-            this.flpResult.Size = new System.Drawing.Size(553, 78);
-            this.flpResult.TabIndex = 4;
-            this.flpResult.WrapContents = false;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.BkColor = System.Drawing.Color.MidnightBlue;
-            this.lblStatus.BorderColor = System.Drawing.Color.LightSteelBlue;
-            this.lblStatus.CornerR = 10;
-            this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblStatus.IsFillLB = false;
-            this.lblStatus.IsFillLT = false;
-            this.lblStatus.IsFillRB = false;
-            this.lblStatus.IsFillRT = false;
-            this.lblStatus.Location = new System.Drawing.Point(1, 1);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(1);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(124, 33);
-            this.lblStatus.TabIndex = 2;
-            this.lblStatus.Text = "Status";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblStatus.Thickness = 1;
-            // 
-            // lblLotName
-            // 
-            this.lblLotName.AutoSize = true;
-            this.lblLotName.BkColor = System.Drawing.Color.MidnightBlue;
-            this.lblLotName.BorderColor = System.Drawing.Color.LightSteelBlue;
-            this.lblLotName.CornerR = 10;
-            this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLotName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblLotName.IsFillLB = false;
-            this.lblLotName.IsFillLT = false;
-            this.lblLotName.IsFillRB = false;
-            this.lblLotName.IsFillRT = false;
-            this.lblLotName.Location = new System.Drawing.Point(135, 1);
-            this.lblLotName.Margin = new System.Windows.Forms.Padding(1);
-            this.lblLotName.Name = "lblLotName";
-            this.lblLotName.Size = new System.Drawing.Size(419, 33);
-            this.lblLotName.TabIndex = 2;
-            this.lblLotName.Text = "LOT";
-            this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblLotName.Thickness = 1;
-            this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
-            // 
             // lblProcess
             // 
             this.lblProcess.AutoSize = true;
@@ -188,6 +175,18 @@
             this.lblProcess.Text = "Case 1:";
             this.lblProcess.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProcess.Thickness = 1;
+            // 
+            // flpResult
+            // 
+            this.flpResult.AutoScroll = true;
+            this.flpResult.BackColor = System.Drawing.Color.White;
+            this.flpResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpResult.Location = new System.Drawing.Point(51, 1);
+            this.flpResult.Margin = new System.Windows.Forms.Padding(1);
+            this.flpResult.Name = "flpResult";
+            this.flpResult.Size = new System.Drawing.Size(553, 78);
+            this.flpResult.TabIndex = 4;
+            this.flpResult.WrapContents = false;
             // 
             // FormLotSummaryData
             // 

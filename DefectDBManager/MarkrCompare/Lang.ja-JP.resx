@@ -139,7 +139,7 @@
     <value>変数</value>
   </data>
   <data name="btnSetting" xml:space="preserve">
-    <value> プロセス</value>
+    <value>プロセス</value>
   </data>
   <data name="btnSystem" xml:space="preserve">
     <value>設定</value>
@@ -560,5 +560,8 @@
   </data>
   <data name="SelectedLotSearch" xml:space="preserve">
     <value>LOT指定検索</value>
+  </data>
+  <data name="bunchDefect" xml:space="preserve">
+    <value>欠点の束</value>
   </data>
 </root>

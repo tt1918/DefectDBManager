@@ -139,10 +139,10 @@
     <value> PARAM</value>
   </data>
   <data name="btnSetting" xml:space="preserve">
-    <value>  PROCESS</value>
+    <value>PROCESS</value>
   </data>
   <data name="btnSystem" xml:space="preserve">
-    <value> SYSTEM</value>
+    <value>SYSTEM</value>
   </data>
   <data name="filterDgvModel" xml:space="preserve">
     <value>MODEL</value>
@@ -560,5 +560,8 @@
   </data>
   <data name="SelectedLotSearch" xml:space="preserve">
     <value>Designated LOT Search</value>
+  </data>
+  <data name="bunchDefect" xml:space="preserve">
+    <value>Bunch of Defect</value>
   </data>
 </root>

@@ -241,11 +241,20 @@ namespace MarkCompare {
         }
         
         /// <summary>
-        ///    시스템과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///   시스템과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnSystem {
             get {
                 return ResourceManager.GetString("btnSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   결점 다발과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string bunchDefect {
+            get {
+                return ResourceManager.GetString("bunchDefect", resourceCulture);
             }
         }
         

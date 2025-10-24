@@ -25,8 +25,8 @@ namespace DefectDBManager
         public CompareResult()
         {
             Base = new MarkingFaultDatum();
-
             Comp = new Dictionary<(string, string), List<MarkingFaultDatum>[]>();
+
         }
 
         public void AddCompData(string lncd, string ctrno, int idx, List<MarkingFaultDatum> data)

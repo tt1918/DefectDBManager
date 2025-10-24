@@ -85,6 +85,7 @@ namespace DefectDBManager
                                                         Math.Abs(x.XPOS_M - posX) < maxX && Math.Abs(x.XPOS_M - posX) >= minX &&
                                                         Math.Abs(x.OFFSET - posY) < maxY && Math.Abs(x.OFFSET - posY) >= minY
                                                         /*&& x.FAULTID == item.FAULTID*/); // 결점 ID가 같고 영역 내에 들어오는 경우
+
                         comp.AddCompData(preItem1.LNCD, preItem1.CTLNO, compIdx, subData);
                     }
                 }
@@ -141,7 +142,7 @@ namespace DefectDBManager
             List<CompRange> compRange = procData.CompRange;
 
             MarkCompList.SetCTLNOArray(procData.Compare.Count);
-            Comp1Cnt = new List<int[,]>();
+            CompCnt = new List<int[,]>();
 
             LotSummary.SetRange(procData);
             LotSummary.Name = LotName;
@@ -180,33 +181,32 @@ namespace DefectDBManager
 
                         if (exists == true)
                         {
-                            foreach (var aaa in MarkCompList.Data[0].Comp)
+                            foreach (var compItem in MarkCompList.Data[0].Comp)
                             {
-                                if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                                if (compItem.Key.Item1 == procData.Compare[i].LNCD)
                                 {
-                                    MarkCompList.CTLNO[i].Add(aaa.Key.Item2);
+                                    MarkCompList.CTLNO[i].Add(compItem.Key.Item2);
                                     count++;
                                 }
                             }
 
-                            if (count == 0) Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+                            if (count == 0) CompCnt.Add(new int[1, procData.CompRange.Count + 1]);
                             else // 여기서 데이터 추가함
                             {
-                                Comp1Cnt.Add(new int[count, procData.CompRange.Count + 1]);
+                                CompCnt.Add(new int[count, procData.CompRange.Count + 1]);
 
                                 count = 0;
-                                int idx = Comp1Cnt.Count - 1;
-                                foreach (var aaa in MarkCompList.Data[0].Comp)
+                                int idx = CompCnt.Count - 1;
+                                foreach (var compItem in MarkCompList.Data[0].Comp)
                                 {
-                                    if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                                    if (compItem.Key.Item1 == procData.Compare[i].LNCD)
                                     {
                                         foreach (var item in MarkCompList.Data)
                                         {
-                                            if (item.Comp[aaa.Key][0].Count > 0)
-                                                Comp1Cnt[idx][count, 0]++;
+                                            if (item.Comp[compItem.Key][0].Count > 0)    CompCnt[idx][count, 0]++;
 
-                                            for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
-                                                if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][count, j]++;
+                                            for (int j = 1; j < item.Comp[compItem.Key].GetLength(0); j++)
+                                                if (item.Comp[compItem.Key][j].Count > 0) CompCnt[idx][count, j]++;
                                         }
                                         count++;
                                     }
@@ -214,29 +214,49 @@ namespace DefectDBManager
                             }
                         }
                         else
-                            Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
+                            CompCnt.Add(new int[1, procData.CompRange.Count + 1]);
                     }
                 }
                 else
                 {
-                    Comp1Cnt.Add(new int[1, procData.CompRange.Count + 1]);
-                    int idx = Comp1Cnt.Count - 1;
-                    foreach (var aaa in MarkCompList.Data[0].Comp)
+                    CompCnt.Add(new int[1, procData.CompRange.Count + 1]);
+                    int idx = CompCnt.Count - 1;
+                    foreach (var compItem in MarkCompList.Data[0].Comp)
                     {
-                        if (aaa.Key.Item1 == procData.Compare[i].LNCD)
+                        if (compItem.Key.Item1 == procData.Compare[i].LNCD)
                         {
                             foreach (var item in MarkCompList.Data)
                             {
-                                if (item.Comp[aaa.Key][0].Count > 0)
-                                    Comp1Cnt[idx][0, 0]++;
+                                if (item.Comp[compItem.Key][0].Count > 0)
+                                    CompCnt[idx][0, 0]++;
 
-                                for (int j = 1; j < item.Comp[aaa.Key].GetLength(0); j++)
-                                    if (item.Comp[aaa.Key][j].Count > 0) Comp1Cnt[idx][0, j]++;
+                                for (int j = 1; j < item.Comp[compItem.Key].GetLength(0); j++)
+                                    if (item.Comp[compItem.Key][j].Count > 0) CompCnt[idx][0, j]++;
                             }
                         }
                     }
                 }
             }
+
+            #region 결점 다발 계산
+            void AddBunchDefects(int[] target, int[] source)
+            {
+                for (int i = 0; i < target.Length; i++)
+                    target[i] += source[i];
+            }
+
+            void CheckBunchDefects(CompSummary summary, int[] cntSum)
+            {
+                for (int i = 0; i < cntSum.Length; i++)
+                {
+                    if (cntSum[i] >= procData.BunchCount)
+                    {
+                        summary.IsBunchDefects = true;
+                        break;
+                    }
+                }
+            }
+            #endregion
 
             bool isEmpty = true;
             bool isError = false;
@@ -250,15 +270,31 @@ namespace DefectDBManager
                     summary.Name = procData.Compare[idx].LNCD;
                     LotSummary.Summary.Add(summary);
 
-                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+                    #region 결점 다발 체크
+                    int[] cntSum = new int[10000];
+                    AddBunchDefects(cntSum, FaultData.DefectCnt1M);
+                    
+                    foreach (var line in FaultData.PreMarkData)
+                    {
+                        foreach (var item in line)
+                        {
+                            if (item.LNCD == procData.Compare[idx].LNCD)
+                                AddBunchDefects(cntSum, item.DefectCnt1M);
+                        }
+                    }
+
+                    CheckBunchDefects(summary, cntSum);
+                    #endregion
+
+                    for (int idx1 = 0; idx1 < CompCnt[idx].GetLength(0); idx1++)
                     {
                         isEmpty = true;
-                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
+                        summary.BasicCount = CompCnt[idx][idx1, 0];
 
-                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                        for (int i = 0; i < CompCnt[idx].GetLength(1); i++)
                         {
-                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
-                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                            if (i > 0) summary.CompCount.Add(CompCnt[idx][idx1, i]);
+                            if (CompCnt[idx][idx1, i] > 0) isEmpty = false;
                         }
                         if (isEmpty)
                         {
@@ -273,22 +309,20 @@ namespace DefectDBManager
                         result[0] = 100.0;
                         for (int i = 1; i < procData.CompRange.Count + 1; i++)
                         {
-                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                            if (CompCnt[idx][idx1, 0] > 0)
                             {
-                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                                result[i] = (double)((double)CompCnt[idx][idx1, i] / (double)CompCnt[idx][idx1, 0]) * 100.0;
                                 summary.CompRate.Add(result[i]);
                             }
                             else
                             {
-                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                if (CompCnt[idx][idx1, i] > 0)
                                 {
-                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    result[i] = (double)CompCnt[idx][idx1, i] * 100.0;
                                     summary.CompRate.Add(result[i]);
                                 }
                                 else
-                                {
                                     summary.CompRate.Add(0.0);
-                                }
                             }
                             if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
                             {
@@ -296,30 +330,44 @@ namespace DefectDBManager
                                 summary.CompJudge.Add(false);
                             }
                             else
-                            {
                                 summary.CompJudge.Add(true);
-                            }
                         }
                     }
                 }
                 else
                 {
-                    for (int idx1 = 0; idx1 < Comp1Cnt[idx].GetLength(0); idx1++)
+                    for (int idx1 = 0; idx1 < CompCnt[idx].GetLength(0); idx1++)
                     {
                         CompSummary summary = new CompSummary();
                         summary.Name = procData.Compare[idx].LNCD;
 
                         LotSummary.Summary.Add(summary);
-                        summary.BasicCount = Comp1Cnt[idx][idx1, 0];
+                        summary.BasicCount = CompCnt[idx][idx1, 0];
                         isEmpty = true;
 
                         if (MarkCompList.CTLNO[idx].Count >= idx1 + 1) summary.CTLNO = MarkCompList.CTLNO[idx][idx1];
                         else summary.CTLNO = string.Empty;
 
-                        for (int i = 0; i < Comp1Cnt[idx].GetLength(1); i++)
+                        #region 결점 다발 체크
+                        int[] cntSum = new int[10000];
+                        AddBunchDefects(cntSum, FaultData.DefectCnt1M);
+
+                        foreach (var line in FaultData.PreMarkData)
                         {
-                            if (i > 0) summary.CompCount.Add(Comp1Cnt[idx][idx1, i]);
-                            if (Comp1Cnt[idx][idx1, i] > 0) isEmpty = false;
+                            foreach (var item in line)
+                            {
+                                if (item.LNCD == procData.Compare[idx].LNCD && item.CTLNO == summary.CTLNO)
+                                    AddBunchDefects(cntSum, item.DefectCnt1M);
+                            }
+                        }
+
+                        CheckBunchDefects(summary, cntSum);
+                        #endregion
+
+                        for (int i = 0; i < CompCnt[idx].GetLength(1); i++)
+                        {
+                            if (i > 0) summary.CompCount.Add(CompCnt[idx][idx1, i]);
+                            if (CompCnt[idx][idx1, i] > 0) isEmpty = false;
                         }
 
                         if (isEmpty)
@@ -335,32 +383,29 @@ namespace DefectDBManager
                         result[0] = 100.0;
                         for (int i = 1; i < procData.CompRange.Count + 1; i++)
                         {
-                            if (Comp1Cnt[idx][idx1, 0] > 0)
+                            if (CompCnt[idx][idx1, 0] > 0)
                             {
-                                result[i] = (double)((double)Comp1Cnt[idx][idx1, i] / (double)Comp1Cnt[idx][idx1, 0]) * 100.0;
+                                result[i] = (double)((double)CompCnt[idx][idx1, i] / (double)CompCnt[idx][idx1, 0]) * 100.0;
                                 summary.CompRate.Add(result[i]);
                             }
                             else
                             {
-                                if (Comp1Cnt[idx][idx1, i] > 0)
+                                if (CompCnt[idx][idx1, i] > 0)
                                 {
-                                    result[i] = (double)Comp1Cnt[idx][idx1, i] * 100.0;
+                                    result[i] = (double)CompCnt[idx][idx1, i] * 100.0;
                                     summary.CompRate.Add(result[i]);
                                 }
                                 else
-                                {
                                     summary.CompRate.Add(0.0);
-                                }
                             }
+
                             if (Math.Abs(result[0] - result[i]) > procData.CompRange[i - 1].Accuracy)
                             {
                                 isError = true;
                                 summary.CompJudge.Add(false);
                             }
                             else
-                            {
                                 summary.CompJudge.Add(true);
-                            }
                         }
                     }
                 }

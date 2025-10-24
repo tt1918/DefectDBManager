@@ -142,7 +142,7 @@
     <value>공정</value>
   </data>
   <data name="btnSystem" xml:space="preserve">
-    <value> 시스템</value>
+    <value>시스템</value>
   </data>
   <data name="filterDgvModel" xml:space="preserve">
     <value>모델</value>
@@ -560,5 +560,8 @@
   </data>
   <data name="SelectedLotSearch" xml:space="preserve">
     <value>LOT 지정 검사</value>
+  </data>
+  <data name="bunchDefect" xml:space="preserve">
+    <value>결점 다발</value>
   </data>
 </root>

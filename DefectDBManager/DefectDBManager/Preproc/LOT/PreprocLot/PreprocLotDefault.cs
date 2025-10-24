@@ -18,7 +18,7 @@ namespace DefectDBManager
         public PreProcResultData FaultData { get; protected set; } = null;
         public MarkCompData MarkCompList { get; set; } = null;
         public eCompResult CompResult { get; protected set; } = eCompResult.None;
-        public List<int[,]> Comp1Cnt { get; protected set; } = new List<int[,]>();
+        public List<int[,]> CompCnt { get; protected set; } = new List<int[,]>();
         public Preproc.LOT.CompResult LotSummary { get; protected set; } = new Preproc.LOT.CompResult();
 
         public void Init()

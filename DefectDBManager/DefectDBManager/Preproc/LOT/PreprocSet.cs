@@ -252,6 +252,8 @@ namespace DefectDBManager.Preproc
         [Description("Defect ID Type")]
         public bool UseAiResult { get; set; } = false;
 
+        public int BunchCount { get; set; } = 10;
+
         public PreprocItem()
         {
         }
@@ -282,6 +284,9 @@ namespace DefectDBManager.Preproc
             data.Judge = this.Judge.Clone();
 
             data.UseAiResult = this.UseAiResult;
+
+            data.BunchCount = this.BunchCount;
+
             return data;
         }
     }
@@ -528,6 +533,8 @@ namespace DefectDBManager.Preproc
         [Description("Comp Type")]
         public int CompType { get; set; } = 0;
 
+        public int BunchCount { get; set; } = 10;
+
         public void Save()
         {
             string path = Define.CsvParamSetPath;
@@ -625,6 +632,8 @@ namespace DefectDBManager.Preproc
         [Category("items")]
         [Description("User Filter")]
         public ProcFilterList UserFilter { get; set; } = new ProcFilterList();
+
+        public int BunchCount { get; set; } = 10;
 
         public void Save()
         {

@@ -142,8 +142,8 @@ namespace MarkCompare
             #endregion
 
             #region 실시간 탐색
-            _markDiffForm.FormMorLive.OnStartLiveSearch += _dbManager.StartLiveLot;
-            _markDiffForm.FormMorLive.OnStopLiveSearch += _dbManager.StopLiveLot;
+            _markDiffForm.FormMorLive.OnStartLiveSearch += StartLiveSearch;
+            _markDiffForm.FormMorLive.OnStopLiveSearch += StopLiveSearch;
             
             _dbManager.OnStartLiveDefectSearching += _markDiffForm.FormMorLive.StartLotSearch;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
@@ -169,8 +169,8 @@ namespace MarkCompare
             #endregion
 
             #region 실시간 탐색
-            _markDiffForm.FormMorLive.OnStartLiveSearch -= _dbManager.StartLiveLot;
-            _markDiffForm.FormMorLive.OnStopLiveSearch -= _dbManager.StopLiveLot;
+            _markDiffForm.FormMorLive.OnStartLiveSearch -= StartLiveSearch;
+            _markDiffForm.FormMorLive.OnStopLiveSearch -= StopLiveSearch;
             _dbManager.OnStartLiveDefectSearching -= _markDiffForm.FormMorLive.StartLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.UpdateLotSummary;
@@ -307,6 +307,9 @@ namespace MarkCompare
         #region 기간 검색 시작
         public void StartSearchLotList()
         {
+            foreach( var item in this._lotManager.ProcSetting.Data)
+                item.BunchCount = _systemParam.BunchOfDefect;
+
             _dbManager.SearchLotMarkDiff();
         }
 
@@ -340,6 +343,18 @@ namespace MarkCompare
         #endregion
 
         #region 실시간 검색 시작
+        public void StartLiveSearch()
+        {
+            foreach (var item in this._lotManager.ProcSetting.Data)
+                item.BunchCount = _systemParam.BunchOfDefect;
+
+            _dbManager.StartLiveLot();
+        }
+
+        public void StopLiveSearch()
+        {
+            _dbManager.StopLiveLot();
+        }
         public void EndLiveSearch()
         {
             bool isError = false;
@@ -388,6 +403,11 @@ namespace MarkCompare
         {
             LotSelProcParam param = _markDiffForm.SelLotParam;
             List<string> list = _markDiffForm.SelLotList;
+
+            foreach (var item in this._lotManager.ProcSetting.Data)
+                item.BunchCount = _systemParam.BunchOfDefect;
+            _markDiffForm.SelLotParam.BunchCount = _systemParam.BunchOfDefect;
+
             _dbManager.SearchSelectedLotMarkDiff(list, param);
         }
 

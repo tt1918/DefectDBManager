@@ -489,6 +489,11 @@ namespace DefectDBManager
         public string LNCD { get; set; } = "";
         public string CTLNO { get; set; } = "";
 
+        /// <summary>
+        /// 10M 단위 결점 갯수 저장
+        /// </summary>
+        public int[] DefectCnt1M { get; set; } = new int[10000]; 
+
         public List<MarkingFaultDatum> Data = null;
 
         public MarkingFaultDatum this[int idx]
@@ -499,6 +504,8 @@ namespace DefectDBManager
         public PreprocMrkDat()
         {
             Data = new List<MarkingFaultDatum>();
+
+            Array.Clear(DefectCnt1M, 0, DefectCnt1M.Length);
         }
 
         public void Reset()
@@ -506,6 +513,7 @@ namespace DefectDBManager
             LNCD = "";
             CTLNO = "";
             Data.Clear();
+            Array.Clear(DefectCnt1M, 0, DefectCnt1M.Length);
         }
 
         public PreprocMrkDat Clone()
@@ -517,6 +525,9 @@ namespace DefectDBManager
 
             foreach(var item in Data)
                 data.Data.Add(item);
+
+            for (int i = 0; i < data.DefectCnt1M.Length; i++)
+                data.DefectCnt1M[i] = DefectCnt1M[i];
 
             return data;
         }
@@ -568,6 +579,8 @@ namespace DefectDBManager
         }
         private MrkFltDat _markData;
 
+        public int[] DefectCnt1M { get; set; } = new int[10000];
+
         /// <summary>
         /// 이전 공정 비교용 결점 데이터 
         /// </summary>
@@ -600,6 +613,7 @@ namespace DefectDBManager
             }    
 
             _markData = new MrkFltDat();
+            Array.Clear(DefectCnt1M, 0, DefectCnt1M.Length);
         }
 
         ~PreProcResultData()
@@ -611,6 +625,7 @@ namespace DefectDBManager
         {            
             // 실시간 불량 전송용 데이터 
             _markData.Reset();
+            Array.Clear(DefectCnt1M, 0, DefectCnt1M.Length);
 
             for (int i = 0; i < _fltdat.Length; i++)
             {
@@ -677,7 +692,10 @@ namespace DefectDBManager
                 foreach (var marks in PreMarkData[i])
                     data.PreMarkData[i].Add(marks.Clone());
             }
-            
+
+            for (int i = 0; i < data.DefectCnt1M.Length; i++)
+                data.DefectCnt1M[i] = DefectCnt1M[i];
+
             return data;
         }
     }

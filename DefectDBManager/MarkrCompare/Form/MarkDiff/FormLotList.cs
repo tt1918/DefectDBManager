@@ -287,7 +287,13 @@ namespace MarkCompare
                     {
                         _dicFormSummary["Search"].Add(form);
                         if (_flpSummeryDic.ContainsKey(filter))
-                            this._flpSummeryDic[filter].Controls.Add(form);
+                        {
+                            if (summary.CompResult != eCompResult.ProcNg)
+                                this._flpSummeryDic[filter].Controls.Add(form);
+                            else
+                                this._flpSummeryDic[filter].Controls.SetChildIndex(form, 0);
+                        }
+                            
                     }
                     else
                     {
@@ -325,8 +331,10 @@ namespace MarkCompare
                     if (_dicFormSummary.ContainsKey("Search"))
                     {
                         _dicFormSummary["Search"].Add(form);
-                        if (_flpSummeryDic.ContainsKey(filter))
+                        if (summary.CompResult != eCompResult.ProcNg)
                             this._flpSummeryDic[filter].Controls.Add(form);
+                        else
+                            this._flpSummeryDic[filter].Controls.SetChildIndex(form, 0);
                     }
                     else
                     {

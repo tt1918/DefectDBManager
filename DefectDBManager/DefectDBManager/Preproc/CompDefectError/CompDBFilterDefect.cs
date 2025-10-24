@@ -183,9 +183,9 @@ namespace DefectDBManager.Preproc
                         int mkcdIdx = -1;
                         for (int mkcdI = 0; mkcdI < _DbResult.INSPDAT[fcdIdx].Count; mkcdI++)
                         {
-                            for (int aaa = 0; aaa < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; aaa++)
+                            for (int idx = 0; idx < _DbResult.INSPDAT[fcdIdx][mkcdI].Count; idx++)
                             {
-                                if (_DbResult.INSPDAT[fcdIdx][mkcdI][aaa].LNCD == inspLNCD)
+                                if (_DbResult.INSPDAT[fcdIdx][mkcdI][idx].LNCD == inspLNCD)
                                 {
                                     mkcdIdx = mkcdI;
                                     break;
@@ -305,6 +305,10 @@ namespace DefectDBManager.Preproc
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
                                         markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
                                         preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
+
+                                        int yIdx = markData.OFFSET > 0 ? (int)(markData.OFFSET / 1000.0f) : -1;
+                                        if (yIdx >= 0) preMarkData.DefectCnt1M[yIdx]++;
+
                                         defectCnt[fcdIdx]++;
                                     }
 
@@ -371,12 +375,8 @@ namespace DefectDBManager.Preproc
             INSPDATData inspdata;
 
             int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
-            int dataCnt = 0;
-            string query;
             int procStep = 0;
-            long dbCnt;
-            string logData;
-
+            
             int[] defectCnt = new int[fcdCnt];
             defectCnt.Initialize();
 
@@ -487,11 +487,17 @@ namespace DefectDBManager.Preproc
                                         MarkingFaultDatum markData = new MarkingFaultDatum();
                                         markData.SetFaultData((eFCD)fcdIdx, csvType, inspdata.LNCD, inspdata.BCNO, (float)finalXPos, false, tmpFltData, data, dbOption.useKT);
 
+                                        int yIdx = markData.OFFSET>0 ? (int)(markData.OFFSET / 1000.0f) : -1;
                                         if (dataTarget == eProcDataType.Reference)
+                                        {
                                             FaultData.MarkData.Add(markData);
+                                            if(yIdx>=0)FaultData.DefectCnt1M[yIdx]++;
+                                        }
                                         else// 마킹 대상 결점
+                                        {
                                             preMarkData.Data.Add(markData); // 이전 비교 공정 데이터
-
+                                            if (yIdx >= 0) preMarkData.DefectCnt1M[yIdx]++;
+                                        }
                                         defectCnt[fcdIdx]++;
 
                                     }

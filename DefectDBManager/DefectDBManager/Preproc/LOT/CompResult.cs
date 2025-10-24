@@ -25,7 +25,11 @@ namespace DefectDBManager.Preproc.LOT
         public List<int> CompCount { get; set; } = new List<int>();
         public List<double> CompRate {  get; set; } = new List<double>();
         public List<bool> CompJudge { get; set; }  = new List<bool>();
-        
+        /// <summary>
+        /// 결점 다발 여부 확인
+        /// </summary>
+        public bool IsBunchDefects { get; set; } = false;
+
         public CompSummary()
         {
             
