@@ -390,6 +390,10 @@ namespace MarkCompare
                         // 데이터 입력
                         sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
                         lineCnt++;
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
+                                                                    s.IsBunchDefects == true))
+                            sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+                        
 
                         foreach (var data in _lotSummery.PTRY0P_Data)
                         {
@@ -406,13 +410,6 @@ namespace MarkCompare
                                 }
                             }
                         }
-
-                        if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
-                                                                    s.IsBunchDefects == true))
-                        {
-                            sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
-                        }
-
 
                         int[] defectCnt = new int[comp1Cnt[idx].GetLength(1)];
                         for(int a2=0; a2< defectCnt.Length; a2++)
@@ -455,7 +452,15 @@ namespace MarkCompare
 
                         if (lineCnt > maxLine) maxLine = lineCnt;
 
-                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                        if (isSubError == true && flpResult.Controls.Count > 0)
+                        {
+                            var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
+
+                            flpResult.Controls.Add(lbl);
+                            flpResult.Controls.SetChildIndex(lbl, 0);
+                        }
+                        else
+                            flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                         if (isSubError == true) _isError = true;
                     }
                     else
@@ -510,9 +515,7 @@ namespace MarkCompare
                                 sb1.Append($"[{procItem.Reference.LNCD}-{procItem.Compare[idx].LNCD}]\n");
                                 lineCnt++;
 
-                                
-
-                                bool isFindCTLNO = false;
+                                bool isFindCTLNO = false, isBunchDefect=false;
                                 foreach (var data in _lotSummery.INSPDAT)
                                 {
                                     foreach (var subData in data)
@@ -523,6 +526,14 @@ namespace MarkCompare
                                             if (subData2.LNCD == procItem.Compare[idx].LNCD && subData2.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx]
                                                 && isFindCTLNO == false)
                                             {
+                                                if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
+                                                                                            s.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx] &&
+                                                                                            s.IsBunchDefects == true) && isBunchDefect == false)
+                                                {
+                                                    sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+                                                    isBunchDefect = true;
+                                                }
+
                                                 // 생산 시간 입력
                                                 sb1.AppendLine($"[ {subData2.STRDT}{subData2.STRTM}-{subData2.ENDDT}{subData2.ENDTM}"); lineCnt++;
                                                 // 품명 추가
@@ -532,14 +543,6 @@ namespace MarkCompare
                                                 // CTLO 추가
                                                 sb1.AppendLine($"CTLNO : {_lotSummery.MarkCompList.CTLNO[idx][subIdx]}"); lineCnt++;
                                                 isFindCTLNO = true;
-
-                                                if (_lotSummery.LotSummary.Summary.Any(s => 
-                                                s.Name == procItem.Compare[idx].LNCD && 
-                                                s.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx]&&
-                                                s.IsBunchDefects==true))
-                                                {
-                                                    sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
-                                                }
                                             }
                                         }
                                     }
@@ -585,7 +588,15 @@ namespace MarkCompare
                                 if (lineCnt > maxLine) maxLine = lineCnt;
                                 if (isSubError == true) _isError = true;
 
-                                flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                                if (isSubError == true && flpResult.Controls.Count > 0)
+                                {
+                                    var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
+
+                                    flpResult.Controls.Add(lbl);
+                                    flpResult.Controls.SetChildIndex(lbl, 0);
+                                }
+                                else
+                                    flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                             }
                         }
                     }
@@ -721,6 +732,10 @@ namespace MarkCompare
                         sbSummary.Append($"[{RefLNCD}-{CompLNCD[idx]}]");
                         lineCnt++;
 
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
+                                                                    s.IsBunchDefects == true))
+                            sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+
                         foreach (var data in _lotSummery.PTRY0P_Data)
                         {
                             foreach (var subData in data.Data)
@@ -792,7 +807,15 @@ namespace MarkCompare
 
                         if (lineCnt > maxLine) maxLine = lineCnt;
 
-                        flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                        if (isSubError==true && flpResult.Controls.Count>0)
+                        {
+                            var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
+
+                            flpResult.Controls.Add(lbl);
+                            flpResult.Controls.SetChildIndex(lbl, 0);
+                        }
+                        else
+                            flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                         if (isSubError == true) _isError = true;
                     }
                     else
@@ -848,7 +871,7 @@ namespace MarkCompare
                                 sb1.Append($"[{RefLNCD}-{CompLNCD[idx]}]\n");
                                 lineCnt++;
 
-                                bool isFindCTLNO = false;
+                                bool isFindCTLNO = false, isBunchDefect = false;
                                 foreach (var data in _lotSummery.INSPDAT)
                                 {
                                     foreach (var subData in data)
@@ -859,6 +882,14 @@ namespace MarkCompare
                                             if (subData2.LNCD == CompLNCD[idx] && subData2.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx]
                                                 && isFindCTLNO == false)
                                             {
+                                                if (_lotSummery.LotSummary.Summary.Any(s => s.Name == CompLNCD[idx] &&
+                                                                                            s.CTLNO == _lotSummery.MarkCompList.CTLNO[idx][subIdx] &&
+                                                                                            s.IsBunchDefects == true) && isBunchDefect == false)
+                                                {
+                                                    sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
+                                                    isBunchDefect = true;
+                                                }
+
                                                 // 생산 시간 입력
                                                 sb1.AppendLine($"[ {subData2.STRDT}{subData2.STRTM}-{subData2.ENDDT}{subData2.ENDTM}"); lineCnt++;
                                                 // 품명 추가
@@ -913,7 +944,15 @@ namespace MarkCompare
                                 if (lineCnt > maxLine) maxLine = lineCnt;
                                 if (isSubError == true) _isError = true;
 
-                                flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
+                                if (isSubError == true && flpResult.Controls.Count > 0)
+                                {
+                                    var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
+
+                                    flpResult.Controls.Add(lbl);
+                                    flpResult.Controls.SetChildIndex(lbl, 0);
+                                }
+                                else
+                                    flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
                             }
                         }
                     }

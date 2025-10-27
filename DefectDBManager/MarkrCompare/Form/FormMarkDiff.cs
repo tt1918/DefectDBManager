@@ -521,11 +521,13 @@ namespace MarkCompare
 
                 foreach(var lot in _lotManager.Live.LOT[item.Key])
                 {
-                    if (lot.CompResult == eCompResult.ProcNg)
+                    StringBuilder sb = new StringBuilder(); ;
+                    sb.Append($"DB : {lot.LotName}");
+                    if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                     {
-                        string strTemp = $"{item.Key} : {lot.LotName}";
-                        errLot.Add(strTemp);
+                        sb.Append($" - {Lang.bunchDefect}");
                     }
+                    errLot.Add(sb.ToString());
                 }
             }
 
@@ -592,11 +594,13 @@ namespace MarkCompare
 
                     foreach (var lot in _lotManager.Search.LOT[item.ToString()])
                     {
-                        if(lot.CompResult== eCompResult.ProcNg)
+                        StringBuilder sb = new StringBuilder(); ;
+                        sb.Append($"DB : {lot.LotName}");
+                        if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                         {
-                            string strTemp = $"{item.ToString()} : {lot.LotName}";
-                            errLot.Add(strTemp);
+                            sb.Append($" - {Lang.bunchDefect}");
                         }
+                        errLot.Add(sb.ToString());
                     }
                 }
             }
@@ -929,8 +933,13 @@ namespace MarkCompare
                     {
                         if (lot.CompResult == eCompResult.ProcNg)
                         {
-                            string strTemp = $"DB : {lot.LotName}";
-                            errLot.Add(strTemp);
+                            StringBuilder sb = new StringBuilder(); ;
+                            sb.Append($"DB : {lot.LotName}");
+                            if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
+                            {
+                                sb.Append($" - {Lang.bunchDefect}");
+                            }
+                            errLot.Add(sb.ToString());
                         }
                     }
                 }

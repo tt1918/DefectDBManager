@@ -293,7 +293,6 @@ namespace MarkCompare
                             else
                                 this._flpSummeryDic[filter].Controls.SetChildIndex(form, 0);
                         }
-                            
                     }
                     else
                     {

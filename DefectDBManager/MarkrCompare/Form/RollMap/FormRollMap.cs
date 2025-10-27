@@ -414,8 +414,8 @@ namespace MarkCompare
             _key = key;
             _isSplit = isSplit;
 
-            double compRangeX = procItem.CompRange[0].MaxXRange;
-            double compRangeY = procItem.CompRange[0].MaxYRange;
+            double compRangeX = procItem.BasicRange.MaxXRange;
+            double compRangeY = procItem.BasicRange.MaxYRange;
 
             int compStep = procItem.CompRange.Count+1;
             int compSize = procItem.Compare.Count;
@@ -493,7 +493,7 @@ namespace MarkCompare
                                 // Error area 생성
                                 //if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
                                 //    errIdx = baseCnt > 0 ? 0 : j;
-                                if (compCnt>0 && j > 0)
+                                if (compCnt > 0 && j > 0)
                                     errIdx = j;
                             }
 
@@ -567,18 +567,19 @@ namespace MarkCompare
                                             0, Interlocked.Increment(ref defIdx), Color.Red, symbolE);
                                             isSet = isSetC = true;
                                         }
+                                        compCnt++;
                                     }
-                                    compCnt++;
                                 }
 
                                 if (isSet) localDefects.Add(tmpItem);
-
                                 if (posY > localMaxY) localMaxY = posY;
                             }
 
                             // Error area 생성
-                            if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
-                                errIdx = baseCnt > 0 ? 0 : j;
+                            //if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
+                            //    errIdx = baseCnt > 0 ? 0 : j;
+                            if (compCnt > 0 && j > 0)
+                                errIdx = j;
                         }
 
 
@@ -611,6 +612,7 @@ namespace MarkCompare
                 Rollmap.AddPrevErrorArea(area);
 
             Rollmap.WholeHeight = (int)(maxPosY + 100000);
+            Rollmap.MapViewOption(MapViewOptionArgs.tagMapViewRange.Whole);
             Rollmap.RedrawAll();
         }
 
@@ -776,6 +778,7 @@ namespace MarkCompare
                 Rollmap.AddPrevErrorArea(area);
 
             Rollmap.WholeHeight = (int)(maxPosY + 100000);
+            Rollmap.MapViewOption(MapViewOptionArgs.tagMapViewRange.Whole);
             Rollmap.RedrawAll();
         }
 
@@ -911,16 +914,16 @@ namespace MarkCompare
 
 
                                         // Error area 생성
-                                        //if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
-                                        //{
-                                        //    if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
-                                        //        errIdx = baseCnt > 0 ? 0 : j;
-                                        //    else if (baseCnt > 0 && compCnt > 0 && j > 0)
-                                        //        errIdx = j;
-                                        //}
+                                        if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
+                                        {
+                                            if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
+                                                errIdx = baseCnt > 0 ? 0 : j;
+                                            else if (baseCnt > 0 && compCnt > 0 && j > 0)
+                                                errIdx = j;
+                                        }
 
-                                        if(compCnt>0 && j > 0)
-                                            errIdx = j;
+                                        //if (compCnt>0 && j > 0)
+                                        //    errIdx = j;
                                     }
                                 }
 
@@ -997,16 +1000,16 @@ namespace MarkCompare
                                 }
                                 if (isSet) localDefects.Add(tmpItem);
                                 // Error area 생성
-                                //if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
-                                //{
-                                //    if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
-                                //        errIdx = baseCnt > 0 ? 0 : j;
-                                //    else if (baseCnt > 0 && compCnt > 0 && j > 0)
-                                //        errIdx = j;
-                                //}
+                                if (tmpItem.symbol != null && tmpItem.symbol.Contains("C_"))
+                                {
+                                    if (((baseCnt > 0 && compCnt <= 0) || (baseCnt <= 0 && compCnt > 0)) && j > 0)
+                                        errIdx = baseCnt > 0 ? 0 : j;
+                                    else if (baseCnt > 0 && compCnt > 0 && j > 0)
+                                        errIdx = j;
+                                }
 
-                                if (compCnt > 0 && j > 0)
-                                    errIdx = j;
+                                //if (compCnt > 0 && j > 0)
+                                //    errIdx = j;
                             }
                             // Error area 생성
                             if (errIdx > 0)
@@ -1037,6 +1040,7 @@ namespace MarkCompare
                     Rollmap.AddPrevErrorArea(area);
 
                 Rollmap.WholeHeight = (int)(maxPosY + 100000);
+                Rollmap.MapViewOption(MapViewOptionArgs.tagMapViewRange.Whole);
                 Rollmap.RedrawAll();
             }
             catch (Exception ex)

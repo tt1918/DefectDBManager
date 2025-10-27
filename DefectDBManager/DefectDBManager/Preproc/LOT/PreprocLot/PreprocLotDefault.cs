@@ -53,21 +53,21 @@ namespace DefectDBManager
                     PTRY0P_Data[i].Add(data.Clone());
             }
 
-            for (int i = 0; i < count; i++)
+            int idx = 0;
+            foreach (var data in result.INSPDAT)
             {
-                foreach (var data in result.INSPDAT)
+                List<INSPDATList> inspList = new List<INSPDATList>();
+                foreach (var data1 in data)
                 {
-                    List<INSPDATList> inspList = new List<INSPDATList>();
-                    foreach (var data1 in data)
-                    {
-                        INSPDATList inspList1 = new INSPDATList();
-                        foreach (var data2 in data1.Data)
-                            inspList1.Add(data2.Clone());
-                        inspList.Add(inspList1);
-                    }
-                    INSPDAT[i] = inspList;
+                    INSPDATList inspList1 = new INSPDATList();
+                    foreach (var data2 in data1.Data)
+                        inspList1.Add(data2.Clone());
+                    inspList.Add(inspList1);
                 }
+                INSPDAT[idx] = inspList;
+                idx++;
             }
+            
         }
 
         public void SetFaultData(PreProcResultData data)
