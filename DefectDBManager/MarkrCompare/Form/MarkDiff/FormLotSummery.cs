@@ -508,7 +508,7 @@ namespace MarkCompare
             string fltId = string.Join(",", judge.Value.FLTID);
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Value = judge.Key;
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = fltId;
-            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.Rate.ToString("0.00%");
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.NoneConvertRate.ToString("0.00%");
 
             if (judge.Value.Judgement == true)
                 dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Green;

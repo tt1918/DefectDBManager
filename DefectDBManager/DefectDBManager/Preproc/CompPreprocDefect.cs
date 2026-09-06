@@ -1363,13 +1363,16 @@ namespace DefectDBManager
 
                 StringBuilder header = new StringBuilder();
                 StringBuilder dataLine = new StringBuilder();
-                header.Append("FLTID,Rate,Judgement");
+                header.Append("FLTID,Total,Converted,None Convert Rate,Judgement");
                 sw.WriteLine(header.ToString());
                 foreach (var item in data.Judgement)
                 {
                     dataLine.Clear();
-                    dataLine.Append($"{item.Value.FLTID}");
-                    dataLine.Append($",{item.Value.Rate*100.0}");
+                    string fltids = string.Join(";", item.Value.FLTID);
+                    dataLine.Append(fltids);
+                    dataLine.Append($",{item.Value.Total}");
+                    dataLine.Append($",{item.Value.Converted}");
+                    dataLine.Append($",{item.Value.NoneConvertRate*100.0}");
                     dataLine.Append($",{item.Value.Judgement}");
                     sw.WriteLine(dataLine.ToString());
                 }

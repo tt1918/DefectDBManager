@@ -19,7 +19,9 @@ namespace DefectDBManager.Preproc
     {
         public List<string> FLTID { get; set; } = new List<string>();
         public string SECFLTID { get; set; } = string.Empty;
-        public double Rate { get; set; } = 0.0;
+        public int Total { get; set; } = 0;
+        public int Converted { get; set; } = 0;
+        public double NoneConvertRate { get; set; } = 0.0;
         public bool Judgement { get; set; } = false;
     }
 
@@ -70,6 +72,7 @@ namespace DefectDBManager.Preproc
                 {
                     double totalRate = defects.Count(d => model.FLTID.Contains(d.FLTID));
                     double convRate = defects.Count(d => model.FLTID.Contains(d.FLTID) && d.SECFLTID == model.SECFLTID);
+                    double mismatchRate = 1.0 - (convRate / totalRate);
 
                     // 데이터가 없으면 무시한다.
                     if (totalRate == 0) return 0.0;
@@ -83,8 +86,10 @@ namespace DefectDBManager.Preproc
                         {
                             FLTID = model.FLTID,
                             SECFLTID = model.SECFLTID,
-                            Rate = (convRate / totalRate),
-                            Judgement = (convRate / totalRate) * 100.0 >= rate ? true : false
+                            Total = (int)totalRate,
+                            Converted = (int)convRate,
+                            NoneConvertRate = mismatchRate,
+                            Judgement = mismatchRate * 100.0 >= rate ? false : true
                         });
                     }
                     else
@@ -93,12 +98,14 @@ namespace DefectDBManager.Preproc
                         {
                             FLTID = model.FLTID,
                             SECFLTID = model.SECFLTID,
-                            Rate = (convRate / totalRate),
-                            Judgement = (convRate / totalRate) * 100.0 >= rate ? true : false
+                            Total = (int)totalRate,
+                            Converted = (int)convRate,  
+                            NoneConvertRate = mismatchRate,
+                            Judgement = mismatchRate * 100.0 >= rate ? false : true
                         };
                     }
 
-                    return (convRate / totalRate) * 100.0;
+                    return mismatchRate * 100.0;
                 }
             }
             return 0.0;
