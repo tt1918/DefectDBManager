@@ -235,6 +235,8 @@
     <Compile Include="Preproc\Data\ProcMaterial.cs" />
     <Compile Include="enumError.cs" />
     <Compile Include="Preproc\LotHistory.cs" />
+    <Compile Include="Preproc\LOT\AiMonitorParam.cs" />
+    <Compile Include="Preproc\LOT\SjMonitorData.cs" />
     <Compile Include="Preproc\LOT\CompLotList.cs" />
     <Compile Include="Preproc\LOT\CompResult.cs" />
     <Compile Include="Preproc\LOT\MarkCompData.cs" />
@@ -245,6 +247,7 @@
     <Compile Include="Preproc\LOT\PreprocLot\PreprocLotDefault.cs" />
     <Compile Include="Preproc\LOT\PreprocLot\PreprocLotFilter.cs" />
     <Compile Include="Preproc\LOT\PreprocSet.cs" />
+    <Compile Include="Preproc\LOT\SjModeParam.cs" />
     <Compile Include="Preproc\MarkCompDB.cs" />
     <Compile Include="Preproc\MRKCTLMST\mrkctlmstManager.cs" />
     <Compile Include="Preproc\PreProcCompDB.cs" />

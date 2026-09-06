@@ -247,7 +247,7 @@ namespace MarkCompare
 
         #region Data Grid View Material Info
         static string[] _strDgvMaterial = { "No", "Name"};
-        static int[] _DgvMaterialLength = { 50, 200 };
+        static int[] _DgvMaterialLength = { 80, 300 };
         enum eDgvMaterial { No, Name, Total};
 
         private void initMaterialCtrl()

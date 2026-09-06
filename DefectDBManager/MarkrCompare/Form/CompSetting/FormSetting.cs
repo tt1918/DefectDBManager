@@ -1130,6 +1130,7 @@ namespace MarkCompare
             if (selProcIdx == -1) return;
 
             _preprocSet[selProcIdx].UseAiResult = cbUseMNTTAN.Checked;
+            _preprocSet[selProcIdx].UseAiMonitoring = cbAiMonitoring.Checked;
         }
 
         private void displayOtherParam()
@@ -1138,7 +1139,7 @@ namespace MarkCompare
             if (selProcIdx == -1 || _selSetName == "") return;
 
             cbUseMNTTAN.Checked = _preprocSet[selProcIdx].UseAiResult;
-
+            cbAiMonitoring.Checked = _preprocSet[selProcIdx].UseAiMonitoring;
         }
         #endregion
 

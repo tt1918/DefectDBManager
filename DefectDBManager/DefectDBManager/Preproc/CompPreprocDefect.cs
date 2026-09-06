@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 namespace DefectDBManager
 {
     public delegate void DelegateLotProgress(int percent);
-    
+    public delegate void DelegateSjMonitorEvent(SjMonitorData data);
+
     public sealed class CompPreprocDefect : IDisposable
     {
         #region Event
@@ -43,7 +45,23 @@ namespace DefectDBManager
         public event DelegateLotProgress OnLotProgress = null;
 
         public event DelegateEvent OnStartLiveDefectSearching = null;
+
+        public event DelegateSjMonitorEvent OnSjMonitorEvent = null;
         #endregion Event
+
+        #region Comp Data 저장용 구조체
+        private struct CompareTarget
+        {
+            public string LNCD;
+            public bool IsSplitCTLNO;
+
+            public CompareTarget(string lncd, bool isSplitCTLNO)
+            {
+                LNCD = lncd;
+                IsSplitCTLNO = isSplitCTLNO;
+            }
+        }
+        #endregion
 
         #region Param
         /// <summary>
@@ -123,7 +141,6 @@ namespace DefectDBManager
         } = false;
         #endregion
 
-
         #endregion Param
 
         public CompPreprocDefect(object parent)
@@ -164,6 +181,7 @@ namespace DefectDBManager
 
             // 검색 타이머 초기화
             initCheckLotTimer();
+            initSjModeMonitorTimer();
         }
 
         ~CompPreprocDefect()
@@ -242,12 +260,21 @@ namespace DefectDBManager
 
                     string lotName = item.Y0KLOT;
                     PreprocItem preprocItem = null;
+                    AiMonitorItem aiMonitorItem = null;
+
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) { preprocItem = LotManager.ProcSetting[i]; break; }
 
+                    for (int i = 0; i < LotManager.AiMonitorParam.ModeItems.Count; i++)
+                    {
+                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
+                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                            aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
+                    }
+
                     ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Live][productIdx];
 
-                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem, aiMonitorItem);
 
                     SearchLiveDefectData(list.Key, lotName, preprocItem, filter);
 
@@ -373,85 +400,29 @@ namespace DefectDBManager
                 ((PreprocLotFilter)lot).ProcData = preprocItem;
                 lot.ComparePosition();
 
-                string logName = $"CompData";
                 string subPath = comp._SubPath;
 
                 LogDB log = comp._LOG;
-                int idx1 = 0, idx2 = 0;
+                var targets = preprocItem.Compare
+                    .Select(x => new CompareTarget(x.LNCD, x.IsSplitCTLNO))
+                    .ToList();
 
-                int maxStep = preprocItem.Compare.Count; 
+                var compRangeLogs = preprocItem.CompRange
+                    .Select(x => x.LogString())
+                    .ToList();
 
-                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
-                for (int i = 0; i < maxStep; i++)
-                {
-                    if (preprocItem.Compare[i].IsSplitCTLNO == false)
-                    {
-                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
-                        for (int j = 0; j < nStep; j++)
-                        {
-                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
+                WriteCompareDataLog(
+                    lot,
+                    comp._LOG,
+                    comp._SubPath,
+                    preprocItem.Reference.LNCD,
+                    targets,
+                    preprocItem.BasicRange.LogString(),
+                    compRangeLogs);
 
-                            idx1 = 0;
-                            foreach (var item in lot.MarkCompList.Data)
-                            {
-                                if (!item.Comp.Any(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD && kv.Value[j].Count > 0)) continue;
-
-                                var itemList = item.Comp.Where(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD).ToList();
-                                idx2 = 0;
-                                log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{item.Base.LogString()}"), idx1, logName, 0.0);
-                                idx2++;
-
-                                foreach (var kv in itemList)
-                                {
-                                    foreach (var datum in kv.Value[j])
-                                    {
-                                        log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{datum.LogString()}"), idx1, logName, 0.0);
-                                        idx2++;
-                                    }
-                                }
-                                idx1++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (lot.MarkCompList.Data.Count != 0)
-                        {
-                            bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
-                            if (exists == true)
-                            {
-                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
-                                {
-                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
-                                    {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
-
-                                        for (int j = 0; j < nStep1; j++)
-                                        {
-                                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
-
-                                            idx1 = 0;
-                                            foreach (var item1 in lot.MarkCompList.Data)
-                                            {
-                                                if (item1.Comp[compItem.Key][j].Count > 0)
-                                                {
-                                                    log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);
-                                                    idx1++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Ai Monitoring Result
+                logAIMonitorResult(subPath, log, lot);
+                
                 LotManager.Live.AddLot(lncd, lot);
 
                 Thread.Sleep(200);
@@ -527,10 +498,14 @@ namespace DefectDBManager
             LotManager.Live.LotHistory.Clear();
 #endif
             _timerCheckLiveLot.Start();
+
+            runSjModeData();
+            _timerSjModeMonitor.Start();
         }
         public void StopLiveLot()
         {
             _timerCheckLiveLot.Stop();
+            _timerSjModeMonitor.Stop();
         }
 
         public bool IsRunLiveCheck()
@@ -595,10 +570,19 @@ namespace DefectDBManager
                 if (filter.Use == true)
                 {
                     PreprocItem preprocItem = null;
+                    AiMonitorItem aiMonitorItem = null;
+
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) preprocItem = LotManager.ProcSetting[i];
 
-                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
+                    for (int i = 0; i < LotManager.AiMonitorParam.ModeItems.Count; i++)
+                    {
+                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
+                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                            aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
+                    }
+
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem, aiMonitorItem);
 
                     foreach (var item in list.Value.Data)
                     {
@@ -735,88 +719,29 @@ namespace DefectDBManager
                 ((PreprocLotFilter)lot).ProcData = preprocItem;
                 lot.ComparePosition();
 
-                string logName = $"CompData";
                 string subPath = comp._SubPath;
 
                 LogDB log = comp._LOG;
-                int idx1 = 0, idx2 = 0;
 
-                int maxStep = preprocItem.Compare.Count;
+                var targets = preprocItem.Compare
+                    .Select(x => new CompareTarget(x.LNCD, x.IsSplitCTLNO))
+                    .ToList();
 
-                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
-                for (int i = 0; i < maxStep; i++)
-                {
-                    if (preprocItem.Compare[i].IsSplitCTLNO == false)
-                    {
-                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
-                        for (int j = 0; j < nStep; j++)
-                        {
-                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
+                var compRangeLogs = preprocItem.CompRange
+                    .Select(x => x.LogString())
+                    .ToList();
 
-                            idx1 = 0;
-                            foreach (var item in lot.MarkCompList.Data)
-                            {
-                                if (!item.Comp.Any(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD
-                                                    && kv.Value[j].Count > 0)) continue;
+                WriteCompareDataLog(
+                    lot,
+                    comp._LOG,
+                    comp._SubPath,
+                    preprocItem.Reference.LNCD,
+                    targets,
+                    preprocItem.BasicRange.LogString(),
+                    compRangeLogs);
 
-                                var itemList = item.Comp.
-                                       Where(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD).ToList();
-
-                                idx2 = 0;
-                                log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{item.Base.LogString()}"), idx1, logName, 0.0);
-                                idx2++;
-
-                                foreach (var kv in itemList)
-                                {
-                                    foreach (var datum in kv.Value[j])
-                                    {
-                                        log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{datum.LogString()}"), idx1, logName, 0.0);
-                                        idx2++;
-                                    }
-                                }
-                                idx1++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (lot.MarkCompList.Data.Count != 0)
-                        {
-                            bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
-                            if (exists == true)
-                            {
-                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
-                                {
-                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
-                                    {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
-
-                                        for (int j = 0; j < nStep1; j++)
-                                        {
-                                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
-                                            
-                                            idx1 = 0;
-                                            foreach (var item1 in lot.MarkCompList.Data)
-                                            {
-                                                if (item1.Comp[compItem.Key][j].Count > 0)
-                                                {
-                                                    log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);      
-                                                    idx1++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Ai Monitoring Result
+                logAIMonitorResult(subPath, log, lot);
 
                 LotManager.Search.AddLot(lncd, lot);
 
@@ -909,15 +834,27 @@ namespace DefectDBManager
                 if (filter.Use == true)
                 {
                     PreprocItem preprocItem = null;
+                    AiMonitorItem aiMonitorItem = null;
 
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                     {
                         if (LotManager.ProcSetting[i].Name == keyData[2])
+                        {
                             preprocItem = LotManager.ProcSetting[i].Clone();
-
+                            // 선택랏 설정에 대하여 따로 설정되는 파라미터 적용
+                            preprocItem.UseAiMonitoring = _selParam.UseAiMonitoring;
+                            preprocItem.UseAiResult = _selParam.UseAiResult;
+                        }
                     }
 
-                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem);
+                    for(int i=0; i< LotManager.AiMonitorParam.ModeItems.Count; i++)
+                    {
+                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
+                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                            aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
+                    }
+                    
+                    (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem, aiMonitorItem);
 
                     foreach (var item in list.Value.Data)
                     {
@@ -972,11 +909,15 @@ namespace DefectDBManager
                 foreach (var item in list.Value.Data)
                 {
                     if (StopSelectedLotList == true) break;
+                    AiMonitorItem aiMonitorItem = null;
 
                     string lotName = item.Y0KLOT;
-                    (_CompDBFD as CompDBFilterDefect)?.SetDBParam(filter.Title);
 
-                    SearchSelectedDBLotDefect(lotName, _selParam);
+                    aiMonitorItem = LotManager.AiMonitorParam.ModeItems.FirstOrDefault(x=>x.Name==_selParam.DBFilterAiMonitorName);
+
+                    (_CompDBFD as CompDBFilterDefect)?.SetDBParam(filter.Title, aiMonitorItem);
+
+                    SearchSelectedDBLotDefect(lotName, _selParam, aiMonitorItem);
 
                     // 검색 진행 상황을 
                     int rate = (int)((float)LotManager.Selected.TotalLot / (float)LotManager.Selected.TotalProduct);
@@ -1013,88 +954,29 @@ namespace DefectDBManager
                 ((PreprocLotFilter)lot).ProcData = preprocItem;
                 lot.ComparePosition();
 
-                string logName = $"CompData";
                 string subPath = comp._SubPath;
 
                 LogDB log = comp._LOG;
-                int idx1 = 0, idx2 = 0;
 
-                int maxStep = preprocItem.Compare.Count;
+                var targets = preprocItem.Compare
+                    .Select(x => new CompareTarget(x.LNCD, x.IsSplitCTLNO))
+                    .ToList();
 
-                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
-                for (int i = 0; i < maxStep; i++)
-                {
-                    if (preprocItem.Compare[i].IsSplitCTLNO == false)
-                    {
-                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}";
-                        int nStep = preprocItem.CompRange.Count + 1; // 비교 거리 데이터 확인용
-                        for (int j = 0; j < nStep; j++)
-                        {
-                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
+                var compRangeLogs = preprocItem.CompRange
+                    .Select(x => x.LogString())
+                    .ToList();
 
-                            idx1 = 0;
-                            foreach (var item in lot.MarkCompList.Data)
-                            {
-                                if (!item.Comp.Any(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD
-                                                    && kv.Value[j].Count > 0)) continue;
+                WriteCompareDataLog(
+                    lot,
+                    comp._LOG,
+                    comp._SubPath,
+                    preprocItem.Reference.LNCD,
+                    targets,
+                    preprocItem.BasicRange.LogString(),
+                    compRangeLogs);
 
-                                var itemList = item.Comp.
-                                       Where(kv => kv.Key.Item1 == preprocItem.Compare[i].LNCD).ToList();
-
-                                idx2 = 0;
-                                log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{item.Base.LogString()}"), idx1, logName, 0.0);
-                                idx2++;
-
-                                foreach (var kv in itemList)
-                                {
-                                    foreach (var datum in kv.Value[j])
-                                    {
-                                        log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{datum.LogString()}"), idx1, logName, 0.0);
-                                        idx2++;
-                                    }
-                                }
-                                idx1++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (lot.MarkCompList.Data.Count != 0)
-                        {
-                            bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == preprocItem.Compare[i].LNCD);
-                            if (exists == true)
-                            {
-                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
-                                {
-                                    if (compItem.Key.Item1 == preprocItem.Compare[i].LNCD)
-                                    {
-                                        logName = $"CompData_{preprocItem.Reference.LNCD}_{preprocItem.Compare[i].LNCD}_{compItem.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
-
-                                        for (int j = 0; j < nStep1; j++)
-                                        {
-                                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{preprocItem.BasicRange.LogString()}", j, logName, 0.0, true);
-                                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {preprocItem.CompRange[j - 1].LogString()}", j, logName, 0.0);
-
-                                            idx1 = 0;
-                                            foreach (var item1 in lot.MarkCompList.Data)
-                                            {
-                                                if (item1.Comp[compItem.Key][j].Count > 0)
-                                                {
-                                                    log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);    
-                                                    idx1++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Ai Monitoring Result
+                logAIMonitorResult(subPath, log, lot);
 
                 LotManager.Selected.AddLot(lncd, lot);
 
@@ -1106,13 +988,13 @@ namespace DefectDBManager
             }
         }
 
-        public void SearchSelectedDBLotDefect(string lotName, LotSelProcParam param)
+        public void SearchSelectedDBLotDefect(string lotName, LotSelProcParam param, AiMonitorItem aiMonitorItem)
         {
             eSearchError error = eSearchError.Normal;
             try
             {
                 CompDBFilterDefect comp = _CompDBFD as CompDBFilterDefect;
-                comp.SetLotSearchingParam(lotName, param, false);
+                comp.SetLotSearchingParam(lotName, param, aiMonitorItem, false);
 #if TEST_MODE
                 IPreprocLot lot = comp.SearchLot_TEST(ref error);
 #else
@@ -1136,85 +1018,28 @@ namespace DefectDBManager
                 lotDB.SetInfo(param, refLNCD, listLNCD);
                 lot.ComparePosition();
 
-                string logName = $"CompData";
                 string subPath = comp._SubPath;
 
                 LogDB log = comp._LOG;
-                int idx1 = 0, idx2 = 0;
+                var targets = listLNCD
+                    .Select(x => new CompareTarget(x, param.UseSplit))
+                    .ToList();
 
-                int maxIndex = listLNCD.Count;
+                var compRangeLogs = param.CompRange
+                    .Select(x => x.LogString())
+                    .ToList();
 
-                // 이제 비교가 된 데이터에 대해서만 정보를 저장한다. 
-                for (int i = 0; i < maxIndex; i++)
-                {
-                    if(param.UseSplit==false)
-                    {
-                        logName = $"CompData_{refLNCD}_{listLNCD[i]}";
-                        int nStep = param.CompRange.Count + 1; // 비교 거리 데이터 확인용
-                        for (int j = 0; j < nStep; j++)
-                        {
-                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{param.BasicRange.LogString()}", j, logName, 0.0, true);
-                            else        log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {param.CompRange[j - 1].LogString()}", j, logName, 0.0);
+                WriteCompareDataLog(
+                    lot,
+                    comp._LOG,
+                    comp._SubPath,
+                    refLNCD,
+                    targets,
+                    param.BasicRange.LogString(),
+                    compRangeLogs);
 
-                            idx1 = 0;
-                            foreach (var item in lot.MarkCompList.Data)
-                            {
-                                if (!item.Comp.Any(kv => kv.Key.Item1 == listLNCD[i] && kv.Value[j].Count > 0)) continue;
-
-                                var itemList = item.Comp.Where(kv => kv.Key.Item1 == listLNCD[i]).ToList();
-                                idx2 = 0;
-                                log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{item.Base.LogString()}"), idx1, logName, 0.0);
-                                idx2++;
-
-                                foreach (var kv in itemList)
-                                {
-                                    foreach (var datum in kv.Value[j])
-                                    {
-                                        log.WriteLoadData(subPath, String.Format($"{idx1},{idx2}\t-\t{datum.LogString()}"), idx1, logName, 0.0);
-                                        idx2++;
-                                    }
-                                }
-                                idx1++;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (lot.MarkCompList.Data.Count != 0)
-                        {
-                            bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == listLNCD[i]);
-                            if (exists == true)
-                            {
-                                foreach (var compItem in lot.MarkCompList.Data[0].Comp)
-                                {
-                                    if (compItem.Key.Item1 == listLNCD[i])
-                                    {
-                                        logName = $"CompData_{refLNCD}_{listLNCD[i]}_{compItem.Key.Item2}";
-                                        int nStep1 = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0); // 비교 거리 데이터 확인용
-
-                                        for (int j = 0; j < nStep1; j++)
-                                        {
-                                            if (j == 0)     log.WriteLoadData(subPath, $"[COMPARE BASIC]-{param.BasicRange.LogString()}", j, logName, 0.0, true);
-                                            else            log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {param.CompRange[j - 1].LogString()}", j, logName, 0.0);
-
-                                            idx1 = 0;
-                                            foreach (var item1 in lot.MarkCompList.Data)
-                                            {
-                                                if (item1.Comp[compItem.Key][j].Count > 0)
-                                                {
-                                                    log.WriteLoadData(subPath, String.Format($"{idx1},0\t-\t{item1.Base.LogString()}"), idx1, logName, 0.0);
-                                                    for (int k = 0, id=1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
-                                                        log.WriteLoadData(subPath, String.Format($"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}"), idx1, logName, 0.0);
-                                                    idx1++;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // Ai Monitoring Result
+                logAIMonitorResult(subPath, log, lot);
 
                 LotManager.Selected.AddLot("DB", lot);
 
@@ -1229,6 +1054,337 @@ namespace DefectDBManager
 
             }
         }
+        #endregion
+
+        #region Log 저장 함수
+        private void WriteCompareDataLog(IPreprocLot lot, LogDB log, string subPath, string refLncd, IList<CompareTarget> targets,
+                                        string basicRangeLog, IList<string> compRangeLogs)
+        {
+            if (lot == null || log == null || targets == null) return;
+
+            foreach (var target in targets)
+            {
+                if (!target.IsSplitCTLNO)
+                {
+                    string logName = $"CompData_{refLncd}_{target.LNCD}";
+                    int nStep = compRangeLogs.Count + 1;
+
+                    for (int j = 0; j < nStep; j++)
+                    {
+                        if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{basicRangeLog}", j, logName, 0.0, true);
+                        else log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {compRangeLogs[j - 1]}", j, logName, 0.0);
+
+                        int idx1 = 0;
+                        foreach (var item in lot.MarkCompList.Data)
+                        {
+                            if (!item.Comp.Any(kv => kv.Key.Item1 == target.LNCD && kv.Value[j].Count > 0)) continue;
+
+                            var itemList = item.Comp.Where(kv => kv.Key.Item1 == target.LNCD).ToList();
+                            int idx2 = 0;
+
+                            log.WriteLoadData(subPath, $"{idx1},{idx2}\t-\t{item.Base.LogString()}", idx1, logName, 0.0);
+                            idx2++;
+
+                            foreach (var kv in itemList)
+                            {
+                                foreach (var datum in kv.Value[j])
+                                {
+                                    log.WriteLoadData(subPath, $"{idx1},{idx2}\t-\t{datum.LogString()}", idx1, logName, 0.0);
+                                    idx2++;
+                                }
+                            }
+
+                            idx1++;
+                        }
+                    }
+                }
+                else
+                {
+                    if (lot.MarkCompList.Data.Count == 0) continue;
+
+                    bool exists = lot.MarkCompList.Data[0].Comp.Keys.Any(k => k.Item1 == target.LNCD);
+                    if (!exists) continue;
+
+                    foreach (var compItem in lot.MarkCompList.Data[0].Comp)
+                    {
+                        if (compItem.Key.Item1 != target.LNCD) continue;
+
+                        string logName = $"CompData_{refLncd}_{target.LNCD}_{compItem.Key.Item2}";
+                        int nStep = lot.MarkCompList.Data[0].Comp[compItem.Key].GetLength(0);
+
+                        for (int j = 0; j < nStep; j++)
+                        {
+                            if (j == 0) log.WriteLoadData(subPath, $"[COMPARE BASIC]-{basicRangeLog}", j, logName, 0.0, true);
+                            else if (j - 1 < compRangeLogs.Count)
+                                log.WriteLoadData(subPath, $"[COMPARE Range {j}] - {compRangeLogs[j - 1]}", j, logName, 0.0);
+
+                            int idx1 = 0;
+                            foreach (var item1 in lot.MarkCompList.Data)
+                            {
+                                if (item1.Comp[compItem.Key][j].Count <= 0) continue;
+
+                                log.WriteLoadData(subPath, $"{idx1},0\t-\t{item1.Base.LogString()}", idx1, logName, 0.0);
+                                for (int k = 0, id = 1; k < item1.Comp[compItem.Key][j].Count; k++, id++)
+                                {
+                                    log.WriteLoadData(subPath, $"{idx1},{id}\t-\t{item1.Comp[compItem.Key][j][k].LogString()}", idx1, logName, 0.0);
+                                }
+                                idx1++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void logAIMonitorResult(string subPath, LogDB log, IPreprocLot lot)
+        {
+            if (lot.FaultData.AIMonResult == null) return;
+            string logName = $"Ai_Monitoring";
+
+            int idx = 0;
+            AIMonitorResult aiRes = lot.FaultData.AIMonResult;
+            log.WriteLoadData(subPath, $"Model Exist: {aiRes.IsModelExsit}", idx, logName, 0.0, true);
+            foreach (var item in lot.FaultData.AIMonResult.Items)
+            {
+                log.WriteLoadData(subPath, $"[{item.Model.SECFLTID} - {string.Join(",", item.Model.FLTID)}] Judgement Rate : {item.Model.Rate}", ++idx, logName, 0.0);
+
+                string logString = $"Total : {item.Total}";
+                log.WriteLoadData(subPath, logString, ++idx, logName, 0.0);
+                logString = $"Match : {item.Match}";
+                log.WriteLoadData(subPath, logString, ++idx, logName, 0.0);
+                if (item.Model.Use)
+                {
+                    logString = $"Judgement : {item.Judge}";
+                    log.WriteLoadData(subPath, logString, ++idx, logName, 0.0);
+                }
+                else
+                {
+                    string strExist = item.Total > 0 ? "OK" : "NG";
+                    logString = $"Defect Exsit : {strExist}";
+                    log.WriteLoadData(subPath, logString, ++idx, logName, 0.0);
+                }
+
+            }
+        }
+        #endregion
+
+
+        #region SJMode 실시간 모니터링 처리
+        System.Timers.Timer _timerSjModeMonitor = null;
+
+        bool _isRunSjModeMonitor = false;
+        bool _stopSjModeMonitor = false;
+
+        private void initSjModeMonitorTimer()
+        {
+            closeSjModeMonitorTimer();
+            _timerSjModeMonitor = new System.Timers.Timer();
+            _timerSjModeMonitor.Interval = 1000*60;
+            _timerSjModeMonitor.Elapsed += checkSjModeMonitor;
+        }
+
+        private void closeSjModeMonitorTimer()
+        {
+            if(_timerSjModeMonitor!=null)
+            {
+                _timerSjModeMonitor.Stop();
+                _timerSjModeMonitor.Elapsed -= checkSjModeMonitor;
+                _timerSjModeMonitor.Dispose();
+                _timerSjModeMonitor = null;
+            }
+        }
+
+        private void checkSjModeMonitor(object sender, ElapsedEventArgs e)
+        {
+            // 검색 중이면 스킵 처리
+            if (_isRunSjModeMonitor == true) return;
+
+            // 탐색 가능 확인
+
+            runSjModeData();
+        }
+
+        private void runSjModeData()
+        {
+            Task task = new Task(searchSjModeData);
+            task.Start();
+        }
+
+        private void searchSjModeData()
+        {
+            try
+            {
+                if (_isRunSjModeMonitor == true) return;
+                _isRunSjModeMonitor = true;
+
+                var param = LotManager.SjMonitorParam;
+                foreach (var item in param.ModeItems)
+                {
+                    string mainPath = item.MainPath;
+
+                    // 내부에 있는 폴더를 확인하고, 해당 폴더에 대한 데이터를 취합한다.
+                    var subFolderList = Directory.GetDirectories(mainPath);
+                    foreach (var subFolder in subFolderList)
+                    {
+                        string subFolderName = Path.GetFileName(subFolder);
+                        string ctlno = subFolderName;
+
+                        // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
+                        if (LotManager.SjMonitorDataList.Exist(ctlno) == true &&
+                            LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno).IsFinished == true)
+                            continue;
+
+                        string path = item.NetPathSummery(ctlno);
+
+                        // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
+                        int key = Convert.ToInt32(item.ModelName);
+                        var data = ReadSjData(ctlno, path);
+                        data.ModeNo = key;
+
+                        // 판정 처리함
+                        foreach (var infoItem in item.DefectInfo)
+                        {
+                            if(infoItem.Use==false) continue;
+                            if (!data.DefectInfo.ContainsKey(key)) continue;
+                            var rate = data.SetDefectJudgement(key, infoItem);
+                        }
+
+                        data.LNCD = item.LNCD;
+
+                        if (LotManager.SjMonitorDataList.Exist(ctlno) == false)
+                            LotManager.SjMonitorDataList.Add(data);
+                        else
+                        {
+                            LotManager.SjMonitorDataList.Remove(ctlno);
+                            LotManager.SjMonitorDataList.Add(data);
+                        }
+
+                        // 데이터가 존재하면 리스트에 추가
+                        OnSjMonitorEvent?.Invoke(data);
+
+                        // 검색 결과 데이터를 파일에 저장한다.
+                        _ = Task.Run(() => saveSjMonitorData(data));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write($"[Error] searchSjModeData : {ex.Message}");
+            }
+            finally
+            {
+                _isRunSjModeMonitor = false;
+            }
+        }
+
+        private SjMonitorData ReadSjData(string ctrno, string path)
+        {
+            SjMonitorData data = new SjMonitorData();
+            data.CTLNO = ctrno;
+            data.IsFinished = false;
+
+            Dictionary<int, int> modeNo = new Dictionary<int, int>();
+            Dictionary<string, string> tmpCtrlNo = new Dictionary<string, string>();
+            // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
+            var filePath = Path.Combine(path, "DecisionResult.csv");
+            try
+            {
+                // 파일이 존재하지 않으면 없음을 표시함
+                if (System.IO.File.Exists(filePath) == false)            
+                    return data;
+
+                // 파일이 존재하면 완료 플레그는 true로 설정함
+                data.IsFinished = true;
+                // 파일이 존재하면 데이터를 읽어옴
+                var lines = System.IO.File.ReadAllLines(filePath);
+                foreach (var line in lines)
+                {
+                    if(line.Contains("SJMODE") ||
+                        line.Contains("CTLNO") || 
+                        line.Contains("FLTNO") ||
+                        line.Contains("PICFNAME") || 
+                        line.Contains("FLTID") ||
+                        line.Contains("SECFLTID"))
+                        continue;
+
+                    string[] items = line.Split(',');
+                    if (items.Length <= 0) continue;
+
+                    SjData item = new SjData
+                    {
+                        FltNo = int.Parse(items[2]),
+                        PicName = items[3],
+                        FLTID = items[4],
+                        SECFLTID = items[5]
+                    };
+                    int no = int.Parse(items[0]);
+                    data.AddDefect(no, item);
+
+                    if (!modeNo.ContainsKey(no)) 
+                        modeNo.Add(no, no);
+
+                    
+                    if(!tmpCtrlNo.ContainsKey(items[1]))
+                        tmpCtrlNo.Add(items[1], items[1]);
+                }
+
+               
+
+                if (tmpCtrlNo.Count==1)
+                {
+                    data.CTLNO = tmpCtrlNo.First().Key;
+                }
+                else if(tmpCtrlNo.Count>1)
+                {
+                    Log.Write($"[Error] ReadSjData : {ctrno} - CTLNO Count is more than 1");
+                    data.CTLNO = tmpCtrlNo.First().Key;
+                }
+
+                return data;
+            }
+            catch(Exception ex)
+            {
+                Log.Write($"[Error] ReadSjData : {ex.Message}");
+                return null;
+            }
+        }
+
+        private void saveSjMonitorData(SjMonitorData data)
+        {
+            string path = Path.Combine(Define.SjMonitorDataFolder, $"{data.CTLNO}.csv");
+            if (Directory.Exists(Define.SjMonitorDataFolder) == false)
+                Directory.CreateDirectory(Define.SjMonitorDataFolder);
+            
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                // Summery 정보 저장
+                sw.WriteLine("CTLNO,MODE,Finish");
+                sw.WriteLine($"{data.CTLNO},{data.ModeNo},{data.IsFinished}");
+
+                StringBuilder header = new StringBuilder();
+                StringBuilder dataLine = new StringBuilder();
+                header.Append("FLTID,Rate,Judgement");
+                sw.WriteLine(header.ToString());
+                foreach (var item in data.Judgement)
+                {
+                    dataLine.Clear();
+                    dataLine.Append($"{item.Value.FLTID}");
+                    dataLine.Append($",{item.Value.Rate*100.0}");
+                    dataLine.Append($",{item.Value.Judgement}");
+                    sw.WriteLine(dataLine.ToString());
+                }
+
+                sw.WriteLine("SJMODE,CTLNO,FLTNO,PICFNAME,FLTID,SECFLTID");
+                foreach (var item in data.DefectInfo)
+                {
+                    foreach (var defect in item.Value)
+                    {
+                        sw.WriteLine($"{item.Key},{data.CTLNO},{defect.FltNo},{defect.PicName},{defect.FLTID},{defect.SECFLTID}");
+                    }
+                }
+            }
+        }
+
         #endregion
 
         public void dbReconnect()

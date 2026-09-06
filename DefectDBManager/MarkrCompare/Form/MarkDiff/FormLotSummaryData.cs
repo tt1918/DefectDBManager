@@ -240,7 +240,7 @@ namespace MarkCompare
                 {
                     this.BeginInvoke(new Action(() =>
                     {
-                        lblStatus.BkColor = Color.Red;
+                        lblStatus.FillColor = Color.Red;
                         this.BackColor = Color.Pink;
                         lblStatus.Text = Lang.ErrorOccurrence;
 
@@ -252,7 +252,7 @@ namespace MarkCompare
                 {
                     this.BeginInvoke(new Action(() =>
                     {
-                        lblStatus.BkColor = Color.MidnightBlue;
+                        lblStatus.FillColor = Color.MidnightBlue;
                         this.BackColor = Color.WhiteSmoke;
                         lblStatus.Text = Lang.Normal;
 
@@ -271,13 +271,72 @@ namespace MarkCompare
         {
             try
             {
-                string str = _lotSummery.LotName;
-                lblLotName.Text = str + $" - {filter}";
-
-                if (_isError)
-                    lblLotName.BkColor = Color.Red;
+                bool isAiError = false;
+                StringBuilder sb = new StringBuilder();
+                sb.Append(_lotSummery.LotName);
+                sb.Append($" - {filter} ");
+                if(!_lotSummery.FaultData.AIMonResult.IsModelExsit)
+                {
+                    sb.Append("[AI 모니터링 미적용]");
+                }
                 else
-                    lblLotName.BkColor = Color.MidnightBlue;
+                {
+                    foreach(var item in _lotSummery.FaultData.AIMonResult.Items)
+                    {
+                        if(item.Model.Use)
+                        {
+                            sb.Append("[인정 비율 검사] ");
+                            if (item.Judge == true)
+                                sb.Append($"OK({item.Ratio:F1}%)");
+                            else
+                            {
+                                sb.Append($"NG({item.Ratio:F1}%)");
+                                isAiError = true;
+                            }
+                        }
+                        else
+                        {
+                            sb.Append("[유무 검사] ");
+                            if (item.Total > 0)
+                                sb.Append("OK");
+                            else
+                            {
+                                sb.Append("NG");
+                                isAiError = true;
+                            }
+                        }
+                    }
+                }
+
+                lblLotName.Text = sb.ToString();
+
+                if (_isError || isAiError)
+                {
+                    if (isAiError && !_isError)
+                    {
+                        lblLotName.FillColor = Color.Yellow;
+                        lblLotName.FillColor2 = Color.Gold;
+                        lblLotName.TextColor = Color.Black;
+                    }
+                    else if (!isAiError && _isError)
+                    {
+                        lblLotName.FillColor = Color.Red;
+                        lblLotName.FillColor2 = Color.DarkRed;
+                        lblLotName.TextColor = Color.Black;
+                    }
+                    else
+                    {
+                        lblLotName.FillColor = Color.Yellow;
+                        lblLotName.FillColor2 = Color.Red;
+                        lblLotName.TextColor = Color.Black;
+                    }
+                }
+                else
+                {
+                    lblLotName.FillColor = Color.DarkBlue;
+                    lblLotName.FillColor2 = Color.MidnightBlue;
+                    lblLotName.TextColor = Color.White;
+                }
             }
             catch(Exception ex)
             {

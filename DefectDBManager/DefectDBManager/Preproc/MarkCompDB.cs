@@ -1556,6 +1556,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAiMonitoring = _PreprocItem.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -1789,6 +1790,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAiMonitoring = _PreprocItem.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -1984,6 +1986,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = procParam.UseAiResult;
+            bool useAiMonitoring = procParam.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -2215,6 +2218,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = procParam.UseAiResult;
+            bool useAiMonitoring = procParam.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;

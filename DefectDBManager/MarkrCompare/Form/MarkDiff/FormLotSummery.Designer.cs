@@ -28,25 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnClearHistory = new CustomControls.RoundButton();
             this.rbShowNormal = new System.Windows.Forms.RadioButton();
             this.rbShowNG = new System.Windows.Forms.RadioButton();
             this.rbShowAll = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flpLotSummary = new System.Windows.Forms.FlowLayoutPanel();
+            this.dgvAiMonitor = new System.Windows.Forms.DataGridView();
+            this.btnClearHistory = new CustomControls.RoundButton();
+            this.lblSJMonitor = new CustomControls.ShadedLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAiMonitor)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.dgvAiMonitor, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lblSJMonitor, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
@@ -54,7 +61,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(536, 562);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(851, 562);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -70,34 +77,13 @@
             this.tableLayoutPanel2.Controls.Add(this.rbShowNG, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.rbShowAll, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 1);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(341, 1);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(534, 33);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(509, 33);
             this.tableLayoutPanel2.TabIndex = 0;
-            // 
-            // btnClearHistory
-            // 
-            this.btnClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BorderColor = System.Drawing.Color.Lavender;
-            this.btnClearHistory.BorderRadius = 5;
-            this.btnClearHistory.BorderSize = 2;
-            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClearHistory.FlatAppearance.BorderSize = 0;
-            this.btnClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearHistory.ForeColor = System.Drawing.Color.White;
-            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
-            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
-            this.btnClearHistory.Name = "btnClearHistory";
-            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
-            this.btnClearHistory.TabIndex = 11;
-            this.btnClearHistory.Text = "이력 삭제";
-            this.btnClearHistory.TextColor = System.Drawing.Color.White;
-            this.btnClearHistory.UseVisualStyleBackColor = false;
-            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
             // 
             // rbShowNormal
             // 
@@ -144,9 +130,9 @@
             this.panel1.AutoSize = true;
             this.panel1.Controls.Add(this.flpLotSummary);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 38);
+            this.panel1.Location = new System.Drawing.Point(343, 38);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(530, 521);
+            this.panel1.Size = new System.Drawing.Size(505, 521);
             this.panel1.TabIndex = 1;
             // 
             // flpLotSummary
@@ -157,14 +143,86 @@
             this.flpLotSummary.Location = new System.Drawing.Point(0, 0);
             this.flpLotSummary.Margin = new System.Windows.Forms.Padding(1);
             this.flpLotSummary.Name = "flpLotSummary";
-            this.flpLotSummary.Size = new System.Drawing.Size(530, 521);
+            this.flpLotSummary.Size = new System.Drawing.Size(505, 521);
             this.flpLotSummary.TabIndex = 2;
+            // 
+            // dgvAiMonitor
+            // 
+            this.dgvAiMonitor.AllowUserToAddRows = false;
+            this.dgvAiMonitor.AllowUserToDeleteRows = false;
+            this.dgvAiMonitor.AllowUserToResizeColumns = false;
+            this.dgvAiMonitor.AllowUserToResizeRows = false;
+            this.dgvAiMonitor.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvAiMonitor.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvAiMonitor.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAiMonitor.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvAiMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAiMonitor.Location = new System.Drawing.Point(3, 38);
+            this.dgvAiMonitor.MultiSelect = false;
+            this.dgvAiMonitor.Name = "dgvAiMonitor";
+            this.dgvAiMonitor.ReadOnly = true;
+            this.dgvAiMonitor.RowHeadersVisible = false;
+            this.dgvAiMonitor.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvAiMonitor.RowTemplate.Height = 23;
+            this.dgvAiMonitor.Size = new System.Drawing.Size(334, 521);
+            this.dgvAiMonitor.TabIndex = 2;
+            // 
+            // btnClearHistory
+            // 
+            this.btnClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.BorderColor = System.Drawing.Color.Lavender;
+            this.btnClearHistory.BorderRadius = 5;
+            this.btnClearHistory.BorderSize = 2;
+            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnClearHistory.FlatAppearance.BorderSize = 0;
+            this.btnClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearHistory.ForeColor = System.Drawing.Color.White;
+            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
+            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
+            this.btnClearHistory.Name = "btnClearHistory";
+            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
+            this.btnClearHistory.TabIndex = 11;
+            this.btnClearHistory.Text = "이력 삭제";
+            this.btnClearHistory.TextColor = System.Drawing.Color.White;
+            this.btnClearHistory.UseVisualStyleBackColor = false;
+            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
+            // 
+            // lblSJMonitor
+            // 
+            this.lblSJMonitor.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblSJMonitor.BackColor = System.Drawing.Color.Transparent;
+            this.lblSJMonitor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblSJMonitor.BorderRadius = 4;
+            this.lblSJMonitor.BorderSize = 1;
+            this.lblSJMonitor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSJMonitor.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(27)))), ((int)(((byte)(38)))));
+            this.lblSJMonitor.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSJMonitor.ImagePadding = 6;
+            this.lblSJMonitor.ImageSize = 18;
+            this.lblSJMonitor.LabelImage = null;
+            this.lblSJMonitor.Location = new System.Drawing.Point(1, 1);
+            this.lblSJMonitor.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSJMonitor.Name = "lblSJMonitor";
+            this.lblSJMonitor.ShowAccentLine = false;
+            this.lblSJMonitor.Size = new System.Drawing.Size(338, 33);
+            this.lblSJMonitor.TabIndex = 3;
+            this.lblSJMonitor.Text = "AI MONITOR";
+            this.lblSJMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSJMonitor.TextColor = System.Drawing.Color.White;
             // 
             // FormLotSummery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(536, 562);
+            this.ClientSize = new System.Drawing.Size(851, 562);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -177,6 +235,7 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAiMonitor)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -191,5 +250,7 @@
         private CustomControls.RoundButton btnClearHistory;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flpLotSummary;
+        private System.Windows.Forms.DataGridView dgvAiMonitor;
+        private CustomControls.ShadedLabel lblSJMonitor;
     }
 }

@@ -148,6 +148,8 @@ namespace MarkCompare
             _dbManager.OnStartLiveDefectSearching += _markDiffForm.FormMorLive.StartLotSearch;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
+
+            _dbManager.OnSjMonitorEvent += _markDiffForm.FormLotSummery.UpdateAIResultMonitor;
             #endregion
 
             #region 선택 Lot 탐색
@@ -177,8 +179,8 @@ namespace MarkCompare
             #endregion
 
             #region 선택 Lot 탐색
-            _markDiffForm.FormMorSelectedLot.OnSearchSelectedLot += StartSelectedLotProcess;
-            _markDiffForm.FormMorSelectedLot.OnStopLotSearch += EndSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnSearchSelectedLot -= StartSelectedLotProcess;
+            _markDiffForm.FormMorSelectedLot.OnStopLotSearch -= EndSelectedLotProcess;
             _dbManager.OnEndSelectedLot -= _markDiffForm.FormMorSelectedLot.EndLotSearch;
             _dbManager.OnEndSelectedLot -= _markDiffForm.UpdateSelectedLotList;
             #endregion
@@ -233,29 +235,53 @@ namespace MarkCompare
 
         private void btnParam_Click(object sender, EventArgs e)
         {
-            FormSetting form = new FormSetting(this._lotManager.ProcSetting);
-            if (form.ShowDialog() == DialogResult.OK)
-                this._lotManager.UpdatePreprocSet(form.PreprocSet);
-
+            using(FormSetting form = new FormSetting(this._lotManager.ProcSetting))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                    this._lotManager.UpdatePreprocSet(form.PreprocSet);
+            }
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
-            FormLNCD form = new FormLNCD();
-            form.CultureCode = _cultureCode;
-            if (form.ShowDialog() == DialogResult.OK)
-                this._lotManager.SetLNCDData(form.MaterialDate);
+            using(FormLNCD form = new FormLNCD())
+            {
+                form.CultureCode = _cultureCode;
+                if (form.ShowDialog() == DialogResult.OK)
+                    this._lotManager.SetLNCDData(form.MaterialDate);
+            }
+        }
+        private void btnSetAiMonitorParam_Click(object sender, EventArgs e)
+        {
+            using (FormAiMonitorParam form = new FormAiMonitorParam())
+            {
+                form.CultureCode = _cultureCode;
+                if (form.ShowDialog() == DialogResult.OK)
+                    this._lotManager.SetAiMonitorParam(form.Param);
+            }
+        }
+
+        private void btnSJModeParam_Click(object sender, EventArgs e)
+        {
+            using(FormSJModeParam form = new FormSJModeParam())
+            {
+                form.CultureCode = _cultureCode;
+                if(form.ShowDialog() == DialogResult.OK)
+                    this._lotManager.SetSjMonitorParam(form.Param);
+            }
         }
 
         private void btnSystem_Click(object sender, EventArgs e)
         {
-            FormSystem form = new FormSystem(_systemParam);
-            form.CultureCode = _cultureCode;
-            if (form.ShowDialog() == DialogResult.OK)
+            using(FormSystem form = new FormSystem(_systemParam))
             {
-                _systemParam = form.SysParam;
-                SetCultureCode();
-                ChangeLanguage();
+                form.CultureCode = _cultureCode;
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    _systemParam = form.SysParam;
+                    SetCultureCode();
+                    ChangeLanguage();
+                }
             }
         }
 
@@ -441,7 +467,7 @@ namespace MarkCompare
 
         #endregion
 
-            #region DB Connection
+        #region DB Connection
         Timer _timerDBConn = null;
         private bool isDbConnOn = false;
         private Image ledOn = null;
@@ -577,5 +603,6 @@ namespace MarkCompare
             lblTitle.Text = Lang.mainFormTitle;
         }
         #endregion
+
     }
 }

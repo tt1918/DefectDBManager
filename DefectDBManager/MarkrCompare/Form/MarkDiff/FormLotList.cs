@@ -438,6 +438,8 @@ namespace MarkCompare
         private void btnLoad_Click(object sender, EventArgs e)
         {
             ((FormMarkDiff)this.ParentForm).RemoveAll();
+            if (!_dicFormSummary.ContainsKey("Search")) return;
+
             foreach (var form in _dicFormSummary["Search"])
             {
                 if (form.StateCheckbox)

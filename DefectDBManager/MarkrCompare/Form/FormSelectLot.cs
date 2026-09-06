@@ -44,6 +44,7 @@ namespace MarkCompare
             _lotManager = manager;
 
             _selDestName = ProcItem.DBFilter.Title;
+            _selAiMonitorItemname = ProcItem.DBFilterAiMonitorName;
 
             _destConfig = new DefectDBManager.DestConfig();
             _destConfig.Read();
@@ -56,6 +57,7 @@ namespace MarkCompare
             initDbFilterCtrl();
 
             cbDest.SelectedText = ProcItem.DBFilter.Title;
+            cbbAiMonitorParam.SelectedItem = _selAiMonitorItemname;
 
             UpdateLanguage();
 
@@ -495,6 +497,7 @@ namespace MarkCompare
         {
             cbUseMNTTAN.Checked = ProcItem.UseAiResult;
             cbUseSplit.Checked = ProcItem.UseSplit;
+            cbAiMonitoring.Checked = ProcItem.UseAiMonitoring;
         }
 
         #endregion
@@ -515,6 +518,7 @@ namespace MarkCompare
             updateJudgeRange();
             ProcItem.UseAiResult = cbUseMNTTAN.Checked;
             ProcItem.UseSplit = cbUseSplit.Checked;
+            ProcItem.UseAiMonitoring = cbAiMonitoring.Checked;
             ProcItem.Save();
         }
 
@@ -629,6 +633,7 @@ namespace MarkCompare
 
         #region DB Filter
         string _selDestName = string.Empty;
+        string _selAiMonitorItemname = string.Empty;
         private void initDbFilterCtrl()
         {
             rbFilterType2.CheckedChanged += rbFilterType_CheckedChanged;
@@ -636,6 +641,9 @@ namespace MarkCompare
             cbDest.Items.Clear();
             foreach (var item in _destConfig.DicDest)
                 cbDest.Items.Add(item.Key);
+
+            foreach(var item in _lotManager.AiMonitorParam.ModeItems)
+                cbbAiMonitorParam.Items.Add(item.Name);
         }
         private void cbDest_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -643,6 +651,13 @@ namespace MarkCompare
             if (_selDestName == "") return;
             
             displayDbFilterOption();
+        }
+
+
+        private void cbbAiMonitorParam_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _selAiMonitorItemname = cbbAiMonitorParam.SelectedItem.ToString();
+            if(_selAiMonitorItemname == "") return;
         }
 
         private void displayDbFilterOption()
@@ -663,6 +678,8 @@ namespace MarkCompare
                     ckbTG.Checked = item.UseTG;
                     ckbETC.Checked = item.UseETC;
                 }
+
+                cbbAiMonitorParam.SelectedItem = _selAiMonitorItemname;
             }
             catch (Exception ex)
             {
@@ -686,6 +703,8 @@ namespace MarkCompare
                 ProcItem.DBFilter.UseES = ckbES.Checked;
                 ProcItem.DBFilter.UseTG = ckbTG.Checked;
                 ProcItem.DBFilter.UseETC = ckbETC.Checked;
+
+                ProcItem.DBFilterAiMonitorName = _selAiMonitorItemname;
             }
             catch
             {
@@ -699,6 +718,8 @@ namespace MarkCompare
             ckbES.Enabled = enable;
             ckbTG.Enabled = enable;
             ckbETC.Enabled = enable;
+
+            cbbAiMonitorParam.Enabled = enable;
         }
         #endregion
 
@@ -758,5 +779,6 @@ namespace MarkCompare
                 }
             }
         }
+
     }
 }

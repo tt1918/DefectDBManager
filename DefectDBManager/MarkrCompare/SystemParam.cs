@@ -34,6 +34,7 @@ namespace MarkCompare
             SystemParam param = new SystemParam();
             param.Language = _language;
             param.BunchOfDefect = _bunchOfDefect;
+
             return param;
         }
 

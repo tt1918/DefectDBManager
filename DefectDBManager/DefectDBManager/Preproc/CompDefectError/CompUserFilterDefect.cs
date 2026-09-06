@@ -13,6 +13,7 @@ namespace DefectDBManager.Preproc
     public class CompUserFilterDefect : CompDefectErrorDefault, ICompareDefectError
     {
         public PreprocItem _PreprocItem { get; private set; } = null;
+        public AiMonitorItem _AiMonitorItem { get; private set; } = null;
         #region Lot List Search Param
         public string LNCD { get; private set; } = string.Empty;
         public ProcFilter Filter { get; private set; } = null;
@@ -30,13 +31,15 @@ namespace DefectDBManager.Preproc
             : base(parent, dbconn, disconnDB)
         {
             _PreprocItem = new PreprocItem();
+            _AiMonitorItem = null;
         }
 
-        public void SetFilterParam(string lncd, string productName, PreprocItem item, bool skipWildCard = false)
+        public void SetFilterParam(string lncd, string productName, PreprocItem item, AiMonitorItem aiMonitorItem, bool skipWildCard = false)
         {
             _SearchY0LNCD = lncd;
             _ProductName = productName;
             _PreprocItem = item;
+            _AiMonitorItem = aiMonitorItem; 
 
             _SubPath = $"{lncd}_{productName}_{item.Name}";
             _SubPath = Helper.ReplaceInvalidPathChar(_SubPath);
@@ -97,6 +100,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAiMonitoring = _PreprocItem.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -171,6 +175,7 @@ namespace DefectDBManager.Preproc
 
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
+                        AiMonitorItem aiItem = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
@@ -178,6 +183,47 @@ namespace DefectDBManager.Preproc
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
+
+                            if (_AiMonitorItem != null)
+                            {
+                                string filter = _AiMonitorItem.ModelName.Trim('*');
+                                if (inspdata.HINMEI.Contains(filter))
+                                    aiItem = _AiMonitorItem;
+                            }
+
+                            if (aiItem != null)
+                            {
+                                FaultData.AIMonResult.IsModelExsit = true;
+                                foreach (var aimonitor in aiItem.DefectInfo)
+                                {
+                                    bool isExist = false;
+                                    for (int aiIdx = 0; aiIdx < FaultData.AIMonResult.Items.Count; aiIdx++)
+                                    {
+                                        if (FaultData.AIMonResult[aiIdx].Model != null &&
+                                            FaultData.AIMonResult[aiIdx].Model.SECFLTID == aimonitor.SECFLTID)
+                                        {
+                                            var existFltIds = FaultData.AIMonResult[aiIdx].Model.FLTID ?? new List<string>();
+                                            var targetFltIds = aimonitor.FLTID ?? new List<string>();
+
+                                            if (existFltIds.Count == targetFltIds.Count &&
+                                                !existFltIds.Except(targetFltIds).Any() &&
+                                                !targetFltIds.Except(existFltIds).Any())
+                                            {
+                                                isExist = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (isExist) continue;
+                                    FaultData.AIMonResult.Items.Add(new AiMonitorResultItem()
+                                    {
+                                        Model = aimonitor,
+                                        Total = 0,
+                                        Match = 0
+                                    });
+                                }
+                            }
                         }
                         else
                         {
@@ -240,7 +286,11 @@ namespace DefectDBManager.Preproc
                                                 tmpKey = data.FLTID;
                                         }
                                         else tmpKey = data.FLTID;
-
+                                        
+                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                        {
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                        }
 
                                         // Log는 무조건 데이터 다 남기도록 수정
                                         dataCnt++;
@@ -318,6 +368,7 @@ namespace DefectDBManager.Preproc
 
                 // 불량 체크
                 bool isSuccess = FalutFunction.IsDefectExist(DbDestConfig.CSVType, defectCnt);
+                FaultData.AIMonResult.Judgement();
                 return true;
             }
             catch (Exception ex)
@@ -333,6 +384,7 @@ namespace DefectDBManager.Preproc
 
             bool useXOffset = false;
             bool useAIFromDB = _PreprocItem.UseAiResult;
+            bool useAiMonitoring = _PreprocItem.UseAiMonitoring;
             eCSV_TYPE csvType = eCSV_TYPE.NITTO;
 
             string tmpKey;
@@ -395,12 +447,56 @@ namespace DefectDBManager.Preproc
                         PreprocMrkDat preMarkData = new PreprocMrkDat();
                         preMarkData.LNCD = inspdata.LNCD;
                         preMarkData.CTLNO = inspdata.CTLNO;
+
+                        AiMonitorItem aiItem = null;
+
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
                         {
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
+
+                            if(_AiMonitorItem!=null)
+                            {
+                                string filter = _AiMonitorItem.ModelName.Trim('*');
+                                if (inspdata.HINMEI.Contains(filter))
+                                    aiItem = _AiMonitorItem;
+                            }
+
+                            if (aiItem != null)
+                            {
+                                FaultData.AIMonResult.IsModelExsit = true;
+                                foreach(var aimonitor in aiItem.DefectInfo)
+                                {
+                                    bool isExist = false;
+                                    for(int aiIdx=0; aiIdx< FaultData.AIMonResult.Items.Count; aiIdx++)
+                                    {
+                                        if (FaultData.AIMonResult[aiIdx].Model!=null && 
+                                            FaultData.AIMonResult[aiIdx].Model.SECFLTID == aimonitor.SECFLTID)
+                                        {
+                                            var existFltIds = FaultData.AIMonResult[aiIdx].Model.FLTID ?? new List<string>();
+                                            var targetFltIds = aimonitor.FLTID ?? new List<string>();
+
+                                            if (existFltIds.Count == targetFltIds.Count &&
+                                                !existFltIds.Except(targetFltIds).Any() &&
+                                                !targetFltIds.Except(existFltIds).Any())
+                                            {
+                                                isExist = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (isExist)                continue;
+                                    FaultData.AIMonResult.Items.Add(new AiMonitorResultItem()
+                                    {
+                                        Model = aimonitor,
+                                        Total = 0,
+                                        Match = 0
+                                    });
+                                }
+                            }
                         }
                         else
                         {
@@ -456,6 +552,11 @@ namespace DefectDBManager.Preproc
                                                 tmpKey = data.FLTID;
                                         }
                                         else tmpKey = data.FLTID;
+
+                                        if (dataTarget == eProcDataType.Reference && aiItem!=null)
+                                        {
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                        }
 
                                         // MKCD Model에서 데이터 가져와서 다시 탐색함. 
                                         bValid = false;
@@ -514,6 +615,7 @@ namespace DefectDBManager.Preproc
 
                 // 불량 체크
                 bool isSuccess = FalutFunction.IsDefectExist(DbDestConfig.CSVType, defectCnt);
+                FaultData.AIMonResult.Judgement();
                 return true;
             }
             catch (Exception ex)

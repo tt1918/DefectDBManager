@@ -41,7 +41,9 @@
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
             this.btnSetting = new CustomControls.RoundButton();
+            this.btnSJModeParam = new CustomControls.RoundButton();
             this.btnSystem = new CustomControls.RoundButton();
+            this.btnSetAiMonitorParam = new CustomControls.RoundButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -207,19 +209,23 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.tableLayoutPanel5.ColumnCount = 8;
+            this.tableLayoutPanel5.ColumnCount = 10;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel5.Controls.Add(this.btnClose, 6, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnClose, 8, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnParam, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSetting, 2, 0);
-            this.tableLayoutPanel5.Controls.Add(this.btnSystem, 3, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSJModeParam, 4, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSystem, 5, 0);
+            this.tableLayoutPanel5.Controls.Add(this.btnSetAiMonitorParam, 3, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(1, 791);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(1);
@@ -270,7 +276,7 @@
             this.btnParam.Location = new System.Drawing.Point(11, 1);
             this.btnParam.Margin = new System.Windows.Forms.Padding(1);
             this.btnParam.Name = "btnParam";
-            this.btnParam.Size = new System.Drawing.Size(138, 56);
+            this.btnParam.Size = new System.Drawing.Size(188, 56);
             this.btnParam.TabIndex = 1;
             this.btnParam.Text = "     PARAM";
             this.btnParam.TextColor = System.Drawing.Color.White;
@@ -291,15 +297,37 @@
             this.btnSetting.ForeColor = System.Drawing.Color.White;
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
             this.btnSetting.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSetting.Location = new System.Drawing.Point(151, 1);
+            this.btnSetting.Location = new System.Drawing.Point(201, 1);
             this.btnSetting.Margin = new System.Windows.Forms.Padding(1);
             this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(138, 56);
+            this.btnSetting.Size = new System.Drawing.Size(188, 56);
             this.btnSetting.TabIndex = 1;
             this.btnSetting.Text = "     PRODUCT";
             this.btnSetting.TextColor = System.Drawing.Color.White;
             this.btnSetting.UseVisualStyleBackColor = false;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            // 
+            // btnSJModeParam
+            // 
+            this.btnSJModeParam.BackColor = System.Drawing.Color.DimGray;
+            this.btnSJModeParam.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnSJModeParam.BorderColor = System.Drawing.Color.Black;
+            this.btnSJModeParam.BorderRadius = 5;
+            this.btnSJModeParam.BorderSize = 1;
+            this.btnSJModeParam.FlatAppearance.BorderSize = 0;
+            this.btnSJModeParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSJModeParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSJModeParam.ForeColor = System.Drawing.Color.White;
+            this.btnSJModeParam.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSJModeParam.Location = new System.Drawing.Point(581, 1);
+            this.btnSJModeParam.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSJModeParam.Name = "btnSJModeParam";
+            this.btnSJModeParam.Size = new System.Drawing.Size(188, 56);
+            this.btnSJModeParam.TabIndex = 2;
+            this.btnSJModeParam.Text = "       SJMODE PARAM";
+            this.btnSJModeParam.TextColor = System.Drawing.Color.White;
+            this.btnSJModeParam.UseVisualStyleBackColor = false;
+            this.btnSJModeParam.Click += new System.EventHandler(this.btnSJModeParam_Click);
             // 
             // btnSystem
             // 
@@ -315,15 +343,37 @@
             this.btnSystem.ForeColor = System.Drawing.Color.White;
             this.btnSystem.Image = ((System.Drawing.Image)(resources.GetObject("btnSystem.Image")));
             this.btnSystem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSystem.Location = new System.Drawing.Point(291, 1);
+            this.btnSystem.Location = new System.Drawing.Point(771, 1);
             this.btnSystem.Margin = new System.Windows.Forms.Padding(1);
             this.btnSystem.Name = "btnSystem";
-            this.btnSystem.Size = new System.Drawing.Size(138, 56);
+            this.btnSystem.Size = new System.Drawing.Size(188, 56);
             this.btnSystem.TabIndex = 1;
             this.btnSystem.Text = "       SYSTEM";
             this.btnSystem.TextColor = System.Drawing.Color.White;
             this.btnSystem.UseVisualStyleBackColor = false;
             this.btnSystem.Click += new System.EventHandler(this.btnSystem_Click);
+            // 
+            // btnSetAiMonitorParam
+            // 
+            this.btnSetAiMonitorParam.BackColor = System.Drawing.Color.DimGray;
+            this.btnSetAiMonitorParam.BackgroundColor = System.Drawing.Color.DimGray;
+            this.btnSetAiMonitorParam.BorderColor = System.Drawing.Color.Black;
+            this.btnSetAiMonitorParam.BorderRadius = 5;
+            this.btnSetAiMonitorParam.BorderSize = 1;
+            this.btnSetAiMonitorParam.FlatAppearance.BorderSize = 0;
+            this.btnSetAiMonitorParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetAiMonitorParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSetAiMonitorParam.ForeColor = System.Drawing.Color.White;
+            this.btnSetAiMonitorParam.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSetAiMonitorParam.Location = new System.Drawing.Point(391, 1);
+            this.btnSetAiMonitorParam.Margin = new System.Windows.Forms.Padding(1);
+            this.btnSetAiMonitorParam.Name = "btnSetAiMonitorParam";
+            this.btnSetAiMonitorParam.Size = new System.Drawing.Size(188, 56);
+            this.btnSetAiMonitorParam.TabIndex = 2;
+            this.btnSetAiMonitorParam.Text = "       AI PARAM";
+            this.btnSetAiMonitorParam.TextColor = System.Drawing.Color.White;
+            this.btnSetAiMonitorParam.UseVisualStyleBackColor = false;
+            this.btnSetAiMonitorParam.Click += new System.EventHandler(this.btnSetAiMonitorParam_Click);
             // 
             // FormMain
             // 
@@ -367,6 +417,8 @@
         private CustomControls.RoundButton btnMaximize;
         private CustomControls.RoundButton btnSystem;
         private System.Windows.Forms.Label lvVersion;
+        private CustomControls.RoundButton btnSJModeParam;
+        private CustomControls.RoundButton btnSetAiMonitorParam;
     }
 }
 

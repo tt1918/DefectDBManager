@@ -56,7 +56,6 @@ namespace DefectDBManager
             private set { _selectedLot = value; }
         }
         private CompLotList _selectedLot = new CompLotList(eProc.Selected);
-
         #endregion
 
         #region 공정 정보 
@@ -69,7 +68,6 @@ namespace DefectDBManager
         #endregion 공정 정보
 
         public bool UseMrkctlmstModel { get; set; }
-
 
         public Preproc.PreprocSet ProcSetting
         {
@@ -85,6 +83,33 @@ namespace DefectDBManager
             private set { _crtProcFilter = value; }
         }
         public ProcFilterSet _crtProcFilter = null;
+
+
+        #endregion
+
+        #region Ai Data Monitoring
+        public AiMonitorParam AiMonitorParam
+        {
+            get { return _aiMonitorParam; }
+            private set { _aiMonitorParam = value; }
+        }
+        private AiMonitorParam _aiMonitorParam = new AiMonitorParam();
+        #endregion
+
+        #region SJMode Monitoring 
+        public SjModeParam SjMonitorParam
+        {
+            get { return _sjMonitorParam; }
+            private set { _sjMonitorParam = value; }
+        }
+        private SjModeParam _sjMonitorParam = new SjModeParam();
+
+        public SJModeMonotorDataList SjMonitorDataList
+        {
+            get { return _sjMonitorDataList; }
+            private set { _sjMonitorDataList = value; }
+        }
+        private SJModeMonotorDataList _sjMonitorDataList = new SJModeMonotorDataList();
         #endregion
 
         #region 검색 시간 설정 
@@ -102,6 +127,9 @@ namespace DefectDBManager
 
             _crtProcFilter = new ProcFilterSet();
             _crtProcFilter.Load();
+
+            _sjMonitorParam.Load();
+            _aiMonitorParam.Load();
         }
 
         #region 데이터 검색에서 사용할 라인코드와 검색 여부 처리
@@ -123,6 +151,17 @@ namespace DefectDBManager
         {
             this.ProcLNCD = data;
         }
+
+        public void SetSjMonitorParam(SjModeParam param)
+        {
+            this.SjMonitorParam = param;
+        }
+
+        public void SetAiMonitorParam(AiMonitorParam param)
+        {
+            this.AiMonitorParam = param;
+        }
+
         #endregion
     }
 }

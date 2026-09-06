@@ -35,8 +35,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.lbLog = new System.Windows.Forms.ListBox();
+            this.lblRunState = new CustomControls.GradiantLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblRunState = new CustomControls.RoundLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabSearchSet.SuspendLayout();
@@ -138,6 +138,22 @@
             this.lbLog.Size = new System.Drawing.Size(207, 192);
             this.lbLog.TabIndex = 1;
             // 
+            // lblRunState
+            // 
+            this.lblRunState.CornerRadius = 5;
+            this.lblRunState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.lblRunState.FillColor2 = System.Drawing.Color.Black;
+            this.lblRunState.Font = new System.Drawing.Font("Segoe UI", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRunState.ForeColor = System.Drawing.Color.White;
+            this.lblRunState.Location = new System.Drawing.Point(3, 3);
+            this.lblRunState.Name = "lblRunState";
+            this.lblRunState.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+            this.lblRunState.Size = new System.Drawing.Size(439, 188);
+            this.lblRunState.TabIndex = 2;
+            this.lblRunState.Text = "STOP";
+            this.lblRunState.UseBestFitFont = true;
+            this.lblRunState.UseGradient = true;
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -151,26 +167,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(1014, 504);
             this.tableLayoutPanel3.TabIndex = 1;
-            // 
-            // lblRunState
-            // 
-            this.lblRunState.BkColor = System.Drawing.Color.Gainsboro;
-            this.lblRunState.BorderColor = System.Drawing.Color.LightGray;
-            this.lblRunState.CornerR = 10;
-            this.lblRunState.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRunState.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRunState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.lblRunState.IsFillLB = false;
-            this.lblRunState.IsFillLT = false;
-            this.lblRunState.IsFillRB = false;
-            this.lblRunState.IsFillRT = false;
-            this.lblRunState.Location = new System.Drawing.Point(3, 3);
-            this.lblRunState.Margin = new System.Windows.Forms.Padding(3);
-            this.lblRunState.Name = "lblRunState";
-            this.lblRunState.Size = new System.Drawing.Size(439, 188);
-            this.lblRunState.TabIndex = 2;
-            this.lblRunState.Text = "STOP";
-            this.lblRunState.Thickness = 1;
             // 
             // FormMarkDiff
             // 
@@ -204,6 +200,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.ListBox lbLog;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private CustomControls.RoundLabel lblRunState;
+        private CustomControls.GradiantLabel lblRunState;
     }
 }

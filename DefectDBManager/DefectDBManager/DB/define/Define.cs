@@ -25,8 +25,10 @@ namespace DefectDBManager
         public static string MaterialListPath { get { return Path.Combine(MainPath, "MaterialList.json"); } }
         public static string FilterSetPath { get { return Path.Combine(MainPath, "FilterSet.json"); } }
         public static string CsvParamSetPath { get { return Path.Combine(MainPath, "CsvParamSet.json"); } }
-
         public static string SystemParamPath { get { return Path.Combine(MainPath, "SystemParam.json"); } }
+        public static string SjModeParamPath { get { return Path.Combine(MainPath, "SjModeParam.json"); } }
+        public static string SjMonitorDataFolder { get { return Path.Combine(MainPath, "AIMonitoring"); } }
+        public static string AiMonitorParamPath { get { return Path.Combine(MainPath, "AiMonitorParam.json"); } }
     }
 
     public class Global

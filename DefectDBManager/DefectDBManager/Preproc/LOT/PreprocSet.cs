@@ -252,6 +252,10 @@ namespace DefectDBManager.Preproc
         [Description("Defect ID Type")]
         public bool UseAiResult { get; set; } = false;
 
+        [Category("items")]
+        [Description("Ai Monitoring")]
+        public bool UseAiMonitoring { get; set; } = false;
+
         public int BunchCount { get; set; } = 10;
 
         public PreprocItem()
@@ -284,6 +288,7 @@ namespace DefectDBManager.Preproc
             data.Judge = this.Judge.Clone();
 
             data.UseAiResult = this.UseAiResult;
+            data.UseAiMonitoring = this.UseAiMonitoring;
 
             data.BunchCount = this.BunchCount;
 
@@ -618,6 +623,10 @@ namespace DefectDBManager.Preproc
         public bool UseAiResult { get; set; } = false;
 
         [Category("items")]
+        [Description("Ai Monitoring")]
+        public bool UseAiMonitoring { get; set; } = false;
+
+        [Category("items")]
         [Description("Split CTRLNO")]
         public bool UseSplit { get; set; } = false;
 
@@ -628,6 +637,10 @@ namespace DefectDBManager.Preproc
         [Category("items")]
         [Description("DB Filter")]
         public DBFilter DBFilter { get; set; } = new DBFilter();
+
+        [Category("Items")]
+        [Description("DB Filter Ai Monitor Item")]
+        public string DBFilterAiMonitorName { get; set; } = string.Empty;
 
         [Category("items")]
         [Description("User Filter")]
@@ -664,6 +677,7 @@ namespace DefectDBManager.Preproc
                 this.CompRange = obj.CompRange;
                 this.Judge = obj.Judge;
                 this.UseAiResult = obj.UseAiResult;
+                this.UseAiMonitoring = obj.UseAiMonitoring;
                 this.FilterType = obj.FilterType;
                 this.DBFilter = obj.DBFilter;
                 this.UserFilter = obj.UserFilter;

@@ -100,25 +100,29 @@ namespace MarkCompare
                 lblRunState.SuspendLayout();
                 if (_dbProcess.IsRunLiveTimer)
                 {
-                    lblRunState.BkColor = Color.Yellow;
-                    lblRunState.ForeColor = Color.ForestGreen;
+                    lblRunState.FillColor = Color.PaleGoldenrod;
+                    lblRunState.FillColor2 = Color.Yellow;
+                    lblRunState.ForeColor = Color.DarkGreen;
                     lblRunState.Text = Lang.ProcLiveSearch;
                 }
                 else if (_dbProcess.IsRunSearchingLotList)
                 {
-                    lblRunState.BkColor = Color.White;
+                    lblRunState.FillColor = Color.LightGray;
+                    lblRunState.FillColor2 = Color.White;
                     lblRunState.ForeColor = Color.DarkBlue;
                     lblRunState.Text = Lang.ProcSearch;
                 }
                 else if(_dbProcess.IsRunSelectedLotList)
                 {
-                    lblRunState.BkColor = Color.White;
+                    lblRunState.FillColor = Color.LightGray;
+                    lblRunState.FillColor2 = Color.White;
                     lblRunState.ForeColor = Color.DarkBlue;
                     lblRunState.Text = Lang.ProcSelectedLot;
                 }
                 else
                 {
-                    lblRunState.BkColor = Color.Black;
+                    lblRunState.FillColor = Color.FromArgb(48, 48, 48);
+                    lblRunState.FillColor2 = Color.Black;
                     lblRunState.ForeColor = Color.White;
                     lblRunState.Text = Lang.ProcStop;
                 }
@@ -827,7 +831,7 @@ namespace MarkCompare
                 preprocItem.BasicRange = _csvCompParam.BasicRange;
                 preprocItem.CompRange = _csvCompParam.CompRange;
                 preprocItem.UseAiResult = _csvCompParam.UseAiResult;
-
+                
                 PreprocLotFilter tmpLot = new PreprocLotFilter(strLot, null, _csvCompData);
                 tmpLot.IsCSVMode = true;
                 tmpLot.ProcData = preprocItem;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DefectDBManager.Preproc;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -533,10 +534,89 @@ namespace DefectDBManager
         }
     }
 
+    public class AiMonitorResultItem
+    {
+        public SjModelItem Model = null;
+        public int Total = 0;
+        public int Match = 0;
+        public double Ratio = 0.0;
+        public bool Judge = false;
+
+        public AiMonitorResultItem Clone()
+        {
+            AiMonitorResultItem item = new AiMonitorResultItem();
+            item.Model = Model;
+            item.Total = Total;
+            item.Match = Match;
+            item.Judge = Judge;
+            item.Ratio = Ratio;
+            return item;
+        }
+    }
+    public class AIMonitorResult
+    {
+        public bool IsModelExsit = false;
+        public List<AiMonitorResultItem> Items = new List<AiMonitorResultItem>();
+
+        public AiMonitorResultItem this[int idx]
+        {
+            get { return Items[idx]; }
+        }
+
+        public void AddDefectCnt(string fltid, string secfltid)
+        {
+            AiMonitorResultItem item = 
+                Items.Find(x => 
+                x.Model!=null && 
+                x.Model.FLTID.Contains(fltid));
+            
+            if (item == null) return;
+            
+            item.Total++;
+
+            if (item.Model.SECFLTID == secfltid) 
+                item.Match++;
+        }
+
+        public void Judgement()
+        {
+            foreach(var item in Items)
+            {
+                if(item.Total==0)
+                {
+                    double rate = 100.0;
+                    item.Ratio = rate;
+                    item.Judge = true;
+                }
+                else
+                {
+                    double rate = 100.0-((double)item.Match / (double)item.Total) * 100.0;
+                    item.Ratio = rate;
+                    // 넘어가면 NG, 안넘어가면 OK
+                    if (rate > item.Model.Rate) item.Judge = false;
+                    else item.Judge = true;
+                }
+                
+            }
+        }
+
+        public AIMonitorResult Clone()
+        {
+            AIMonitorResult result = new AIMonitorResult();
+            result.IsModelExsit = this.IsModelExsit;
+
+            foreach(var item in Items)
+                result.Items.Add(item.Clone());
+
+            return result;
+        }
+    }
+
     public class ResultData
     {
         public FltDatumList Data;
         public MrkFltDat MarkFault;
+        public AIMonitorResult AiMonResult;
 
         public ResultData()
         {
@@ -600,6 +680,14 @@ namespace DefectDBManager
         private string _bcno;
 
         public bool IsPreProc = false;
+
+        public AIMonitorResult AIMonResult
+        {
+            get { return _aiMonitorResult; }
+            private set { _aiMonitorResult = value; }
+        }
+        private AIMonitorResult _aiMonitorResult = new AIMonitorResult();
+
 
         public PreProcResultData()
         {
@@ -695,6 +783,8 @@ namespace DefectDBManager
 
             for (int i = 0; i < data.DefectCnt1M.Length; i++)
                 data.DefectCnt1M[i] = DefectCnt1M[i];
+
+            data.AIMonResult = this.AIMonResult.Clone();
 
             return data;
         }

@@ -97,6 +97,7 @@
             this.btnOK = new CustomControls.RoundButton();
             this.btnSave = new CustomControls.RoundButton();
             this.btnLoad = new CustomControls.RoundButton();
+            this.cbAiMonitoring = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -1261,9 +1262,10 @@
             // tableLayoutPanel19
             // 
             this.tableLayoutPanel19.ColumnCount = 2;
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 164F));
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 139F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel19.Controls.Add(this.cbAiMonitoring, 1, 0);
             this.tableLayoutPanel19.Controls.Add(this.cbUseMNTTAN, 0, 0);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel19.Location = new System.Drawing.Point(0, 330);
@@ -1280,7 +1282,7 @@
             this.cbUseMNTTAN.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbUseMNTTAN.Location = new System.Drawing.Point(3, 3);
             this.cbUseMNTTAN.Name = "cbUseMNTTAN";
-            this.cbUseMNTTAN.Size = new System.Drawing.Size(158, 24);
+            this.cbUseMNTTAN.Size = new System.Drawing.Size(124, 24);
             this.cbUseMNTTAN.TabIndex = 10;
             this.cbUseMNTTAN.Text = "USE AI RESULT";
             this.cbUseMNTTAN.UseVisualStyleBackColor = true;
@@ -1426,6 +1428,17 @@
             this.btnLoad.UseVisualStyleBackColor = false;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // cbAiMonitoring
+            // 
+            this.cbAiMonitoring.AutoSize = true;
+            this.cbAiMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cbAiMonitoring.Location = new System.Drawing.Point(133, 3);
+            this.cbAiMonitoring.Name = "cbAiMonitoring";
+            this.cbAiMonitoring.Size = new System.Drawing.Size(167, 24);
+            this.cbAiMonitoring.TabIndex = 11;
+            this.cbAiMonitoring.Text = "USE AI MONITORING";
+            this.cbAiMonitoring.UseVisualStyleBackColor = true;
+            // 
             // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1561,5 +1574,6 @@
         private CustomControls.RoundButton btnProcessUp;
         private CustomControls.RoundButton btnProcessDn;
         private System.Windows.Forms.CheckBox ckbSplitCTLNO;
+        private System.Windows.Forms.CheckBox cbAiMonitoring;
     }
 }

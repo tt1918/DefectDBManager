@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Coss.Controls;
+using DefectDBManager.Preproc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +29,7 @@ namespace MarkCompare
         {
             InitializeComponent();
             initLotSummary();
+            initDgvAiMonitor();
             // 전체 보기를 기본으로 처리함
             rbShowAll.Checked = true;
         }
@@ -37,7 +40,6 @@ namespace MarkCompare
         }
 
         #endregion
-
 
         #region Lot Summary Flow Layout Panel
         /// <summary>
@@ -319,6 +321,363 @@ namespace MarkCompare
 
             }));
         }
+        #endregion
+
+        #region AI Monitoring 
+        enum eDgvTable
+        {
+            Index,
+            LNCD,
+            SJMode,
+            CTRNO,
+            Finish,
+            ModeNo,
+            FLTID,
+            Rate,
+        }
+
+        class AiMonitorMergeRange
+        {
+            public int StartRow { get; set; }
+            public int EndRow { get; set; }
+        }
+
+        readonly List<AiMonitorMergeRange> _aiMonitorMergeRanges = new List<AiMonitorMergeRange>();
+
+        string[] aiTableName = new string[] { "#", "LNCD","MODE","CTRNO", "Finish", "ModeNo", "FLTID ", "Rate" };
+        int[] dgvTableWidth = new int[] { 40, 50, 50,90, 45, 60, 70, 50};
+
+        int _aiDataCnt = 0;
+        private void initDgvAiMonitor()
+        {
+            dgvAiMonitor.ColumnCount = aiTableName.Length;
+            for (int i = 0; i < aiTableName.Length; i++)
+            {
+                dgvAiMonitor.Columns[i].Name = aiTableName[i];
+                dgvAiMonitor.Columns[i].Width = dgvTableWidth[i];
+                dgvAiMonitor.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                dgvAiMonitor.Columns[i].Resizable = DataGridViewTriState.False;
+            }
+
+            dgvAiMonitor.CellFormatting -= dgvAiMonitor_CellFormatting;
+            dgvAiMonitor.CellFormatting += dgvAiMonitor_CellFormatting;
+            dgvAiMonitor.CellPainting -= dgvAiMonitor_CellPainting;
+            dgvAiMonitor.CellPainting += dgvAiMonitor_CellPainting;
+
+            dgvAiMonitor.AllowUserToAddRows = false;
+
+            clearDgvAiMonitor();
+        }
+
+        private void clearDgvAiMonitor()
+        {
+            dgvAiMonitor.Rows.Clear();
+            _aiMonitorMergeRanges.Clear();
+            _aiDataCnt = 0;
+        }
+
+        bool isAiMonitorMergeColumn(int columnIndex)
+        {
+            return columnIndex == (int)eDgvTable.Index ||
+                   columnIndex == (int)eDgvTable.LNCD ||
+                   columnIndex == (int)eDgvTable.SJMode ||
+                   columnIndex == (int)eDgvTable.CTRNO ||
+                   columnIndex == (int)eDgvTable.ModeNo ||
+                   columnIndex == (int)eDgvTable.Finish;
+        }
+
+        bool tryGetAiMonitorMergeRange(int rowIndex, out int startRow, out int endRow)
+        {
+            startRow = -1;
+            endRow = -1;
+
+            for (int i = _aiMonitorMergeRanges.Count - 1; i >= 0; i--)
+            {
+                var range = _aiMonitorMergeRanges[i];
+                if (rowIndex >= range.StartRow && rowIndex <= range.EndRow)
+                {
+                    startRow = range.StartRow;
+                    endRow = range.EndRow;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        void dgvAiMonitor_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (!isAiMonitorMergeColumn(e.ColumnIndex)) return;
+
+            if (tryGetAiMonitorMergeRange(e.RowIndex, out int startRow, out int endRow) && endRow > startRow && e.RowIndex > startRow)
+            {
+                e.Value = string.Empty;
+                e.FormattingApplied = true;
+            }
+        }
+
+        void dgvAiMonitor_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (!isAiMonitorMergeColumn(e.ColumnIndex)) return;
+
+            if (!tryGetAiMonitorMergeRange(e.RowIndex, out int startRow, out int endRow) || endRow <= startRow)
+                return;
+
+            if (e.RowIndex > startRow)
+            {
+                e.Handled = true;
+
+                using (Pen gridPen = new Pen(dgvAiMonitor.GridColor))
+                {
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Top, e.CellBounds.Left, e.CellBounds.Bottom - 1);
+                    e.Graphics.DrawLine(gridPen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                    if (e.RowIndex == endRow)
+                    {
+                        e.Graphics.DrawLine(gridPen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                    }
+                }
+                return;
+            }
+
+            Rectangle mergedBounds = e.CellBounds;
+            for (int i = startRow + 1; i <= endRow; i++)
+            {
+                mergedBounds.Height += dgvAiMonitor.Rows[i].Height;
+            }
+
+            e.Handled = true;
+
+            using (SolidBrush backBrush = new SolidBrush(e.CellStyle.BackColor))
+            {
+                e.Graphics.FillRectangle(backBrush, mergedBounds);
+            }
+
+            using (Pen gridPen = new Pen(dgvAiMonitor.GridColor))
+            {
+                e.Graphics.DrawRectangle(gridPen, mergedBounds.X, mergedBounds.Y, mergedBounds.Width - 1, mergedBounds.Height - 1);
+            }
+
+            string text = Convert.ToString(e.Value);
+            Region oldClip = e.Graphics.Clip;
+            e.Graphics.SetClip(mergedBounds);
+            TextRenderer.DrawText(
+                e.Graphics,
+                text,
+                e.CellStyle.Font,
+                mergedBounds,
+                e.CellStyle.ForeColor,
+                System.Windows.Forms.TextFormatFlags.HorizontalCenter |
+                System.Windows.Forms.TextFormatFlags.VerticalCenter |
+                System.Windows.Forms.TextFormatFlags.EndEllipsis);
+            e.Graphics.Clip = oldClip;
+        }
+
+        private int findAiMonitorRow(SjMonitorData monitorData)
+        {
+            for (int i = 0; i < dgvAiMonitor.Rows.Count; i++)
+            {
+                DataGridViewRow row = dgvAiMonitor.Rows[i];
+                if (row.IsNewRow) continue;
+
+                if (Convert.ToString(row.Cells[(int)eDgvTable.LNCD].Value) != Convert.ToString(monitorData.LNCD))
+                    continue;
+                if (Convert.ToString(row.Cells[(int)eDgvTable.CTRNO].Value) != Convert.ToString(monitorData.CTLNO))
+                    continue;
+                if (Convert.ToString(row.Cells[(int)eDgvTable.SJMode].Value) != Convert.ToString(monitorData.ModeNo))
+                    continue;
+
+                return i;
+            }
+
+            return -1;
+        }
+
+        private void setAiMonitorCommonCells(int rowIndex, object indexValue, SjMonitorData monitorData)
+        {
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Index].Value = indexValue;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.LNCD].Value = monitorData.LNCD;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.CTRNO].Value = monitorData.CTLNO;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.SJMode].Value = monitorData.ModeNo;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Finish].Value = monitorData.IsFinished ? "O" : "X";
+        }
+
+        private void setAiMonitorJudgeCells(int rowIndex, KeyValuePair<int, SjJudgement> judge)
+        {
+            string fltId = string.Join(",", judge.Value.FLTID);
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Value = judge.Key;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = fltId;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.Rate.ToString("0.00%");
+
+            if (judge.Value.Judgement == true)
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Green;
+            else
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Red;
+        }
+
+        private void clearAiMonitorJudgeCells(int rowIndex)
+        {
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = string.Empty;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = string.Empty;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = dgvAiMonitor.DefaultCellStyle.ForeColor;
+        }
+
+        private void shiftAiMonitorMergeRanges(int startRowIndex, int delta)
+        {
+            if (delta == 0) return;
+
+            foreach (var range in _aiMonitorMergeRanges)
+            {
+                if (range.StartRow >= startRowIndex)
+                {
+                    range.StartRow += delta;
+                    range.EndRow += delta;
+                }
+                else if (range.EndRow >= startRowIndex)
+                {
+                    range.EndRow += delta;
+                }
+            }
+        }
+
+        private void removeAiMonitorMergeRangeContaining(int rowIndex)
+        {
+            for (int i = _aiMonitorMergeRanges.Count - 1; i >= 0; i--)
+            {
+                if (rowIndex >= _aiMonitorMergeRanges[i].StartRow && rowIndex <= _aiMonitorMergeRanges[i].EndRow)
+                    _aiMonitorMergeRanges.RemoveAt(i);
+            }
+        }
+
+        public void AddAiMonitorData(SjMonitorData monitorData)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    AddAiMonitorData(monitorData);
+                }));
+                return;
+            }
+
+            if (monitorData == null)
+                return;
+
+            try
+            {
+                dgvAiMonitor.SuspendLayout();
+
+                int existRowIndex = findAiMonitorRow(monitorData);
+                bool hasJudgement = monitorData.Judgement != null && monitorData.Judgement.Count > 0;
+
+                // 1. 기존 행이 있고, 이번에는 검색 결과가 생긴 경우
+                if (existRowIndex >= 0 && hasJudgement)
+                {
+                    removeAiMonitorMergeRangeContaining(existRowIndex);
+
+                    object indexValue = dgvAiMonitor.Rows[existRowIndex].Cells[(int)eDgvTable.Index].Value;
+                    int startRow = existRowIndex;
+                    int addedRowCount = 0;
+                    bool isFirst = true;
+
+                    foreach (var judge in monitorData.Judgement)
+                    {
+                        if (isFirst)
+                        {
+                            setAiMonitorCommonCells(existRowIndex, indexValue, monitorData);
+                            setAiMonitorJudgeCells(existRowIndex, judge);
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            int insertRowIndex = existRowIndex + addedRowCount;
+                            dgvAiMonitor.Rows.Insert(insertRowIndex, 1);
+                            shiftAiMonitorMergeRanges(insertRowIndex, 1);
+
+                            setAiMonitorCommonCells(insertRowIndex, indexValue, monitorData);
+                            setAiMonitorJudgeCells(insertRowIndex, judge);
+                        }
+
+                        addedRowCount++;
+                    }
+
+                    if (addedRowCount > 1)
+                    {
+                        _aiMonitorMergeRanges.Add(new AiMonitorMergeRange
+                        {
+                            StartRow = startRow,
+                            EndRow = startRow + addedRowCount - 1
+                        });
+                    }
+
+                    dgvAiMonitor.Invalidate();
+                    return;
+                }
+
+                // 2. 기존 행이 있지만 Judgement는 아직 없는 경우 -> 공통 정보만 갱신
+                if (existRowIndex >= 0 && !hasJudgement)
+                {
+                    object indexValue = dgvAiMonitor.Rows[existRowIndex].Cells[(int)eDgvTable.Index].Value;
+                    setAiMonitorCommonCells(existRowIndex, indexValue, monitorData);
+                    clearAiMonitorJudgeCells(existRowIndex);
+
+                    dgvAiMonitor.Invalidate();
+                    return;
+                }
+
+                // 3. 신규 데이터 추가
+                _aiDataCnt++;
+
+                if (hasJudgement)
+                {
+                    int startRow = dgvAiMonitor.Rows.Count;
+                    int addedRowCount = 0;
+
+                    foreach (var judge in monitorData.Judgement)
+                    {
+                        int rowIndex = dgvAiMonitor.Rows.Add();
+                        setAiMonitorCommonCells(rowIndex, _aiDataCnt, monitorData);
+                        setAiMonitorJudgeCells(rowIndex, judge);
+                        addedRowCount++;
+                    }
+
+                    if (addedRowCount > 1)
+                    {
+                        _aiMonitorMergeRanges.Add(new AiMonitorMergeRange
+                        {
+                            StartRow = startRow,
+                            EndRow = startRow + addedRowCount - 1
+                        });
+                    }
+                }
+                else
+                {
+                    int rowIndex = dgvAiMonitor.Rows.Add();
+                    setAiMonitorCommonCells(rowIndex, _aiDataCnt, monitorData);
+                    clearAiMonitorJudgeCells(rowIndex);
+                }
+
+                dgvAiMonitor.Invalidate();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                dgvAiMonitor.ResumeLayout();
+            }
+        }
+
+        public void UpdateAIResultMonitor(SjMonitorData monitorData)
+        {
+            if (monitorData == null) return;
+            this.BeginInvoke(new Action(() =>
+            {
+                AddAiMonitorData(monitorData);
+            }));
+        }
+
         #endregion
     }
 }
