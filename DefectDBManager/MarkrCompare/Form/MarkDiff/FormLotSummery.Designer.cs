@@ -37,8 +37,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.flpLotSummary = new System.Windows.Forms.FlowLayoutPanel();
             this.dgvAiMonitor = new System.Windows.Forms.DataGridView();
-            this.btnClearHistory = new CustomControls.RoundButton();
             this.lblSJMonitor = new CustomControls.ShadedLabel();
+            this.btnClearHistory = new CustomControls.ShadedButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -72,10 +72,10 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.btnClearHistory, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.rbShowNormal, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.rbShowNG, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.rbShowAll, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnClearHistory, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(341, 1);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
@@ -174,27 +174,6 @@
             this.dgvAiMonitor.Size = new System.Drawing.Size(334, 521);
             this.dgvAiMonitor.TabIndex = 2;
             // 
-            // btnClearHistory
-            // 
-            this.btnClearHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.BorderColor = System.Drawing.Color.Lavender;
-            this.btnClearHistory.BorderRadius = 5;
-            this.btnClearHistory.BorderSize = 2;
-            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClearHistory.FlatAppearance.BorderSize = 0;
-            this.btnClearHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearHistory.ForeColor = System.Drawing.Color.White;
-            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
-            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
-            this.btnClearHistory.Name = "btnClearHistory";
-            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
-            this.btnClearHistory.TabIndex = 11;
-            this.btnClearHistory.Text = "이력 삭제";
-            this.btnClearHistory.TextColor = System.Drawing.Color.White;
-            this.btnClearHistory.UseVisualStyleBackColor = false;
-            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
-            // 
             // lblSJMonitor
             // 
             this.lblSJMonitor.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
@@ -217,6 +196,37 @@
             this.lblSJMonitor.Text = "AI MONITOR";
             this.lblSJMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSJMonitor.TextColor = System.Drawing.Color.White;
+            // 
+            // btnClearHistory
+            // 
+            this.btnClearHistory.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnClearHistory.BackColor = System.Drawing.Color.Transparent;
+            this.btnClearHistory.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnClearHistory.BorderRadius = 5;
+            this.btnClearHistory.BorderSize = 2;
+            this.btnClearHistory.ButtonImage = null;
+            this.btnClearHistory.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClearHistory.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnClearHistory.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnClearHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearHistory.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnClearHistory.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnClearHistory.IconPadding = 6;
+            this.btnClearHistory.IconSize = 20;
+            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
+            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
+            this.btnClearHistory.Name = "btnClearHistory";
+            this.btnClearHistory.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnClearHistory.ShowAccentLine = false;
+            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
+            this.btnClearHistory.TabIndex = 12;
+            this.btnClearHistory.Text = "이력 삭제";
+            this.btnClearHistory.TextColor = System.Drawing.Color.White;
+            this.btnClearHistory.TextOffsetX = 0;
+            this.btnClearHistory.TextOffsetY = 0;
+            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
             // 
             // FormLotSummery
             // 
@@ -247,10 +257,10 @@
         private System.Windows.Forms.RadioButton rbShowNormal;
         private System.Windows.Forms.RadioButton rbShowNG;
         private System.Windows.Forms.RadioButton rbShowAll;
-        private CustomControls.RoundButton btnClearHistory;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flpLotSummary;
         private System.Windows.Forms.DataGridView dgvAiMonitor;
         private CustomControls.ShadedLabel lblSJMonitor;
+        private CustomControls.ShadedButton btnClearHistory;
     }
 }

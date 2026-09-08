@@ -479,7 +479,7 @@ namespace MarkCompare
 
             _symbolColor = info.SymbolColor;
             Color txtColor = Color.FromArgb(255 - _symbolColor.R, 255 - _symbolColor.G, 255 - _symbolColor.B);
-            btnSelectColor.BackColor = _symbolColor;
+            btnSelectColor.NormalColor = _symbolColor;
 
             string text = $"RGB[{_symbolColor.R},{_symbolColor.G},{_symbolColor.B}]";
             btnSelectColor.Text = text;
@@ -504,7 +504,7 @@ namespace MarkCompare
                     {
                         _symbolColor = dlg.Color;
                         Color txtColor = Color.FromArgb(255 - _symbolColor.R, 255 - _symbolColor.G, 255 - _symbolColor.B);
-                        btnSelectColor.BackColor = _symbolColor;
+                        btnSelectColor.NormalColor = _symbolColor;
 
                         string text = $"RGB[{_symbolColor.R},{_symbolColor.G},{_symbolColor.B}]";
                         btnSelectColor.Text = text;

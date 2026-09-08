@@ -298,6 +298,11 @@ namespace DefectDBManager.Preproc
 
     public class PreprocSet : ItemList<PreprocItem>
     {
+
+        [Category("SJ MODE")]
+        [Description("Cycle Time")]
+        public int SJModeCycleTime { get; set; } = 10;
+
         public PreprocSet()
         {
             _data = new List<PreprocItem>();
@@ -374,6 +379,8 @@ namespace DefectDBManager.Preproc
 
             foreach (var item in obj.Data)
                 this.Add(item);
+
+            this.SJModeCycleTime = obj.SJModeCycleTime;
 
             return true;
         }

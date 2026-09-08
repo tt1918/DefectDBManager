@@ -20,6 +20,8 @@ namespace MarkCompare
         #region Param
         private BindingList<string> _errLots = new BindingList<string>();
         DefectDBManager.Preproc.eProc _viewType;
+
+        public bool IsHideMode { get; set; } = false;
         #endregion
 
         #region Form
@@ -35,11 +37,14 @@ namespace MarkCompare
 
             _viewType = type;
 
-            UpdateLanguage();
         }
 
         private void FormErrorLotDisp_VisibleChanged(object sender, EventArgs e)
         {
+            if(this.Visible)
+            {
+                UpdateLanguage();
+            }
         }
         #endregion
 
@@ -67,9 +72,16 @@ namespace MarkCompare
         #region Control
         private void btnOK_Click(object sender, EventArgs e)
         {
-           
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            if(IsHideMode)
+            {
+                _errLots.Clear();
+                this.Hide();
+            }
+            else
+            {
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
         }
         #endregion
 
@@ -106,7 +118,13 @@ namespace MarkCompare
             btnOK.Font = newFont;
 
             if (_viewType == DefectDBManager.Preproc.eProc.Live)
-                lblTitle.Text = Lang.formErrorLotDispTitleLive;
+            {
+                if(!IsHideMode)
+                    lblTitle.Text = Lang.formErrorLotDispTitleLive;
+                else
+                    lblTitle.Text = "[SJ MODE] 감시 에러";
+            }
+                
             else
                 lblTitle.Text = Lang.formErrorLotDispTitleSearch;
 

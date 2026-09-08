@@ -499,7 +499,9 @@ namespace DefectDBManager
 #endif
             _timerCheckLiveLot.Start();
 
+            // SJ MODE DATA 모니터링 시작
             runSjModeData();
+            _timerSjModeMonitor.Interval = LotManager.ProcSetting.SJModeCycleTime * 1000*60;
             _timerSjModeMonitor.Start();
         }
         public void StopLiveLot()

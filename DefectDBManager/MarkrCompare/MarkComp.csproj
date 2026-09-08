@@ -74,6 +74,9 @@
     <Compile Include="Control\RoundTextBox.designer.cs">
       <DependentUpon>RoundTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Control\ShadedButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Control\ShadedLabel.cs">
       <SubType>Component</SubType>
     </Compile>

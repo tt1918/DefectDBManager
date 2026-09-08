@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new CustomControls.RoundLabel();
+            this.lblTitle = new CustomControls.ShadedLabel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblName = new CustomControls.ShadedLabel();
             this.tbName = new CustomControls.RoundTextBox();
-            this.lblName = new CustomControls.RoundLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnCancel = new CustomControls.RoundButton();
-            this.btnOK = new CustomControls.RoundButton();
+            this.btnCancel = new CustomControls.ShadedButton();
+            this.btnOK = new CustomControls.ShadedButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -62,33 +62,34 @@
             // 
             // lblTitle
             // 
+            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.lblTitle.BorderColor = System.Drawing.Color.White;
-            this.lblTitle.CornerR = 15;
+            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BorderRadius = 5;
+            this.lblTitle.BorderSize = 1;
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblTitle.IsFillLB = false;
-            this.lblTitle.IsFillLT = false;
-            this.lblTitle.IsFillRB = false;
-            this.lblTitle.IsFillRT = false;
-            this.lblTitle.Location = new System.Drawing.Point(3, 3);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(3);
+            this.lblTitle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ImagePadding = 6;
+            this.lblTitle.ImageSize = 18;
+            this.lblTitle.LabelImage = null;
+            this.lblTitle.Location = new System.Drawing.Point(1, 1);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(347, 27);
-            this.lblTitle.TabIndex = 1;
+            this.lblTitle.ShowAccentLine = false;
+            this.lblTitle.Size = new System.Drawing.Size(351, 31);
+            this.lblTitle.TabIndex = 20;
             this.lblTitle.Text = "TITLE";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTitle.Thickness = 0;
+            this.lblTitle.TextColor = System.Drawing.Color.White;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.04533F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.95467F));
-            this.tableLayoutPanel2.Controls.Add(this.tbName, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblName, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tbName, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 33);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
@@ -98,6 +99,29 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(353, 38);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // lblName
+            // 
+            this.lblName.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblName.BackColor = System.Drawing.Color.Transparent;
+            this.lblName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblName.BorderRadius = 5;
+            this.lblName.BorderSize = 1;
+            this.lblName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblName.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.lblName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.ImagePadding = 6;
+            this.lblName.ImageSize = 18;
+            this.lblName.LabelImage = null;
+            this.lblName.Location = new System.Drawing.Point(1, 1);
+            this.lblName.Margin = new System.Windows.Forms.Padding(1);
+            this.lblName.Name = "lblName";
+            this.lblName.ShowAccentLine = false;
+            this.lblName.Size = new System.Drawing.Size(97, 36);
+            this.lblName.TabIndex = 21;
+            this.lblName.Text = "NAME";
+            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblName.TextColor = System.Drawing.Color.White;
             // 
             // tbName
             // 
@@ -122,28 +146,6 @@
             this.tbName.Texts = "";
             this.tbName.UnderlinedStyle = false;
             // 
-            // lblName
-            // 
-            this.lblName.BackColor = System.Drawing.Color.Transparent;
-            this.lblName.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.lblName.BorderColor = System.Drawing.Color.White;
-            this.lblName.CornerR = 10;
-            this.lblName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblName.IsFillLB = false;
-            this.lblName.IsFillLT = false;
-            this.lblName.IsFillRB = false;
-            this.lblName.IsFillRT = false;
-            this.lblName.Location = new System.Drawing.Point(3, 3);
-            this.lblName.Margin = new System.Windows.Forms.Padding(3);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(93, 32);
-            this.lblName.TabIndex = 1;
-            this.lblName.Text = "NAME";
-            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblName.Thickness = 0;
-            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 3;
@@ -163,46 +165,64 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.btnCancel.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.btnCancel.BorderColor = System.Drawing.Color.Transparent;
-            this.btnCancel.BorderRadius = 10;
-            this.btnCancel.BorderSize = 0;
+            this.btnCancel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.BorderColor = System.Drawing.Color.CadetBlue;
+            this.btnCancel.BorderRadius = 5;
+            this.btnCancel.BorderSize = 1;
+            this.btnCancel.ButtonImage = null;
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnCancel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(170, 2);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCancel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnCancel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnCancel.IconPadding = 6;
+            this.btnCancel.IconSize = 20;
+            this.btnCancel.Location = new System.Drawing.Point(169, 1);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(1);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(88, 40);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.btnCancel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnCancel.ShowAccentLine = false;
+            this.btnCancel.Size = new System.Drawing.Size(90, 42);
+            this.btnCancel.TabIndex = 17;
             this.btnCancel.Text = "CANCEL";
             this.btnCancel.TextColor = System.Drawing.Color.White;
-            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.TextOffsetX = 0;
+            this.btnCancel.TextOffsetY = 0;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnOK
             // 
-            this.btnOK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.btnOK.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
-            this.btnOK.BorderColor = System.Drawing.Color.Transparent;
-            this.btnOK.BorderRadius = 10;
-            this.btnOK.BorderSize = 0;
+            this.btnOK.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnOK.BackColor = System.Drawing.Color.Transparent;
+            this.btnOK.BorderColor = System.Drawing.Color.CadetBlue;
+            this.btnOK.BorderRadius = 5;
+            this.btnOK.BorderSize = 1;
+            this.btnOK.ButtonImage = null;
+            this.btnOK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOK.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnOK.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
             this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.FlatAppearance.BorderSize = 0;
-            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Location = new System.Drawing.Point(262, 2);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(2);
+            this.btnOK.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnOK.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnOK.IconPadding = 6;
+            this.btnOK.IconSize = 20;
+            this.btnOK.Location = new System.Drawing.Point(261, 1);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(1);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(89, 40);
-            this.btnOK.TabIndex = 4;
+            this.btnOK.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.btnOK.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnOK.ShowAccentLine = false;
+            this.btnOK.Size = new System.Drawing.Size(91, 42);
+            this.btnOK.TabIndex = 18;
             this.btnOK.Text = "OK";
             this.btnOK.TextColor = System.Drawing.Color.White;
-            this.btnOK.UseVisualStyleBackColor = false;
+            this.btnOK.TextOffsetX = 0;
+            this.btnOK.TextOffsetY = 0;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // FormAddDel
@@ -229,12 +249,12 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private CustomControls.RoundLabel lblTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private CustomControls.RoundTextBox tbName;
-        private CustomControls.RoundLabel lblName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private CustomControls.RoundButton btnCancel;
-        private CustomControls.RoundButton btnOK;
+        private CustomControls.ShadedLabel lblTitle;
+        private CustomControls.ShadedLabel lblName;
+        private CustomControls.ShadedButton btnCancel;
+        private CustomControls.ShadedButton btnOK;
     }
 }

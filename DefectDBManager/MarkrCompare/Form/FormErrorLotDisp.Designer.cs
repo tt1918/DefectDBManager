@@ -33,8 +33,8 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.lbLot = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnOK = new CustomControls.RoundButton();
-            this.lblTitle = new CustomControls.RoundLabel();
+            this.lblTitle = new CustomControls.ShadedLabel();
+            this.btnOK = new CustomControls.ShadedButton();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -121,50 +121,59 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(606, 36);
             this.tableLayoutPanel4.TabIndex = 5;
             // 
-            // btnOK
-            // 
-            this.btnOK.BackColor = System.Drawing.Color.DimGray;
-            this.btnOK.BackgroundColor = System.Drawing.Color.DimGray;
-            this.btnOK.BorderColor = System.Drawing.Color.Transparent;
-            this.btnOK.BorderRadius = 8;
-            this.btnOK.BorderSize = 0;
-            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOK.FlatAppearance.BorderSize = 0;
-            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOK.ForeColor = System.Drawing.Color.White;
-            this.btnOK.Location = new System.Drawing.Point(504, 2);
-            this.btnOK.Margin = new System.Windows.Forms.Padding(2);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(96, 45);
-            this.btnOK.TabIndex = 4;
-            this.btnOK.Text = "OK";
-            this.btnOK.TextColor = System.Drawing.Color.White;
-            this.btnOK.UseVisualStyleBackColor = false;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
             // lblTitle
             // 
+            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.BkColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.lblTitle.BorderColor = System.Drawing.Color.White;
-            this.lblTitle.CornerR = 15;
+            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BorderRadius = 3;
+            this.lblTitle.BorderSize = 1;
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblTitle.IsFillLB = false;
-            this.lblTitle.IsFillLT = false;
-            this.lblTitle.IsFillRB = false;
-            this.lblTitle.IsFillRT = false;
+            this.lblTitle.ImagePadding = 6;
+            this.lblTitle.ImageSize = 18;
+            this.lblTitle.LabelImage = null;
             this.lblTitle.Location = new System.Drawing.Point(11, 1);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblTitle.ShowAccentLine = false;
             this.lblTitle.Size = new System.Drawing.Size(584, 34);
-            this.lblTitle.TabIndex = 1;
+            this.lblTitle.TabIndex = 15;
             this.lblTitle.Text = "오차 발생 LOT";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTitle.Thickness = 0;
+            this.lblTitle.TextColor = System.Drawing.Color.White;
+            // 
+            // btnOK
+            // 
+            this.btnOK.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnOK.BackColor = System.Drawing.Color.Transparent;
+            this.btnOK.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnOK.BorderRadius = 5;
+            this.btnOK.BorderSize = 2;
+            this.btnOK.ButtonImage = null;
+            this.btnOK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOK.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnOK.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnOK.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOK.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOK.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnOK.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnOK.IconPadding = 6;
+            this.btnOK.IconSize = 20;
+            this.btnOK.Location = new System.Drawing.Point(503, 1);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(1);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.NormalColor = System.Drawing.Color.DimGray;
+            this.btnOK.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnOK.ShowAccentLine = false;
+            this.btnOK.Size = new System.Drawing.Size(98, 47);
+            this.btnOK.TabIndex = 15;
+            this.btnOK.Text = "OK";
+            this.btnOK.TextColor = System.Drawing.Color.White;
+            this.btnOK.TextOffsetX = 0;
+            this.btnOK.TextOffsetY = 0;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // FormErrorLotDisp
             // 
@@ -192,11 +201,11 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private CustomControls.RoundButton btnOK;
-        private CustomControls.RoundLabel lblTitle;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.ListBox lbLot;
+        private CustomControls.ShadedLabel lblTitle;
+        private CustomControls.ShadedButton btnOK;
     }
 }

@@ -24,6 +24,13 @@ namespace MarkCompare
         public int BunchOfDefect { get { return _bunchOfDefect; } set { _bunchOfDefect = value; } }
         private int _bunchOfDefect = 10;
 
+        [CategoryAttribute("Param")]
+        [DisplayName("SJ MODE Cycle Time")]
+        [DescriptionAttribute("SJ Mode Cycle Time (Minute)")]
+        public int SJModeCycleTime { get { return _sjModeCycleTime; } set { _sjModeCycleTime = value; } }
+        private int _sjModeCycleTime = 10;
+
+
         public SystemParam()
         {
 
@@ -34,6 +41,7 @@ namespace MarkCompare
             SystemParam param = new SystemParam();
             param.Language = _language;
             param.BunchOfDefect = _bunchOfDefect;
+            param.SJModeCycleTime = _sjModeCycleTime;
 
             return param;
         }
@@ -50,6 +58,7 @@ namespace MarkCompare
 
             this._language = obj.Language;
             this._bunchOfDefect = obj.BunchOfDefect;
+            this._sjModeCycleTime = obj.SJModeCycleTime;
 
             return true;
         }

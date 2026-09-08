@@ -64,10 +64,6 @@ namespace MarkCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            btnAdd.Click += btnAdd_Click;
-            btnDel.Click += btnDel_Click;
-            btnClear.Click += btnClear_Click;
-
             if (ProcItem.FilterType==FilterType.UserFilter)
                 rbFilterType1.Checked = true;
             else

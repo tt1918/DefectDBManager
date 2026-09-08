@@ -32,11 +32,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnDBConnect = new CustomControls.RoundButton();
-            this.lblTitle = new CustomControls.RoundLabel();
             this.btnMinimize = new CustomControls.RoundButton();
             this.lblTime = new System.Windows.Forms.Label();
             this.btnMaximize = new CustomControls.RoundButton();
             this.lvVersion = new System.Windows.Forms.Label();
+            this.lblTitle = new CustomControls.ShadedLabel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.btnClose = new CustomControls.RoundButton();
             this.btnParam = new CustomControls.RoundButton();
@@ -60,7 +60,7 @@
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1387, 850);
@@ -79,18 +79,18 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutPanel2.Controls.Add(this.btnDBConnect, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.lblTitle, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnMinimize, 5, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblTime, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnMaximize, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lvVersion, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.lblTitle, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1387, 31);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1387, 32);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // btnDBConnect
@@ -110,35 +110,13 @@
             this.btnDBConnect.Location = new System.Drawing.Point(1000, 1);
             this.btnDBConnect.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.btnDBConnect.Name = "btnDBConnect";
-            this.btnDBConnect.Size = new System.Drawing.Size(51, 29);
+            this.btnDBConnect.Size = new System.Drawing.Size(51, 30);
             this.btnDBConnect.TabIndex = 3;
             this.btnDBConnect.Text = "DB";
             this.btnDBConnect.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnDBConnect.TextColor = System.Drawing.Color.White;
             this.btnDBConnect.UseVisualStyleBackColor = false;
             this.btnDBConnect.Click += new System.EventHandler(this.btnDBConnect_Click);
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.BkColor = System.Drawing.Color.DarkSlateBlue;
-            this.lblTitle.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.lblTitle.CornerR = 15;
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblTitle.IsFillLB = false;
-            this.lblTitle.IsFillLT = false;
-            this.lblTitle.IsFillRB = false;
-            this.lblTitle.IsFillRT = false;
-            this.lblTitle.Location = new System.Drawing.Point(2, 2);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(2);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(993, 27);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "MARKING COMPARISION";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTitle.Thickness = 1;
             // 
             // btnMinimize
             // 
@@ -155,7 +133,7 @@
             this.btnMinimize.Location = new System.Drawing.Point(1356, 1);
             this.btnMinimize.Margin = new System.Windows.Forms.Padding(1);
             this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(30, 29);
+            this.btnMinimize.Size = new System.Drawing.Size(30, 30);
             this.btnMinimize.TabIndex = 1;
             this.btnMinimize.TextColor = System.Drawing.Color.White;
             this.btnMinimize.UseVisualStyleBackColor = false;
@@ -169,7 +147,7 @@
             this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(64)))));
             this.lblTime.Location = new System.Drawing.Point(1157, 0);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(163, 31);
+            this.lblTime.Size = new System.Drawing.Size(163, 32);
             this.lblTime.TabIndex = 2;
             this.lblTime.Text = "2024-12-13 14:14:01";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -189,7 +167,7 @@
             this.btnMaximize.Location = new System.Drawing.Point(1324, 1);
             this.btnMaximize.Margin = new System.Windows.Forms.Padding(1);
             this.btnMaximize.Name = "btnMaximize";
-            this.btnMaximize.Size = new System.Drawing.Size(30, 29);
+            this.btnMaximize.Size = new System.Drawing.Size(30, 30);
             this.btnMaximize.TabIndex = 4;
             this.btnMaximize.TextColor = System.Drawing.Color.White;
             this.btnMaximize.UseVisualStyleBackColor = false;
@@ -201,10 +179,33 @@
             this.lvVersion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvVersion.Location = new System.Drawing.Point(1057, 0);
             this.lvVersion.Name = "lvVersion";
-            this.lvVersion.Size = new System.Drawing.Size(94, 31);
+            this.lvVersion.Size = new System.Drawing.Size(94, 32);
             this.lvVersion.TabIndex = 5;
             this.lvVersion.Text = "Ver.25081215";
             this.lvVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BorderRadius = 8;
+            this.lblTitle.BorderSize = 2;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(27)))), ((int)(((byte)(38)))));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ImagePadding = 6;
+            this.lblTitle.ImageSize = 18;
+            this.lblTitle.LabelImage = null;
+            this.lblTitle.Location = new System.Drawing.Point(0, 0);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.ShowAccentLine = false;
+            this.lblTitle.Size = new System.Drawing.Size(997, 32);
+            this.lblTitle.TabIndex = 6;
+            this.lblTitle.Text = "MARKING COMPARISION";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.TextColor = System.Drawing.Color.White;
             // 
             // tableLayoutPanel5
             // 
@@ -217,8 +218,8 @@
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 91F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 54F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 157F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel5.Controls.Add(this.btnClose, 8, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnParam, 1, 0);
@@ -249,12 +250,12 @@
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(1256, 1);
+            this.btnClose.Location = new System.Drawing.Point(1219, 1);
             this.btnClose.Margin = new System.Windows.Forms.Padding(1);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(118, 56);
+            this.btnClose.Size = new System.Drawing.Size(155, 56);
             this.btnClose.TabIndex = 0;
-            this.btnClose.Text = "  CLOSE";
+            this.btnClose.Text = "           CLOSE";
             this.btnClose.TextColor = System.Drawing.Color.White;
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -318,13 +319,14 @@
             this.btnSJModeParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSJModeParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSJModeParam.ForeColor = System.Drawing.Color.White;
+            this.btnSJModeParam.Image = ((System.Drawing.Image)(resources.GetObject("btnSJModeParam.Image")));
             this.btnSJModeParam.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSJModeParam.Location = new System.Drawing.Point(581, 1);
             this.btnSJModeParam.Margin = new System.Windows.Forms.Padding(1);
             this.btnSJModeParam.Name = "btnSJModeParam";
             this.btnSJModeParam.Size = new System.Drawing.Size(188, 56);
             this.btnSJModeParam.TabIndex = 2;
-            this.btnSJModeParam.Text = "       SJMODE PARAM";
+            this.btnSJModeParam.Text = "           SJMODE PARAM";
             this.btnSJModeParam.TextColor = System.Drawing.Color.White;
             this.btnSJModeParam.UseVisualStyleBackColor = false;
             this.btnSJModeParam.Click += new System.EventHandler(this.btnSJModeParam_Click);
@@ -364,6 +366,7 @@
             this.btnSetAiMonitorParam.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetAiMonitorParam.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetAiMonitorParam.ForeColor = System.Drawing.Color.White;
+            this.btnSetAiMonitorParam.Image = ((System.Drawing.Image)(resources.GetObject("btnSetAiMonitorParam.Image")));
             this.btnSetAiMonitorParam.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSetAiMonitorParam.Location = new System.Drawing.Point(391, 1);
             this.btnSetAiMonitorParam.Margin = new System.Windows.Forms.Padding(1);
@@ -406,7 +409,6 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private CustomControls.RoundLabel lblTitle;
         private CustomControls.RoundButton btnMinimize;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private CustomControls.RoundButton btnClose;
@@ -419,6 +421,7 @@
         private System.Windows.Forms.Label lvVersion;
         private CustomControls.RoundButton btnSJModeParam;
         private CustomControls.RoundButton btnSetAiMonitorParam;
+        private CustomControls.ShadedLabel lblTitle;
     }
 }
 

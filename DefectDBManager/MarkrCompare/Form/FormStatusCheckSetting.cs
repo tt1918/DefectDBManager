@@ -155,8 +155,8 @@ namespace MarkCompare
             Font newFont = new Font(fontName, 10, FontStyle.Bold);
 
             lblTitle.Font = newFont;
-            lblDuration.Font = newFont;
             lblIP.Font = newFont;
+            lblDuration.Font = newFont;
             btnCancel.Font = newFont;
             btnOK.Font = newFont;
 

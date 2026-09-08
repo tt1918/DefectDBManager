@@ -347,6 +347,8 @@ namespace MarkCompare
         string[] aiTableName = new string[] { "#", "LNCD","MODE","CTRNO", "Finish", "ModeNo", "FLTID ", "Rate" };
         int[] dgvTableWidth = new int[] { 40, 50, 50,90, 45, 60, 70, 50};
 
+        FormErrorLotDisp _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
+
         int _aiDataCnt = 0;
         private void initDgvAiMonitor()
         {
@@ -367,6 +369,8 @@ namespace MarkCompare
             dgvAiMonitor.AllowUserToAddRows = false;
 
             clearDgvAiMonitor();
+
+            _sjmodeErrLotDispForm.IsHideMode = true;
         }
 
         private void clearDgvAiMonitor()
@@ -567,9 +571,26 @@ namespace MarkCompare
             try
             {
                 dgvAiMonitor.SuspendLayout();
+                List<string> errLot = new List<string>();
 
                 int existRowIndex = findAiMonitorRow(monitorData);
                 bool hasJudgement = monitorData.Judgement != null && monitorData.Judgement.Count > 0;
+
+                // 0. 에러 체크
+                if (hasJudgement)
+                {
+                    foreach (var judge in monitorData.Judgement)
+                    {
+                        if(judge.Value.Judgement == false)
+                        {
+                            errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Mismatch {judge.Value.NoneConvertRate*100.0:F2}%");
+                        }
+                    }
+                }
+                else
+                {
+                    errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / No Judgement");
+                }
 
                 // 1. 기존 행이 있고, 이번에는 검색 결과가 생긴 경우
                 if (existRowIndex >= 0 && hasJudgement)
@@ -659,6 +680,11 @@ namespace MarkCompare
                 }
 
                 dgvAiMonitor.Invalidate();
+
+                if(_sjmodeErrLotDispForm==null)
+                    _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
+                _sjmodeErrLotDispForm.OnUpdateErrorLots(errLot.ToArray());
+                _sjmodeErrLotDispForm.Show();
             }
             catch
             {

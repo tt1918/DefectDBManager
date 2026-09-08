@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnLoad = new CustomControls.RoundButton();
+            this.btnLoad = new CustomControls.ShadedButton();
             this.tcLotSummary = new System.Windows.Forms.TabControl();
             this.tpLotSummery = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
@@ -48,23 +48,34 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLoad.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnLoad.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnLoad.BorderColor = System.Drawing.Color.Lavender;
+            this.btnLoad.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoad.BackColor = System.Drawing.Color.Transparent;
+            this.btnLoad.BorderColor = System.Drawing.Color.SlateGray;
             this.btnLoad.BorderRadius = 5;
             this.btnLoad.BorderSize = 2;
-            this.btnLoad.FlatAppearance.BorderSize = 0;
-            this.btnLoad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoad.ForeColor = System.Drawing.Color.White;
-            this.btnLoad.Location = new System.Drawing.Point(303, 2);
-            this.btnLoad.Margin = new System.Windows.Forms.Padding(1);
+            this.btnLoad.ButtonImage = null;
+            this.btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLoad.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnLoad.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnLoad.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLoad.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnLoad.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnLoad.IconPadding = 6;
+            this.btnLoad.IconSize = 20;
+            this.btnLoad.Location = new System.Drawing.Point(300, 4);
+            this.btnLoad.Margin = new System.Windows.Forms.Padding(0);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(90, 33);
-            this.btnLoad.TabIndex = 1;
+            this.btnLoad.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnLoad.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnLoad.ShowAccentLine = false;
+            this.btnLoad.Size = new System.Drawing.Size(93, 31);
+            this.btnLoad.TabIndex = 7;
             this.btnLoad.Text = "LOAD";
             this.btnLoad.TextColor = System.Drawing.Color.White;
-            this.btnLoad.UseVisualStyleBackColor = false;
+            this.btnLoad.TextOffsetX = 0;
+            this.btnLoad.TextOffsetY = 0;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // tcLotSummary
@@ -110,8 +121,8 @@
 
         #endregion
         private System.Windows.Forms.Panel panel1;
-        private CustomControls.RoundButton btnLoad;
         private System.Windows.Forms.TabControl tcLotSummary;
         private System.Windows.Forms.TabPage tpLotSummery;
+        private CustomControls.ShadedButton btnLoad;
     }
 }

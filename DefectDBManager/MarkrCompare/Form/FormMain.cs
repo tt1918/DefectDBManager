@@ -372,7 +372,10 @@ namespace MarkCompare
         public void StartLiveSearch()
         {
             foreach (var item in this._lotManager.ProcSetting.Data)
+            {
                 item.BunchCount = _systemParam.BunchOfDefect;
+            }
+            _lotManager.ProcSetting.SJModeCycleTime = _systemParam.SJModeCycleTime;
 
             _dbManager.StartLiveLot();
         }

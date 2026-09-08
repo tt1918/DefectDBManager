@@ -35,13 +35,13 @@
             this.rbScale3 = new System.Windows.Forms.RadioButton();
             this.rbScale4 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblLotName = new CustomControls.RoundLabel();
+            this.lblLotName = new CustomControls.ShadedLabel();
             this.cbProcess = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.Rollmap = new Coss.Controls.Rollmap();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblRefInfo = new CustomControls.RoundLabel();
-            this.lblCompInfo = new CustomControls.RoundLabel();
+            this.lblCompInfo = new CustomControls.ShadedLabel();
+            this.lblRefInfo = new CustomControls.ShadedLabel();
             this.lbxCompItem = new System.Windows.Forms.ListBox();
             this.lbxRefInfo = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -167,24 +167,26 @@
             // 
             // lblLotName
             // 
-            this.lblLotName.AutoSize = true;
-            this.lblLotName.BkColor = System.Drawing.Color.DimGray;
+            this.lblLotName.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblLotName.BackColor = System.Drawing.Color.Transparent;
             this.lblLotName.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.lblLotName.CornerR = 10;
+            this.lblLotName.BorderRadius = 3;
+            this.lblLotName.BorderSize = 1;
             this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblLotName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblLotName.IsFillLB = false;
-            this.lblLotName.IsFillLT = false;
-            this.lblLotName.IsFillRB = false;
-            this.lblLotName.IsFillRT = false;
-            this.lblLotName.Location = new System.Drawing.Point(2, 2);
-            this.lblLotName.Margin = new System.Windows.Forms.Padding(2);
+            this.lblLotName.FillColor = System.Drawing.Color.DimGray;
+            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLotName.ImagePadding = 6;
+            this.lblLotName.ImageSize = 18;
+            this.lblLotName.LabelImage = null;
+            this.lblLotName.Location = new System.Drawing.Point(1, 1);
+            this.lblLotName.Margin = new System.Windows.Forms.Padding(1);
             this.lblLotName.Name = "lblLotName";
-            this.lblLotName.Size = new System.Drawing.Size(196, 26);
-            this.lblLotName.TabIndex = 1;
+            this.lblLotName.ShowAccentLine = false;
+            this.lblLotName.Size = new System.Drawing.Size(198, 28);
+            this.lblLotName.TabIndex = 17;
+            this.lblLotName.Text = "LINE DATA SETTING";
             this.lblLotName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblLotName.Thickness = 1;
+            this.lblLotName.TextColor = System.Drawing.Color.White;
             // 
             // cbProcess
             // 
@@ -260,8 +262,8 @@
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.lblRefInfo, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.lblCompInfo, 0, 2);
+            this.tableLayoutPanel6.Controls.Add(this.lblRefInfo, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.lbxCompItem, 0, 3);
             this.tableLayoutPanel6.Controls.Add(this.lbxRefInfo, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -276,49 +278,51 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(178, 688);
             this.tableLayoutPanel6.TabIndex = 4;
             // 
-            // lblRefInfo
-            // 
-            this.lblRefInfo.AutoSize = true;
-            this.lblRefInfo.BkColor = System.Drawing.Color.DarkGray;
-            this.lblRefInfo.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.lblRefInfo.CornerR = 5;
-            this.lblRefInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRefInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblRefInfo.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblRefInfo.IsFillLB = false;
-            this.lblRefInfo.IsFillLT = false;
-            this.lblRefInfo.IsFillRB = false;
-            this.lblRefInfo.IsFillRT = false;
-            this.lblRefInfo.Location = new System.Drawing.Point(2, 2);
-            this.lblRefInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
-            this.lblRefInfo.Name = "lblRefInfo";
-            this.lblRefInfo.Size = new System.Drawing.Size(174, 22);
-            this.lblRefInfo.TabIndex = 2;
-            this.lblRefInfo.Text = "BASE";
-            this.lblRefInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblRefInfo.Thickness = 1;
-            // 
             // lblCompInfo
             // 
-            this.lblCompInfo.AutoSize = true;
-            this.lblCompInfo.BkColor = System.Drawing.Color.DarkGray;
+            this.lblCompInfo.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblCompInfo.BackColor = System.Drawing.Color.Transparent;
             this.lblCompInfo.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.lblCompInfo.CornerR = 5;
+            this.lblCompInfo.BorderRadius = 5;
+            this.lblCompInfo.BorderSize = 0;
             this.lblCompInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblCompInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblCompInfo.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCompInfo.IsFillLB = false;
-            this.lblCompInfo.IsFillLT = false;
-            this.lblCompInfo.IsFillRB = false;
-            this.lblCompInfo.IsFillRT = false;
-            this.lblCompInfo.Location = new System.Drawing.Point(2, 346);
-            this.lblCompInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 1);
+            this.lblCompInfo.FillColor = System.Drawing.Color.DarkGray;
+            this.lblCompInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompInfo.ImagePadding = 6;
+            this.lblCompInfo.ImageSize = 18;
+            this.lblCompInfo.LabelImage = null;
+            this.lblCompInfo.Location = new System.Drawing.Point(1, 345);
+            this.lblCompInfo.Margin = new System.Windows.Forms.Padding(1);
             this.lblCompInfo.Name = "lblCompInfo";
-            this.lblCompInfo.Size = new System.Drawing.Size(174, 22);
-            this.lblCompInfo.TabIndex = 3;
+            this.lblCompInfo.ShowAccentLine = false;
+            this.lblCompInfo.Size = new System.Drawing.Size(176, 23);
+            this.lblCompInfo.TabIndex = 20;
             this.lblCompInfo.Text = "COMPARING";
             this.lblCompInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblCompInfo.Thickness = 1;
+            this.lblCompInfo.TextColor = System.Drawing.Color.Black;
+            // 
+            // lblRefInfo
+            // 
+            this.lblRefInfo.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblRefInfo.BackColor = System.Drawing.Color.Transparent;
+            this.lblRefInfo.BorderColor = System.Drawing.Color.MidnightBlue;
+            this.lblRefInfo.BorderRadius = 5;
+            this.lblRefInfo.BorderSize = 0;
+            this.lblRefInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRefInfo.FillColor = System.Drawing.Color.DarkGray;
+            this.lblRefInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRefInfo.ImagePadding = 6;
+            this.lblRefInfo.ImageSize = 18;
+            this.lblRefInfo.LabelImage = null;
+            this.lblRefInfo.Location = new System.Drawing.Point(1, 1);
+            this.lblRefInfo.Margin = new System.Windows.Forms.Padding(1);
+            this.lblRefInfo.Name = "lblRefInfo";
+            this.lblRefInfo.ShowAccentLine = false;
+            this.lblRefInfo.Size = new System.Drawing.Size(176, 23);
+            this.lblRefInfo.TabIndex = 18;
+            this.lblRefInfo.Text = "BASE";
+            this.lblRefInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRefInfo.TextColor = System.Drawing.Color.Black;
             // 
             // lbxCompItem
             // 
@@ -375,10 +379,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -397,11 +399,11 @@
         private System.Windows.Forms.ComboBox cbProcess;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private Coss.Controls.Rollmap Rollmap;
-        private CustomControls.RoundLabel lblLotName;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private CustomControls.RoundLabel lblRefInfo;
-        private CustomControls.RoundLabel lblCompInfo;
         private System.Windows.Forms.ListBox lbxCompItem;
         private System.Windows.Forms.ListBox lbxRefInfo;
+        private CustomControls.ShadedLabel lblLotName;
+        private CustomControls.ShadedLabel lblCompInfo;
+        private CustomControls.ShadedLabel lblRefInfo;
     }
 }
