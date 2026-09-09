@@ -520,6 +520,14 @@ namespace MarkCompare
                 dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Red;
         }
 
+        private void setAiMonitorNonJudgeCells(int rowIndex, object indexValue, SjMonitorData monitorData)
+        {
+            string modeKey = string.Join(",", monitorData.DefectInfo.Keys);
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Value = modeKey;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = string.Empty;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = string.Empty;
+        }
+
         private void clearAiMonitorJudgeCells(int rowIndex)
         {
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = string.Empty;
@@ -589,7 +597,24 @@ namespace MarkCompare
                 }
                 else
                 {
-                    errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / No Judgement");
+                    // 불량 데이터가 존재면 해당 SJMode를 추가한다
+                    if(monitorData.DefectInfo.Count>0)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Input SJMODE [");
+                        foreach(var defectInfo in monitorData.DefectInfo)
+                        {
+                            sb.Append($" {defectInfo.Key}");
+                        }
+                        sb.Append(" ]");
+
+                        sb.Append(" / No Judgement");
+                        errLot.Add(sb.ToString());
+                    }
+                    else
+                    {
+                        errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / No Judgement");
+                    }
                 }
 
                 // 1. 기존 행이 있고, 이번에는 검색 결과가 생긴 경우
@@ -676,7 +701,7 @@ namespace MarkCompare
                 {
                     int rowIndex = dgvAiMonitor.Rows.Add();
                     setAiMonitorCommonCells(rowIndex, _aiDataCnt, monitorData);
-                    clearAiMonitorJudgeCells(rowIndex);
+                    setAiMonitorNonJudgeCells(rowIndex, _aiDataCnt, monitorData);
                 }
 
                 dgvAiMonitor.Invalidate();

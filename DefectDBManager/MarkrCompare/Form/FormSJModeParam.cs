@@ -93,7 +93,7 @@ namespace MarkCompare
             btnOK.Font = newFont;
             dgvModel.Font = newFont;
 
-            lblTitle.Text = Lang.formLNCDTitle;
+            //lblTitle.Text = Lang.formLNCDTitle;
 
             btnAddModel.Text = Lang.btnAdd;
             btnDeleteModel.Text = Lang.btnDel1;

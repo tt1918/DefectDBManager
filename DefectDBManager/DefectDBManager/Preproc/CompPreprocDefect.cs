@@ -1202,7 +1202,6 @@ namespace DefectDBManager
             if (_isRunSjModeMonitor == true) return;
 
             // 탐색 가능 확인
-
             runSjModeData();
         }
 
@@ -1218,6 +1217,17 @@ namespace DefectDBManager
             {
                 if (_isRunSjModeMonitor == true) return;
                 _isRunSjModeMonitor = true;
+
+                // 이전 검색에서 생성된 데이터에 DefectInfo 자료가 있으면 내부 데이터만 삭제 처리
+                if(LotManager.SjMonitorDataList.DataList.Count>0)
+                {
+                    foreach(var item in LotManager.SjMonitorDataList.DataList)
+                    {
+                        foreach(var defects in item.DefectInfo)
+                            defects.Value.Clear();
+                    }
+                }
+
 
                 var param = LotManager.SjMonitorParam;
                 foreach (var item in param.ModeItems)
