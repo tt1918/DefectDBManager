@@ -4,6 +4,7 @@ using DefectDBManager.DB;
 using DefectDBManager.Preproc;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -501,7 +502,7 @@ namespace DefectDBManager
 
             // SJ MODE DATA 모니터링 시작
             runSjModeData();
-            _timerSjModeMonitor.Interval = LotManager.ProcSetting.SJModeCycleTime * 1000*60;
+            _timerSjModeMonitor.Interval = LotManager.SjMonitorParam.CycleTime * 1000*60;
             _timerSjModeMonitor.Start();
         }
         public void StopLiveLot()
@@ -1228,54 +1229,132 @@ namespace DefectDBManager
                     }
                 }
 
-
                 var param = LotManager.SjMonitorParam;
-                foreach (var item in param.ModeItems)
-                {
-                    string mainPath = item.MainPath;
+                
+                // 여기에서 각 주소 별로 ModelItems를 구별한다. 
+                Dictionary<string, List<SjModeIPath>> modelItems = new Dictionary<string, List<SjModeIPath>>();
 
-                    // 내부에 있는 폴더를 확인하고, 해당 폴더에 대한 데이터를 취합한다.
-                    var subFolderList = Directory.GetDirectories(mainPath);
+                if(param.ModeItems.Count <= 0) return;
+                foreach(var item in param.ModeItems)
+                {
+                    if (modelItems.ContainsKey(item.MainPath) == false)
+                        modelItems.Add(item.MainPath, new List<SjModeIPath>());
+                    modelItems[item.MainPath].Add(item);
+                }
+
+                foreach(var  modelItem in modelItems)
+                {
+                    string key = modelItem.Key;
+
+                    var subFolderList = Directory.GetDirectories(key);
                     foreach (var subFolder in subFolderList)
                     {
+                        // modelItem의 경로가 다 같은지 확인하고 아니면 따로 처리
                         string subFolderName = Path.GetFileName(subFolder);
                         string ctlno = subFolderName;
 
-                        // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
-                        if (LotManager.SjMonitorDataList.Exist(ctlno) == true &&
-                            LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno).IsFinished == true)
-                            continue;
-
-                        string path = item.NetPathSummery(ctlno);
-
-                        // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
-                        int key = Convert.ToInt32(item.ModelName);
-                        var data = ReadSjData(ctlno, path);
-                        data.ModeNo = key;
-
-                        // 판정 처리함
-                        foreach (var infoItem in item.DefectInfo)
+                        bool isSamePath = true;
+                        string netPath = modelItem.Value.First().NetPathSummery(ctlno);
+                        foreach (var item in modelItem.Value)
                         {
-                            if(infoItem.Use==false) continue;
-                            if (!data.DefectInfo.ContainsKey(key)) continue;
-                            var rate = data.SetDefectJudgement(key, infoItem);
+                            string path = item.NetPathSummery(ctlno);
+                            if (netPath!=path)
+                            {
+                                isSamePath = false;
+                                break;
+                            }
                         }
 
-                        data.LNCD = item.LNCD;
+                        if(isSamePath && modelItem.Value.Count>1)
+                        {
+                            // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
+                            if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName)) == true &&
+                                LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(modelItem.Value.First().ModelName)).IsFinished == true)
+                                continue;
 
-                        if (LotManager.SjMonitorDataList.Exist(ctlno) == false)
-                            LotManager.SjMonitorDataList.Add(data);
+                            // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
+                            var data = ReadSjData(ctlno, netPath);
+
+                            foreach(var dataItem in data.DefectInfo)
+                            {
+                                // dataItem.Key와 맞는 item의 데이터를 찾는다. 
+                                var matchModelList = modelItem.Value.Where(e => e.ModelName == dataItem.Key.ToString()).ToList();
+                                if (matchModelList.Count == 0) continue;
+
+                                var matchModel = matchModelList.First();
+                                data.ModeNo = Convert.ToInt32(matchModel.ModelName);
+
+                                // 판정 처리함
+                                foreach (var infoItem in matchModel.DefectInfo)
+                                {
+                                    if (infoItem.Use == false) continue;
+                                    if (!data.DefectInfo.ContainsKey(dataItem.Key)) continue;
+                                    var rate = data.SetDefectJudgement(dataItem.Key, infoItem);
+                                }
+
+                                data.LNCD = matchModel.LNCD;
+
+                                if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName)) == false)
+                                    LotManager.SjMonitorDataList.Add(data);
+                                else
+                                {
+                                    LotManager.SjMonitorDataList.Remove(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName));
+                                    LotManager.SjMonitorDataList.Add(data);
+                                }
+
+                                // 데이터가 존재하면 리스트에 추가
+                                OnSjMonitorEvent?.Invoke(data);
+
+                                // 검색 결과 데이터를 파일에 저장한다.
+                                _ = Task.Run(() => saveSjMonitorData(data));
+                            }
+
+                        }
                         else
                         {
-                            LotManager.SjMonitorDataList.Remove(ctlno);
-                            LotManager.SjMonitorDataList.Add(data);
+                            foreach (var item in modelItem.Value)
+                            {
+                                string path = item.NetPathSummery(ctlno);
+
+                                // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
+                                if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(item.ModelName)) == true &&
+                                    LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(item.ModelName)).IsFinished == true)
+                                    continue;
+
+                                // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
+                                int modelKey = Convert.ToInt32(item.ModelName);
+                                var data = ReadSjData(ctlno, path);
+
+                                foreach (var dataItem in data.DefectInfo)
+                                {
+                                    data.ModeNo = modelKey;
+
+                                    // 판정 처리함
+                                    foreach (var infoItem in item.DefectInfo)
+                                    {
+                                        if (infoItem.Use == false) continue;
+                                        if (!data.DefectInfo.ContainsKey(modelKey)) continue;
+                                        var rate = data.SetDefectJudgement(modelKey, infoItem);
+                                    }
+
+                                    data.LNCD = item.LNCD;
+
+                                    if (LotManager.SjMonitorDataList.Exist(ctlno, modelKey) == false)
+                                        LotManager.SjMonitorDataList.Add(data);
+                                    else
+                                    {
+                                        LotManager.SjMonitorDataList.Remove(ctlno, modelKey);
+                                        LotManager.SjMonitorDataList.Add(data);
+                                    }
+
+                                    // 데이터가 존재하면 리스트에 추가
+                                    OnSjMonitorEvent?.Invoke(data);
+
+                                    // 검색 결과 데이터를 파일에 저장한다.
+                                    _ = Task.Run(() => saveSjMonitorData(data));
+                                }
+                            }
                         }
-
-                        // 데이터가 존재하면 리스트에 추가
-                        OnSjMonitorEvent?.Invoke(data);
-
-                        // 검색 결과 데이터를 파일에 저장한다.
-                        _ = Task.Run(() => saveSjMonitorData(data));
                     }
                 }
             }

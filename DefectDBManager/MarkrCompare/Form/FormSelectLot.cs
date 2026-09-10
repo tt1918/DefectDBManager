@@ -220,6 +220,8 @@ namespace MarkCompare
         {
             _LotList.Clear();
 
+            dgvLotList.EndEdit();
+
             foreach (DataGridViewRow row in dgvLotList.Rows)
             {
                 _LotList.Add(row.Cells[1].Value.ToString());

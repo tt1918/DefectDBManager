@@ -140,12 +140,12 @@ namespace DefectDBManager.Preproc
             DataList.Remove(data);
         }
 
-        public void Remove(string ctlno)
+        public void Remove(string ctlno, int modeNo)
         {
-            var item = DataList.FirstOrDefault(x => x.CTLNO == ctlno);
+            var item = DataList.FirstOrDefault(x => x.CTLNO == ctlno && x.ModeNo == modeNo);
             if (item != null)
                 DataList.Remove(item);
-        }
+        }       
 
         public void Clear()
         {
@@ -154,12 +154,12 @@ namespace DefectDBManager.Preproc
 
         public bool Exist(SjMonitorData data)
         { 
-            var item =  DataList.FirstOrDefault(x=>x.CTLNO == data.CTLNO);
+            var item =  DataList.FirstOrDefault(x=>x.CTLNO == data.CTLNO && x.ModeNo == data.ModeNo);
             return item != null ? true : false;
         }
-        public bool Exist(string ctrno)
+        public bool Exist(string ctrno, int modeNo)
         {
-            var item = DataList.FirstOrDefault(x => x.CTLNO == ctrno);
+            var item = DataList.FirstOrDefault(x => x.CTLNO == ctrno && x.ModeNo == modeNo);
             return item != null ? true : false;
         }
     }

@@ -375,8 +375,7 @@ namespace MarkCompare
             {
                 item.BunchCount = _systemParam.BunchOfDefect;
             }
-            _lotManager.ProcSetting.SJModeCycleTime = _systemParam.SJModeCycleTime;
-
+            
             _dbManager.StartLiveLot();
         }
 

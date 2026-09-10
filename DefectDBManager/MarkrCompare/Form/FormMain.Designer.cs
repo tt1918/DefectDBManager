@@ -326,7 +326,7 @@
             this.btnSJModeParam.Name = "btnSJModeParam";
             this.btnSJModeParam.Size = new System.Drawing.Size(188, 56);
             this.btnSJModeParam.TabIndex = 2;
-            this.btnSJModeParam.Text = "           SJMODE PARAM";
+            this.btnSJModeParam.Text = "           AI PROCESSING PARAM";
             this.btnSJModeParam.TextColor = System.Drawing.Color.White;
             this.btnSJModeParam.UseVisualStyleBackColor = false;
             this.btnSJModeParam.Click += new System.EventHandler(this.btnSJModeParam_Click);

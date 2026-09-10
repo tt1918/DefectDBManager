@@ -34,11 +34,11 @@
             this.rbShowNormal = new System.Windows.Forms.RadioButton();
             this.rbShowNG = new System.Windows.Forms.RadioButton();
             this.rbShowAll = new System.Windows.Forms.RadioButton();
+            this.btnClearHistory = new CustomControls.ShadedButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flpLotSummary = new System.Windows.Forms.FlowLayoutPanel();
             this.dgvAiMonitor = new System.Windows.Forms.DataGridView();
             this.lblSJMonitor = new CustomControls.ShadedLabel();
-            this.btnClearHistory = new CustomControls.ShadedButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -124,6 +124,37 @@
             this.rbShowAll.UseVisualStyleBackColor = true;
             this.rbShowAll.Click += new System.EventHandler(this.rbShow_Click);
             // 
+            // btnClearHistory
+            // 
+            this.btnClearHistory.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnClearHistory.BackColor = System.Drawing.Color.Transparent;
+            this.btnClearHistory.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnClearHistory.BorderRadius = 5;
+            this.btnClearHistory.BorderSize = 2;
+            this.btnClearHistory.ButtonImage = null;
+            this.btnClearHistory.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClearHistory.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnClearHistory.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnClearHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearHistory.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnClearHistory.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnClearHistory.IconPadding = 6;
+            this.btnClearHistory.IconSize = 20;
+            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
+            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
+            this.btnClearHistory.Name = "btnClearHistory";
+            this.btnClearHistory.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnClearHistory.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnClearHistory.ShowAccentLine = false;
+            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
+            this.btnClearHistory.TabIndex = 12;
+            this.btnClearHistory.Text = "이력 삭제";
+            this.btnClearHistory.TextColor = System.Drawing.Color.White;
+            this.btnClearHistory.TextOffsetX = 0;
+            this.btnClearHistory.TextOffsetY = 0;
+            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
+            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -193,40 +224,9 @@
             this.lblSJMonitor.ShowAccentLine = false;
             this.lblSJMonitor.Size = new System.Drawing.Size(338, 33);
             this.lblSJMonitor.TabIndex = 3;
-            this.lblSJMonitor.Text = "AI MONITOR";
+            this.lblSJMonitor.Text = "AI PROCESSING MONITOR";
             this.lblSJMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblSJMonitor.TextColor = System.Drawing.Color.White;
-            // 
-            // btnClearHistory
-            // 
-            this.btnClearHistory.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnClearHistory.BackColor = System.Drawing.Color.Transparent;
-            this.btnClearHistory.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnClearHistory.BorderRadius = 5;
-            this.btnClearHistory.BorderSize = 2;
-            this.btnClearHistory.ButtonImage = null;
-            this.btnClearHistory.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClearHistory.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnClearHistory.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnClearHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnClearHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearHistory.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnClearHistory.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnClearHistory.IconPadding = 6;
-            this.btnClearHistory.IconSize = 20;
-            this.btnClearHistory.Location = new System.Drawing.Point(301, 1);
-            this.btnClearHistory.Margin = new System.Windows.Forms.Padding(1);
-            this.btnClearHistory.Name = "btnClearHistory";
-            this.btnClearHistory.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnClearHistory.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnClearHistory.ShowAccentLine = false;
-            this.btnClearHistory.Size = new System.Drawing.Size(98, 31);
-            this.btnClearHistory.TabIndex = 12;
-            this.btnClearHistory.Text = "이력 삭제";
-            this.btnClearHistory.TextColor = System.Drawing.Color.White;
-            this.btnClearHistory.TextOffsetX = 0;
-            this.btnClearHistory.TextOffsetY = 0;
-            this.btnClearHistory.Click += new System.EventHandler(this.btnClearHistory_Click);
             // 
             // FormLotSummery
             // 

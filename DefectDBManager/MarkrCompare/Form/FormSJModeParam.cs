@@ -43,6 +43,7 @@ namespace MarkCompare
             {
                 initDgvModel();
                 initDgvParam();
+                displayCommonParam();
             }
         }
 
@@ -211,8 +212,22 @@ namespace MarkCompare
 
         #region Parameter Control
 
+        #region Common Param
+        private void displayCommonParam()
+        {
+            tbCycleTime.Text = _param.CycleTime.ToString();
+        }
+        private void updateCommonParam()
+        {
+            if (int.TryParse(tbCycleTime.Text, out int cycleTime))
+            {
+                _param.CycleTime = cycleTime;
+            }
+        }
+        #endregion
+
         #region Data Grid View
-      
+
 
         private void initDgvParam()
         {
@@ -277,7 +292,6 @@ namespace MarkCompare
                 tbxSubFolderName.Text = _selectedModel.SubFolderName;
                 lblPathView.Text = _selectedModel.NetPathSummery("CTLNO");
             }
-
         }
 
         #endregion
@@ -302,6 +316,7 @@ namespace MarkCompare
         private void btnApplyParam_Click(object sender, EventArgs e)
         {
             List<SjModelItem> info = new List<SjModelItem>();
+            dgvDetailParam.EndEdit();
 
             foreach (DataGridViewRow row in dgvDetailParam.Rows)
             {
@@ -348,6 +363,7 @@ namespace MarkCompare
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            updateCommonParam();
             _param.Save();
         }
 

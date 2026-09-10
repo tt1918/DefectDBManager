@@ -71,6 +71,7 @@ namespace DefectDBManager.Preproc
 
     public class SjModeParam : ICloneable
     {
+        public int CycleTime { get; set; } = 1000;
         public List<SjModeIPath> ModeItems { get; set; } = new List<SjModeIPath>();
 
         public SjModeParam()
@@ -97,6 +98,7 @@ namespace DefectDBManager.Preproc
 
             var obj = Newtonsoft.Json.JsonConvert.DeserializeObject<SjModeParam>(jsonString);
 
+            this.CycleTime = obj.CycleTime;
             foreach (var item in obj.ModeItems)
                 this.ModeItems.Add(item);
 
@@ -106,6 +108,7 @@ namespace DefectDBManager.Preproc
         public object Clone()
         {
             SjModeParam clone = (SjModeParam)this.MemberwiseClone();
+            this.CycleTime = clone.CycleTime;
             clone.ModeItems = new List<SjModeIPath>();
             foreach (var modeItem in this.ModeItems)
             {

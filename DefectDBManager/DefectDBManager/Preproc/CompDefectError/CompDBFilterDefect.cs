@@ -217,7 +217,7 @@ namespace DefectDBManager.Preproc
                         // 매칭 불량 갯수 초기화
                         inspdata.RollCtlCnt = 0;
 
-                        QueryMsg.FLTDAT_FAST_Query fastMsg = new QueryMsg.FLTDAT_FAST_Query();
+                        QueryMsg.FLTDAT_FAST_AI_Query fastMsg = new QueryMsg.FLTDAT_FAST_AI_Query();
                         fastMsg.CTLNO = inspdata.CTLNO;
                         query = fastMsg.GetQuery(_DbResult.dicSizeData, _DbResult.dicMRKF1Data);
 
@@ -238,7 +238,7 @@ namespace DefectDBManager.Preproc
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;
 
-                            if (_AiMonitorItem != null)
+                            if (_AiMonitorItem != null && procParam.UseAiMonitoring)
                             {
                                 string filter = _AiMonitorItem.ModelName.Trim('*');
                                 if (inspdata.HINMEI.Contains(filter))
@@ -482,7 +482,7 @@ namespace DefectDBManager.Preproc
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;
 
-                            if (_AiMonitorItem != null)
+                            if (_AiMonitorItem != null && procParam.UseAiMonitoring)
                             {
                                 string filter = _AiMonitorItem.ModelName.Trim('*');
                                 if (inspdata.HINMEI.Contains(filter))

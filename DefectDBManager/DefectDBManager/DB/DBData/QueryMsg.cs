@@ -532,6 +532,40 @@ namespace DefectDBManager
             }
         }
 
+        public class FLTDAT_FAST_AI_Query : QueryMsg
+        {
+            public string CTLNO = "";
+
+            public string GetQuery(Dictionary<string, float> dicSize, Dictionary<string, bool> dicMKCTL)
+            {
+                StringBuilder sbMsg = new StringBuilder();
+                sbMsg.Append("SELECT FAULTDAT.CTLNO,FAULTDAT.FLTNO,FAULTDAT.OFFSET,FAULTDAT.YPOS_M,FAULTDAT.XPOS_M,FAULTDAT.AREA_M,FAULTDAT.RANK,FAULTDAT.KND,FAULTDAT.CAMNO," +
+                                "FAULTDAT.MNTTAN,FAULTDAT.JIGCD,FAULTDAT.MACNO,FAULTDAT.FLTID FROM FAULTDAT WHERE CTLNO='" + CTLNO + "'");
+                
+                bool isStart = false;
+                foreach (KeyValuePair<string, bool> pair in dicMKCTL)
+                {
+                    if (pair.Value == true)
+                    {
+                        if (dicSize.ContainsKey(pair.Key) == true)
+                        {
+                            if (isStart == false)
+                                sbMsg.Append("AND (");
+
+                            if (isStart == true)
+                                sbMsg.Append(" OR ");
+
+                            sbMsg.Append($"(FAULTDAT.MNTTAN = '{pair.Key}' AND FAULTDAT.AREA_M>={dicSize[pair.Key]:F5})");
+                            isStart = true;
+                        }
+                    }
+                }
+                if (isStart == true)
+                    sbMsg.Append(")");
+                return sbMsg.ToString();
+            }
+        }
+
         public class FLTDAT_Daily_Query : QueryMsg
         {
             public string GetQuery(string CTLNO)
@@ -541,31 +575,5 @@ namespace DefectDBManager
                 return sbMsg.ToString();
             }
         }
-
-        public class FLTDAT_Daily_New_Query : QueryMsg
-        {
-            public string GetQuery()
-            {
-                StringBuilder sbMsg = new StringBuilder();
-                sbMsg.Append("SELECT * ");
-                sbMsg.Append("FROM FAULTDAT, FLTMST, INSPDAT ");
-                sbMsg.Append("WHERE FAULTDAT.FLTID = FLTMST.FLTID ");
-                sbMsg.Append("AND FAULTDAT.CTLNO = INSPDAT.CTLNO ");
-                sbMsg.Append("AND FAULTDAT.CTLNO = :ctlno ");
-                sbMsg.Append("ORDER BY FAULTDAT.FLTID ");
-                sbMsg.Append("OFFSET :offset ROWS FETCH NEXT :pageSize ROWS ONLY");
-                return sbMsg.ToString();
-            }
-        }
-
-        public class FLTDAT_Daily_Count_Query : QueryMsg
-        {
-            public string GetQuery()
-            {
-                string msg = @"SELECT COUNT(*) FROM FAULTDAT FD, FLTMST FM, INSPDAT ID WHERE FD.FLTID = FM.FLTID AND FD.CTLNO = ID.CTLNO AND FD.CTLNO = :ctlno";
-                return msg;
-            }
-        }
-
     }
 }

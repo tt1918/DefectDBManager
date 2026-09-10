@@ -598,23 +598,23 @@ namespace MarkCompare
                 else
                 {
                     // 불량 데이터가 존재면 해당 SJMode를 추가한다
-                    if(monitorData.DefectInfo.Count>0)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Input SJMODE [");
-                        foreach(var defectInfo in monitorData.DefectInfo)
-                        {
-                            sb.Append($" {defectInfo.Key}");
-                        }
-                        sb.Append(" ]");
+                    //if(monitorData.DefectInfo.Count>0)
+                    //{
+                    //    StringBuilder sb = new StringBuilder();
+                    //    sb.Append($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Input SJMODE [");
+                    //    foreach(var defectInfo in monitorData.DefectInfo)
+                    //    {
+                    //        sb.Append($" {defectInfo.Key}");
+                    //    }
+                    //    sb.Append(" ]");
 
-                        sb.Append(" / No Judgement");
-                        errLot.Add(sb.ToString());
-                    }
-                    else
-                    {
-                        errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / No Judgement");
-                    }
+                    //    sb.Append(" / No Judgement");
+                    //    errLot.Add(sb.ToString());
+                    //}
+                    //else
+                    //{
+                    //    errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / No Judgement");
+                    //}
                 }
 
                 // 1. 기존 행이 있고, 이번에는 검색 결과가 생긴 경우

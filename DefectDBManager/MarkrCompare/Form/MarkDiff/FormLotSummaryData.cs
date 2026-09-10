@@ -275,36 +275,14 @@ namespace MarkCompare
                 StringBuilder sb = new StringBuilder();
                 sb.Append(_lotSummery.LotName);
                 sb.Append($" - {filter} ");
-                if(!_lotSummery.FaultData.AIMonResult.IsModelExsit)
-                {
-                    sb.Append("[AI 모니터링 미적용]");
-                }
-                else
+                if(_lotSummery.FaultData.AIMonResult.IsModelExsit==true)
                 {
                     foreach(var item in _lotSummery.FaultData.AIMonResult.Items)
                     {
-                        if(item.Model.Use)
-                        {
-                            sb.Append("[인정 비율 검사] ");
-                            if (item.Judge == true)
-                                sb.Append($"OK({item.Ratio:F1}%)");
-                            else
-                            {
-                                sb.Append($"NG({item.Ratio:F1}%)");
-                                isAiError = true;
-                            }
-                        }
-                        else
-                        {
-                            sb.Append("[유무 검사] ");
-                            if (item.Total > 0)
-                                sb.Append("OK");
-                            else
-                            {
-                                sb.Append("NG");
-                                isAiError = true;
-                            }
-                        }
+                        if(item.Model.Use && item.Judge == false)
+                            isAiError = true;
+                        else if (item.Total <= 0)
+                            isAiError = true;
                     }
                 }
 
@@ -364,6 +342,48 @@ namespace MarkCompare
                     foreach (Control ctrl in flpResult.Controls)
                         ctrl.Height = flpResult.ClientSize.Height - 20; // 여유 패딩 고려
                     return;
+                }
+
+                // 맨 처음 AI 결과를 출력한다.
+                if (!_lotSummery.FaultData.AIMonResult.IsModelExsit)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("[AI 모니터링 미적용]");
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), false));
+                }
+                else
+                {
+                    bool isAiError = false;
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("[AI 모니터링 결과]");
+                    foreach (var item in _lotSummery.FaultData.AIMonResult.Items)
+                    {
+                        if (item.Model.Use)
+                        {
+                            sb.AppendLine("[인정 비율 검사] ");
+                            sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            if (item.Judge == true)
+                                sb.Append($"OK({item.Ratio:F1}%)");
+                            else
+                            {
+                                sb.Append($"NG({item.Ratio:F1}%)");
+                                isAiError = true;
+                            }
+                        }
+                        else
+                        {
+                            sb.AppendLine("[유무 검사] ");
+                            sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            if (item.Total > 0)
+                                sb.Append("OK");
+                            else
+                            {
+                                sb.Append("NG");
+                                isAiError = true;
+                            }
+                        }
+                    }
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), isAiError));
                 }
 
                 string str = null;
@@ -705,6 +725,48 @@ namespace MarkCompare
                     return;
                 }
 
+                // 맨 처음 AI 결과를 출력한다.
+                if (!_lotSummery.FaultData.AIMonResult.IsModelExsit)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("[AI 모니터링 미적용]");
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), false));
+                }
+                else
+                {
+                    bool isAiError = false;
+                    StringBuilder sb = new StringBuilder();
+                    sb.AppendLine("[AI 모니터링 결과]");
+                    foreach (var item in _lotSummery.FaultData.AIMonResult.Items)
+                    {
+                        if (item.Model.Use)
+                        {
+                            sb.AppendLine("[인정 비율 검사] ");
+                            sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            if (item.Judge == true)
+                                sb.Append($"OK({item.Ratio:F1}%)");
+                            else
+                            {
+                                sb.Append($"NG({item.Ratio:F1}%)");
+                                isAiError = true;
+                            }
+                        }
+                        else
+                        {
+                            sb.AppendLine("[유무 검사] ");
+                            sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            if (item.Total > 0)
+                                sb.Append("OK");
+                            else
+                            {
+                                sb.Append("NG");
+                                isAiError = true;
+                            }
+                        }
+                    }
+                    flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), isAiError));
+                }
+
                 string str = null;
                 List<int[,]> comp1Cnt = _lotSummery.CompCnt;
 
@@ -791,8 +853,7 @@ namespace MarkCompare
                         sbSummary.Append($"[{RefLNCD}-{CompLNCD[idx]}]");
                         lineCnt++;
 
-                        if (_lotSummery.LotSummary.Summary.Any(s => s.Name == procItem.Compare[idx].LNCD &&
-                                                                    s.IsBunchDefects == true))
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                             sb1.AppendLine($"{Lang.bunchDefect}"); lineCnt++;
 
                         foreach (var data in _lotSummery.PTRY0P_Data)

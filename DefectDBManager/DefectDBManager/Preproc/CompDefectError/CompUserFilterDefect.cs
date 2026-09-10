@@ -184,7 +184,7 @@ namespace DefectDBManager.Preproc
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
 
-                            if (_AiMonitorItem != null)
+                            if (_AiMonitorItem != null && _PreprocItem.UseAiMonitoring)
                             {
                                 string filter = _AiMonitorItem.ModelName.Trim('*');
                                 if (inspdata.HINMEI.Contains(filter))
@@ -457,7 +457,7 @@ namespace DefectDBManager.Preproc
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
 
-                            if(_AiMonitorItem!=null)
+                            if(_AiMonitorItem!=null && _PreprocItem.UseAiMonitoring)
                             {
                                 string filter = _AiMonitorItem.ModelName.Trim('*');
                                 if (inspdata.HINMEI.Contains(filter))
