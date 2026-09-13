@@ -156,9 +156,9 @@ namespace MarkCompare
             {
                 displaySummary();
 
-                displayLotName();
                 displayDetail();
                 displayCompareResult();
+                displayLotName();
             }
             else
             {
@@ -174,9 +174,9 @@ namespace MarkCompare
                 }
                 CompLNCD = compLNCDList;
 
-                displayLotName(); 
                 displayDBDetail();
                 displayCompareResult();
+                displayLotName();
             }
         }
 
@@ -327,6 +327,7 @@ namespace MarkCompare
         {
             int maxLine = 0;
             int lineCnt = 0;
+            int errorCnt = 0;
             try
             {
                 _isError = false;
@@ -362,11 +363,12 @@ namespace MarkCompare
                         {
                             sb.AppendLine("[인정 비율 검사] ");
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            sb.Append($"[{item.Total}, {item.Match}] ");
                             if (item.Judge == true)
-                                sb.Append($"OK({item.Ratio:F1}%)");
+                                sb.AppendLine($"OK({item.Ratio:F1}%)");
                             else
                             {
-                                sb.Append($"NG({item.Ratio:F1}%)");
+                                sb.AppendLine($"NG({item.Ratio:F1}%)");
                                 isAiError = true;
                             }
                         }
@@ -375,15 +377,16 @@ namespace MarkCompare
                             sb.AppendLine("[유무 검사] ");
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             if (item.Total > 0)
-                                sb.Append("OK");
+                                sb.AppendLine("OK");
                             else
                             {
-                                sb.Append("NG");
+                                sb.AppendLine("NG");
                                 isAiError = true;
                             }
                         }
                     }
                     flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), isAiError));
+                    if(isAiError) errorCnt++;
                 }
 
                 string str = null;
@@ -536,7 +539,7 @@ namespace MarkCompare
                             var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
 
                             flpResult.Controls.Add(lbl);
-                            flpResult.Controls.SetChildIndex(lbl, 0);
+                            flpResult.Controls.SetChildIndex(lbl, errorCnt++);
                         }
                         else
                             flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
@@ -672,7 +675,7 @@ namespace MarkCompare
                                     var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
 
                                     flpResult.Controls.Add(lbl);
-                                    flpResult.Controls.SetChildIndex(lbl, 0);
+                                    flpResult.Controls.SetChildIndex(lbl, errorCnt++);
                                 }
                                 else
                                     flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
@@ -707,7 +710,7 @@ namespace MarkCompare
             
             int maxLine = 0;
             int lineCnt = 0;
-            
+            int errorCnt = 0;
             try
             {
                 _isError = false;
@@ -743,11 +746,12 @@ namespace MarkCompare
                         {
                             sb.AppendLine("[인정 비율 검사] ");
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
+                            sb.Append($"[{item.Total}, {item.Match}] ");
                             if (item.Judge == true)
-                                sb.Append($"OK({item.Ratio:F1}%)");
+                                sb.AppendLine($"OK({item.Ratio:F1}%)");
                             else
                             {
-                                sb.Append($"NG({item.Ratio:F1}%)");
+                                sb.AppendLine($"NG({item.Ratio:F1}%)");
                                 isAiError = true;
                             }
                         }
@@ -756,15 +760,16 @@ namespace MarkCompare
                             sb.AppendLine("[유무 검사] ");
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             if (item.Total > 0)
-                                sb.Append("OK");
+                                sb.AppendLine("OK");
                             else
                             {
-                                sb.Append("NG");
+                                sb.AppendLine("NG");
                                 isAiError = true;
                             }
                         }
                     }
                     flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), isAiError));
+                    if(isAiError) errorCnt++;
                 }
 
                 string str = null;
@@ -932,7 +937,7 @@ namespace MarkCompare
                             var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
 
                             flpResult.Controls.Add(lbl);
-                            flpResult.Controls.SetChildIndex(lbl, 0);
+                            flpResult.Controls.SetChildIndex(lbl, errorCnt++);
                         }
                         else
                             flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));
@@ -1069,7 +1074,7 @@ namespace MarkCompare
                                     var lbl = makeProcessInfoLabel(sb1.ToString(), isSubError);
 
                                     flpResult.Controls.Add(lbl);
-                                    flpResult.Controls.SetChildIndex(lbl, 0);
+                                    flpResult.Controls.SetChildIndex(lbl, errorCnt++);
                                 }
                                 else
                                     flpResult.Controls.Add(makeProcessInfoLabel(sb1.ToString(), isSubError));

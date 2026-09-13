@@ -31,12 +31,16 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lblTitle = new CustomControls.ShadedLabel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnCancel = new CustomControls.ShadedButton();
+            this.btnOk = new CustomControls.ShadedButton();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.groupCompRange = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvCompRange = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddCompRange = new CustomControls.ShadedButton();
+            this.btnDelCompRange = new CustomControls.ShadedButton();
             this.gpJudgeRange = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.lblRangeY = new CustomControls.ShadedLabel();
@@ -54,8 +58,11 @@
             this.lvFilterList = new System.Windows.Forms.ListView();
             this.rbFilterType2 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddUserFilter = new CustomControls.ShadedButton();
             this.rbFilterType1 = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAiSkipDefects = new CustomControls.ShadedLabel();
+            this.tbAiSkipDefect = new CustomControls.RoundTextBox();
             this.cbbAiMonitorParam = new System.Windows.Forms.ComboBox();
             this.cbDest = new System.Windows.Forms.ComboBox();
             this.ckbES = new System.Windows.Forms.CheckBox();
@@ -63,20 +70,15 @@
             this.ckbETC = new System.Windows.Forms.CheckBox();
             this.lblDBAiMonitorName = new CustomControls.ShadedLabel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnLoadParam = new CustomControls.ShadedButton();
+            this.btnSaveParam = new CustomControls.ShadedButton();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvLotList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnLoadParam = new CustomControls.ShadedButton();
-            this.btnSaveParam = new CustomControls.ShadedButton();
-            this.btnAddUserFilter = new CustomControls.ShadedButton();
-            this.btnAddCompRange = new CustomControls.ShadedButton();
-            this.btnDelCompRange = new CustomControls.ShadedButton();
-            this.btnAddList = new CustomControls.ShadedButton();
-            this.btnAdd = new CustomControls.ShadedButton();
             this.btnDel = new CustomControls.ShadedButton();
             this.btnClear = new CustomControls.ShadedButton();
-            this.btnCancel = new CustomControls.ShadedButton();
-            this.btnOk = new CustomControls.ShadedButton();
+            this.btnAdd = new CustomControls.ShadedButton();
+            this.btnAddList = new CustomControls.ShadedButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -161,6 +163,68 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(694, 48);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnCancel.BorderRadius = 5;
+            this.btnCancel.BorderSize = 2;
+            this.btnCancel.ButtonImage = null;
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnCancel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnCancel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnCancel.IconPadding = 6;
+            this.btnCancel.IconSize = 20;
+            this.btnCancel.Location = new System.Drawing.Point(501, 1);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(1);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnCancel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnCancel.ShowAccentLine = false;
+            this.btnCancel.Size = new System.Drawing.Size(98, 46);
+            this.btnCancel.TabIndex = 17;
+            this.btnCancel.Text = "CANCEL";
+            this.btnCancel.TextColor = System.Drawing.Color.White;
+            this.btnCancel.TextOffsetX = 0;
+            this.btnCancel.TextOffsetY = 0;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnOk
+            // 
+            this.btnOk.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnOk.BackColor = System.Drawing.Color.Transparent;
+            this.btnOk.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnOk.BorderRadius = 5;
+            this.btnOk.BorderSize = 2;
+            this.btnOk.ButtonImage = null;
+            this.btnOk.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOk.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnOk.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnOk.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnOk.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOk.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnOk.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnOk.IconPadding = 6;
+            this.btnOk.IconSize = 20;
+            this.btnOk.Location = new System.Drawing.Point(601, 1);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(1);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnOk.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnOk.ShowAccentLine = false;
+            this.btnOk.Size = new System.Drawing.Size(92, 46);
+            this.btnOk.TabIndex = 17;
+            this.btnOk.Text = "OK";
+            this.btnOk.TextColor = System.Drawing.Color.White;
+            this.btnOk.TextOffsetX = 0;
+            this.btnOk.TextOffsetY = 0;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -174,7 +238,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 589F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 729F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(688, 729);
             this.tableLayoutPanel3.TabIndex = 10;
             // 
@@ -193,7 +257,7 @@
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel15.RowCount = 5;
-            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 268F));
+            this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 297F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
@@ -205,11 +269,11 @@
             // 
             this.groupCompRange.Controls.Add(this.tableLayoutPanel11);
             this.groupCompRange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupCompRange.Location = new System.Drawing.Point(4, 272);
+            this.groupCompRange.Location = new System.Drawing.Point(4, 301);
             this.groupCompRange.Margin = new System.Windows.Forms.Padding(2);
             this.groupCompRange.Name = "groupCompRange";
             this.groupCompRange.Padding = new System.Windows.Forms.Padding(1, 1, 1, 5);
-            this.groupCompRange.Size = new System.Drawing.Size(334, 280);
+            this.groupCompRange.Size = new System.Drawing.Size(334, 251);
             this.groupCompRange.TabIndex = 3;
             this.groupCompRange.TabStop = false;
             this.groupCompRange.Text = "COMPARE RANGE";
@@ -228,7 +292,7 @@
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(332, 258);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(332, 229);
             this.tableLayoutPanel11.TabIndex = 1;
             // 
             // dgvCompRange
@@ -244,7 +308,7 @@
             this.dgvCompRange.Name = "dgvCompRange";
             this.dgvCompRange.RowTemplate.Height = 23;
             this.dgvCompRange.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCompRange.Size = new System.Drawing.Size(326, 220);
+            this.dgvCompRange.Size = new System.Drawing.Size(326, 191);
             this.dgvCompRange.TabIndex = 5;
             // 
             // tableLayoutPanel12
@@ -256,13 +320,74 @@
             this.tableLayoutPanel12.Controls.Add(this.btnAddCompRange, 1, 0);
             this.tableLayoutPanel12.Controls.Add(this.btnDelCompRange, 2, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(2, 224);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(2, 195);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(328, 32);
             this.tableLayoutPanel12.TabIndex = 0;
+            // 
+            // btnAddCompRange
+            // 
+            this.btnAddCompRange.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddCompRange.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddCompRange.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAddCompRange.BorderRadius = 5;
+            this.btnAddCompRange.BorderSize = 2;
+            this.btnAddCompRange.ButtonImage = null;
+            this.btnAddCompRange.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddCompRange.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddCompRange.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddCompRange.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddCompRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCompRange.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddCompRange.IconPadding = 6;
+            this.btnAddCompRange.IconSize = 20;
+            this.btnAddCompRange.Location = new System.Drawing.Point(209, 1);
+            this.btnAddCompRange.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddCompRange.Name = "btnAddCompRange";
+            this.btnAddCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddCompRange.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddCompRange.ShowAccentLine = false;
+            this.btnAddCompRange.Size = new System.Drawing.Size(58, 30);
+            this.btnAddCompRange.TabIndex = 17;
+            this.btnAddCompRange.Text = "ADD";
+            this.btnAddCompRange.TextColor = System.Drawing.Color.White;
+            this.btnAddCompRange.TextOffsetX = 0;
+            this.btnAddCompRange.TextOffsetY = 0;
+            this.btnAddCompRange.Click += new System.EventHandler(this.btnAddCompRange_Click);
+            // 
+            // btnDelCompRange
+            // 
+            this.btnDelCompRange.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnDelCompRange.BackColor = System.Drawing.Color.Transparent;
+            this.btnDelCompRange.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnDelCompRange.BorderRadius = 5;
+            this.btnDelCompRange.BorderSize = 2;
+            this.btnDelCompRange.ButtonImage = null;
+            this.btnDelCompRange.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDelCompRange.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnDelCompRange.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnDelCompRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelCompRange.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnDelCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnDelCompRange.IconPadding = 6;
+            this.btnDelCompRange.IconSize = 20;
+            this.btnDelCompRange.Location = new System.Drawing.Point(269, 1);
+            this.btnDelCompRange.Margin = new System.Windows.Forms.Padding(1);
+            this.btnDelCompRange.Name = "btnDelCompRange";
+            this.btnDelCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnDelCompRange.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnDelCompRange.ShowAccentLine = false;
+            this.btnDelCompRange.Size = new System.Drawing.Size(58, 28);
+            this.btnDelCompRange.TabIndex = 17;
+            this.btnDelCompRange.Text = "DEL";
+            this.btnDelCompRange.TextColor = System.Drawing.Color.White;
+            this.btnDelCompRange.TextOffsetX = 0;
+            this.btnDelCompRange.TextOffsetY = 0;
+            this.btnDelCompRange.Click += new System.EventHandler(this.btnDelCompRange_Click);
             // 
             // gpJudgeRange
             // 
@@ -480,7 +605,7 @@
             this.gbFilterType.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gbFilterType.Name = "gbFilterType";
             this.gbFilterType.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.gbFilterType.Size = new System.Drawing.Size(332, 260);
+            this.gbFilterType.Size = new System.Drawing.Size(332, 289);
             this.gbFilterType.TabIndex = 6;
             this.gbFilterType.TabStop = false;
             this.gbFilterType.Text = "Filter Type";
@@ -501,8 +626,8 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(326, 236);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(326, 265);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // lvFilterList
@@ -513,7 +638,7 @@
             this.lvFilterList.Location = new System.Drawing.Point(1, 31);
             this.lvFilterList.Margin = new System.Windows.Forms.Padding(1);
             this.lvFilterList.Name = "lvFilterList";
-            this.lvFilterList.Size = new System.Drawing.Size(324, 120);
+            this.lvFilterList.Size = new System.Drawing.Size(324, 113);
             this.lvFilterList.TabIndex = 5;
             this.lvFilterList.UseCompatibleStateImageBehavior = false;
             this.lvFilterList.View = System.Windows.Forms.View.List;
@@ -522,7 +647,7 @@
             // 
             this.rbFilterType2.AutoSize = true;
             this.rbFilterType2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rbFilterType2.Location = new System.Drawing.Point(3, 156);
+            this.rbFilterType2.Location = new System.Drawing.Point(3, 149);
             this.rbFilterType2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.rbFilterType2.Name = "rbFilterType2";
             this.rbFilterType2.Size = new System.Drawing.Size(320, 22);
@@ -548,6 +673,37 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(326, 30);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
+            // btnAddUserFilter
+            // 
+            this.btnAddUserFilter.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddUserFilter.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddUserFilter.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAddUserFilter.BorderRadius = 5;
+            this.btnAddUserFilter.BorderSize = 2;
+            this.btnAddUserFilter.ButtonImage = null;
+            this.btnAddUserFilter.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddUserFilter.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddUserFilter.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddUserFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddUserFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddUserFilter.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddUserFilter.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddUserFilter.IconPadding = 6;
+            this.btnAddUserFilter.IconSize = 20;
+            this.btnAddUserFilter.Location = new System.Drawing.Point(225, 1);
+            this.btnAddUserFilter.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddUserFilter.Name = "btnAddUserFilter";
+            this.btnAddUserFilter.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddUserFilter.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddUserFilter.ShowAccentLine = false;
+            this.btnAddUserFilter.Size = new System.Drawing.Size(100, 28);
+            this.btnAddUserFilter.TabIndex = 17;
+            this.btnAddUserFilter.Text = "ADD";
+            this.btnAddUserFilter.TextColor = System.Drawing.Color.White;
+            this.btnAddUserFilter.TextOffsetX = 0;
+            this.btnAddUserFilter.TextOffsetY = 0;
+            this.btnAddUserFilter.Click += new System.EventHandler(this.btnAddUserFilter_Click);
+            // 
             // rbFilterType1
             // 
             this.rbFilterType1.AutoSize = true;
@@ -568,6 +724,8 @@
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel7.Controls.Add(this.lblAiSkipDefects, 0, 2);
+            this.tableLayoutPanel7.Controls.Add(this.tbAiSkipDefect, 1, 2);
             this.tableLayoutPanel7.Controls.Add(this.cbbAiMonitorParam, 1, 1);
             this.tableLayoutPanel7.Controls.Add(this.cbDest, 0, 0);
             this.tableLayoutPanel7.Controls.Add(this.ckbES, 1, 0);
@@ -575,21 +733,69 @@
             this.tableLayoutPanel7.Controls.Add(this.ckbETC, 3, 0);
             this.tableLayoutPanel7.Controls.Add(this.lblDBAiMonitorName, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(1, 183);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(1, 176);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(324, 52);
+            this.tableLayoutPanel7.RowCount = 3;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(324, 88);
             this.tableLayoutPanel7.TabIndex = 6;
+            // 
+            // lblAiSkipDefects
+            // 
+            this.lblAiSkipDefects.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblAiSkipDefects.BackColor = System.Drawing.Color.Transparent;
+            this.lblAiSkipDefects.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblAiSkipDefects.BorderRadius = 5;
+            this.lblAiSkipDefects.BorderSize = 1;
+            this.lblAiSkipDefects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAiSkipDefects.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.lblAiSkipDefects.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAiSkipDefects.ImagePadding = 6;
+            this.lblAiSkipDefects.ImageSize = 18;
+            this.lblAiSkipDefects.LabelImage = null;
+            this.lblAiSkipDefects.Location = new System.Drawing.Point(1, 59);
+            this.lblAiSkipDefects.Margin = new System.Windows.Forms.Padding(1);
+            this.lblAiSkipDefects.Name = "lblAiSkipDefects";
+            this.lblAiSkipDefects.ShowAccentLine = false;
+            this.lblAiSkipDefects.Size = new System.Drawing.Size(127, 28);
+            this.lblAiSkipDefects.TabIndex = 22;
+            this.lblAiSkipDefects.Text = "AI SKIP DEFECT";
+            this.lblAiSkipDefects.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblAiSkipDefects.TextColor = System.Drawing.Color.White;
+            // 
+            // tbAiSkipDefect
+            // 
+            this.tbAiSkipDefect.BackColor = System.Drawing.SystemColors.Window;
+            this.tbAiSkipDefect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbAiSkipDefect.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbAiSkipDefect.BorderRadius = 5;
+            this.tbAiSkipDefect.BorderSize = 2;
+            this.tableLayoutPanel7.SetColumnSpan(this.tbAiSkipDefect, 3);
+            this.tbAiSkipDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbAiSkipDefect.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbAiSkipDefect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbAiSkipDefect.Location = new System.Drawing.Point(130, 59);
+            this.tbAiSkipDefect.Margin = new System.Windows.Forms.Padding(1);
+            this.tbAiSkipDefect.Multiline = false;
+            this.tbAiSkipDefect.Name = "tbAiSkipDefect";
+            this.tbAiSkipDefect.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.tbAiSkipDefect.PasswordChar = false;
+            this.tbAiSkipDefect.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.tbAiSkipDefect.PlaceholderText = "";
+            this.tbAiSkipDefect.Size = new System.Drawing.Size(193, 30);
+            this.tbAiSkipDefect.TabIndex = 21;
+            this.tbAiSkipDefect.Texts = "";
+            this.tbAiSkipDefect.UnderlinedStyle = false;
             // 
             // cbbAiMonitorParam
             // 
             this.tableLayoutPanel7.SetColumnSpan(this.cbbAiMonitorParam, 3);
             this.cbbAiMonitorParam.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbbAiMonitorParam.FormattingEnabled = true;
-            this.cbbAiMonitorParam.Location = new System.Drawing.Point(130, 28);
+            this.cbbAiMonitorParam.Location = new System.Drawing.Point(130, 31);
             this.cbbAiMonitorParam.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
             this.cbbAiMonitorParam.Name = "cbbAiMonitorParam";
             this.cbbAiMonitorParam.Size = new System.Drawing.Size(193, 23);
@@ -613,7 +819,7 @@
             this.ckbES.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ckbES.Location = new System.Drawing.Point(132, 3);
             this.ckbES.Name = "ckbES";
-            this.ckbES.Size = new System.Drawing.Size(58, 20);
+            this.ckbES.Size = new System.Drawing.Size(58, 23);
             this.ckbES.TabIndex = 1;
             this.ckbES.Text = "ES";
             this.ckbES.UseVisualStyleBackColor = true;
@@ -624,7 +830,7 @@
             this.ckbTG.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ckbTG.Location = new System.Drawing.Point(196, 3);
             this.ckbTG.Name = "ckbTG";
-            this.ckbTG.Size = new System.Drawing.Size(58, 20);
+            this.ckbTG.Size = new System.Drawing.Size(58, 23);
             this.ckbTG.TabIndex = 1;
             this.ckbTG.Text = "TG";
             this.ckbTG.UseVisualStyleBackColor = true;
@@ -635,7 +841,7 @@
             this.ckbETC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ckbETC.Location = new System.Drawing.Point(260, 3);
             this.ckbETC.Name = "ckbETC";
-            this.ckbETC.Size = new System.Drawing.Size(61, 20);
+            this.ckbETC.Size = new System.Drawing.Size(61, 23);
             this.ckbETC.TabIndex = 1;
             this.ckbETC.Text = "ETC";
             this.ckbETC.UseVisualStyleBackColor = true;
@@ -653,11 +859,11 @@
             this.lblDBAiMonitorName.ImagePadding = 6;
             this.lblDBAiMonitorName.ImageSize = 18;
             this.lblDBAiMonitorName.LabelImage = null;
-            this.lblDBAiMonitorName.Location = new System.Drawing.Point(1, 27);
+            this.lblDBAiMonitorName.Location = new System.Drawing.Point(1, 30);
             this.lblDBAiMonitorName.Margin = new System.Windows.Forms.Padding(1);
             this.lblDBAiMonitorName.Name = "lblDBAiMonitorName";
             this.lblDBAiMonitorName.ShowAccentLine = false;
-            this.lblDBAiMonitorName.Size = new System.Drawing.Size(127, 24);
+            this.lblDBAiMonitorName.Size = new System.Drawing.Size(127, 27);
             this.lblDBAiMonitorName.TabIndex = 2;
             this.lblDBAiMonitorName.Text = "AI PARAM";
             this.lblDBAiMonitorName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -680,59 +886,6 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(332, 33);
             this.tableLayoutPanel5.TabIndex = 7;
-            // 
-            // tableLayoutPanel8
-            // 
-            this.tableLayoutPanel8.ColumnCount = 1;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.Controls.Add(this.dgvLotList, 0, 0);
-            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 1);
-            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(346, 0);
-            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
-            this.tableLayoutPanel8.RowCount = 2;
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(342, 729);
-            this.tableLayoutPanel8.TabIndex = 6;
-            // 
-            // dgvLotList
-            // 
-            this.dgvLotList.AllowUserToAddRows = false;
-            this.dgvLotList.AllowUserToDeleteRows = false;
-            this.dgvLotList.AllowUserToResizeColumns = false;
-            this.dgvLotList.AllowUserToResizeRows = false;
-            this.dgvLotList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLotList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvLotList.Location = new System.Drawing.Point(1, 1);
-            this.dgvLotList.Margin = new System.Windows.Forms.Padding(1);
-            this.dgvLotList.Name = "dgvLotList";
-            this.dgvLotList.RowTemplate.Height = 23;
-            this.dgvLotList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLotList.Size = new System.Drawing.Size(340, 674);
-            this.dgvLotList.TabIndex = 6;
-            this.dgvLotList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLotList_CellEndEdit);
-            // 
-            // tableLayoutPanel9
-            // 
-            this.tableLayoutPanel9.ColumnCount = 4;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel9.Controls.Add(this.btnDel, 2, 0);
-            this.tableLayoutPanel9.Controls.Add(this.btnClear, 3, 0);
-            this.tableLayoutPanel9.Controls.Add(this.btnAdd, 1, 0);
-            this.tableLayoutPanel9.Controls.Add(this.btnAddList, 0, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 679);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 1;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(336, 47);
-            this.tableLayoutPanel9.TabIndex = 3;
             // 
             // btnLoadParam
             // 
@@ -794,159 +947,58 @@
             this.btnSaveParam.TextOffsetY = 0;
             this.btnSaveParam.Click += new System.EventHandler(this.btnSaveParam_Click);
             // 
-            // btnAddUserFilter
+            // tableLayoutPanel8
             // 
-            this.btnAddUserFilter.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAddUserFilter.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddUserFilter.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAddUserFilter.BorderRadius = 5;
-            this.btnAddUserFilter.BorderSize = 2;
-            this.btnAddUserFilter.ButtonImage = null;
-            this.btnAddUserFilter.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddUserFilter.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAddUserFilter.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAddUserFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAddUserFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddUserFilter.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAddUserFilter.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAddUserFilter.IconPadding = 6;
-            this.btnAddUserFilter.IconSize = 20;
-            this.btnAddUserFilter.Location = new System.Drawing.Point(225, 1);
-            this.btnAddUserFilter.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAddUserFilter.Name = "btnAddUserFilter";
-            this.btnAddUserFilter.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAddUserFilter.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAddUserFilter.ShowAccentLine = false;
-            this.btnAddUserFilter.Size = new System.Drawing.Size(100, 28);
-            this.btnAddUserFilter.TabIndex = 17;
-            this.btnAddUserFilter.Text = "ADD";
-            this.btnAddUserFilter.TextColor = System.Drawing.Color.White;
-            this.btnAddUserFilter.TextOffsetX = 0;
-            this.btnAddUserFilter.TextOffsetY = 0;
-            this.btnAddUserFilter.Click += new System.EventHandler(this.btnAddUserFilter_Click);
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel8.Controls.Add(this.dgvLotList, 0, 0);
+            this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 1);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(346, 0);
+            this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 2;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(342, 729);
+            this.tableLayoutPanel8.TabIndex = 6;
             // 
-            // btnAddCompRange
+            // dgvLotList
             // 
-            this.btnAddCompRange.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAddCompRange.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddCompRange.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAddCompRange.BorderRadius = 5;
-            this.btnAddCompRange.BorderSize = 2;
-            this.btnAddCompRange.ButtonImage = null;
-            this.btnAddCompRange.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddCompRange.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAddCompRange.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAddCompRange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAddCompRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddCompRange.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAddCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAddCompRange.IconPadding = 6;
-            this.btnAddCompRange.IconSize = 20;
-            this.btnAddCompRange.Location = new System.Drawing.Point(209, 1);
-            this.btnAddCompRange.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAddCompRange.Name = "btnAddCompRange";
-            this.btnAddCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAddCompRange.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAddCompRange.ShowAccentLine = false;
-            this.btnAddCompRange.Size = new System.Drawing.Size(58, 30);
-            this.btnAddCompRange.TabIndex = 17;
-            this.btnAddCompRange.Text = "ADD";
-            this.btnAddCompRange.TextColor = System.Drawing.Color.White;
-            this.btnAddCompRange.TextOffsetX = 0;
-            this.btnAddCompRange.TextOffsetY = 0;
-            this.btnAddCompRange.Click += new System.EventHandler(this.btnAddCompRange_Click);
+            this.dgvLotList.AllowUserToAddRows = false;
+            this.dgvLotList.AllowUserToDeleteRows = false;
+            this.dgvLotList.AllowUserToResizeColumns = false;
+            this.dgvLotList.AllowUserToResizeRows = false;
+            this.dgvLotList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLotList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLotList.Location = new System.Drawing.Point(1, 1);
+            this.dgvLotList.Margin = new System.Windows.Forms.Padding(1);
+            this.dgvLotList.Name = "dgvLotList";
+            this.dgvLotList.RowTemplate.Height = 23;
+            this.dgvLotList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLotList.Size = new System.Drawing.Size(340, 674);
+            this.dgvLotList.TabIndex = 6;
+            this.dgvLotList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLotList_CellEndEdit);
             // 
-            // btnDelCompRange
+            // tableLayoutPanel9
             // 
-            this.btnDelCompRange.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnDelCompRange.BackColor = System.Drawing.Color.Transparent;
-            this.btnDelCompRange.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnDelCompRange.BorderRadius = 5;
-            this.btnDelCompRange.BorderSize = 2;
-            this.btnDelCompRange.ButtonImage = null;
-            this.btnDelCompRange.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDelCompRange.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnDelCompRange.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnDelCompRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDelCompRange.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnDelCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnDelCompRange.IconPadding = 6;
-            this.btnDelCompRange.IconSize = 20;
-            this.btnDelCompRange.Location = new System.Drawing.Point(269, 1);
-            this.btnDelCompRange.Margin = new System.Windows.Forms.Padding(1);
-            this.btnDelCompRange.Name = "btnDelCompRange";
-            this.btnDelCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnDelCompRange.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnDelCompRange.ShowAccentLine = false;
-            this.btnDelCompRange.Size = new System.Drawing.Size(58, 28);
-            this.btnDelCompRange.TabIndex = 17;
-            this.btnDelCompRange.Text = "DEL";
-            this.btnDelCompRange.TextColor = System.Drawing.Color.White;
-            this.btnDelCompRange.TextOffsetX = 0;
-            this.btnDelCompRange.TextOffsetY = 0;
-            this.btnDelCompRange.Click += new System.EventHandler(this.btnDelCompRange_Click);
-            // 
-            // btnAddList
-            // 
-            this.btnAddList.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAddList.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddList.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAddList.BorderRadius = 5;
-            this.btnAddList.BorderSize = 2;
-            this.btnAddList.ButtonImage = null;
-            this.btnAddList.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddList.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAddList.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAddList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAddList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddList.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAddList.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAddList.IconPadding = 6;
-            this.btnAddList.IconSize = 20;
-            this.btnAddList.Location = new System.Drawing.Point(1, 1);
-            this.btnAddList.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAddList.Name = "btnAddList";
-            this.btnAddList.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAddList.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAddList.ShowAccentLine = false;
-            this.btnAddList.Size = new System.Drawing.Size(82, 45);
-            this.btnAddList.TabIndex = 17;
-            this.btnAddList.Text = "ADD LIST";
-            this.btnAddList.TextColor = System.Drawing.Color.White;
-            this.btnAddList.TextOffsetX = 0;
-            this.btnAddList.TextOffsetY = 0;
-            this.btnAddList.Click += new System.EventHandler(this.btnAddList_Click);
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAdd.BackColor = System.Drawing.Color.Transparent;
-            this.btnAdd.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAdd.BorderRadius = 5;
-            this.btnAdd.BorderSize = 2;
-            this.btnAdd.ButtonImage = null;
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAdd.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAdd.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAdd.IconPadding = 6;
-            this.btnAdd.IconSize = 20;
-            this.btnAdd.Location = new System.Drawing.Point(85, 1);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAdd.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAdd.ShowAccentLine = false;
-            this.btnAdd.Size = new System.Drawing.Size(82, 45);
-            this.btnAdd.TabIndex = 17;
-            this.btnAdd.Text = "ADD";
-            this.btnAdd.TextColor = System.Drawing.Color.White;
-            this.btnAdd.TextOffsetX = 0;
-            this.btnAdd.TextOffsetY = 0;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.tableLayoutPanel9.ColumnCount = 4;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel9.Controls.Add(this.btnDel, 2, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnClear, 3, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnAdd, 1, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnAddList, 0, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 679);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(336, 47);
+            this.tableLayoutPanel9.TabIndex = 3;
             // 
             // btnDel
             // 
@@ -1010,67 +1062,67 @@
             this.btnClear.TextOffsetY = 0;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // btnCancel
+            // btnAdd
             // 
-            this.btnCancel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
-            this.btnCancel.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnCancel.BorderRadius = 5;
-            this.btnCancel.BorderSize = 2;
-            this.btnCancel.ButtonImage = null;
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnCancel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnCancel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnCancel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnCancel.IconPadding = 6;
-            this.btnCancel.IconSize = 20;
-            this.btnCancel.Location = new System.Drawing.Point(501, 1);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(1);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnCancel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnCancel.ShowAccentLine = false;
-            this.btnCancel.Size = new System.Drawing.Size(98, 46);
-            this.btnCancel.TabIndex = 17;
-            this.btnCancel.Text = "CANCEL";
-            this.btnCancel.TextColor = System.Drawing.Color.White;
-            this.btnCancel.TextOffsetX = 0;
-            this.btnCancel.TextOffsetY = 0;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnAdd.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAdd.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdd.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAdd.BorderRadius = 5;
+            this.btnAdd.BorderSize = 2;
+            this.btnAdd.ButtonImage = null;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAdd.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAdd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAdd.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAdd.IconPadding = 6;
+            this.btnAdd.IconSize = 20;
+            this.btnAdd.Location = new System.Drawing.Point(85, 1);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAdd.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAdd.ShowAccentLine = false;
+            this.btnAdd.Size = new System.Drawing.Size(82, 45);
+            this.btnAdd.TabIndex = 17;
+            this.btnAdd.Text = "ADD";
+            this.btnAdd.TextColor = System.Drawing.Color.White;
+            this.btnAdd.TextOffsetX = 0;
+            this.btnAdd.TextOffsetY = 0;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // btnOk
+            // btnAddList
             // 
-            this.btnOk.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnOk.BackColor = System.Drawing.Color.Transparent;
-            this.btnOk.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnOk.BorderRadius = 5;
-            this.btnOk.BorderSize = 2;
-            this.btnOk.ButtonImage = null;
-            this.btnOk.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOk.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnOk.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnOk.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnOk.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOk.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnOk.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnOk.IconPadding = 6;
-            this.btnOk.IconSize = 20;
-            this.btnOk.Location = new System.Drawing.Point(601, 1);
-            this.btnOk.Margin = new System.Windows.Forms.Padding(1);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnOk.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnOk.ShowAccentLine = false;
-            this.btnOk.Size = new System.Drawing.Size(92, 46);
-            this.btnOk.TabIndex = 17;
-            this.btnOk.Text = "OK";
-            this.btnOk.TextColor = System.Drawing.Color.White;
-            this.btnOk.TextOffsetX = 0;
-            this.btnOk.TextOffsetY = 0;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnAddList.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddList.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddList.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAddList.BorderRadius = 5;
+            this.btnAddList.BorderSize = 2;
+            this.btnAddList.ButtonImage = null;
+            this.btnAddList.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddList.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddList.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddList.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddList.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddList.IconPadding = 6;
+            this.btnAddList.IconSize = 20;
+            this.btnAddList.Location = new System.Drawing.Point(1, 1);
+            this.btnAddList.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddList.Name = "btnAddList";
+            this.btnAddList.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddList.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddList.ShowAccentLine = false;
+            this.btnAddList.Size = new System.Drawing.Size(82, 45);
+            this.btnAddList.TabIndex = 17;
+            this.btnAddList.Text = "ADD LIST";
+            this.btnAddList.TextColor = System.Drawing.Color.White;
+            this.btnAddList.TextOffsetX = 0;
+            this.btnAddList.TextOffsetY = 0;
+            this.btnAddList.Click += new System.EventHandler(this.btnAddList_Click);
             // 
             // FormSelectedLot
             // 
@@ -1163,5 +1215,7 @@
         private CustomControls.ShadedButton btnOk;
         private CustomControls.ShadedButton btnDel;
         private CustomControls.ShadedButton btnClear;
+        private CustomControls.RoundTextBox tbAiSkipDefect;
+        private CustomControls.ShadedLabel lblAiSkipDefects;
     }
 }

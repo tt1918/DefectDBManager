@@ -175,11 +175,14 @@ namespace DefectDBManager.Preproc
 
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
+                        List<string> aiSkipFaultData = null;
                         AiMonitorItem aiItem = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
                         {
+                            aiSkipFaultData = _PreprocItem.Reference.AiSkipDefects;
+
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
@@ -234,7 +237,10 @@ namespace DefectDBManager.Preproc
                                 {
                                     isFindComp = true;
                                     mkcdLncdData = compItem;
+
+                                    aiSkipFaultData = compItem.AiSkipDefects;
                                     dataTarget = eProcDataType.Compare;
+
                                     break;
                                 }
                             }
@@ -276,21 +282,30 @@ namespace DefectDBManager.Preproc
 
                                         tmpFaltID = data.FLTID.ToUpper();
 
-
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
+
+                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+
                                         if (useAIFromDB == false) // AI 미사용시
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey))
                                                 tmpKey = data.FLTID;
                                         }
-                                        else tmpKey = data.FLTID;
-                                        
-                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                        else
                                         {
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                            tmpKey = data.FLTID;
+
+                                            // Ai Skip Defect Data 확인
+                                            if (aiSkipFaultData != null && aiSkipFaultData.Count > 0)
+                                            {
+                                                if (aiSkipFaultData.Contains(tmpKey))
+                                                    continue;
+                                            }
                                         }
+
 
                                         // Log는 무조건 데이터 다 남기도록 수정
                                         dataCnt++;
@@ -448,6 +463,8 @@ namespace DefectDBManager.Preproc
                         preMarkData.LNCD = inspdata.LNCD;
                         preMarkData.CTLNO = inspdata.CTLNO;
 
+                        List<string> aiSkipFaultData= null;
+
                         AiMonitorItem aiItem = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
@@ -457,7 +474,10 @@ namespace DefectDBManager.Preproc
                             mkcdLncdData = _PreprocItem.Reference;
                             dataTarget = eProcDataType.Reference;
 
-                            if(_AiMonitorItem!=null && _PreprocItem.UseAiMonitoring)
+                            // Ai Skip Defect Data 가져오기
+                            aiSkipFaultData = _PreprocItem.Reference.AiSkipDefects;
+
+                            if (_AiMonitorItem!=null && _PreprocItem.UseAiMonitoring)
                             {
                                 string filter = _AiMonitorItem.ModelName.Trim('*');
                                 if (inspdata.HINMEI.Contains(filter))
@@ -508,6 +528,10 @@ namespace DefectDBManager.Preproc
                                     isFindComp = true;
                                     mkcdLncdData = compItem;
                                     dataTarget = eProcDataType.Compare;
+
+                                    // Ai Skip Defect Data 가져오기
+                                    aiSkipFaultData = compItem.AiSkipDefects;
+
                                     break;
                                 }
                             }
@@ -542,20 +566,28 @@ namespace DefectDBManager.Preproc
                                         data.Parse(text);
                                         tmpFaltID = data.FLTID.ToUpper();
 
-
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
+
+                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+
                                         if (useAIFromDB == false) // AI 미사용시
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey))
                                                 tmpKey = data.FLTID;
                                         }
-                                        else tmpKey = data.FLTID;
-
-                                        if (dataTarget == eProcDataType.Reference && aiItem!=null)
+                                        else
                                         {
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                            tmpKey = data.FLTID;
+
+                                            // Ai Skip Defect Data 확인
+                                            if (aiSkipFaultData!=null && aiSkipFaultData.Count > 0)
+                                            {
+                                                if (aiSkipFaultData.Contains(tmpKey))
+                                                    continue;
+                                            }
                                         }
 
                                         // MKCD Model에서 데이터 가져와서 다시 탐색함. 

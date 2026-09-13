@@ -52,6 +52,9 @@
             this.lblLineID = new CustomControls.ShadedLabel();
             this.tbRefLNCD = new CustomControls.RoundTextBox();
             this.tbRefProcLineID = new CustomControls.RoundTextBox();
+            this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
+            this.tbRefAiSkipDefect = new CustomControls.RoundTextBox();
+            this.lblRefAiSkipDefect = new CustomControls.ShadedLabel();
             this.groupProcess = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvProcess = new System.Windows.Forms.DataGridView();
@@ -62,6 +65,9 @@
             this.btnDelProc = new CustomControls.ShadedButton();
             this.gpCompProc = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
+            this.tbCompAiSkipDefect = new CustomControls.RoundTextBox();
+            this.lblCompAiSkipDefect = new CustomControls.ShadedLabel();
             this.dgvCompProc = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.cbCompFltAll = new System.Windows.Forms.CheckBox();
@@ -109,12 +115,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvRefProc)).BeginInit();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
+            this.tableLayoutPanel22.SuspendLayout();
             this.groupProcess.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProcess)).BeginInit();
             this.tableLayoutPanel8.SuspendLayout();
             this.gpCompProc.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
+            this.tableLayoutPanel23.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCompProc)).BeginInit();
             this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel18.SuspendLayout();
@@ -396,11 +404,11 @@
             // 
             this.gpReference.Controls.Add(this.tableLayoutPanel9);
             this.gpReference.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpReference.Location = new System.Drawing.Point(308, 4);
-            this.gpReference.Margin = new System.Windows.Forms.Padding(2);
+            this.gpReference.Location = new System.Drawing.Point(307, 3);
+            this.gpReference.Margin = new System.Windows.Forms.Padding(1);
             this.gpReference.Name = "gpReference";
-            this.gpReference.Padding = new System.Windows.Forms.Padding(1);
-            this.gpReference.Size = new System.Drawing.Size(316, 274);
+            this.gpReference.Padding = new System.Windows.Forms.Padding(2);
+            this.gpReference.Size = new System.Drawing.Size(318, 276);
             this.gpReference.TabIndex = 3;
             this.gpReference.TabStop = false;
             this.gpReference.Text = "REFERENCE PROCESS";
@@ -412,14 +420,16 @@
             this.tableLayoutPanel9.Controls.Add(this.dgvRefProc, 0, 1);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 2);
             this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel17, 0, 0);
+            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel22, 0, 3);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(1, 17);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(2, 18);
             this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel9.RowCount = 3;
+            this.tableLayoutPanel9.RowCount = 4;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(314, 256);
             this.tableLayoutPanel9.TabIndex = 1;
@@ -437,7 +447,7 @@
             this.dgvRefProc.Name = "dgvRefProc";
             this.dgvRefProc.RowTemplate.Height = 23;
             this.dgvRefProc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRefProc.Size = new System.Drawing.Size(308, 180);
+            this.dgvRefProc.Size = new System.Drawing.Size(308, 145);
             this.dgvRefProc.TabIndex = 5;
             // 
             // tableLayoutPanel10
@@ -451,7 +461,7 @@
             this.tableLayoutPanel10.Controls.Add(this.btnAddRefFlt, 2, 0);
             this.tableLayoutPanel10.Controls.Add(this.btnDelRefFlt, 3, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(2, 219);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(2, 184);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
@@ -644,15 +654,78 @@
             this.tbRefProcLineID.Texts = "";
             this.tbRefProcLineID.UnderlinedStyle = false;
             // 
+            // tableLayoutPanel22
+            // 
+            this.tableLayoutPanel22.ColumnCount = 2;
+            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel22.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel22.Controls.Add(this.tbRefAiSkipDefect, 1, 0);
+            this.tableLayoutPanel22.Controls.Add(this.lblRefAiSkipDefect, 0, 0);
+            this.tableLayoutPanel22.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel22.Location = new System.Drawing.Point(2, 219);
+            this.tableLayoutPanel22.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel22.Name = "tableLayoutPanel22";
+            this.tableLayoutPanel22.RowCount = 1;
+            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel22.Size = new System.Drawing.Size(310, 35);
+            this.tableLayoutPanel22.TabIndex = 7;
+            // 
+            // tbRefAiSkipDefect
+            // 
+            this.tbRefAiSkipDefect.BackColor = System.Drawing.SystemColors.Window;
+            this.tbRefAiSkipDefect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefAiSkipDefect.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbRefAiSkipDefect.BorderRadius = 5;
+            this.tbRefAiSkipDefect.BorderSize = 2;
+            this.tbRefAiSkipDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbRefAiSkipDefect.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbRefAiSkipDefect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbRefAiSkipDefect.Location = new System.Drawing.Point(118, 1);
+            this.tbRefAiSkipDefect.Margin = new System.Windows.Forms.Padding(1);
+            this.tbRefAiSkipDefect.Multiline = false;
+            this.tbRefAiSkipDefect.Name = "tbRefAiSkipDefect";
+            this.tbRefAiSkipDefect.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.tbRefAiSkipDefect.PasswordChar = false;
+            this.tbRefAiSkipDefect.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.tbRefAiSkipDefect.PlaceholderText = "";
+            this.tbRefAiSkipDefect.Size = new System.Drawing.Size(191, 32);
+            this.tbRefAiSkipDefect.TabIndex = 20;
+            this.tbRefAiSkipDefect.Texts = "";
+            this.tbRefAiSkipDefect.UnderlinedStyle = false;
+            // 
+            // lblRefAiSkipDefect
+            // 
+            this.lblRefAiSkipDefect.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblRefAiSkipDefect.BackColor = System.Drawing.Color.Transparent;
+            this.lblRefAiSkipDefect.BorderColor = System.Drawing.Color.Silver;
+            this.lblRefAiSkipDefect.BorderRadius = 5;
+            this.lblRefAiSkipDefect.BorderSize = 1;
+            this.lblRefAiSkipDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblRefAiSkipDefect.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblRefAiSkipDefect.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRefAiSkipDefect.ImagePadding = 6;
+            this.lblRefAiSkipDefect.ImageSize = 18;
+            this.lblRefAiSkipDefect.LabelImage = null;
+            this.lblRefAiSkipDefect.Location = new System.Drawing.Point(1, 1);
+            this.lblRefAiSkipDefect.Margin = new System.Windows.Forms.Padding(1);
+            this.lblRefAiSkipDefect.Name = "lblRefAiSkipDefect";
+            this.lblRefAiSkipDefect.ShowAccentLine = false;
+            this.lblRefAiSkipDefect.Size = new System.Drawing.Size(115, 33);
+            this.lblRefAiSkipDefect.TabIndex = 19;
+            this.lblRefAiSkipDefect.Text = "AI SKIP DEFECT";
+            this.lblRefAiSkipDefect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblRefAiSkipDefect.TextColor = System.Drawing.Color.White;
+            // 
             // groupProcess
             // 
             this.groupProcess.Controls.Add(this.tableLayoutPanel7);
             this.groupProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupProcess.Location = new System.Drawing.Point(2, 2);
-            this.groupProcess.Margin = new System.Windows.Forms.Padding(0);
+            this.groupProcess.Location = new System.Drawing.Point(3, 3);
+            this.groupProcess.Margin = new System.Windows.Forms.Padding(1);
             this.groupProcess.Name = "groupProcess";
             this.groupProcess.Padding = new System.Windows.Forms.Padding(2);
-            this.groupProcess.Size = new System.Drawing.Size(304, 278);
+            this.groupProcess.Size = new System.Drawing.Size(302, 276);
             this.groupProcess.TabIndex = 2;
             this.groupProcess.TabStop = false;
             this.groupProcess.Text = "PROCESS";
@@ -671,7 +744,7 @@
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(300, 258);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(298, 256);
             this.tableLayoutPanel7.TabIndex = 1;
             // 
             // dgvProcess
@@ -687,7 +760,7 @@
             this.dgvProcess.Name = "dgvProcess";
             this.dgvProcess.RowTemplate.Height = 23;
             this.dgvProcess.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProcess.Size = new System.Drawing.Size(292, 215);
+            this.dgvProcess.Size = new System.Drawing.Size(290, 213);
             this.dgvProcess.TabIndex = 5;
             this.dgvProcess.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProcess_CellClick);
             this.dgvProcess.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProcess_CellEndEdit);
@@ -705,12 +778,12 @@
             this.tableLayoutPanel8.Controls.Add(this.btnAddProc, 3, 0);
             this.tableLayoutPanel8.Controls.Add(this.btnDelProc, 4, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel8.Location = new System.Drawing.Point(2, 221);
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(2, 219);
             this.tableLayoutPanel8.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(296, 35);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(294, 35);
             this.tableLayoutPanel8.TabIndex = 0;
             // 
             // btnProcessUp
@@ -730,7 +803,7 @@
             this.btnProcessUp.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnProcessUp.IconPadding = 6;
             this.btnProcessUp.IconSize = 20;
-            this.btnProcessUp.Location = new System.Drawing.Point(97, 1);
+            this.btnProcessUp.Location = new System.Drawing.Point(95, 1);
             this.btnProcessUp.Margin = new System.Windows.Forms.Padding(1);
             this.btnProcessUp.Name = "btnProcessUp";
             this.btnProcessUp.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -761,7 +834,7 @@
             this.btnProcessDn.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnProcessDn.IconPadding = 6;
             this.btnProcessDn.IconSize = 20;
-            this.btnProcessDn.Location = new System.Drawing.Point(137, 1);
+            this.btnProcessDn.Location = new System.Drawing.Point(135, 1);
             this.btnProcessDn.Margin = new System.Windows.Forms.Padding(1);
             this.btnProcessDn.Name = "btnProcessDn";
             this.btnProcessDn.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -792,7 +865,7 @@
             this.btnAddProc.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnAddProc.IconPadding = 6;
             this.btnAddProc.IconSize = 20;
-            this.btnAddProc.Location = new System.Drawing.Point(177, 1);
+            this.btnAddProc.Location = new System.Drawing.Point(175, 1);
             this.btnAddProc.Margin = new System.Windows.Forms.Padding(1);
             this.btnAddProc.Name = "btnAddProc";
             this.btnAddProc.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -823,7 +896,7 @@
             this.btnDelProc.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnDelProc.IconPadding = 6;
             this.btnDelProc.IconSize = 20;
-            this.btnDelProc.Location = new System.Drawing.Point(237, 1);
+            this.btnDelProc.Location = new System.Drawing.Point(235, 1);
             this.btnDelProc.Margin = new System.Windows.Forms.Padding(1);
             this.btnDelProc.Name = "btnDelProc";
             this.btnDelProc.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -841,11 +914,11 @@
             // 
             this.gpCompProc.Controls.Add(this.tableLayoutPanel13);
             this.gpCompProc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpCompProc.Location = new System.Drawing.Point(308, 282);
-            this.gpCompProc.Margin = new System.Windows.Forms.Padding(2);
+            this.gpCompProc.Location = new System.Drawing.Point(307, 281);
+            this.gpCompProc.Margin = new System.Windows.Forms.Padding(1);
             this.gpCompProc.Name = "gpCompProc";
-            this.gpCompProc.Padding = new System.Windows.Forms.Padding(1);
-            this.gpCompProc.Size = new System.Drawing.Size(316, 360);
+            this.gpCompProc.Padding = new System.Windows.Forms.Padding(2);
+            this.gpCompProc.Size = new System.Drawing.Size(318, 362);
             this.gpCompProc.TabIndex = 3;
             this.gpCompProc.TabStop = false;
             this.gpCompProc.Text = "COMPARE PROCESS";
@@ -854,22 +927,87 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel23, 0, 4);
             this.tableLayoutPanel13.Controls.Add(this.dgvCompProc, 0, 2);
             this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel14, 0, 3);
             this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel18, 0, 0);
             this.tableLayoutPanel13.Controls.Add(this.ckbSplitCTLNO, 0, 1);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel13.Location = new System.Drawing.Point(1, 17);
+            this.tableLayoutPanel13.Location = new System.Drawing.Point(2, 18);
             this.tableLayoutPanel13.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
             this.tableLayoutPanel13.Padding = new System.Windows.Forms.Padding(2);
-            this.tableLayoutPanel13.RowCount = 4;
+            this.tableLayoutPanel13.RowCount = 5;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel13.Size = new System.Drawing.Size(314, 342);
             this.tableLayoutPanel13.TabIndex = 1;
+            // 
+            // tableLayoutPanel23
+            // 
+            this.tableLayoutPanel23.ColumnCount = 2;
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel23.Controls.Add(this.tbCompAiSkipDefect, 1, 0);
+            this.tableLayoutPanel23.Controls.Add(this.lblCompAiSkipDefect, 0, 0);
+            this.tableLayoutPanel23.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel23.Location = new System.Drawing.Point(2, 305);
+            this.tableLayoutPanel23.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel23.Name = "tableLayoutPanel23";
+            this.tableLayoutPanel23.RowCount = 1;
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel23.Size = new System.Drawing.Size(310, 35);
+            this.tableLayoutPanel23.TabIndex = 8;
+            // 
+            // tbCompAiSkipDefect
+            // 
+            this.tbCompAiSkipDefect.BackColor = System.Drawing.SystemColors.Window;
+            this.tbCompAiSkipDefect.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbCompAiSkipDefect.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(61)))), ((int)(((byte)(90)))));
+            this.tbCompAiSkipDefect.BorderRadius = 5;
+            this.tbCompAiSkipDefect.BorderSize = 2;
+            this.tbCompAiSkipDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbCompAiSkipDefect.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbCompAiSkipDefect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbCompAiSkipDefect.Location = new System.Drawing.Point(118, 1);
+            this.tbCompAiSkipDefect.Margin = new System.Windows.Forms.Padding(1);
+            this.tbCompAiSkipDefect.Multiline = false;
+            this.tbCompAiSkipDefect.Name = "tbCompAiSkipDefect";
+            this.tbCompAiSkipDefect.Padding = new System.Windows.Forms.Padding(10, 7, 10, 7);
+            this.tbCompAiSkipDefect.PasswordChar = false;
+            this.tbCompAiSkipDefect.PlaceholderColor = System.Drawing.Color.DarkGray;
+            this.tbCompAiSkipDefect.PlaceholderText = "";
+            this.tbCompAiSkipDefect.Size = new System.Drawing.Size(191, 32);
+            this.tbCompAiSkipDefect.TabIndex = 20;
+            this.tbCompAiSkipDefect.Texts = "";
+            this.tbCompAiSkipDefect.UnderlinedStyle = false;
+            // 
+            // lblCompAiSkipDefect
+            // 
+            this.lblCompAiSkipDefect.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblCompAiSkipDefect.BackColor = System.Drawing.Color.Transparent;
+            this.lblCompAiSkipDefect.BorderColor = System.Drawing.Color.Silver;
+            this.lblCompAiSkipDefect.BorderRadius = 5;
+            this.lblCompAiSkipDefect.BorderSize = 1;
+            this.lblCompAiSkipDefect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblCompAiSkipDefect.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(70)))));
+            this.lblCompAiSkipDefect.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCompAiSkipDefect.ImagePadding = 6;
+            this.lblCompAiSkipDefect.ImageSize = 18;
+            this.lblCompAiSkipDefect.LabelImage = null;
+            this.lblCompAiSkipDefect.Location = new System.Drawing.Point(1, 1);
+            this.lblCompAiSkipDefect.Margin = new System.Windows.Forms.Padding(1);
+            this.lblCompAiSkipDefect.Name = "lblCompAiSkipDefect";
+            this.lblCompAiSkipDefect.ShowAccentLine = false;
+            this.lblCompAiSkipDefect.Size = new System.Drawing.Size(115, 33);
+            this.lblCompAiSkipDefect.TabIndex = 19;
+            this.lblCompAiSkipDefect.Text = "AI SKIP DEFECT";
+            this.lblCompAiSkipDefect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblCompAiSkipDefect.TextColor = System.Drawing.Color.White;
             // 
             // dgvCompProc
             // 
@@ -884,7 +1022,7 @@
             this.dgvCompProc.Name = "dgvCompProc";
             this.dgvCompProc.RowTemplate.Height = 23;
             this.dgvCompProc.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCompProc.Size = new System.Drawing.Size(308, 241);
+            this.dgvCompProc.Size = new System.Drawing.Size(308, 206);
             this.dgvCompProc.TabIndex = 5;
             // 
             // tableLayoutPanel14
@@ -900,7 +1038,7 @@
             this.tableLayoutPanel14.Controls.Add(this.btnAddCompFlt, 2, 0);
             this.tableLayoutPanel14.Controls.Add(this.btnDelCompFlt, 3, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(2, 305);
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(2, 270);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
@@ -1110,25 +1248,25 @@
             this.tableLayoutPanel15.Controls.Add(this.gpJudgeRange, 0, 1);
             this.tableLayoutPanel15.Controls.Add(this.tableLayoutPanel19, 0, 2);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel15.Location = new System.Drawing.Point(4, 282);
-            this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(2, 280);
+            this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 3;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 82.72727F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 17.27273F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(300, 360);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(304, 364);
             this.tableLayoutPanel15.TabIndex = 4;
             // 
             // groupCompRange
             // 
             this.groupCompRange.Controls.Add(this.tableLayoutPanel11);
             this.groupCompRange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupCompRange.Location = new System.Drawing.Point(2, 2);
-            this.groupCompRange.Margin = new System.Windows.Forms.Padding(2);
+            this.groupCompRange.Location = new System.Drawing.Point(1, 1);
+            this.groupCompRange.Margin = new System.Windows.Forms.Padding(1);
             this.groupCompRange.Name = "groupCompRange";
-            this.groupCompRange.Padding = new System.Windows.Forms.Padding(1);
-            this.groupCompRange.Size = new System.Drawing.Size(296, 269);
+            this.groupCompRange.Padding = new System.Windows.Forms.Padding(1, 2, 1, 2);
+            this.groupCompRange.Size = new System.Drawing.Size(302, 275);
             this.groupCompRange.TabIndex = 3;
             this.groupCompRange.TabStop = false;
             this.groupCompRange.Text = "COMPARE RANGE";
@@ -1140,14 +1278,14 @@
             this.tableLayoutPanel11.Controls.Add(this.dgvCompRange, 0, 0);
             this.tableLayoutPanel11.Controls.Add(this.tableLayoutPanel12, 0, 1);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(1, 17);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(1, 18);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(294, 251);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(300, 255);
             this.tableLayoutPanel11.TabIndex = 1;
             // 
             // dgvCompRange
@@ -1163,7 +1301,7 @@
             this.dgvCompRange.Name = "dgvCompRange";
             this.dgvCompRange.RowTemplate.Height = 23;
             this.dgvCompRange.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCompRange.Size = new System.Drawing.Size(288, 210);
+            this.dgvCompRange.Size = new System.Drawing.Size(294, 214);
             this.dgvCompRange.TabIndex = 5;
             // 
             // tableLayoutPanel12
@@ -1175,12 +1313,12 @@
             this.tableLayoutPanel12.Controls.Add(this.btnAddCompRange, 1, 0);
             this.tableLayoutPanel12.Controls.Add(this.btnDelCompRange, 2, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(2, 214);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(2, 218);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(290, 35);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(296, 35);
             this.tableLayoutPanel12.TabIndex = 0;
             // 
             // btnAddCompRange
@@ -1200,7 +1338,7 @@
             this.btnAddCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnAddCompRange.IconPadding = 6;
             this.btnAddCompRange.IconSize = 20;
-            this.btnAddCompRange.Location = new System.Drawing.Point(171, 1);
+            this.btnAddCompRange.Location = new System.Drawing.Point(177, 1);
             this.btnAddCompRange.Margin = new System.Windows.Forms.Padding(1);
             this.btnAddCompRange.Name = "btnAddCompRange";
             this.btnAddCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -1231,7 +1369,7 @@
             this.btnDelCompRange.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnDelCompRange.IconPadding = 6;
             this.btnDelCompRange.IconSize = 20;
-            this.btnDelCompRange.Location = new System.Drawing.Point(231, 1);
+            this.btnDelCompRange.Location = new System.Drawing.Point(237, 1);
             this.btnDelCompRange.Margin = new System.Windows.Forms.Padding(1);
             this.btnDelCompRange.Name = "btnDelCompRange";
             this.btnDelCompRange.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
@@ -1249,11 +1387,11 @@
             // 
             this.gpJudgeRange.Controls.Add(this.tableLayoutPanel16);
             this.gpJudgeRange.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpJudgeRange.Location = new System.Drawing.Point(2, 275);
-            this.gpJudgeRange.Margin = new System.Windows.Forms.Padding(2);
+            this.gpJudgeRange.Location = new System.Drawing.Point(1, 278);
+            this.gpJudgeRange.Margin = new System.Windows.Forms.Padding(1);
             this.gpJudgeRange.Name = "gpJudgeRange";
-            this.gpJudgeRange.Padding = new System.Windows.Forms.Padding(1);
-            this.gpJudgeRange.Size = new System.Drawing.Size(296, 53);
+            this.gpJudgeRange.Padding = new System.Windows.Forms.Padding(2);
+            this.gpJudgeRange.Size = new System.Drawing.Size(302, 55);
             this.gpJudgeRange.TabIndex = 4;
             this.gpJudgeRange.TabStop = false;
             this.gpJudgeRange.Text = "JUDGE RANGE";
@@ -1274,12 +1412,12 @@
             this.tableLayoutPanel16.Controls.Add(this.label2, 5, 0);
             this.tableLayoutPanel16.Controls.Add(this.tbJudgeRangeY, 4, 0);
             this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel16.Location = new System.Drawing.Point(1, 17);
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(2, 18);
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.Padding = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(294, 35);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(298, 35);
             this.tableLayoutPanel16.TabIndex = 0;
             // 
             // lblRangeY
@@ -1295,7 +1433,7 @@
             this.lblRangeY.ImagePadding = 6;
             this.lblRangeY.ImageSize = 18;
             this.lblRangeY.LabelImage = null;
-            this.lblRangeY.Location = new System.Drawing.Point(147, 3);
+            this.lblRangeY.Location = new System.Drawing.Point(149, 3);
             this.lblRangeY.Margin = new System.Windows.Forms.Padding(1);
             this.lblRangeY.Name = "lblRangeY";
             this.lblRangeY.ShowAccentLine = false;
@@ -1336,7 +1474,7 @@
             this.tbJudgeRangeX.BorderRadius = 5;
             this.tbJudgeRangeX.BorderSize = 2;
             this.tbJudgeRangeX.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbJudgeRangeX.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbJudgeRangeX.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbJudgeRangeX.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbJudgeRangeX.Location = new System.Drawing.Point(38, 3);
             this.tbJudgeRangeX.Margin = new System.Windows.Forms.Padding(1);
@@ -1346,7 +1484,7 @@
             this.tbJudgeRangeX.PasswordChar = false;
             this.tbJudgeRangeX.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.tbJudgeRangeX.PlaceholderText = "";
-            this.tbJudgeRangeX.Size = new System.Drawing.Size(72, 32);
+            this.tbJudgeRangeX.Size = new System.Drawing.Size(74, 30);
             this.tbJudgeRangeX.TabIndex = 6;
             this.tbJudgeRangeX.Texts = "";
             this.tbJudgeRangeX.UnderlinedStyle = false;
@@ -1356,7 +1494,7 @@
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.label1.Location = new System.Drawing.Point(113, 18);
+            this.label1.Location = new System.Drawing.Point(115, 18);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 15);
@@ -1368,7 +1506,7 @@
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(257, 18);
+            this.label2.Location = new System.Drawing.Point(261, 18);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 15);
@@ -1383,9 +1521,9 @@
             this.tbJudgeRangeY.BorderRadius = 5;
             this.tbJudgeRangeY.BorderSize = 2;
             this.tbJudgeRangeY.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbJudgeRangeY.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbJudgeRangeY.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbJudgeRangeY.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.tbJudgeRangeY.Location = new System.Drawing.Point(182, 3);
+            this.tbJudgeRangeY.Location = new System.Drawing.Point(184, 3);
             this.tbJudgeRangeY.Margin = new System.Windows.Forms.Padding(1);
             this.tbJudgeRangeY.Multiline = false;
             this.tbJudgeRangeY.Name = "tbJudgeRangeY";
@@ -1393,7 +1531,7 @@
             this.tbJudgeRangeY.PasswordChar = false;
             this.tbJudgeRangeY.PlaceholderColor = System.Drawing.Color.DarkGray;
             this.tbJudgeRangeY.PlaceholderText = "";
-            this.tbJudgeRangeY.Size = new System.Drawing.Size(72, 32);
+            this.tbJudgeRangeY.Size = new System.Drawing.Size(74, 30);
             this.tbJudgeRangeY.TabIndex = 6;
             this.tbJudgeRangeY.Texts = "";
             this.tbJudgeRangeY.UnderlinedStyle = false;
@@ -1402,26 +1540,27 @@
             // 
             this.tableLayoutPanel19.ColumnCount = 2;
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 173F));
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 174F));
             this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel19.Controls.Add(this.cbAiMonitoring, 1, 0);
             this.tableLayoutPanel19.Controls.Add(this.cbUseMNTTAN, 0, 0);
             this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel19.Location = new System.Drawing.Point(0, 330);
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(0, 334);
             this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.tableLayoutPanel19.RowCount = 1;
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(300, 30);
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(304, 30);
             this.tableLayoutPanel19.TabIndex = 5;
             // 
             // cbAiMonitoring
             // 
             this.cbAiMonitoring.AutoSize = true;
             this.cbAiMonitoring.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbAiMonitoring.Location = new System.Drawing.Point(133, 3);
+            this.cbAiMonitoring.Location = new System.Drawing.Point(133, 7);
             this.cbAiMonitoring.Name = "cbAiMonitoring";
-            this.cbAiMonitoring.Size = new System.Drawing.Size(167, 24);
+            this.cbAiMonitoring.Size = new System.Drawing.Size(168, 20);
             this.cbAiMonitoring.TabIndex = 11;
             this.cbAiMonitoring.Text = "USE AI MONITORING";
             this.cbAiMonitoring.UseVisualStyleBackColor = true;
@@ -1430,9 +1569,9 @@
             // 
             this.cbUseMNTTAN.AutoSize = true;
             this.cbUseMNTTAN.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cbUseMNTTAN.Location = new System.Drawing.Point(3, 3);
+            this.cbUseMNTTAN.Location = new System.Drawing.Point(3, 7);
             this.cbUseMNTTAN.Name = "cbUseMNTTAN";
-            this.cbUseMNTTAN.Size = new System.Drawing.Size(124, 24);
+            this.cbUseMNTTAN.Size = new System.Drawing.Size(124, 20);
             this.cbUseMNTTAN.TabIndex = 10;
             this.cbUseMNTTAN.Text = "USE AI RESULT";
             this.cbUseMNTTAN.UseVisualStyleBackColor = true;
@@ -1656,6 +1795,7 @@
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel17.ResumeLayout(false);
+            this.tableLayoutPanel22.ResumeLayout(false);
             this.groupProcess.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProcess)).EndInit();
@@ -1663,6 +1803,7 @@
             this.gpCompProc.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel13.PerformLayout();
+            this.tableLayoutPanel23.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCompProc)).EndInit();
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel14.PerformLayout();
@@ -1761,5 +1902,11 @@
         private CustomControls.ShadedButton btnOK;
         private CustomControls.ShadedButton btnCancel;
         private CustomControls.ShadedButton btnSave;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel22;
+        private CustomControls.ShadedLabel lblRefAiSkipDefect;
+        private CustomControls.RoundTextBox tbRefAiSkipDefect;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
+        private CustomControls.RoundTextBox tbCompAiSkipDefect;
+        private CustomControls.ShadedLabel lblCompAiSkipDefect;
     }
 }

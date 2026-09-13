@@ -672,6 +672,7 @@ namespace MarkCompare
 
                 cbCompFltAll.Checked = refer.IsFltAll;
                 ckbSplitCTLNO.Checked =  refer.IsSplitCTLNO;
+                tbCompAiSkipDefect.Texts = string.Join(",", refer.AiSkipDefects);
             }
             catch
             {
@@ -706,6 +707,11 @@ namespace MarkCompare
                 _tmpCompProc[selIdx].FltInfos = listInfo;
                 _tmpCompProc[selIdx].IsFltAll = cbCompFltAll.Checked;
                 _tmpCompProc[selIdx].IsSplitCTLNO = ckbSplitCTLNO.Checked;
+
+
+                string[] aiSkipDefects = tbRefAiSkipDefect.Texts.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                List<string> listAiSkipDefects = aiSkipDefects.Select(x => x.Trim()).ToList();
+                _tmpCompProc[selIdx].AiSkipDefects = listAiSkipDefects;
             }
         }
 
@@ -836,6 +842,7 @@ namespace MarkCompare
 
                 cbRefFltAll.Checked = refer.IsFltAll;
                 ckbSplitCTLNO.Checked = refer.IsSplitCTLNO;
+                tbRefAiSkipDefect.Texts = string.Join(",", refer.AiSkipDefects);
             }
             catch
             {
@@ -863,6 +870,10 @@ namespace MarkCompare
             refer.FltInfos = listInfo;
             refer.IsFltAll = cbRefFltAll.Checked;
             refer.IsSplitCTLNO = ckbSplitCTLNO.Checked;
+
+            string[] aiSkipDefects = tbRefAiSkipDefect.Texts.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> listAiSkipDefects = aiSkipDefects.Select(x => x.Trim()).ToList();
+            refer.AiSkipDefects = listAiSkipDefects;
         }
 
         private void addRefFlt()

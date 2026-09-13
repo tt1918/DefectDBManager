@@ -76,11 +76,17 @@ namespace DefectDBManager.Preproc
         [Description("Split CTLNO")]
         public bool IsSplitCTLNO { get; set; }
 
+        [Category("Process")]
+        [Description("Ai Skip Defect")]
+        public List<string> AiSkipDefects { get; set; }
+
+
         public ProcessData()
         {
             IsFltAll = false;
             IsSplitCTLNO = false;
             FltInfos = new List<FltInfo>();
+            AiSkipDefects = new List<string>();
         }
 
         public ProcessData(string lineID="", string lncd="")
@@ -90,6 +96,7 @@ namespace DefectDBManager.Preproc
             IsFltAll = false;
             IsSplitCTLNO = false;
             FltInfos = new List<FltInfo>();
+            AiSkipDefects = new List<string>();
         }
 
         public ProcessData Clone()
@@ -104,6 +111,7 @@ namespace DefectDBManager.Preproc
 
             item.IsFltAll = this.IsFltAll;
             item.IsSplitCTLNO = this.IsSplitCTLNO;
+            item.AiSkipDefects = this.AiSkipDefects;
 
             return item;
         }
@@ -653,6 +661,10 @@ namespace DefectDBManager.Preproc
         [Description("User Filter")]
         public ProcFilterList UserFilter { get; set; } = new ProcFilterList();
 
+        [Category("items")]
+        [Description("AI Skip Defect")]
+        public List<string> AiSkipDefect { get; set; } = new List<string>();
+
         public int BunchCount { get; set; } = 10;
 
         public void Save()
@@ -689,6 +701,8 @@ namespace DefectDBManager.Preproc
                 this.DBFilter = obj.DBFilter;
                 this.UserFilter = obj.UserFilter;
                 this.UseSplit = obj.UseSplit;
+                this.DBFilterAiMonitorName = obj.DBFilterAiMonitorName;
+                this.AiSkipDefect = obj.AiSkipDefect;
             }
             catch (Exception ex)
             {

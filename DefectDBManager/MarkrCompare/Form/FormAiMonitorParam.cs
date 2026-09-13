@@ -298,6 +298,7 @@ namespace MarkCompare
         {
             List<SjModelItem> info = new List<SjModelItem>();
 
+            dgvDetailParam.EndEdit();
             foreach (DataGridViewRow row in dgvDetailParam.Rows)
             {
                 string secfltId = row.Cells[0].Value?.ToString().Trim() ?? string.Empty;

@@ -161,6 +161,9 @@ namespace DefectDBManager.Preproc
             // 체크 카운트 초기화
             conn.ResetDisconCheck();
 
+
+            List<string> aiSkipFaultData = procParam.AiSkipDefect;
+
             try
             {
                 for (int fcdIdx = 0; fcdIdx < fcdCnt; fcdIdx++)
@@ -318,18 +321,28 @@ namespace DefectDBManager.Preproc
 
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
+
+                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+
                                         if (useAIFromDB == false) // AI 미사용시
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey))
                                                 tmpKey = data.FLTID;
                                         }
-                                        else tmpKey = data.FLTID;
-
-                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                        else
                                         {
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                            tmpKey = data.FLTID;
+
+                                            // Ai Skip Defect Data 확인
+                                            if (aiSkipFaultData != null && aiSkipFaultData.Count > 0)
+                                            {
+                                                if (aiSkipFaultData.Contains(tmpKey))
+                                                    continue;
+                                            }
                                         }
+
 
                                         // Log는 무조건 데이터 다 남기도록 수정
                                         dataCnt++;
@@ -438,6 +451,10 @@ namespace DefectDBManager.Preproc
 
             // 현재 데이터는 마킹 비교 결점 데이터라는 것을 표시함.
             FaultData.IsPreProc = true;
+
+
+            List<string> aiSkipFaultData = procParam.AiSkipDefect;
+
 
             try
             {
@@ -551,20 +568,28 @@ namespace DefectDBManager.Preproc
                                         data.Parse(text);
                                         tmpFaltID = data.FLTID.ToUpper();
 
-
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
+
+                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);                                        
+
                                         if (useAIFromDB == false) // AI 미사용시
                                         {
                                             tmpKey = data.MNTTAN.TrimStart();
                                             if (string.IsNullOrEmpty(tmpKey))
                                                 tmpKey = data.FLTID;
                                         }
-                                        else tmpKey = data.FLTID;
-
-                                        if (dataTarget == eProcDataType.Reference && aiItem != null)
+                                        else
                                         {
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                            tmpKey = data.FLTID;
+
+                                            // Ai Skip Defect Data 확인
+                                            if (aiSkipFaultData != null && aiSkipFaultData.Count > 0)
+                                            {
+                                                if (aiSkipFaultData.Contains(tmpKey))
+                                                    continue;
+                                            }
                                         }
 
                                         // MKCD Model에서 데이터 가져와서 다시 탐색함. 

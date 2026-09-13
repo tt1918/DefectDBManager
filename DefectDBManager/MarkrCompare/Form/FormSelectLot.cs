@@ -58,6 +58,7 @@ namespace MarkCompare
 
             cbDest.SelectedText = ProcItem.DBFilter.Title;
             cbbAiMonitorParam.SelectedItem = _selAiMonitorItemname;
+            tbAiSkipDefect.Texts = string.Join(",", ProcItem.AiSkipDefect);
 
             UpdateLanguage();
 
@@ -227,6 +228,7 @@ namespace MarkCompare
                 _LotList.Add(row.Cells[1].Value.ToString());
             }
 
+            ProcItem.DBFilterAiMonitorName = _selAiMonitorItemname;
             DialogResult = DialogResult.OK;
             this.Close();
         }
@@ -496,6 +498,9 @@ namespace MarkCompare
             cbUseMNTTAN.Checked = ProcItem.UseAiResult;
             cbUseSplit.Checked = ProcItem.UseSplit;
             cbAiMonitoring.Checked = ProcItem.UseAiMonitoring;
+            if(_selAiMonitorItemname!=null) cbbAiMonitorParam.SelectedItem = _selAiMonitorItemname;
+
+            tbAiSkipDefect.Texts = string.Join(",", ProcItem.AiSkipDefect);
         }
 
         #endregion
@@ -517,6 +522,10 @@ namespace MarkCompare
             ProcItem.UseAiResult = cbUseMNTTAN.Checked;
             ProcItem.UseSplit = cbUseSplit.Checked;
             ProcItem.UseAiMonitoring = cbAiMonitoring.Checked;
+
+            string[] strings = tbAiSkipDefect.Texts.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            ProcItem.AiSkipDefect = strings.Select(s => s.Trim()).ToList();
+
             ProcItem.Save();
         }
 
