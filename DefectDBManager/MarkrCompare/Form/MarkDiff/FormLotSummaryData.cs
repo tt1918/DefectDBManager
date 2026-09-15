@@ -60,8 +60,12 @@ namespace MarkCompare
         }
         private eSummaryMode _mode = eSummaryMode.Monitoring;
 
+        public bool IsTypeDB
+        {
+            get { return isTypeDB; }
+        }
         bool isTypeDB = false;
-
+        
         public DefectDBManager.Preproc.PreprocItem ProcItem
         {
             get { return procItem; }
@@ -182,6 +186,12 @@ namespace MarkCompare
 
         private void displaySummary()
         {
+            if (LotManager == null || LotManager.ProcSetting == null)
+            {
+                SystemLog.DisplaySystemLog($"LotManager is not initialized", Log.Level.Error);
+                return;
+            }
+
             if (_lotSummery.ProcName != procItem.Name)
             {
                 StringBuilder sb1 = new StringBuilder();

@@ -178,6 +178,12 @@
     <Compile Include="Form\MarkDiff\FormLotSummaryData.Designer.cs">
       <DependentUpon>FormLotSummaryData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummaryDataPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\MarkDiff\FormLotSummaryDataPopup.Designer.cs">
+      <DependentUpon>FormLotSummaryDataPopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\MarkDiff\FormLotSummery.cs">
       <SubType>Form</SubType>
     </Compile>

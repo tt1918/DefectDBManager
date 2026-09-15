@@ -390,36 +390,29 @@ namespace MarkCompare
 
         public void DoubleClickSummaryData(FormLotSummaryData data)
         {
-            foreach (var item in _dicFormSummary.Values)
+            // FormLotSummaryData를 팝업으로 표시
+            ShowSummaryDataPopup(data);
+        }
+
+        /// <summary>
+        /// FormLotSummaryData를 더 큰 크기의 팝업 다이얼로그로 표시합니다.
+        /// </summary>
+        private void ShowSummaryDataPopup(FormLotSummaryData data)
+        {
+            if (data == null)
+                return;
+
+            try
             {
-                if (item.Contains(data))
-                {
-                    switch(_procType)
-                    {
-                        case eProc.Search:
-                            if(data.Filter!=null)
-                                ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
-                            else
-                                ((FormMarkDiff)this.ParentForm).UpdateRollmapCSV(data.LotSummery);
-                            break;
-
-                        case eProc.Live:
-                            ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
-                            break;
-
-                        case eProc.Selected:
-                            if(data.Filter=="LOT INSP")
-                                ((FormMarkDiff)this.ParentForm).UpdateRollmapDB(data.LotSummery);
-                            else
-                                ((FormMarkDiff)this.ParentForm).UpdateRollmap(data.LotSummery, data.Filter);
-                            break;
-                    }
-                    
-                    break;
-                }
+                FormLotSummaryDataPopup popup = new FormLotSummaryDataPopup();
+                popup.SetData(data);
+                popup.ShowDialog(this);
             }
-
-            MessageBox.Show(Lang.SelectedLotIsLoaded);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"팝업 표시 중 오류가 발생했습니다: {ex.Message}", "오류", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void AddCsvData()
