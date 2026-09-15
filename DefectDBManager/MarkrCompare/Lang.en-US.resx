@@ -564,4 +564,46 @@
   <data name="bunchDefect" xml:space="preserve">
     <value>Bunch of Defect</value>
   </data>
+  <data name="btnSetAiMonitorParam" xml:space="preserve">
+    <value>       AI PARAM</value>
+  </data>
+  <data name="btnSJModeParam" xml:space="preserve">
+    <value>           AI PROCESSING PARAM</value>
+  </data>
+  <data name="useAiMonitoring" xml:space="preserve">
+    <value>USE AI MONITORING</value>
+  </data>
+  <data name="AiSkipDefect" xml:space="preserve">
+    <value>AI SKIP DEFECT</value>
+  </data>
+  <data name="CommonParam" xml:space="preserve">
+    <value>Common Parameter</value>
+  </data>
+  <data name="CycleTime" xml:space="preserve">
+    <value>CYCLE TIME</value>
+  </data>
+  <data name="CycleTimeUnit" xml:space="preserve">
+    <value>Min.</value>
+  </data>
+  <data name="MainFolderName" xml:space="preserve">
+    <value>MAIN FOLDER</value>
+  </data>
+  <data name="SubFolderName" xml:space="preserve">
+    <value>SUB FOLDER</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>PARAMETER</value>
+  </data>
+  <data name="SECFLTID_Name" xml:space="preserve">
+    <value>TARGET DEFECT</value>
+  </data>
+  <data name="UseAiMonitor" xml:space="preserve">
+    <value>USE</value>
+  </data>
+  <data name="ErrorRate" xml:space="preserve">
+    <value>ERROR RATE</value>
+  </data>
+  <data name="DefectID" xml:space="preserve">
+    <value>Defect ID</value>
+  </data>
 </root>

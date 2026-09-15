@@ -142,6 +142,7 @@ namespace DefectDBManager.Preproc
 
             int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
             int dataCnt = 0;
+            int aiDataCnt = 0;
             string query;
             int procStep = 0;
             long dbCnt;
@@ -241,11 +242,20 @@ namespace DefectDBManager.Preproc
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;
 
-                            if (_AiMonitorItem != null && procParam.UseAiMonitoring)
+                            if(_AiMonitorItem!=null && procParam.UseAiMonitoring)
                             {
-                                string filter = _AiMonitorItem.ModelName.Trim('*');
-                                if (inspdata.HINMEI.Contains(filter))
-                                    aiItem = _AiMonitorItem;
+                                if (_AiMonitorItem.ModelName.Contains('*'))
+                                {
+                                    string filter = _AiMonitorItem.ModelName.Trim('*');
+                                    if (inspdata.HINMEI.Contains(filter))
+                                        aiItem = _AiMonitorItem;
+                                }
+                                else
+                                {
+                                    string filter = _AiMonitorItem.ModelName;
+                                    if (inspdata.HINMEI == filter)
+                                        aiItem = _AiMonitorItem;
+                                }
                             }
 
                             if (aiItem != null)
@@ -318,12 +328,11 @@ namespace DefectDBManager.Preproc
 
                                         tmpFaltID = data.FLTID.ToUpper();
 
-
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
 
                                         if (dataTarget == eProcDataType.Reference && aiItem != null)
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID, data.GetString(aiDataCnt++, inspdata.BCNO));
 
                                         if (useAIFromDB == false) // AI 미사용시
                                         {
@@ -440,7 +449,8 @@ namespace DefectDBManager.Preproc
 
             int fcdCnt = System.Enum.GetValues(typeof(eFCD)).Length;
             int procStep = 0;
-            
+            int aiDataCnt = 0;
+
             int[] defectCnt = new int[fcdCnt];
             defectCnt.Initialize();
 
@@ -452,9 +462,7 @@ namespace DefectDBManager.Preproc
             // 현재 데이터는 마킹 비교 결점 데이터라는 것을 표시함.
             FaultData.IsPreProc = true;
 
-
             List<string> aiSkipFaultData = procParam.AiSkipDefect;
-
 
             try
             {
@@ -501,9 +509,18 @@ namespace DefectDBManager.Preproc
 
                             if (_AiMonitorItem != null && procParam.UseAiMonitoring)
                             {
-                                string filter = _AiMonitorItem.ModelName.Trim('*');
-                                if (inspdata.HINMEI.Contains(filter))
-                                    aiItem = _AiMonitorItem;
+                                if(_AiMonitorItem.ModelName.Contains('*'))
+                                {
+                                    string filter = _AiMonitorItem.ModelName.Trim('*');
+                                    if (inspdata.HINMEI.Contains(filter))
+                                        aiItem = _AiMonitorItem;
+                                }
+                                else
+                                {
+                                    string filter = _AiMonitorItem.ModelName;
+                                    if (inspdata.HINMEI == filter)
+                                        aiItem = _AiMonitorItem;
+                                }
                             }
 
                             if (aiItem != null)
@@ -572,7 +589,7 @@ namespace DefectDBManager.Preproc
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
 
                                         if (dataTarget == eProcDataType.Reference && aiItem != null)
-                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID);                                        
+                                            FaultData.AIMonResult.AddDefectCnt(data.MNTTAN, data.FLTID, data.GetString(aiDataCnt++, inspdata.BCNO));
 
                                         if (useAIFromDB == false) // AI 미사용시
                                         {

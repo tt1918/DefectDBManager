@@ -1215,18 +1215,21 @@ namespace MarkCompare
             gpJudgeRange.Font = newFont;
 
             cbUseMNTTAN.Font = newFont;
+            cbAiMonitoring.Font = newFont;
 
             gpReference.Font = newFont;
             cbRefFltAll.Font = newFont;
             btnAddRefFlt.Font = newFont;
             btnDelRefFlt.Font = newFont;
             dgvRefProc.Font = newFont;
+            lblRefAiSkipDefect.Font = newFont;
 
             gpCompProc.Font = newFont;
             cbCompFltAll.Font = newFont;
             btnAddCompFlt.Font = newFont;
             btnDelCompFlt.Font= newFont;
             dgvCompProc.Font= newFont;
+            lblCompAiSkipDefect.Font = newFont;
 
             btnApply.Font = newFont;
             btnCancel.Font = newFont;
@@ -1260,12 +1263,14 @@ namespace MarkCompare
             gpJudgeRange.Text = Lang.formSettingGroupJudgeRange;
 
             cbUseMNTTAN.Text = Lang.formSettingUseMNTTAN;
+            cbAiMonitoring.Text = Lang.useAiMonitoring;
 
             gpReference.Text = Lang.formSettingGroupRefer;
             cbRefFltAll.Text = Lang.formSettingCheckAll;
             btnAddRefFlt.Text = Lang.btnAdd;
             btnDelRefFlt.Text = Lang.btnDel1;
             dgvRefProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
+            lblRefAiSkipDefect.Text = Lang.AiSkipDefect;
 
 
             gpCompProc.Text= Lang.formSettingGroupCompProc;
@@ -1273,6 +1278,7 @@ namespace MarkCompare
             btnAddCompFlt.Text = Lang.btnAdd;
             btnDelCompFlt.Text= Lang.btnDel1;
             dgvCompProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
+            lblCompAiSkipDefect.Text = Lang.AiSkipDefect;
 
             btnApply.Text = Lang.btnApply;
             btnCancel.Text = Lang.btnCancel;

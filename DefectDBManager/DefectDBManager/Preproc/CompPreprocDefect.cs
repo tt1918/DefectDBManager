@@ -266,14 +266,13 @@ namespace DefectDBManager
                     for (int i = 0; i < LotManager.ProcSetting.Count; i++)
                         if (LotManager.ProcSetting[i].Name == keyData[2]) { preprocItem = LotManager.ProcSetting[i]; break; }
 
+                    ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Live][productIdx];
+
                     for (int i = 0; i < LotManager.AiMonitorParam.ModeItems.Count; i++)
                     {
-                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
-                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                        if (LotManager.AiMonitorParam.ModeItems[i].Name == filter.AiModel)
                             aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
                     }
-
-                    ProcFilter filter = LotManager.CrtProcFilter[(int)eProc.Live][productIdx];
 
                     (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem, aiMonitorItem);
 
@@ -580,8 +579,7 @@ namespace DefectDBManager
 
                     for (int i = 0; i < LotManager.AiMonitorParam.ModeItems.Count; i++)
                     {
-                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
-                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                        if (LotManager.AiMonitorParam.ModeItems[i].Name == filter.AiModel)
                             aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
                     }
 
@@ -852,11 +850,10 @@ namespace DefectDBManager
 
                     for(int i=0; i< LotManager.AiMonitorParam.ModeItems.Count; i++)
                     {
-                        if (LotManager.AiMonitorParam.ModeItems[i].LNCD == preprocItem.Reference.LNCD &&
-                            LotManager.AiMonitorParam.ModeItems[i].ModelName == keyData[1])
+                        if (LotManager.AiMonitorParam.ModeItems[i].Name == filter.AiModel)
                             aiMonitorItem = LotManager.AiMonitorParam.ModeItems[i];
                     }
-                    
+
                     (_CompUserFD as CompUserFilterDefect)?.SetFilterParam(lncd, keyData[1], preprocItem, aiMonitorItem);
 
                     foreach (var item in list.Value.Data)
@@ -1166,8 +1163,14 @@ namespace DefectDBManager
                     logString = $"Defect Exsit : {strExist}";
                     log.WriteLoadData(subPath, logString, ++idx, logName, 0.0);
                 }
-
             }
+
+            log.WriteLoadData(subPath, "[Defect Data]", ++idx, logName, 0.0);
+
+            foreach (var dftString in lot.FaultData.AIMonResult.FaultInfos)
+                log.WriteLoadData(subPath, dftString, ++idx, logName, 0.0);
+
+            lot.FaultData.AIMonResult.FaultInfos.Clear();
         }
         #endregion
 

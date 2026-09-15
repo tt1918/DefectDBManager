@@ -1010,6 +1010,7 @@ namespace MarkCompare
                     tabSearchSet.Font = newFont;
                     tabSearchSet.TabPages[0].Text = Lang.LiveSearch;
                     tabSearchSet.TabPages[1].Text = Lang.PeridoSearch;
+                    tabSearchSet.TabPages[2].Text = Lang.SelectedLotSearch;
                 }));
             });
         }

@@ -557,19 +557,22 @@ namespace DefectDBManager
     {
         public bool IsModelExsit = false;
         public List<AiMonitorResultItem> Items = new List<AiMonitorResultItem>();
+        public List<string> FaultInfos = new List<string>();
 
         public AiMonitorResultItem this[int idx]
         {
             get { return Items[idx]; }
         }
 
-        public void AddDefectCnt(string fltid, string secfltid)
+        public void AddDefectCnt(string fltid, string secfltid, string faultInfo)
         {
             AiMonitorResultItem item = 
                 Items.Find(x => 
                 x.Model!=null && 
                 x.Model.FLTID.Contains(fltid));
-            
+
+            FaultInfos.Add(faultInfo);
+
             if (item == null) return;
             
             item.Total++;
@@ -607,6 +610,8 @@ namespace DefectDBManager
 
             foreach(var item in Items)
                 result.Items.Add(item.Clone());
+
+            result.FaultInfos = FaultInfos.ToList();
 
             return result;
         }

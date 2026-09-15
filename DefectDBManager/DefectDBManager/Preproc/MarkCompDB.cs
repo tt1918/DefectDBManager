@@ -2128,7 +2128,6 @@ namespace DefectDBManager.Preproc
 
                                         tmpFaltID = data.FLTID.ToUpper();
 
-
                                         finalXPos = data.XPOS_M;
                                         if (useXOffset == true) finalXPos += inspdata.OffsetX;
                                         if (useAIFromDB == false) // AI 미사용시
@@ -2138,7 +2137,6 @@ namespace DefectDBManager.Preproc
                                                 tmpKey = data.FLTID;
                                         }
                                         else tmpKey = data.FLTID;
-
 
                                         // Log는 무조건 데이터 다 남기도록 수정
                                         dataCnt++;

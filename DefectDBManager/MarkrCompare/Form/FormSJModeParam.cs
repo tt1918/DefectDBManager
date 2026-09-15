@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MarkCompare
@@ -75,9 +76,11 @@ namespace MarkCompare
 
 
         #region 언어
-        public void UpdateLanguage(string cultrue)
+        string _culture = string.Empty;
+        public void UpdateLanguage(string culture)
         {
-            string fontName = Functions.GetCultureFontName(cultrue);
+            _culture = culture;
+            string fontName = Functions.GetCultureFontName(culture);
             Font newFont = new Font(fontName, 10, FontStyle.Bold);
 
             lblTitle.Font = newFont;
@@ -94,6 +97,18 @@ namespace MarkCompare
             btnOK.Font = newFont;
             dgvModel.Font = newFont;
 
+            btnAddSecFltId.Font = newFont;
+            btnDeleteParam.Font = newFont;
+            btnApplyParam.Font = newFont;
+
+            Font newFont1 = new Font(fontName, 10, FontStyle.Bold);
+            lblCommonParam.Font = newFont1;
+            lblCmnCycleTime.Font = newFont1;
+            lblCycleTimeUnit.Font = newFont;
+            lblMainFolderName.Font = newFont1;
+            lblSubFolderName.Font = newFont1;
+            lblDataParam.Font = newFont1;
+
             //lblTitle.Text = Lang.formLNCDTitle;
 
             btnAddModel.Text = Lang.btnAdd;
@@ -103,6 +118,19 @@ namespace MarkCompare
 
             btnCancel.Text = Lang.btnCancel;
             btnOK.Text = Lang.btnOK1;
+
+            lblMainFolderName.Text = Lang.MainFolderName;
+            lblSubFolderName.Text = Lang.SubFolderName;
+
+            lblDataParam.Text = Lang.Parameter;
+
+            btnAddSecFltId.Text = Lang.btnAdd;
+            btnDeleteParam.Text = Lang.btnDel1;
+            btnApplyParam.Text = Lang.btnApply;
+
+            lblCommonParam.Text = Lang.CommonParam;
+            lblCmnCycleTime.Text = Lang.CycleTime;
+            lblCycleTimeUnit.Text = Lang.CycleTimeUnit;
         }
         #endregion
 
@@ -154,6 +182,8 @@ namespace MarkCompare
 
                 _selectedModel = _param.ModeItems.FirstOrDefault(item => item.Name == name && item.LNCD == lncd && item.ModelName == modelName);
                 displayParamForSelectedModel();
+
+                lblSelLNCD.Text = _selectedModel.Name;
             }
         }
 
@@ -231,28 +261,36 @@ namespace MarkCompare
 
         private void initDgvParam()
         {
+            string fontName = Functions.GetCultureFontName(_culture);
+            Font newFont = new Font(fontName, 9);
+
             dgvDetailParam.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dgvDetailParam.Rows.Clear();
             dgvDetailParam.Columns.Clear();
 
             // 1. 텍스트 컬럼
-            dgvDetailParam.Columns.Add("SECFLTID", "대상 결점");
+            dgvDetailParam.Columns.Add("SECFLTID", Lang.SECFLTID_Name);
 
             // 2. 체크박스 컬럼
             DataGridViewCheckBoxColumn useColumn = new DataGridViewCheckBoxColumn();
             useColumn.Name = "Use";
-            useColumn.HeaderText = "감시 여부";
+            useColumn.HeaderText = Lang.UseAiMonitor;
             useColumn.TrueValue = true;
             useColumn.FalseValue = false;
             useColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvDetailParam.Columns.Add(useColumn);
 
             // 3. 텍스트 컬럼
-            dgvDetailParam.Columns.Add("ErrorRate", "이상 비율");
+            dgvDetailParam.Columns.Add("ErrorRate", Lang.ErrorRate);
 
             // 4. 결점 이름
-            dgvDetailParam.Columns.Add("FLTID", "결점");
+            dgvDetailParam.Columns.Add("FLTID", Lang.DefectID);
+
+            dgvDetailParam.Columns[0].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[1].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[2].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[3].DefaultCellStyle.Font = newFont;
 
             dgvDetailParam.Columns[0].FillWeight = 90;
             dgvDetailParam.Columns[1].FillWeight = 90;

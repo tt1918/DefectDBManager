@@ -488,7 +488,13 @@ namespace MarkCompare
         #region 언어 변경
         public void UpdateLanguage(string culture)
         {
+            if(this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => UpdateLanguage(culture)));
+                return;
+            }
 
+            btnLoad.Text = Lang.btnLoad;
         }
         #endregion
     }

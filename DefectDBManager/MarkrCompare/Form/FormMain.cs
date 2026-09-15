@@ -601,6 +601,8 @@ namespace MarkCompare
             btnSetting.Text = Lang.btnSetting;
             btnSystem.Text = Lang.btnSystem;
             btnClose.Text = Lang.btnClose;
+            btnSetAiMonitorParam.Text = Lang.btnSetAiMonitorParam;
+            btnSJModeParam.Text = Lang.btnSJModeParam;
 
             lblTitle.Text = Lang.mainFormTitle;
         }

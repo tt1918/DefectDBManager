@@ -74,17 +74,18 @@ namespace MarkCompare
 
 
         #region 언어
+        string _curture = "en-US";
         public void UpdateLanguage(string cultrue)
         {
+            _curture = cultrue;
             string fontName = Functions.GetCultureFontName(cultrue);
-            Font newFont = new Font(fontName, 10, FontStyle.Bold);
+            Font newFont1 = new Font(fontName, 10, FontStyle.Bold);
 
-            lblTitle.Font = newFont;
-            
-            lblSelLNCD.Font = newFont;
+            lblTitle.Font = newFont1;
+            lblSelLNCD.Font = newFont1;
             
 
-            newFont = new Font(fontName, 9);
+            Font newFont = new Font(fontName, 9);
             btnAddModel.Font = newFont;
             btnDeleteModel.Font = newFont;
             btnLoad.Font = newFont;
@@ -92,13 +93,22 @@ namespace MarkCompare
             btnCancel.Font = newFont;
             btnOK.Font = newFont;
             dgvModel.Font = newFont;
+            btnAddSecFltId.Font = newFont;
+            btnDeleteParam.Font = newFont;
+            btnApplyParam.Font = newFont;
 
-            //lblTitle.Text = Lang.formLNCDTitle;
+            lblDataParam.Font = newFont1;
 
             btnAddModel.Text = Lang.btnAdd;
             btnDeleteModel.Text = Lang.btnDel1;
             btnLoad.Text = Lang.btnLoad1;
             btnSave.Text = Lang.btnSave1;
+
+            btnAddSecFltId.Text = Lang.btnAdd;
+            btnDeleteParam.Text = Lang.btnDel1;
+            btnApplyParam.Text = Lang.btnApply;
+
+            lblDataParam.Text = Lang.Parameter;
 
             btnCancel.Text = Lang.btnCancel;
             btnOK.Text = Lang.btnOK1;
@@ -110,14 +120,21 @@ namespace MarkCompare
         #region Data Grid View 
         private void initDgvModel()
         {
+            string fontName = Functions.GetCultureFontName(_curture);
+            Font newFont = new Font(fontName, 9);
+
             dgvModel.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dgvModel.Rows.Clear();
             dgvModel.Columns.Clear();
 
-            dgvModel.Columns.Add("Name", "NAME");
+            dgvModel.Columns.Add("Name", Lang.formSettingDgvProcIdx1);
             dgvModel.Columns.Add("LNCD", "LNCD");
-            dgvModel.Columns.Add("ModelName", "품종 정보");
+            dgvModel.Columns.Add("ModelName", Lang.product);
+
+            dgvModel.Columns[0].DefaultCellStyle.Font = newFont;
+            dgvModel.Columns[1].DefaultCellStyle.Font = newFont;
+            dgvModel.Columns[2].DefaultCellStyle.Font = newFont;
 
             dgvModel.Columns[0].FillWeight = 100;
             dgvModel.Columns[1].FillWeight = 100;
@@ -153,6 +170,8 @@ namespace MarkCompare
 
                 _selectedModel = _param.ModeItems.FirstOrDefault(item => item.Name == name && item.LNCD == lncd && item.ModelName == modelName);
                 displayParamForSelectedModel();
+
+                lblSelLNCD.Text = _selectedModel.Name;
             }
         }
 
@@ -216,33 +235,43 @@ namespace MarkCompare
 
         private void initDgvParam()
         {
+            string fontName = Functions.GetCultureFontName(_curture);
+            Font newFont = new Font(fontName, 9);
+
             dgvDetailParam.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dgvDetailParam.Rows.Clear();
             dgvDetailParam.Columns.Clear();
 
             // 1. 텍스트 컬럼
-            dgvDetailParam.Columns.Add("SECFLTID", "대상 결점");
+            dgvDetailParam.Columns.Add("SECFLTID", Lang.SECFLTID_Name);
 
             // 2. 체크박스 컬럼
             DataGridViewCheckBoxColumn useColumn = new DataGridViewCheckBoxColumn();
             useColumn.Name = "Use";
-            useColumn.HeaderText = "감시 여부";
+            useColumn.HeaderText = Lang.UseAiMonitor;
             useColumn.TrueValue = true;
             useColumn.FalseValue = false;
             useColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvDetailParam.Columns.Add(useColumn);
 
             // 3. 텍스트 컬럼
-            dgvDetailParam.Columns.Add("ErrorRate", "이상 비율");
+            dgvDetailParam.Columns.Add("ErrorRate", Lang.ErrorRate);
 
             // 4. 결점 이름
-            dgvDetailParam.Columns.Add("FLTID", "결점");
+            dgvDetailParam.Columns.Add("FLTID", Lang.DefectID);
+
+            dgvDetailParam.Columns[0].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[1].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[2].DefaultCellStyle.Font = newFont;
+            dgvDetailParam.Columns[3].DefaultCellStyle.Font = newFont;
 
             dgvDetailParam.Columns[0].FillWeight = 90;
             dgvDetailParam.Columns[1].FillWeight = 90;
             dgvDetailParam.Columns[2].FillWeight = 90;
             dgvDetailParam.Columns[3].FillWeight = 200;
+
+
 
             // 컬럼 정렬 기능 비활성화
             foreach (DataGridViewColumn column in dgvDetailParam.Columns)

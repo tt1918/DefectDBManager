@@ -110,11 +110,11 @@ namespace MarkCompare
         #endregion
 
         #region Data Grid View Reference
-        static string[] _strDgvMaterial = { "No", "LINE", "PRODUCT NAME", "MODEL", "DURATION" };
-        static string[] _strDgvSearchMaterial = { "No", "LINE", "PRODUCT NAME", "MODEL", "USE" };
-        static int[] _DgvMaterialLength = { 60, 100, 250, 100, 75, 75 };
-        enum eDgvLiveFilter { No, Line, Product, Model, Duration, Total };
-        enum eDgvSearchFilter { No, Line, Product, Model, Use, Total };
+        static string[] _strDgvMaterial = { "No", "LINE", "PRODUCT NAME", "MODEL", "AI PARAM", "DURATION" };
+        static string[] _strDgvSearchMaterial = { "No", "LINE", "PRODUCT NAME", "MODEL", "AI PARAM", "USE" };
+        static int[] _DgvMaterialLength = { 60, 100, 150, 100, 100, 75, 75 };
+        enum eDgvLiveFilter { No, Line, Product, Model, AiParam, Duration, Total };
+        enum eDgvSearchFilter { No, Line, Product, Model, AiParam, Use, Total };
 
         private void deleteFilter()
         {
@@ -207,6 +207,33 @@ namespace MarkCompare
             return makeComboBoxCell(strings.ToArray(), firstName);
         }
 
+        private object makeAiModelCombobox(string name)
+        {
+            List<string> aiModel = new List<string>();
+
+            foreach (var info in _lotManager.ProcLNCD.Info)
+            {
+                if (info.Name == name)
+                {
+                    string lncd = info.LNCD;
+
+                    foreach (var item in _lotManager.AiMonitorParam.ModeItems)
+                    {
+                        if (item.LNCD == lncd)
+                        {
+                            aiModel.Add(item.Name);
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            
+
+            return makeComboBoxCell(aiModel.ToArray(), "");
+        }
+
         private object makeDurationCombobox()
         {
             List<string> duration = new List<string>();
@@ -227,6 +254,7 @@ namespace MarkCompare
                     {
                         dgvFilter.Rows[rowIdx].Cells[(int)eDgvSearchFilter.Product] = makeProductComboBox(name, rowIdx, colIdx) as DataGridViewComboBoxCell;
                         dgvFilter.Rows[rowIdx].Cells[(int)eDgvSearchFilter.Model] = makeModelCombobox(rowIdx) as DataGridViewComboBoxCell;
+                        dgvFilter.Rows[rowIdx].Cells[(int)eDgvSearchFilter.AiParam] = makeAiModelCombobox(name) as DataGridViewComboBoxCell;
                         break;
                     }
 
@@ -286,6 +314,7 @@ namespace MarkCompare
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
+                List<string> aiModel = new List<string>();
 
                 DefectDBManager.Preproc.ProcFilterList list = _lotManager.CrtProcFilter[_procIdx];
                 string lncd = string.Empty;
@@ -293,14 +322,15 @@ namespace MarkCompare
                 int idx = 0;
 
                 dgvFilter.Rows.Clear();
-                
+
                 foreach (var item in list.Data)
                 {
                     lineName.Clear();
                     material.Clear();
                     model.Clear();
+                    aiModel.Clear();
 
-                    bool isSkip=false;
+                    bool isSkip = false;
 
                     foreach (var info in _lotManager.ProcLNCD.Info)
                     {
@@ -332,19 +362,33 @@ namespace MarkCompare
                         model.Add(data.Name);
                     }
 
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line)
+                        {
+                            lncd = info.LNCD;
+
+                            foreach (var data in _lotManager.AiMonitorParam.ModeItems)
+                            {
+                                if (lncd == data.LNCD)
+                                    aiModel.Add(data.Name);
+                            }
+                        }
+                    }
+
                     // 에러 체크 추가
                     bool bError = false;
-                    if(lineName.Contains(item.Line)==false)
+                    if (lineName.Contains(item.Line) == false)
                     {
                         errString.Add($"[{item.Line}] : {Lang.NoLineInformation}");
                         bError = true;
                     }
-                    if(material.Contains(item.Product) == false)
+                    if (material.Contains(item.Product) == false)
                     {
                         errString.Add($"[{item.Product}] : {Lang.NoProductInformation}");
                         bError = true;
                     }
-                    if(model.Contains(item.Model) == false)
+                    if (model.Contains(item.Model) == false)
                     {
                         errString.Add($"[{item.Product}] : {Lang.NoModelInformation}");
                         bError = true;
@@ -359,6 +403,7 @@ namespace MarkCompare
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.AiParam] = makeComboBoxCell(aiModel.ToArray(), item.AiModel) as DataGridViewComboBoxCell;
 
                     DataGridViewCheckBoxCell checkBoxCell1 = new DataGridViewCheckBoxCell();
                     checkBoxCell1.Value = item.Use;
@@ -394,6 +439,7 @@ namespace MarkCompare
                     filter.Line = item.Cells[(int)eDgvSearchFilter.Line].FormattedValue as string;
                     filter.Product = item.Cells[(int)eDgvSearchFilter.Product].FormattedValue as string;
                     filter.Model = item.Cells[(int)eDgvSearchFilter.Model].FormattedValue as string;
+                    filter.AiModel = item.Cells[(int)eDgvSearchFilter.AiParam].FormattedValue as string;
                     filter.Use = Convert.ToBoolean(item.Cells[(int)eDgvSearchFilter.Use].FormattedValue);
                     list.Add(filter);
                 }
@@ -412,6 +458,7 @@ namespace MarkCompare
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
+                List<string> aiModel = new List<string>();
 
                 // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                 foreach (var info in _lotManager.ProcLNCD.Info)
@@ -429,7 +476,8 @@ namespace MarkCompare
                 dgvFilter.Rows[index].Cells[(int)eDgvSearchFilter.Line] = makeComboBoxCell(lineName.ToArray(), "") as DataGridViewComboBoxCell;
                 dgvFilter.Rows[index].Cells[(int)eDgvSearchFilter.Product] = makeComboBoxCell(material.ToArray(), "") as DataGridViewComboBoxCell;
                 dgvFilter.Rows[index].Cells[(int)eDgvSearchFilter.Model] = makeComboBoxCell(model.ToArray(), "") as DataGridViewComboBoxCell;
-                
+                dgvFilter.Rows[index].Cells[(int)eDgvSearchFilter.AiParam] = makeComboBoxCell(aiModel.ToArray(), "") as DataGridViewComboBoxCell;
+
                 DataGridViewCheckBoxCell checkBoxCell1 = new DataGridViewCheckBoxCell();
                 checkBoxCell1.Value = true;
                 dgvFilter.Rows[index].Cells[(int)eDgvSearchFilter.Use] = checkBoxCell1;
@@ -482,6 +530,7 @@ namespace MarkCompare
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
+                List<string> aiModel = new List<string>();
 
                 DefectDBManager.Preproc.ProcFilterList list = _lotManager.CrtProcFilter[_procIdx];
 
@@ -494,6 +543,7 @@ namespace MarkCompare
                     lineName.Clear();
                     material.Clear();
                     model.Clear();
+                    aiModel.Clear();
 
                     bool isSkip = false;
 
@@ -526,6 +576,19 @@ namespace MarkCompare
                         model.Add(data.Name);
                     }
 
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line)
+                        {
+                            lncd = info.LNCD;
+
+                            foreach (var data in _lotManager.AiMonitorParam.ModeItems)
+                            {
+                                if (lncd == data.LNCD)
+                                    aiModel.Add(data.Name);
+                            }
+                        }
+                    }
 
                     // 에러 체크 추가
                     bool bError = false;
@@ -554,6 +617,7 @@ namespace MarkCompare
                     dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.AiParam] = makeComboBoxCell(aiModel.ToArray(), item.AiModel) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvLiveFilter.Duration] = makeDurationCombobox() as DataGridViewComboBoxCell;
 
                     idx++;
@@ -584,6 +648,7 @@ namespace MarkCompare
                     filter.Line = item.Cells[(int)eDgvLiveFilter.Line].FormattedValue as string;
                     filter.Product = item.Cells[(int)eDgvLiveFilter.Product].FormattedValue as string;
                     filter.Model = item.Cells[(int)eDgvLiveFilter.Model].FormattedValue as string;
+                    filter.AiModel = item.Cells[(int)eDgvLiveFilter.AiParam].FormattedValue as string;
                     filter.Duration = Convert.ToInt32(item.Cells[(int)eDgvLiveFilter.Duration].FormattedValue as string);
                     list.Add(filter);
                 }
@@ -602,6 +667,7 @@ namespace MarkCompare
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
+                List<string> aiModel = new List<string>();
 
                 // 라인 코드 및 라인 코드에 해당하는 품종 데이터 업데이트
                 foreach (var info in _lotManager.ProcLNCD.Info)
@@ -619,6 +685,7 @@ namespace MarkCompare
                 dgvFilter.Rows[index].Cells[(int)eDgvLiveFilter.Line] = makeComboBoxCell(lineName.ToArray(), "") as DataGridViewComboBoxCell;
                 dgvFilter.Rows[index].Cells[(int)eDgvLiveFilter.Product] = makeComboBoxCell(material.ToArray(), "") as DataGridViewComboBoxCell;
                 dgvFilter.Rows[index].Cells[(int)eDgvLiveFilter.Model] = makeComboBoxCell(model.ToArray(), "") as DataGridViewComboBoxCell;
+                dgvFilter.Rows[index].Cells[(int)eDgvLiveFilter.AiParam] = makeComboBoxCell(aiModel.ToArray(), "") as DataGridViewComboBoxCell;
                 dgvFilter.Rows[index].Cells[(int)eDgvLiveFilter.Duration] = makeDurationCombobox() as DataGridViewComboBoxCell;
             }
             catch
@@ -642,6 +709,7 @@ namespace MarkCompare
                 List<string> lineName = new List<string>();
                 List<string> material = new List<string>();
                 List<string> model = new List<string>();
+                List<string> aiModel = new List<string>();
 
                 DefectDBManager.Preproc.ProcFilterList list = Filter;
                 string lncd = string.Empty;
@@ -655,6 +723,7 @@ namespace MarkCompare
                     lineName.Clear();
                     material.Clear();
                     model.Clear();
+                    aiModel.Clear();
 
                     bool isSkip = false;
 
@@ -688,6 +757,20 @@ namespace MarkCompare
                         model.Add(data.Name);
                     }
 
+                    foreach (var info in _lotManager.ProcLNCD.Info)
+                    {
+                        if (info.Name == item.Line)
+                        {
+                            lncd = info.LNCD;
+
+                            foreach (var data in _lotManager.AiMonitorParam.ModeItems)
+                            {
+                                if (lncd == data.LNCD)
+                                    aiModel.Add(data.Name);
+                            }
+                        }
+                    }
+
                     // 에러 체크 추가
                     bool bError = false;
                     if (lineName.Contains(item.Line) == false)
@@ -715,6 +798,7 @@ namespace MarkCompare
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Line] = makeComboBoxCell(lineName.ToArray(), item.Line) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Product] = makeComboBoxCell(material.ToArray(), item.Product) as DataGridViewComboBoxCell;
                     dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.Model] = makeComboBoxCell(model.ToArray(), item.Model) as DataGridViewComboBoxCell;
+                    dgvFilter.Rows[idx].Cells[(int)eDgvSearchFilter.AiParam] = makeComboBoxCell(aiModel.ToArray(), item.AiModel) as DataGridViewComboBoxCell;
 
                     DataGridViewCheckBoxCell checkBoxCell1 = new DataGridViewCheckBoxCell();
                     checkBoxCell1.Value = item.Use;
@@ -749,6 +833,7 @@ namespace MarkCompare
                     filter.Line = item.Cells[(int)eDgvSearchFilter.Line].FormattedValue as string;
                     filter.Product = item.Cells[(int)eDgvSearchFilter.Product].FormattedValue as string;
                     filter.Model = item.Cells[(int)eDgvSearchFilter.Model].FormattedValue as string;
+                    filter.AiModel = item.Cells[(int)eDgvSearchFilter.AiParam].FormattedValue as string;
                     filter.Use = Convert.ToBoolean(item.Cells[(int)eDgvSearchFilter.Use].FormattedValue);
                     list.Add(filter);
                 }
@@ -853,17 +938,17 @@ namespace MarkCompare
             btnCancel.Text = Lang.btnCancel;
             btnOK.Text = Lang.btnOK;
 
-            dgvFilter.Columns[0].Name = Lang.filterDgvNo;
-            dgvFilter.Columns[1].Name = Lang.filterDgvLine;
-            dgvFilter.Columns[2].Name = Lang.filterDgvProdName;
-            dgvFilter.Columns[3].Name = Lang.filterDgvModel;
+            dgvFilter.Columns[(int)eDgvLiveFilter.No].Name = Lang.filterDgvNo;
+            dgvFilter.Columns[(int)eDgvLiveFilter.Line].Name = Lang.filterDgvLine;
+            dgvFilter.Columns[(int)eDgvLiveFilter.Product].Name = Lang.filterDgvProdName;
+            dgvFilter.Columns[(int)eDgvLiveFilter.Model].Name = Lang.filterDgvModel;
+            dgvFilter.Columns[(int)eDgvLiveFilter.AiParam].Name = "AI PARAM";
             switch ((DefectDBManager.Preproc.eProc)_procIdx)
             {
-                case eProc.Live: dgvFilter.Columns[4].Name = Lang.filterDgvDuration; break;
+                case eProc.Live: dgvFilter.Columns[(int)eDgvLiveFilter.Duration].Name = Lang.filterDgvDuration; break;
                 case eProc.Search:
                 case eProc.Selected:
-                    dgvFilter.Columns[4].Name = Lang.filterDgvUse; break;
-
+                    dgvFilter.Columns[(int)eDgvSearchFilter.Use].Name = Lang.filterDgvUse; break;
             }                
         }
         #endregion

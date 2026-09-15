@@ -401,6 +401,7 @@ namespace DefectDBManager.Preproc
         public string Line { get; set; } = string.Empty;
         public string Product { get; set; } = string.Empty;
         public string Model { get; set; } = string.Empty;
+        public string AiModel { get; set; } = string.Empty;
 
         /// <summary>
         /// 수동 검사에서 사용 여부

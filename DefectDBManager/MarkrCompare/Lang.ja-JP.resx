@@ -564,4 +564,46 @@
   <data name="bunchDefect" xml:space="preserve">
     <value>欠点の束</value>
   </data>
+  <data name="btnSetAiMonitorParam" xml:space="preserve">
+    <value>       AI PARAM</value>
+  </data>
+  <data name="btnSJModeParam" xml:space="preserve">
+    <value>           AI PROCESSING PARAM</value>
+  </data>
+  <data name="useAiMonitoring" xml:space="preserve">
+    <value>AIモニタリング</value>
+  </data>
+  <data name="AiSkipDefect" xml:space="preserve">
+    <value>AI判定例外不良</value>
+  </data>
+  <data name="CommonParam" xml:space="preserve">
+    <value>共通パラメータ</value>
+  </data>
+  <data name="CycleTime" xml:space="preserve">
+    <value>監視周期</value>
+  </data>
+  <data name="CycleTimeUnit" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="MainFolderName" xml:space="preserve">
+    <value>メインフォルダ</value>
+  </data>
+  <data name="SubFolderName" xml:space="preserve">
+    <value>サブフォルダ</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>パラメータ</value>
+  </data>
+  <data name="SECFLTID_Name" xml:space="preserve">
+    <value>対象欠陥</value>
+  </data>
+  <data name="UseAiMonitor" xml:space="preserve">
+    <value>監視</value>
+  </data>
+  <data name="ErrorRate" xml:space="preserve">
+    <value>異常率</value>
+  </data>
+  <data name="DefectID" xml:space="preserve">
+    <value>欠陥名</value>
+  </data>
 </root>

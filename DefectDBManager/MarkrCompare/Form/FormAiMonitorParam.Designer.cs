@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new CustomControls.ShadedLabel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvModel = new System.Windows.Forms.DataGridView();
-            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvDetailParam = new System.Windows.Forms.DataGridView();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblSelLNCD = new CustomControls.ShadedLabel();
-            this.lblDataParam = new CustomControls.ShadedLabel();
-            this.btnAddModel = new CustomControls.ShadedButton();
-            this.btnDeleteModel = new CustomControls.ShadedButton();
-            this.btnAddSecFltId = new CustomControls.ShadedButton();
-            this.btnDeleteParam = new CustomControls.ShadedButton();
-            this.btnApplyParam = new CustomControls.ShadedButton();
             this.btnLoad = new CustomControls.ShadedButton();
             this.btnSave = new CustomControls.ShadedButton();
             this.btnCancel = new CustomControls.ShadedButton();
             this.btnOK = new CustomControls.ShadedButton();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTitle = new CustomControls.ShadedLabel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSelLNCD = new CustomControls.ShadedLabel();
+            this.dgvModel = new System.Windows.Forms.DataGridView();
+            this.btnAddModel = new CustomControls.ShadedButton();
+            this.btnDeleteModel = new CustomControls.ShadedButton();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDataParam = new CustomControls.ShadedLabel();
+            this.dgvDetailParam = new System.Windows.Forms.DataGridView();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddSecFltId = new CustomControls.ShadedButton();
+            this.btnDeleteParam = new CustomControls.ShadedButton();
+            this.btnApplyParam = new CustomControls.ShadedButton();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -80,368 +80,6 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(761, 51);
             this.tableLayoutPanel5.TabIndex = 3;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 2);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(761, 628);
-            this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblTitle.BorderRadius = 3;
-            this.lblTitle.BorderSize = 1;
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.FillColor = System.Drawing.Color.DarkSlateBlue;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ImagePadding = 6;
-            this.lblTitle.ImageSize = 18;
-            this.lblTitle.LabelImage = null;
-            this.lblTitle.Location = new System.Drawing.Point(1, 1);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.ShowAccentLine = false;
-            this.lblTitle.Size = new System.Drawing.Size(759, 28);
-            this.lblTitle.TabIndex = 16;
-            this.lblTitle.Text = "AI MONITORING SETTING";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTitle.TextColor = System.Drawing.Color.White;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.54665F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.45335F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 30);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(761, 547);
-            this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.BackColor = System.Drawing.Color.Gainsboro;
-            this.tableLayoutPanel3.ColumnCount = 4;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel3.Controls.Add(this.lblSelLNCD, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.dgvModel, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.btnAddModel, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.btnDeleteModel, 1, 2);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(339, 547);
-            this.tableLayoutPanel3.TabIndex = 0;
-            // 
-            // dgvModel
-            // 
-            this.dgvModel.AllowUserToAddRows = false;
-            this.dgvModel.AllowUserToDeleteRows = false;
-            this.dgvModel.AllowUserToResizeColumns = false;
-            this.dgvModel.AllowUserToResizeRows = false;
-            this.dgvModel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tableLayoutPanel3.SetColumnSpan(this.dgvModel, 4);
-            this.dgvModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvModel.Location = new System.Drawing.Point(1, 36);
-            this.dgvModel.Margin = new System.Windows.Forms.Padding(1);
-            this.dgvModel.Name = "dgvModel";
-            this.dgvModel.RowTemplate.Height = 23;
-            this.dgvModel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvModel.Size = new System.Drawing.Size(337, 475);
-            this.dgvModel.TabIndex = 7;
-            this.dgvModel.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModel_CellClick);
-            this.dgvModel.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModel_CellEndEdit);
-            // 
-            // tableLayoutPanel6
-            // 
-            this.tableLayoutPanel6.ColumnCount = 2;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Controls.Add(this.lblDataParam, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.dgvDetailParam, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel4, 0, 2);
-            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(339, 0);
-            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 3;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(422, 547);
-            this.tableLayoutPanel6.TabIndex = 1;
-            // 
-            // dgvDetailParam
-            // 
-            this.dgvDetailParam.AllowUserToAddRows = false;
-            this.dgvDetailParam.AllowUserToDeleteRows = false;
-            this.dgvDetailParam.AllowUserToResizeColumns = false;
-            this.dgvDetailParam.AllowUserToResizeRows = false;
-            this.dgvDetailParam.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tableLayoutPanel6.SetColumnSpan(this.dgvDetailParam, 2);
-            this.dgvDetailParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvDetailParam.Location = new System.Drawing.Point(1, 36);
-            this.dgvDetailParam.Margin = new System.Windows.Forms.Padding(1);
-            this.dgvDetailParam.Name = "dgvDetailParam";
-            this.dgvDetailParam.RowTemplate.Height = 23;
-            this.dgvDetailParam.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetailParam.Size = new System.Drawing.Size(420, 475);
-            this.dgvDetailParam.TabIndex = 7;
-            // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 4;
-            this.tableLayoutPanel6.SetColumnSpan(this.tableLayoutPanel4, 2);
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.42409F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.2729F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.3657F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.93731F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.btnAddSecFltId, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnDeleteParam, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnApplyParam, 3, 0);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 512);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(422, 35);
-            this.tableLayoutPanel4.TabIndex = 14;
-            // 
-            // lblSelLNCD
-            // 
-            this.lblSelLNCD.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblSelLNCD.BackColor = System.Drawing.Color.Transparent;
-            this.lblSelLNCD.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblSelLNCD.BorderRadius = 5;
-            this.lblSelLNCD.BorderSize = 1;
-            this.tableLayoutPanel3.SetColumnSpan(this.lblSelLNCD, 4);
-            this.lblSelLNCD.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSelLNCD.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.lblSelLNCD.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSelLNCD.ImagePadding = 6;
-            this.lblSelLNCD.ImageSize = 18;
-            this.lblSelLNCD.LabelImage = null;
-            this.lblSelLNCD.Location = new System.Drawing.Point(1, 1);
-            this.lblSelLNCD.Margin = new System.Windows.Forms.Padding(1);
-            this.lblSelLNCD.Name = "lblSelLNCD";
-            this.lblSelLNCD.ShowAccentLine = false;
-            this.lblSelLNCD.Size = new System.Drawing.Size(337, 33);
-            this.lblSelLNCD.TabIndex = 12;
-            this.lblSelLNCD.Text = "X";
-            this.lblSelLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSelLNCD.TextColor = System.Drawing.Color.White;
-            // 
-            // lblDataParam
-            // 
-            this.lblDataParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblDataParam.BackColor = System.Drawing.Color.Transparent;
-            this.lblDataParam.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblDataParam.BorderRadius = 5;
-            this.lblDataParam.BorderSize = 1;
-            this.tableLayoutPanel6.SetColumnSpan(this.lblDataParam, 2);
-            this.lblDataParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDataParam.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.lblDataParam.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDataParam.ImagePadding = 6;
-            this.lblDataParam.ImageSize = 18;
-            this.lblDataParam.LabelImage = null;
-            this.lblDataParam.Location = new System.Drawing.Point(1, 1);
-            this.lblDataParam.Margin = new System.Windows.Forms.Padding(1);
-            this.lblDataParam.Name = "lblDataParam";
-            this.lblDataParam.ShowAccentLine = false;
-            this.lblDataParam.Size = new System.Drawing.Size(420, 33);
-            this.lblDataParam.TabIndex = 15;
-            this.lblDataParam.Text = "PARAMETER";
-            this.lblDataParam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDataParam.TextColor = System.Drawing.Color.White;
-            // 
-            // btnAddModel
-            // 
-            this.btnAddModel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAddModel.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddModel.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAddModel.BorderRadius = 5;
-            this.btnAddModel.BorderSize = 2;
-            this.btnAddModel.ButtonImage = null;
-            this.btnAddModel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddModel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAddModel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAddModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAddModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddModel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAddModel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAddModel.IconPadding = 6;
-            this.btnAddModel.IconSize = 20;
-            this.btnAddModel.Location = new System.Drawing.Point(1, 513);
-            this.btnAddModel.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAddModel.Name = "btnAddModel";
-            this.btnAddModel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAddModel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAddModel.ShowAccentLine = false;
-            this.btnAddModel.Size = new System.Drawing.Size(78, 33);
-            this.btnAddModel.TabIndex = 13;
-            this.btnAddModel.Text = "ADD";
-            this.btnAddModel.TextColor = System.Drawing.Color.White;
-            this.btnAddModel.TextOffsetX = 0;
-            this.btnAddModel.TextOffsetY = 0;
-            this.btnAddModel.Click += new System.EventHandler(this.btnAddModel_Click);
-            // 
-            // btnDeleteModel
-            // 
-            this.btnDeleteModel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnDeleteModel.BackColor = System.Drawing.Color.Transparent;
-            this.btnDeleteModel.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnDeleteModel.BorderRadius = 5;
-            this.btnDeleteModel.BorderSize = 2;
-            this.btnDeleteModel.ButtonImage = null;
-            this.btnDeleteModel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteModel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnDeleteModel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnDeleteModel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDeleteModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteModel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnDeleteModel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnDeleteModel.IconPadding = 6;
-            this.btnDeleteModel.IconSize = 20;
-            this.btnDeleteModel.Location = new System.Drawing.Point(81, 513);
-            this.btnDeleteModel.Margin = new System.Windows.Forms.Padding(1);
-            this.btnDeleteModel.Name = "btnDeleteModel";
-            this.btnDeleteModel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnDeleteModel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnDeleteModel.ShowAccentLine = false;
-            this.btnDeleteModel.Size = new System.Drawing.Size(78, 33);
-            this.btnDeleteModel.TabIndex = 13;
-            this.btnDeleteModel.Text = "DELETE";
-            this.btnDeleteModel.TextColor = System.Drawing.Color.White;
-            this.btnDeleteModel.TextOffsetX = 0;
-            this.btnDeleteModel.TextOffsetY = 0;
-            this.btnDeleteModel.Click += new System.EventHandler(this.btnDeleteModel_Click);
-            // 
-            // btnAddSecFltId
-            // 
-            this.btnAddSecFltId.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnAddSecFltId.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddSecFltId.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnAddSecFltId.BorderRadius = 5;
-            this.btnAddSecFltId.BorderSize = 2;
-            this.btnAddSecFltId.ButtonImage = null;
-            this.btnAddSecFltId.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddSecFltId.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnAddSecFltId.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnAddSecFltId.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnAddSecFltId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddSecFltId.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnAddSecFltId.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnAddSecFltId.IconPadding = 6;
-            this.btnAddSecFltId.IconSize = 20;
-            this.btnAddSecFltId.Location = new System.Drawing.Point(1, 1);
-            this.btnAddSecFltId.Margin = new System.Windows.Forms.Padding(1);
-            this.btnAddSecFltId.Name = "btnAddSecFltId";
-            this.btnAddSecFltId.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnAddSecFltId.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnAddSecFltId.ShowAccentLine = false;
-            this.btnAddSecFltId.Size = new System.Drawing.Size(126, 33);
-            this.btnAddSecFltId.TabIndex = 13;
-            this.btnAddSecFltId.Text = "ADD";
-            this.btnAddSecFltId.TextColor = System.Drawing.Color.White;
-            this.btnAddSecFltId.TextOffsetX = 0;
-            this.btnAddSecFltId.TextOffsetY = 0;
-            this.btnAddSecFltId.Click += new System.EventHandler(this.btnAddSecFltId_Click);
-            // 
-            // btnDeleteParam
-            // 
-            this.btnDeleteParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnDeleteParam.BackColor = System.Drawing.Color.Transparent;
-            this.btnDeleteParam.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnDeleteParam.BorderRadius = 5;
-            this.btnDeleteParam.BorderSize = 2;
-            this.btnDeleteParam.ButtonImage = null;
-            this.btnDeleteParam.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDeleteParam.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnDeleteParam.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnDeleteParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDeleteParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteParam.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnDeleteParam.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnDeleteParam.IconPadding = 6;
-            this.btnDeleteParam.IconSize = 20;
-            this.btnDeleteParam.Location = new System.Drawing.Point(129, 1);
-            this.btnDeleteParam.Margin = new System.Windows.Forms.Padding(1);
-            this.btnDeleteParam.Name = "btnDeleteParam";
-            this.btnDeleteParam.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnDeleteParam.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnDeleteParam.ShowAccentLine = false;
-            this.btnDeleteParam.Size = new System.Drawing.Size(117, 33);
-            this.btnDeleteParam.TabIndex = 14;
-            this.btnDeleteParam.Text = "DELETE";
-            this.btnDeleteParam.TextColor = System.Drawing.Color.White;
-            this.btnDeleteParam.TextOffsetX = 0;
-            this.btnDeleteParam.TextOffsetY = 0;
-            this.btnDeleteParam.Click += new System.EventHandler(this.btnDeleteParam_Click);
-            // 
-            // btnApplyParam
-            // 
-            this.btnApplyParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.btnApplyParam.BackColor = System.Drawing.Color.Transparent;
-            this.btnApplyParam.BorderColor = System.Drawing.Color.SlateGray;
-            this.btnApplyParam.BorderRadius = 5;
-            this.btnApplyParam.BorderSize = 2;
-            this.btnApplyParam.ButtonImage = null;
-            this.btnApplyParam.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnApplyParam.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.btnApplyParam.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.btnApplyParam.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnApplyParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnApplyParam.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.btnApplyParam.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.btnApplyParam.IconPadding = 6;
-            this.btnApplyParam.IconSize = 20;
-            this.btnApplyParam.Location = new System.Drawing.Point(312, 1);
-            this.btnApplyParam.Margin = new System.Windows.Forms.Padding(1);
-            this.btnApplyParam.Name = "btnApplyParam";
-            this.btnApplyParam.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.btnApplyParam.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.btnApplyParam.ShowAccentLine = false;
-            this.btnApplyParam.Size = new System.Drawing.Size(109, 33);
-            this.btnApplyParam.TabIndex = 14;
-            this.btnApplyParam.Text = "APPLY";
-            this.btnApplyParam.TextColor = System.Drawing.Color.White;
-            this.btnApplyParam.TextOffsetX = 0;
-            this.btnApplyParam.TextOffsetY = 0;
-            this.btnApplyParam.Click += new System.EventHandler(this.btnApplyParam_Click);
             // 
             // btnLoad
             // 
@@ -566,6 +204,368 @@
             this.btnOK.TextOffsetX = 0;
             this.btnOK.TextOffsetY = 0;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.lblTitle, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 2);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(761, 628);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BorderRadius = 3;
+            this.lblTitle.BorderSize = 1;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.FillColor = System.Drawing.Color.DarkSlateBlue;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ImagePadding = 6;
+            this.lblTitle.ImageSize = 18;
+            this.lblTitle.LabelImage = null;
+            this.lblTitle.Location = new System.Drawing.Point(1, 1);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.ShowAccentLine = false;
+            this.lblTitle.Size = new System.Drawing.Size(759, 28);
+            this.lblTitle.TabIndex = 16;
+            this.lblTitle.Text = "AI MONITORING SETTING";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitle.TextColor = System.Drawing.Color.White;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.54665F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.45335F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 1, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 30);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(761, 547);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.BackColor = System.Drawing.Color.Gainsboro;
+            this.tableLayoutPanel3.ColumnCount = 4;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel3.Controls.Add(this.lblSelLNCD, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dgvModel, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.btnAddModel, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.btnDeleteModel, 1, 2);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(339, 547);
+            this.tableLayoutPanel3.TabIndex = 0;
+            // 
+            // lblSelLNCD
+            // 
+            this.lblSelLNCD.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblSelLNCD.BackColor = System.Drawing.Color.Transparent;
+            this.lblSelLNCD.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblSelLNCD.BorderRadius = 5;
+            this.lblSelLNCD.BorderSize = 1;
+            this.tableLayoutPanel3.SetColumnSpan(this.lblSelLNCD, 4);
+            this.lblSelLNCD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSelLNCD.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.lblSelLNCD.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSelLNCD.ImagePadding = 6;
+            this.lblSelLNCD.ImageSize = 18;
+            this.lblSelLNCD.LabelImage = null;
+            this.lblSelLNCD.Location = new System.Drawing.Point(1, 1);
+            this.lblSelLNCD.Margin = new System.Windows.Forms.Padding(1);
+            this.lblSelLNCD.Name = "lblSelLNCD";
+            this.lblSelLNCD.ShowAccentLine = false;
+            this.lblSelLNCD.Size = new System.Drawing.Size(337, 33);
+            this.lblSelLNCD.TabIndex = 12;
+            this.lblSelLNCD.Text = "-";
+            this.lblSelLNCD.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSelLNCD.TextColor = System.Drawing.Color.White;
+            // 
+            // dgvModel
+            // 
+            this.dgvModel.AllowUserToAddRows = false;
+            this.dgvModel.AllowUserToDeleteRows = false;
+            this.dgvModel.AllowUserToResizeColumns = false;
+            this.dgvModel.AllowUserToResizeRows = false;
+            this.dgvModel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel3.SetColumnSpan(this.dgvModel, 4);
+            this.dgvModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvModel.Location = new System.Drawing.Point(1, 36);
+            this.dgvModel.Margin = new System.Windows.Forms.Padding(1);
+            this.dgvModel.Name = "dgvModel";
+            this.dgvModel.RowTemplate.Height = 23;
+            this.dgvModel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvModel.Size = new System.Drawing.Size(337, 475);
+            this.dgvModel.TabIndex = 7;
+            this.dgvModel.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModel_CellClick);
+            this.dgvModel.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvModel_CellEndEdit);
+            // 
+            // btnAddModel
+            // 
+            this.btnAddModel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddModel.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddModel.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAddModel.BorderRadius = 5;
+            this.btnAddModel.BorderSize = 2;
+            this.btnAddModel.ButtonImage = null;
+            this.btnAddModel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddModel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddModel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddModel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddModel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddModel.IconPadding = 6;
+            this.btnAddModel.IconSize = 20;
+            this.btnAddModel.Location = new System.Drawing.Point(1, 513);
+            this.btnAddModel.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddModel.Name = "btnAddModel";
+            this.btnAddModel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddModel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddModel.ShowAccentLine = false;
+            this.btnAddModel.Size = new System.Drawing.Size(78, 33);
+            this.btnAddModel.TabIndex = 13;
+            this.btnAddModel.Text = "ADD";
+            this.btnAddModel.TextColor = System.Drawing.Color.White;
+            this.btnAddModel.TextOffsetX = 0;
+            this.btnAddModel.TextOffsetY = 0;
+            this.btnAddModel.Click += new System.EventHandler(this.btnAddModel_Click);
+            // 
+            // btnDeleteModel
+            // 
+            this.btnDeleteModel.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnDeleteModel.BackColor = System.Drawing.Color.Transparent;
+            this.btnDeleteModel.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnDeleteModel.BorderRadius = 5;
+            this.btnDeleteModel.BorderSize = 2;
+            this.btnDeleteModel.ButtonImage = null;
+            this.btnDeleteModel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteModel.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnDeleteModel.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnDeleteModel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDeleteModel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteModel.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnDeleteModel.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnDeleteModel.IconPadding = 6;
+            this.btnDeleteModel.IconSize = 20;
+            this.btnDeleteModel.Location = new System.Drawing.Point(81, 513);
+            this.btnDeleteModel.Margin = new System.Windows.Forms.Padding(1);
+            this.btnDeleteModel.Name = "btnDeleteModel";
+            this.btnDeleteModel.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnDeleteModel.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnDeleteModel.ShowAccentLine = false;
+            this.btnDeleteModel.Size = new System.Drawing.Size(78, 33);
+            this.btnDeleteModel.TabIndex = 13;
+            this.btnDeleteModel.Text = "DELETE";
+            this.btnDeleteModel.TextColor = System.Drawing.Color.White;
+            this.btnDeleteModel.TextOffsetX = 0;
+            this.btnDeleteModel.TextOffsetY = 0;
+            this.btnDeleteModel.Click += new System.EventHandler(this.btnDeleteModel_Click);
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.lblDataParam, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.dgvDetailParam, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel4, 0, 2);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(339, 0);
+            this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 3;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(422, 547);
+            this.tableLayoutPanel6.TabIndex = 1;
+            // 
+            // lblDataParam
+            // 
+            this.lblDataParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblDataParam.BackColor = System.Drawing.Color.Transparent;
+            this.lblDataParam.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblDataParam.BorderRadius = 5;
+            this.lblDataParam.BorderSize = 1;
+            this.tableLayoutPanel6.SetColumnSpan(this.lblDataParam, 2);
+            this.lblDataParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblDataParam.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.lblDataParam.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDataParam.ImagePadding = 6;
+            this.lblDataParam.ImageSize = 18;
+            this.lblDataParam.LabelImage = null;
+            this.lblDataParam.Location = new System.Drawing.Point(1, 1);
+            this.lblDataParam.Margin = new System.Windows.Forms.Padding(1);
+            this.lblDataParam.Name = "lblDataParam";
+            this.lblDataParam.ShowAccentLine = false;
+            this.lblDataParam.Size = new System.Drawing.Size(420, 33);
+            this.lblDataParam.TabIndex = 15;
+            this.lblDataParam.Text = "PARAMETER";
+            this.lblDataParam.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDataParam.TextColor = System.Drawing.Color.White;
+            // 
+            // dgvDetailParam
+            // 
+            this.dgvDetailParam.AllowUserToAddRows = false;
+            this.dgvDetailParam.AllowUserToDeleteRows = false;
+            this.dgvDetailParam.AllowUserToResizeColumns = false;
+            this.dgvDetailParam.AllowUserToResizeRows = false;
+            this.dgvDetailParam.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tableLayoutPanel6.SetColumnSpan(this.dgvDetailParam, 2);
+            this.dgvDetailParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvDetailParam.Location = new System.Drawing.Point(1, 36);
+            this.dgvDetailParam.Margin = new System.Windows.Forms.Padding(1);
+            this.dgvDetailParam.Name = "dgvDetailParam";
+            this.dgvDetailParam.RowTemplate.Height = 23;
+            this.dgvDetailParam.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDetailParam.Size = new System.Drawing.Size(420, 475);
+            this.dgvDetailParam.TabIndex = 7;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel6.SetColumnSpan(this.tableLayoutPanel4, 2);
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.42409F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.2729F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.3657F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.93731F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.btnAddSecFltId, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnDeleteParam, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnApplyParam, 3, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 512);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(422, 35);
+            this.tableLayoutPanel4.TabIndex = 14;
+            // 
+            // btnAddSecFltId
+            // 
+            this.btnAddSecFltId.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddSecFltId.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddSecFltId.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnAddSecFltId.BorderRadius = 5;
+            this.btnAddSecFltId.BorderSize = 2;
+            this.btnAddSecFltId.ButtonImage = null;
+            this.btnAddSecFltId.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddSecFltId.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddSecFltId.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddSecFltId.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddSecFltId.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddSecFltId.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddSecFltId.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddSecFltId.IconPadding = 6;
+            this.btnAddSecFltId.IconSize = 20;
+            this.btnAddSecFltId.Location = new System.Drawing.Point(1, 1);
+            this.btnAddSecFltId.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddSecFltId.Name = "btnAddSecFltId";
+            this.btnAddSecFltId.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddSecFltId.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddSecFltId.ShowAccentLine = false;
+            this.btnAddSecFltId.Size = new System.Drawing.Size(126, 33);
+            this.btnAddSecFltId.TabIndex = 13;
+            this.btnAddSecFltId.Text = "ADD";
+            this.btnAddSecFltId.TextColor = System.Drawing.Color.White;
+            this.btnAddSecFltId.TextOffsetX = 0;
+            this.btnAddSecFltId.TextOffsetY = 0;
+            this.btnAddSecFltId.Click += new System.EventHandler(this.btnAddSecFltId_Click);
+            // 
+            // btnDeleteParam
+            // 
+            this.btnDeleteParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnDeleteParam.BackColor = System.Drawing.Color.Transparent;
+            this.btnDeleteParam.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnDeleteParam.BorderRadius = 5;
+            this.btnDeleteParam.BorderSize = 2;
+            this.btnDeleteParam.ButtonImage = null;
+            this.btnDeleteParam.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDeleteParam.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnDeleteParam.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnDeleteParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDeleteParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteParam.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnDeleteParam.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnDeleteParam.IconPadding = 6;
+            this.btnDeleteParam.IconSize = 20;
+            this.btnDeleteParam.Location = new System.Drawing.Point(129, 1);
+            this.btnDeleteParam.Margin = new System.Windows.Forms.Padding(1);
+            this.btnDeleteParam.Name = "btnDeleteParam";
+            this.btnDeleteParam.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnDeleteParam.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnDeleteParam.ShowAccentLine = false;
+            this.btnDeleteParam.Size = new System.Drawing.Size(117, 33);
+            this.btnDeleteParam.TabIndex = 14;
+            this.btnDeleteParam.Text = "DELETE";
+            this.btnDeleteParam.TextColor = System.Drawing.Color.White;
+            this.btnDeleteParam.TextOffsetX = 0;
+            this.btnDeleteParam.TextOffsetY = 0;
+            this.btnDeleteParam.Click += new System.EventHandler(this.btnDeleteParam_Click);
+            // 
+            // btnApplyParam
+            // 
+            this.btnApplyParam.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnApplyParam.BackColor = System.Drawing.Color.Transparent;
+            this.btnApplyParam.BorderColor = System.Drawing.Color.SlateGray;
+            this.btnApplyParam.BorderRadius = 5;
+            this.btnApplyParam.BorderSize = 2;
+            this.btnApplyParam.ButtonImage = null;
+            this.btnApplyParam.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApplyParam.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnApplyParam.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnApplyParam.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnApplyParam.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplyParam.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnApplyParam.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnApplyParam.IconPadding = 6;
+            this.btnApplyParam.IconSize = 20;
+            this.btnApplyParam.Location = new System.Drawing.Point(312, 1);
+            this.btnApplyParam.Margin = new System.Windows.Forms.Padding(1);
+            this.btnApplyParam.Name = "btnApplyParam";
+            this.btnApplyParam.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnApplyParam.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnApplyParam.ShowAccentLine = false;
+            this.btnApplyParam.Size = new System.Drawing.Size(109, 33);
+            this.btnApplyParam.TabIndex = 14;
+            this.btnApplyParam.Text = "APPLY";
+            this.btnApplyParam.TextColor = System.Drawing.Color.White;
+            this.btnApplyParam.TextOffsetX = 0;
+            this.btnApplyParam.TextOffsetY = 0;
+            this.btnApplyParam.Click += new System.EventHandler(this.btnApplyParam_Click);
             // 
             // FormAiMonitorParam
             // 

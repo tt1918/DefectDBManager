@@ -19,7 +19,7 @@ namespace MarkCompare {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Lang {
@@ -66,6 +66,15 @@ namespace MarkCompare {
         internal static string addList {
             get {
                 return ResourceManager.GetString("addList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AI 판정 예외 불량과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string AiSkipDefect {
+            get {
+                return ResourceManager.GetString("AiSkipDefect", resourceCulture);
             }
         }
         
@@ -232,11 +241,29 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///          AI 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string btnSetAiMonitorParam {
+            get {
+                return ResourceManager.GetString("btnSetAiMonitorParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   공정과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnSetting {
             get {
                 return ResourceManager.GetString("btnSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///              AI 처리 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string btnSJModeParam {
+            get {
+                return ResourceManager.GetString("btnSJModeParam", resourceCulture);
             }
         }
         
@@ -286,6 +313,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   공통 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CommonParam {
+            get {
+                return ResourceManager.GetString("CommonParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   2개 이상의 CSV 파일을 비교하십시요.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string compare2OrMore {
@@ -309,6 +345,24 @@ namespace MarkCompare {
         internal static string ConditionalLotSearchIsRunning {
             get {
                 return ResourceManager.GetString("ConditionalLotSearchIsRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   감시 주기과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CycleTime {
+            get {
+                return ResourceManager.GetString("CycleTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   분과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CycleTimeUnit {
+            get {
+                return ResourceManager.GetString("CycleTimeUnit", resourceCulture);
             }
         }
         
@@ -354,6 +408,15 @@ namespace MarkCompare {
         internal static string dbFilter {
             get {
                 return ResourceManager.GetString("dbFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   결점과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string DefectID {
+            get {
+                return ResourceManager.GetString("DefectID", resourceCulture);
             }
         }
         
@@ -426,6 +489,15 @@ namespace MarkCompare {
         internal static string ErrorOccurrence {
             get {
                 return ResourceManager.GetString("ErrorOccurrence", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   이상 비율과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ErrorRate {
+            get {
+                return ResourceManager.GetString("ErrorRate", resourceCulture);
             }
         }
         
@@ -988,6 +1060,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   상위 폴더과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string MainFolderName {
+            get {
+                return ResourceManager.GetString("MainFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   마킹 오차 비교과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string mainFormTitle {
@@ -1083,6 +1164,15 @@ namespace MarkCompare {
         internal static string noSelectedRow {
             get {
                 return ResourceManager.GetString("noSelectedRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string Parameter {
+            get {
+                return ResourceManager.GetString("Parameter", resourceCulture);
             }
         }
         
@@ -1249,6 +1339,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   대상 결점과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SECFLTID_Name {
+            get {
+                return ResourceManager.GetString("SECFLTID_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   선택한 LOT을 불러왔습니다.과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string SelectedLotIsLoaded {
@@ -1339,6 +1438,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   하위 폴더과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SubFolderName {
+            get {
+                return ResourceManager.GetString("SubFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   실시간 감시과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string tabLive {
@@ -1371,6 +1479,24 @@ namespace MarkCompare {
         internal static string time {
             get {
                 return ResourceManager.GetString("time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   감시과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string UseAiMonitor {
+            get {
+                return ResourceManager.GetString("UseAiMonitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AI 모니터링 사용과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string useAiMonitoring {
+            get {
+                return ResourceManager.GetString("useAiMonitoring", resourceCulture);
             }
         }
         
