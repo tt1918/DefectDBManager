@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -715,6 +717,92 @@ namespace MarkCompare
             }
         }
 
+        private void btnAddCompFltList_Click(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                dlg.Multiselect = false;
+
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+
+                int addCount = 0;
+                int skipCount = 0;
+
+                try
+                {
+                    string[] lines = File.ReadAllLines(dlg.FileName);
+
+                    dgvCompProc.SuspendLayout();
+                    try
+                    {
+                        foreach (string rawLine in lines)
+                        {
+                            if (string.IsNullOrWhiteSpace(rawLine))
+                                continue;
+
+                            string[] cols = rawLine.Split(',');
+                            if (cols.Length < 2)
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            string id = cols[0].Trim();
+                            string sizeText = cols[1].Trim();
+                            if (string.IsNullOrWhiteSpace(id))
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            float size;
+                            bool parseOk = float.TryParse(sizeText, NumberStyles.Float, CultureInfo.InvariantCulture, out size)
+                                           || float.TryParse(sizeText, NumberStyles.Float, CultureInfo.CurrentCulture, out size);
+
+                            if (parseOk == false)
+                            {
+                                if (addCount == 0 && id.Equals("ID", StringComparison.OrdinalIgnoreCase))
+                                    continue;
+
+                                skipCount++;
+                                continue;
+                            }
+
+                            string[] data = new string[(int)eDgvProcData.Total];
+                            data[(int)eDgvProcData.No] = dgvCompProc.Rows.Count.ToString();
+                            data[(int)eDgvProcData.ID] = id;
+                            data[(int)eDgvProcData.Size] = size.ToString();
+                            dgvCompProc.Rows.Add(data);
+                            addCount++;
+                        }
+                    }
+                    finally
+                    {
+                        dgvCompProc.ResumeLayout();
+                    }
+
+                    if (addCount == 0)
+                    {
+                        MessageBox.Show("추가할 CSV 데이터가 없습니다.", Lang.warning);
+                    }
+                    else if (skipCount > 0)
+                    {
+                        MessageBox.Show($"{addCount}개 추가, {skipCount}개 건너뜀", Lang.warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"CSV 파일 로드 실패: {ex.Message}", Lang.warning);
+                }
+            }
+        }
+
+
         private void btnAddCompFlt_Click(object sender, EventArgs e)
         {
             if (getValidTaskIdx(_selSetName) == -1) return;
@@ -922,6 +1010,90 @@ namespace MarkCompare
             }
         }
 
+        private void btnAddRefFltList_Click(object sender, EventArgs e)
+        {
+            int selProcIdx = getValidTaskIdx(_selSetName);
+            if (selProcIdx == -1) return;
+
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                dlg.Multiselect = false;
+
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+
+                int addCount = 0;
+                int skipCount = 0;
+
+                try
+                {
+                    string[] lines = File.ReadAllLines(dlg.FileName);
+
+                    dgvRefProc.SuspendLayout();
+                    try
+                    {
+                        foreach (string rawLine in lines)
+                        {
+                            if (string.IsNullOrWhiteSpace(rawLine))
+                                continue;
+
+                            string[] cols = rawLine.Split(',');
+                            if (cols.Length < 2)
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            string id = cols[0].Trim();
+                            string sizeText = cols[1].Trim();
+                            if (string.IsNullOrWhiteSpace(id))
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            float size;
+                            bool parseOk = float.TryParse(sizeText, NumberStyles.Float, CultureInfo.InvariantCulture, out size)
+                                           || float.TryParse(sizeText, NumberStyles.Float, CultureInfo.CurrentCulture, out size);
+
+                            if (parseOk == false)
+                            {
+                                if (addCount == 0 && id.Equals("ID", StringComparison.OrdinalIgnoreCase))
+                                    continue;
+
+                                skipCount++;
+                                continue;
+                            }
+
+                            string[] data = new string[(int)eDgvProcData.Total];
+                            data[(int)eDgvProcData.No] = dgvRefProc.Rows.Count.ToString();
+                            data[(int)eDgvProcData.ID] = id;
+                            data[(int)eDgvProcData.Size] = size.ToString();
+                            dgvRefProc.Rows.Add(data);
+                            addCount++;
+                        }
+                    }
+                    finally
+                    {
+                        dgvRefProc.ResumeLayout();
+                    }
+
+                    if (addCount == 0)
+                    {
+                        MessageBox.Show("추가할 CSV 데이터가 없습니다.", Lang.warning);
+                    }
+                    else if (skipCount > 0)
+                    {
+                        MessageBox.Show($"{addCount}개 추가, {skipCount}개 건너뜀", Lang.warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"CSV 파일 로드 실패: {ex.Message}", Lang.warning);
+                }
+            }
+        }
 
         private void btnAddRefFlt_Click(object sender, EventArgs e)
         {
@@ -1223,6 +1395,7 @@ namespace MarkCompare
             btnDelRefFlt.Font = newFont;
             dgvRefProc.Font = newFont;
             lblRefAiSkipDefect.Font = newFont;
+            btnAddRefFltList.Font = newFont;
 
             gpCompProc.Font = newFont;
             cbCompFltAll.Font = newFont;
@@ -1230,6 +1403,7 @@ namespace MarkCompare
             btnDelCompFlt.Font= newFont;
             dgvCompProc.Font= newFont;
             lblCompAiSkipDefect.Font = newFont;
+            btnAddCompFltList.Font = newFont;
 
             btnApply.Font = newFont;
             btnCancel.Font = newFont;
@@ -1271,6 +1445,7 @@ namespace MarkCompare
             btnDelRefFlt.Text = Lang.btnDel1;
             dgvRefProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
             lblRefAiSkipDefect.Text = Lang.AiSkipDefect;
+            btnAddRefFltList.Text = Lang.addList;
 
 
             gpCompProc.Text= Lang.formSettingGroupCompProc;
@@ -1279,6 +1454,7 @@ namespace MarkCompare
             btnDelCompFlt.Text= Lang.btnDel1;
             dgvCompProc.Columns[2].Name = Lang.formSettingDgvTitleSize;
             lblCompAiSkipDefect.Text = Lang.AiSkipDefect;
+            btnAddCompFltList.Text = Lang.addList;
 
             btnApply.Text = Lang.btnApply;
             btnCancel.Text = Lang.btnCancel;
@@ -1286,6 +1462,5 @@ namespace MarkCompare
         }
 
         #endregion
-
     }
 }

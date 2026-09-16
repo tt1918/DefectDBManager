@@ -47,6 +47,7 @@
             this.cbRefFltAll = new System.Windows.Forms.CheckBox();
             this.btnAddRefFlt = new CustomControls.ShadedButton();
             this.btnDelRefFlt = new CustomControls.ShadedButton();
+            this.btnAddRefFltList = new CustomControls.ShadedButton();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.lblLNCD = new CustomControls.ShadedLabel();
             this.lblLineID = new CustomControls.ShadedLabel();
@@ -104,6 +105,7 @@
             this.btnCancel = new CustomControls.ShadedButton();
             this.btnSave = new CustomControls.ShadedButton();
             this.btnLoad = new CustomControls.ShadedButton();
+            this.btnAddCompFltList = new CustomControls.ShadedButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -452,14 +454,16 @@
             // 
             // tableLayoutPanel10
             // 
-            this.tableLayoutPanel10.ColumnCount = 4;
+            this.tableLayoutPanel10.ColumnCount = 5;
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel10.Controls.Add(this.cbRefFltAll, 0, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnAddRefFlt, 2, 0);
-            this.tableLayoutPanel10.Controls.Add(this.btnDelRefFlt, 3, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnAddRefFlt, 3, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnDelRefFlt, 4, 0);
+            this.tableLayoutPanel10.Controls.Add(this.btnAddRefFltList, 2, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel10.Location = new System.Drawing.Point(2, 184);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
@@ -542,6 +546,37 @@
             this.btnDelRefFlt.TextOffsetX = 0;
             this.btnDelRefFlt.TextOffsetY = 0;
             this.btnDelRefFlt.Click += new System.EventHandler(this.btnDelRefFlt_Click);
+            // 
+            // btnAddRefFltList
+            // 
+            this.btnAddRefFltList.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddRefFltList.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddRefFltList.BorderColor = System.Drawing.Color.Lavender;
+            this.btnAddRefFltList.BorderRadius = 5;
+            this.btnAddRefFltList.BorderSize = 1;
+            this.btnAddRefFltList.ButtonImage = null;
+            this.btnAddRefFltList.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddRefFltList.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddRefFltList.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddRefFltList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddRefFltList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddRefFltList.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddRefFltList.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddRefFltList.IconPadding = 6;
+            this.btnAddRefFltList.IconSize = 20;
+            this.btnAddRefFltList.Location = new System.Drawing.Point(116, 1);
+            this.btnAddRefFltList.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddRefFltList.Name = "btnAddRefFltList";
+            this.btnAddRefFltList.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddRefFltList.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddRefFltList.ShowAccentLine = false;
+            this.btnAddRefFltList.Size = new System.Drawing.Size(73, 33);
+            this.btnAddRefFltList.TabIndex = 12;
+            this.btnAddRefFltList.Text = "ADD LIST";
+            this.btnAddRefFltList.TextColor = System.Drawing.Color.White;
+            this.btnAddRefFltList.TextOffsetX = 0;
+            this.btnAddRefFltList.TextOffsetY = 0;
+            this.btnAddRefFltList.Click += new System.EventHandler(this.btnAddRefFltList_Click);
             // 
             // tableLayoutPanel17
             // 
@@ -1027,16 +1062,16 @@
             // 
             // tableLayoutPanel14
             // 
-            this.tableLayoutPanel14.ColumnCount = 4;
+            this.tableLayoutPanel14.ColumnCount = 5;
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel14.Controls.Add(this.cbCompFltAll, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.btnAddCompFlt, 2, 0);
-            this.tableLayoutPanel14.Controls.Add(this.btnDelCompFlt, 3, 0);
+            this.tableLayoutPanel14.Controls.Add(this.btnAddCompFlt, 3, 0);
+            this.tableLayoutPanel14.Controls.Add(this.btnDelCompFlt, 4, 0);
+            this.tableLayoutPanel14.Controls.Add(this.btnAddCompFltList, 2, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel14.Location = new System.Drawing.Point(2, 270);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
@@ -1767,6 +1802,37 @@
             this.btnLoad.TextOffsetY = 0;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // btnAddCompFltList
+            // 
+            this.btnAddCompFltList.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnAddCompFltList.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddCompFltList.BorderColor = System.Drawing.Color.Lavender;
+            this.btnAddCompFltList.BorderRadius = 5;
+            this.btnAddCompFltList.BorderSize = 1;
+            this.btnAddCompFltList.ButtonImage = null;
+            this.btnAddCompFltList.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddCompFltList.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnAddCompFltList.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnAddCompFltList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAddCompFltList.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCompFltList.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnAddCompFltList.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnAddCompFltList.IconPadding = 6;
+            this.btnAddCompFltList.IconSize = 20;
+            this.btnAddCompFltList.Location = new System.Drawing.Point(116, 1);
+            this.btnAddCompFltList.Margin = new System.Windows.Forms.Padding(1);
+            this.btnAddCompFltList.Name = "btnAddCompFltList";
+            this.btnAddCompFltList.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnAddCompFltList.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnAddCompFltList.ShowAccentLine = false;
+            this.btnAddCompFltList.Size = new System.Drawing.Size(73, 33);
+            this.btnAddCompFltList.TabIndex = 14;
+            this.btnAddCompFltList.Text = "ADD LIST";
+            this.btnAddCompFltList.TextColor = System.Drawing.Color.White;
+            this.btnAddCompFltList.TextOffsetX = 0;
+            this.btnAddCompFltList.TextOffsetY = 0;
+            this.btnAddCompFltList.Click += new System.EventHandler(this.btnAddCompFltList_Click);
+            // 
             // FormSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1908,5 +1974,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
         private CustomControls.RoundTextBox tbCompAiSkipDefect;
         private CustomControls.ShadedLabel lblCompAiSkipDefect;
+        private CustomControls.ShadedButton btnAddRefFltList;
+        private CustomControls.ShadedButton btnAddCompFltList;
     }
 }
