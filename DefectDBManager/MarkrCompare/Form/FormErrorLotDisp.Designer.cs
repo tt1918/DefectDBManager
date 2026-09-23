@@ -31,10 +31,10 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbLot = new System.Windows.Forms.ListBox();
+            this.rtbErrList = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblTitle = new CustomControls.ShadedLabel();
             this.btnOK = new CustomControls.ShadedButton();
+            this.lblTitle = new CustomControls.ShadedLabel();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -49,11 +49,11 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Controls.Add(this.btnOK, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 406);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 417);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(602, 49);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(762, 49);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -72,7 +72,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 458);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(768, 469);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -81,28 +81,27 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel2.Controls.Add(this.lbLot, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.rtbErrList, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(1, 47);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(606, 355);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(766, 366);
             this.tableLayoutPanel2.TabIndex = 4;
             // 
-            // lbLot
+            // rtbErrList
             // 
-            this.lbLot.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.lbLot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbLot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbLot.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbLot.FormattingEnabled = true;
-            this.lbLot.ItemHeight = 21;
-            this.lbLot.Location = new System.Drawing.Point(13, 3);
-            this.lbLot.Name = "lbLot";
-            this.lbLot.Size = new System.Drawing.Size(580, 349);
-            this.lbLot.TabIndex = 0;
+            this.rtbErrList.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.rtbErrList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbErrList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbErrList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbErrList.Location = new System.Drawing.Point(13, 3);
+            this.rtbErrList.Name = "rtbErrList";
+            this.rtbErrList.Size = new System.Drawing.Size(740, 360);
+            this.rtbErrList.TabIndex = 7;
+            this.rtbErrList.Text = "";
             // 
             // tableLayoutPanel4
             // 
@@ -117,32 +116,9 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 83F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(606, 36);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(766, 36);
             this.tableLayoutPanel4.TabIndex = 5;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblTitle.BorderRadius = 3;
-            this.lblTitle.BorderSize = 1;
-            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTitle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ImagePadding = 6;
-            this.lblTitle.ImageSize = 18;
-            this.lblTitle.LabelImage = null;
-            this.lblTitle.Location = new System.Drawing.Point(11, 1);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.ShowAccentLine = false;
-            this.lblTitle.Size = new System.Drawing.Size(584, 34);
-            this.lblTitle.TabIndex = 15;
-            this.lblTitle.Text = "오차 발생 LOT";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblTitle.TextColor = System.Drawing.Color.White;
             // 
             // btnOK
             // 
@@ -161,7 +137,7 @@
             this.btnOK.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
             this.btnOK.IconPadding = 6;
             this.btnOK.IconSize = 20;
-            this.btnOK.Location = new System.Drawing.Point(503, 1);
+            this.btnOK.Location = new System.Drawing.Point(663, 1);
             this.btnOK.Margin = new System.Windows.Forms.Padding(1);
             this.btnOK.Name = "btnOK";
             this.btnOK.NormalColor = System.Drawing.Color.DimGray;
@@ -175,12 +151,35 @@
             this.btnOK.TextOffsetY = 0;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // lblTitle
+            // 
+            this.lblTitle.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblTitle.BorderRadius = 3;
+            this.lblTitle.BorderSize = 1;
+            this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblTitle.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ImagePadding = 6;
+            this.lblTitle.ImageSize = 18;
+            this.lblTitle.LabelImage = null;
+            this.lblTitle.Location = new System.Drawing.Point(11, 1);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(1);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.ShowAccentLine = false;
+            this.lblTitle.Size = new System.Drawing.Size(744, 34);
+            this.lblTitle.TabIndex = 15;
+            this.lblTitle.Text = "오차 발생 LOT";
+            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTitle.TextColor = System.Drawing.Color.White;
+            // 
             // FormErrorLotDisp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(608, 458);
+            this.ClientSize = new System.Drawing.Size(768, 469);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -204,8 +203,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.ListBox lbLot;
         private CustomControls.ShadedLabel lblTitle;
         private CustomControls.ShadedButton btnOK;
+        private System.Windows.Forms.RichTextBox rtbErrList;
     }
 }

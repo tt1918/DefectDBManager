@@ -558,6 +558,18 @@ namespace DefectDBManager
         public bool IsModelExsit = false;
         public List<AiMonitorResultItem> Items = new List<AiMonitorResultItem>();
         public List<string> FaultInfos = new List<string>();
+        public bool IsAiError
+        {
+            get
+            {
+                foreach (var item in Items)
+                {
+                    if (item.Model.Use && item.Judge == false) 
+                        return true;
+                }
+                return false;
+            }
+        }
 
         public AiMonitorResultItem this[int idx]
         {

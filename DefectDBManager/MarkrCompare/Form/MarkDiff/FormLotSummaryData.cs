@@ -245,8 +245,28 @@ namespace MarkCompare
                     }));
                     return;
                 }
+                bool isAiError = false;
+                if (_lotSummery.FaultData.AIMonResult.IsModelExsit == true)
+                    isAiError = _lotSummery.FaultData.AIMonResult.IsAiError;
 
-                if (_isError)
+                if (_isError && isAiError)
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        tableLayoutPanel1.RowStyles[0].Height = 55;
+                        
+                        lblStatus.FillColor = Color.Red;
+                        this.BackColor = Color.Pink;
+                        lblStatus.Text = Lang.ErrorOccurrence;
+
+                        if (_lotSummery.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
+                            lblStatus.Text = lblStatus.Text + $" - {Lang.bunchDefect}";
+                        
+                        if(isAiError==true)
+                            lblStatus.Text += $"\n Ai Result - Error";
+                    }));
+                }
+                else if (_isError && !isAiError)
                 {
                     this.BeginInvoke(new Action(() =>
                     {
@@ -256,6 +276,19 @@ namespace MarkCompare
 
                         if (_lotSummery.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                             lblStatus.Text = lblStatus.Text + $" - {Lang.bunchDefect}";
+                    }));
+                }
+                else if (!_isError && isAiError)
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        lblStatus.FillColor = Color.Red;
+                        this.BackColor = Color.Pink;
+                        lblStatus.Text = Lang.ErrorOccurrence;
+                        
+                        if (isAiError == true)
+                            lblStatus.Text += $"Ai Result - Error";
+
                     }));
                 }
                 else
@@ -286,15 +319,7 @@ namespace MarkCompare
                 sb.Append(_lotSummery.LotName);
                 sb.Append($" - {filter} ");
                 if(_lotSummery.FaultData.AIMonResult.IsModelExsit==true)
-                {
-                    foreach(var item in _lotSummery.FaultData.AIMonResult.Items)
-                    {
-                        if(item.Model.Use && item.Judge == false)
-                            isAiError = true;
-                        else if (item.Total <= 0)
-                            isAiError = true;
-                    }
-                }
+                    isAiError = _lotSummery.FaultData.AIMonResult.IsAiError;
 
                 lblLotName.Text = sb.ToString();
 

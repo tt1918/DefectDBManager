@@ -252,6 +252,7 @@
     <Compile Include="Control\RoundLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Summery\SummeryInfo.cs" />
     <Compile Include="SystemParam.cs" />
     <EmbeddedResource Include="Control\RoundTextBox.resx">
       <DependentUpon>RoundTextBox.cs</DependentUpon>

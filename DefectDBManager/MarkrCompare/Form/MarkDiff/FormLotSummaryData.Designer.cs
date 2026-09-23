@@ -56,7 +56,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(655, 128);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(655, 183);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -93,7 +93,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(655, 80);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(655, 135);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // cbViewSelect
@@ -103,7 +103,7 @@
             this.cbViewSelect.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbViewSelect.Location = new System.Drawing.Point(3, 3);
             this.cbViewSelect.Name = "cbViewSelect";
-            this.cbViewSelect.Size = new System.Drawing.Size(44, 74);
+            this.cbViewSelect.Size = new System.Drawing.Size(44, 129);
             this.cbViewSelect.TabIndex = 3;
             this.cbViewSelect.UseVisualStyleBackColor = true;
             this.cbViewSelect.Visible = false;
@@ -117,7 +117,7 @@
             this.flpResult.Location = new System.Drawing.Point(51, 1);
             this.flpResult.Margin = new System.Windows.Forms.Padding(1);
             this.flpResult.Name = "flpResult";
-            this.flpResult.Size = new System.Drawing.Size(553, 78);
+            this.flpResult.Size = new System.Drawing.Size(553, 133);
             this.flpResult.TabIndex = 4;
             this.flpResult.WrapContents = false;
             // 
@@ -187,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 128);
+            this.ClientSize = new System.Drawing.Size(655, 183);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

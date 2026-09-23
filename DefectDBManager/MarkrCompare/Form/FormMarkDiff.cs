@@ -2,6 +2,7 @@
 using DefectDBManager.Preproc;
 using MarkCompare.Delegate;
 using MarkCompare.Helper;
+using MarkCompare.Summery;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -513,7 +514,7 @@ namespace MarkCompare
 
         public void UpdateLotSummary()
         {
-            List<string> errLot = new List<string>();
+            SummeryInfoList summeryInfoList = new SummeryInfoList();
 
             foreach (var item in _lotManager.Live.Product)
             {
@@ -525,22 +526,45 @@ namespace MarkCompare
 
                 foreach(var lot in _lotManager.Live.LOT[item.Key])
                 {
-                    StringBuilder sb = new StringBuilder(); ;
+                    SummeryInfo summeryInfo = new SummeryInfo();
+                    StringBuilder preSb = new StringBuilder();
+                    StringBuilder sb = new StringBuilder();
+
                     sb.Append($"DB : {lot.LotName}");
                     if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                     {
+                        preSb.Append($"[좌표 오차]");
                         sb.Append($" - {Lang.bunchDefect}");
+                        summeryInfo.IsMarkingError = true;
                     }
-                    errLot.Add(sb.ToString());
+                    if (lot.FaultData.AIMonResult.IsAiError)
+                    {
+                        preSb.Append($"[AI 처리 이상]");
+                        foreach (var aiResult in lot.FaultData.AIMonResult.Items)
+                        {
+                            if (aiResult.Judge == false)
+                            {
+                                sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                summeryInfo.IsAiProcError = true;
+                            }
+                        }
+                    }
+
+                    if (summeryInfo.IsMarkingError || summeryInfo.IsAiProcError)
+                    {
+                        string strInfo = $"{preSb.ToString()} {sb.ToString()}";
+                        summeryInfo.Info = strInfo;
+                        summeryInfoList.Infos.Add(summeryInfo);
+                    }
                 }
             }
 
-            if (errLot.Count > 0)
+            if (summeryInfoList.Infos.Count > 0)
             {
                 BeginInvoke(new Action(delegate
                 {
                     FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
-                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.OnUpdateErrorLots(summeryInfoList);
                     form.Show();
                 }));
             }
@@ -578,7 +602,7 @@ namespace MarkCompare
                 _lotListForms[(int)DefectDBManager.Preproc.eProc.Search].SetTapControl(_lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search]);
             }));
 
-            List<string> errLot = new List<string>();
+            SummeryInfoList summeryInfoList = new SummeryInfoList();
 
             foreach (var item in _lotManager.CrtProcFilter[(int)DefectDBManager.Preproc.eProc.Search].Data)
             {
@@ -598,23 +622,46 @@ namespace MarkCompare
 
                     foreach (var lot in _lotManager.Search.LOT[item.ToString()])
                     {
-                        StringBuilder sb = new StringBuilder(); ;
+                        SummeryInfo summeryInfo = new SummeryInfo();
+                        StringBuilder preSb = new StringBuilder();
+                        StringBuilder sb = new StringBuilder();
+
                         sb.Append($"DB : {lot.LotName}");
                         if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                         {
+                            preSb.Append($"[좌표 오차]");
                             sb.Append($" - {Lang.bunchDefect}");
+                            summeryInfo.IsMarkingError = true;
                         }
-                        errLot.Add(sb.ToString());
+                        if (lot.FaultData.AIMonResult.IsAiError)
+                        {
+                            preSb.Append($"[AI 처리 이상]");
+                            foreach (var aiResult in lot.FaultData.AIMonResult.Items)
+                            {
+                                if (aiResult.Judge == false)
+                                {
+                                    sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                    summeryInfo.IsAiProcError = true;
+                                }
+                            }
+                        }
+
+                        if (summeryInfo.IsMarkingError || summeryInfo.IsAiProcError)
+                        {
+                            string strInfo = $"{preSb.ToString()} {sb.ToString()}";
+                            summeryInfo.Info = strInfo;
+                            summeryInfoList.Infos.Add(summeryInfo);
+                        }
                     }
                 }
             }
 
-            if(errLot.Count>0)
+            if(summeryInfoList.Infos.Count>0)
             {
                 BeginInvoke(new Action(delegate
                 {
                     FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Search);
-                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.OnUpdateErrorLots(summeryInfoList);
                     form.Show();
                 }));
             }
@@ -895,9 +942,9 @@ namespace MarkCompare
                     _lotListForms[(int)DefectDBManager.Preproc.eProc.Selected].SetTapControlDB();
             }));
 
-            List<string> errLot = new List<string>();
+            SummeryInfoList summeryInfoList = new SummeryInfoList();
 
-            if(_selLotParam.FilterType==FilterType.UserFilter)
+            if (_selLotParam.FilterType==FilterType.UserFilter)
             {
                 foreach (var item in _selLotParam.UserFilter.Data)
                 {
@@ -917,10 +964,38 @@ namespace MarkCompare
 
                         foreach (var lot in _lotManager.Selected.LOT[item.ToString()])
                         {
+                            SummeryInfo summeryInfo = new SummeryInfo();
+                            StringBuilder preSb = new StringBuilder();
+                            StringBuilder sb = new StringBuilder();
+
+                            sb.Append($"{item.ToString()} : {lot.LotName}");
                             if (lot.CompResult == eCompResult.ProcNg)
                             {
-                                string strTemp = $"{item.ToString()} : {lot.LotName}";
-                                errLot.Add(strTemp);
+                                if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
+                                {
+                                    preSb.Append($"[좌표 오차]");
+                                    sb.Append($" - {Lang.bunchDefect}");
+                                    summeryInfo.IsMarkingError = true;
+                                }
+                            }
+                            if (lot.FaultData.AIMonResult.IsAiError)
+                            {
+                                preSb.Append($"[AI 처리 이상]");
+                                foreach (var aiResult in lot.FaultData.AIMonResult.Items)
+                                {
+                                    if (aiResult.Judge == false)
+                                    {
+                                        sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                        summeryInfo.IsAiProcError = true;
+                                    }
+                                }
+                            }
+
+                            if(summeryInfo.IsMarkingError || summeryInfo.IsAiProcError)
+                            {
+                                string strInfo = $"{preSb.ToString()} {sb.ToString()}";
+                                summeryInfo.Info = strInfo;
+                                summeryInfoList.Infos.Add(summeryInfo);
                             }
                         }
                     }
@@ -937,24 +1012,46 @@ namespace MarkCompare
                     {
                         if (lot.CompResult == eCompResult.ProcNg)
                         {
-                            StringBuilder sb = new StringBuilder(); ;
+                            SummeryInfo summeryInfo = new SummeryInfo();
+                            StringBuilder preSb = new StringBuilder();
+                            StringBuilder sb = new StringBuilder();
+
                             sb.Append($"DB : {lot.LotName}");
                             if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                             {
+                                preSb.Append($"[좌표 오차]");
                                 sb.Append($" - {Lang.bunchDefect}");
+                                summeryInfo.IsMarkingError = true;
                             }
-                            errLot.Add(sb.ToString());
+                            if (lot.FaultData.AIMonResult.IsAiError)
+                            {
+                                preSb.Append($"[AI 처리 이상]");
+                                foreach (var aiResult in lot.FaultData.AIMonResult.Items)
+                                {
+                                    if (aiResult.Judge == false)
+                                    {
+                                        sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                        summeryInfo.IsAiProcError = true;
+                                    }
+                                }
+                            }
+                            if (summeryInfo.IsMarkingError || summeryInfo.IsAiProcError)
+                            {
+                                string strInfo = $"{preSb.ToString()} {sb.ToString()}";
+                                summeryInfo.Info = strInfo;
+                                summeryInfoList.Infos.Add(summeryInfo);
+                            }
                         }
                     }
                 }
             }
 
-            if (errLot.Count > 0)
+            if (summeryInfoList.Infos.Count > 0)
             {
                 BeginInvoke(new Action(delegate
                 {
                     FormErrorLotDisp form = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Selected);
-                    form.OnUpdateErrorLots(errLot.ToArray());
+                    form.OnUpdateErrorLots(summeryInfoList);
                     form.Show();
                 }));
             }

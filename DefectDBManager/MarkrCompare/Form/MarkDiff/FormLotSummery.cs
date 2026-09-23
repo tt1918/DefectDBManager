@@ -1,5 +1,6 @@
 ﻿using Coss.Controls;
 using DefectDBManager.Preproc;
+using MarkCompare.Summery;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -579,7 +580,7 @@ namespace MarkCompare
             try
             {
                 dgvAiMonitor.SuspendLayout();
-                List<string> errLot = new List<string>();
+                SummeryInfoList errLot = new SummeryInfoList();
 
                 int existRowIndex = findAiMonitorRow(monitorData);
                 bool hasJudgement = monitorData.Judgement != null && monitorData.Judgement.Count > 0;
@@ -591,7 +592,10 @@ namespace MarkCompare
                     {
                         if(judge.Value.Judgement == false)
                         {
-                            errLot.Add($"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Mismatch {judge.Value.NoneConvertRate*100.0:F2}%");
+                            SummeryInfo info = new SummeryInfo();
+                            info.Info = $"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Mismatch {judge.Value.NoneConvertRate*100.0:F2}% " +
+                                $"[{judge.Value.Total} → {judge.Value.Converted}]";
+                            errLot.Infos.Add(info);
                         }
                     }
                 }
@@ -706,10 +710,13 @@ namespace MarkCompare
 
                 dgvAiMonitor.Invalidate();
 
-                if(_sjmodeErrLotDispForm==null)
-                    _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
-                _sjmodeErrLotDispForm.OnUpdateErrorLots(errLot.ToArray());
-                _sjmodeErrLotDispForm.Show();
+                if(errLot.Infos.Count>0)
+                {
+                    if (_sjmodeErrLotDispForm == null)
+                        _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
+                    _sjmodeErrLotDispForm.OnUpdateErrorLots(errLot);
+                    _sjmodeErrLotDispForm.Show();
+                }
             }
             catch
             {

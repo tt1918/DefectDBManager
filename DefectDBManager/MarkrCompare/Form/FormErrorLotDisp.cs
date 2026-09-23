@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarkCompare.Summery;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -18,7 +19,6 @@ namespace MarkCompare
     public partial class FormErrorLotDisp : Form
     {
         #region Param
-        private BindingList<string> _errLots = new BindingList<string>();
         DefectDBManager.Preproc.eProc _viewType;
 
         public bool IsHideMode { get; set; } = false;
@@ -32,11 +32,9 @@ namespace MarkCompare
             lblTitle.MouseDown += lblTitle_MouseDown;
             lblTitle.MouseMove += lblTitle_MouseMove;
 
-            // listBox에 바인딩
-            lbLot.DataSource = _errLots;
+            initErrList();
 
             _viewType = type;
-
         }
 
         private void FormErrorLotDisp_VisibleChanged(object sender, EventArgs e)
@@ -69,12 +67,60 @@ namespace MarkCompare
         }
         #endregion
 
+        #region Display Error List
+        private void initErrList()
+        {
+            rtbErrList.ReadOnly = true;
+            rtbErrList.BorderStyle = BorderStyle.None;
+            rtbErrList.DetectUrls = false;
+            rtbErrList.HideSelection = true;
+            rtbErrList.TabStop = false;
+        }
+
+        private void displayErrList(SummeryInfoList infos)
+        {
+            if (infos == null) return;
+
+            try
+            {
+                rtbErrList.SuspendLayout();
+
+                foreach (var info in infos.Infos)
+                {
+                    Color color = Color.Black;
+
+                    if (info.IsMarkingError && !info.IsAiProcError)
+                        color = Color.Black;
+                    else if (!info.IsMarkingError && info.IsAiProcError)
+                        color = Color.Blue;
+                    else if (info.IsMarkingError && info.IsAiProcError)
+                        color = Color.Red;
+                    else
+                        color = Color.Black;
+
+                    rtbErrList.SelectionStart = rtbErrList.TextLength;
+                    rtbErrList.SelectionLength = 0;
+
+                    rtbErrList.SelectionColor = color;
+                    rtbErrList.AppendText(info.Info + Environment.NewLine);
+                }
+
+                // 커서/선택 제거
+                rtbErrList.SelectionStart = 0;
+                rtbErrList.SelectionLength = 0;
+            }
+            finally
+            {
+                rtbErrList.ResumeLayout();
+            }
+        }
+        #endregion
+
         #region Control
         private void btnOK_Click(object sender, EventArgs e)
         {
             if(IsHideMode)
             {
-                _errLots.Clear();
                 this.Hide();
             }
             else
@@ -86,13 +132,11 @@ namespace MarkCompare
         #endregion
 
         #region Lot Update
-        public void OnUpdateErrorLots(string[] lots)
+        public void OnUpdateErrorLots(SummeryInfoList infos)
         {
             try
             {
-                _errLots.RaiseListChangedEvents = false;// UI 갱신 중지
-                foreach (var lot in lots)
-                    _errLots.Add(lot);
+                displayErrList(infos);
             }
             catch
             {
@@ -100,8 +144,6 @@ namespace MarkCompare
             }
             finally
             {
-                _errLots.RaiseListChangedEvents = true;// UI 갱신 중지
-                _errLots.ResetBindings();
             }
         }
         #endregion
