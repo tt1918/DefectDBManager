@@ -533,18 +533,18 @@ namespace MarkCompare
                     sb.Append($"DB : {lot.LotName}");
                     if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                     {
-                        preSb.Append($"[좌표 오차]");
+                        preSb.Append($"[{Lang.PosCompError}]");
                         sb.Append($" - {Lang.bunchDefect}");
                         summeryInfo.IsMarkingError = true;
                     }
                     if (lot.FaultData.AIMonResult.IsAiError)
                     {
-                        preSb.Append($"[AI 처리 이상]");
+                        preSb.Append($"[{Lang.AiCheckError}]");
                         foreach (var aiResult in lot.FaultData.AIMonResult.Items)
                         {
                             if (aiResult.Judge == false)
                             {
-                                sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
                                 summeryInfo.IsAiProcError = true;
                             }
                         }
@@ -629,18 +629,18 @@ namespace MarkCompare
                         sb.Append($"DB : {lot.LotName}");
                         if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                         {
-                            preSb.Append($"[좌표 오차]");
+                            preSb.Append($"[{Lang.PosCompError}]");
                             sb.Append($" - {Lang.bunchDefect}");
                             summeryInfo.IsMarkingError = true;
                         }
                         if (lot.FaultData.AIMonResult.IsAiError)
                         {
-                            preSb.Append($"[AI 처리 이상]");
+                            preSb.Append($"[{Lang.AiCheckError}]");
                             foreach (var aiResult in lot.FaultData.AIMonResult.Items)
                             {
                                 if (aiResult.Judge == false)
                                 {
-                                    sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                    sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
                                     summeryInfo.IsAiProcError = true;
                                 }
                             }
@@ -973,19 +973,19 @@ namespace MarkCompare
                             {
                                 if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                                 {
-                                    preSb.Append($"[좌표 오차]");
+                                    preSb.Append($"[{Lang.PosCompError}]");
                                     sb.Append($" - {Lang.bunchDefect}");
                                     summeryInfo.IsMarkingError = true;
                                 }
                             }
                             if (lot.FaultData.AIMonResult.IsAiError)
                             {
-                                preSb.Append($"[AI 처리 이상]");
+                                preSb.Append($"[{Lang.AiCheckError}]");
                                 foreach (var aiResult in lot.FaultData.AIMonResult.Items)
                                 {
                                     if (aiResult.Judge == false)
                                     {
-                                        sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                        sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
                                         summeryInfo.IsAiProcError = true;
                                     }
                                 }
@@ -1019,18 +1019,18 @@ namespace MarkCompare
                             sb.Append($"DB : {lot.LotName}");
                             if (lot.LotSummary.Summary.Any(s => s.IsBunchDefects == true))
                             {
-                                preSb.Append($"[좌표 오차]");
+                                preSb.Append($"[{Lang.PosCompError}]");
                                 sb.Append($" - {Lang.bunchDefect}");
                                 summeryInfo.IsMarkingError = true;
                             }
                             if (lot.FaultData.AIMonResult.IsAiError)
                             {
-                                preSb.Append($"[AI 처리 이상]");
+                                preSb.Append($"[{Lang.AiCheckError}]");
                                 foreach (var aiResult in lot.FaultData.AIMonResult.Items)
                                 {
                                     if (aiResult.Judge == false)
                                     {
-                                        sb.Append($"_Mismatch({aiResult.Ratio:F1}%)");
+                                        sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
                                         summeryInfo.IsAiProcError = true;
                                     }
                                 }

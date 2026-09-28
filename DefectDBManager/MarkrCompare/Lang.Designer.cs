@@ -70,6 +70,42 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   AI 처리 이상과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string AiCheckError {
+            get {
+                return ResourceManager.GetString("AiCheckError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [AI 모니터링 결과]과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string AiMonitoringResult {
+            get {
+                return ResourceManager.GetString("AiMonitoringResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [AI 모니터링 미적용]과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string AiMonNotApplied {
+            get {
+                return ResourceManager.GetString("AiMonNotApplied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AI 비교 - 에러과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string AiResult_Error {
+            get {
+                return ResourceManager.GetString("AiResult_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   AI 판정 예외 불량과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string AiSkipDefect {
@@ -295,6 +331,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   [유무 검사]과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string CheckAiResultExsitance {
+            get {
+                return ResourceManager.GetString("CheckAiResultExsitance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   이력 삭제과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string clearHistory {
@@ -327,6 +372,15 @@ namespace MarkCompare {
         internal static string compare2OrMore {
             get {
                 return ResourceManager.GetString("compare2OrMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [인정 비율 검사]과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string ComparingAiResult {
+            get {
+                return ResourceManager.GetString("ComparingAiResult", resourceCulture);
             }
         }
         
@@ -1087,6 +1141,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   불일치과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string mismatch {
+            get {
+                return ResourceManager.GetString("mismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   이름에는 [ _ ] 를 포함할 수 없습니다. 과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string NamesCannotContain {
@@ -1200,6 +1263,15 @@ namespace MarkCompare {
         internal static string plzChooseProcess {
             get {
                 return ResourceManager.GetString("plzChooseProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   좌표 오차과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string PosCompError {
+            get {
+                return ResourceManager.GetString("PosCompError", resourceCulture);
             }
         }
         
@@ -1380,6 +1452,15 @@ namespace MarkCompare {
         internal static string setting {
             get {
                 return ResourceManager.GetString("setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   [SJ MODE] 감시 에러과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string SJMODE_Mornitor_Error {
+            get {
+                return ResourceManager.GetString("SJMODE_Mornitor_Error", resourceCulture);
             }
         }
         

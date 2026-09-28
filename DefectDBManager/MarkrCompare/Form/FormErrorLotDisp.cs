@@ -164,7 +164,7 @@ namespace MarkCompare
                 if(!IsHideMode)
                     lblTitle.Text = Lang.formErrorLotDispTitleLive;
                 else
-                    lblTitle.Text = "[SJ MODE] 감시 에러";
+                    lblTitle.Text = Lang.SJMODE_Mornitor_Error;
             }
                 
             else

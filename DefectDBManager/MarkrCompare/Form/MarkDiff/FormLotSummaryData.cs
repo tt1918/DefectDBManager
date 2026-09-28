@@ -263,7 +263,7 @@ namespace MarkCompare
                             lblStatus.Text = lblStatus.Text + $" - {Lang.bunchDefect}";
                         
                         if(isAiError==true)
-                            lblStatus.Text += $"\n Ai Result - Error";
+                            lblStatus.Text += $"\n {Lang.AiResult_Error}";
                     }));
                 }
                 else if (_isError && !isAiError)
@@ -287,7 +287,7 @@ namespace MarkCompare
                         lblStatus.Text = Lang.ErrorOccurrence;
                         
                         if (isAiError == true)
-                            lblStatus.Text += $"Ai Result - Error";
+                            lblStatus.Text += $"\n {Lang.AiResult_Error}";
 
                     }));
                 }
@@ -384,19 +384,19 @@ namespace MarkCompare
                 if (!_lotSummery.FaultData.AIMonResult.IsModelExsit)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("[AI 모니터링 미적용]");
+                    sb.Append(Lang.AiMonNotApplied);
                     flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), false));
                 }
                 else
                 {
                     bool isAiError = false;
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("[AI 모니터링 결과]");
+                    sb.AppendLine(Lang.AiMonitoringResult);
                     foreach (var item in _lotSummery.FaultData.AIMonResult.Items)
                     {
                         if (item.Model.Use)
                         {
-                            sb.AppendLine("[인정 비율 검사] ");
+                            sb.AppendLine(Lang.ComparingAiResult);
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             sb.Append($"[{item.Total}, {item.Match}] ");
                             if (item.Judge == true)
@@ -409,7 +409,7 @@ namespace MarkCompare
                         }
                         else
                         {
-                            sb.AppendLine("[유무 검사] ");
+                            sb.AppendLine(Lang.CheckAiResultExsitance);
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             if (item.Total > 0)
                                 sb.AppendLine("OK");
@@ -767,19 +767,19 @@ namespace MarkCompare
                 if (!_lotSummery.FaultData.AIMonResult.IsModelExsit)
                 {
                     StringBuilder sb = new StringBuilder();
-                    sb.Append("[AI 모니터링 미적용]");
+                    sb.Append(Lang.AiMonNotApplied);
                     flpResult.Controls.Add(makeProcessInfoLabel(sb.ToString(), false));
                 }
                 else
                 {
                     bool isAiError = false;
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("[AI 모니터링 결과]");
+                    sb.AppendLine(Lang.AiMonitoringResult);
                     foreach (var item in _lotSummery.FaultData.AIMonResult.Items)
                     {
                         if (item.Model.Use)
                         {
-                            sb.AppendLine("[인정 비율 검사] ");
+                            sb.AppendLine(Lang.ComparingAiResult);
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             sb.Append($"[{item.Total}, {item.Match}] ");
                             if (item.Judge == true)
@@ -792,7 +792,7 @@ namespace MarkCompare
                         }
                         else
                         {
-                            sb.AppendLine("[유무 검사] ");
+                            sb.AppendLine(Lang.CheckAiResultExsitance);
                             sb.Append($"{string.Join(",", item.Model.FLTID)}→{item.Model.SECFLTID}: ");
                             if (item.Total > 0)
                                 sb.AppendLine("OK");

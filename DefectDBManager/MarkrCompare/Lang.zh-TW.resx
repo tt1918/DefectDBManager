@@ -606,4 +606,31 @@
   <data name="DefectID" xml:space="preserve">
     <value>缺陷名稱</value>
   </data>
+  <data name="SJMODE_Mornitor_Error" xml:space="preserve">
+    <value>[SJ MODE] 監控錯誤</value>
+  </data>
+  <data name="AiMonNotApplied" xml:space="preserve">
+    <value>[未套用AI監控]</value>
+  </data>
+  <data name="AiMonitoringResult" xml:space="preserve">
+    <value>[AI監控結果]</value>
+  </data>
+  <data name="ComparingAiResult" xml:space="preserve">
+    <value>[轉換率檢查]</value>
+  </data>
+  <data name="CheckAiResultExsitance" xml:space="preserve">
+    <value>[有無檢查</value>
+  </data>
+  <data name="AiResult_Error" xml:space="preserve">
+    <value>AI比較 - 錯誤</value>
+  </data>
+  <data name="PosCompError" xml:space="preserve">
+    <value>座標誤差</value>
+  </data>
+  <data name="AiCheckError" xml:space="preserve">
+    <value>AI處理異常</value>
+  </data>
+  <data name="mismatch" xml:space="preserve">
+    <value>不一致</value>
+  </data>
 </root>
