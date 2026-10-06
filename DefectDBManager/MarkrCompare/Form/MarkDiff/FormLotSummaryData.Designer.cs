@@ -56,7 +56,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(655, 183);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(624, 183);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -74,7 +74,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(655, 35);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 35);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -93,7 +93,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(655, 135);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(624, 135);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // cbViewSelect
@@ -117,7 +117,7 @@
             this.flpResult.Location = new System.Drawing.Point(51, 1);
             this.flpResult.Margin = new System.Windows.Forms.Padding(1);
             this.flpResult.Name = "flpResult";
-            this.flpResult.Size = new System.Drawing.Size(553, 133);
+            this.flpResult.Size = new System.Drawing.Size(522, 133);
             this.flpResult.TabIndex = 4;
             this.flpResult.WrapContents = false;
             // 
@@ -154,7 +154,7 @@
             this.lblLotName.Location = new System.Drawing.Point(161, 3);
             this.lblLotName.Name = "lblLotName";
             this.lblLotName.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLotName.Size = new System.Drawing.Size(481, 29);
+            this.lblLotName.Size = new System.Drawing.Size(450, 29);
             this.lblLotName.TabIndex = 8;
             this.lblLotName.Text = "-";
             this.lblLotName.UseBestFitFont = true;
@@ -173,7 +173,7 @@
             this.lblProcess.ImagePadding = 6;
             this.lblProcess.ImageSize = 18;
             this.lblProcess.LabelImage = null;
-            this.lblProcess.Location = new System.Drawing.Point(606, 1);
+            this.lblProcess.Location = new System.Drawing.Point(575, 1);
             this.lblProcess.Margin = new System.Windows.Forms.Padding(1);
             this.lblProcess.Name = "lblProcess";
             this.lblProcess.ShowAccentLine = false;
@@ -187,7 +187,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 183);
+            this.ClientSize = new System.Drawing.Size(624, 183);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

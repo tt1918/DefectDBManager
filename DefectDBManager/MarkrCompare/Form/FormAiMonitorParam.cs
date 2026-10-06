@@ -20,6 +20,7 @@ namespace MarkCompare
         DefectDBManager.Preproc.AiMonitorParam _param = null;
 
         private DefectDBManager.Preproc.AiMonitorItem _selectedModel = null;
+        private DefectDBManager.Preproc.SjModelInfo _selectedSubItem = null;
 
         #endregion
 
@@ -42,6 +43,7 @@ namespace MarkCompare
             if(this.Visible==true)
             {
                 initDgvModel();
+                initDgvSubItems();
                 initDgvParam();
             }
         }
@@ -129,16 +131,10 @@ namespace MarkCompare
             dgvModel.Columns.Clear();
 
             dgvModel.Columns.Add("Name", Lang.formSettingDgvProcIdx1);
-            dgvModel.Columns.Add("LNCD", "LNCD");
-            dgvModel.Columns.Add("ModelName", Lang.product);
 
             dgvModel.Columns[0].DefaultCellStyle.Font = newFont;
-            dgvModel.Columns[1].DefaultCellStyle.Font = newFont;
-            dgvModel.Columns[2].DefaultCellStyle.Font = newFont;
 
             dgvModel.Columns[0].FillWeight = 100;
-            dgvModel.Columns[1].FillWeight = 100;
-            dgvModel.Columns[2].FillWeight = 200;
 
             // 컬럼 정렬 기능 비활성화
             foreach (DataGridViewColumn column in dgvModel.Columns)
@@ -157,19 +153,18 @@ namespace MarkCompare
 
         private void addModelToDgv(DefectDBManager.Preproc.AiMonitorItem model)
         {
-            dgvModel.Rows.Add(model.Name, model.LNCD, model.ModelName);
+            dgvModel.Rows.Add(model.Name);
         }
         private void dgvModel_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             _selectedModel = null;
+            _selectedSubItem = null;
             if (dgvModel.SelectedRows.Count > 0)
             {
                 string name = dgvModel.SelectedRows[0].Cells[0].Value?.ToString() ?? string.Empty;
-                string lncd = dgvModel.SelectedRows[0].Cells[1].Value?.ToString() ?? string.Empty;
-                string modelName = dgvModel.SelectedRows[0].Cells[2].Value?.ToString() ?? string.Empty;
 
-                _selectedModel = _param.ModeItems.FirstOrDefault(item => item.Name == name && item.LNCD == lncd && item.ModelName == modelName);
-                displayParamForSelectedModel();
+                _selectedModel = _param.ModeItems.FirstOrDefault(item => item.Name == name);
+                displaySubItemsForSelectedModel();
 
                 lblSelLNCD.Text = _selectedModel.Name;
             }
@@ -183,11 +178,7 @@ namespace MarkCompare
                 DataGridViewRow row = dgvModel.SelectedRows[0];
                 int index = row.Index;
                 string name = row.Cells[0].Value?.ToString() ?? string.Empty;
-                string lncd = row.Cells[1].Value?.ToString() ?? string.Empty;
-                string modelName = row.Cells[2].Value?.ToString() ?? string.Empty;
                 _param.ModeItems[index].Name = name;
-                _param.ModeItems[index].LNCD = lncd;
-                _param.ModeItems[index].ModelName = modelName;
             }
         }
 
@@ -199,7 +190,8 @@ namespace MarkCompare
             
             addModelToDgv(item);
             _selectedModel = item;
-            displayParamForSelectedModel();
+            displayParamForSelectedItem();
+            clearParamGrid();
         }
 
         private void btnDeleteModel_Click(object sender, EventArgs e)
@@ -207,15 +199,11 @@ namespace MarkCompare
             if (dgvModel.SelectedRows.Count > 0)
             {
                 string name = dgvModel.SelectedRows[0].Cells[0].Value?.ToString() ?? string.Empty;
-                string lncd = dgvModel.SelectedRows[0].Cells[1].Value?.ToString() ?? string.Empty;
-                string modelName = dgvModel.SelectedRows[0].Cells[2].Value?.ToString() ?? string.Empty;
 
                 for (int i=0; i<_param.ModeItems.Count; i++)
                 {
                     var item = _param.ModeItems[i];
-                    if (item.Name == name && 
-                        item.LNCD == lncd && 
-                        item.ModelName == modelName)
+                    if (item.Name == name)
                     {
                         _param.ModeItems.RemoveAt(i);
                         break;
@@ -228,10 +216,101 @@ namespace MarkCompare
 
         #endregion
 
+        #region Sub Item Control
+        private void initDgvSubItems()
+        {
+            dgvSubItems.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvSubItems.Rows.Clear();
+            dgvSubItems.Columns.Clear();
+
+            dgvSubItems.Columns.Add("LNCD", "LNCD");
+            dgvSubItems.Columns.Add("ModelName", "SJMODE");
+
+            dgvSubItems.Columns[0].FillWeight = 100;
+            dgvSubItems.Columns[1].FillWeight = 100;
+
+            // 컬럼 정렬 기능 비활성화
+            foreach (DataGridViewColumn column in dgvSubItems.Columns)
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            dgvSubItems.AllowUserToAddRows = false;
+            dgvSubItems.AllowUserToDeleteRows = false;
+            dgvSubItems.AllowUserToResizeColumns = false;
+            dgvSubItems.AllowUserToResizeRows = false;
+            dgvSubItems.RowHeadersVisible = false;
+            dgvSubItems.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        private void addSubModelToDgv(DefectDBManager.Preproc.SjModelInfo info)
+        {
+            dgvSubItems.Rows.Add(info.LNCD, info.ModelName);
+        }
+
+        private void btnAddSubItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedModel == null) return;
+            int cnt = dgvSubItems.Rows.Count + 1;
+            dgvSubItems.Rows.Add($"tmp{cnt}", "");
+            _selectedModel.Infos.Add(new SjModelInfo { LNCD = $"tmp{cnt}", ModelName = "" });
+        }
+
+        private void btnDeleteSubItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedModel == null) return;
+            int selIndex = dgvSubItems.CurrentCell.RowIndex;
+            if (selIndex < 0) return;
+
+            if (selIndex < _selectedModel.Infos.Count)
+            {
+                _selectedModel.Infos.RemoveAt(selIndex);
+                dgvSubItems.Rows.RemoveAt(selIndex);
+                _selectedSubItem = null;
+                clearParamGrid();
+            }
+        }
+
+        private void dgvSubItems_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_selectedModel == null) return;
+            int selIndex = e.RowIndex;
+            if (selIndex < 0 || selIndex >= _selectedModel.Infos.Count) return;
+            _selectedSubItem = _selectedModel.Infos[selIndex];
+            displayParamForSelectedItem();
+        }
+
+        private void btnApplySubItems_Click(object sender, EventArgs e)
+        {
+            dgvSubItems.EndEdit();
+            if (_selectedModel == null) return;
+
+            foreach (DataGridViewRow row in dgvSubItems.Rows)
+            {
+                int index = row.Index;
+                if (index < _selectedModel.Infos.Count)
+                {
+                    string lncd = row.Cells[0].Value?.ToString() ?? string.Empty;
+                    string modelName = row.Cells[1].Value?.ToString() ?? string.Empty;
+                    _selectedModel.Infos[index].LNCD = lncd;
+                    _selectedModel.Infos[index].ModelName = modelName;
+                }
+            }
+        }
+        private void displaySubItemsForSelectedModel()
+        {
+            if (_selectedModel == null) return;
+            dgvSubItems.Rows.Clear();
+            foreach (var info in _selectedModel.Infos)
+            {
+                addSubModelToDgv(info);
+            }
+        }
+        #endregion
+
         #region Parameter Control
 
         #region Data Grid View
-      
+
 
         private void initDgvParam()
         {
@@ -285,12 +364,13 @@ namespace MarkCompare
             dgvDetailParam.SelectionMode = DataGridViewSelectionMode.CellSelect;
         }
 
-        private void displayParamForSelectedModel()
+        private void displayParamForSelectedItem()
         {
             dgvDetailParam.Rows.Clear();
-            if (_selectedModel != null)
+            if (_selectedSubItem != null)
             {
-                foreach (var defect in _selectedModel.DefectInfo)
+                foreach (var defect in _selectedSubItem.DefectInfo)
+
                 {
                     if (defect.FLTID == null || defect.FLTID.Count == 0)
                     {
@@ -301,9 +381,12 @@ namespace MarkCompare
                     dgvDetailParam.Rows.Add(defect.SECFLTID, defect.Use, defect.Rate, fltIds ?? string.Empty);
                 }
             }
-
         }
 
+        private void clearParamGrid()
+        {
+            dgvDetailParam.Rows.Clear();
+        }
         #endregion
 
         private void btnAddSecFltId_Click(object sender, EventArgs e)
@@ -354,8 +437,8 @@ namespace MarkCompare
                 info.Add(item);
             }
 
-            if (_selectedModel != null)
-                _selectedModel.DefectInfo = info;
+            if (_selectedSubItem != null)
+                _selectedSubItem.DefectInfo = info;
         }
         #endregion
 

@@ -601,6 +601,8 @@ namespace DefectDBManager.Preproc
                                         data.LNCD = _DbResult.PTRY0P[idx][i].LNCD;
                                         data.Parse(reader);
 
+                                        data.DataIndex = i;
+
                                         // 리스트에 데이터 추가함
                                         inspDataList.Add(data);
                                         dataCnt++;

@@ -178,7 +178,9 @@ namespace DefectDBManager.Preproc
                         ProcessData mkcdLncdData = null;
                         eProcDataType dataTarget = eProcDataType.None;
                         List<string> aiSkipFaultData = null;
+                        
                         AiMonitorItem aiItem = null;
+                        SjModelInfo aiModelInfo = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
@@ -191,24 +193,37 @@ namespace DefectDBManager.Preproc
 
                             if (_AiMonitorItem != null && _PreprocItem.UseAiMonitoring)
                             {
-                                if (_AiMonitorItem.ModelName.Contains('*'))
+                                foreach (var modelInfo in _AiMonitorItem.Infos)
                                 {
-                                    string filter = _AiMonitorItem.ModelName.Trim('*');
-                                    if (inspdata.HINMEI.Contains(filter))
-                                        aiItem = _AiMonitorItem;
-                                }
-                                else
-                                {
-                                    string filter = _AiMonitorItem.ModelName;
-                                    if (inspdata.HINMEI == filter)
-                                        aiItem = _AiMonitorItem;
+                                    if (modelInfo.LNCD == inspdata.LNCD)
+                                    {
+                                        if (modelInfo.ModelName.Contains('*'))
+                                        {
+                                            string filter = modelInfo.ModelName.Trim('*');
+                                            if (inspdata.HINMEI.Contains(filter))
+                                            {
+                                                aiItem = _AiMonitorItem;
+                                                aiModelInfo = modelInfo;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            string filter = modelInfo.ModelName;
+                                            if (inspdata.HINMEI == filter)
+                                            {
+                                                aiItem = _AiMonitorItem;
+                                                aiModelInfo = modelInfo;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
                             }
 
-                            if (aiItem != null)
+                            if (aiItem != null && aiModelInfo != null)
                             {
                                 FaultData.AIMonResult.IsModelExsit = true;
-                                foreach (var aimonitor in aiItem.DefectInfo)
+                                foreach (var aimonitor in aiModelInfo.DefectInfo)
                                 {
                                     bool isExist = false;
                                     for (int aiIdx = 0; aiIdx < FaultData.AIMonResult.Items.Count; aiIdx++)
@@ -478,6 +493,7 @@ namespace DefectDBManager.Preproc
                         List<string> aiSkipFaultData= null;
 
                         AiMonitorItem aiItem = null;
+                        SjModelInfo aiModelInfo = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
                         if (inspdata.LNCD == _PreprocItem.Reference.LNCD)
@@ -491,24 +507,37 @@ namespace DefectDBManager.Preproc
 
                             if (_AiMonitorItem != null && _PreprocItem.UseAiMonitoring)
                             {
-                                if (_AiMonitorItem.ModelName.Contains('*'))
+                                foreach (var modelInfo in _AiMonitorItem.Infos)
                                 {
-                                    string filter = _AiMonitorItem.ModelName.Trim('*');
-                                    if (inspdata.HINMEI.Contains(filter))
-                                        aiItem = _AiMonitorItem;
-                                }
-                                else
-                                {
-                                    string filter = _AiMonitorItem.ModelName;
-                                    if (inspdata.HINMEI == filter)
-                                        aiItem = _AiMonitorItem;
+                                    if (modelInfo.LNCD == inspdata.LNCD)
+                                    {
+                                        if (modelInfo.ModelName.Contains('*'))
+                                        {
+                                            string filter = modelInfo.ModelName.Trim('*');
+                                            if (inspdata.HINMEI.Contains(filter))
+                                            {
+                                                aiItem = _AiMonitorItem;
+                                                aiModelInfo = modelInfo;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            string filter = modelInfo.ModelName;
+                                            if (inspdata.HINMEI == filter)
+                                            {
+                                                aiItem = _AiMonitorItem;
+                                                aiModelInfo = modelInfo;
+                                            }
+                                        }
+                                        break;
+                                    }
                                 }
                             }
 
-                            if (aiItem != null)
+                            if (aiItem != null && aiModelInfo != null)
                             {
                                 FaultData.AIMonResult.IsModelExsit = true;
-                                foreach(var aimonitor in aiItem.DefectInfo)
+                                foreach(var aimonitor in aiModelInfo.DefectInfo)
                                 {
                                     bool isExist = false;
                                     for(int aiIdx=0; aiIdx< FaultData.AIMonResult.Items.Count; aiIdx++)

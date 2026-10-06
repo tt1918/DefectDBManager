@@ -33,7 +33,7 @@ namespace DefectDBManager.Preproc
         public bool IsFinished { get; set; } = false;
         public Dictionary<int, List<SjData>> DefectInfo { get; set; } = new Dictionary<int, List<SjData>>();
         public Dictionary<int, SjJudgement> Judgement { get; set; } = new Dictionary<int, SjJudgement>();
-
+        public Dictionary<int, int> Mode = new Dictionary<int, int>();
         public override string ToString()
         {
             return $"CTLNO: {CTLNO}, SJMode: {ModeNo}, IsFinished: {IsFinished}";

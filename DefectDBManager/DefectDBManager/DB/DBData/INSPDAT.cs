@@ -56,6 +56,8 @@ namespace DefectDBManager.DB
         // 검사 라인 확인용 LNCD 추가
         public string LNCD { get; set; }
 
+        public int DataIndex { get; set; } = -1;
+
         public void Parse(OracleDataReader reader)
         {
             CTLNO = reader[0].ToString();
@@ -138,6 +140,7 @@ namespace DefectDBManager.DB
             data.LNCD = this.LNCD;
             data.YPosStart = this.YPosStart;
             data.YPosEnd = this.YPosEnd;
+            data.DataIndex = this.DataIndex;
 
             return data;
         }

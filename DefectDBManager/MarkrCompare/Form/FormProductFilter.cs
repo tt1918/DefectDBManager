@@ -219,10 +219,14 @@ namespace MarkCompare
 
                     foreach (var item in _lotManager.AiMonitorParam.ModeItems)
                     {
-                        if (item.LNCD == lncd)
+                        bool isExist = false;
+                        foreach (var data1 in item.Infos)
                         {
-                            aiModel.Add(item.Name);
+                            if (lncd == data1.LNCD)
+                                isExist = true;
                         }
+                        if (isExist)
+                            aiModel.Add(item.Name);
                     }
 
                     break;
@@ -370,7 +374,13 @@ namespace MarkCompare
 
                             foreach (var data in _lotManager.AiMonitorParam.ModeItems)
                             {
-                                if (lncd == data.LNCD)
+                                bool isExist = false;
+                                foreach (var data1 in data.Infos)
+                                {
+                                    if (lncd == data1.LNCD)
+                                        isExist = true;
+                                }
+                                if (isExist)
                                     aiModel.Add(data.Name);
                             }
                         }
@@ -584,7 +594,13 @@ namespace MarkCompare
 
                             foreach (var data in _lotManager.AiMonitorParam.ModeItems)
                             {
-                                if (lncd == data.LNCD)
+                                bool isExist = false;
+                                foreach (var data1 in data.Infos)
+                                {
+                                    if (lncd == data1.LNCD)
+                                        isExist = true;
+                                }
+                                if (isExist)
                                     aiModel.Add(data.Name);
                             }
                         }
@@ -765,7 +781,13 @@ namespace MarkCompare
 
                             foreach (var data in _lotManager.AiMonitorParam.ModeItems)
                             {
-                                if (lncd == data.LNCD)
+                                bool isExist = false;
+                                foreach (var data1 in data.Infos)
+                                {
+                                    if (lncd == data1.LNCD)
+                                        isExist = true;
+                                }
+                                if(isExist) 
                                     aiModel.Add(data.Name);
                             }
                         }

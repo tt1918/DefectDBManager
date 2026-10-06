@@ -516,9 +516,31 @@ namespace MarkCompare
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.NoneConvertRate.ToString("0.00%");
 
             if (judge.Value.Judgement == true)
+            {
                 dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Green;
+
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Index].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.LNCD].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.SJMode].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.CTRNO].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Finish].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.BackColor = Color.FromArgb(255, 222, 255, 222);
+            }
             else
+            {
                 dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.ForeColor = Color.Red;
+
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Index].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.LNCD].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.SJMode].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.CTRNO].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Finish].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+                dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Style.BackColor = Color.FromArgb(255, 255, 222, 222);
+            }
         }
 
         private void setAiMonitorNonJudgeCells(int rowIndex, object indexValue, SjMonitorData monitorData)

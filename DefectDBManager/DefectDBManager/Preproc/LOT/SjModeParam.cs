@@ -27,11 +27,30 @@ namespace DefectDBManager.Preproc
         }
     }
 
+    public class SjModelInfo : ICloneable
+    {
+        public string LNCD { get; set; } = string.Empty;
+        public string ModelName { get; set; } = string.Empty;
+        public List<SjModelItem> DefectInfo { get; set; } = new List<SjModelItem>();
+        public object Clone()
+        {
+            SjModelInfo clone = new SjModelInfo
+            {
+                LNCD = this.LNCD,
+                ModelName = this.ModelName,
+                DefectInfo = new List<SjModelItem>()
+            };
+            foreach (var defect in this.DefectInfo)
+            {
+                clone.DefectInfo.Add((SjModelItem)defect.Clone());
+            }
+            return clone;
+        }
+    }
+
     public class SjModeIPath : ICloneable
     {
         public string Name { get; set; } = string.Empty;
-        public string LNCD { get; set; } = string.Empty;
-        public string ModelName { get; set; } = string.Empty;
         public string MainIP { get; set; } = string.Empty;
         public string MainFolderName { get; set; } = string.Empty;
         public string SubFolderName { get; set; } = string.Empty;
@@ -48,23 +67,22 @@ namespace DefectDBManager.Preproc
             return $"{MainIP}\\{MainFolderName}\\{ctlno}\\{SubFolderName}";
         }
 
-        public List<SjModelItem> DefectInfo { get; set; } = new List<SjModelItem>();
+        public List<SjModelInfo> ModelInfo { get; set; } = new List<SjModelInfo>();
+
         public object Clone()
         {
             SjModeIPath clone = new SjModeIPath
             {
                 Name = this.Name,
-                LNCD = this.LNCD,
-                ModelName = this.ModelName,
                 MainIP = this.MainIP,
                 MainFolderName = this.MainFolderName,
                 SubFolderName = this.SubFolderName
             };
-            clone.DefectInfo = new List<SjModelItem>();
-            foreach (var defect in this.DefectInfo)
-            {
-                clone.DefectInfo.Add((SjModelItem)defect.Clone());
-            }
+            
+            clone.ModelInfo = new List<SjModelInfo>();
+            foreach (var model in this.ModelInfo)
+                clone.ModelInfo.Add((SjModelInfo)model.Clone());
+            
             return clone;
         }
     }

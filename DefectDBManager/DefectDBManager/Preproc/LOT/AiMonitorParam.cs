@@ -10,23 +10,19 @@ namespace DefectDBManager.Preproc
     public class AiMonitorItem : ICloneable
     {
         public string Name { get; set; } = string.Empty;
-        public string LNCD { get; set; } = string.Empty;
-        public string ModelName { get; set; } = string.Empty;
 
-        public List<SjModelItem> DefectInfo { get; set; } = new List<SjModelItem>();
+        public List<SjModelInfo> Infos { get; set; } = new List<SjModelInfo>();
 
         public object Clone()
         {
-            SjModeIPath clone = new SjModeIPath
+            AiMonitorItem clone = new AiMonitorItem
             {
                 Name = this.Name,
-                LNCD = this.LNCD,
-                ModelName = this.ModelName
             };
-            clone.DefectInfo = new List<SjModelItem>();
-            foreach (var defect in this.DefectInfo)
+            clone.Infos = new List<SjModelInfo>();
+            foreach (var item in this.Infos)
             {
-                clone.DefectInfo.Add((SjModelItem)defect.Clone());
+                clone.Infos.Add((SjModelInfo)item.Clone());
             }
             return clone;
         }

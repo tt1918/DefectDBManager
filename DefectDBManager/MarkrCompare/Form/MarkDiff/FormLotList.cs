@@ -370,6 +370,8 @@ namespace MarkCompare
             if (_flpSummeryDic.ContainsKey("ErrorCheck"))
                 form.Parent = this._flpSummeryDic["ErrorCheck"];
             form.SetStatusCheck(line, ip, duration);
+
+            form.Height = 150;
             form.Show();
             
             if (_dicFormSummary.ContainsKey("ErrorCheck"))

@@ -1271,9 +1271,21 @@ namespace DefectDBManager
                         if(isSamePath && modelItem.Value.Count>1)
                         {
                             // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
-                            if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName)) == true &&
-                                LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(modelItem.Value.First().ModelName)).IsFinished == true)
-                                continue;
+                            bool isSkip = false;
+                            foreach(var item in modelItem.Value)
+                            {
+                                foreach (var item2 in item.ModelInfo)
+                                {
+                                    if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(item2.ModelName)) == true &&
+                                        LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(item2.ModelName)).IsFinished == true)
+                                    {
+                                        isSkip = true;
+                                        break;
+                                    }
+                                }
+                                if (isSkip) break;
+                            }
+                            if(isSkip) continue;
 
                             // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
                             var data = ReadSjData(ctlno, netPath);
@@ -1281,10 +1293,15 @@ namespace DefectDBManager
                             foreach(var dataItem in data.DefectInfo)
                             {
                                 // dataItem.Key와 맞는 item의 데이터를 찾는다. 
-                                var matchModelList = modelItem.Value.Where(e => e.ModelName == dataItem.Key.ToString()).ToList();
-                                if (matchModelList.Count == 0) continue;
+                                SjModelInfo matchModel = new SjModelInfo();
+                                foreach (var item in modelItem.Value)
+                                {
+                                    matchModel = item.ModelInfo.FirstOrDefault(m => m.ModelName == dataItem.Key.ToString());
+                                    if (matchModel != null) break;
+                                }
 
-                                var matchModel = matchModelList.First();
+                                if (matchModel == null) continue;
+
                                 data.ModeNo = Convert.ToInt32(matchModel.ModelName);
 
                                 // 판정 처리함
@@ -1297,11 +1314,11 @@ namespace DefectDBManager
 
                                 data.LNCD = matchModel.LNCD;
 
-                                if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName)) == false)
+                                if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(matchModel.ModelName)) == false)
                                     LotManager.SjMonitorDataList.Add(data);
                                 else
                                 {
-                                    LotManager.SjMonitorDataList.Remove(ctlno, Convert.ToInt32(modelItem.Value.First().ModelName));
+                                    LotManager.SjMonitorDataList.Remove(ctlno, Convert.ToInt32(matchModel.ModelName));
                                     LotManager.SjMonitorDataList.Add(data);
                                 }
 
@@ -1311,7 +1328,6 @@ namespace DefectDBManager
                                 // 검색 결과 데이터를 파일에 저장한다.
                                 _ = Task.Run(() => saveSjMonitorData(data));
                             }
-
                         }
                         else
                         {
@@ -1320,27 +1336,48 @@ namespace DefectDBManager
                                 string path = item.NetPathSummery(ctlno);
 
                                 // 해당 ctlno에 대한 데이터가 이미 존재하면 스킵
-                                if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(item.ModelName)) == true &&
-                                    LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(item.ModelName)).IsFinished == true)
-                                    continue;
+                                bool isSkip = false;
+                               
+                                foreach (var item3 in item.ModelInfo)
+                                {
+                                    if (LotManager.SjMonitorDataList.Exist(ctlno, Convert.ToInt32(item3.ModelName)) == true &&
+                                        LotManager.SjMonitorDataList.DataList.First(x => x.CTLNO == ctlno && x.ModeNo == Convert.ToInt32(item3.ModelName)).IsFinished == true)
+                                    {
+                                        isSkip = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (isSkip) continue;
 
                                 // 해당 경로에 있는 파일을 확인하고, 데이터를 취합한다.
-                                int modelKey = Convert.ToInt32(item.ModelName);
                                 var data = ReadSjData(ctlno, path);
+
+                                // dataItem.Key와 맞는 item의 데이터를 찾는다.
+                                SjModelInfo profitModel = new SjModelInfo();
+                                int modelKey = 0;
+                                foreach (var modelInfo in item.ModelInfo)
+                                {
+                                    if (data.Mode.ContainsKey(Convert.ToInt32(modelInfo.ModelName)))
+                                    {
+                                        profitModel = modelInfo;
+                                        break;
+                                    }
+                                }
+                                modelKey = profitModel.ModelName == string.Empty ? 0 : Convert.ToInt32(profitModel.ModelName);
+                                data.ModeNo = modelKey;
 
                                 foreach (var dataItem in data.DefectInfo)
                                 {
-                                    data.ModeNo = modelKey;
-
                                     // 판정 처리함
-                                    foreach (var infoItem in item.DefectInfo)
+                                    foreach (var infoItem in profitModel.DefectInfo)
                                     {
                                         if (infoItem.Use == false) continue;
                                         if (!data.DefectInfo.ContainsKey(modelKey)) continue;
                                         var rate = data.SetDefectJudgement(modelKey, infoItem);
                                     }
 
-                                    data.LNCD = item.LNCD;
+                                    data.LNCD = profitModel.LNCD;
 
                                     if (LotManager.SjMonitorDataList.Exist(ctlno, modelKey) == false)
                                         LotManager.SjMonitorDataList.Add(data);
@@ -1422,8 +1459,6 @@ namespace DefectDBManager
                         tmpCtrlNo.Add(items[1], items[1]);
                 }
 
-               
-
                 if (tmpCtrlNo.Count==1)
                 {
                     data.CTLNO = tmpCtrlNo.First().Key;
@@ -1433,6 +1468,8 @@ namespace DefectDBManager
                     Log.Write($"[Error] ReadSjData : {ctrno} - CTLNO Count is more than 1");
                     data.CTLNO = tmpCtrlNo.First().Key;
                 }
+
+                data.Mode = modeNo;
 
                 return data;
             }

@@ -26,6 +26,8 @@ namespace DefectDBManager.DB
         public string PPCD;
         public float SIZE;
 
+        public int DataIndex { get; set; } = -1;
+
         // Dic 구현해야함
         // FLTID -> SIZE
 
@@ -57,6 +59,7 @@ namespace DefectDBManager.DB
             data.MRKF2 = this.MRKF2;
             data.PPCD = this.PPCD;
             data.SIZE = this.SIZE;
+            data.DataIndex = this.DataIndex;
 
             return data;
         }

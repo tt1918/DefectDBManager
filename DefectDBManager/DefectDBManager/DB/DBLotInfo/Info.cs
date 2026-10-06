@@ -230,6 +230,7 @@ namespace DefectDBManager.DBLotInfo
         public void UpdateDicSizeData(int fcd, int op)
         {
             dicSizeData.Clear();
+            if(dicSizeMRKCTLMST[fcd].Count<=op) return;
             foreach (KeyValuePair<string, float> pair in dicSizeMRKCTLMST[fcd][op])
                 dicSizeData.Add(pair.Key, pair.Value);
         }
@@ -237,6 +238,7 @@ namespace DefectDBManager.DBLotInfo
         public void UpdateDicMRKF1Data(int fcd, int op)
         {
             dicMRKF1Data.Clear();
+            if (dicMRKF1MRKCTLMST[fcd].Count <= op) return;
             foreach (KeyValuePair<string, bool> pair in dicMRKF1MRKCTLMST[fcd][op])
                 dicMRKF1Data.Add(pair.Key, pair.Value);
         }
