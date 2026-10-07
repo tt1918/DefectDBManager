@@ -58,6 +58,7 @@ namespace DefectDBManager.DB
 
         public int DataIndex { get; set; } = -1;
 
+
         public void Parse(OracleDataReader reader)
         {
             CTLNO = reader[0].ToString();
@@ -105,6 +106,7 @@ namespace DefectDBManager.DB
             CUSTCD = data[16].Trim(' ');
             KYCD = data[17].Trim(' ');
             KTCD = data[18].Trim(' ');
+            Y0KLOT = data[19].Trim(' ');
         }
 
         //public override string ToString()
@@ -116,7 +118,7 @@ namespace DefectDBManager.DB
         public override string ToString()
         {
             string msg = String.Format($"{CTLNO}, {HINMEI}, {LOTNO}, {ROLLNO}, {BCNO}, {YPosStart}, {YPosEnd}, {Width}, {XPosStart}, {XPosEnd}, {Length}, {STRDT}, {STRTM}," +
-                $" {ENDDT}, {ENDTM}, {USEFLG}, {CUSTCD}, {KYCD}, {KTCD}");
+                $" {ENDDT}, {ENDTM}, {USEFLG}, {CUSTCD}, {KYCD}, {KTCD}, {Y0KLOT}");
             return msg;
         }
 
@@ -140,6 +142,7 @@ namespace DefectDBManager.DB
             data.LNCD = this.LNCD;
             data.YPosStart = this.YPosStart;
             data.YPosEnd = this.YPosEnd;
+            data.Y0KLOT = this.Y0KLOT;
             data.DataIndex = this.DataIndex;
 
             return data;

@@ -226,7 +226,7 @@ namespace DefectDBManager.Preproc
                         SjModelInfo  aiModelInfo = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
-                        if (inspdata.LNCD == _DbResult.SelectedDbLNCD)
+                        if (inspdata.LNCD == _DbResult.SelectedDbLNCD && inspdata.Y0KLOT==_LOG.Lot)
                         {
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;
@@ -505,7 +505,7 @@ namespace DefectDBManager.Preproc
                         SjModelInfo aiModelInfo = null;
 
                         // LNCD 데이터를 기준으로 Reference/Compare 중에서 선택함. 
-                        if (inspdata.LNCD == _DbResult.SelectedDbLNCD)
+                        if (inspdata.LNCD == _DbResult.SelectedDbLNCD && inspdata.Y0KLOT==_LOG.Lot)
                         {
                             FaultData.MarkData.LNCD = inspdata.LNCD;
                             dataTarget = eProcDataType.Reference;

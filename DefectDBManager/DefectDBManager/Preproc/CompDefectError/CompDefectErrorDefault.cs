@@ -671,9 +671,9 @@ namespace DefectDBManager.Preproc
                         {
                             foreach (var op in opList.Data)
                             {
+
                                 if (op.LNCD == data.USEFLG)
                                 {
-                                    data.Y0KLOT = op.Y0KLOT;
                                     data.LNCD = op.LNCD;
 
                                     if (dicList.ContainsKey(op.LNCD) == true)
