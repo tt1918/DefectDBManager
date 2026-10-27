@@ -160,9 +160,20 @@ namespace MarkCompare
         {
             DataGridViewComboBoxCell cbCell = new DataGridViewComboBoxCell();
             cbCell.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
+
+            bool isFind = false;
+
             foreach (string name in names)
+            {
                 cbCell.Items.Add(name);
-            cbCell.Value = trgName;
+                if (trgName == name) isFind = true;
+            }
+
+            if (names.Length > 0 && isFind == true)
+                cbCell.Value = trgName;
+            else
+                cbCell.Value = "";
+
             return cbCell;
         }
         private object makeProductComboBox(string name, int row, int col)
@@ -232,8 +243,6 @@ namespace MarkCompare
                     break;
                 }
             }
-
-            
 
             return makeComboBoxCell(aiModel.ToArray(), "");
         }

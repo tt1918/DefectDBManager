@@ -142,6 +142,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   CSV 추가과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string btnAddList {
+            get {
+                return ResourceManager.GetString("btnAddList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   적용과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnApply {
@@ -295,7 +304,7 @@ namespace MarkCompare {
         }
         
         /// <summary>
-        ///              AI 처리 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///              실시간 AI 처리 파라미터과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string btnSJModeParam {
             get {

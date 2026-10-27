@@ -605,10 +605,10 @@ namespace DefectDBManager
                 }
                 else
                 {
-                    double rate = 100.0-((double)item.Match / (double)item.Total) * 100.0;
+                    double rate = ((double)item.Match / (double)item.Total) * 100.0;
                     item.Ratio = rate;
                     // 넘어가면 NG, 안넘어가면 OK
-                    if (rate > item.Model.Rate) item.Judge = false;
+                    if (rate < item.Model.Rate) item.Judge = false;
                     else item.Judge = true;
                 }
                 

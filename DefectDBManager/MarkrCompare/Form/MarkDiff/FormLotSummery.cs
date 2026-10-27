@@ -345,8 +345,8 @@ namespace MarkCompare
 
         readonly List<AiMonitorMergeRange> _aiMonitorMergeRanges = new List<AiMonitorMergeRange>();
 
-        string[] aiTableName = new string[] { "#", "LNCD","MODE","CTRNO", "Finish", "ModeNo", "FLTID ", "Rate" };
-        int[] dgvTableWidth = new int[] { 40, 50, 50,90, 45, 60, 70, 50};
+        string[] aiTableName = new string[] { "#", "LNCD", Lang.Parameter, "CTRNO", "Finish", "ModeNo", "FLTID ", "Rate" };
+        int[] dgvTableWidth = new int[] { 30, 45, 70, 90, 45, 60, 70, 50};
 
         FormErrorLotDisp _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
 

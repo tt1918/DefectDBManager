@@ -558,7 +558,8 @@ namespace DefectDBManager.Preproc
                                         }
                                     }
 
-                                    if (isExist)                continue;
+                                    if (isExist) continue;
+
                                     FaultData.AIMonResult.Items.Add(new AiMonitorResultItem()
                                     {
                                         Model = aimonitor,

@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace MarkCompare
@@ -98,6 +101,7 @@ namespace MarkCompare
             btnAddSecFltId.Font = newFont;
             btnDeleteParam.Font = newFont;
             btnApplyParam.Font = newFont;
+            btnAddList.Font = newFont;
 
             lblDataParam.Font = newFont1;
 
@@ -109,6 +113,7 @@ namespace MarkCompare
             btnAddSecFltId.Text = Lang.btnAdd;
             btnDeleteParam.Text = Lang.btnDel1;
             btnApplyParam.Text = Lang.btnApply;
+            btnAddList.Text = Lang.btnAddList;
 
             lblDataParam.Text = Lang.Parameter;
 
@@ -164,8 +169,10 @@ namespace MarkCompare
                 string name = dgvModel.SelectedRows[0].Cells[0].Value?.ToString() ?? string.Empty;
 
                 _selectedModel = _param.ModeItems.FirstOrDefault(item => item.Name == name);
+                
+                if (_selectedModel == null) return;
                 displaySubItemsForSelectedModel();
-
+                clearDetailParam();
                 lblSelLNCD.Text = _selectedModel.Name;
             }
         }
@@ -225,7 +232,7 @@ namespace MarkCompare
             dgvSubItems.Columns.Clear();
 
             dgvSubItems.Columns.Add("LNCD", "LNCD");
-            dgvSubItems.Columns.Add("ModelName", "SJMODE");
+            dgvSubItems.Columns.Add("ModelName", Lang.product);
 
             dgvSubItems.Columns[0].FillWeight = 100;
             dgvSubItems.Columns[1].FillWeight = 100;
@@ -389,6 +396,109 @@ namespace MarkCompare
         }
         #endregion
 
+        private void btnAddList_Click(object sender, EventArgs e)
+        {
+            if (dgvSubItems.SelectedCells.Count == 0) return;
+
+            int selProcIdx = dgvSubItems.SelectedCells[0].RowIndex;
+            if (selProcIdx == -1) return;
+
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                dlg.Multiselect = false;
+
+                if (dlg.ShowDialog() != DialogResult.OK)
+                    return;
+
+                int addCount = 0;
+                int skipCount = 0;
+
+                try
+                {
+                    string[] lines = File.ReadAllLines(dlg.FileName);
+
+                    dgvDetailParam.SuspendLayout();
+                    try
+                    {
+                        foreach (string rawLine in lines)
+                        {
+                            if (string.IsNullOrWhiteSpace(rawLine))
+                                continue;
+
+                            string[] cols = rawLine.Split(';');
+                            if (cols.Length != 4)
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            // 0: ID, 1: 사용 여부, 2: 크기, 3: 연관 ID 목록
+                            string id = cols[0].Trim();
+                            string enabledText = cols[1].Trim();
+                            string sizeText = cols[2].Trim();
+                            string relatedIds = cols[3].Trim();
+
+                            if (id.Equals("ID", StringComparison.OrdinalIgnoreCase))
+                                continue;
+
+                            bool enabled;
+                            float size;
+
+                            bool enabledOk = bool.TryParse(enabledText, out enabled);
+                            bool sizeOk =
+                                float.TryParse(sizeText, NumberStyles.Float,
+                                    CultureInfo.InvariantCulture, out size)
+                                || float.TryParse(sizeText, NumberStyles.Float,
+                                    CultureInfo.CurrentCulture, out size);
+
+                            if (string.IsNullOrWhiteSpace(id)
+                                || !enabledOk
+                                || !sizeOk
+                                || float.IsNaN(size)
+                                || float.IsInfinity(size))
+                            {
+                                skipCount++;
+                                continue;
+                            }
+
+                            // DataGridView의 4개 열 순서와 일치해야 합니다.
+                            dgvDetailParam.Rows.Add(new object[]
+                            {
+                        id,         // 인덱스 0
+                        enabled,    // 인덱스 1
+                        size,       // 인덱스 2
+                        relatedIds  // 인덱스 3: "E01,E02,E81"
+                            });
+
+                            addCount++;
+                        }
+                    }
+                    finally
+                    {
+                        dgvDetailParam.ResumeLayout();
+                    }
+
+                    if (addCount == 0)
+                    {
+                        MessageBox.Show("추가할 CSV 데이터가 없습니다.", Lang.warning);
+                    }
+                    else if (skipCount > 0)
+                    {
+                        MessageBox.Show(
+                            $"{addCount}개 추가, {skipCount}개 건너뜀",
+                            Lang.warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"CSV 파일 로드 실패: {ex.Message}",
+                        Lang.warning);
+                }
+            }
+        }
+
         private void btnAddSecFltId_Click(object sender, EventArgs e)
         {
             dgvDetailParam.Rows.Add("", false, "", "");
@@ -439,6 +549,11 @@ namespace MarkCompare
 
             if (_selectedSubItem != null)
                 _selectedSubItem.DefectInfo = info;
+        }
+
+        private void clearDetailParam()
+        {
+            dgvDetailParam.Rows.Clear();
         }
         #endregion
 

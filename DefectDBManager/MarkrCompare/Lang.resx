@@ -568,7 +568,7 @@
     <value>       AI 파라미터</value>
   </data>
   <data name="btnSJModeParam" xml:space="preserve">
-    <value>           AI 처리 파라미터</value>
+    <value>           실시간 AI 처리 파라미터</value>
   </data>
   <data name="useAiMonitoring" xml:space="preserve">
     <value>AI 모니터링 사용</value>
@@ -632,5 +632,8 @@
   </data>
   <data name="mismatch" xml:space="preserve">
     <value>불일치</value>
+  </data>
+  <data name="btnAddList" xml:space="preserve">
+    <value>CSV 추가</value>
   </data>
 </root>
