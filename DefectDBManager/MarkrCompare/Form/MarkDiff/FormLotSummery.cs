@@ -346,7 +346,7 @@ namespace MarkCompare
         readonly List<AiMonitorMergeRange> _aiMonitorMergeRanges = new List<AiMonitorMergeRange>();
 
         string[] aiTableName = new string[] { "#", "LNCD", Lang.Parameter, "CTRNO", "Finish", "ModeNo", "FLTID ", "Rate" };
-        int[] dgvTableWidth = new int[] { 30, 45, 70, 90, 45, 60, 70, 50};
+        int[] dgvTableWidth = new int[] { 30, 45, 90, 90, 45, 60, 70, 50};
 
         FormErrorLotDisp _sjmodeErrLotDispForm = new FormErrorLotDisp(DefectDBManager.Preproc.eProc.Live);
 
@@ -490,7 +490,7 @@ namespace MarkCompare
                     continue;
                 if (Convert.ToString(row.Cells[(int)eDgvTable.CTRNO].Value) != Convert.ToString(monitorData.CTLNO))
                     continue;
-                if (Convert.ToString(row.Cells[(int)eDgvTable.SJMode].Value) != Convert.ToString(monitorData.ModeNo))
+                if (Convert.ToString(row.Cells[(int)eDgvTable.SJMode].Value) != monitorData.ParamName)
                     continue;
 
                 return i;
@@ -504,7 +504,7 @@ namespace MarkCompare
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Index].Value = indexValue;
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.LNCD].Value = monitorData.LNCD;
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.CTRNO].Value = monitorData.CTLNO;
-            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.SJMode].Value = monitorData.ModeNo;
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.SJMode].Value = monitorData.ParamName;
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Finish].Value = monitorData.IsFinished ? "O" : "X";
         }
 
@@ -513,7 +513,7 @@ namespace MarkCompare
             string fltId = string.Join(",", judge.Value.FLTID);
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.ModeNo].Value = judge.Key;
             dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.FLTID].Value = fltId;
-            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.NoneConvertRate.ToString("0.00%");
+            dgvAiMonitor.Rows[rowIndex].Cells[(int)eDgvTable.Rate].Value = judge.Value.ConvertRate.ToString("0.00%");
 
             if (judge.Value.Judgement == true)
             {
@@ -615,7 +615,7 @@ namespace MarkCompare
                         if(judge.Value.Judgement == false)
                         {
                             SummeryInfo info = new SummeryInfo();
-                            info.Info = $"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / Mismatch {judge.Value.NoneConvertRate*100.0:F2}% " +
+                            info.Info = $"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / {Lang.mismatch} {(1.0f-judge.Value.ConvertRate)*100.0:F2}% " +
                                 $"[{judge.Value.Total} → {judge.Value.Converted}]";
                             errLot.Infos.Add(info);
                         }

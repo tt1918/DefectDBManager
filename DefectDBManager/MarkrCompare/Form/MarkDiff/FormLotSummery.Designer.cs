@@ -48,8 +48,8 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 41.83314F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58.16686F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.dgvAiMonitor, 0, 1);
@@ -77,12 +77,12 @@
             this.tableLayoutPanel2.Controls.Add(this.rbShowAll, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnClearHistory, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(341, 1);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(357, 1);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(509, 33);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(493, 33);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // rbShowNormal
@@ -161,9 +161,9 @@
             this.panel1.AutoSize = true;
             this.panel1.Controls.Add(this.flpLotSummary);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(343, 38);
+            this.panel1.Location = new System.Drawing.Point(359, 38);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(505, 521);
+            this.panel1.Size = new System.Drawing.Size(489, 521);
             this.panel1.TabIndex = 1;
             // 
             // flpLotSummary
@@ -174,7 +174,7 @@
             this.flpLotSummary.Location = new System.Drawing.Point(0, 0);
             this.flpLotSummary.Margin = new System.Windows.Forms.Padding(1);
             this.flpLotSummary.Name = "flpLotSummary";
-            this.flpLotSummary.Size = new System.Drawing.Size(505, 521);
+            this.flpLotSummary.Size = new System.Drawing.Size(489, 521);
             this.flpLotSummary.TabIndex = 2;
             // 
             // dgvAiMonitor
@@ -202,7 +202,7 @@
             this.dgvAiMonitor.RowHeadersVisible = false;
             this.dgvAiMonitor.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvAiMonitor.RowTemplate.Height = 23;
-            this.dgvAiMonitor.Size = new System.Drawing.Size(334, 521);
+            this.dgvAiMonitor.Size = new System.Drawing.Size(350, 521);
             this.dgvAiMonitor.TabIndex = 2;
             // 
             // lblSJMonitor
@@ -222,7 +222,7 @@
             this.lblSJMonitor.Margin = new System.Windows.Forms.Padding(1);
             this.lblSJMonitor.Name = "lblSJMonitor";
             this.lblSJMonitor.ShowAccentLine = false;
-            this.lblSJMonitor.Size = new System.Drawing.Size(338, 33);
+            this.lblSJMonitor.Size = new System.Drawing.Size(354, 33);
             this.lblSJMonitor.TabIndex = 3;
             this.lblSJMonitor.Text = "AI PROCESSING MONITOR";
             this.lblSJMonitor.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

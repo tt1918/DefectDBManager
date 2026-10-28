@@ -607,7 +607,7 @@ namespace DefectDBManager
                 {
                     double rate = ((double)item.Match / (double)item.Total) * 100.0;
                     item.Ratio = rate;
-                    // 넘어가면 NG, 안넘어가면 OK
+                    // 넘어가면 OK, 안넘어가면 NG
                     if (rate < item.Model.Rate) item.Judge = false;
                     else item.Judge = true;
                 }

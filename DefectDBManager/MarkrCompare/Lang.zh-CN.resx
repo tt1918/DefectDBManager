@@ -636,4 +636,7 @@
   <data name="btnAddList" xml:space="preserve">
     <value>CSV导入</value>
   </data>
+  <data name="matchingRate" xml:space="preserve">
+    <value>匹配率</value>
+  </data>
 </root>

@@ -1141,6 +1141,15 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   정합률과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string matchingRate {
+            get {
+                return ResourceManager.GetString("matchingRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   최대 CSV 파일 갯수는 100개입니다과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string maximumCsvFiles {

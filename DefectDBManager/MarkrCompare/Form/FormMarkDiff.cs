@@ -544,7 +544,7 @@ namespace MarkCompare
                         {
                             if (aiResult.Judge == false)
                             {
-                                sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
+                                sb.Append($"_{Lang.mismatch}({(100.0f- aiResult.Ratio):F1}%)");
                                 summeryInfo.IsAiProcError = true;
                             }
                         }
@@ -640,7 +640,7 @@ namespace MarkCompare
                             {
                                 if (aiResult.Judge == false)
                                 {
-                                    sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
+                                    sb.Append($"_{Lang.mismatch}({(100.0f - aiResult.Ratio):F1}%)");
                                     summeryInfo.IsAiProcError = true;
                                 }
                             }
@@ -985,7 +985,7 @@ namespace MarkCompare
                                 {
                                     if (aiResult.Judge == false)
                                     {
-                                        sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
+                                        sb.Append($"_{Lang.mismatch}({(100.0f - aiResult.Ratio):F1}%)");
                                         summeryInfo.IsAiProcError = true;
                                     }
                                 }
@@ -1030,7 +1030,7 @@ namespace MarkCompare
                                 {
                                     if (aiResult.Judge == false)
                                     {
-                                        sb.Append($"_{Lang.mismatch}({aiResult.Ratio:F1}%)");
+                                        sb.Append($"_{Lang.mismatch}({(100.0f - aiResult.Ratio):F1}%)");
                                         summeryInfo.IsAiProcError = true;
                                     }
                                 }

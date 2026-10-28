@@ -636,4 +636,7 @@
   <data name="btnAddList" xml:space="preserve">
     <value>CSV 추가</value>
   </data>
+  <data name="matchingRate" xml:space="preserve">
+    <value>정합률</value>
+  </data>
 </root>

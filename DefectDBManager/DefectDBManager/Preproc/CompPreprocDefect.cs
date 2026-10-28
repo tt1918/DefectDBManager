@@ -1294,15 +1294,18 @@ namespace DefectDBManager
                             {
                                 // dataItem.Key와 맞는 item의 데이터를 찾는다. 
                                 SjModelInfo matchModel = new SjModelInfo();
+                                SjModeIPath sjModel = null;
                                 foreach (var item in modelItem.Value)
                                 {
                                     matchModel = item.ModelInfo.FirstOrDefault(m => m.ModelName == dataItem.Key.ToString());
+                                    sjModel = item;
                                     if (matchModel != null) break;
                                 }
 
                                 if (matchModel == null) continue;
 
                                 data.ModeNo = Convert.ToInt32(matchModel.ModelName);
+                                if (sjModel != null) data.ParamName = sjModel.Name;
 
                                 // 판정 처리함
                                 foreach (var infoItem in matchModel.DefectInfo)
@@ -1366,6 +1369,7 @@ namespace DefectDBManager
                                 }
                                 modelKey = profitModel.ModelName == string.Empty ? 0 : Convert.ToInt32(profitModel.ModelName);
                                 data.ModeNo = modelKey;
+                                data.ParamName = item.Name;
 
                                 foreach (var dataItem in data.DefectInfo)
                                 {
@@ -1503,7 +1507,7 @@ namespace DefectDBManager
                     dataLine.Append(fltids);
                     dataLine.Append($",{item.Value.Total}");
                     dataLine.Append($",{item.Value.Converted}");
-                    dataLine.Append($",{item.Value.NoneConvertRate*100.0}");
+                    dataLine.Append($",{item.Value.ConvertRate*100.0}");
                     dataLine.Append($",{item.Value.Judgement}");
                     sw.WriteLine(dataLine.ToString());
                 }

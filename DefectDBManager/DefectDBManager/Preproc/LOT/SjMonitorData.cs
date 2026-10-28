@@ -21,7 +21,7 @@ namespace DefectDBManager.Preproc
         public string SECFLTID { get; set; } = string.Empty;
         public int Total { get; set; } = 0;
         public int Converted { get; set; } = 0;
-        public double NoneConvertRate { get; set; } = 0.0;
+        public double ConvertRate { get; set; } = 0.0;
         public bool Judgement { get; set; } = false;
     }
 
@@ -29,6 +29,7 @@ namespace DefectDBManager.Preproc
     {
         public string LNCD { get; set; } = string.Empty;
         public string CTLNO { get; set; } = string.Empty;
+        public string ParamName { get; set; } = string.Empty;
         public int ModeNo { get; set; } = 0;
         public bool IsFinished { get; set; } = false;
         public Dictionary<int, List<SjData>> DefectInfo { get; set; } = new Dictionary<int, List<SjData>>();
@@ -72,7 +73,7 @@ namespace DefectDBManager.Preproc
                 {
                     double totalRate = defects.Count(d => model.FLTID.Contains(d.FLTID));
                     double convRate = defects.Count(d => model.FLTID.Contains(d.FLTID) && d.SECFLTID == model.SECFLTID);
-                    double mismatchRate = 1.0 - (convRate / totalRate);
+                    double matchRate = (convRate / totalRate);
 
                     // 데이터가 없으면 무시한다.
                     if (totalRate == 0) return 0.0;
@@ -88,8 +89,8 @@ namespace DefectDBManager.Preproc
                             SECFLTID = model.SECFLTID,
                             Total = (int)totalRate,
                             Converted = (int)convRate,
-                            NoneConvertRate = mismatchRate,
-                            Judgement = mismatchRate * 100.0 >= rate ? false : true
+                            ConvertRate = matchRate,
+                            Judgement = matchRate * 100.0 >= rate ? true : false
                         });
                     }
                     else
@@ -100,12 +101,12 @@ namespace DefectDBManager.Preproc
                             SECFLTID = model.SECFLTID,
                             Total = (int)totalRate,
                             Converted = (int)convRate,  
-                            NoneConvertRate = mismatchRate,
-                            Judgement = mismatchRate * 100.0 >= rate ? false : true
+                            ConvertRate = matchRate,
+                            Judgement = matchRate * 100.0 >= rate ? true : false
                         };
                     }
 
-                    return mismatchRate * 100.0;
+                    return matchRate * 100.0;
                 }
             }
             return 0.0;
