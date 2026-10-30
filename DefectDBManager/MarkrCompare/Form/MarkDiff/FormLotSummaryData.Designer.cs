@@ -30,11 +30,11 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblStatus = new CustomControls.ShadedLabel();
+            this.lblLotName = new CustomControls.GradiantLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.cbViewSelect = new System.Windows.Forms.CheckBox();
             this.flpResult = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblStatus = new CustomControls.ShadedLabel();
-            this.lblLotName = new CustomControls.GradiantLabel();
             this.lblProcess = new CustomControls.ShadedLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -76,6 +76,46 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(624, 35);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatus.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(27)))), ((int)(((byte)(38)))));
+            this.lblStatus.BorderRadius = 3;
+            this.lblStatus.BorderSize = 1;
+            this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatus.FillColor = System.Drawing.Color.MidnightBlue;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.ImagePadding = 6;
+            this.lblStatus.ImageSize = 18;
+            this.lblStatus.LabelImage = null;
+            this.lblStatus.Location = new System.Drawing.Point(1, 1);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(1);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.ShowAccentLine = false;
+            this.lblStatus.Size = new System.Drawing.Size(148, 33);
+            this.lblStatus.TabIndex = 7;
+            this.lblStatus.Text = "STATUS";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatus.TextColor = System.Drawing.Color.WhiteSmoke;
+            // 
+            // lblLotName
+            // 
+            this.lblLotName.CornerRadius = 4;
+            this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLotName.FillColor = System.Drawing.Color.DarkBlue;
+            this.lblLotName.FillColor2 = System.Drawing.Color.MidnightBlue;
+            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
+            this.lblLotName.Location = new System.Drawing.Point(161, 3);
+            this.lblLotName.Name = "lblLotName";
+            this.lblLotName.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLotName.Size = new System.Drawing.Size(450, 29);
+            this.lblLotName.TabIndex = 8;
+            this.lblLotName.Text = "-";
+            this.lblLotName.UseBestFitFont = true;
+            this.lblLotName.UseGradient = true;
+            this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
             // 
             // tableLayoutPanel3
             // 
@@ -120,46 +160,6 @@
             this.flpResult.Size = new System.Drawing.Size(522, 133);
             this.flpResult.TabIndex = 4;
             this.flpResult.WrapContents = false;
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatus.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(27)))), ((int)(((byte)(38)))));
-            this.lblStatus.BorderRadius = 3;
-            this.lblStatus.BorderSize = 1;
-            this.lblStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatus.FillColor = System.Drawing.Color.MidnightBlue;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.ImagePadding = 6;
-            this.lblStatus.ImageSize = 18;
-            this.lblStatus.LabelImage = null;
-            this.lblStatus.Location = new System.Drawing.Point(1, 1);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(1);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.ShowAccentLine = false;
-            this.lblStatus.Size = new System.Drawing.Size(148, 33);
-            this.lblStatus.TabIndex = 7;
-            this.lblStatus.Text = "STATUS";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblStatus.TextColor = System.Drawing.Color.WhiteSmoke;
-            // 
-            // lblLotName
-            // 
-            this.lblLotName.CornerRadius = 4;
-            this.lblLotName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblLotName.FillColor = System.Drawing.Color.DarkBlue;
-            this.lblLotName.FillColor2 = System.Drawing.Color.MidnightBlue;
-            this.lblLotName.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
-            this.lblLotName.Location = new System.Drawing.Point(161, 3);
-            this.lblLotName.Name = "lblLotName";
-            this.lblLotName.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblLotName.Size = new System.Drawing.Size(450, 29);
-            this.lblLotName.TabIndex = 8;
-            this.lblLotName.Text = "-";
-            this.lblLotName.UseBestFitFont = true;
-            this.lblLotName.UseGradient = true;
-            this.lblLotName.DoubleClick += new System.EventHandler(this.lblLotName_DoubleClick);
             // 
             // lblProcess
             // 

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -214,6 +215,21 @@ namespace MarkCompare
             }
         }
 
+        private void displayStatusCtrl(int index)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action(() => displayStatusCtrl(index)));
+                return;
+            }
+
+            if (index==1)
+            {
+                lblStatus.FillColor = Color.LightGray;
+                lblStatus.TextColor = Color.Black;
+            }
+        }
+
         private void displayCompareResult()
         {
             try
@@ -221,8 +237,7 @@ namespace MarkCompare
                 if(_lotSummery==null)
                 {
                     UIHelper.SetText(lblStatus, Lang.error);
-                    UIHelper.SetBackColor(lblStatus, Color.Black);
-                    UIHelper.SetForeColor(lblStatus, Color.White);
+                    displayStatusCtrl(1);
 
                     this.BeginInvoke(new Action(() =>
                     {
@@ -236,8 +251,7 @@ namespace MarkCompare
                 if (_lotSummery.MarkCompList == null || _lotSummery.MarkCompList.Data.Count <= 0)
                 {
                     UIHelper.SetText(lblStatus, Lang.error);
-                    UIHelper.SetBackColor(lblStatus, Color.Black);
-                    UIHelper.SetForeColor(lblStatus, Color.White);
+                    displayStatusCtrl(1);
 
                     this.BeginInvoke(new Action(() =>
                     {
