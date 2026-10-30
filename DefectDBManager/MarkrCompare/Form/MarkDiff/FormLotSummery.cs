@@ -615,14 +615,25 @@ namespace MarkCompare
                         if(judge.Value.Judgement == false)
                         {
                             SummeryInfo info = new SummeryInfo();
+                            info.SjModeProcResult = eSjModeProcResult.Error;
                             info.Info = $"{monitorData.LNCD} / {monitorData.CTLNO} / {monitorData.ModeNo} / {Lang.mismatch} {(1.0f-judge.Value.ConvertRate)*100.0:F2}% " +
                                 $"[{judge.Value.Total} → {judge.Value.Converted}]";
                             errLot.Infos.Add(info);
+                            
                         }
                     }
                 }
                 else
                 {
+                    if(monitorData.IsFinished==false)
+                    {
+                        SummeryInfo info = new SummeryInfo();
+                        info.SjModeProcResult = eSjModeProcResult.NoFile;
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append($"{monitorData.ParamName} / {monitorData.CTLNO} / No DecisionResult.csv file.");
+                        info.Info = sb.ToString();
+                        errLot.Infos.Add(info);
+                    }
                     // 불량 데이터가 존재면 해당 SJMode를 추가한다
                     //if(monitorData.DefectInfo.Count>0)
                     //{

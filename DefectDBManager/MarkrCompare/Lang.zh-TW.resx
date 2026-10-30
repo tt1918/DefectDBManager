@@ -639,4 +639,10 @@
   <data name="matchingRate" xml:space="preserve">
     <value>匹配率</value>
   </data>
+  <data name="monitorDiff" xml:space="preserve">
+    <value>誤差監控</value>
+  </data>
+  <data name="morSjMode" xml:space="preserve">
+    <value>AI處理</value>
+  </data>
 </root>

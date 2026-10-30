@@ -60,7 +60,7 @@
             this.btnAddSecFltId = new CustomControls.ShadedButton();
             this.dgvSubItems = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.ApplySubItems = new CustomControls.ShadedButton();
+            this.btnApplySubItems = new CustomControls.ShadedButton();
             this.btnDeleteSubItem = new CustomControls.ShadedButton();
             this.btnAddSubItem = new CustomControls.ShadedButton();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
@@ -818,7 +818,7 @@
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.ApplySubItems, 3, 0);
+            this.tableLayoutPanel9.Controls.Add(this.btnApplySubItems, 3, 0);
             this.tableLayoutPanel9.Controls.Add(this.btnDeleteSubItem, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.btnAddSubItem, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -830,36 +830,36 @@
             this.tableLayoutPanel9.Size = new System.Drawing.Size(312, 35);
             this.tableLayoutPanel9.TabIndex = 14;
             // 
-            // ApplySubItems
+            // btnApplySubItems
             // 
-            this.ApplySubItems.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
-            this.ApplySubItems.BackColor = System.Drawing.Color.Transparent;
-            this.ApplySubItems.BorderColor = System.Drawing.Color.Lavender;
-            this.ApplySubItems.BorderRadius = 5;
-            this.ApplySubItems.BorderSize = 1;
-            this.ApplySubItems.ButtonImage = null;
-            this.ApplySubItems.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ApplySubItems.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.ApplySubItems.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.ApplySubItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ApplySubItems.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ApplySubItems.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
-            this.ApplySubItems.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
-            this.ApplySubItems.IconPadding = 6;
-            this.ApplySubItems.IconSize = 20;
-            this.ApplySubItems.Location = new System.Drawing.Point(213, 1);
-            this.ApplySubItems.Margin = new System.Windows.Forms.Padding(1);
-            this.ApplySubItems.Name = "ApplySubItems";
-            this.ApplySubItems.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
-            this.ApplySubItems.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
-            this.ApplySubItems.ShowAccentLine = false;
-            this.ApplySubItems.Size = new System.Drawing.Size(98, 33);
-            this.ApplySubItems.TabIndex = 14;
-            this.ApplySubItems.Text = "APPLY";
-            this.ApplySubItems.TextColor = System.Drawing.Color.White;
-            this.ApplySubItems.TextOffsetX = 0;
-            this.ApplySubItems.TextOffsetY = 0;
-            this.ApplySubItems.Click += new System.EventHandler(this.ApplySubItems_Click);
+            this.btnApplySubItems.AccentColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(130)))), ((int)(((byte)(255)))));
+            this.btnApplySubItems.BackColor = System.Drawing.Color.Transparent;
+            this.btnApplySubItems.BorderColor = System.Drawing.Color.Lavender;
+            this.btnApplySubItems.BorderRadius = 5;
+            this.btnApplySubItems.BorderSize = 1;
+            this.btnApplySubItems.ButtonImage = null;
+            this.btnApplySubItems.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApplySubItems.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnApplySubItems.DisabledTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.btnApplySubItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnApplySubItems.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplySubItems.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(50)))), ((int)(((byte)(70)))));
+            this.btnApplySubItems.IconAlign = CustomControls.ShadedButtonIconAlign.Left;
+            this.btnApplySubItems.IconPadding = 6;
+            this.btnApplySubItems.IconSize = 20;
+            this.btnApplySubItems.Location = new System.Drawing.Point(213, 1);
+            this.btnApplySubItems.Margin = new System.Windows.Forms.Padding(1);
+            this.btnApplySubItems.Name = "btnApplySubItems";
+            this.btnApplySubItems.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(80)))));
+            this.btnApplySubItems.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(15)))), ((int)(((byte)(25)))));
+            this.btnApplySubItems.ShowAccentLine = false;
+            this.btnApplySubItems.Size = new System.Drawing.Size(98, 33);
+            this.btnApplySubItems.TabIndex = 14;
+            this.btnApplySubItems.Text = "APPLY";
+            this.btnApplySubItems.TextColor = System.Drawing.Color.White;
+            this.btnApplySubItems.TextOffsetX = 0;
+            this.btnApplySubItems.TextOffsetY = 0;
+            this.btnApplySubItems.Click += new System.EventHandler(this.ApplySubItems_Click);
             // 
             // btnDeleteSubItem
             // 
@@ -1080,7 +1080,7 @@
         private CustomControls.ShadedLabel lblParamList;
         private System.Windows.Forms.DataGridView dgvSubItems;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private CustomControls.ShadedButton ApplySubItems;
+        private CustomControls.ShadedButton btnApplySubItems;
         private CustomControls.ShadedButton btnDeleteSubItem;
         private CustomControls.ShadedButton btnAddSubItem;
         private CustomControls.ShadedButton btnAddList;

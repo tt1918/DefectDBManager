@@ -1168,6 +1168,24 @@ namespace MarkCompare {
         }
         
         /// <summary>
+        ///   오차 감지과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string monitorDiff {
+            get {
+                return ResourceManager.GetString("monitorDiff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AI 감시과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        internal static string morSjMode {
+            get {
+                return ResourceManager.GetString("morSjMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   이름에는 [ _ ] 를 포함할 수 없습니다. 과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         internal static string NamesCannotContain {

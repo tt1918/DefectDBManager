@@ -106,6 +106,8 @@ namespace MarkCompare
             btnApplyParam.Font = newFont;
             btnAddList.Font = newFont;
 
+            btnApplySubItems.Font = newFont;
+
             Font newFont1 = new Font(fontName, 10, FontStyle.Bold);
             lblCommonParam.Font = newFont1;
             lblCmnCycleTime.Font = newFont1;
@@ -133,6 +135,8 @@ namespace MarkCompare
             btnAddSecFltId.Text = Lang.btnAdd;
             btnDeleteParam.Text = Lang.btnDel1;
             btnApplyParam.Text = Lang.btnApply;
+
+            btnApplySubItems.Text = Lang.btnApply;
 
             lblCommonParam.Text = Lang.CommonParam;
             lblCmnCycleTime.Text = Lang.CycleTime;

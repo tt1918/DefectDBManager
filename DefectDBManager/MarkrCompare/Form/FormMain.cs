@@ -144,10 +144,15 @@ namespace MarkCompare
             #region 실시간 탐색
             _markDiffForm.FormMorLive.OnStartLiveSearch += StartLiveSearch;
             _markDiffForm.FormMorLive.OnStopLiveSearch += StopLiveSearch;
-            
+
             _dbManager.OnStartLiveDefectSearching += _markDiffForm.FormMorLive.StartLotSearch;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.UpdateLotSummary;
             _dbManager.OnEndLiveSearchLot += _markDiffForm.FormMorLive.EndLotSearch;
+            #endregion
+
+            #region SJ Mode Monitor
+            _markDiffForm.FormMorLive.OnStartSjModeMonitor += StartSjModeMonitor;
+            _markDiffForm.FormMorLive.OnStopSjModeMonitor += StopSjModeMonitor;
 
             _dbManager.OnSjMonitorEvent += _markDiffForm.FormLotSummery.UpdateAIResultMonitor;
             #endregion
@@ -176,6 +181,13 @@ namespace MarkCompare
             _dbManager.OnStartLiveDefectSearching -= _markDiffForm.FormMorLive.StartLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.FormMorLive.EndLotSearch;
             _dbManager.OnEndLiveSearchLot -= _markDiffForm.UpdateLotSummary;
+            #endregion
+
+            #region SJ Mode Monitor
+            _markDiffForm.FormMorLive.OnStartSjModeMonitor -= StartSjModeMonitor;
+            _markDiffForm.FormMorLive.OnStopSjModeMonitor -= StopSjModeMonitor;
+
+            _dbManager.OnSjMonitorEvent -= _markDiffForm.FormLotSummery.UpdateAIResultMonitor;
             #endregion
 
             #region 선택 Lot 탐색
@@ -365,6 +377,23 @@ namespace MarkCompare
             {
                 MessageBox.Show(this, Lang.periodOperationIsComplete);
             }));
+        }
+        #endregion
+
+        #region SJ MOde 검색 시작
+        public void StartSjModeMonitor()
+        {
+            foreach (var item in this._lotManager.ProcSetting.Data)
+            {
+                item.BunchCount = _systemParam.BunchOfDefect;
+            }
+
+            _dbManager.StartSjModeMonitoring();
+        }
+
+        public void StopSjModeMonitor()
+        {
+            _dbManager.StopSjModeMonitoring();
         }
         #endregion
 

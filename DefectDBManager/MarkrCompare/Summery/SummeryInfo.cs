@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 
 namespace MarkCompare.Summery
 {
+    public enum eSjModeProcResult
+    {
+        None=0,
+        Error=1,
+        NoFile=2,
+    }
     public class SummeryInfo
     {
         public bool IsMarkingError { get; set; } = false;
         public bool IsAiProcError { get; set; } = false;
+        public eSjModeProcResult SjModeProcResult { get; set; } = eSjModeProcResult.None;
         public string Info { get; set; } = string.Empty;
     }
 

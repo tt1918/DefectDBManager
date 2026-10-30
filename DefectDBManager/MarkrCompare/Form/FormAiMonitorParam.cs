@@ -103,6 +103,9 @@ namespace MarkCompare
             btnApplyParam.Font = newFont;
             btnAddList.Font = newFont;
 
+            btnCopySubItem.Font = newFont;
+            btnApplySubItem.Font = newFont;
+
             lblDataParam.Font = newFont1;
 
             btnAddModel.Text = Lang.btnAdd;
@@ -114,6 +117,9 @@ namespace MarkCompare
             btnDeleteParam.Text = Lang.btnDel1;
             btnApplyParam.Text = Lang.btnApply;
             btnAddList.Text = Lang.btnAddList;
+
+            btnCopySubItem.Text = Lang.btnCopy;
+            btnApplySubItem.Text = Lang.btnApply;
 
             lblDataParam.Text = Lang.Parameter;
 
@@ -284,6 +290,17 @@ namespace MarkCompare
             if (selIndex < 0 || selIndex >= _selectedModel.Infos.Count) return;
             _selectedSubItem = _selectedModel.Infos[selIndex];
             displayParamForSelectedItem();
+        }
+
+        private void btnCopySubItem_Click(object sender, EventArgs e)
+        {
+            if (_selectedModel == null) return;
+            int selIndex = dgvSubItems.CurrentCell.RowIndex;
+            if (selIndex < 0) return;
+            SjModelInfo info = (SjModelInfo)_selectedModel.Infos[selIndex].Clone();
+            info.ModelName += "_copy";
+            _selectedModel.Infos.Add(info);
+            addSubModelToDgv(info);
         }
 
         private void btnApplySubItems_Click(object sender, EventArgs e)

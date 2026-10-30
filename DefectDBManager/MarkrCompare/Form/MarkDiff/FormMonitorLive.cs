@@ -34,6 +34,9 @@ namespace MarkCompare
         public event MarkCompare.Delegate.UpdatePrepLncdInfo OnUpdatePrepLncdInfo;
         public event MarkCompare.Delegate.UpdateEvent OnStartLiveSearch;
         public event MarkCompare.Delegate.UpdateEvent OnStopLiveSearch;
+        public event MarkCompare.Delegate.UpdateEvent OnStartSjModeMonitor;
+        public event MarkCompare.Delegate.UpdateEvent OnStopSjModeMonitor;
+
         #endregion
 
         #region Create/Destroy
@@ -234,6 +237,45 @@ namespace MarkCompare
             }
         }
 
+
+        private void btnRunSjModeMonitor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Process.IsRunSjModeMonitor)
+                {
+                    SystemLog.DisplayFileServerLog("SJ Mode Monitoring is running");
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, "SJ Mode Monitoring is running");
+                    }));
+                    return;
+                }
+
+                OnStartSjModeMonitor?.Invoke();
+                SystemLog.DisplayFileServerLog("Run SJ Mode Monitoring");
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void btnStopSjModeMonitor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SystemLog.DisplayFileServerLog("Stop SJ Mode Monitroing");
+
+                // 검사 정지
+                OnStopSjModeMonitor?.Invoke();
+            }
+            catch
+            {
+
+            }
+        }
+
         private void btnMaterialFilter_Click(object sender, EventArgs e)
         {
             try
@@ -306,6 +348,8 @@ namespace MarkCompare
         }
         #endregion
 
+
+
         #region 언어 변경
         string _cultureCode = "";
         public void UpdateLanguage(string culture)
@@ -318,11 +362,21 @@ namespace MarkCompare
                 Font newFont = new Font(fontName, 9, FontStyle.Regular);
                 btnStart.Font = newFont;
                 btnStop.Font = newFont;
+                lblMon.Font = newFont;
                 btnMaterialFilter.Font = newFont;
 
+                lblSjMode.Font = newFont;
+                btnRunSjModeMonitor.Font = newFont;
+                btnStopSjModeMonitor.Font = newFont;
+
+                lblMon.Text = Lang.monitorDiff;
                 btnStart.Text = Lang.start;
                 btnStop.Text = Lang.ProcStop;
                 btnMaterialFilter.Text = Lang.filterSet;
+
+                lblSjMode.Text = Lang.morSjMode;
+                btnRunSjModeMonitor.Text = Lang.start;
+                btnStopSjModeMonitor.Text = Lang.ProcStop;
             }));
         }
         #endregion

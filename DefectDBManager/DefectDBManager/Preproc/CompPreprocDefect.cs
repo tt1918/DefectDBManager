@@ -115,6 +115,13 @@ namespace DefectDBManager
         } = false;
         #endregion
 
+        #region SJMODE 탐색
+        public bool IsRunSjModeMonitor
+        {
+            get; private set;
+        } = false;
+        #endregion
+
         #region 실시간 탐색
         public bool IsRunLiveTimer
         {
@@ -470,6 +477,19 @@ namespace DefectDBManager
 
         }
 
+        public void StartSjModeMonitoring()
+        {
+            // SJ MODE DATA 모니터링 시작
+            runSjModeData();
+            _timerSjModeMonitor.Interval = LotManager.SjMonitorParam.CycleTime * 1000 * 60;
+            _timerSjModeMonitor.Start();
+        }
+
+        public void StopSjModeMonitoring()
+        {
+            _timerSjModeMonitor.Stop();
+        }
+
         public void StartLiveLot()
         {
             bool isSync = LotManager.CrtProcFilter.UseLiveSync;
@@ -499,15 +519,10 @@ namespace DefectDBManager
 #endif
             _timerCheckLiveLot.Start();
 
-            // SJ MODE DATA 모니터링 시작
-            runSjModeData();
-            _timerSjModeMonitor.Interval = LotManager.SjMonitorParam.CycleTime * 1000*60;
-            _timerSjModeMonitor.Start();
         }
         public void StopLiveLot()
         {
             _timerCheckLiveLot.Stop();
-            _timerSjModeMonitor.Stop();
         }
 
         public bool IsRunLiveCheck()
@@ -1324,13 +1339,13 @@ namespace DefectDBManager
                                     LotManager.SjMonitorDataList.Remove(ctlno, Convert.ToInt32(matchModel.ModelName));
                                     LotManager.SjMonitorDataList.Add(data);
                                 }
-
-                                // 데이터가 존재하면 리스트에 추가
-                                OnSjMonitorEvent?.Invoke(data);
-
-                                // 검색 결과 데이터를 파일에 저장한다.
-                                _ = Task.Run(() => saveSjMonitorData(data));
                             }
+
+                            // 데이터가 존재하면 리스트에 추가
+                            OnSjMonitorEvent?.Invoke(data);
+
+                            // 검색 결과 데이터를 파일에 저장한다.
+                            _ = Task.Run(() => saveSjMonitorData(data));
                         }
                         else
                         {
@@ -1370,6 +1385,7 @@ namespace DefectDBManager
                                 modelKey = profitModel.ModelName == string.Empty ? 0 : Convert.ToInt32(profitModel.ModelName);
                                 data.ModeNo = modelKey;
                                 data.ParamName = item.Name;
+                                data.LNCD = profitModel.LNCD;
 
                                 foreach (var dataItem in data.DefectInfo)
                                 {
@@ -1381,7 +1397,6 @@ namespace DefectDBManager
                                         var rate = data.SetDefectJudgement(modelKey, infoItem);
                                     }
 
-                                    data.LNCD = profitModel.LNCD;
 
                                     if (LotManager.SjMonitorDataList.Exist(ctlno, modelKey) == false)
                                         LotManager.SjMonitorDataList.Add(data);
@@ -1391,12 +1406,13 @@ namespace DefectDBManager
                                         LotManager.SjMonitorDataList.Add(data);
                                     }
 
-                                    // 데이터가 존재하면 리스트에 추가
-                                    OnSjMonitorEvent?.Invoke(data);
-
-                                    // 검색 결과 데이터를 파일에 저장한다.
-                                    _ = Task.Run(() => saveSjMonitorData(data));
                                 }
+
+                                // 데이터가 존재하면 리스트에 추가
+                                OnSjMonitorEvent?.Invoke(data);
+
+                                // 검색 결과 데이터를 파일에 저장한다.
+                                _ = Task.Run(() => saveSjMonitorData(data));
                             }
                         }
                     }

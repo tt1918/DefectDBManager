@@ -95,6 +95,14 @@ namespace MarkCompare
                         color = Color.Blue;
                     else if (info.IsMarkingError && info.IsAiProcError)
                         color = Color.Red;
+                    else if (info.SjModeProcResult != eSjModeProcResult.None)
+                    {
+                        if (info.SjModeProcResult == eSjModeProcResult.Error)
+                            color = Color.Red;
+                        else if (info.SjModeProcResult == eSjModeProcResult.NoFile)
+                            color = Color.FromArgb(8,30,190);
+                    }
+                        
                     else
                         color = Color.Black;
 
